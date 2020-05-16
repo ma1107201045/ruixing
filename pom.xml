@@ -25,7 +25,7 @@
         <ruixing-all.version>${version}</ruixing-all.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
-        <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
+        <druid-spring-boot-starter.version>1.2.25</druid-spring-boot-starter.version>
         <fastjson.version>1.2.62</fastjson.version>
     </properties>
     <dependencyManagement>
