@@ -525,6 +525,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             dataJa.add(jsonObject);
         }
         jo.put("data", dataJa);
+
         return jo;
     }
 

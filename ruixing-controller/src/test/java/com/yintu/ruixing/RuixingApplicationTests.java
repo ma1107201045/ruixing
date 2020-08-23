@@ -113,12 +113,10 @@ class RuixingApplicationTests {
 
     }
 
+
     @Test
     void contextLoads8() {
-        QuDuanInfoService quDuanInfoService = this.quDuanInfoService;
-        Object o = JSONObject.parseObject("", "111".getClass());
-        System.out.println(o.getClass());
+        JSONObject jo = JSONObject.parseObject("{}");
     }
-
 
 }

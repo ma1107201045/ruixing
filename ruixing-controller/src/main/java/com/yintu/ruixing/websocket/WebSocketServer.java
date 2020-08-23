@@ -27,7 +27,7 @@ public class WebSocketServer {
     public static Map<String, SessionInfo> webSocketSession = new ConcurrentHashMap<>();
 
     public WebSocketServer() {
-        logger.info("WebSocketBrowserServer初始化.......");
+        logger.info("WebSocketServer初始化.......");
     }
 
     @OnOpen

@@ -10,6 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -82,6 +83,7 @@ public class SkylightTimeServiceImpl implements SkylightTimeService {
 
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public String[][] importFile(InputStream inputStream, String fileName) throws IOException {
         //excel标题
         String title = "天窗时间列表";
@@ -145,6 +147,7 @@ public class SkylightTimeServiceImpl implements SkylightTimeService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void templateFile(OutputStream outputStream) throws IOException {
         //excel标题
         String title = "天窗时间列表";
