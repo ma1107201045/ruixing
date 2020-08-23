@@ -1,3 +1,4 @@
+/*
 package com.yintu.ruixing.guzhangzhenduan;
 
 import cn.hutool.core.img.ImgUtil;
@@ -30,10 +31,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+*/
 /**
  * @author:mlf
  * @date:2020/6/1 16:06
- */
+ *//*
+
 @Controller
 @RequestMapping("/test")
 @Api("测试接口描述")
@@ -142,3 +145,4 @@ public class TestController {
     }
 
 }
+*/

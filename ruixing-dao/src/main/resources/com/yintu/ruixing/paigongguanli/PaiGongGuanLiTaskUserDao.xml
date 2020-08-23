@@ -14,6 +14,25 @@
   </sql>
 
 
+
+
+    <!--根据tid  和最大分值和最小分值 查询对应的人员-->
+    <select id="findUser" resultMap="BaseResultMap">
+        SELECT
+            tu.id,
+            tu.true_name
+        FROM
+            mro_paigongguanli_task_user ptu,
+            tb_user tu
+        WHERE
+            tu.id = ptu.uid
+            AND ptu.tid = #{tid}
+            AND ptu.score BETWEEN #{minTaskshuxingNum}
+            AND #{maxTaskshuxingNum}
+        ORDER BY
+            ptu.score DESC
+    </select>
+
     <!--根据人员id  查询所有的任务能力数据-->
     <select id="findUserPowerScoreById" resultMap="BaseResultMap">
         SELECT

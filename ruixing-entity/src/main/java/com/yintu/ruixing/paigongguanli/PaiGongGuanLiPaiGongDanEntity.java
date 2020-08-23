@@ -2,6 +2,15 @@ package com.yintu.ruixing.paigongguanli;
 
 import java.util.Date;
 
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaiGongGuanLiPaiGongDanEntity {
     private Integer id;
 
@@ -46,6 +55,10 @@ public class PaiGongGuanLiPaiGongDanEntity {
     private String gaipaipeople;
 
     private Integer paigongstate;
+
+    private Integer paigongmode; //派工方式 1：手动派工  2：自动派工
+
+    private Integer paigongpeoplenumber; //派工人员数量
 
     public Integer getId() {
         return id;

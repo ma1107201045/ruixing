@@ -31,6 +31,35 @@
     chuChaiStartTime, chuChaiEndTime, teShuAsk, guanLianDanJu, paiGongPeople, gaiPaiPeople, 
     paiGongState
   </sql>
+
+
+  <!--根据派工人员名  查询对应的数据-->
+  <select id="findUserByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan
+    where paiGongPeople=#{truename} or gaiPaiPeople=#{truename}
+  </select>
+
+
+  <!--根据派工单号  查询对应的关联单据-->
+  <select id="findOnePaiGongDanByNum" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan
+    where paiGongNumber like concat('%',#{paiGongDanNum},'%')
+  </select>
+
+  <!--根据派工单的编号前缀  查询含有此前缀的编号-->
+  <select id="findPaiGongDanNum"  resultMap="BaseResultMap">
+    select
+    paiGongNumber
+    from mro_paigongguanli_paigongdan
+    where paiGongNumber like concat('%',#{suoxie},'%')
+    group by id limit 1
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -41,24 +70,8 @@
     delete from mro_paigongguanli_paigongdan
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
-    insert into mro_paigongguanli_paigongdan (id, paiGongNumber, yeWuType, 
-      tljName, dwdName, xdName, 
-      czName, xiangMuType, chuChaiType, 
-      workContent, taskShuXing, contacts, 
-      contactsPhoneNum, chuChaiCity, xiangXiAdress, 
-      chuChaiStartTime, chuChaiEndTime, teShuAsk, 
-      guanLianDanJu, paiGongPeople, gaiPaiPeople, 
-      paiGongState)
-    values (#{id,jdbcType=INTEGER}, #{paigongnumber,jdbcType=VARCHAR}, #{yewutype,jdbcType=VARCHAR}, 
-      #{tljname,jdbcType=VARCHAR}, #{dwdname,jdbcType=VARCHAR}, #{xdname,jdbcType=VARCHAR}, 
-      #{czname,jdbcType=VARCHAR}, #{xiangmutype,jdbcType=VARCHAR}, #{chuchaitype,jdbcType=VARCHAR}, 
-      #{workcontent,jdbcType=VARCHAR}, #{taskshuxing,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
-      #{contactsphonenum,jdbcType=VARCHAR}, #{chuchaicity,jdbcType=VARCHAR}, #{xiangxiadress,jdbcType=VARCHAR}, 
-      #{chuchaistarttime,jdbcType=TIMESTAMP}, #{chuchaiendtime,jdbcType=TIMESTAMP}, #{teshuask,jdbcType=VARCHAR}, 
-      #{guanliandanju,jdbcType=VARCHAR}, #{paigongpeople,jdbcType=VARCHAR}, #{gaipaipeople,jdbcType=VARCHAR}, 
-      #{paigongstate,jdbcType=INTEGER})
-  </insert>
+
+  <!--新增派工单-->
   <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     insert into mro_paigongguanli_paigongdan
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -198,6 +211,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     update mro_paigongguanli_paigongdan
     <set>
@@ -292,4 +307,23 @@
       paiGongState = #{paigongstate,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+    insert into mro_paigongguanli_paigongdan (id, paiGongNumber, yeWuType,
+      tljName, dwdName, xdName,
+      czName, xiangMuType, chuChaiType,
+      workContent, taskShuXing, contacts,
+      contactsPhoneNum, chuChaiCity, xiangXiAdress,
+      chuChaiStartTime, chuChaiEndTime, teShuAsk,
+      guanLianDanJu, paiGongPeople, gaiPaiPeople,
+      paiGongState)
+    values (#{id,jdbcType=INTEGER}, #{paigongnumber,jdbcType=VARCHAR}, #{yewutype,jdbcType=VARCHAR},
+      #{tljname,jdbcType=VARCHAR}, #{dwdname,jdbcType=VARCHAR}, #{xdname,jdbcType=VARCHAR},
+      #{czname,jdbcType=VARCHAR}, #{xiangmutype,jdbcType=VARCHAR}, #{chuchaitype,jdbcType=VARCHAR},
+      #{workcontent,jdbcType=VARCHAR}, #{taskshuxing,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR},
+      #{contactsphonenum,jdbcType=VARCHAR}, #{chuchaicity,jdbcType=VARCHAR}, #{xiangxiadress,jdbcType=VARCHAR},
+      #{chuchaistarttime,jdbcType=TIMESTAMP}, #{chuchaiendtime,jdbcType=TIMESTAMP}, #{teshuask,jdbcType=VARCHAR},
+      #{guanliandanju,jdbcType=VARCHAR}, #{paigongpeople,jdbcType=VARCHAR}, #{gaipaipeople,jdbcType=VARCHAR},
+      #{paigongstate,jdbcType=INTEGER})
+  </insert>
 </mapper>
