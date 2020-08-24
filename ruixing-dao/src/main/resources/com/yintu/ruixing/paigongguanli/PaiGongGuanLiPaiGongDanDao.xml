@@ -39,6 +39,7 @@
     <include refid="Base_Column_List" />
     from mro_paigongguanli_paigongdan
     where paiGongPeople=#{truename} or gaiPaiPeople=#{truename}
+    order by chuChaiEndTime desc
   </select>
 
 

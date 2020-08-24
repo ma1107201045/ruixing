@@ -24,5 +24,5 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum);
 
-    List<PaiGongGuanLiTaskUserEntity> findUserByName(String truename);
+    List<PaiGongGuanLiPaiGongDanEntity> findUserByName(String truename);
 }
