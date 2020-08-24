@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,8 +18,16 @@ public class PermissionEntity implements Serializable {
     private static final long serialVersionUID = -2742251652831479682L;
     private Long id;
 
-    private Long parentId;
+    private String createBy;
 
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
+    @NotNull
+    private Long parentId;
+    @NotBlank
     private String name;
 
     private String url;

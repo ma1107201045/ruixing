@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.danganguanli.CustomerDutyEntity;
 import com.yintu.ruixing.danganguanli.CustomerUnitsEntity;
 import com.yintu.ruixing.danganguanli.CustomerUnitsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +103,12 @@ public class UserController extends SessionController {
         List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L, customerUnitsId);
         return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
     }
+
+    @GetMapping("/customer/duties")
+    public Map<String, Object> findCustomerDuties(@RequestParam Long[] departmentIds) {
+        List<CustomerDutyEntity> customerDutyEntities = departmentService.findCustomerDutiesByIds(departmentIds);
+        return ResponseDataUtil.ok("查询职务列表信息成功", customerDutyEntities);
+    }
+
 
 }
