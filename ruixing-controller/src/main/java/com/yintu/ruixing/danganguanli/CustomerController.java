@@ -114,7 +114,7 @@ public class CustomerController extends SessionController {
     @ResponseBody
     public Map<String, Object> findCustomerDuties(@RequestParam Long[] departmentIds) {
         List<CustomerDutyEntity> customerDutyEntities = departmentService.findCustomerDutiesByIds(departmentIds);
-        return ResponseDataUtil.ok("查询部门列表信息成功", customerDutyEntities);
+        return ResponseDataUtil.ok("查询职务列表信息成功", customerDutyEntities);
     }
 
     @GetMapping("/export/{ids}")

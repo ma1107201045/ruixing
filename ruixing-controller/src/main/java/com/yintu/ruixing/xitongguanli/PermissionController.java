@@ -1,13 +1,17 @@
 package com.yintu.ruixing.xitongguanli;
 
+import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.PermissionEntity;
 import com.yintu.ruixing.xitongguanli.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,15 +21,17 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/permissions")
-public class PermissionController {
+public class PermissionController extends SessionController {
     @Autowired
     private PermissionService permissionService;
 
 
     @PostMapping
-    public Map<String, Object> add(PermissionEntity permissionEntity) {
-        Assert.notNull(permissionEntity.getName(), "权限名不能为空");
-        Assert.notNull(permissionEntity.getParentId(), "父节点ID不能为空");
+    public Map<String, Object> add(@Validated PermissionEntity permissionEntity) {
+        permissionEntity.setCreateBy(this.getLoginUserName());
+        permissionEntity.setCreateTime(new Date());
+        permissionEntity.setModifiedBy(this.getLoginUserName());
+        permissionEntity.setModifiedTime(new Date());
         permissionService.add(permissionEntity);
         return ResponseDataUtil.ok("添加权限成功");
     }
@@ -37,9 +43,9 @@ public class PermissionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Long id, PermissionEntity permissionEntity) {
-        Assert.notNull(permissionEntity.getName(), "权限名不能为空");
-        Assert.notNull(permissionEntity.getParentId(), "父节点ID不能为空");
+    public Map<String, Object> edit(@PathVariable Long id, @Validated PermissionEntity permissionEntity) {
+        permissionEntity.setModifiedBy(this.getLoginUserName());
+        permissionEntity.setModifiedTime(new Date());
         permissionService.edit(permissionEntity);
         return ResponseDataUtil.ok("修改权限成功");
     }

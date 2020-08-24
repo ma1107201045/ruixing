@@ -99,10 +99,9 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
+            userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
             if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
-                userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
-                userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
                 userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
                 userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
                 userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));
@@ -176,10 +175,9 @@ public class UserServiceImpl implements UserService {
         for (UserEntity userEntity : userEntities) {
             userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
+            userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
             if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
-                userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
-                userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
                 userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
                 userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
                 userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));
