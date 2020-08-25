@@ -1,6 +1,7 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
 import com.yintu.ruixing.paigongguanli.*;
+import com.yintu.ruixing.xitongguanli.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,12 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
     @Autowired
     private PaiGongGuanLiTaskUserDao paiGongGuanLiTaskUserDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private PaiGongGuanLiRiQinDao paiGongGuanLiRiQinDao;
 
     @Override
     public List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum) {
@@ -61,37 +68,60 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             List<PaiGongGuanLiTaskUserEntity> userEntityList = paiGongGuanLiTaskUserDao.findUser(tid, maxTaskshuxingNum, minTaskshuxingNum);
             for (PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity : userEntityList) {//遍历每个人员
                 String truename = paiGongGuanLiTaskUserEntity.getTruename();//获取人员名
-                List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(truename);//根据人员名  查询是否派单 或者是否是改派人员
-                if (userList.size() == 0) {//说明这个人咩有出过差
-                    userlist.add(truename); //把这个人放到list集合里
-                } else {//这个人出过差
-                    for (PaiGongGuanLiPaiGongDanEntity gongGuanLiPaiGongDanEntity : userList) {//遍历这个人的出差的次数
-                        long Chuchaiendtime = gongGuanLiPaiGongDanEntity.getChuchaiendtime().getTime();//获得本次出差的结束时间
-                        String paigongpeople = gongGuanLiPaiGongDanEntity.getPaigongpeople();//得到此人的名称
-                        if (Chuchaiendtime < today.getTime()) {//说明此人 能派遣
-                            userlist.add(paigongpeople);
+                Integer uid = userDao.findid(truename);
+                String userdongtai = paiGongGuanLiRiQinDao.findUserDongTai(uid);//查询这个人的出差  请假情况
+                if (!userdongtai.equals("请假") || !userdongtai.equals("出差")) {
+                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(truename);//根据人员名  查询是否派单 或者是否是改派人员
+                    if (userList.size() == 0) { //说明这个人咩有出过差
+                        userlist.add(truename); //把这个人放到list集合里
+                    } else {//这个人出过差
+                        for (PaiGongGuanLiPaiGongDanEntity gongGuanLiPaiGongDanEntity : userList) {//遍历这个人的出差情况  由时间从前往后排序
+                            long Chuchaiendtime = gongGuanLiPaiGongDanEntity.getChuchaiendtime().getTime();//获得本次出差的结束时间
+                            String paigongpeople = gongGuanLiPaiGongDanEntity.getPaigongpeople();//得到此人的名称
+                            if (Chuchaiendtime < paiGongGuanLiPaiGongDanEntity.getChuchaistarttime().getTime()) {//说明此人 能派遣
+                                userlist.add(paigongpeople);
+                            }
                         }
                     }
                 }
             }
 
             //遍历符合条件的人员userlist
-            for (int i = 0; i < userlist.size(); i++) {
-                String username = userlist.get(i);//得到人员名
-                List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(username);//根据人员名  查询此人的派工经历
-                if (userList.size()==1){
-                    long endtime = userList.get(0).getChuchaiendtime().getTime();
-                    long starttime = userList.get(0).getChuchaistarttime().getTime();
-                    long lianxutime=endtime-starttime;
-                }
-                if (userList.size()>1){
-                    long endtime1 = userList.get(0).getChuchaiendtime().getTime();
-                    long starttime1 = userList.get(0).getChuchaistarttime().getTime();
-                    long endtime2 = userList.get(1).getChuchaiendtime().getTime();
-                    long starttime2 = userList.get(1).getChuchaistarttime().getTime();
-                }
-            }
+            if (userlist.size() != 0) {
+                double lianxutime = 0;
+                for (int i = 0; i < userlist.size(); i++) {
+                    String username = userlist.get(i);//得到人员名
+                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(username);//根据人员名  查询此人的派工经历
+                    if (userList.size() == 1) {
+                        long endtime = userList.get(0).getChuchaiendtime().getTime();
+                        long starttime = userList.get(0).getChuchaistarttime().getTime();
+                        lianxutime = endtime - starttime;
+                    }
+                    if (userList.size() > 1) {
+                        long endtime1 = userList.get(0).getChuchaiendtime().getTime();
+                        long starttime1 = userList.get(0).getChuchaistarttime().getTime();
 
+                        long endtime2 = userList.get(1).getChuchaiendtime().getTime();
+                        long starttime2 = userList.get(1).getChuchaistarttime().getTime();
+
+                        long lianxutime1 = starttime1 - endtime2;
+                        long dayNum = lianxutime1 / 86400000;//间隔天数
+                        if (dayNum < 3) {
+                            lianxutime = (endtime1 - starttime1) + (endtime2 - starttime2);
+                        }
+                        if (3 <= dayNum && dayNum < 6) {
+                            lianxutime = (endtime1 - starttime1) + (endtime2 - starttime2) * 0.6;
+                        }
+                        if (6 <= dayNum && dayNum < 10) {
+                            lianxutime = (endtime1 - starttime1) + (endtime2 - starttime2) * 0.3;
+                        }
+                        if (10 <= dayNum) {
+                            lianxutime = (endtime1 - starttime1);
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -99,4 +129,21 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     public String findPaiGongDanNum(String suoxie) {
         return paiGongGuanLiPaiGongDanDao.findPaiGongDanNum(suoxie);
     }
+
+
+    public static void main(String[] args) {
+        int[] a={1,2,9,6,5};
+        for (int i = 0; i < a.length; i++) {
+            for (int i1 = i+1; i1 < a.length; i1++) {
+                if (a[i]>a[i1]){
+                    int temp = a[i];
+
+                    a[i] = a[i1];
+
+                    a[i1] = temp;
+                }
+            }
+        }
+    }
+
 }

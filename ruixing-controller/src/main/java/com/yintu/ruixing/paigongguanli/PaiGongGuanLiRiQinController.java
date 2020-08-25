@@ -1,13 +1,12 @@
 package com.yintu.ruixing.paigongguanli;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -39,5 +38,30 @@ public class PaiGongGuanLiRiQinController {
     public Map<String,Object>findAllRiQin(Integer page,Integer size){
         PageHelper.startPage(page,size);
         List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinService.findAllRiQin(page,size);
+        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
+        return ResponseDataUtil.ok("查询日勤数据成功",riQinEntityPageInfo);
+    }
+
+    //根据名字查询对应的日勤管理数据
+    @GetMapping("/findAllRiQinByUserName")
+    public Map<String,Object>findAllRiQinByUserName(Integer page,Integer size,String username){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinService.findAllRiQinByUserName(page,size,username);
+        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
+        return ResponseDataUtil.ok("查询日勤数据成功",riQinEntityPageInfo);
+    }
+
+    //新增日勤
+    @PostMapping("/addRiQin")
+    public Map<String,Object>addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
+        paiGongGuanLiRiQinService.addRiQin(paiGongGuanLiRiQinEntity);
+        return ResponseDataUtil.ok("新增日勤成功");
+    }
+
+    //根据日勤id  编辑对应的数据
+    @PutMapping("/editRiQinById/{id}")
+    public Map<String,Object>editRiQinById(@PathVariable Integer id,PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
+        paiGongGuanLiRiQinService.editRiQinById(paiGongGuanLiRiQinEntity);
+        return ResponseDataUtil.ok("编辑日勤数据成功");
     }
 }

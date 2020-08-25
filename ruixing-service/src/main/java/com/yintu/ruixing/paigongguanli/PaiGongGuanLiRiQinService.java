@@ -10,4 +10,10 @@ import java.util.List;
  */
 public interface PaiGongGuanLiRiQinService {
     List<PaiGongGuanLiRiQinEntity> findAllRiQin(Integer page, Integer size);
+
+    List<PaiGongGuanLiRiQinEntity> findAllRiQinByUserName(Integer page, Integer size, String username);
+
+    void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
+
+    void editRiQinById(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
 }

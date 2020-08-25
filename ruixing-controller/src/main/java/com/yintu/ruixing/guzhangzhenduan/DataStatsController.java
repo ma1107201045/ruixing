@@ -1023,12 +1023,10 @@ public class DataStatsController {
     @GetMapping("/findAllQuDuan")
     public Map<String, Object> findAllQuDuan(@RequestParam(value = "page", required = false) Integer page,
                                              @RequestParam(value = "size", required = false) Integer size) {
-        JSONObject jo = new JSONObject();
+
         PageHelper.startPage(page, size);
         List<QuDuanBaseEntity> quDuanBaseEntities = dataStatsService.findAllQuDuan(page, size);
-        jo.put("quDuanBaseEntities", quDuanBaseEntities);
         PageInfo<QuDuanBaseEntity> quDuanBaseEntityPageInfo = new PageInfo<>(quDuanBaseEntities);
-        jo.put("quDuanBaseEntityPageInfo", quDuanBaseEntityPageInfo);
         return ResponseDataUtil.ok("查询所有站外区段成功", quDuanBaseEntityPageInfo);
     }
 

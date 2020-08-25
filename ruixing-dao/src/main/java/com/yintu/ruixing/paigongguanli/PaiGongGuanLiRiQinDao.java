@@ -11,14 +11,17 @@ public interface PaiGongGuanLiRiQinDao {
 
     int insert(PaiGongGuanLiRiQinEntity record);
 
-    int insertSelective(PaiGongGuanLiRiQinEntity record);
-
     PaiGongGuanLiRiQinEntity selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(PaiGongGuanLiRiQinEntity record);
 
     int updateByPrimaryKey(PaiGongGuanLiRiQinEntity record);
 
+
     ////////////////////////////////
+    int updateByPrimaryKeySelective(PaiGongGuanLiRiQinEntity record);
+
+    int insertSelective(PaiGongGuanLiRiQinEntity record);
+
     List<PaiGongGuanLiRiQinEntity> findAllRiQin();
+
+    String findUserDongTai(Integer uid);
 }

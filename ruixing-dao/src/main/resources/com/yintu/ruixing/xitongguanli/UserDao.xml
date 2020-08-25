@@ -42,7 +42,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -71,7 +72,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -87,7 +89,23 @@
     phone, telephone, email, auth_type, locked, enableds, province_id, city_id, district_id, 
     address, customer_units_id, customer_duty_id, is_customer
     </sql>
-    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample" resultMap="BaseResultMap">
+
+    <select id="findid" resultType="java.lang.Integer">
+        select
+        id
+        from tb_user
+        where true_name = #{truename}
+    </select>
+
+    <select id="findId" resultType="java.lang.Long">
+        select
+        id
+        from tb_user
+        where true_name like concat('%'.#{username},'%')
+    </select>
+
+    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
+            resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -118,7 +136,8 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into tb_user (id, create_by, create_time,
                              modified_by, modified_time, username,
                              password, true_name, phone,
@@ -134,7 +153,8 @@
                 #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
                 #{customerUnitsId,jdbcType=BIGINT}, #{customerDutyId,jdbcType=BIGINT}, #{isCustomer,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into tb_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -267,7 +287,8 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
+            resultType="java.lang.Long">
         select count(*) from tb_user
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>

@@ -181,6 +181,7 @@
     <!--根据线段xid  查询此线段下面所有的区段数据-->
     <select id="findQuDuanByXid" resultMap="BaseResultMap">
         select qb.*,
+        	   xd.xd_name,
                cz.cz_name
         FROM mro_xianduan xd,
              mro_chezhan cz,
@@ -195,6 +196,7 @@
     <!--根据电务段did  查询此电务段下面所有的区段数据-->
     <select id="findQuDuanByDid" resultMap="BaseResultMap">
         select qb.*,
+        	   xd.xd_name,
                cz.cz_name
         FROM mro_dianwuduan dwd,
              mro_xianduan xd,
@@ -210,6 +212,7 @@
     <!--根据铁路局tid  查询此铁路局下面所有的区段数据-->
     <select id="findQuDuanByTid" resultMap="BaseResultMap">
         select qb.*,
+        	   xd.xd_name,
                cz.cz_name
         FROM mro_tieluju tlj,
              mro_dianwuduan dwd,

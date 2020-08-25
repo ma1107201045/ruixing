@@ -32,4 +32,7 @@ public interface UserDao {
 
     List<PermissionEntity> selectPermission(@Param("parentId") Long parentId,@Param("isMenu") Short isMenu);
 
+    List<Long> findId(@Param("username") String username);
+
+    Integer findid(@Param("truename")String truename);
 }

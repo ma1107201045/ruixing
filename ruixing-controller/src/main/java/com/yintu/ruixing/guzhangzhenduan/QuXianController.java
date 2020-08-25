@@ -478,6 +478,7 @@ public class QuXianController {
             List<BigDecimal> listt5 = new ArrayList<>();
             List<Long> timelist = new ArrayList<>();
             JSONObject js = new JSONObject();
+
             long time = endTime.getTime() / 1000 - startTime.getTime() / 1000;//得到这两个时间差 单位是秒
             long starttimea = startTime.getTime();
             for (long i = 0; i <= time; i++) {
@@ -541,7 +542,6 @@ public class QuXianController {
                                 listt1.add(i1, null);
                             } else {
                                 listt1.add(i1, date.get(p).getName());
-                                // System.out.println("666666666666666666+="+date.get(i1).getName());
                             }
                         }
                         if (k == 2) {

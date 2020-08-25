@@ -15,6 +15,14 @@
   </sql>
 
 
+  <!--根据uid  查询此人的动态-->
+  <select id="findUserDongTai"  resultType="java.lang.String">
+    select
+    userDongTai
+    from mro_paigongguanli_riqin
+    where uid=#{uid}
+  </select>
+
   <!--查询所有的日勤数据-->
   <select id="findAllRiQin"  resultMap="BaseResultMap">
     select
@@ -33,14 +41,8 @@
     delete from mro_paigongguanli_riqin
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
-    insert into mro_paigongguanli_riqin (id, uid, userDongTai, 
-      startTime, endTime, creatTime, 
-      updateTime)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{userdongtai,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{creattime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
-  </insert>
+
+  <!--新增日勤数据-->
   <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
     insert into mro_paigongguanli_riqin
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -90,6 +92,8 @@
       </if>
     </trim>
   </insert>
+
+  <!--编辑日勤数据-->
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
     update mro_paigongguanli_riqin
     <set>
@@ -124,4 +128,13 @@
       updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    insert into mro_paigongguanli_riqin (id, uid, userDongTai,
+      startTime, endTime, creatTime,
+      updateTime)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{userdongtai,jdbcType=VARCHAR},
+      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{creattime,jdbcType=TIMESTAMP},
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
 </mapper>
