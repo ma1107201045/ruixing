@@ -37,6 +37,8 @@ public class XianDuanEntity {
 
     private Long xdType;
 
+    private String dwdName;
+
     private Integer xdState;//线段设置状态  0：未设置  1：已设置
 
     private String xdJson;//储存的json

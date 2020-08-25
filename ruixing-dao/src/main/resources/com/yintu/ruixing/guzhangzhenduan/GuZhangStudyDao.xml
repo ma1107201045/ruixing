@@ -78,6 +78,7 @@
         <result property="xdId" column="xd_id"/>
         <result property="dwdId" column="dwd_id"/>
         <result property="xdName" column="xd_name"/>
+        <result property="dwdName" column="dwd_name"/>
         <result property="xdZgName" column="xd_zg_name"/>
         <result property="dwdXdId" column="dwd_xd_id"/>
         <result property="xdMiaoShu" column="xd_miaoshu"/>
@@ -85,8 +86,16 @@
     </resultMap>
     <!--查询线段信息-->
     <select id="getXianDuan" resultMap="xianduan">
-    select xd.xd_name,xd.xid,xd.xd_id
-     from mro_xianduan xd
+        SELECT
+            xd.xd_name,
+            xd.xid,
+            xd.xd_id,
+            dwd.dwd_name
+        FROM
+            mro_xianduan xd,
+            mro_dianwuduan dwd
+        WHERE
+            xd.dwd_xd_id = dwd.did
   </select>
 
     <!--根据线段id查询对应的车站-->
