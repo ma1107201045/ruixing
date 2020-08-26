@@ -1,5 +1,7 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +21,10 @@ public interface SolutionService {
     /**
      * 统计工作完成进度
      *
-     * @param selectType 1.年  2.年-月  3.年-月-日
-     * @param date       日期
+     * @param date 日期
      * @return 解决方案中每个模块工作完成情况
      */
-    Map<String, Object> workCompletion(Integer selectType, Date date);
+    JSONArray workCompletion(Date date);
 
     /**
      * 按照状态以及项目日期区间查询中标项目

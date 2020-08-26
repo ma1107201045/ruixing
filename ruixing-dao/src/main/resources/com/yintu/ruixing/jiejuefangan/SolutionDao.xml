@@ -1,67 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.jiejuefangan.SolutionDao">
-
-
-    <sql id="Date_Condition_List">
-        <if test="selectType==1">
-            DATE_FORMAT(project_date,'%Y') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y')
-        </if>
-        <if test="selectType==2">
-            DATE_FORMAT(project_date,'%Y-%m') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m')
-        </if>
-        <if test="selectType==3">
-            DATE_FORMAT(project_date,'%Y-%m-%d') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m-%d')
-        </if>
-    </sql>
-
-    <sql id="Status2_Condition_List">
+    <sql id="Where_Condition_List">
         <where>
-            <include refid="Date_Condition_List"/>
-            AND task_status = 2
+            <choose>
+                <when test="selectType==1">
+                    DATE_FORMAT(project_date,'%Y') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y')
+                </when>
+                <when test="selectType==2">
+                    DATE_FORMAT(project_date,'%Y-%m') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m')
+                </when>
+                <when test="selectType==3">
+                    DATE_FORMAT(project_date,'%Y-%m-%d') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m-%d')
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="taskStatus==1">
+                    and task_status= #{taskStatus,jdbcType=SMALLINT}
+                </when>
+                <when test="taskStatus==2">
+                    and task_status= #{taskStatus,jdbcType=SMALLINT}
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
         </where>
     </sql>
-    <sql id="Status1_Condition_List">
-        <where>
-            <include refid="Date_Condition_List"/>
-            AND task_status = 1
-        </where>
-    </sql>
-
     <select id="countTaskStatusByGroupBy" resultType="java.lang.Integer">
-        SELECT *
-        FROM (
         SELECT count(*)
         FROM mro_pre_sale
-        <include refid="Status2_Condition_List"/>
-        UNION ALL
-        SELECT count(*)
-        FROM mro_pre_sale
-        <include refid="Status1_Condition_List"/>
-        ) ps
-        UNION ALL
-        SELECT *
-        FROM (
-        SELECT count(*)
-        FROM mro_bidding
-        <include refid="Status2_Condition_List"/>
+        <include refid="Where_Condition_List"/>
         UNION ALL
         SELECT count(*)
         FROM mro_bidding
-        <include refid="Status1_Condition_List"/>
-        ) b
-        UNION ALL
-        SELECT *
-        FROM (
-        SELECT count(*)
-        FROM mro_design_liaison
-        <include refid="Status2_Condition_List"/>
+        <include refid="Where_Condition_List"/>
         UNION ALL
         SELECT count(*)
         FROM mro_design_liaison
-        <include refid="Status1_Condition_List"/>
-        ) dl
-
+        <include refid="Where_Condition_List"/>
     </select>
 
 

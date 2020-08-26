@@ -11,6 +11,7 @@ import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyService;
 import com.yintu.ruixing.guzhangzhenduan.SkylightTimeService;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorService;
+import com.yintu.ruixing.jiejuefangan.SolutionService;
 import com.yintu.ruixing.xitongguanli.RoleEntity;
 import com.yintu.ruixing.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
@@ -26,6 +27,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -45,6 +47,9 @@ class RuixingApplicationTests {
 
     @Autowired
     private SkylightTimeService skylightTimeService;
+
+    @Autowired
+    private SolutionService solutionService;
 
 
     @Test
@@ -116,7 +121,7 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads8() {
-        JSONObject jo = JSONObject.parseObject("{}");
+        System.out.println(solutionService.workCompletion(new Date()));
     }
 
 }

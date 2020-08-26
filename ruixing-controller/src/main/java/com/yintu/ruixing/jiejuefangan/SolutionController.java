@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -26,9 +27,9 @@ public class SolutionController extends SessionController {
 
 
     @GetMapping("/work/completion")
-    public Map<String, Object> workCompletion(@RequestParam("selectType") Integer selectType, @RequestParam("date") Date date) {
-        Map<String, Object> map = solutionService.workCompletion(selectType, date);
-        return ResponseDataUtil.ok("查询工作完成进度成功", map);
+    public Map<String, Object> workCompletion(@RequestParam("date") Date date) {
+        JSONArray ja = solutionService.workCompletion(date);
+        return ResponseDataUtil.ok("查询工作完成进度成功", ja);
     }
 
     @GetMapping("/bidding/project")
