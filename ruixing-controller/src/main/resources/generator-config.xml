@@ -23,23 +23,37 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.yintu.ruixing.common" targetProject="../ruixing-entity/src/main/java">
+        <javaModelGenerator targetPackage="com.yintu.ruixing.jiejuefangan" targetProject="../ruixing-entity/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.common" targetProject="../ruixing-dao/src/main/resources">
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.jiejuefangan" targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.common" targetProject="../ruixing-dao/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.jiejuefangan" targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="mro_message"
-               domainObjectName="MessageEntity1"
-               mapperName="MessageDao1"
+        <table tableName="mro_pre_sale"
+               domainObjectName="PreSaleEntity1"
+               mapperName="PreSaleDao1"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableSelectByExample="false"/>
+        <table tableName="mro_bidding"
+               domainObjectName="BiddingEntity1"
+               mapperName="BiddingDao1"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableSelectByExample="false"/>
+        <table tableName="mro_design_liaison"
+               domainObjectName="DesignLiaisonEntity1"
+               mapperName="DesignLiaisonDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

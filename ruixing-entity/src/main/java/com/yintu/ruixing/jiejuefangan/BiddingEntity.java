@@ -5,32 +5,38 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.util.Date;
-/**
- * 投招标技术支持 项目实体类
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiddingEntity implements Serializable {
-    private static final long serialVersionUID = 5743348273904345051L;
+    private static final long serialVersionUID = 6496546618138184802L;
     private Integer id;
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
     @NotEmpty
     private String projectName;
-    @NotNull
+
     private Short projectStatus;
-    @NotNull
+
     private Date projectDate;
-    @NotNull
+
     private Short taskStatus;
 
     private Date taskFinishDate;
-    @NotEmpty
+
+    private String remark;
+
     private String bidder;
-    @NotNull
+
     private Integer railwayAdministrationId;
 
     private Integer preSaleId;

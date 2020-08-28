@@ -13,14 +13,13 @@ public interface BiddingDao {
 
     BiddingEntity selectByPrimaryKey(Integer id);
 
-    List<BiddingEntity> selectAll();
-
-    List<BiddingEntity> selectByYear(Integer year);
-
     int updateByPrimaryKeySelective(BiddingEntity record);
 
     int updateByPrimaryKey(BiddingEntity record);
 
-    List<Integer> selectByDistinctProjectDate();
+    List<BiddingEntity> selectAll();
 
+    List<BiddingEntity> selectByYear(Integer year);
+
+    List<Integer> selectByDistinctProjectDate();
 }

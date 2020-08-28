@@ -13,15 +13,13 @@ public interface PreSaleDao {
 
     PreSaleEntity selectByPrimaryKey(Integer id);
 
-    List<PreSaleEntity> selectAll();
-
-    List<PreSaleEntity> selectByYear(Integer year);
-
     int updateByPrimaryKeySelective(PreSaleEntity record);
 
     int updateByPrimaryKey(PreSaleEntity record);
 
+    List<PreSaleEntity> selectAll();
+
+    List<PreSaleEntity> selectByYear(Integer year);
+
     List<Integer> selectByDistinctProjectDate();
-
-
 }

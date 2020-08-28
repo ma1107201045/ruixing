@@ -13,14 +13,13 @@ public interface DesignLiaisonDao {
 
     DesignLiaisonEntity selectByPrimaryKey(Integer id);
 
-    List<DesignLiaisonEntity> selectAll();
-
-    List<DesignLiaisonEntity> selectByYear(Integer year);
-
     int updateByPrimaryKeySelective(DesignLiaisonEntity record);
 
     int updateByPrimaryKey(DesignLiaisonEntity record);
 
-    List<Integer> selectByDistinctProjectDate();
+    List<DesignLiaisonEntity> selectAll();
 
+    List<DesignLiaisonEntity> selectByYear(Integer year);
+
+    List<Integer> selectByDistinctProjectDate();
 }

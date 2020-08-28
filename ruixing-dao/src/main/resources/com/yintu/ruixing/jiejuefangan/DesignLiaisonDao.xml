@@ -3,11 +3,16 @@
 <mapper namespace="com.yintu.ruixing.jiejuefangan.DesignLiaisonDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
         <result column="project_status" jdbcType="SMALLINT" property="projectStatus"/>
         <result column="project_date" jdbcType="DATE" property="projectDate"/>
         <result column="task_status" jdbcType="SMALLINT" property="taskStatus"/>
         <result column="task_finish_date" jdbcType="TIMESTAMP" property="taskFinishDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="meeting_status" jdbcType="SMALLINT" property="meetingStatus"/>
         <result column="change_status" jdbcType="SMALLINT" property="changeStatus"/>
         <result column="bidder" jdbcType="VARCHAR" property="bidder"/>
@@ -15,8 +20,9 @@
         <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, project_name, project_status, project_date, task_status, task_finish_date, meeting_status,
-    change_status, bidder, railway_administration_id, bidding_id
+        id, create_by, create_time, modified_by, modified_time, project_name, project_status,
+    project_date, task_status, task_finish_date, remark, meeting_status, change_status, 
+    bidder, railway_administration_id, bidding_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -24,37 +30,42 @@
         from mro_design_liaison
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectAll" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_design_liaison
-    </select>
-    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_design_liaison
-        where YEAR(project_date) = #{year,jdbcType=INTEGER}
-    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mro_design_liaison
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
-        insert into mro_design_liaison (id, project_name, project_status,
-                                        project_date, task_status, task_finish_date,
-                                        meeting_status, change_status, bidder,
-                                        railway_administration_id, bidding_id)
-        values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{projectStatus,jdbcType=SMALLINT},
-                #{projectDate,jdbcType=DATE}, #{taskStatus,jdbcType=SMALLINT}, #{taskFinishDate,jdbcType=TIMESTAMP},
-                #{meetingStatus,jdbcType=SMALLINT}, #{changeStatus,jdbcType=SMALLINT}, #{bidder,jdbcType=VARCHAR},
-                #{railwayAdministrationId,jdbcType=INTEGER}, #{biddingId,jdbcType=INTEGER})
+        insert into mro_design_liaison (id, create_by, create_time,
+                                        modified_by, modified_time, project_name,
+                                        project_status, project_date, task_status,
+                                        task_finish_date, remark, meeting_status,
+                                        change_status, bidder, railway_administration_id,
+                                        bidding_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{projectName,jdbcType=VARCHAR},
+                #{projectStatus,jdbcType=SMALLINT}, #{projectDate,jdbcType=DATE}, #{taskStatus,jdbcType=SMALLINT},
+                #{taskFinishDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{meetingStatus,jdbcType=SMALLINT},
+                #{changeStatus,jdbcType=SMALLINT}, #{bidder,jdbcType=VARCHAR}, #{railwayAdministrationId,jdbcType=INTEGER},
+                #{biddingId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         insert into mro_design_liaison
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
             </if>
             <if test="projectName != null">
                 project_name,
@@ -70,6 +81,9 @@
             </if>
             <if test="taskFinishDate != null">
                 task_finish_date,
+            </if>
+            <if test="remark != null">
+                remark,
             </if>
             <if test="meetingStatus != null">
                 meeting_status,
@@ -91,6 +105,18 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="projectName != null">
                 #{projectName,jdbcType=VARCHAR},
             </if>
@@ -105,6 +131,9 @@
             </if>
             <if test="taskFinishDate != null">
                 #{taskFinishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
             </if>
             <if test="meetingStatus != null">
                 #{meetingStatus,jdbcType=SMALLINT},
@@ -126,6 +155,18 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         update mro_design_liaison
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="projectName != null">
                 project_name = #{projectName,jdbcType=VARCHAR},
             </if>
@@ -140,6 +181,9 @@
             </if>
             <if test="taskFinishDate != null">
                 task_finish_date = #{taskFinishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="meetingStatus != null">
                 meeting_status = #{meetingStatus,jdbcType=SMALLINT},
@@ -161,11 +205,16 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         update mro_design_liaison
-        set project_name              = #{projectName,jdbcType=VARCHAR},
+        set create_by                 = #{createBy,jdbcType=VARCHAR},
+            create_time               = #{createTime,jdbcType=TIMESTAMP},
+            modified_by               = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time             = #{modifiedTime,jdbcType=TIMESTAMP},
+            project_name              = #{projectName,jdbcType=VARCHAR},
             project_status            = #{projectStatus,jdbcType=SMALLINT},
             project_date              = #{projectDate,jdbcType=DATE},
             task_status               = #{taskStatus,jdbcType=SMALLINT},
             task_finish_date          = #{taskFinishDate,jdbcType=TIMESTAMP},
+            remark                    = #{remark,jdbcType=VARCHAR},
             meeting_status            = #{meetingStatus,jdbcType=SMALLINT},
             change_status             = #{changeStatus,jdbcType=SMALLINT},
             bidder                    = #{bidder,jdbcType=VARCHAR},
@@ -173,6 +222,17 @@
             bidding_id                = #{biddingId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison
+    </select>
+    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison
+        where YEAR(project_date) = #{year,jdbcType=INTEGER}
+    </select>
     <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
         select DISTINCT YEAR(project_date)
         from mro_design_liaison
