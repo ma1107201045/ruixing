@@ -28,6 +28,7 @@
     select
     <include refid="Base_Column_List" />
     from mro_paigongguanli_riqin
+    order by id desc
   </select>
 
 
