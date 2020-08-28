@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @ServerEndpoint("/websocket/video/{meetingNum}")
-public class WevSocketVideoServer {
+public class WebSocketVideoServer {
     private final static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
     /**
@@ -38,8 +38,8 @@ public class WevSocketVideoServer {
     private Session session;
 
 
-    public WevSocketVideoServer() {
-        logger.info("WevSocketVideoServer初始化.......");
+    public WebSocketVideoServer() {
+        logger.info("WebSocketVideoServer初始化.......");
     }
 
     @OnOpen
@@ -59,6 +59,10 @@ public class WevSocketVideoServer {
             Set<Session> sessions = new HashSet<>();
             sessions.add(session);
             webSocketMap.put(meetingNum, sessions);
+            logger.info("创建会议成功，房间号成功" + meetingNum);
+        }
+        for (Integer s : webSocketMap.keySet()) {
+            System.out.println(webSocketMap.get(s).size());
         }
     }
 
@@ -102,6 +106,7 @@ public class WevSocketVideoServer {
      * 实现服务器主动推送
      */
     public void sendMessage(String message) throws IOException {
+        logger.info("发送者sessionId：" + this.session.getId());
         Set<Integer> keys = webSocketMap.keySet();
         for (Integer key : keys) {
             if (key.equals(this.meetingNum)) {
@@ -109,9 +114,12 @@ public class WevSocketVideoServer {
                 for (Session session : sessions) {
                     if (this.session != session) {
                         session.getBasicRemote().sendText(message);
+                        logger.info("转发者sessionId：" + session.getId() + message);
                     }
                 }
+                break;
             }
+
         }
     }
 
@@ -121,10 +129,10 @@ public class WevSocketVideoServer {
     }
 
     public static synchronized void addOnlineCount() {
-        WevSocketVideoServer.onlineCount++;
+        WebSocketVideoServer.onlineCount++;
     }
 
     public static synchronized void subOnlineCount() {
-        WevSocketVideoServer.onlineCount--;
+        WebSocketVideoServer.onlineCount--;
     }
 }

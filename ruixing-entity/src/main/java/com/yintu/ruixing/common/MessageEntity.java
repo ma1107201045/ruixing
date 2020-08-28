@@ -7,25 +7,28 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageEntity implements Serializable {
-    private static final long serialVersionUID = -6696722812248660445L;
+    private static final long serialVersionUID = 7286806262496745258L;
     private Integer id;
 
-    private String title;//标题
+    private String createBy;
 
-    private Short type;//类型 1. 解决方案 2.产品交付 3.安装调试 4.故障诊断
+    private Date createTime;
 
-    private Integer senderId;
+    private String modifiedBy;
 
-    private Integer receiverId;
+    private Date modifiedTime;
 
-    private Short status;//状态 1.未读 2.OPEN 3.CLOSE',
+    private String title;
 
-    private Date createdDate;//创建时间
+    private Short type;
+
+    private Short smallType;
+
+    private Short status;
 
     private String context;
 
