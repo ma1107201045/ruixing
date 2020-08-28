@@ -72,6 +72,91 @@ public class QuXianController {
     }
 
 
+    //电码化日曲线
+    //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
+    @GetMapping("/findDMHQuDuanDayData")
+    public Map<String, Object> findDMHQuDuanDayData(@RequestParam("dayTime") Date dayTime,
+                                                 @RequestParam("shuxingId") Integer[] shuxingId,
+                                                 @RequestParam("quduanName") String[] quduanName,
+                                                 Integer czid) throws Exception {
+        String tableName = StringUtil.getTableName(czid, dayTime);
+        if (shuxingId.length == 0 || quduanName.length == 0 || dayTime == null) {
+            return ResponseDataUtil.error("请选择正确的数据");
+        } else {
+            List<String> list = new ArrayList<>();//48个时间集合
+            List<BigDecimal> listt1 = new ArrayList<>();
+            List<BigDecimal> listt2 = new ArrayList<>();
+            List<BigDecimal> listt3 = new ArrayList<>();
+            List<BigDecimal> listt4 = new ArrayList<>();
+            List<BigDecimal> listt5 = new ArrayList<>();
+            JSONObject js = new JSONObject();
+            List<Long> times = new ArrayList<>();//48个秒数集合
+            long daytimes = dayTime.getTime() / 1000;
+            for (int i = 0; i < 48; i++) {
+                long onetime = daytimes + 1800 * i;
+                times.add(onetime);
+                long value = onetime * 1000L;
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String time2 = format1.format(new Date(value));
+                list.add(time2);
+            }
+            js.put("shijian", list);
+            List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
+            List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
+            Integer k = 0;
+            for (int i = 0; i < sqlname.size(); i++) {
+                k++;
+                System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                String shuxingname = sqlname.get(i);
+                System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                String quduanname = quduanName[i];
+                Integer qdid = quXianService.findQDid(quduanname);
+                for (Long time : times) {
+                    BigDecimal date = quXianService.findOneQuDuanDatas(time, shuxingname, quduanname, qdid, tableName);
+                    System.out.println("1234" + date);
+                    if (k == 1) {
+                        listt1.add(date);
+                    }
+                    if (k == 2) {
+                        listt2.add(date);
+                    }
+                    if (k == 3) {
+                        listt3.add(date);
+                    }
+                    if (k == 4) {
+                        listt4.add(date);
+                    }
+                    if (k == 5) {
+                        listt5.add(date);
+                    }
+                    if (k == 1) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                    }
+                    if (k == 2) {
+                        js.put("shuju" + k.toString(), listt2);
+                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                    }
+                    if (k == 3) {
+                        js.put("shuju" + k.toString(), listt3);
+                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                    }
+                    if (k == 4) {
+                        js.put("shuju" + k.toString(), listt4);
+                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
+                    }
+                    if (k == 5) {
+                        js.put("shuju" + k.toString(), listt5);
+                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                    }
+                }
+            }
+            System.out.println("jsssssssssssssss" + js);
+            return ResponseDataUtil.ok("查询数据成功", js);
+        }
+    }
+
+
     //电码化实时曲线
     @GetMapping("/findDMHQuDuanShiShiData")
     public Map<String, Object> findDMHQuDuanShiShiData(@RequestParam("shuxingId") Integer[] shuxingId,
@@ -374,7 +459,7 @@ public class QuXianController {
     }
 
 
-    //日曲线
+    //区段日曲线
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
     @GetMapping("/findQuDuanDayData")
     public Map<String, Object> findQuDuanDayData(@RequestParam("dayTime") Date dayTime,
@@ -459,6 +544,7 @@ public class QuXianController {
     }
 
 
+    //区段辅助曲线
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
     @GetMapping("/findQuDuanData")
     public Map<String, Object> findQuDuanData(@RequestParam("startTime") Date startTime,
