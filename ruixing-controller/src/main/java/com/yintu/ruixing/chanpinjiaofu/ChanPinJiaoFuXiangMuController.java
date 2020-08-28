@@ -102,7 +102,6 @@ public class ChanPinJiaoFuXiangMuController {
                 messageEntity.setContext(xiangmuName+"项目待发货，请及时联系顾客确认供货计划！");
                 messageEntity.setType((short)2);
                 messageEntity.setStatus((short)1);
-                messageEntity.setCreatedDate(new Date());
                 chanPinJiaoFuXiangMuService.addXiaoXi(messageEntity);
             }
         }

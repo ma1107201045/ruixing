@@ -25,6 +25,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void add(MessageEntity entity) {
+
         messageDao.insertSelective(entity);
     }
 

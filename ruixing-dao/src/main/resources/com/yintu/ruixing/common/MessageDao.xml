@@ -3,32 +3,25 @@
 <mapper namespace="com.yintu.ruixing.common.MessageDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.common.MessageEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
-        <result column="sender_id" jdbcType="INTEGER" property="senderId"/>
-        <result column="receiver_id" jdbcType="INTEGER" property="receiverId"/>
+        <result column="small_type" jdbcType="SMALLINT" property="smallType"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
-        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.common.MessageEntity">
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, title, type, sender_id,receiver_id, status, created_date
+        id, create_by, create_time, modified_by, modified_time, title, type, small_type,
+    status
     </sql>
     <sql id="Blob_Column_List">
         context
     </sql>
-    <!--查询产品交付里所有的消息内容-->
-    <select id="findXiaoXi"  resultMap="ResultMapWithBLOBs">
-        select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        from mro_message
-        where type = 2
-        AND STATUS =1
-    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -43,17 +36,32 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.common.MessageEntity">
-        insert into mro_message (id, title, type, sender_id, receiver_id, status, created_date, context)
-        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT},
-                #{senderId,jdbcType=INTEGER}, #{receiverId,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT},
-                #{createdDate,jdbcType=TIMESTAMP}, #{context,jdbcType=LONGVARCHAR})
+        insert into mro_message (id, create_by, create_time,
+                                 modified_by, modified_time, title,
+                                 type, small_type, status,
+                                 context)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR},
+                #{type,jdbcType=SMALLINT}, #{smallType,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT},
+                #{context,jdbcType=LONGVARCHAR})
     </insert>
-
     <insert id="insertSelective" parameterType="com.yintu.ruixing.common.MessageEntity">
         insert into mro_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
             </if>
             <if test="title != null">
                 title,
@@ -61,17 +69,11 @@
             <if test="type != null">
                 type,
             </if>
-            <if test="senderId != null">
-                sender_id,
-            </if>
-            <if test="receiverId != null">
-                receiver_id,
+            <if test="smallType != null">
+                small_type,
             </if>
             <if test="status != null">
                 status,
-            </if>
-            <if test="createdDate != null">
-                created_date,
             </if>
             <if test="context != null">
                 context,
@@ -81,50 +83,61 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="title != null">
                 #{title,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 #{type,jdbcType=SMALLINT},
             </if>
-            <if test="senderId != null">
-                #{senderId,jdbcType=INTEGER},
-            </if>
-            <if test="receiverId != null">
-                #{ receiverId,jdbcType=INTEGER},
+            <if test="smallType != null">
+                #{smallType,jdbcType=SMALLINT},
             </if>
             <if test="status != null">
                 #{status,jdbcType=SMALLINT},
-            </if>
-            <if test="createdDate != null">
-                #{createdDate,jdbcType=TIMESTAMP},
             </if>
             <if test="context != null">
                 #{context,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>
-    <!--根据id  修改消息状态-->
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.common.MessageEntity">
         update mro_message
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 type = #{type,jdbcType=SMALLINT},
             </if>
-            <if test="senderId != null">
-                sender_id = #{senderId,jdbcType=INTEGER},
-            </if>
-            <if test="receiverId != null">
-                receiver_id = #{receiverId,jdbcType=INTEGER},
+            <if test="smallType != null">
+                small_type = #{smallType,jdbcType=SMALLINT},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=SMALLINT},
-            </if>
-            <if test="createdDate != null">
-                created_date = #{createdDate,jdbcType=TIMESTAMP},
             </if>
             <if test="context != null">
                 context = #{context,jdbcType=LONGVARCHAR},
@@ -134,26 +147,40 @@
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.common.MessageEntity">
         update mro_message
-        set title        = #{title,jdbcType=VARCHAR},
-            type         = #{type,jdbcType=SMALLINT},
-            sender_id    = #{senderId,jdbcType=INTEGER},
-            receiver_id  = #{receiverId,jdbcType=INTEGER},
-            status       = #{status,jdbcType=SMALLINT},
-            created_date = #{createdDate,jdbcType=TIMESTAMP},
-            context      = #{context,jdbcType=LONGVARCHAR}
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            title         = #{title,jdbcType=VARCHAR},
+            type          = #{type,jdbcType=SMALLINT},
+            small_type    = #{smallType,jdbcType=SMALLINT},
+            status        = #{status,jdbcType=SMALLINT},
+            context       = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.common.MessageEntity">
         update mro_message
-        set title        = #{title,jdbcType=VARCHAR},
-            type         = #{type,jdbcType=SMALLINT},
-            sender_id    = #{senderId,jdbcType=INTEGER},
-            receiver_id  = #{receiverId,jdbcType=INTEGER},
-            status       = #{status,jdbcType=SMALLINT},
-            created_date = #{createdDate,jdbcType=TIMESTAMP}
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            title         = #{title,jdbcType=VARCHAR},
+            type          = #{type,jdbcType=SMALLINT},
+            small_type    = #{smallType,jdbcType=SMALLINT},
+            status        = #{status,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <!--查询产品交付里所有的消息内容-->
+    <select id="findXiaoXi" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_message
+        where type = 2
+        AND STATUS =1
+    </select>
     <select id="selectByTypeAndStatus" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
