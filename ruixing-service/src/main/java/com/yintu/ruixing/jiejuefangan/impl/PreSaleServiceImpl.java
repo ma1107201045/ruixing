@@ -77,8 +77,10 @@ public class PreSaleServiceImpl implements PreSaleService {
             if (target.getRemark() != null) {
                 sb.append("   备注：").append(entity.getRemark());
             }
-            solutionLogEntity.setContext(sb.toString());
-            solutionLogService.add(solutionLogEntity);
+            if (!"".equals(sb.toString().trim())) {
+                solutionLogEntity.setContext(sb.toString());
+                solutionLogService.add(solutionLogEntity);
+            }
         }
 
     }
