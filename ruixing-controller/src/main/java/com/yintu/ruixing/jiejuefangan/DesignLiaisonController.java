@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +38,10 @@ public class DesignLiaisonController extends SessionController implements BaseCo
 
     @PostMapping
     public Map<String, Object> add(@Validated DesignLiaisonEntity entity) {
-        if (entity.getProjectDate() == null) {
-            throw new BaseRuntimeException("项目日期不能为空");
-        }
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         designLiaisonService.add(entity);
         return ResponseDataUtil.ok("添加设计联络及后续技术交流信息成功");
     }
@@ -53,9 +55,8 @@ public class DesignLiaisonController extends SessionController implements BaseCo
 
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonEntity entity) {
-        if (entity.getProjectDate() == null) {
-            throw new BaseRuntimeException("项目日期不能为空");
-        }
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         designLiaisonService.edit(entity);
         return ResponseDataUtil.ok("修改设计联络及后续技术交流信息成功");
     }

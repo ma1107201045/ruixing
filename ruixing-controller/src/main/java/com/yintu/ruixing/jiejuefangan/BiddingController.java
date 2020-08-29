@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,10 @@ public class BiddingController extends SessionController implements BaseControll
 
     @PostMapping
     public Map<String, Object> add(@Validated BiddingEntity entity) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         biddingService.add(entity);
         return ResponseDataUtil.ok("添加投招标技术支持信息成功");
     }
@@ -48,6 +53,8 @@ public class BiddingController extends SessionController implements BaseControll
 
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingEntity entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         biddingService.edit(entity);
         return ResponseDataUtil.ok("修改投招标技术支持信息成功");
     }

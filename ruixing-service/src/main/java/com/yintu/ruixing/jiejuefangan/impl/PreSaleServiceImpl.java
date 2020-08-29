@@ -1,11 +1,11 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.jiejuefangan.PreSaleDao;
+import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.common.MessageEntity;
-import com.yintu.ruixing.jiejuefangan.PreSaleEntity;
 import com.yintu.ruixing.common.MessageService;
-import com.yintu.ruixing.jiejuefangan.PreSaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +23,24 @@ public class PreSaleServiceImpl implements PreSaleService {
     @Autowired
     private PreSaleDao preSaleDao;
     @Autowired
+    private SolutionLogService solutionLogService;
+    @Autowired
     private MessageService messageService;
 
 
     @Override
     public void add(PreSaleEntity entity) {
         preSaleDao.insertSelective(entity);
+        //项目日志记录
+        StringBuilder sb = new StringBuilder();
+        sb.append("   项目名称：").append(entity.getProjectName())
+                .append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
+                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
+                .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
+                .append("   备注：").append(entity.getRemark());
+        solutionLogService.add(new SolutionLogEntity(null, entity.getModifiedBy(), entity.getModifiedTime(), (short) 1, (short) 1, entity.getId(), sb.toString()));
         //售后技术支持项目状态为3时发送消息
-        if (entity.getProjectStatus().equals((short) 3)) {
+        if (entity.getProjectStatus() == 3) {
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setTitle("");
             messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
@@ -48,13 +58,41 @@ public class PreSaleServiceImpl implements PreSaleService {
 
     @Override
     public void edit(PreSaleEntity entity) {
-        preSaleDao.updateByPrimaryKeySelective(entity);
+        SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, entity.getModifiedBy(), entity.getModifiedTime(), (short) 1, (short) 1, entity.getId(), null);
+        PreSaleEntity source = this.findById(entity.getId());
+        if (source != null) {
+            preSaleDao.updateByPrimaryKeySelective(entity);
+            //项目日志记录
+            PreSaleEntity target = BeanUtil.compareFieldValues(source, entity, PreSaleEntity.class);
+            StringBuilder sb = new StringBuilder();
+            if (target.getProjectName() != null) {
+                sb.append("   项目名称：").append(entity.getProjectName());
+            }
+            if (target.getProjectStatus() != null) {
+                sb.append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误");
+            }
+            if (target.getTaskStatus() != null) {
+                sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");
+            }
+            if (target.getRemark() != null) {
+                sb.append("   备注：").append(entity.getRemark());
+            }
+            solutionLogEntity.setContext(sb.toString());
+            solutionLogService.add(solutionLogEntity);
+        }
 
     }
 
     @Override
     public PreSaleEntity findById(Integer id) {
         return preSaleDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
     }
 
     @Override
@@ -65,6 +103,11 @@ public class PreSaleServiceImpl implements PreSaleService {
     @Override
     public List<PreSaleEntity> findByYear(Integer year) {
         return preSaleDao.selectByYear(year);
+    }
+
+    @Override
+    public List<PreSaleEntity> findByExample(Integer year, String projectName) {
+        return preSaleDao.selectByExample(year, projectName);
     }
 
     @Override

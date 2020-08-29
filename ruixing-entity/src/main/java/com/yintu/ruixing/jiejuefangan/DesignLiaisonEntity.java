@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class DesignLiaisonEntity implements Serializable {
     private String projectName;
 
     private Short projectStatus;
-
+    @NotNull
     private Date projectDate;
 
     private Short taskStatus;

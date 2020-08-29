@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface PreSaleService extends BaseService<PreSaleEntity, Integer> {
 
+    void remove(Integer[] ids);
 
 
     List<PreSaleEntity> findAll();
@@ -23,6 +24,13 @@ public interface PreSaleService extends BaseService<PreSaleEntity, Integer> {
      * @return 项目id  项目名称
      */
     List<PreSaleEntity> findByYear(Integer year);
+
+    /**
+     * @param year        年份
+     * @param projectName 项目名称
+     * @return
+     */
+    List<PreSaleEntity> findByExample(Integer year, String projectName);
 
     /**
      * 按照项目日期去重

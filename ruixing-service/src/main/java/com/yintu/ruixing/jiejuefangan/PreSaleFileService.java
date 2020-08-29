@@ -40,12 +40,11 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
     PreSaleFileEntity findPreSaleById(Integer id);
 
     /**
-     * @param year        年份
-     * @param projectName 项目名称
-     * @param type        文件类型
+     * @param projectId 项目名称
+     * @param type      文件类型
      * @return
      */
-    List<PreSaleFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type);
+    List<PreSaleFileEntity> findProjectIdAndType(Integer projectId, String type);
 
     /**
      * @param outputStream 输出流

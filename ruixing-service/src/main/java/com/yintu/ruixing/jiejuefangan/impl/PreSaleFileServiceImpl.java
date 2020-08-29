@@ -130,8 +130,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public List<PreSaleFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type) {
-        return preSaleFileDao.selectByCondition(year, projectName, null, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
+    public List<PreSaleFileEntity> findProjectIdAndType(Integer projectId, String type) {
+        return preSaleFileDao.selectByCondition(projectId, null, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         //excel表名
         String[] headers = {"序号", "年份", "项目名称", "项目状态", "任务状态", "文件类型", "文件名称",};
         //获取数据
-        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(null, null, ids, null);
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(null, ids, null);
         preSaleFileEntities = preSaleFileEntities.stream()
                 .sorted(Comparator.comparing(PreSaleFileEntity::getId).reversed())
                 .collect(Collectors.toList());

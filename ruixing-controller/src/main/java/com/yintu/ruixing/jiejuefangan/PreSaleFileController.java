@@ -1,7 +1,7 @@
 package com.yintu.ruixing.jiejuefangan;
 
-import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +25,9 @@ public class PreSaleFileController extends SessionController {
 
     @Autowired
     private PreSaleFileService preSaleFileService;
+    @Autowired
+    private SolutionLogService solutionLogService;
+
 
     @PostMapping
     @ResponseBody
@@ -54,33 +57,6 @@ public class PreSaleFileController extends SessionController {
         PreSaleFileEntity preSaleFileEntity = preSaleFileService.findPreSaleById(id);
         return ResponseDataUtil.ok("查询售前技术支持文件信息成功", preSaleFileEntity);
     }
-//
-//    @PostMapping("/upload")
-//    @ResponseBody
-//    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-//        String fileName = multipartFile.getOriginalFilename();
-//        String filePath = FileUploadUtil.save(multipartFile.getInputStream(), fileName);
-//        JSONObject jo = new JSONObject();
-//        jo.put("filePath", filePath);
-//        jo.put("fileName", fileName);
-//        return ResponseDataUtil.ok("上传售前技术支持文件信息成功", jo);
-//    }
-//
-//    @GetMapping("/download/{id}")
-//    public void downloadFile(@PathVariable Integer id, HttpServletResponse response) throws IOException {
-//        PreSaleFileEntity preSaleFileEntity = preSaleFileService.findById(id);
-//        if (preSaleFileEntity != null) {
-//            String filePath = preSaleFileEntity.getPath();
-//            String fileName = preSaleFileEntity.getName();
-//            if (filePath != null && !"".equals(filePath) && fileName != null && !"".equals(fileName)) {
-//                response.setContentType("application/octet-stream;charset=ISO8859-1");
-//                response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-//                response.addHeader("Pargam", "no-cache");
-//                response.addHeader("Cache-Control", "no-cache");
-//                FileUploadUtil.get(response.getOutputStream(), filePath + "\\" + fileName);
-//            }
-//        }
-//    }
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
@@ -99,5 +75,11 @@ public class PreSaleFileController extends SessionController {
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
+
+    @GetMapping("/log")
+    public Map<String, Object> findLogByExample(@RequestParam("recordTypeId") Integer recordTypeId) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 1, recordTypeId, null));
+        return ResponseDataUtil.ok("查询售前技术支持项目日志信息列表成功", solutionLogEntities);
+    }
 
 }

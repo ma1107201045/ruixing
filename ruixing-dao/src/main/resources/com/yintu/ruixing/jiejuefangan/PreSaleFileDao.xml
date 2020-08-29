@@ -148,11 +148,8 @@
     </sql>
     <sql id="Connect_condition_List">
         <where>
-            <if test="year!=null">
-                and YEAR(ps.project_date) = #{year}
-            </if>
-            <if test="projectName!=null">
-                and ps.project_name like concat('%',#{projectName},'%')
+            <if test="projectId!=null">
+                and ps.id =#{projectId,jdbcType=INTEGER}
             </if>
             <if test="ids!=null and ids.length>0">
                 and psf.id in
@@ -161,7 +158,7 @@
                 </foreach>
             </if>
             <if test="type!=null">
-                and psf.type = #{type}
+                and psf.type = #{type,jdbcType=SMALLINT}
             </if>
         </where>
     </sql>
