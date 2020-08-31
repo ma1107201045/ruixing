@@ -89,7 +89,6 @@ public class PreSaleServiceImpl implements PreSaleService {
 
     @Override
     public void edit(PreSaleEntity entity, String trueName) {
-        SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), null);
         PreSaleEntity source = this.findById(entity.getId());
         if (source != null) {
             this.edit(entity);
@@ -108,7 +107,8 @@ public class PreSaleServiceImpl implements PreSaleService {
             if (target.getRemark() != null) {
                 sb.append("   备注：").append(entity.getRemark());
             }
-            if (!"".equals(sb.toString().trim())) {
+            if (!"".equals(sb.toString())) {
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), null);
                 solutionLogEntity.setContext(sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
