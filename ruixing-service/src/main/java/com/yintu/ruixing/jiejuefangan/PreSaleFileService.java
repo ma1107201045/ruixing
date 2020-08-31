@@ -47,16 +47,18 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
      * @param preSaleId 项目名称
      * @param name      文件名称
      * @param type      文件类型
+     * @param userId    当前登录人id
      * @return
      */
-    List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type);
+    List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId);
 
     /**
      * @param outputStream 输出流
      * @param ids          id 集合
+     * @param userId       当前登录人id
      * @throws IOException io异常
      */
-    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
+    void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException;
 
 
 }

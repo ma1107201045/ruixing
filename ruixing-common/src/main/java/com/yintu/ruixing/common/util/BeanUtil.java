@@ -54,11 +54,11 @@ public class BeanUtil {
                 }
                 Object value1 = fields1[i].get(source);
                 Object value2 = fields2[i].get(target);
-                if (value2 == null && value1 != null) {
-                    fields2[i].set(target, value1);
+                if (value2 == null && value1 == null) {
                     continue;
                 }
                 if (value2 == null) {
+                    fields2[i].set(target, value1);
                     continue;
                 }
                 if (value2.equals(value1)) {
