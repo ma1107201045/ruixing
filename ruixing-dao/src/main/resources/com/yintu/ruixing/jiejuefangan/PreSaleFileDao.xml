@@ -245,7 +245,7 @@
         select
         <include refid="Connect_Column_List"/>
         from mro_pre_sale_file psf inner join mro_pre_sale ps on psf.pre_sale_id=ps.id
-        inner join mro_pre_sale_file_auditor psfa on psf.id=psfa.pre_sale_file_id
+        left outer join mro_pre_sale_file_auditor psfa on psf.id=psfa.pre_sale_file_id
         <include refid="Connect_condition_List"/>
     </select>
 </mapper>
