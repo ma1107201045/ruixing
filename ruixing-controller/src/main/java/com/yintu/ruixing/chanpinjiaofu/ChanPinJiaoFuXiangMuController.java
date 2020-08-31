@@ -3,14 +3,12 @@ package com.yintu.ruixing.chanpinjiaofu;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuService;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +35,7 @@ import java.util.Map;
 @EnableScheduling   // 2.开启定时任务
 @Controller
 @RequestMapping("/ChanPinJiaoFuXiangMuAll")
-public class ChanPinJiaoFuXiangMuController {
+public class ChanPinJiaoFuXiangMuController extends SessionController {
     @Autowired
     private ChanPinJiaoFuXiangMuService chanPinJiaoFuXiangMuService;
 
@@ -52,65 +50,79 @@ public class ChanPinJiaoFuXiangMuController {
         return ResponseDataUtil.ok("查询成功", treeNodeUtils);
     }
 
-    //新增项目
-    @ResponseBody
-    @PostMapping("/addXiangMu")
-    public Map<String, Object> addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity) {
-        chanPinJiaoFuXiangMuService.addXiangMu(chanPinJiaoFuXiangMuEntity);
-        return ResponseDataUtil.ok("添加项目成功");
-    }
-
     //查询消息提醒
     @ResponseBody
     @GetMapping("/findXiaoXi")
-    public Map<String,Object>findXiaoXi(){
-        List<MessageEntity> contextlist=chanPinJiaoFuXiangMuService.findXiaoXi();
-        return ResponseDataUtil.ok("添加消息成功",contextlist);
+    public Map<String, Object> findXiaoXi() {
+        List<MessageEntity> contextlist = chanPinJiaoFuXiangMuService.findXiaoXi();
+        return ResponseDataUtil.ok("添加消息成功", contextlist);
     }
 
     //根据消息id   更改信息状态
     @ResponseBody
     @PutMapping("/editXiaoXiById/{id}")
-    public Map<String,Object>editXiaoXiById(@PathVariable Integer id,MessageEntity messageEntity){
+    public Map<String, Object> editXiaoXiById(@PathVariable Integer id, MessageEntity messageEntity) {
         chanPinJiaoFuXiangMuService.editXiaoXiById(messageEntity);
         return ResponseDataUtil.ok("更改信息状态成功");
     }
+
     //添加新消息提醒
     //添加定时任务
     @Scheduled(cron = "0 0 06 * * ?")
     @ResponseBody
-    @GetMapping ("/addXiaoXi")
-    public void addXiaoXi()throws Exception{
+    @GetMapping("/addXiaoXi")
+    public void addXiaoXi() throws Exception {
         //获取当前的时间
         SimpleDateFormat dateFormat = new SimpleDateFormat(" yyyy-MM-dd ");
-        String currentDate = dateFormat.format( new Date() );
+        String currentDate = dateFormat.format(new Date());
         Date date1 = dateFormat.parse(currentDate);
         //System.out.println("12313"+currentDate);
         //获取 项目的发货提醒日期
-        List<ChanPinJiaoFuXiangMuEntity> xiangMuEntityList=chanPinJiaoFuXiangMuService.findAllXiangMu();
+        List<ChanPinJiaoFuXiangMuEntity> xiangMuEntityList = chanPinJiaoFuXiangMuService.findAllXiangMu();
         for (ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity : xiangMuEntityList) {
             Integer id = chanPinJiaoFuXiangMuEntity.getId();
             String xiangmuName = chanPinJiaoFuXiangMuEntity.getXiangmuName();
             Date fahuoTixingTime = chanPinJiaoFuXiangMuEntity.getFahuoTixingTime();
-            String currentDate1 = dateFormat.format( fahuoTixingTime);
-            //System.out.println("fahuoTixingTime"+currentDate1);
-            Date date2 = dateFormat.parse(currentDate1);
-            int compareTo = date1.compareTo(date2);
-            if (compareTo==0){
-                MessageEntity messageEntity =new MessageEntity();
-                //添加一条消息到消息表
-                messageEntity.setContext(xiangmuName+"项目待发货，请及时联系顾客确认供货计划！");
-                messageEntity.setType((short)2);
-                messageEntity.setStatus((short)1);
-                chanPinJiaoFuXiangMuService.addXiaoXi(messageEntity);
+            if (fahuoTixingTime != null) {
+                String currentDate1 = dateFormat.format(fahuoTixingTime);
+                //System.out.println("fahuoTixingTime"+currentDate1);
+                Date date2 = dateFormat.parse(currentDate1);
+                int compareTo = date1.compareTo(date2);
+                if (compareTo == 0) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    //添加一条消息到消息表
+                    messageEntity.setContext(xiangmuName + "项目待发货，请及时联系顾客确认供货计划！");
+                    messageEntity.setType((short) 2);
+                    messageEntity.setStatus((short) 1);
+                    chanPinJiaoFuXiangMuService.addXiaoXi(messageEntity);
+                }
             }
         }
     }
+
+    //根据项目id 查看更新历史记录
+    @ResponseBody
+    @GetMapping("/findReordById/{id}")
+    public Map<String, Object> findReordById(@PathVariable Integer id) {
+        List<ChanPinJiaoFuRecordMessageEntity> recordMessageEntityList = chanPinJiaoFuXiangMuService.findReordById(id);
+        return ResponseDataUtil.ok("查询记录成功", recordMessageEntityList);
+    }
+
+    //新增项目
+    @ResponseBody
+    @PostMapping("/addXiangMu")
+    public Map<String, Object> addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity) {
+        String username = this.getLoginUser().getTrueName();
+        chanPinJiaoFuXiangMuService.addXiangMu(chanPinJiaoFuXiangMuEntity, username);
+        return ResponseDataUtil.ok("添加项目成功");
+    }
+
     //根据选择的id  修改对应的项目内容
     @ResponseBody
     @PutMapping("/editXiangMuById/{id}")
     public Map<String, Object> editXiangMuById(@PathVariable Integer id, ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity) {
-        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity);
+        String username = this.getLoginUser().getTrueName();
+        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity, username, id);
         return ResponseDataUtil.ok("修改项目数据成功");
     }
 
@@ -126,12 +138,9 @@ public class ChanPinJiaoFuXiangMuController {
     @ResponseBody
     @GetMapping("/findAll")
     public Map<String, Object> findAll(Integer page, Integer size) {
-        JSONObject js = new JSONObject();
         PageHelper.startPage(page, size);
         List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuService.findAll(page, size);
-        js.put("chanPinJiaoFuXiangMuEntities", chanPinJiaoFuXiangMuEntities);
         PageInfo<ChanPinJiaoFuXiangMuEntity> pageInfo = new PageInfo<>(chanPinJiaoFuXiangMuEntities);
-        js.put("pageInfo", pageInfo);
         return ResponseDataUtil.ok("查询所有数据成功", pageInfo);
     }
 
@@ -139,41 +148,41 @@ public class ChanPinJiaoFuXiangMuController {
     @ResponseBody
     @GetMapping("/findXiangMuData")
     public Map<String, Object> findXiangMuData(String xiangMuBianHao, String xiangMuName, Integer page, Integer size) {
-        JSONObject js = new JSONObject();
         PageHelper.startPage(page, size);
         List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuService.findXiangMuData(xiangMuBianHao, xiangMuName, page, size);
-        js.put("chanPinJiaoFuXiangMuEntities", chanPinJiaoFuXiangMuEntities);
         PageInfo<ChanPinJiaoFuXiangMuEntity> pageInfo = new PageInfo<>(chanPinJiaoFuXiangMuEntities);
-        js.put("pageInfo", pageInfo);
-        return ResponseDataUtil.ok("查询数据成功", js);
+        return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
 
     //根据树的id  查询对应的数据
     @ResponseBody
     @GetMapping("/findXiangMuByIds")
-    public Map<String, Object> findXiangMuByIds(Integer stateid, Integer id, Integer typeid, Integer page, Integer size) {
-        JSONObject js = new JSONObject();
+    public Map<String, Object> findXiangMuByIds(Integer stateid, Integer page, Integer size) {
         PageHelper.startPage(page, size);
-        List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuService.findXiangMuByIds(stateid, id, typeid, page, size);
-        js.put("chanPinJiaoFuXiangMuEntities", chanPinJiaoFuXiangMuEntities);
+        List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuService.findXiangMuByIds(stateid, page, size);
         PageInfo<ChanPinJiaoFuXiangMuEntity> pageInfo = new PageInfo<>(chanPinJiaoFuXiangMuEntities);
-        js.put("pageInfo", pageInfo);
-        return ResponseDataUtil.ok("查询数据成功", js);
+        return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
+
+    ///////////////////////////文件////////////////////////////////////
 
     //新增文件列表
     @ResponseBody
     @PostMapping("/addXiangMuFile")
-    public Map<String, Object> addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity,Integer[] uids) {
-        chanPinJiaoFuXiangMuService.addXiangMuFile(chanPinJiaoFuXiangMuFileEntity,uids);
+    public Map<String, Object> addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer[] uids) {
+        String username = this.getLoginUser().getTrueName();
+        Integer uid = this.getLoginUser().getId().intValue();
+        chanPinJiaoFuXiangMuService.addXiangMuFile(chanPinJiaoFuXiangMuFileEntity, uids, username, uid);
         return ResponseDataUtil.ok("新增文件列表成功");
     }
 
     //根据id  修改文件列表
     @ResponseBody
     @PutMapping("/editXiangMuFileById/{id}")
-    public Map<String, Object> editXiangMuFileById(@PathVariable Integer id,Integer[] uids, ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity) {
-        chanPinJiaoFuXiangMuService.editXiangMuFileById(chanPinJiaoFuXiangMuFileEntity,id,uids);
+    public Map<String, Object> editXiangMuFileById(@PathVariable Integer id, Integer[] uids, ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity) {
+        String username = this.getLoginUser().getTrueName();
+        Integer uid = this.getLoginUser().getId().intValue();
+        chanPinJiaoFuXiangMuService.editXiangMuFileById(chanPinJiaoFuXiangMuFileEntity, id, uids, uid, username);
         return ResponseDataUtil.ok("修改数据成功");
     }
 
@@ -225,17 +234,17 @@ public class ChanPinJiaoFuXiangMuController {
     //查询所有审核人姓名
     @ResponseBody
     @GetMapping("/findAllAuditorName")
-    public Map<String,Object>findAllAuditorNamre(String truename){
-        List<UserEntity> userEntities=userService.findByTruename(truename);
-        return ResponseDataUtil.ok("查询姓名成功",userEntities);
+    public Map<String, Object> findAllAuditorNamre(String truename) {
+        List<UserEntity> userEntities = userService.findByTruename(truename);
+        return ResponseDataUtil.ok("查询姓名成功", userEntities);
     }
 
     //根据文件id  查询对应的审核人名字
     @ResponseBody
     @GetMapping("/findAllAuditorNameById/{id}")
-    public Map<String,Object> findAllAuditorNameById(@PathVariable Integer id ){
-        List<UserEntity > userEntities=chanPinJiaoFuXiangMuService.findAllAuditorNameById(id);
-        return ResponseDataUtil.ok("查询审核人名成功",userEntities);
+    public Map<String, Object> findAllAuditorNameById(@PathVariable Integer id) {
+        List<UserEntity> userEntities = chanPinJiaoFuXiangMuService.findAllAuditorNameById(id);
+        return ResponseDataUtil.ok("查询审核人名成功", userEntities);
 
     }
     //////////////////////////////交付情况统计/////////////////////////////////////

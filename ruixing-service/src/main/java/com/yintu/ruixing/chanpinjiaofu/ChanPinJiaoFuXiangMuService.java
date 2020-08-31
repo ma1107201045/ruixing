@@ -1,8 +1,6 @@
 package com.yintu.ruixing.chanpinjiaofu;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 
@@ -18,17 +16,17 @@ import java.util.Map;
 public interface ChanPinJiaoFuXiangMuService {
     List<TreeNodeUtil> findSanJiShu();
 
-    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity);
+    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username);
 
-    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity);
+    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id);
 
     void deletXiagMuById(Integer id);
 
-    List<ChanPinJiaoFuXiangMuEntity> findAll(Integer page,Integer size);
+    List<ChanPinJiaoFuXiangMuEntity> findAll(Integer page, Integer size);
 
-    void addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity,Integer[] uids);
+    void addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer[] uids, String username, Integer uid);
 
-    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity,Integer id,Integer[] uids);
+    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uid,String username );
 
     ChanPinJiaoFuXiangMuFileEntity findById(Integer id);
 
@@ -38,7 +36,7 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuXiangMuEntity> findXiangMuData(String xiangMuBianHao, String xiangMuName, Integer page, Integer size);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(Integer stateid, Integer id, Integer typeid, Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(Integer stateid, Integer page, Integer size);
 
     Map<String, Object> findJiaoFuQingKuangNumberAll();
 
@@ -55,4 +53,6 @@ public interface ChanPinJiaoFuXiangMuService {
     List<MessageEntity> findXiaoXi();
 
     void editXiaoXiById(MessageEntity messageEntity);
+
+    List<ChanPinJiaoFuRecordMessageEntity> findReordById(Integer id);
 }

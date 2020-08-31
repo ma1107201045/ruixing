@@ -1,10 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
-import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;

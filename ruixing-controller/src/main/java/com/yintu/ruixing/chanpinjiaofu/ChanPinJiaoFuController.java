@@ -149,8 +149,8 @@ public class ChanPinJiaoFuController {
 
     @GetMapping("/findXiangMuDataByIds")
     public Map<String, Object> findXiangMuDataByIds(Integer parentId, Integer id,
-                                                     Integer page, Integer size) {
-        if (parentId==-1){
+                                                    Integer page, Integer size) {
+        if (parentId == -1) {
             JSONObject js = new JSONObject();
             PageHelper.startPage(page, size);
             List<ChanPinJiaoFuEntity> chanPinJiaoFuEntityList = chanPinJiaoFuService.findXiangMuDataByIdFirst(id, page, size);
@@ -158,7 +158,8 @@ public class ChanPinJiaoFuController {
             PageInfo<ChanPinJiaoFuEntity> info = new PageInfo<>(chanPinJiaoFuEntityList);
             js.put("info", info);
             return ResponseDataUtil.ok("查询数据成功", js);
-        }if (parentId==1 || parentId==2 ||parentId==3){
+        }
+        if (parentId == 1 || parentId == 2 || parentId == 3) {
             JSONObject js = new JSONObject();
             PageHelper.startPage(page, size);
             List<ChanPinJiaoFuEntity> chanPinJiaoFuEntityList = chanPinJiaoFuService.findXiangMuDataByIdSecond(id, page, size);
@@ -166,7 +167,7 @@ public class ChanPinJiaoFuController {
             PageInfo<ChanPinJiaoFuEntity> info = new PageInfo<>(chanPinJiaoFuEntityList);
             js.put("info", info);
             return ResponseDataUtil.ok("查询数据成功", js);
-        }else {
+        } else {
             JSONObject js = new JSONObject();
             PageHelper.startPage(page, size);
             List<ChanPinJiaoFuEntity> chanPinJiaoFuEntityList = chanPinJiaoFuService.findXiangMuDataByIdThird(id, page, size);
@@ -179,7 +180,7 @@ public class ChanPinJiaoFuController {
     }
 
 
-        //上传文件
+    //上传文件
     @PostMapping("/uploads")
     @ResponseBody
     public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -231,7 +232,7 @@ public class ChanPinJiaoFuController {
 
     //根据id 批量删除项目交付管理状态
     @DeleteMapping("/deletXiangMuDataByIds/{ids}")
-    public Map<String,Object>deletXiangMuDataByIds(@PathVariable Integer[] ids){
+    public Map<String, Object> deletXiangMuDataByIds(@PathVariable Integer[] ids) {
         chanPinJiaoFuService.deletXiangMuDataByIds(ids);
         return ResponseDataUtil.ok("批量删除数据成功");
     }

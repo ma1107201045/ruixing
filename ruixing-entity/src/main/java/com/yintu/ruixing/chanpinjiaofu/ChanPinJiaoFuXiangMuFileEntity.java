@@ -4,31 +4,131 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @Author Mr.liu
- * @Date 2020/7/1 17:47
- * @Version 1.0
- * 需求:产品交付的文件
- */
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChanPinJiaoFuXiangMuFileEntity {
-
     private Integer id;
 
-    private Integer xmId;//项目的id
+    private Integer uid;
 
-    private Integer fileType;//文件类型 1：输入文件 ，2：输出文件',
+    private Integer xmId;
 
-    private String fileName;//文件名
+    private Integer fileType;
 
-    private String filePath;//  文件路径
+    private String fileName;
 
-    private Integer fabuType;//发布状态 1：录入  2：发布'
+    private String filePath;
 
-    private Integer auditorId;//审核人id
+    private Integer fabuType;
 
-    private ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity;
+    private Integer auditorState;
 
+    private Integer auditorId;
+
+    private Date createtime;
+
+    private Date updatetime;
+
+    private String createname;
+
+    private String updatename;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public Integer getXmId() {
+        return xmId;
+    }
+
+    public void setXmId(Integer xmId) {
+        this.xmId = xmId;
+    }
+
+    public Integer getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName == null ? null : fileName.trim();
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
+    }
+
+    public Integer getFabuType() {
+        return fabuType;
+    }
+
+    public void setFabuType(Integer fabuType) {
+        this.fabuType = fabuType;
+    }
+
+    public Integer getAuditorId() {
+        return auditorId;
+    }
+
+    public void setAuditorId(Integer auditorId) {
+        this.auditorId = auditorId;
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
+
+    public String getCreatename() {
+        return createname;
+    }
+
+    public void setCreatename(String createname) {
+        this.createname = createname == null ? null : createname.trim();
+    }
+
+    public String getUpdatename() {
+        return updatename;
+    }
+
+    public void setUpdatename(String updatename) {
+        this.updatename = updatename == null ? null : updatename.trim();
+    }
 }

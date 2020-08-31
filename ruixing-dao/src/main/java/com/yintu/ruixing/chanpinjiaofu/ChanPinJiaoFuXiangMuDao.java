@@ -13,11 +13,10 @@ public interface ChanPinJiaoFuXiangMuDao {
 
     int insertSelective(ChanPinJiaoFuXiangMuEntity record);
 
-    ChanPinJiaoFuXiangMuEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(ChanPinJiaoFuXiangMuEntity record);
 
     int updateByPrimaryKey(ChanPinJiaoFuXiangMuEntity record);
+
 
     // ////////////////////////////////////
 
@@ -27,6 +26,7 @@ public interface ChanPinJiaoFuXiangMuDao {
 
 
 
+    ChanPinJiaoFuXiangMuEntity selectByPrimaryKey(Integer id);
 
     List<ChanPinJiaoFuXiangMuEntity> findSanJiShu();
 
@@ -54,7 +54,7 @@ public interface ChanPinJiaoFuXiangMuDao {
 
     List<ChanPinJiaoFuXiangMuEntity> findOneXiangMU(Integer id);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(@Param("stateid") Integer stateid,@Param("id") Integer id,@Param("typeid") Integer typeid);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(@Param("stateid") Integer stateid );
 
     List<String> findZhengZaiZhiXing();
 
