@@ -35,7 +35,10 @@ public class PreSaleFileEntity implements Serializable {
     @NotNull
     private Short releaseStatus;
 
+    private Integer userId;
+
     private String remark;
+
     @NotNull
     private Integer preSaleId;
 

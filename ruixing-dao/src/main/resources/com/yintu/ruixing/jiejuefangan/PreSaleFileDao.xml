@@ -12,12 +12,13 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
-    type, release_status,remark, pre_sale_id
+    type, release_status,user_id,remark, pre_sale_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -34,11 +35,11 @@
         insert into mro_pre_sale_file (id, create_by, create_time,
                                        modified_by, modified_time, name,
                                        path, upload_datetime, type,
-                                       release_status, remark, pre_sale_id)
+                                       release_status, user_id, remark, pre_sale_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{remark,jdbcType=VARCHAR}, #{preSaleId,jdbcType=INTEGER})
+                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{preSaleId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_pre_sale_file
@@ -72,6 +73,9 @@
             </if>
             <if test="releaseStatus != null">
                 release_status,
+            </if>
+            <if test="userId != null">
+                user_id,
             </if>
             <if test="remark != null">
                 remark,
@@ -112,6 +116,9 @@
             <if test="releaseStatus != null">
                 #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="userId != null">
+                user_id=#{userId,jdbcType=INTEGER},
+            </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
@@ -150,6 +157,9 @@
             <if test="releaseStatus != null">
                 release_status = #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="userId != null">
+                user_id=#{userId,jdbcType=INTEGER},
+            </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
@@ -170,6 +180,7 @@
             upload_datetime = #{uploadDatetime,jdbcType=TIMESTAMP},
             type            = #{type,jdbcType=SMALLINT},
             release_status  = #{releaseStatus,jdbcType=SMALLINT},
+            user_id         = #{userId,jdbcType=INTEGER},
             remark          = #{remark,jdbcType=VARCHAR},
             pre_sale_id     = #{preSaleId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -186,6 +197,7 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
         <association column="pre_sale_id" property="preSaleEntity">
@@ -205,7 +217,7 @@
         </collection>
     </resultMap>
     <sql id="Connect_Column_List">
-        psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.remark, psf.pre_sale_id,
+        psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.user_id,psf.remark, psf.pre_sale_id,
         ps.id as ps_id , ps.project_name, ps.project_status, ps.project_date, ps.task_status, ps.task_finish_date,
         psfa.id as psfa_id, psfa.pre_sale_file_id, psfa.auditor_id, psfa.is_pass,psfa.reason
     </sql>
@@ -226,6 +238,7 @@
             <if test="type!=null">
                 and psf.type = #{type,jdbcType=SMALLINT}
             </if>
+            and (psf.user_id = #{userId,jdbcType=SMALLINT} or psf.release_status = #{releaseStatus,jdbcType=INTEGER})
         </where>
     </sql>
     <select id="selectByCondition" resultMap="ConnectResultMap">

@@ -42,6 +42,7 @@ public class PreSaleFileController extends SessionController {
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
+        entity.setUserId(this.getLoginUserId().intValue());
         preSaleFileService.add(entity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加售前技术支持文件信息成功");
     }
@@ -76,11 +77,11 @@ public class PreSaleFileController extends SessionController {
     public Map<String, Object> findPreSaleIdAndNameAndType(@RequestParam("page_number") Integer pageNumber,
                                                            @RequestParam("page_size") Integer pageSize,
                                                            @RequestParam(value = "order_by", required = false, defaultValue = "psf.id DESC") String orderBy,
-                                                           @RequestParam(value = "project_id",required = false) Integer preSaleId,
+                                                           @RequestParam(value = "project_id", required = false) Integer preSaleId,
                                                            @RequestParam(value = "file_name", required = false) String name,
                                                            @RequestParam(value = "type", required = false) String type) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findPreSaleIdAndNameAndType(preSaleId, name, type);
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findPreSaleIdAndNameAndType(preSaleId, name, type, this.getLoginUserId().intValue());
         PageInfo<PreSaleFileEntity> pageInfo = new PageInfo<>(preSaleFileEntities);
         return ResponseDataUtil.ok("查询售前技术支持文件信息列表成功", pageInfo);
     }
@@ -93,7 +94,7 @@ public class PreSaleFileController extends SessionController {
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
-        preSaleFileService.exportFile(response.getOutputStream(), ids);
+        preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
 
     @GetMapping("/auditors")
