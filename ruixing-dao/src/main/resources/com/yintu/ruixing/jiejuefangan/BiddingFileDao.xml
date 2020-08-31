@@ -12,11 +12,12 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
-    type, release_status, bidding_id
+    type, release_status,remark,bidding_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -33,11 +34,11 @@
         insert into mro_bidding_file (id, create_by, create_time,
                                       modified_by, modified_time, name,
                                       path, upload_datetime, type,
-                                      release_status, bidding_id)
+                                      release_status, remark, bidding_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{biddingId,jdbcType=INTEGER})
+                #{releaseStatus,jdbcType=SMALLINT}, #{remark,jdbcType=VARCHAR}, #{biddingId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_bidding_file
@@ -71,6 +72,9 @@
             </if>
             <if test="releaseStatus != null">
                 release_status,
+            </if>
+            <if test="remark != null">
+                remark,
             </if>
             <if test="biddingId != null">
                 bidding_id,
@@ -107,6 +111,9 @@
             <if test="releaseStatus != null">
                 #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="biddingId != null">
                 #{biddingId,jdbcType=INTEGER},
             </if>
@@ -142,6 +149,9 @@
             <if test="releaseStatus != null">
                 release_status = #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="biddingId != null">
                 bidding_id = #{biddingId,jdbcType=INTEGER},
             </if>
@@ -159,6 +169,7 @@
             upload_datetime = #{uploadDatetime,jdbcType=TIMESTAMP},
             type            = #{type,jdbcType=SMALLINT},
             release_status  = #{releaseStatus,jdbcType=SMALLINT},
+            remark          = #{remark,jdbcType=VARCHAR},
             bidding_id      = #{biddingId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -173,6 +184,7 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
         <association column="bidding_id" property="biddingEntity">
             <id column="b_id" jdbcType="INTEGER" property="id"/>
@@ -194,7 +206,7 @@
         </collection>
     </resultMap>
     <sql id="Connect_Column_List">
-        bf.id as bf_id,bf.create_by, bf.create_time, bf.modified_by, bf.modified_time,  bf.name,  bf.path,  bf.upload_datetime,  bf.type,  bf.release_status, bf.bidding_id,
+        bf.id as bf_id,bf.create_by, bf.create_time, bf.modified_by, bf.modified_time,  bf.name,  bf.path,  bf.upload_datetime,  bf.type,  bf.release_status,bf.remark, bf.bidding_id,
         b.id as b_id , b.project_name, b.project_status, b.project_date, b.task_status, b.task_finish_date, b.bidder, b.railway_administration_id, b.pre_sale_id,
         bfa.id as bfa_id, bfa.bidding_file_id, bfa.auditor_id, bfa.is_pass,bfa.reason
     </sql>

@@ -152,7 +152,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
-                Map<String, Object> map = JSONObject.parseObject(((JSONObject) JSONObject.toJSON(preSaleEntity)).toString(), Map.class);
+                Map<String,Object> map = JSONObject.parseObject(JSONObject.toJSON(preSaleEntity).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(map);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
