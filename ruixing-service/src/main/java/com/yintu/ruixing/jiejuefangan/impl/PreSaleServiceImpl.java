@@ -1,6 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -151,17 +152,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", preSaleEntity.getId());
-                map.put("createBy", preSaleEntity.getCreateBy());
-                map.put("createTime", preSaleEntity.getCreateTime());
-                map.put("modifiedBy", preSaleEntity.getModifiedBy());
-                map.put("modifiedTime", preSaleEntity.getModifiedTime());
-                map.put("projectDate", preSaleEntity.getProjectDate());
-                map.put("projectName", preSaleEntity.getProjectName());
-                map.put("projectStatus", preSaleEntity.getProjectStatus());
-                map.put("taskStatus", preSaleEntity.getTaskStatus());
-                map.put("taskFinishStatus", preSaleEntity.getTaskFinishDate());
+                Map<String, Object> map = JSONObject.parseObject(((JSONObject) JSONObject.toJSON(preSaleEntity)).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(map);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
