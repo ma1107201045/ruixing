@@ -67,7 +67,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds) {
+    public void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
         this.add(preSaleFileEntity);
         Integer id = preSaleFileEntity.getId();
         if (auditorIds != null) {
@@ -77,7 +77,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
                     preSaleFileAuditorEntity.setPreSaleFileId(id);
                     preSaleFileAuditorEntity.setAuditorId(auditorId);
-                    preSaleFileAuditorEntity.setIsPass((short) 0);
+                    preSaleFileAuditorEntity.setIsPass((short) 1);
                     preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                 }
             }
@@ -88,7 +88,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds) {
+    public void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
         this.edit(preSaleFileEntity);
         Integer id = preSaleFileEntity.getId();
         preSaleFileAuditorService.removeByPreSaleFileId(id); //删除
@@ -99,7 +99,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
                     preSaleFileAuditorEntity.setPreSaleFileId(id);
                     preSaleFileAuditorEntity.setAuditorId(auditorId);
-                    preSaleFileAuditorEntity.setIsPass((short) 0);
+                    preSaleFileAuditorEntity.setIsPass((short) 1);
                     preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                 }
             }
@@ -130,8 +130,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public List<PreSaleFileEntity> findProjectIdAndType(Integer projectId, String type) {
-        return preSaleFileDao.selectByCondition(projectId, null, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
+    public List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type) {
+        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         //excel表名
         String[] headers = {"序号", "年份", "项目名称", "项目状态", "任务状态", "文件类型", "文件名称",};
         //获取数据
-        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(null, ids, null);
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(null, ids, null, null);
         preSaleFileEntities = preSaleFileEntities.stream()
                 .sorted(Comparator.comparing(PreSaleFileEntity::getId).reversed())
                 .collect(Collectors.toList());
@@ -169,8 +169,4 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         outputStream.close();
     }
 
-    @Override
-    public List<UserEntity> findUserEntitiesByTruename(String truename) {
-        return userService.findByTruename(truename);
-    }
 }

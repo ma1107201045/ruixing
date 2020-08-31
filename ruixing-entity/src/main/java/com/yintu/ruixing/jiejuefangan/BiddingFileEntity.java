@@ -10,23 +10,29 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
-/**
- * 投招标技术支持 项目文件实体类
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BiddingFileEntity implements Serializable {
-    private static final long serialVersionUID = -2896894795077610716L;
+    private static final long serialVersionUID = 1980809989337498350L;
     private Integer id;
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
     @NotEmpty
     private String name;
     @NotEmpty
     private String path;
+
     private Date uploadDatetime;
     @NotNull
     private Short type;
+
     private Short releaseStatus;
     @NotNull
     private Integer biddingId;
@@ -34,6 +40,4 @@ public class BiddingFileEntity implements Serializable {
     private BiddingEntity biddingEntity;
 
     private List<BiddingFileAuditorEntity> biddingFileAuditorEntities;
-
-
 }

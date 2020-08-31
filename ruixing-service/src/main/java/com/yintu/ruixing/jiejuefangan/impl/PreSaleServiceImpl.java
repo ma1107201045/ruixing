@@ -31,6 +31,32 @@ public class PreSaleServiceImpl implements PreSaleService {
     @Override
     public void add(PreSaleEntity entity) {
         preSaleDao.insertSelective(entity);
+
+    }
+
+    @Override
+    public void remove(Integer id) {
+        preSaleDao.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void edit(PreSaleEntity entity) {
+        preSaleDao.updateByPrimaryKeySelective(entity);
+    }
+
+    @Override
+    public PreSaleEntity findById(Integer id) {
+        return preSaleDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<PreSaleEntity> findAll() {
+        return preSaleDao.selectAll();
+    }
+
+    @Override
+    public void add(PreSaleEntity entity, String trueName) {
+        this.add(entity);
         //项目日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   项目名称：").append(entity.getProjectName())
@@ -38,7 +64,8 @@ public class PreSaleServiceImpl implements PreSaleService {
                 .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
                 .append("   备注：").append(entity.getRemark());
-        solutionLogService.add(new SolutionLogEntity(null, entity.getModifiedBy(), entity.getModifiedTime(), (short) 1, (short) 1, entity.getId(), sb.toString()));
+        solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), sb.toString()));
+
         //售后技术支持项目状态为3时发送消息
         if (entity.getProjectStatus() == 3) {
             MessageEntity messageEntity = new MessageEntity();
@@ -52,16 +79,19 @@ public class PreSaleServiceImpl implements PreSaleService {
     }
 
     @Override
-    public void remove(Integer id) {
-        preSaleDao.deleteByPrimaryKey(id);
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
     }
 
+
     @Override
-    public void edit(PreSaleEntity entity) {
-        SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, entity.getModifiedBy(), entity.getModifiedTime(), (short) 1, (short) 1, entity.getId(), null);
+    public void edit(PreSaleEntity entity, String trueName) {
+        SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), null);
         PreSaleEntity source = this.findById(entity.getId());
         if (source != null) {
-            preSaleDao.updateByPrimaryKeySelective(entity);
+            this.edit(entity);
             //项目日志记录
             PreSaleEntity target = BeanUtil.compareFieldValues(source, entity, PreSaleEntity.class);
             StringBuilder sb = new StringBuilder();
@@ -83,23 +113,6 @@ public class PreSaleServiceImpl implements PreSaleService {
             }
         }
 
-    }
-
-    @Override
-    public PreSaleEntity findById(Integer id) {
-        return preSaleDao.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public void remove(Integer[] ids) {
-        for (Integer id : ids) {
-            this.remove(id);
-        }
-    }
-
-    @Override
-    public List<PreSaleEntity> findAll() {
-        return preSaleDao.selectAll();
     }
 
     @Override
@@ -140,6 +153,10 @@ public class PreSaleServiceImpl implements PreSaleService {
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", preSaleEntity.getId());
+                map.put("createBy", preSaleEntity.getCreateBy());
+                map.put("createTime", preSaleEntity.getCreateTime());
+                map.put("modifiedBy", preSaleEntity.getModifiedBy());
+                map.put("modifiedTime", preSaleEntity.getModifiedTime());
                 map.put("projectDate", preSaleEntity.getProjectDate());
                 map.put("projectName", preSaleEntity.getProjectName());
                 map.put("projectStatus", preSaleEntity.getProjectStatus());

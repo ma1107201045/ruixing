@@ -27,19 +27,16 @@ public class PreSaleController extends SessionController implements BaseControll
     @Autowired
     private PreSaleService preSaleService;
     @Autowired
-    private PreSaleFileService preSaleFileService;
-    @Autowired
     private SolutionLogService solutionLogService;
 
 
     @PostMapping
-
     public Map<String, Object> add(@Validated PreSaleEntity entity) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        preSaleService.add(entity);
+        preSaleService.add(entity, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加售前技术支持信息成功");
     }
 
@@ -58,7 +55,7 @@ public class PreSaleController extends SessionController implements BaseControll
     public Map<String, Object> edit(@PathVariable Integer id, @Validated PreSaleEntity entity) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        preSaleService.edit(entity);
+        preSaleService.edit(entity, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改售前技术支持信息成功");
     }
 
@@ -85,20 +82,6 @@ public class PreSaleController extends SessionController implements BaseControll
         PageInfo<PreSaleEntity> pageInfo = new PageInfo<>(preSaleEntities);
         return ResponseDataUtil.ok("查询售前技术支持项目信息列表成功", pageInfo);
     }
-
-
-    @GetMapping("/search")
-    public Map<String, Object> findFileBySearch(@RequestParam("page_number") Integer pageNumber,
-                                                @RequestParam("page_size") Integer pageSize,
-                                                @RequestParam(value = "order_by", required = false, defaultValue = "psf.id DESC") String orderBy,
-                                                @RequestParam(value = "project_id", required = false) Integer projectId,
-                                                @RequestParam(value = "type", required = false) String type) {
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findProjectIdAndType(projectId, type);
-        PageInfo<PreSaleFileEntity> pageInfo = new PageInfo<>(preSaleFileEntities);
-        return ResponseDataUtil.ok("查询售前技术支持以及文件信息列表成功", pageInfo);
-    }
-
 
     @GetMapping("/{id}/log")
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {

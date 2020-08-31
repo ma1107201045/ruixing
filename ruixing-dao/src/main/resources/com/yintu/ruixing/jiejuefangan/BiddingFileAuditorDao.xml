@@ -6,9 +6,10 @@
         <result column="bidding_file_id" jdbcType="INTEGER" property="biddingFileId"/>
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="is_pass" jdbcType="SMALLINT" property="isPass"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, bidding_file_id, auditor_id, is_pass
+        id, bidding_file_id, auditor_id, is_pass, reason
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -16,27 +17,16 @@
         from mro_bidding_file_auditor
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectByBiddingFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_bidding_file_auditor
-        where bidding_file_id = #{biddingFileId,jdbcType=INTEGER}
-    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mro_bidding_file_auditor
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <delete id="deleteByBiddingFileId" parameterType="java.lang.Integer">
-        delete
-        from mro_bidding_file_auditor
-        where bidding_file_id = #{biddingFileId,jdbcType=INTEGER}
-    </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
         insert into mro_bidding_file_auditor (id, bidding_file_id, auditor_id,
-                                               is_pass)
+                                              is_pass, reason)
         values (#{id,jdbcType=INTEGER}, #{biddingFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
-                #{isPass,jdbcType=SMALLINT})
+                #{isPass,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
         insert into mro_bidding_file_auditor
@@ -53,6 +43,9 @@
             <if test="isPass != null">
                 is_pass,
             </if>
+            <if test="reason != null">
+                reason,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -67,8 +60,37 @@
             <if test="isPass != null">
                 #{isPass,jdbcType=SMALLINT},
             </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
+        update mro_bidding_file_auditor
+        <set>
+            <if test="biddingFileId != null">
+                bidding_file_id = #{biddingFileId,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=INTEGER},
+            </if>
+            <if test="isPass != null">
+                is_pass = #{isPass,jdbcType=SMALLINT},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
+        update mro_bidding_file_auditor
+        set bidding_file_id = #{biddingFileId,jdbcType=INTEGER},
+            auditor_id      = #{auditorId,jdbcType=INTEGER},
+            is_pass         = #{isPass,jdbcType=SMALLINT},
+            reason          = #{reason,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
         insert into mro_bidding_file_auditor
@@ -84,26 +106,16 @@
             </trim>
         </foreach>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
-        update mro_bidding_file_auditor
-        <set>
-            <if test="biddingFileId != null">
-                bidding_file_id = #{biddingFileId,jdbcType=INTEGER},
-            </if>
-            <if test="auditorId != null">
-                auditor_id = #{auditorId,jdbcType=INTEGER},
-            </if>
-            <if test="isPass != null">
-                is_pass = #{isPass,jdbcType=SMALLINT},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
-        update mro_bidding_file_auditor
-        set bidding_file_id = #{biddingFileId,jdbcType=INTEGER},
-            auditor_id      = #{auditorId,jdbcType=INTEGER},
-            is_pass         = #{isPass,jdbcType=SMALLINT}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
+
+    <delete id="deleteByBiddingFileId" parameterType="java.lang.Integer">
+        delete
+        from mro_bidding_file_auditor
+        where bidding_file_id = #{biddingFileId,jdbcType=INTEGER}
+    </delete>
+    <select id="selectByBiddingFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_bidding_file_auditor
+        where bidding_file_id = #{biddingFileId,jdbcType=INTEGER}
+    </select>
 </mapper>

@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PreSaleFileAuditorEntity implements Serializable {
-    private static final long serialVersionUID = -3516771071121003349L;
+    private static final long serialVersionUID = -9174666833401218840L;
     private Integer id;
     @NotNull
     private Integer preSaleFileId;
@@ -19,5 +19,8 @@ public class PreSaleFileAuditorEntity implements Serializable {
     private Integer auditorId;
     @NotNull
     private Short isPass;
+
+    private String reason;
+
 
 }

@@ -6,9 +6,10 @@
         <result column="design_liaison_file_id" jdbcType="INTEGER" property="designLiaisonFileId"/>
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="is_pass" jdbcType="SMALLINT" property="isPass"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, design_liaison_file_id, auditor_id, is_pass
+        id, design_liaison_file_id, auditor_id, is_pass, reason
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -16,30 +17,18 @@
         from mro_design_liaison_file_auditor
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectByDesignLiaisonFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_design_liaison_file_auditor
-        where design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER}
-    </select>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mro_design_liaison_file_auditor
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <delete id="deleteByDesignLiaisonFileId" parameterType="java.lang.Integer">
-        delete
-        from mro_design_liaison_file_auditor
-        where design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER}
-    </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         insert into mro_design_liaison_file_auditor (id, design_liaison_file_id, auditor_id,
-                                                     is_pass)
+                                                     is_pass, reason)
         values (#{id,jdbcType=INTEGER}, #{designLiaisonFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
-                #{isPass,jdbcType=SMALLINT})
+                #{isPass,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -53,6 +42,9 @@
             </if>
             <if test="isPass != null">
                 is_pass,
+            </if>
+            <if test="reason != null">
+                reason,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -68,21 +60,10 @@
             <if test="isPass != null">
                 #{isPass,jdbcType=SMALLINT},
             </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
         </trim>
-    </insert>
-    <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
-        insert into mro_design_liaison_file_auditor
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            design_liaison_file_id,auditor_id, is_pass,
-        </trim>
-        values
-        <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">
-            <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{designLiaisonFileAuditorEntity.designLiaisonFileId,jdbcType=INTEGER},
-                #{designLiaisonFileAuditorEntity.auditorId,jdbcType=INTEGER},
-                #{designLiaisonFileAuditorEntity.isPass,jdbcType=SMALLINT},
-            </trim>
-        </foreach>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         update mro_design_liaison_file_auditor
@@ -96,6 +77,9 @@
             <if test="isPass != null">
                 is_pass = #{isPass,jdbcType=SMALLINT},
             </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -103,7 +87,8 @@
         update mro_design_liaison_file_auditor
         set design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER},
             auditor_id             = #{auditorId,jdbcType=INTEGER},
-            is_pass                = #{isPass,jdbcType=SMALLINT}
+            is_pass                = #{isPass,jdbcType=SMALLINT},
+            reason                 = #{reason,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

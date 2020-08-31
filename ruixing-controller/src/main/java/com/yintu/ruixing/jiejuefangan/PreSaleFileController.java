@@ -1,8 +1,11 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +31,18 @@ public class PreSaleFileController extends SessionController {
     private PreSaleFileService preSaleFileService;
     @Autowired
     private SolutionLogService solutionLogService;
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated PreSaleFileEntity preSaleFileEntity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
-        preSaleFileService.add(preSaleFileEntity, auditorIds);
+    public Map<String, Object> add(@Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
+        preSaleFileService.add(entity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加售前技术支持文件信息成功");
     }
 
@@ -46,8 +56,10 @@ public class PreSaleFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity preSaleFileEntity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
-        preSaleFileService.edit(preSaleFileEntity, auditorIds);
+    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
+        preSaleFileService.edit(entity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("更新售前技术支持文件信息成功");
     }
 
@@ -57,6 +69,22 @@ public class PreSaleFileController extends SessionController {
         PreSaleFileEntity preSaleFileEntity = preSaleFileService.findPreSaleById(id);
         return ResponseDataUtil.ok("查询售前技术支持文件信息成功", preSaleFileEntity);
     }
+
+
+    @GetMapping("/search")
+    @ResponseBody
+    public Map<String, Object> findPreSaleIdAndNameAndType(@RequestParam("page_number") Integer pageNumber,
+                                                           @RequestParam("page_size") Integer pageSize,
+                                                           @RequestParam(value = "order_by", required = false, defaultValue = "psf.id DESC") String orderBy,
+                                                           @RequestParam(value = "project_id",required = false) Integer preSaleId,
+                                                           @RequestParam(value = "file_name", required = false) String name,
+                                                           @RequestParam(value = "type", required = false) String type) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findPreSaleIdAndNameAndType(preSaleId, name, type);
+        PageInfo<PreSaleFileEntity> pageInfo = new PageInfo<>(preSaleFileEntities);
+        return ResponseDataUtil.ok("查询售前技术支持文件信息列表成功", pageInfo);
+    }
+
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
@@ -71,15 +99,16 @@ public class PreSaleFileController extends SessionController {
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String truename) {
-        List<UserEntity> userEntities = preSaleFileService.findUserEntitiesByTruename(truename);
+        List<UserEntity> userEntities = userService.findByTruename(truename);
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
 
-    @GetMapping("/log")
-    public Map<String, Object> findLogByExample(@RequestParam("recordTypeId") Integer recordTypeId) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 1, recordTypeId, null));
-        return ResponseDataUtil.ok("查询售前技术支持项目日志信息列表成功", solutionLogEntities);
+    @GetMapping("/{id}/log")
+    @ResponseBody
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
+        return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
     }
 
 }

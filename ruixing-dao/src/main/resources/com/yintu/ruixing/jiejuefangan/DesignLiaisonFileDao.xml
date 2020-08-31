@@ -3,6 +3,10 @@
 <mapper namespace="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
@@ -11,7 +15,8 @@
         <result column="design_liaison_id" jdbcType="INTEGER" property="designLiaisonId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, path, upload_datetime, type, release_status, design_liaison_id
+        id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
+    type, release_status, design_liaison_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -25,17 +30,32 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
-        insert into mro_design_liaison_file (id, name, path,
-                                             upload_datetime, type, release_status
-            , design_liaison_id)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
-                #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT}, #{releaseStatus,jdbcType=SMALLINT}, #{designLiaisonId,jdbcType=INTEGER})
+        insert into mro_design_liaison_file (id, create_by, create_time,
+                                             modified_by, modified_time, name,
+                                             path, upload_datetime, type,
+                                             release_status, design_liaison_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
+                #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
+                #{releaseStatus,jdbcType=SMALLINT}, #{designLiaisonId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
             </if>
             <if test="name != null">
                 name,
@@ -60,6 +80,18 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
@@ -83,6 +115,18 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
         update mro_design_liaison_file
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
@@ -106,7 +150,11 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
         update mro_design_liaison_file
-        set name              = #{name,jdbcType=VARCHAR},
+        set create_by         = #{createBy,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
+            name              = #{name,jdbcType=VARCHAR},
             path              = #{path,jdbcType=VARCHAR},
             upload_datetime   = #{uploadDatetime,jdbcType=TIMESTAMP},
             type              = #{type,jdbcType=SMALLINT},
@@ -114,10 +162,12 @@
             design_liaison_id = #{designLiaisonId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
-
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
         <id column="dlf_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
@@ -142,12 +192,13 @@
             <result column="design_liaison_file_id" jdbcType="INTEGER" property="designLiaisonFileId" />
             <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
             <result column="is_pass" jdbcType="SMALLINT" property="isPass" />
+            <result column="reason" jdbcType="VARCHAR" property="reason" />
         </collection>
     </resultMap>
     <sql id="Connect_Column_List">
         dlf.id as dlf_id, dlf.name, dlf.path, dlf.upload_datetime, dlf.type, dlf.release_status, dlf.design_liaison_id,
         dl.id as dl_id,  dl.project_name,  dl.project_status,  dl.project_date,  dl.task_status,  dl.task_finish_date, dl.meeting_status,dl.change_status,  dl.bidder,  dl.railway_administration_id,  dl.bidding_id,
-        dlfa.id as dlfa_id , dlfa.design_liaison_file_id, dlfa.auditor_id, dlfa.is_pass
+        dlfa.id as dlfa_id , dlfa.design_liaison_file_id, dlfa.auditor_id, dlfa.is_pass,dlfa.reason
     </sql>
     <sql id="Connect_condition_List">
         <where>
@@ -173,7 +224,7 @@
         <include refid="Connect_Column_List"/>
         from mro_design_liaison_file dlf
         inner join mro_design_liaison dl on dlf.design_liaison_id=dl.id
-        left outer join mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
+        inner join mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
         <include refid="Connect_condition_List"/>
     </select>
 </mapper>

@@ -10,30 +10,35 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 设计联络以及后续技术交流 项目文件实体类
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DesignLiaisonFileEntity implements Serializable {
-
-    private static final long serialVersionUID = 2040050047670489042L;
-
+    private static final long serialVersionUID = -9142910497691464517L;
     private Integer id;
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
     @NotEmpty
     private String name;
     @NotEmpty
     private String path;
+
     private Date uploadDatetime;
     @NotNull
     private Short type;
-    private Short releaseStatus;
 
+    private Short releaseStatus;
     @NotNull
     private Integer designLiaisonId;
 
     private DesignLiaisonEntity designLiaisonEntity;
 
     private List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities;
+
 }

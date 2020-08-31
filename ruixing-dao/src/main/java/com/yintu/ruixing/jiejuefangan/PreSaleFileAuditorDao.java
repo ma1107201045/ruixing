@@ -22,6 +22,4 @@ public interface PreSaleFileAuditorDao {
     void insertMuch(List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities);
 
     void deleteByPreSaleFileId(Integer preSaleFileId);
-
-
 }

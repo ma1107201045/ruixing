@@ -11,11 +11,31 @@ import java.util.List;
  * @date:2020/6/30 18:52
  */
 public interface PreSaleService extends BaseService<PreSaleEntity, Integer> {
+    List<PreSaleEntity> findAll();
 
+    /**
+     * 添加
+     *
+     * @param entity   项目实体类
+     * @param trueName 当前登录用户真实姓名
+     */
+    void add(PreSaleEntity entity, String trueName);
+
+    /**
+     * 批量删除
+     *
+     * @param ids 项目id集
+     */
     void remove(Integer[] ids);
 
+    /**
+     * 修改
+     *
+     * @param entity   项目实体类
+     * @param trueName 当前登录用户真实姓名
+     */
+    void edit(PreSaleEntity entity, String trueName);
 
-    List<PreSaleEntity> findAll();
 
     /**
      * 根据年份查询项目名称

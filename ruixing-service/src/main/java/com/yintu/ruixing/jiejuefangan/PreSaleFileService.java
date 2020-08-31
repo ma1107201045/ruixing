@@ -17,14 +17,9 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
     /**
      * @param preSaleFileEntity 售前技术支持文件实体类
      * @param auditorIds        审核人id
+     * @param trueName          当前登录用户真实姓名
      */
-    void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds);
-
-    /**
-     * @param preSaleFileEntity 售前技术支持文件实体类
-     * @param auditorIds        审核人id
-     */
-    void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds);
+    void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName);
 
     /**
      * 批量删除
@@ -34,17 +29,27 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
     void remove(Integer[] ids);
 
     /**
+     * @param preSaleFileEntity 售前技术支持文件实体类
+     * @param auditorIds        审核人id
+     * @param trueName          当前登录用户真实姓名
+     */
+    void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName);
+
+
+    /**
      * @param id
      * @return
      */
     PreSaleFileEntity findPreSaleById(Integer id);
 
+
     /**
-     * @param projectId 项目名称
+     * @param preSaleId 项目名称
+     * @param name      文件名称
      * @param type      文件类型
      * @return
      */
-    List<PreSaleFileEntity> findProjectIdAndType(Integer projectId, String type);
+    List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type);
 
     /**
      * @param outputStream 输出流
@@ -53,10 +58,5 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
      */
     void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
 
-    /**
-     * 审核人列表信息
-     *
-     * @return 审核人列表
-     */
-    List<UserEntity> findUserEntitiesByTruename(String trueName);
+
 }

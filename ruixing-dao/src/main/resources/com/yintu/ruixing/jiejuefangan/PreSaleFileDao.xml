@@ -3,15 +3,21 @@
 <mapper namespace="com.yintu.ruixing.jiejuefangan.PreSaleFileDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, path, upload_datetime, type, release_status, pre_sale_id
+        id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
+    type, release_status,remark, pre_sale_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -24,20 +30,33 @@
         from mro_pre_sale_file
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
-        insert into mro_pre_sale_file (id, name, path,
-                                       upload_datetime, type,
-                                       release_status,
-                                       pre_sale_id)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
-                #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT}, #{releaseStatus,jdbcType=SMALLINT},
-                #{preSaleId,jdbcType=INTEGER})
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into mro_pre_sale_file (id, create_by, create_time,
+                                       modified_by, modified_time, name,
+                                       path, upload_datetime, type,
+                                       release_status, remark, pre_sale_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
+                #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
+                #{releaseStatus,jdbcType=SMALLINT}, #{remark,jdbcType=VARCHAR}, #{preSaleId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_pre_sale_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
             </if>
             <if test="name != null">
                 name,
@@ -54,6 +73,9 @@
             <if test="releaseStatus != null">
                 release_status,
             </if>
+            <if test="remark != null">
+                remark,
+            </if>
             <if test="preSaleId != null">
                 pre_sale_id,
             </if>
@@ -62,6 +84,18 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
@@ -78,6 +112,9 @@
             <if test="releaseStatus != null">
                 #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="preSaleId != null">
                 #{preSaleId,jdbcType=INTEGER},
             </if>
@@ -86,6 +123,18 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
         update mro_pre_sale_file
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
@@ -101,6 +150,9 @@
             <if test="releaseStatus != null">
                 release_status = #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
             <if test="preSaleId != null">
                 pre_sale_id = #{preSaleId,jdbcType=INTEGER},
             </if>
@@ -109,22 +161,32 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
         update mro_pre_sale_file
-        set name            = #{name,jdbcType=VARCHAR},
+        set create_by       = #{createBy,jdbcType=VARCHAR},
+            create_time     = #{createTime,jdbcType=TIMESTAMP},
+            modified_by     = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time   = #{modifiedTime,jdbcType=TIMESTAMP},
+            name            = #{name,jdbcType=VARCHAR},
             path            = #{path,jdbcType=VARCHAR},
             upload_datetime = #{uploadDatetime,jdbcType=TIMESTAMP},
             type            = #{type,jdbcType=SMALLINT},
             release_status  = #{releaseStatus,jdbcType=SMALLINT},
+            remark          = #{remark,jdbcType=VARCHAR},
             pre_sale_id     = #{preSaleId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
         <id column="psf_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
         <association column="pre_sale_id" property="preSaleEntity">
             <id column="ps_id" jdbcType="INTEGER" property="id"/>
@@ -139,23 +201,27 @@
             <result column="pre_sale_file_id" jdbcType="INTEGER" property="preSaleFileId"/>
             <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
             <result column="is_pass" jdbcType="SMALLINT" property="isPass"/>
+            <result column="reason" jdbcType="VARCHAR" property="reason"/>
         </collection>
     </resultMap>
     <sql id="Connect_Column_List">
-        psf.id as psf_id, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status, psf.pre_sale_id,
+        psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.remark, psf.pre_sale_id,
         ps.id as ps_id , ps.project_name, ps.project_status, ps.project_date, ps.task_status, ps.task_finish_date,
-        psfa.id as psfa_id, psfa.pre_sale_file_id, psfa.auditor_id, psfa.is_pass
+        psfa.id as psfa_id, psfa.pre_sale_file_id, psfa.auditor_id, psfa.is_pass,psfa.reason
     </sql>
     <sql id="Connect_condition_List">
         <where>
-            <if test="projectId!=null">
-                and ps.id =#{projectId,jdbcType=INTEGER}
+            <if test="preSaleId!=null">
+                and psf.pre_sale_id=#{preSaleId,jdbcType=INTEGER}
             </if>
-            <if test="ids!=null and ids.length>0">
+            <if test="ids!=null and ids.length > 0">
                 and psf.id in
                 <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                     #{id}
                 </foreach>
+            </if>
+            <if test="name!=null">
+                and psf.name like concat('%',#{name,jdbcType=VARCHAR},'%')
             </if>
             <if test="type!=null">
                 and psf.type = #{type,jdbcType=SMALLINT}
@@ -166,7 +232,7 @@
         select
         <include refid="Connect_Column_List"/>
         from mro_pre_sale_file psf inner join mro_pre_sale ps on psf.pre_sale_id=ps.id
-        left outer join mro_pre_sale_file_auditor psfa on psf.id=psfa.pre_sale_file_id
+        inner join mro_pre_sale_file_auditor psfa on psf.id=psfa.pre_sale_file_id
         <include refid="Connect_condition_List"/>
     </select>
 </mapper>
