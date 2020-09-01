@@ -73,6 +73,7 @@ public class BiddingFileController extends SessionController {
 
 
     @GetMapping("/search")
+    @ResponseBody
     public Map<String, Object> findBySearch(@RequestParam("page_number") Integer pageNumber,
                                             @RequestParam("page_size") Integer pageSize,
                                             @RequestParam(value = "order_by", required = false, defaultValue = "bf.id DESC") String orderBy,

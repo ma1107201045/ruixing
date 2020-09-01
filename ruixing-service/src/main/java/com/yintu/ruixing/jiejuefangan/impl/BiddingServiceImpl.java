@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import com.yintu.ruixing.jiejuefangan.BiddingDao;
 import com.yintu.ruixing.jiejuefangan.BiddingEntity;
 import com.yintu.ruixing.jiejuefangan.BiddingService;
@@ -29,6 +30,8 @@ public class BiddingServiceImpl implements BiddingService {
     private SolutionLogService solutionLogService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private TieLuJuService tieLuJuService;
 
     @Override
     public void add(BiddingEntity entity) {
@@ -49,6 +52,7 @@ public class BiddingServiceImpl implements BiddingService {
     @Override
     public BiddingEntity findById(Integer id) {
         return biddingDao.selectByPrimaryKey(id);
+        
     }
 
     @Override

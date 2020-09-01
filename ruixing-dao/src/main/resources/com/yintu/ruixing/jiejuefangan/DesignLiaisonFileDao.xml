@@ -226,11 +226,8 @@
     </sql>
     <sql id="Connect_condition_List">
         <where>
-            <if test="year!=null">
-                and YEAR(dl.project_date) = #{year}
-            </if>
-            <if test="projectName!=null">
-                and dl.project_name like concat('%',#{projectName},'%')
+            <if test="designLiaisonId!=null">
+                and dlf.design_liaison_id = #{designLiaisonId,jdbcType=INTEGER}
             </if>
             <if test="ids!=null and ids.length>0">
                 and dlf.id in

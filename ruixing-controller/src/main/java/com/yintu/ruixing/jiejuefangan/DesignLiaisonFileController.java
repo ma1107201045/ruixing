@@ -61,6 +61,7 @@ public class DesignLiaisonFileController extends SessionController {
     }
 
     @GetMapping("/search")
+    @ResponseBody
     public Map<String, Object> findBySearch(@RequestParam("page_number") Integer pageNumber,
                                             @RequestParam("page_size") Integer pageSize,
                                             @RequestParam(value = "order_by", required = false, defaultValue = "dlf.id DESC") String orderBy,
@@ -85,6 +86,7 @@ public class DesignLiaisonFileController extends SessionController {
     }
 
     @GetMapping("/{id}/log")
+    @ResponseBody
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
         List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 3, (short) 2, id, null));
         return ResponseDataUtil.ok("查询设计联络及后续技术交流文件日志信息列表成功", solutionLogEntities);
