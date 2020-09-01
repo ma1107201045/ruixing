@@ -49,7 +49,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     public DesignLiaisonEntity findById(Integer id) {
         DesignLiaisonEntity designLiaisonEntity = designLiaisonDao.selectByPrimaryKey(id);
         if (designLiaisonEntity != null) {
-            designLiaisonEntity.setTieLuJuEntity(tieLuJuService.findTieLuJuById(designLiaisonEntity.getRailwayAdministrationId().longValue()));
+            designLiaisonEntity.setTieLuJuEntity(tieLuJuService.findByTljId(designLiaisonEntity.getRailwayAdministrationId().longValue()));
         }
         return designLiaisonEntity;
     }
@@ -67,7 +67,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
                 .append("   投标人：").append(entity.getBidder())
                 .append("   项目名称：").append(entity.getProjectName())
-                .append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName())
+                .append("   所属路局：").append(tieLuJuService.findByTljId(entity.getRailwayAdministrationId().longValue()).getTljName())
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
                 .append("   会议状态：").append(entity.getMeetingStatus() == 1 ? "不召开会议" : entity.getProjectStatus() == 2 ? "尚未开会" : entity.getProjectStatus() == 3 ? "已召开设计联络会" : "错误")
                 .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "待确认需求" : entity.getProjectStatus() == 2 ? "已确认部分需求" : entity.getProjectStatus() == 3 ? "已确认全部需求" : "错误")
@@ -98,7 +98,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 sb.append("   项目名称：").append(entity.getProjectName());
             }
             if (target.getRailwayAdministrationId() != null) {
-                sb.append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName());
+                sb.append("   所属路局：").append(tieLuJuService.findByTljId(entity.getRailwayAdministrationId().longValue()).getTljName());
             }
             if (target.getTaskStatus() != null) {
                 sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");

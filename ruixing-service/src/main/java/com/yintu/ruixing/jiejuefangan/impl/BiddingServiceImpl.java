@@ -72,7 +72,7 @@ public class BiddingServiceImpl implements BiddingService {
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
                 .append("   投标人：").append(entity.getBidder())
                 .append("   项目名称：").append(entity.getProjectName())
-                .append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName())
+                .append("   所属路局：").append(tieLuJuService.findByTljId(entity.getRailwayAdministrationId().longValue()).getTljName())
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
                 .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "正在投标" : entity.getProjectStatus() == 2 ? "未中标" : entity.getProjectStatus() == 3 ? "已中标" : entity.getProjectStatus() == 4 ? "流标再投" : "错误")
                 .append("   备注：").append(entity.getRemark());
@@ -112,7 +112,7 @@ public class BiddingServiceImpl implements BiddingService {
                 sb.append("   项目名称：").append(entity.getProjectName());
             }
             if (target.getRailwayAdministrationId() != null) {
-                sb.append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName());
+                sb.append("   所属路局：").append(tieLuJuService.findByTljId(entity.getRailwayAdministrationId().longValue()).getTljName());
             }
             if (target.getTaskStatus() != null) {
                 sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");
