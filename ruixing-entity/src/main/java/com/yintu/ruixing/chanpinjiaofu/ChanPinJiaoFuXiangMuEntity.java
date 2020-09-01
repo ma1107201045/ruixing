@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChanPinJiaoFuXiangMuEntity {
+
     private Integer id;
 
     private Integer xiangmuState;//项目状态 1：正在执行 ， 2：仅剩尾款，3：项目关闭

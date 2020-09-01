@@ -36,6 +36,8 @@ public class ChanPinJiaoFuXiangMuFileEntity {
 
     private String updatename;
 
+    private String remarks;
+
     public Integer getId() {
         return id;
     }

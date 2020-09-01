@@ -344,7 +344,8 @@
         where id=#{id,jdbcType=INTEGER}
     </update>
     <!--添加项目文件列表-->
-    <insert id="addXiangMuFile" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addXiangMuFile" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity"
+            useGeneratedKeys="true" keyProperty="id">
     insert into mro_chanpinjiaofu_file (xm_id,file_type,file_name,file_path,fabu_type)
     values (#{xmId},#{fileType},#{fileName},#{filePath},#{fabuType})
   </insert>
@@ -440,8 +441,7 @@
   </delete>
 
     <!--添加项目-->
-    <insert id="addXiangMu" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity"
-            useGeneratedKeys="true" keyProperty="id">
+    <insert id="addXiangMu" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity"  useGeneratedKeys="true" keyProperty="id">
         insert into mro_chanpinjiaofu_xiangmu
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

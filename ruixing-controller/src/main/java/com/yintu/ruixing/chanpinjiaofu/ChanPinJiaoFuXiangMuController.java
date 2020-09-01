@@ -100,7 +100,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         }
     }
 
-    //根据项目id 查看更新历史记录
+    //根据项目或者文件id 查看更新历史记录
     @ResponseBody
     @GetMapping("/findReordById/{id}")
     public Map<String, Object> findReordById(@PathVariable Integer id) {
@@ -126,12 +126,18 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         return ResponseDataUtil.ok("修改项目数据成功");
     }
 
-    //根据id  删除对应的项目
+    //根据id  单个或者批量删除对应的项目
     @ResponseBody
-    @DeleteMapping("/deletXiagMuById/{id}")
-    public Map<String, Object> deletXiagMuById(@PathVariable Integer id) {
-        chanPinJiaoFuXiangMuService.deletXiagMuById(id);
-        return ResponseDataUtil.ok("删除数据成功");
+    @DeleteMapping("/deletXiagMuByIds/{ids}")
+    public Map<String, Object> deletXiagMuById(@PathVariable Integer[] ids) {
+        for (int i = 0; i < ids.length; i++) {
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList=chanPinJiaoFuXiangMuService.findFile(ids[i]);
+            if (fileEntityList.size()==0){
+                chanPinJiaoFuXiangMuService.deletXiagMuById(ids[i]);
+                return ResponseDataUtil.ok("删除数据成功");
+            }
+        }
+        return ResponseDataUtil.error("项目存在文件，不能删除项目");
     }
 
     //查询所有的数据
@@ -184,6 +190,36 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         Integer uid = this.getLoginUser().getId().intValue();
         chanPinJiaoFuXiangMuService.editXiangMuFileById(chanPinJiaoFuXiangMuFileEntity, id, uids, uid, username);
         return ResponseDataUtil.ok("修改数据成功");
+    }
+
+    //根据文件类型或者文件名 进行模糊查询
+    @ResponseBody
+    @GetMapping("/findFileBySomething")
+    public Map<String, Object> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename) {
+        PageHelper.startPage(page, size);
+        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileBySomething(xmid, page, size, filetype, filename);
+        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询文件成功", fileEntityPageInfo);
+    }
+
+    //根据项目id 初始化输入文件
+    @ResponseBody
+    @GetMapping("/findShuRuFile")
+    public Map<String, Object> findShuRuFile(Integer xmid, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuRuFile(xmid, page, size);
+        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+    }
+
+    //根据项目id 初始化输出文件
+    @ResponseBody
+    @GetMapping("/findShuChuFile")
+    public Map<String, Object> findShuChuFile(Integer xmid, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuChuFile(xmid, page, size);
+        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
     }
 
     //上传文件

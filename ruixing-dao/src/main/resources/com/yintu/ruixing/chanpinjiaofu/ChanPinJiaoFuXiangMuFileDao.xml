@@ -1,40 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="xm_id" jdbcType="INTEGER" property="xmId" />
-    <result column="file_type" jdbcType="INTEGER" property="fileType" />
-    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
-    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
-    <result column="fabu_type" jdbcType="INTEGER" property="fabuType" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
-    <result column="auditorState" jdbcType="INTEGER" property="auditorState" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
-    <result column="createName" jdbcType="VARCHAR" property="createname" />
-    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="xm_id" jdbcType="INTEGER" property="xmId"/>
+        <result column="file_type" jdbcType="INTEGER" property="fileType"/>
+        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="fabu_type" jdbcType="INTEGER" property="fabuType"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="createName" jdbcType="VARCHAR" property="createname"/>
+        <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, uid, xm_id, file_type, file_name, file_path, fabu_type, auditor_id, createTime, 
-    updateTime, createName, updateName,auditorState
+    updateTime, createName, updateName,auditorState,remarks
   </sql>
 
-  <!--根据id  查询对应的文件数据-->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_chanpinjiaofu_file
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+
+    <!-- 根据项目id  查询对应的文件-->
+    <select id="findFile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        where
+        xm_id=#{id}
+    </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!-- 初始化输出文件-->
+    <select id="findShuChuFile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        where
+        xm_id=#{xmid}
+        and file_type=2
+        order by id desc
+    </select>
+
+    <!-- 初始化输入文件-->
+    <select id="findShuRuFile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        where
+        xm_id=#{xmid}
+        and file_type=1
+        order by id desc
+    </select>
+
+    <!-- 根据文件类型或者文件名 进行模糊查询-->
+    <select id="findFileBySomething" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        <where>
+            xm_id=#{xmid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <!--根据id  查询对应的文件数据-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据id  删除文件-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_chanpinjiaofu_file
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
+
+    <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
     insert into mro_chanpinjiaofu_file (id, uid, xm_id, 
       file_type, file_name, file_path, 
       fabu_type, auditor_id, createTime, 
@@ -47,135 +101,146 @@
       )
   </insert>
 
-  <!--新增文件-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity" useGeneratedKeys="true" keyProperty="id">
-    insert into mro_chanpinjiaofu_file
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="uid != null">
-        uid,
-      </if>
-      <if test="xmId != null">
-        xm_id,
-      </if>
-      <if test="fileType != null">
-        file_type,
-      </if>
-      <if test="fileName != null">
-        file_name,
-      </if>
-      <if test="filePath != null">
-        file_path,
-      </if>
-      <if test="fabuType != null">
-        fabu_type,
-      </if>
-      <if test="auditorId != null">
-        auditor_id,
-      </if>
-      <if test="auditorState != null">
-        auditorState,
-      </if>
-      <if test="createtime != null">
-        createTime,
-      </if>
-      <if test="updatetime != null">
-        updateTime,
-      </if>
-      <if test="createname != null">
-        createName,
-      </if>
-      <if test="updatename != null">
-        updateName,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="xmId != null">
-        #{xmId,jdbcType=INTEGER},
-      </if>
-      <if test="fileType != null">
-        #{fileType,jdbcType=INTEGER},
-      </if>
-      <if test="fileName != null">
-        #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="filePath != null">
-        #{filePath,jdbcType=VARCHAR},
-      </if>
-      <if test="fabuType != null">
-        #{fabuType,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorState != null">
-        #{auditorState,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createname != null">
-        #{createname,jdbcType=VARCHAR},
-      </if>
-      <if test="updatename != null">
-        #{updatename,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
-    update mro_chanpinjiaofu_file
-    <set>
-      <if test="uid != null">
-        uid = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="xmId != null">
-        xm_id = #{xmId,jdbcType=INTEGER},
-      </if>
-      <if test="fileType != null">
-        file_type = #{fileType,jdbcType=INTEGER},
-      </if>
-      <if test="fileName != null">
-        file_name = #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="filePath != null">
-        file_path = #{filePath,jdbcType=VARCHAR},
-      </if>
-      <if test="fabuType != null">
-        fabu_type = #{fabuType,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorState != null">
-        auditorState = #{auditorState,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null">
-        createTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createname != null">
-        createName = #{createname,jdbcType=VARCHAR},
-      </if>
-      <if test="updatename != null">
-        updateName = #{updatename,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
+    <!--新增文件-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_chanpinjiaofu_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="xmId != null">
+                xm_id,
+            </if>
+            <if test="fileType != null">
+                file_type,
+            </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="fabuType != null">
+                fabu_type,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditorState != null">
+                auditorState,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="createname != null">
+                createName,
+            </if>
+            <if test="updatename != null">
+                updateName,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="xmId != null">
+                #{xmId,jdbcType=INTEGER},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fabuType != null">
+                #{fabuType,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=INTEGER},
+            </if>
+            <if test="auditorState != null">
+                #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
+        update mro_chanpinjiaofu_file
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="xmId != null">
+                xm_id = #{xmId,jdbcType=INTEGER},
+            </if>
+            <if test="fileType != null">
+                file_type = #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="fileName != null">
+                file_name = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                file_path = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fabuType != null">
+                fabu_type = #{fabuType,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=INTEGER},
+            </if>
+            <if test="auditorState != null">
+                auditorState = #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                createName = #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatename != null">
+                updateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity">
     update mro_chanpinjiaofu_file
     set uid = #{uid,jdbcType=INTEGER},
       xm_id = #{xmId,jdbcType=INTEGER},
