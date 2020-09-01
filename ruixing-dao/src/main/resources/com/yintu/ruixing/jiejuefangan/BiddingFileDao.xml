@@ -225,7 +225,7 @@
     <sql id="Connect_condition_List">
         <where>
             <if test="biddingId!=null">
-                and bf.biddingId=#{biddingId,jdbcType=INTEGER}
+                and bf.bidding_id=#{biddingId,jdbcType=INTEGER}
             </if>
             <if test="ids!=null and ids.length>0">
                 and bf.id in
