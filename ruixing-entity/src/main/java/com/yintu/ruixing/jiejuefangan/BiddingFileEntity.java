@@ -34,6 +34,11 @@ public class BiddingFileEntity implements Serializable {
     private Short type;
 
     private Short releaseStatus;
+
+    private Integer userId;
+
+    private String remark;
+
     @NotNull
     private Integer biddingId;
 

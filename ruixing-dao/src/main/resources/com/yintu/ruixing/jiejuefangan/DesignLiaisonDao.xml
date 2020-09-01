@@ -35,7 +35,7 @@
         from mro_design_liaison
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison (id, create_by, create_time,
                                         modified_by, modified_time, project_name,
                                         project_status, project_date, task_status,
@@ -49,7 +49,7 @@
                 #{changeStatus,jdbcType=SMALLINT}, #{bidder,jdbcType=VARCHAR}, #{railwayAdministrationId,jdbcType=INTEGER},
                 #{biddingId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -232,6 +232,19 @@
         <include refid="Base_Column_List"/>
         from mro_design_liaison
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison
+        <where>
+            <if test="year!=null">
+                YEAR(project_date) = #{year,jdbcType=INTEGER}
+            </if>
+            <if test="projectName!=null">
+                and project_name like concat('%',#{projectName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
     </select>
     <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
         select DISTINCT YEAR(project_date)

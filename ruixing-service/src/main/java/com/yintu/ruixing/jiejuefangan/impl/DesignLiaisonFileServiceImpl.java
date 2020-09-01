@@ -66,7 +66,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     }
 
     @Override
-    public void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds) {
+    public void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName) {
         this.add(designLiaisonFileEntity);
         Integer id = designLiaisonFileEntity.getId();
         if (auditorIds != null) {
@@ -86,7 +86,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     }
 
     @Override
-    public void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds) {
+    public void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName) {
         this.edit(designLiaisonFileEntity);
         Integer id = designLiaisonFileEntity.getId();
         designLiaisonFileAuditorService.removeByDesignLiaisonFileId(id);
@@ -128,18 +128,18 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     }
 
     @Override
-    public List<DesignLiaisonFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type) {
-        return designLiaisonFileDao.selectByCondition(year, projectName, null, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
+    public List<DesignLiaisonFileEntity> findByDesignLiaisonIdIdAndNameAndType(Integer designLiaisonId, String name, String type, Integer userId) {
+        return designLiaisonFileDao.selectByCondition(designLiaisonId, null, name, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
     }
 
     @Override
-    public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
+    public void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException {
         //excel标题
         String title = "设计联络及后续技术交流列表";
         //excel表名
         String[] headers = {"序号", "年份", "项目名称", "招标人", "项目状态", "任务状态", "会议状态", "变更状态", "文件类型", "文件名称"};
         //获取数据
-        List<DesignLiaisonFileEntity> designLiaisonFileEntities = designLiaisonFileDao.selectByCondition(null, null, ids, null);
+        List<DesignLiaisonFileEntity> designLiaisonFileEntities = designLiaisonFileDao.selectByCondition(null, ids, null, null, userId, (short) 2);
         designLiaisonFileEntities = designLiaisonFileEntities.stream()
                 .sorted(Comparator.comparing(DesignLiaisonFileEntity::getId).reversed())
                 .collect(Collectors.toList());
@@ -171,8 +171,4 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
         outputStream.close();
     }
 
-    @Override
-    public List<UserEntity> findUserEntitiesBytTruename(String truename) {
-        return userService.findByTruename(truename);
-    }
 }

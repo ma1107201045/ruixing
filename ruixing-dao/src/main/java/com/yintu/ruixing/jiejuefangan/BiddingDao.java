@@ -3,6 +3,7 @@ package com.yintu.ruixing.jiejuefangan;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface BiddingDao {
     int deleteByPrimaryKey(Integer id);
@@ -20,6 +21,8 @@ public interface BiddingDao {
     List<BiddingEntity> selectAll();
 
     List<BiddingEntity> selectByYear(Integer year);
+
+    List<BiddingEntity> selectByExample(Integer year, String projectName);
 
     List<Integer> selectByDistinctProjectDate();
 }

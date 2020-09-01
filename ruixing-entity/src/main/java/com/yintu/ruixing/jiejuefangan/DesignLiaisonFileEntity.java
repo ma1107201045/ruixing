@@ -35,6 +35,8 @@ public class DesignLiaisonFileEntity implements Serializable {
 
     private Short releaseStatus;
 
+    private Integer userId;
+
     private String remark;
 
     @NotNull

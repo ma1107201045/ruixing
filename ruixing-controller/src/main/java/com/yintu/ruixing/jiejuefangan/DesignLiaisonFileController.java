@@ -1,5 +1,7 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.xitongguanli.UserEntity;
@@ -25,12 +27,14 @@ public class DesignLiaisonFileController extends SessionController {
 
     @Autowired
     private DesignLiaisonFileService designLiaisonFileService;
+    @Autowired
+    private SolutionLogService solutionLogService;
 
 
     @PostMapping
     @ResponseBody
     public Map<String, Object> add(@Validated DesignLiaisonFileEntity designLiaisonFileEntity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
-        designLiaisonFileService.add(designLiaisonFileEntity, auditorIds);
+        designLiaisonFileService.add(designLiaisonFileEntity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加设计联络及后续技术交流文件信息成功");
     }
 
@@ -45,7 +49,7 @@ public class DesignLiaisonFileController extends SessionController {
     @PutMapping("/{id}")
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
-        designLiaisonFileService.edit(entity, auditorIds);
+        designLiaisonFileService.edit(entity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改设计联络及后续技术交流文件信息成功");
     }
 
@@ -56,32 +60,19 @@ public class DesignLiaisonFileController extends SessionController {
         return ResponseDataUtil.ok("查询设计联络及后续技术交流文件信息成功", designLiaisonFileEntity);
     }
 
-//    @PostMapping("/upload")
-//    @ResponseBody
-//    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-//        String fileName = multipartFile.getOriginalFilename();
-//        String filePath = FileUploadUtil.save(multipartFile.getInputStream(), fileName);
-//        JSONObject jo = new JSONObject();
-//        jo.put("filePath", filePath);
-//        jo.put("fileName", fileName);
-//        return ResponseDataUtil.ok("查询设计联络及后续技术交流文件信息成功", jo);
-//    }
-//
-//    @GetMapping("/download/{id}")
-//    public void downloadFile(@PathVariable Integer id, HttpServletResponse response) throws IOException {
-//        DesignLiaisonFileEntity designLiaisonFileEntity = designLiaisonFileService.findById(id);
-//        if (designLiaisonFileEntity != null) {
-//            String filePath = designLiaisonFileEntity.getPath();
-//            String fileName = designLiaisonFileEntity.getName();
-//            if (filePath != null && !"".equals(filePath) && fileName != null && !"".equals(fileName)) {
-//                response.setContentType("application/octet-stream;charset=ISO8859-1");
-//                response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-//                response.addHeader("Pargam", "no-cache");
-//                response.addHeader("Cache-Control", "no-cache");
-//                FileUploadUtil.get(response.getOutputStream(), filePath + "\\" + fileName);
-//            }
-//        }
-//    }
+    @GetMapping("/search")
+    public Map<String, Object> findBySearch(@RequestParam("page_number") Integer pageNumber,
+                                            @RequestParam("page_size") Integer pageSize,
+                                            @RequestParam(value = "order_by", required = false, defaultValue = "dlf.id DESC") String orderBy,
+                                            @RequestParam(value = "project_id", required = false) Integer designLiaisonId,
+                                            @RequestParam(value = "file_name", required = false) String name,
+                                            @RequestParam(value = "type", required = false) String type) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<DesignLiaisonFileEntity> designLiaisonEntities = designLiaisonFileService.findByDesignLiaisonIdIdAndNameAndType(designLiaisonId, name, type, this.getLoginUserId().intValue());
+        PageInfo<DesignLiaisonFileEntity> pageInfo = new PageInfo<>(designLiaisonEntities);
+        return ResponseDataUtil.ok("查询设计联络及后续技术交流信息以及文件信息列表成功", pageInfo);
+    }
+
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
@@ -90,14 +81,13 @@ public class DesignLiaisonFileController extends SessionController {
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
-        designLiaisonFileService.exportFile(response.getOutputStream(), ids);
+        designLiaisonFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
 
-    @GetMapping("/auditors")
-    @ResponseBody
-    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String truename) {
-        List<UserEntity> userEntities = designLiaisonFileService.findUserEntitiesBytTruename(truename);
-        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
+    @GetMapping("/{id}/log")
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 3, (short) 2, id, null));
+        return ResponseDataUtil.ok("查询设计联络及后续技术交流文件日志信息列表成功", solutionLogEntities);
     }
 
 

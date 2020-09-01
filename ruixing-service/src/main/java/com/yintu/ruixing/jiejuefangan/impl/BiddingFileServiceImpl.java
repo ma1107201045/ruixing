@@ -63,7 +63,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     }
 
     @Override
-    public void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds) {
+    public void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName) {
         this.add(biddingFileEntity);
         Integer id = biddingFileEntity.getId();
         if (auditorIds != null) {
@@ -83,7 +83,14 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     }
 
     @Override
-    public void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds) {
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
+    }
+
+    @Override
+    public void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName) {
         this.edit(biddingFileEntity);
         Integer id = biddingFileEntity.getId();
         biddingFileAuditorService.removeByBiddingFileId(id); //删除
@@ -116,27 +123,19 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         return biddingFileEntity;
     }
 
-
     @Override
-    public void remove(Integer[] ids) {
-        for (Integer id : ids) {
-            this.remove(id);
-        }
+    public List<BiddingFileEntity> findByBiddingIdAndNameAndType(Integer biddingId, String name, String type, Integer userId) {
+        return biddingFileDao.selectByCondition(biddingId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
     }
 
     @Override
-    public List<BiddingFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type) {
-        return biddingFileDao.selectByCondition(year, projectName, null, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2);
-    }
-
-    @Override
-    public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
+    public void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException {
         //excel标题
         String title = "投招标技术支持列表";
         //excel表名
         String[] headers = {"序号", "年份", "项目名称", "招标人", "项目状态", "任务状态", "文件类型", "文件名称"};
         //获取数据
-        List<BiddingFileEntity> biddingFileEntities = biddingFileDao.selectByCondition(null, null, ids, null);
+        List<BiddingFileEntity> biddingFileEntities = biddingFileDao.selectByCondition(null, ids, null, null, userId, (short) 2);
         biddingFileEntities = biddingFileEntities.stream()
                 .sorted(Comparator.comparing(BiddingFileEntity::getId).reversed())
                 .collect(Collectors.toList());
@@ -164,8 +163,5 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         outputStream.close();
     }
 
-    @Override
-    public List<UserEntity> findUserEntitiesBytTruename(String truename) {
-        return userService.findByTruename(truename);
-    }
+
 }

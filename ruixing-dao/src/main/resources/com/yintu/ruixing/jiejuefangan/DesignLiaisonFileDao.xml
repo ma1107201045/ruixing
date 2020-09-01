@@ -12,12 +12,13 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="design_liaison_id" jdbcType="INTEGER" property="designLiaisonId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
-    type, release_status, remark, design_liaison_id
+    type, release_status, user_id, remark, design_liaison_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -30,15 +31,15 @@
         from mro_design_liaison_file
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison_file (id, create_by, create_time,
                                              modified_by, modified_time, name,
                                              path, upload_datetime, type,
-                                             release_status, remark, design_liaison_id)
+                                             release_status, user_id, remark, design_liaison_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{remark,jdbcType=VARCHAR}, #{designLiaisonId,jdbcType=INTEGER})
+                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{designLiaisonId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison_file
@@ -72,6 +73,9 @@
             </if>
             <if test="releaseStatus != null">
                 release_status,
+            </if>
+            <if test="userId != null">
+                user_id,
             </if>
             <if test="remark != null">
                 remark,
@@ -111,6 +115,9 @@
             <if test="releaseStatus != null">
                 #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
             </if>
@@ -149,6 +156,9 @@
             <if test="releaseStatus != null">
                 release_status = #{releaseStatus,jdbcType=SMALLINT},
             </if>
+            <if test="userId != null">
+                user_id=#{userId,jdbcType=INTEGER},
+            </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
@@ -169,6 +179,7 @@
             upload_datetime   = #{uploadDatetime,jdbcType=TIMESTAMP},
             type              = #{type,jdbcType=SMALLINT},
             release_status    = #{releaseStatus,jdbcType=SMALLINT},
+            user_id           = #{userId,jdbcType=INTEGER},
             remark            = #{remark,jdbcType=VARCHAR},
             design_liaison_id = #{designLiaisonId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -184,6 +195,7 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="design_liaison_id" jdbcType="INTEGER" property="designLiaisonId"/>
         <association column="design_liaison_id" property="designLiaisonEntity">
@@ -208,7 +220,7 @@
         </collection>
     </resultMap>
     <sql id="Connect_Column_List">
-        dlf.id as dlf_id,dlf.create_by, dlf.create_time, dlf.modified_by, dlf.modified_time, dlf.name, dlf.path, dlf.upload_datetime, dlf.type, dlf.release_status,dlf.remark, dlf.design_liaison_id,
+        dlf.id as dlf_id,dlf.create_by, dlf.create_time, dlf.modified_by, dlf.modified_time, dlf.name, dlf.path, dlf.upload_datetime, dlf.type, dlf.release_status,dlf.user_id,dlf.remark, dlf.design_liaison_id,
         dl.id as dl_id,  dl.project_name,  dl.project_status,  dl.project_date,  dl.task_status,  dl.task_finish_date, dl.meeting_status,dl.change_status,  dl.bidder,  dl.railway_administration_id,  dl.bidding_id,
         dlfa.id as dlfa_id , dlfa.design_liaison_file_id, dlfa.auditor_id, dlfa.is_pass,dlfa.reason
     </sql>
@@ -226,9 +238,13 @@
                     #{id}
                 </foreach>
             </if>
-            <if test="type!=null">
-                and dlf.type = #{type}
+            <if test="name!=null">
+                and dlf.name like concat('%',#{name,jdbcType=VARCHAR},'%')
             </if>
+            <if test="type!=null">
+                and dlf.type = #{type,jdbcType=SMALLINT}
+            </if>
+            and (dlf.user_id = #{userId,jdbcType=SMALLINT} or dlf.release_status = #{releaseStatus,jdbcType=INTEGER})
         </where>
     </sql>
     <select id="selectByCondition" resultMap="ConnectResultMap">

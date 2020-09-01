@@ -33,7 +33,7 @@
         from mro_bidding
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_bidding (id, create_by, create_time,
                                  modified_by, modified_time, project_name,
                                  project_status, project_date, task_status,
@@ -45,7 +45,7 @@
                 #{taskFinishDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{bidder,jdbcType=VARCHAR},
                 #{railwayAdministrationId,jdbcType=INTEGER}, #{preSaleId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_bidding
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -209,6 +209,19 @@
         <include refid="Base_Column_List"/>
         from mro_bidding
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_bidding
+        <where>
+            <if test="year!=null">
+                YEAR(project_date) = #{year,jdbcType=INTEGER}
+            </if>
+            <if test="projectName!=null">
+                and project_name like concat('%',#{projectName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
     </select>
     <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
         select DISTINCT YEAR(project_date)
