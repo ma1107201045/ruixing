@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,8 @@ public class DesignLiaisonEntity implements Serializable {
     private String bidder;
 
     private Integer railwayAdministrationId;
+
+    private TieLuJuEntity tieLuJuEntity;
 
     private Integer biddingId;
 

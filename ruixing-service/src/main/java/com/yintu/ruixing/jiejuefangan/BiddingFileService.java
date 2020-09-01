@@ -16,14 +16,16 @@ public interface BiddingFileService extends BaseService<BiddingFileEntity, Integ
     /**
      * @param biddingFileEntity 投招标文件实体类
      * @param auditorIds        审核人ids
+     * @param trueName          当前登录用户真实姓名
      */
-    void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds);
+    void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName);
 
     /**
      * @param biddingFileEntity 投招标文件实体类
      * @param auditorIds        审核人id
+     * @param trueName          当前登录用户真实姓名
      */
-    void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds);
+    void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName);
 
     /**
      * 批量删除
@@ -36,25 +38,21 @@ public interface BiddingFileService extends BaseService<BiddingFileEntity, Integ
     BiddingFileEntity findBiddingById(Integer id);
 
     /**
-     * @param year        年份
-     * @param projectName 项目名称
-     * @param type        文件类型
+     * @param biddingId 项目id
+     * @param name      文件名
+     * @param type      文件类型
+     * @param userId    当前登录人id
      * @return
      */
-    List<BiddingFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type);
+    List<BiddingFileEntity> findByBiddingIdAndNameAndType(Integer biddingId, String name, String type, Integer userId);
 
     /**
      * @param outputStream 输出流
      * @param ids          id 集合
+     * @param userId       当前登录人id
      * @throws IOException io异常
      */
-    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
+    void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException;
 
 
-    /**
-     * 审核人列表信息
-     *
-     * @return 审核人列表
-     */
-    List<UserEntity> findUserEntitiesBytTruename(String truename);
 }

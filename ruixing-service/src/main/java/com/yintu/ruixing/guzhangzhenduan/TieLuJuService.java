@@ -22,4 +22,6 @@ public interface TieLuJuService {
 
     //查询全部铁路局
     List<TieLuJuEntity> findAllTieLuJu();
+
+    TieLuJuEntity findByTljId(Long tljId);
 }

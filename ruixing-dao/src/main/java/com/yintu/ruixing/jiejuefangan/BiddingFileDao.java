@@ -3,6 +3,7 @@ package com.yintu.ruixing.jiejuefangan;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface BiddingFileDao {
     int deleteByPrimaryKey(Integer id);
@@ -17,6 +18,6 @@ public interface BiddingFileDao {
 
     int updateByPrimaryKey(BiddingFileEntity record);
 
-    List<BiddingFileEntity> selectByCondition(Integer year, String projectName, Integer[] ids, Short type);
+    List<BiddingFileEntity> selectByCondition(Integer biddingId, Integer[] ids, String name, Short type, Integer userId, Short releaseStatus);
 
 }

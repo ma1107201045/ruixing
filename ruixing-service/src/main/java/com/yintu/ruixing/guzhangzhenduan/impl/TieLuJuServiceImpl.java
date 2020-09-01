@@ -21,6 +21,7 @@ public class TieLuJuServiceImpl implements TieLuJuService {
 
     @Autowired
     private TieLuJuDao tieLuJuDao;
+
     @Override
     public TieLuJuEntity findTieLuJuById(Long tid) {
         return tieLuJuDao.findTieLuJuById(tid);
@@ -49,5 +50,10 @@ public class TieLuJuServiceImpl implements TieLuJuService {
     @Override
     public List<TieLuJuEntity> findAllTieLuJu() {
         return tieLuJuDao.findAllTieLuJu();
+    }
+
+    @Override
+    public TieLuJuEntity findByTljId(Long tljId) {
+        return tieLuJuDao.selectByTljId(tljId);
     }
 }

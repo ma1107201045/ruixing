@@ -82,7 +82,7 @@ public class PreSaleFileController extends SessionController {
                                                            @RequestParam(value = "file_name", required = false) String name,
                                                            @RequestParam(value = "type", required = false) String type) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findPreSaleIdAndNameAndType(preSaleId, name, type, this.getLoginUserId().intValue());
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileService.findByPreSaleIdAndNameAndType(preSaleId, name, type, this.getLoginUserId().intValue());
         PageInfo<PreSaleFileEntity> pageInfo = new PageInfo<>(preSaleFileEntities);
         return ResponseDataUtil.ok("查询售前技术支持文件信息列表成功", pageInfo);
     }
@@ -100,8 +100,8 @@ public class PreSaleFileController extends SessionController {
 
     @GetMapping("/auditors")
     @ResponseBody
-    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String truename) {
-        List<UserEntity> userEntities = userService.findByTruename(truename);
+    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
+        List<UserEntity> userEntities = userService.findByTruename(trueName);
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 

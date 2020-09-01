@@ -44,13 +44,13 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
 
 
     /**
-     * @param preSaleId 项目名称
+     * @param preSaleId 项目id
      * @param name      文件名称
      * @param type      文件类型
      * @param userId    当前登录人id
      * @return
      */
-    List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId);
+    List<PreSaleFileEntity> findByPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId);
 
     /**
      * @param outputStream 输出流

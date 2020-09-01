@@ -60,8 +60,8 @@ public class PreSaleServiceImpl implements PreSaleService {
         this.add(entity);
         //项目日志记录
         StringBuilder sb = new StringBuilder();
-        sb.append("   项目名称：").append(entity.getProjectName())
-                .append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
+        sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
+                .append("   项目名称：").append(entity.getProjectName())
                 .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
                 .append("   备注：").append(entity.getRemark());
@@ -108,7 +108,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 sb.append("   备注：").append(entity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), null);
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), null);
                 solutionLogEntity.setContext(sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
@@ -152,7 +152,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
-                Map<String,Object> map = JSONObject.parseObject(JSONObject.toJSON(preSaleEntity).toString(), Map.class);
+                Map<String, Object> map = JSONObject.parseObject(JSONObject.toJSON(preSaleEntity).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(map);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);

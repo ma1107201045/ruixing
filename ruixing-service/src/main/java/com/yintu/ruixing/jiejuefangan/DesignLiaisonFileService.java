@@ -17,14 +17,16 @@ public interface DesignLiaisonFileService extends BaseService<DesignLiaisonFileE
     /**
      * @param designLiaisonFileEntity 设计联络文件实体类
      * @param auditorIds              审核人ids
+     * @param trueName                当前登录用户真实姓名
      */
-    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds);
+    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName);
 
     /**
      * @param designLiaisonFileEntity 设计联络文件实体类
      * @param auditorIds              审核人ids
+     * @param trueName                当前登录用户真实姓名
      */
-    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds);
+    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName);
 
     /**
      * 批量删除
@@ -40,24 +42,21 @@ public interface DesignLiaisonFileService extends BaseService<DesignLiaisonFileE
     DesignLiaisonFileEntity findDesignLiaisonById(Integer id);
 
     /**
-     * @param year        年份
-     * @param projectName 项目名称
-     * @param type        文件类型
+     * @param designLiaisonId 项目id
+     * @param name            项目名称
+     * @param type            文件类型
+     * @param userId          当前登录人id
      * @return
      */
-    List<DesignLiaisonFileEntity> findByYearAndProjectNameAndType(Integer year, String projectName, String type);
+    List<DesignLiaisonFileEntity> findByDesignLiaisonIdIdAndNameAndType(Integer designLiaisonId, String name, String type, Integer userId);
 
     /**
      * @param outputStream 输出流
      * @param ids          id 集合
+     * @param userId       当前登录人id
      * @throws IOException io异常
      */
-    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
+    void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException;
 
-    /**
-     * 查询审核人
-     *
-     * @return 审核人列表
-     */
-    List<UserEntity> findUserEntitiesBytTruename(String truename);
+
 }

@@ -26,4 +26,7 @@ public interface TieLuJuDao {
     Long findTLJid(long parseLong);
 
     List<TieLuJuEntity> findAllTieLuJuByName(String tljName);
+
+    TieLuJuEntity selectByTljId(Long tljId);
+
 }

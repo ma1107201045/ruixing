@@ -87,10 +87,9 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         }
         //项目日志记录
         StringBuilder sb = new StringBuilder();
-        sb.append("   文件名：").append(preSaleFileEntity.getName())
-                .append("   文件路径：").append(preSaleFileEntity.getPath())
-                .append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误")
-                .append("   发布状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
+        sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误")
+                .append("   文件名称：").append(preSaleFileEntity.getName())
+                .append("   文件状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
         if (auditorIds != null && auditorIds.length > 0) {
             UserEntity userEntity = userService.findById(auditorIds[0].longValue());
             if (userEntity != null)
@@ -128,40 +127,34 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             //项目日志记录
             PreSaleFileEntity psfTarget = BeanUtil.compareFieldValues(psfSource, preSaleFileEntity, PreSaleFileEntity.class);
             StringBuilder sb = new StringBuilder();
+            if (psfTarget.getType() != null) {
+                sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误");
+            }
             if (psfTarget.getName() != null) {
                 sb.append("   文件名：").append(preSaleFileEntity.getName());
             }
-            if (psfTarget.getPath() != null) {
-                sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误");
-            }
             if (psfTarget.getReleaseStatus() != null) {
-                sb.append("   发布状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
+                sb.append("   文件状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-
             if (auditorIds != null && auditorIds.length == 0 && !psfaSources.isEmpty()) {
                 sb.append("   审核人：").append("   审核状态：");
             }
 
             if (auditorIds != null && auditorIds.length > 0) {
                 UserEntity userEntity = userService.findById(auditorIds[0].longValue());
-                if (psfaSources.isEmpty()) {
+                if (psfaSources.isEmpty() || !auditorIds[0].equals(psfaSources.get(0).getAuditorId())) {
                     sb.append("   审核人：").append(userEntity.getTrueName())
                             .append("   审核状态：").append("待审核");
                 } else {
-                    PreSaleFileAuditorEntity psfaTarget = BeanUtil.compareFieldValues(psfaSources.get(0), preSaleFileAuditorService.findByPreSaleFileId(auditorIds[0]).get(0), PreSaleFileAuditorEntity.class);
-                    if (psfaTarget.getAuditorId() != null) {
-                        sb.append("   审核人：").append(userEntity.getTrueName());
-                    }
-                    if (psfaTarget.getIsPass() != null) {
-                        sb.append("   审核状态：").append(psfaTarget.getIsPass() == 1 ? "待审核" : psfaTarget.getIsPass() == 2 ? "已审核未通过" : psfaTarget.getIsPass() == 3 ? "已审核未通过" : "错误");
-                    }
+//                    sb.append("   审核人：").append(userEntity.getTrueName())
+//                            .append("   审核状态：").append(psfaTarget.getIsPass() == 1 ? "待审核" : psfaTarget.getIsPass() == 2 ? "已审核未通过" : psfaTarget.getIsPass() == 3 ? "已审核未通过" : "错误");
                 }
             }
             if (psfTarget.getRemark() != null) {
                 sb.append("   备注：").append(preSaleFileEntity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, preSaleFileEntity.getId(), sb.toString());
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, psfSource.getId(), sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
         }
@@ -189,8 +182,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId) {
-        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+    public List<PreSaleFileEntity> findByPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId) {
+        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
     }
 
     @Override

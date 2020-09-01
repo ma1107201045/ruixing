@@ -1,14 +1,19 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonDao;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonService;
+import com.yintu.ruixing.jiejuefangan.SolutionLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author:mlf
@@ -19,6 +24,11 @@ import java.util.*;
 public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     @Autowired
     private DesignLiaisonDao designLiaisonDao;
+    @Autowired
+    private SolutionLogService solutionLogService;
+    @Autowired
+    private TieLuJuService tieLuJuService;
+
 
     @Override
     public void add(DesignLiaisonEntity entity) {
@@ -37,7 +47,11 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
 
     @Override
     public DesignLiaisonEntity findById(Integer id) {
-        return designLiaisonDao.selectByPrimaryKey(id);
+        DesignLiaisonEntity designLiaisonEntity = designLiaisonDao.selectByPrimaryKey(id);
+        if (designLiaisonEntity != null) {
+            designLiaisonEntity.setTieLuJuEntity(tieLuJuService.findTieLuJuById(designLiaisonEntity.getRailwayAdministrationId().longValue()));
+        }
+        return designLiaisonEntity;
     }
 
     @Override
@@ -46,8 +60,31 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     }
 
     @Override
+    public void add(DesignLiaisonEntity entity, String trueName) {
+        this.add(entity);
+    }
+
+    @Override
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
+    }
+
+    @Override
+    public void edit(DesignLiaisonEntity entity, String trueName) {
+        this.edit(entity);
+    }
+
+
+    @Override
     public List<DesignLiaisonEntity> findByYear(Integer year) {
         return designLiaisonDao.selectByYear(year);
+    }
+
+    @Override
+    public List<DesignLiaisonEntity> findByExample(Integer year, String projectName) {
+        return designLiaisonDao.selectByExample(year, projectName);
     }
 
     @Override
@@ -72,18 +109,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(designLiaisonEntity.getProjectName());
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", designLiaisonEntity.getId());
-                map.put("projectDate", designLiaisonEntity.getProjectDate());
-                map.put("projectName", designLiaisonEntity.getProjectName());
-                map.put("projectStatus", designLiaisonEntity.getProjectStatus());
-                map.put("taskStatus", designLiaisonEntity.getTaskStatus());
-                map.put("taskFinishStatus", designLiaisonEntity.getTaskFinishDate());
-                map.put("meetingStatus", designLiaisonEntity.getMeetingStatus());
-                map.put("changeStatus", designLiaisonEntity.getChangeStatus());
-                map.put("bidder", designLiaisonEntity.getBidder());
-                map.put("railwayAdministrationId", designLiaisonEntity.getRailwayAdministrationId());
-                map.put("biddingId", designLiaisonEntity.getBiddingId());
+                Map<String, Object> map = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(map);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);

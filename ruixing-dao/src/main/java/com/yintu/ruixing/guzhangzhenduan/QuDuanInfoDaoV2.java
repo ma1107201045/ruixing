@@ -22,6 +22,8 @@ public interface QuDuanInfoDaoV2 {
     List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
 
 
+    int isTableExist(String tableName);
+
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
     List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Date time, String tableName);
@@ -55,11 +57,11 @@ public interface QuDuanInfoDaoV2 {
     BigDecimal findOneQuDuanDatas(@Param("time") Long time, @Param("shuxingname") String shuxingname,
                                   @Param("quduanname") String quduanname, @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
-    List<quduanEntity> findQuDuanShiShiData( @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
-                                             @Param("qdid") Integer qdid,@Param("tableName") String tableName);
+    List<quduanEntity> findQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
+                                            @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
     List<quduanEntity> findDMHQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
-                                               @Param("qdid") Integer qdid,@Param("tableName") String tableName);
+                                               @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
     List<quduanEntity> findDMHQuDuanData(@Param("starttime") long starttime, @Param("endtime") long endtime,
                                          @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,

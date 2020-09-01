@@ -31,7 +31,7 @@ public class DesignLiaisonController extends SessionController implements BaseCo
     private DesignLiaisonService designLiaisonService;
 
     @Autowired
-    private DesignLiaisonFileService designLiaisonFileService;
+    private SolutionLogService solutionLogService;
 
     @Autowired
     private TieLuJuService tieLuJuService;
@@ -42,13 +42,18 @@ public class DesignLiaisonController extends SessionController implements BaseCo
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        designLiaisonService.add(entity);
+        designLiaisonService.add(entity, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加设计联络及后续技术交流信息成功");
     }
 
-    @DeleteMapping("/{id}")
-    public Map<String, Object> remove(@PathVariable Integer id) {
-        designLiaisonService.remove(id);
+    @Override
+    public Map<String, Object> remove(Integer id) {
+        return null;
+    }
+
+    @DeleteMapping("/{ids}")
+    public Map<String, Object> remove(@PathVariable Integer[] ids) {
+        designLiaisonService.remove(ids);
         return ResponseDataUtil.ok("删除设计联络及后续技术交流信息成功");
 
     }
@@ -57,7 +62,7 @@ public class DesignLiaisonController extends SessionController implements BaseCo
     public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonEntity entity) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        designLiaisonService.edit(entity);
+        designLiaisonService.edit(entity, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改设计联络及后续技术交流信息成功");
     }
 
@@ -74,22 +79,22 @@ public class DesignLiaisonController extends SessionController implements BaseCo
     }
 
     @GetMapping("/list")
-    public Map<String, Object> findAll() {
-        List<DesignLiaisonEntity> designLiaisonEntities = designLiaisonService.findAll();
-        return ResponseDataUtil.ok("查询设计联络及后续技术交流信息列表成功", designLiaisonEntities);
+    public Map<String, Object> findByExample(@RequestParam("page_number") Integer pageNumber,
+                                             @RequestParam("page_size") Integer pageSize,
+                                             @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
+                                             @RequestParam(value = "year", required = false) Integer year,
+                                             @RequestParam(value = "project_name", required = false) String projectName) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<DesignLiaisonEntity> designLiaisonEntities = designLiaisonService.findByExample(year, projectName);
+        PageInfo<DesignLiaisonEntity> pageInfo = new PageInfo<>(designLiaisonEntities);
+        return ResponseDataUtil.ok("查询设计联络及后续技术交流信息列表成功", pageInfo);
     }
 
-    @GetMapping("/search")
-    public Map<String, Object> findBySearch(@RequestParam("page_number") Integer pageNumber,
-                                            @RequestParam("page_size") Integer pageSize,
-                                            @RequestParam(value = "order_by", required = false, defaultValue = "dlf.id DESC") String orderBy,
-                                            @RequestParam(value = "year", required = false) Integer year,
-                                            @RequestParam(value = "project_name", required = false) String projectName,
-                                            @RequestParam(value = "type", required = false) String type) {
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<DesignLiaisonFileEntity> designLiaisonEntities = designLiaisonFileService.findByYearAndProjectNameAndType(year, projectName, type);
-        PageInfo<DesignLiaisonFileEntity> pageInfo = new PageInfo<>(designLiaisonEntities);
-        return ResponseDataUtil.ok("查询设计联络及后续技术交流信息以及文件信息列表成功", pageInfo);
+
+    @GetMapping("/{id}/log")
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 3, (short) 1, id, null));
+        return ResponseDataUtil.ok("查询设计联络及后续技术交流项目日志信息列表成功", solutionLogEntities);
     }
 
     @GetMapping("/tielujus")

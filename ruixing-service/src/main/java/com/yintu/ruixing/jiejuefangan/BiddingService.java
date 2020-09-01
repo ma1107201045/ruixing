@@ -15,12 +15,43 @@ public interface BiddingService extends BaseService<BiddingEntity, Integer> {
     List<BiddingEntity> findAll();
 
     /**
+     * 添加
+     *
+     * @param entity   项目实体类
+     * @param trueName 当前登录用户真实姓名
+     */
+    void add(BiddingEntity entity, String trueName);
+
+    /**
+     * 批量删除
+     *
+     * @param ids 项目id集
+     */
+    void remove(Integer[] ids);
+
+    /**
+     * 修改
+     *
+     * @param entity   项目实体类
+     * @param trueName 当前登录用户真实姓名
+     */
+    void edit(BiddingEntity entity, String trueName);
+
+    /**
      * 根据年份查询项目名称
      *
      * @param year 年份
      * @return 项目id  项目名称
      */
     List<BiddingEntity> findByYear(Integer year);
+
+
+    /**
+     * @param year        年份
+     * @param projectName 项目名称
+     * @return
+     */
+    List<BiddingEntity> findByExample(Integer year, String projectName);
 
 
     /**

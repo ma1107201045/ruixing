@@ -59,13 +59,20 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     }
 
     @Override
+    public boolean isTableExist(String tableName) {
+        return quDuanInfoDaoV2.isTableExist(tableName) > 0;
+    }
+
+    @Override
     public QuDuanInfoEntityV2 findFirstByCzId1(Integer czId, Integer qid) {
-        return quDuanInfoDaoV2.selectFirstByCzId1(czId, qid, StringUtil.getTableName(czId, new Date()));
+        String tableName = StringUtil.getTableName(czId, new Date());
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectFirstByCzId1(czId, qid, tableName) : new QuDuanInfoEntityV2();
     }
 
     @Override
     public List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Date time) {
-        return quDuanInfoDaoV2.selectByCzIdAndTime1(czId, time, StringUtil.getTableName(czId, new Date()));
+        String tableName = StringUtil.getTableName(czId, new Date());
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, time, tableName) : new ArrayList<>();
     }
 
 
