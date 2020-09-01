@@ -363,7 +363,8 @@
         where qi.v1 = qb.qdid
           and qb.quDuanYunYing_name = "${quduanname}"
           and qi.v1 = "${qdid}"
-          order by qi.createtime DESC limit 1
+        order by qi.createtime DESC
+        limit 1
     </select>
 
 
@@ -375,7 +376,8 @@
         where qi.v1 = qb.qdid
           and qb.quDuanYunYing_name = "${quduanname}"
           and qi.v1 = "${qdid}"
-          order by qi.createtime DESC limit 1
+        order by qi.createtime DESC
+        limit 1
     </select>
 
 
@@ -387,9 +389,8 @@
         where qi.v1 = qb.qdid
           and qb.quDuanYunYing_name = "${quduanname}"
           and qi.v1 = "${qdid}"
-          and qi.createtime="${time}"
+          and qi.createtime = "${time}"
     </select>
-
 
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
@@ -794,5 +795,11 @@
                 and FROM_UNIXTIME(qi.createtime)=#{time,jdbcType=TIMESTAMP}
             </if>
         </where>
+    </select>
+    <!--查询表是否存在-->
+    <select id="isTableExist" parameterType="string" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where table_name = #{tableName}
     </select>
 </mapper>

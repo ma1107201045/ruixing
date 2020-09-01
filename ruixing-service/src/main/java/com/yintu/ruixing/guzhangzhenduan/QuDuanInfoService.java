@@ -48,6 +48,14 @@ public interface QuDuanInfoService {
      */
     List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time);
 
+    /**
+     * 查询表是否存在
+     *
+     * @param tableName 表名称
+     * @return
+     */
+    boolean isTableExist(String tableName);
+
 
     /**
      * 车站下每个区段最新的一条
