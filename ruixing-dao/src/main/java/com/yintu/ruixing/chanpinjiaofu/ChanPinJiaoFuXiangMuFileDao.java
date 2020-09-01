@@ -1,7 +1,9 @@
 package com.yintu.ruixing.chanpinjiaofu;
 
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ChanPinJiaoFuXiangMuFileDao {
     int deleteByPrimaryKey(Integer id);
 
