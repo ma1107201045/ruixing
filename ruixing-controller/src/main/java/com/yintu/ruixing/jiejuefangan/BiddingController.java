@@ -86,7 +86,12 @@ public class BiddingController extends SessionController implements BaseControll
         PageInfo<BiddingEntity> pageInfo = new PageInfo<>(biddingEntities);
         return ResponseDataUtil.ok("查询投招标技术支持信息列表成功", pageInfo);
     }
-
+    @GetMapping("/{id}/log")
+    @ResponseBody
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 1, id, null));
+        return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
+    }
 
     @GetMapping("/tielujus")
     public Map<String, Object> findTieLuJus() {
@@ -94,11 +99,5 @@ public class BiddingController extends SessionController implements BaseControll
         return ResponseDataUtil.ok("查询铁路局列表信息成功", tieLuJuEntities);
     }
 
-    @GetMapping("/{id}/log")
-    @ResponseBody
-    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 1, id, null));
-        return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
-    }
 
 }

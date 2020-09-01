@@ -31,9 +31,6 @@ public class DesignLiaisonController extends SessionController implements BaseCo
     private DesignLiaisonService designLiaisonService;
 
     @Autowired
-    private DesignLiaisonFileService designLiaisonFileService;
-
-    @Autowired
     private SolutionLogService solutionLogService;
 
     @Autowired
@@ -93,16 +90,17 @@ public class DesignLiaisonController extends SessionController implements BaseCo
         return ResponseDataUtil.ok("查询设计联络及后续技术交流信息列表成功", pageInfo);
     }
 
-    @GetMapping("/tielujus")
-    public Map<String, Object> findTieLuJus() {
-        List<TieLuJuEntity> tieLuJuEntities = tieLuJuService.findAllTieLuJu();
-        return ResponseDataUtil.ok("查询铁路局列表信息成功", tieLuJuEntities);
-    }
 
     @GetMapping("/{id}/log")
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
         List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 3, (short) 1, id, null));
         return ResponseDataUtil.ok("查询设计联络及后续技术交流项目日志信息列表成功", solutionLogEntities);
+    }
+
+    @GetMapping("/tielujus")
+    public Map<String, Object> findTieLuJus() {
+        List<TieLuJuEntity> tieLuJuEntities = tieLuJuService.findAllTieLuJu();
+        return ResponseDataUtil.ok("查询铁路局列表信息成功", tieLuJuEntities);
     }
 
 

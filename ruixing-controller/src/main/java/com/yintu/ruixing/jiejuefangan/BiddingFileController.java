@@ -95,6 +95,13 @@ public class BiddingFileController extends SessionController {
         biddingFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
 
+    @GetMapping("/{id}/log")
+    @ResponseBody
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 1, id, null));
+        return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
+    }
+
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
@@ -102,11 +109,5 @@ public class BiddingFileController extends SessionController {
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
-    @GetMapping("/{id}/log")
-    @ResponseBody
-    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 1, id, null));
-        return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
-    }
 
 }
