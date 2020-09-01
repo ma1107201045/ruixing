@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuService;

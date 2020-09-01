@@ -198,7 +198,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         //excel标题
         String title = "售前技术支持列表";
         //excel表名
-        String[] headers = {"序号", "年份", "项目名称", "项目状态", "任务状态", "文件类型", "文件名称",};
+        String[] headers = {"序号", "年份", "项目名称", "任务状态", "项目状态", "文件类型", "文件名称", "文件状态", "审核状态", "备注"};
         //获取数据
         List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(null, ids, null, null, userId, (short) 2);
         preSaleFileEntities = preSaleFileEntities.stream()
@@ -208,18 +208,25 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         String[][] content = new String[preSaleFileEntities.size()][headers.length];
         for (int i = 0; i < preSaleFileEntities.size(); i++) {
             PreSaleFileEntity preSaleFileEntity = preSaleFileEntities.get(i);
+
+            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(preSaleFileEntity.getId());
+
             PreSaleEntity preSaleEntity = preSaleFileEntity.getPreSaleEntity();
             content[i][0] = preSaleFileEntity.getId().toString();
             content[i][1] = Integer.valueOf(preSaleEntity.getProjectDate().getYear() + 1900).toString();
             content[i][2] = preSaleEntity.getProjectName();
-            Short projectStatus = preSaleEntity.getProjectStatus();
-            content[i][3] = projectStatus.equals((short) 1) ? "未知" : projectStatus.equals((short) 2) ? "后续招标" : projectStatus.equals((short) 3) ? "确定采用" : projectStatus.equals((short) 4) ? "关闭" : "未知";
             Short taskStatus = preSaleEntity.getTaskStatus();
-            content[i][4] = taskStatus.equals((short) 1) ? "正在进行" : taskStatus.equals((short) 2) ? "已完成" : "正在进行";
+            content[i][3] = taskStatus.equals((short) 1) ? "正在进行" : taskStatus.equals((short) 2) ? "已完成" : "正在进行";
+            Short projectStatus = preSaleEntity.getProjectStatus();
+            content[i][4] = projectStatus.equals((short) 1) ? "未知" : projectStatus.equals((short) 2) ? "后续招标" : projectStatus.equals((short) 3) ? "确定采用" : projectStatus.equals((short) 4) ? "关闭" : "未知";
             Short type = preSaleFileEntity.getType();
             content[i][5] = type.equals((short) 1) ? "输入文件" : type.equals((short) 2) ? "输出文件" : "输入文件";
             content[i][6] = preSaleFileEntity.getName();
-
+            content[i][7] = preSaleFileEntity.getReleaseStatus().equals((short) 1) ? "录入" : preSaleFileEntity.getReleaseStatus().equals((short) 2) ? "发布" : "录入";
+            content[i][8] = preSaleFileAuditorEntities.isEmpty() ? "" : preSaleFileAuditorEntities.get(0).getIsPass().equals((short) 1) ? "待审核" :
+                    preSaleFileAuditorEntities.get(0).getIsPass().equals((short) 2) ? "已审核未通过" :
+                            preSaleFileAuditorEntities.get(0).getIsPass().equals((short) 3) ? "已审核已通过" : "";
+            content[i][9] = preSaleFileEntity.getRemark();
         }
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
