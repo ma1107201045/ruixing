@@ -1,19 +1,18 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
-import com.yintu.ruixing.jiejuefangan.BiddingDao;
-import com.yintu.ruixing.jiejuefangan.BiddingEntity;
-import com.yintu.ruixing.jiejuefangan.BiddingService;
-import com.yintu.ruixing.jiejuefangan.SolutionLogService;
+import com.yintu.ruixing.jiejuefangan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +50,12 @@ public class BiddingServiceImpl implements BiddingService {
 
     @Override
     public BiddingEntity findById(Integer id) {
-        return biddingDao.selectByPrimaryKey(id);
-        
+        BiddingEntity biddingEntity = biddingDao.selectByPrimaryKey(id);
+        if (biddingEntity != null) {
+            biddingEntity.setTieLuJuEntity(tieLuJuService.findByTljId(biddingEntity.getRailwayAdministrationId().longValue()));
+        }
+        return biddingEntity;
+
     }
 
     @Override
@@ -63,6 +66,17 @@ public class BiddingServiceImpl implements BiddingService {
     @Override
     public void add(BiddingEntity entity, String trueName) {
         this.add(entity);
+        //项目日志记录
+        StringBuilder sb = new StringBuilder();
+        sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
+                .append("   投标人：").append(entity.getBidder())
+                .append("   项目名称：").append(entity.getProjectName())
+                .append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName())
+                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
+                .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
+                .append("   备注：").append(entity.getRemark());
+        solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), sb.toString()));
+
         //投招标支持项目状态为3时发送消息
         if (entity.getProjectStatus().equals((short) 3)) {
             MessageEntity messageEntity = new MessageEntity();
@@ -84,6 +98,7 @@ public class BiddingServiceImpl implements BiddingService {
 
     @Override
     public void edit(BiddingEntity entity, String trueName) {
+
         this.edit(entity);
     }
 

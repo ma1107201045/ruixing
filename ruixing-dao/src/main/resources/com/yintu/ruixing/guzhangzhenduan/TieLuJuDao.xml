@@ -11,25 +11,35 @@
 
     <!--根据铁路局名字  查询对应的数据-->
     <select id="findAllTieLuJuByName" resultMap="tieluju">
-        select * from mro_tieluju where tlj_name=#{tljName}
+        select *
+        from mro_tieluju
+        where tlj_name = #{tljName}
     </select>
 
     <!--根据铁路局专用id  查询对应的id-->
     <select id="findTLJid" resultType="java.lang.Long">
-        select tid from mro_tieluju where tlj_id=#{parseLong}
+        select tid
+        from mro_tieluju
+        where tlj_id = #{parseLong}
+    </select>
+    <select id="selectByTljId" parameterType="java.lang.Long" resultMap="tieluju">
+        select *
+        from mro_tieluju
+        where tlj_id = #{tljId}
     </select>
 
     <!--根据id查询铁路局-->
     <select id="findTieLuJuById" parameterType="long" resultMap="tieluju">
-        select * from mro_tieluju where tid=#{tid}
+        select *
+        from mro_tieluju
+        where tid = #{tid}
     </select>
 
     <!--新增铁路局-->
     <insert id="addTieLuJU" parameterType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity" useGeneratedKeys="true" keyProperty="tid">
-		insert into mro_tieluju (tlj_name,tlj_id,tlj_miaoshu)
-		values
-		(#{tljName},#{tljId},#{tljMiaoShu})
-	</insert>
+        insert into mro_tieluju (tlj_name, tlj_id, tlj_miaoshu)
+        values (#{tljName}, #{tljId}, #{tljMiaoShu})
+    </insert>
     <!--通过id修改铁路局信息-->
     <update id="editTieLuJuById" parameterType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity">
         update mro_tieluju
@@ -45,24 +55,24 @@
     </update>
     <!--根据id删除铁路局-->
     <delete id="delTieLuJu" parameterType="long">
-		delete from mro_tieluju where tid=#{tid}
-	</delete>
+        delete
+        from mro_tieluju
+        where tid = #{tid}
+    </delete>
 
     <!--查询下级是否存在-->
     <select id="findId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT
-        dwd.tlj_dwd_id
-        FROM
-        mro_tieluju tlj,
-        mro_dianwuduan dwd
-        where
-        tlj.tid=dwd.tlj_dwd_id
-        and
-        tid=#{tid}
+        SELECT dwd.tlj_dwd_id
+        FROM mro_tieluju tlj,
+             mro_dianwuduan dwd
+        where tlj.tid = dwd.tlj_dwd_id
+          and tid = #{tid}
     </select>
 
     <!--查询所有的铁路局-->
     <select id="findAllTieLuJu" resultMap="tieluju">
-        select * from mro_tieluju
+        select *
+        from mro_tieluju
     </select>
+
 </mapper>

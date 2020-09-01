@@ -2,6 +2,7 @@ package com.yintu.ruixing.jiejuefangan.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonDao;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonService;
@@ -25,6 +26,9 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     private DesignLiaisonDao designLiaisonDao;
     @Autowired
     private SolutionLogService solutionLogService;
+    @Autowired
+    private TieLuJuService tieLuJuService;
+
 
     @Override
     public void add(DesignLiaisonEntity entity) {
@@ -43,7 +47,11 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
 
     @Override
     public DesignLiaisonEntity findById(Integer id) {
-        return designLiaisonDao.selectByPrimaryKey(id);
+        DesignLiaisonEntity designLiaisonEntity = designLiaisonDao.selectByPrimaryKey(id);
+        if (designLiaisonEntity != null) {
+            designLiaisonEntity.setTieLuJuEntity(tieLuJuService.findTieLuJuById(designLiaisonEntity.getRailwayAdministrationId().longValue()));
+        }
+        return designLiaisonEntity;
     }
 
     @Override
