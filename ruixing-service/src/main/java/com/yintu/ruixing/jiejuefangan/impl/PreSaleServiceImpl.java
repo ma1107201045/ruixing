@@ -62,8 +62,8 @@ public class PreSaleServiceImpl implements PreSaleService {
         StringBuilder sb = new StringBuilder();
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
                 .append("   项目名称：").append(entity.getProjectName())
-                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
+                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
                 .append("   备注：").append(entity.getRemark());
         solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), sb.toString()));
 
@@ -98,18 +98,17 @@ public class PreSaleServiceImpl implements PreSaleService {
             if (target.getProjectName() != null) {
                 sb.append("   项目名称：").append(entity.getProjectName());
             }
-            if (target.getProjectStatus() != null) {
-                sb.append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误");
-            }
             if (target.getTaskStatus() != null) {
                 sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");
+            }
+            if (target.getProjectStatus() != null) {
+                sb.append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误");
             }
             if (target.getRemark() != null) {
                 sb.append("   备注：").append(entity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), null);
-                solutionLogEntity.setContext(sb.toString());
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
         }

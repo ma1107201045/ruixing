@@ -73,7 +73,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
                     biddingFileAuditorEntity.setBiddingFileId(id);
                     biddingFileAuditorEntity.setAuditorId(auditorId);
-                    biddingFileAuditorEntity.setIsPass((short) 0);
+                    biddingFileAuditorEntity.setIsPass((short) 1);
                     biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                 }
             }

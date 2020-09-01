@@ -76,7 +76,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
                     designLiaisonFileAuditorEntity.setDesignLiaisonFileId(id);
                     designLiaisonFileAuditorEntity.setAuditorId(auditorId);
-                    designLiaisonFileAuditorEntity.setIsPass((short) 0);
+                    designLiaisonFileAuditorEntity.setIsPass((short) 1);
                     designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                 }
             }

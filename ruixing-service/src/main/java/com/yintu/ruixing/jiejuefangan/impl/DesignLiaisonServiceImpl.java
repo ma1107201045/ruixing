@@ -1,17 +1,17 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
-import com.yintu.ruixing.jiejuefangan.DesignLiaisonDao;
-import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
-import com.yintu.ruixing.jiejuefangan.DesignLiaisonService;
-import com.yintu.ruixing.jiejuefangan.SolutionLogService;
+import com.yintu.ruixing.jiejuefangan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +62,18 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     @Override
     public void add(DesignLiaisonEntity entity, String trueName) {
         this.add(entity);
+        //项目日志记录
+        StringBuilder sb = new StringBuilder();
+        sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
+                .append("   投标人：").append(entity.getBidder())
+                .append("   项目名称：").append(entity.getProjectName())
+                .append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName())
+                .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
+                .append("   会议状态：").append(entity.getMeetingStatus() == 1 ? "不召开会议" : entity.getProjectStatus() == 2 ? "尚未开会" : entity.getProjectStatus() == 3 ? "已召开设计联络会" : "错误")
+                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "待确认需求" : entity.getProjectStatus() == 2 ? "已确认部分需求" : entity.getProjectStatus() == 3 ? "已确认全部需求" : "错误")
+                .append("   变更状态：").append(entity.getChangeStatus() == 1 ? "无变更" : entity.getProjectStatus() == 2 ? "变更设计中" : entity.getProjectStatus() == 3 ? "变更已定型" : "错误")
+                .append("   备注：").append(entity.getRemark());
+        solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 1, entity.getId(), sb.toString()));
     }
 
     @Override
@@ -73,7 +85,41 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
 
     @Override
     public void edit(DesignLiaisonEntity entity, String trueName) {
-        this.edit(entity);
+        DesignLiaisonEntity source = this.findById(entity.getId());
+        if (source != null) {
+            this.edit(entity);
+            //项目日志记录
+            DesignLiaisonEntity target = BeanUtil.compareFieldValues(source, entity, DesignLiaisonEntity.class);
+            StringBuilder sb = new StringBuilder();
+            if (target.getBidder() != null) {
+                sb.append("   招标人：").append(entity.getBiddingId());
+            }
+            if (target.getProjectName() != null) {
+                sb.append("   项目名称：").append(entity.getProjectName());
+            }
+            if (target.getRailwayAdministrationId() != null) {
+                sb.append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName());
+            }
+            if (target.getTaskStatus() != null) {
+                sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");
+            }
+            if (target.getMeetingStatus() != null) {
+                sb.append("   会议状态：").append(entity.getMeetingStatus() == 1 ? "不召开会议" : entity.getProjectStatus() == 2 ? "尚未开会" : entity.getProjectStatus() == 3 ? "已召开设计联络会" : "错误");
+            }
+            if (target.getProjectStatus() != null) {
+                sb.append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误");
+            }
+            if (target.getChangeStatus() != null) {
+                sb.append("   变更状态：").append(entity.getChangeStatus() == 1 ? "无变更" : entity.getProjectStatus() == 2 ? "变更设计中" : entity.getProjectStatus() == 3 ? "变更已定型" : "错误");
+            }
+            if (target.getRemark() != null) {
+                sb.append("   备注：").append(entity.getRemark());
+            }
+            if (!"".equals(sb.toString())) {
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), sb.toString());
+                solutionLogService.add(solutionLogEntity);
+            }
+        }
     }
 
 

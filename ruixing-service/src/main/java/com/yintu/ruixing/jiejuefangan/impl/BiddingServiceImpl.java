@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -72,10 +73,10 @@ public class BiddingServiceImpl implements BiddingService {
                 .append("   投标人：").append(entity.getBidder())
                 .append("   项目名称：").append(entity.getProjectName())
                 .append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName())
-                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "未知" : entity.getProjectStatus() == 2 ? "后续招标" : entity.getProjectStatus() == 3 ? "确定采用" : entity.getProjectStatus() == 4 ? "关闭" : "错误")
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
+                .append("   项目状态：").append(entity.getProjectStatus() == 1 ? "正在投标" : entity.getProjectStatus() == 2 ? "未中标" : entity.getProjectStatus() == 3 ? "已中标" : entity.getProjectStatus() == 4 ? "流标再投" : "错误")
                 .append("   备注：").append(entity.getRemark());
-        solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), sb.toString()));
+        solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 2, (short) 1, entity.getId(), sb.toString()));
 
         //投招标支持项目状态为3时发送消息
         if (entity.getProjectStatus().equals((short) 3)) {
@@ -98,8 +99,35 @@ public class BiddingServiceImpl implements BiddingService {
 
     @Override
     public void edit(BiddingEntity entity, String trueName) {
-
-        this.edit(entity);
+        BiddingEntity source = this.findById(entity.getId());
+        if (source != null) {
+            this.edit(entity);
+            //项目日志记录
+            BiddingEntity target = BeanUtil.compareFieldValues(source, entity, BiddingEntity.class);
+            StringBuilder sb = new StringBuilder();
+            if (target.getBidder() != null) {
+                sb.append("   投标人：").append(entity.getBidder());
+            }
+            if (target.getProjectName() != null) {
+                sb.append("   项目名称：").append(entity.getProjectName());
+            }
+            if (target.getRailwayAdministrationId() != null) {
+                sb.append("   所属路局：").append(tieLuJuService.findTieLuJuById(entity.getRailwayAdministrationId().longValue()).getTljName());
+            }
+            if (target.getTaskStatus() != null) {
+                sb.append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误");
+            }
+            if (target.getProjectStatus() != null) {
+                sb.append("   项目状态：").append(entity.getProjectStatus() == 1 ? "正在投标" : entity.getProjectStatus() == 2 ? "未中标" : entity.getProjectStatus() == 3 ? "已中标" : entity.getProjectStatus() == 4 ? "流标再投" : "错误");
+            }
+            if (target.getRemark() != null) {
+                sb.append("   备注：").append(entity.getRemark());
+            }
+            if (!"".equals(sb.toString())) {
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 2, (short) 1, source.getId(), sb.toString());
+                solutionLogService.add(solutionLogEntity);
+            }
+        }
     }
 
     @Override
