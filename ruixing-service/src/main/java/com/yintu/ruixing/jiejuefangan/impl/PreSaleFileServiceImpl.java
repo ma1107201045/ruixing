@@ -154,7 +154,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 sb.append("   备注：").append(preSaleFileEntity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, preSaleFileEntity.getId(), sb.toString());
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, psfSource.getId(), sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
         }
@@ -183,7 +183,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
 
     @Override
     public List<PreSaleFileEntity> findPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId) {
-        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
     }
 
     @Override

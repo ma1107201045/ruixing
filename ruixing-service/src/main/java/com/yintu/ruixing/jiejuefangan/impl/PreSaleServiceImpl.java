@@ -108,7 +108,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 sb.append("   备注：").append(entity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, entity.getId(), null);
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), null);
                 solutionLogEntity.setContext(sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
