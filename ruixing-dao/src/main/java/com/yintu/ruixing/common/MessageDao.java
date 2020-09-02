@@ -1,9 +1,10 @@
 package com.yintu.ruixing.common;
 
-import com.yintu.ruixing.common.MessageEntity;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface MessageDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -19,7 +20,7 @@ public interface MessageDao {
 
     int updateByPrimaryKey(MessageEntity record);
 
-    List<MessageEntity> selectByTypeAndStatus(Short type, Short status);
+    List<MessageEntity> selectByTypeAndStatus(Short type, Integer loginUserId, Short status);
 
     List<MessageEntity> findXiaoXi();
 }

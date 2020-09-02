@@ -1,6 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
@@ -81,7 +82,26 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             }
             if (preSaleFileAuditorEntities.size() > 0) {
                 preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
-
+                //给审核人发消息
+                PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
+                if (preSaleEntity != null) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(preSaleFileEntity.getCreateBy());
+                    messageEntity.setCreateTime(preSaleFileEntity.getCreateTime());
+                    messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                    messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                    messageEntity.setFileId(preSaleFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
             }
 
         }

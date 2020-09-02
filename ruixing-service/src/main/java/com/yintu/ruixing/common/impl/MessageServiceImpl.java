@@ -45,9 +45,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntity> findByTypeAndStatus(Short type, Short Status) {
-        return messageDao.selectByTypeAndStatus(type, Status);
+    public List<MessageEntity> findByTypeAndStatus(Short type, Integer loginUserId, Short Status) {
+        return messageDao.selectByTypeAndStatus(type, loginUserId, Status);
     }
+
 
     @Override
     public void changeStatus(Integer id) {

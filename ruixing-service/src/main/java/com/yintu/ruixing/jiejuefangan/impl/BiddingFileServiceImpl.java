@@ -1,5 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -36,6 +38,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     private SolutionLogService solutionLogService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public void add(BiddingFileEntity entity) {
@@ -74,8 +78,29 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                 }
             }
-            if (biddingFileAuditorEntities.size() > 0)
+            if (biddingFileAuditorEntities.size() > 0) {
                 biddingFileAuditorService.addMuch(biddingFileAuditorEntities);
+                //给审核人发消息
+                BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
+                if (biddingEntity != null) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(biddingFileEntity.getCreateBy());
+                    messageEntity.setCreateTime(biddingFileEntity.getCreateTime());
+                    messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
+                    messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 2);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(biddingFileEntity.getBiddingId());
+                    messageEntity.setFileId(biddingFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
+            }
         }
 
         //项目日志记录

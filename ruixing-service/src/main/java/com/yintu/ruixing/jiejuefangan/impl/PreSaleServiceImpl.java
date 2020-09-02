@@ -70,11 +70,16 @@ public class PreSaleServiceImpl implements PreSaleService {
         //售后技术支持项目状态为3时发送消息
         if (entity.getProjectStatus() == 3) {
             MessageEntity messageEntity = new MessageEntity();
-            messageEntity.setTitle("");
+            messageEntity.setCreateBy(entity.getCreateBy());
+            messageEntity.setCreateTime(entity.getCreateTime());
+            messageEntity.setModifiedBy(entity.getModifiedBy());
+            messageEntity.setModifiedTime(entity.getModifiedTime());
+            messageEntity.setTitle("项目");
             messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
             messageEntity.setType((short) 1);
             messageEntity.setSmallType((short) 1);
             messageEntity.setMessageType((short) 1);
+            messageEntity.setProjectId(entity.getId());
             messageEntity.setStatus((short) 1);
             messageService.sendMessage(messageEntity);
         }

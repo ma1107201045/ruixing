@@ -1,5 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -37,6 +39,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     private SolutionLogService solutionLogService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public void add(DesignLiaisonFileEntity entity) {
@@ -76,8 +80,28 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                 }
             }
-            if (designLiaisonFileAuditorEntities.size() > 0)
+            if (designLiaisonFileAuditorEntities.size() > 0) {
                 designLiaisonFileAuditorService.addMuch(designLiaisonFileAuditorEntities);
+                DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());
+                if (designLiaisonEntity != null) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(designLiaisonFileEntity.getCreateBy());
+                    messageEntity.setCreateTime(designLiaisonFileEntity.getCreateTime());
+                    messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                    messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 2);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                    messageEntity.setFileId(designLiaisonFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(designLiaisonFileAuditorEntities.get(0).getAuditorId());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
+            }
         }
         //项目日志记录
         StringBuilder sb = new StringBuilder();

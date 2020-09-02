@@ -18,7 +18,7 @@ public interface MessageService extends BaseService<MessageEntity, Integer> {
      * @param Status 状态
      * @return 消息集
      */
-    List<MessageEntity> findByTypeAndStatus(Short type, Short Status);
+    List<MessageEntity> findByTypeAndStatus(Short type, Integer loginUserId, Short Status);
 
     /**
      * 从未读消息改为已读消息

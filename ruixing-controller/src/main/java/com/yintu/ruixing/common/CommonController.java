@@ -6,7 +6,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.enumobject.EnumAuthType;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.common.util.*;
+import com.yintu.ruixing.common.util.FileUploadUtil;
+import com.yintu.ruixing.common.util.FileUtil;
+import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +131,7 @@ public class CommonController extends SessionController {
                                                @RequestParam(value = "type", required = false) Short type,
                                                @RequestParam(value = "status", required = false) Short status) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<MessageEntity> messageEntities = messageService.findByTypeAndStatus(type, status);
+        List<MessageEntity> messageEntities = messageService.findByTypeAndStatus(type, this.getLoginUserId().intValue(), status);
         PageInfo<MessageEntity> pageInfo = new PageInfo<>(messageEntities);
         return ResponseDataUtil.ok("查询消息信息列表成功", pageInfo);
     }
