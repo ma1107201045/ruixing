@@ -214,6 +214,7 @@ public class DataStatsServiceImpl implements DataStatsService {
     @Override
     public void addCheZhan(CheZhanEntity cheZhan) {
         cheZhan.setCzState(0);
+        cheZhan.setPublicMessage(0);
         cheZhan.setCzdmhState(0);
         cheZhan.setCzLianJieType(0);
         cheZhan.setCzStutrs(0);

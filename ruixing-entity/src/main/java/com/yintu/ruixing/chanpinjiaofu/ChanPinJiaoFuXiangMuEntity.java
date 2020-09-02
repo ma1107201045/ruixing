@@ -46,6 +46,7 @@ public class ChanPinJiaoFuXiangMuEntity {
     private Date createTime;
     private Date updateTime;
     private String operatorName;
+    private String remarks;
 
     //private ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity;
 }

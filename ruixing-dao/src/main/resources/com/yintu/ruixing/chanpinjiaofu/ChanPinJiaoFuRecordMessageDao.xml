@@ -23,6 +23,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+    <!--根据文件id 查看更新历史记录-->
+    <select id="findFileReordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_recordmessage
+        where typeId = #{id,jdbcType=INTEGER}
+        and typeNum=2
+    </select>
 
     <!--根据项目id 查看更新历史记录-->
     <select id="findReordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">

@@ -27,4 +27,6 @@ public interface ChanPinJiaoFuRecordMessageDao {
                           @Param("nowTime") Date nowTime,@Param("username") String username,@Param("context") String context);
 
     List<ChanPinJiaoFuRecordMessageEntity> findReordById(Integer id);
+
+    List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id);
 }
