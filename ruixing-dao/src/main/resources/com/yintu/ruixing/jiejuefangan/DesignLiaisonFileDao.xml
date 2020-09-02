@@ -249,7 +249,7 @@
         <include refid="Connect_Column_List"/>
         from mro_design_liaison_file dlf
         inner join mro_design_liaison dl on dlf.design_liaison_id=dl.id
-        inner join mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
+        left outer join  mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
         <include refid="Connect_condition_List"/>
     </select>
 </mapper>

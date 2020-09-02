@@ -201,7 +201,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
 
     @Override
     public List<DesignLiaisonFileEntity> findByDesignLiaisonIdIdAndNameAndType(Integer designLiaisonId, String name, String type, Integer userId) {
-        return designLiaisonFileDao.selectByCondition(designLiaisonId, null, name, type == null ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        return designLiaisonFileDao.selectByCondition(designLiaisonId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
     }
 
     @Override
