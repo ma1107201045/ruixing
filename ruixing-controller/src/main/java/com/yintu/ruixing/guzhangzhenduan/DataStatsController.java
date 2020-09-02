@@ -381,7 +381,7 @@ public class DataStatsController {
                         System.out.println("11112"+Integer.valueOf(strings[12]).getClass().getTypeName());
                         System.out.println("11113"+Integer.valueOf(strings[13]).getClass().getTypeName());
                         System.out.println("11114"+Integer.valueOf(strings[14]).getClass().getTypeName());*/
-                        if (Integer.valueOf(strings[0]).getClass().getTypeName().equals("java.lang.Integer")
+                        /*if (Integer.valueOf(strings[0]).getClass().getTypeName().equals("java.lang.Integer")
                                 && strings[1].getClass().getTypeName().equals("java.lang.String")
                                 && Integer.valueOf(strings[2]).getClass().getTypeName().equals("java.lang.Integer")
                                 && strings[3].getClass().getTypeName().equals("java.lang.String")
@@ -396,7 +396,10 @@ public class DataStatsController {
                             datas.add(strings1);
                         } else {
                             return ResponseDataUtil.error("请选择正确的Excel数据");
-                        }
+                        }*/
+
+                        String[] strings1 = strings;
+                        datas.add(strings1);
                     }
                 }
             }
