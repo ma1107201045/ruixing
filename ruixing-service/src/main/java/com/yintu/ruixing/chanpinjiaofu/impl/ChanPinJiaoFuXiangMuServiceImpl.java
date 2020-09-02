@@ -138,22 +138,25 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
 
     @Override
     public void deletXiangMuFileByIds(Integer[] ids) {
-        chanPinJiaoFuXiangMuDao.deletXiangMuFileByIds(ids);
+        for (int i = 0; i < ids.length; i++) {
+            chanPinJiaoFuXiangMuFileDao.deleteByPrimaryKey(ids[i]);
+        }
     }
 
     @Override
     public void deletXiangMuFileById(Integer id) {
-        chanPinJiaoFuXiangMuDao.deletXiangMuFileById(id);
+        chanPinJiaoFuXiangMuFileDao.deleteByPrimaryKey(id);
     }
 
     @Override
     public ChanPinJiaoFuXiangMuFileEntity findById(Integer id) {
-        return chanPinJiaoFuXiangMuDao.findById(id);
+        return chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
     }
 
     @Override
-    public void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids,Integer uId,String username) {
-        ChanPinJiaoFuXiangMuFileEntity fileEntity=chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+    public void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uId, String username) {
+        ChanPinJiaoFuXiangMuFileEntity fileEntity = chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+        StringBuilder sb = new StringBuilder();
         //删除中间表的审查人id
         chanPinJiaoFuXiangMuDao.deletAuditor(id);
         //添加审查人
@@ -164,11 +167,47 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
         }
         chanPinJiaoFuXiangMuFileEntity.setUid(uId);
-        chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
         Date nowTime = new Date();
         chanPinJiaoFuXiangMuFileEntity.setUpdatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setUpdatename(username);
-
+        chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
+        if (!fileEntity.getFileName().equals(chanPinJiaoFuXiangMuFileEntity.getFileName())) {
+            sb.append("文件名改为" + chanPinJiaoFuXiangMuFileEntity.getFileName());
+        }
+        if (fileEntity.getAuditorState() != chanPinJiaoFuXiangMuFileEntity.getAuditorState()) {
+            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 1) {
+                sb.append("文件审核状态更改为  待审核  ");
+            }
+            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 2) {
+                sb.append("文件审核状态更改为  已审核未通过 ");
+            }
+            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 3) {
+                sb.append("文件审核状态更改为  已审核已通过");
+            }
+        }
+        if (fileEntity.getFileType() != chanPinJiaoFuXiangMuFileEntity.getFileType()) {
+            if (chanPinJiaoFuXiangMuFileEntity.getFileType() == 1) {
+                sb.append("文件类型更改为  输入文件 ");
+            }
+            if (chanPinJiaoFuXiangMuFileEntity.getFileType() == 2) {
+                sb.append("文件类型更改为  输出文件 ");
+            }
+        }
+        if (fileEntity.getFabuType() != chanPinJiaoFuXiangMuFileEntity.getFabuType()) {
+            if (chanPinJiaoFuXiangMuFileEntity.getFabuType() == 1) {
+                sb.append("发布状态更改为  录入 ");
+            }
+            if (chanPinJiaoFuXiangMuFileEntity.getFabuType() == 2) {
+                sb.append("发布状态更改为  发布 ");
+            }
+        }
+        else {
+            sb.append("没有修改任何状态");
+        }
+        Integer typenum = 2;
+        Integer mid = id;
+        String context = sb.toString();
+        chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);
     }
 
     @Override
@@ -176,13 +215,14 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         Date nowTime = new Date();
         chanPinJiaoFuXiangMuFileEntity.setCreatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setCreatename(username);
+        chanPinJiaoFuXiangMuFileEntity.setUid(uId);
+        chanPinJiaoFuXiangMuFileEntity.setAuditorState(1);
         String fileName = chanPinJiaoFuXiangMuFileEntity.getFileName();
+        chanPinJiaoFuXiangMuFileDao.insertSelective(chanPinJiaoFuXiangMuFileEntity);
         Integer mid = chanPinJiaoFuXiangMuFileEntity.getId();
         Integer typenum = 2;
-        String context = "新增" + fileName + "文件";
+        String context = "新增“" + fileName + "”文件";
         chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);
-        chanPinJiaoFuXiangMuFileEntity.setUid(uId);
-        chanPinJiaoFuXiangMuFileDao.insertSelective(chanPinJiaoFuXiangMuFileEntity);
         Integer xid = chanPinJiaoFuXiangMuFileEntity.getId();
         for (Integer uid : uids) {
             ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
@@ -198,6 +238,11 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
+    public List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id) {
+        return chanPinJiaoFuXiangMuFileDao.findFile(id);
+    }
+
+    @Override
     public void deletXiagMuById(Integer id) {
         chanPinJiaoFuXiangMuDao.deletXiagMuById(id);
     }
@@ -208,6 +253,21 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
+    public List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size) {
+        return chanPinJiaoFuXiangMuFileDao.findShuChuFile(xmid);
+    }
+
+    @Override
+    public List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size) {
+        return chanPinJiaoFuXiangMuFileDao.findShuRuFile(xmid);
+    }
+
+    @Override
+    public List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename) {
+        return chanPinJiaoFuXiangMuFileDao.findFileBySomething(xmid, filetype, filename);
+    }
+
+    @Override
     public void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id) {
         StringBuilder sb = new StringBuilder();
         Date nowTime = new Date();
@@ -215,8 +275,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuEntity.setOperatorName(username);
         Integer typenum = 1;
         Integer mid = id;
-        chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
         ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
+        chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
         if (xiangMuEntity.getXiangmuState() != chanPinJiaoFuXiangMuEntity.getXiangmuState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1) {
                 sb.append(" 项目状态改为“正在执行”");
@@ -229,7 +289,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             }
         }
         if (!xiangMuEntity.getXiangmuName().equals(chanPinJiaoFuXiangMuEntity.getXiangmuName())) {
-            sb.append(" 项目名改为" + chanPinJiaoFuXiangMuEntity.getXiangmuName());
+            String xiangmuName = chanPinJiaoFuXiangMuEntity.getXiangmuName();
+            sb.append(" 项目名改为" + xiangmuName);
         }
         if (xiangMuEntity.getXiaoshouState() != chanPinJiaoFuXiangMuEntity.getXiaoshouState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiaoshouState() == 1) {
@@ -308,6 +369,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         }
         if (xiangMuEntity.getFahuoTixingTime() != null && xiangMuEntity.getFahuoTixingTime().getTime() != chanPinJiaoFuXiangMuEntity.getFahuoTixingTime().getTime()) {
             sb.append("发货时间改为" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime());
+        } else {
+            sb.append("没有修改任何状态");
         }
         String context = sb.toString();
         chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);
@@ -319,10 +382,10 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuEntity.setCreateTime(nowTime);
         chanPinJiaoFuXiangMuEntity.setOperatorName(username);
         String xiangmuName = chanPinJiaoFuXiangMuEntity.getXiangmuName();
-        Integer mid = chanPinJiaoFuXiangMuEntity.getId();
         Integer typenum = 1;
-        String context = "新增" + xiangmuName + "项目";
+        String context = "新增“" + xiangmuName + "”项目";
         chanPinJiaoFuXiangMuDao.addXiangMu(chanPinJiaoFuXiangMuEntity);
+        Integer mid = chanPinJiaoFuXiangMuEntity.getId();
         chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);
     }
 

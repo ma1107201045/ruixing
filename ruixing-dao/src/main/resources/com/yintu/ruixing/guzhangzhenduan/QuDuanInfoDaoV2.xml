@@ -311,7 +311,7 @@
                da.v39_sc2    FBJ_collection_bei
         FROM ${tableName} da
         WHERE da.v1 IN (SELECT qdid FROM mro_quduan_base WHERE cz_id = #{czid} AND line = '电码化')
-          AND da.createtime = (SELECT max(createtime) createtime FROM data_applydata WHERE station_id = #{czid})
+          AND da.createtime = (SELECT max(createtime) createtime FROM ${tableName} WHERE station_id = #{czid})
     </select>
 
 

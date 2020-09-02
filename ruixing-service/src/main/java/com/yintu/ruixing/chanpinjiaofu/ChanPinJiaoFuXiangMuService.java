@@ -55,4 +55,12 @@ public interface ChanPinJiaoFuXiangMuService {
     void editXiaoXiById(MessageEntity messageEntity);
 
     List<ChanPinJiaoFuRecordMessageEntity> findReordById(Integer id);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid,Integer page, Integer size, Integer filetype, String filename);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 }
