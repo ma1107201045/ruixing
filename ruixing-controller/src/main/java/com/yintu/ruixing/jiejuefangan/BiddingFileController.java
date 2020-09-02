@@ -99,7 +99,7 @@ public class BiddingFileController extends SessionController {
     @GetMapping("/{id}/log")
     @ResponseBody
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 1, id, null));
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 2, (short) 2, id, null));
         return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
     }
 
