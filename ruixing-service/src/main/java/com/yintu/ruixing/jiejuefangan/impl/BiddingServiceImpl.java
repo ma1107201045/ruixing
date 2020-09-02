@@ -85,6 +85,7 @@ public class BiddingServiceImpl implements BiddingService {
             messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
             messageEntity.setType((short) 1);
             messageEntity.setSmallType((short) 1);
+            messageEntity.setMessageType((short) 1);
             messageEntity.setStatus((short) 1);
             messageService.sendMessage(messageEntity);
         }
