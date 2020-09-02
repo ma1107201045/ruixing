@@ -95,7 +95,7 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity">
         insert into mro_bidding_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            bidding_file_id,auditor_id, is_pass,
+            bidding_file_id,auditor_id, is_pass,reason
         </trim>
         values
         <foreach collection="list" item="biddingFileAuditorEntity" index="index" separator=",">
@@ -103,6 +103,7 @@
                 #{biddingFileAuditorEntity.biddingFileId,jdbcType=INTEGER},
                 #{biddingFileAuditorEntity.auditorId,jdbcType=INTEGER},
                 #{biddingFileAuditorEntity.isPass,jdbcType=SMALLINT},
+                #{biddingFileAuditorEntity.reason,jdbcType=VARCHAR},
             </trim>
         </foreach>
     </insert>

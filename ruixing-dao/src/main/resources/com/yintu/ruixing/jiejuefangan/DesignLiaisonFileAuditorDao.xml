@@ -91,4 +91,32 @@
             reason                 = #{reason,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
+        insert into mro_design_liaison_file_auditor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            design_liaison_file_id,auditor_id, is_pass,reason
+        </trim>
+        values
+        <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">
+            <trim prefix=" (" suffix=")" suffixOverrides=",">
+                #{designLiaisonFileAuditorEntity.designLiaisonFileId,jdbcType=INTEGER},
+                #{designLiaisonFileAuditorEntity.auditorId,jdbcType=INTEGER},
+                #{designLiaisonFileAuditorEntity.isPass,jdbcType=SMALLINT},
+                #{designLiaisonFileAuditorEntity.reason,jdbcType=VARCHAR},
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteByDesignLiaisonFileId" parameterType="java.lang.Integer">
+        delete
+        from mro_design_liaison_file_auditor
+        where design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER}
+    </delete>
+    <select id="selectByDesignLiaisonFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison_file_auditor
+        where design_liaison_file_id = #{design_liaison_file_id,jdbcType=INTEGER}
+    </select>
 </mapper>

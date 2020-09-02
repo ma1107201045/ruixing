@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,8 +38,13 @@ public class DesignLiaisonFileController extends SessionController {
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated DesignLiaisonFileEntity designLiaisonFileEntity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
-        designLiaisonFileService.add(designLiaisonFileEntity, auditorIds, this.getLoginTrueName());
+    public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
+        entity.setUserId(this.getLoginUserId().intValue());
+        designLiaisonFileService.add(entity, auditorIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加设计联络及后续技术交流文件信息成功");
     }
 

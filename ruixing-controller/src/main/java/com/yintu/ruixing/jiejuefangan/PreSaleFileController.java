@@ -107,6 +107,7 @@ public class PreSaleFileController extends SessionController {
                 .stream()
                 .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
                 .collect(Collectors.toList());
+
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 

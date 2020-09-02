@@ -94,7 +94,7 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
         insert into mro_pre_sale_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            pre_sale_file_id,auditor_id, is_pass,
+            pre_sale_file_id,auditor_id, is_pass,reason
         </trim>
         values
         <foreach collection="list" item="preSaleFileAuditorEntity" index="index" separator=",">
@@ -102,6 +102,7 @@
                 #{preSaleFileAuditorEntity.preSaleFileId,jdbcType=INTEGER},
                 #{preSaleFileAuditorEntity.auditorId,jdbcType=INTEGER},
                 #{preSaleFileAuditorEntity.isPass,jdbcType=SMALLINT},
+                #{preSaleFileAuditorEntity.reason,jdbcType=VARCHAR},
             </trim>
         </foreach>
     </insert>
