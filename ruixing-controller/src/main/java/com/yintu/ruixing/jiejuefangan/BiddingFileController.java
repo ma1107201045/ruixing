@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 投招标文件技术支持
@@ -107,6 +108,10 @@ public class BiddingFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
         List<UserEntity> userEntities = userService.findByTruename(trueName);
+        userEntities = userEntities
+                .stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 设计联络以及后续文件技术交流
@@ -29,6 +31,8 @@ public class DesignLiaisonFileController extends SessionController {
     private DesignLiaisonFileService designLiaisonFileService;
     @Autowired
     private SolutionLogService solutionLogService;
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping
@@ -90,6 +94,17 @@ public class DesignLiaisonFileController extends SessionController {
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
         List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 3, (short) 2, id, null));
         return ResponseDataUtil.ok("查询设计联络及后续技术交流文件日志信息列表成功", solutionLogEntities);
+    }
+
+    @GetMapping("/auditors")
+    @ResponseBody
+    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
+        List<UserEntity> userEntities = userService.findByTruename(trueName);
+        userEntities = userEntities
+                .stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
 
