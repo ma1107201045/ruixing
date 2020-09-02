@@ -1,6 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -28,17 +29,16 @@ import java.util.stream.Collectors;
 public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Autowired
     private PreSaleFileDao preSaleFileDao;
-
     @Autowired
     private PreSaleService preSaleService;
-
     @Autowired
     private PreSaleFileAuditorService preSaleFileAuditorService;
     @Autowired
     private SolutionLogService solutionLogService;
-
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageService messageService;
 
 
     @Override
@@ -85,6 +85,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             }
 
         }
+
         //项目日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误")

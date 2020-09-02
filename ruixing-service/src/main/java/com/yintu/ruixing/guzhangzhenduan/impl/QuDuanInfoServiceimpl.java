@@ -40,7 +40,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
     @Override
     public QuDuanInfoEntityV2 findLastBycZId(Integer czId) {
-        return quDuanInfoDaoV2.selectLastByCzId(czId, StringUtil.getTableName(czId, new Date()));
+        String tableName = StringUtil.getTableName(czId, new Date());
+        return quDuanInfoDaoV2.selectLastByCzId(czId, tableName);
     }
 
     @Override
@@ -50,12 +51,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
     @Override
     public List<QuDuanInfoEntityV2> findByCzIdAndTime(Integer czId, Date time) {
-        return quDuanInfoDaoV2.selectByCzId(czId, time, StringUtil.getTableName(czId, time));
+        String tableName = StringUtil.getTableName(czId, time);
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzId(czId, time, tableName) : new ArrayList<>();
     }
 
     @Override
     public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
-        return quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, time, StringUtil.getTableName(czId, time));
+        String tableName = StringUtil.getTableName(czId, time);
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, time, tableName) : new ArrayList<>();
     }
 
     @Override
