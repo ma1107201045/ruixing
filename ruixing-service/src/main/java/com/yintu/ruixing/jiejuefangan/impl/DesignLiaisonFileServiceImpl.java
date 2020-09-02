@@ -172,7 +172,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 sb.append("   备注：").append(designLiaisonFileEntity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 2, (short) 2, dlfSource.getId(), sb.toString());
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 2, dlfSource.getId(), sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
         }

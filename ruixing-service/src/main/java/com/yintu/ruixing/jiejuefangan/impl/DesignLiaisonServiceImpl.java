@@ -116,7 +116,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 sb.append("   备注：").append(entity.getRemark());
             }
             if (!"".equals(sb.toString())) {
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 1, source.getId(), sb.toString());
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 1, source.getId(), sb.toString());
                 solutionLogService.add(solutionLogEntity);
             }
         }
