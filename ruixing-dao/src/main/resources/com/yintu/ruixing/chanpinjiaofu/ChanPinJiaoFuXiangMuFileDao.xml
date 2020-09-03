@@ -9,16 +9,16 @@
         <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
         <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
         <result column="fabu_type" jdbcType="INTEGER" property="fabuType"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
         <result column="createName" jdbcType="VARCHAR" property="createname"/>
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="auditor_id" jdbcType="VARCHAR" property="auditorid"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uid, xm_id, file_type, file_name, file_path, fabu_type, auditor_id, createTime, 
+    id, uid, xm_id, file_type, file_name, file_path, fabu_type,  createTime,
     updateTime, createName, updateName,auditorState,remarks
   </sql>
 
@@ -35,31 +35,41 @@
 
     <!-- 初始化输出文件-->
     <select id="findShuChuFile" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_chanpinjiaofu_file
-        where
-        xm_id=#{xmid}
-        and file_type=2
-        order by id desc
+        SELECT
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        FROM
+            mro_chanpinjiaofu_file cf
+            LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+        WHERE
+            cf.xm_id = #{xmid}
+            AND cf.file_type = 2
+            and cfa.objectType=2
+        ORDER BY cf.id DESC
     </select>
 
     <!-- 初始化输入文件-->
     <select id="findShuRuFile" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_chanpinjiaofu_file
-        where
-        xm_id=#{xmid}
-        and file_type=1
-        order by id desc
+        SELECT
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        FROM
+        mro_chanpinjiaofu_file cf
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+        WHERE
+        cf.xm_id = #{xmid}
+        AND cf.file_type = 1
+        and cfa.objectType=2
+        ORDER BY cf.id DESC
     </select>
 
     <!-- 根据文件类型或者文件名 进行模糊查询-->
     <select id="findFileBySomething" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from mro_chanpinjiaofu_file
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        from mro_chanpinjiaofu_file cf
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
         <where>
             xm_id=#{xmid}
             <if test="filetype!=null">
@@ -68,6 +78,7 @@
             <if test="filename!=null">
                 and file_name like concat('%',#{filename},'%')
             </if>
+            and cfa.objectType=2
         </where>
         order by id desc
     </select>
@@ -127,9 +138,6 @@
             <if test="fabuType != null">
                 fabu_type,
             </if>
-            <if test="auditorId != null">
-                auditor_id,
-            </if>
             <if test="auditorState != null">
                 auditorState,
             </if>
@@ -170,9 +178,6 @@
             </if>
             <if test="fabuType != null">
                 #{fabuType,jdbcType=INTEGER},
-            </if>
-            <if test="auditorId != null">
-                #{auditorId,jdbcType=INTEGER},
             </if>
             <if test="auditorState != null">
                 #{auditorState,jdbcType=INTEGER},
@@ -215,9 +220,6 @@
             </if>
             <if test="fabuType != null">
                 fabu_type = #{fabuType,jdbcType=INTEGER},
-            </if>
-            <if test="auditorId != null">
-                auditor_id = #{auditorId,jdbcType=INTEGER},
             </if>
             <if test="auditorState != null">
                 auditorState = #{auditorState,jdbcType=INTEGER},

@@ -18,7 +18,7 @@ public interface ChanPinJiaoFuXiangMuService {
 
     void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username);
 
-    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id);
+    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids);
 
     void deletXiagMuById(Integer id);
 
@@ -65,4 +65,6 @@ public interface ChanPinJiaoFuXiangMuService {
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 
     List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id);
+
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id);
 }
