@@ -142,8 +142,22 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                         preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                     }
                 }
-                if (preSaleFileAuditorEntities.size() > 0)
-                    preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);//添加
+                if (preSaleFileAuditorEntities.size() > 0) {
+                    preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
+
+                    //更新之前给审核人发的消息
+                    MessageEntity messageEntity = new MessageEntity(null, null, null, null, null, null,
+                            (short) 1, (short) 1, (short) 2, preSaleFileEntity.getPreSaleId(), preSaleFileEntity.getId(), null, null, null, null);
+                    List<MessageEntity> messageEntities = messageService.findByExample(messageEntity);
+                    for (MessageEntity message : messageEntities) {
+                        if (!message.getReceiverId().equals(preSaleFileAuditorEntities.get(0).getAuditorId())) {
+                            message.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                            message.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                            message.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
+                            messageService.edit(message);
+                        }
+                    }
+                }
             }
 
             //文件日志记录

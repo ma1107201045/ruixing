@@ -138,8 +138,21 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                     }
                 }
-                if (designLiaisonFileAuditorEntities.size() > 0)
+                if (designLiaisonFileAuditorEntities.size() > 0) {
                     designLiaisonFileAuditorService.addMuch(designLiaisonFileAuditorEntities);
+                    //更新之前给审核人发的消息
+                    MessageEntity messageEntity = new MessageEntity(null, null, null, null, null, null,
+                            (short) 1, (short) 1, (short) 2, designLiaisonFileEntity.getDesignLiaisonId(), designLiaisonFileEntity.getId(), null, null, null, null);
+                    List<MessageEntity> messageEntities = messageService.findByExample(messageEntity);
+                    for (MessageEntity message : messageEntities) {
+                        if (!message.getReceiverId().equals(designLiaisonFileAuditorEntities.get(0).getAuditorId())) {
+                            message.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                            message.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                            message.setReceiverId(designLiaisonFileAuditorEntities.get(0).getAuditorId());
+                            messageService.edit(message);
+                        }
+                    }
+                }
             }
 
             //项目日志记录

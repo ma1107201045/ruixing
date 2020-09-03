@@ -21,6 +21,14 @@ public interface MessageService extends BaseService<MessageEntity, Integer> {
     List<MessageEntity> findByTypeAndStatus(Short type, Integer loginUserId, Short Status);
 
     /**
+     * 按照多条件查询
+     *
+     * @param messageEntity 条件
+     * @return
+     */
+    List<MessageEntity> findByExample(MessageEntity messageEntity);
+
+    /**
      * 从未读消息改为已读消息
      *
      * @param id 主键

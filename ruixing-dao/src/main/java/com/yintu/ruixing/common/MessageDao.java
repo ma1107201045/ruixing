@@ -22,5 +22,7 @@ public interface MessageDao {
 
     List<MessageEntity> selectByTypeAndStatus(Short type, Integer loginUserId, Short status);
 
+    List<MessageEntity> selectByExample(MessageEntity messageEntity);
+
     List<MessageEntity> findXiaoXi();
 }

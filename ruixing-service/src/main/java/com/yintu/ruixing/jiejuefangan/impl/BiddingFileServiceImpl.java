@@ -145,8 +145,21 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                     }
                 }
-                if (biddingFileAuditorEntities.size() > 0)
+                if (biddingFileAuditorEntities.size() > 0) {
                     biddingFileAuditorService.addMuch(biddingFileAuditorEntities);
+                    //更新之前给审核人发的消息
+                    MessageEntity messageEntity = new MessageEntity(null, null, null, null, null, null,
+                            (short) 1, (short) 1, (short) 2, biddingFileEntity.getBiddingId(), biddingFileEntity.getId(), null, null, null, null);
+                    List<MessageEntity> messageEntities = messageService.findByExample(messageEntity);
+                    for (MessageEntity message : messageEntities) {
+                        if (!message.getReceiverId().equals(biddingFileAuditorEntities.get(0).getAuditorId())) {
+                            message.setModifiedBy(biddingFileEntity.getModifiedBy());
+                            message.setModifiedTime(biddingFileEntity.getModifiedTime());
+                            message.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
+                            messageService.edit(message);
+                        }
+                    }
+                }
             }
             //项目日志记录
             BiddingFileEntity bfTarget = BeanUtil.compareFieldValues(bfSource, biddingFileEntity, BiddingFileEntity.class);

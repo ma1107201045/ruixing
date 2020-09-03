@@ -49,6 +49,11 @@ public class MessageServiceImpl implements MessageService {
         return messageDao.selectByTypeAndStatus(type, loginUserId, Status);
     }
 
+    @Override
+    public List<MessageEntity> findByExample(MessageEntity messageEntity) {
+        return messageDao.selectByExample(messageEntity);
+    }
+
 
     @Override
     public void changeStatus(Integer id) {
