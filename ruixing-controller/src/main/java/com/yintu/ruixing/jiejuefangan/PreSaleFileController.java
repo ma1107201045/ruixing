@@ -3,6 +3,7 @@ package com.yintu.ruixing.jiejuefangan;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
@@ -117,6 +118,21 @@ public class PreSaleFileController extends SessionController {
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
         List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
         return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
+    }
+
+    /**
+     * 审核文件
+     *
+     * @param id     文件id
+     * @param isPass 是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
+     * @param reason 已审核未通过
+     * @return 已审核未通过理由
+     */
+    @PutMapping("/{id}/audit")
+    @ResponseBody
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
+        preSaleFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
+        return ResponseDataUtil.ok("审核售前技术支持文件信息成功");
     }
 
 }

@@ -3,6 +3,7 @@ package com.yintu.ruixing.jiejuefangan.impl;
 import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -106,7 +107,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
 
         }
 
-        //项目日志记录
+        //文件日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误")
                 .append("   文件名称：").append(preSaleFileEntity.getName())
@@ -145,7 +146,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);//添加
             }
 
-            //项目日志记录
+            //文件日志记录
             PreSaleFileEntity psfTarget = BeanUtil.compareFieldValues(psfSource, preSaleFileEntity, PreSaleFileEntity.class);
             StringBuilder sb = new StringBuilder();
             if (psfTarget.getType() != null) {
@@ -247,6 +248,61 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         wb.write(outputStream);
         outputStream.flush();
         outputStream.close();
+    }
+
+    @Override
+    public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
+        PreSaleFileEntity preSaleFileEntity = this.findById(id);
+        if (preSaleFileEntity != null) {
+            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
+            if (!preSaleFileAuditorEntities.isEmpty()) {
+                PreSaleFileAuditorEntity preSaleFileAuditorEntity = preSaleFileAuditorEntities.get(0);
+                if (!preSaleFileAuditorEntity.getAuditorId().equals(loginUserId)) {
+                    throw new BaseRuntimeException("您无权审核此文件");
+                }
+                if (preSaleFileAuditorEntity.getIsPass() != (short) 1) {
+                    throw new BaseRuntimeException("此文件已审核，无需重复审核");
+                }
+                if (isPass == null)
+                    throw new BaseRuntimeException("审核状态不能为空");
+                if (isPass != 2 && isPass != 3) {
+                    throw new BaseRuntimeException("此文件审核状态有误");
+                }
+                preSaleFileAuditorEntity.setIsPass(isPass);
+                preSaleFileAuditorEntity.setReason(isPass == 3 ? reason : null);
+                preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
+                //给被审核人发消息
+                PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
+                if (preSaleEntity != null) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(userName);
+                    messageEntity.setCreateTime(new Date());
+                    messageEntity.setModifiedBy(userName);
+                    messageEntity.setModifiedTime(new Date());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被审核，请查看结果");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                    messageEntity.setFileId(preSaleFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(preSaleFileEntity.getUserId());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
+                //文件日志记录
+                StringBuilder sb = new StringBuilder();
+                sb.append("   审核人：").append(trueName)
+                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核未通过");
+                if (isPass == 3) {
+                    sb.append("   理由：").append(reason);
+                }
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, id, sb.toString());
+                solutionLogService.add(solutionLogEntity);
+            }
+        }
+
     }
 
 }
