@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -100,12 +101,20 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         }
     }
 
-    //根据项目或者文件id 查看更新历史记录
+    //根据项目id 查看更新历史记录
     @ResponseBody
     @GetMapping("/findReordById/{id}")
     public Map<String, Object> findReordById(@PathVariable Integer id) {
         List<ChanPinJiaoFuRecordMessageEntity> recordMessageEntityList = chanPinJiaoFuXiangMuService.findReordById(id);
-        return ResponseDataUtil.ok("查询记录成功", recordMessageEntityList);
+        return ResponseDataUtil.ok("查询项目记录成功", recordMessageEntityList);
+    }
+
+    //根据文件id 查看更新历史记录
+    @ResponseBody
+    @GetMapping("/findFileReordById/{id}")
+    public Map<String, Object> findFileReordById(@PathVariable Integer id) {
+        List<ChanPinJiaoFuRecordMessageEntity> recordMessageEntityList = chanPinJiaoFuXiangMuService.findFileReordById(id);
+        return ResponseDataUtil.ok("查询文件记录成功", recordMessageEntityList);
     }
 
     //新增项目
@@ -271,7 +280,14 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @ResponseBody
     @GetMapping("/findAllAuditorName")
     public Map<String, Object> findAllAuditorNamre(String truename) {
-        List<UserEntity> userEntities = userService.findByTruename(truename);
+        List<UserEntity> userEntities =new ArrayList<>();
+        String username = this.getLoginUser().getTrueName();
+        List<UserEntity> userEntitiess = userService.findByTruename(truename);
+        for (UserEntity userEntity : userEntitiess) {
+            if (!userEntity.getTrueName().equals(username)){
+                userEntities.add(userEntity);
+            }
+        }
         return ResponseDataUtil.ok("查询姓名成功", userEntities);
     }
 

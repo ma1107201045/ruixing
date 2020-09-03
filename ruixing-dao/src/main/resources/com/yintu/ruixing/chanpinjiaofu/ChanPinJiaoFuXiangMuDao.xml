@@ -37,11 +37,12 @@
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state, 
     yangong_state, xianchangfuwu, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_id,auditor_state,
-    createTime,updateTime,operatorName
+    createTime,updateTime,operatorName,remarks
   </sql>
 
     <!--查询消息列表的内容-->
@@ -385,6 +386,7 @@
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
     </resultMap>
     <!--查询所有的项目中的项目名和项目编号数据-->
     <select id="findXiangMuAndBianHao" resultMap="xiangmu">
@@ -489,6 +491,9 @@
             <if test="operatorName != null">
                 operatorName,
             </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -535,6 +540,9 @@
             </if>
             <if test="operatorName != null">
                 #{operatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -583,6 +591,9 @@
             </if>
             <if test="updateTime != null">
                 updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

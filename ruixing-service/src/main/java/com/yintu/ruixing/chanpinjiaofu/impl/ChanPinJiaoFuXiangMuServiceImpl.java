@@ -200,8 +200,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             if (chanPinJiaoFuXiangMuFileEntity.getFabuType() == 2) {
                 sb.append("发布状态更改为  发布 ");
             }
-        }
-        else {
+        } else {
             sb.append("没有修改任何状态");
         }
         Integer typenum = 2;
@@ -238,13 +237,18 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
+    public void deletXiagMuById(Integer id) {
+        chanPinJiaoFuXiangMuDao.deletXiagMuById(id);
+    }
+
+    @Override
     public List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id) {
         return chanPinJiaoFuXiangMuFileDao.findFile(id);
     }
 
     @Override
-    public void deletXiagMuById(Integer id) {
-        chanPinJiaoFuXiangMuDao.deletXiagMuById(id);
+    public List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id) {
+        return chanPinJiaoFuRecordMessageDao.findFileReordById(id);
     }
 
     @Override
@@ -361,6 +365,14 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu() == 0) {
                 sb.append(" 是否需要现场服务改为 否");
             }
+        }
+        if (xiangMuEntity.getRemarks() == null) {
+            if (chanPinJiaoFuXiangMuEntity.getRemarks() != null) {
+                sb.append("新增备注" + chanPinJiaoFuXiangMuEntity.getRemarks());
+            }
+        }
+        if (xiangMuEntity.getRemarks() != null && xiangMuEntity.getRemarks() != chanPinJiaoFuXiangMuEntity.getRemarks()) {
+            sb.append("备注改为" + chanPinJiaoFuXiangMuEntity.getRemarks());
         }
         if (xiangMuEntity.getFahuoTixingTime() == null) {
             if (chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() != null) {

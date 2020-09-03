@@ -63,4 +63,6 @@ public interface ChanPinJiaoFuXiangMuService {
     List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
+
+    List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id);
 }
