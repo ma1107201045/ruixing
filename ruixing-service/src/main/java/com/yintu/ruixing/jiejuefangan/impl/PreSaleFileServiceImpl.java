@@ -317,7 +317,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     throw new BaseRuntimeException("此文件审核状态有误");
                 }
                 preSaleFileAuditorEntity.setIsPass(isPass);
-                preSaleFileAuditorEntity.setReason(isPass == 3 ? reason : null);
+                preSaleFileAuditorEntity.setReason(isPass == 2 ? reason : null);
                 preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
                 //给被审核人发消息
                 PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
@@ -343,7 +343,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 StringBuilder sb = new StringBuilder();
                 sb.append("   审核人：").append(trueName)
                         .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核未通过");
-                if (isPass == 3) {
+                if (isPass == 2) {
                     sb.append("   理由：").append(reason);
                 }
                 SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, id, sb.toString());

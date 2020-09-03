@@ -2,6 +2,7 @@ package com.yintu.ruixing.jiejuefangan.impl;
 
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -285,6 +286,60 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         wb.write(outputStream);
         outputStream.flush();
         outputStream.close();
+    }
+
+    @Override
+    public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
+        BiddingFileEntity biddingFileEntity = this.findById(id);
+        if (biddingFileEntity != null) {
+            List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByBiddingFileIdId(id);
+            if (!biddingFileAuditorEntities.isEmpty()) {
+                BiddingFileAuditorEntity biddingFileAuditorEntity = biddingFileAuditorEntities.get(0);
+                if (!biddingFileAuditorEntity.getAuditorId().equals(loginUserId)) {
+                    throw new BaseRuntimeException("您无权审核此文件");
+                }
+                if (biddingFileAuditorEntity.getIsPass() != (short) 1) {
+                    throw new BaseRuntimeException("此文件已审核，无需重复审核");
+                }
+                if (isPass == null)
+                    throw new BaseRuntimeException("审核状态不能为空");
+                if (isPass != 2 && isPass != 3) {
+                    throw new BaseRuntimeException("此文件审核状态有误");
+                }
+                biddingFileAuditorEntity.setIsPass(isPass);
+                biddingFileAuditorEntity.setReason(isPass == 2 ? reason : null);
+                biddingFileAuditorService.edit(biddingFileAuditorEntity);
+                //给被审核人发消息
+                BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
+                if (biddingEntity != null) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(userName);
+                    messageEntity.setCreateTime(new Date());
+                    messageEntity.setModifiedBy(userName);
+                    messageEntity.setModifiedTime(new Date());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件已被审核，请查看结果");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 2);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(biddingFileEntity.getBiddingId());
+                    messageEntity.setFileId(biddingFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(biddingFileEntity.getUserId());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
+                //文件日志记录
+                StringBuilder sb = new StringBuilder();
+                sb.append("   审核人：").append(trueName)
+                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核未通过");
+                if (isPass == 2) {
+                    sb.append("   理由：").append(reason);
+                }
+                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 2, (short) 2, id, sb.toString());
+                solutionLogService.add(solutionLogEntity);
+            }
+        }
     }
 
 

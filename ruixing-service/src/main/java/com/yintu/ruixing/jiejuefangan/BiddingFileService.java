@@ -54,5 +54,17 @@ public interface BiddingFileService extends BaseService<BiddingFileEntity, Integ
      */
     void exportFile(OutputStream outputStream, Integer[] ids, Integer userId) throws IOException;
 
+    /**
+     * 审核文件
+     *
+     * @param id          文件id
+     * @param isPass      是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
+     * @param reason      已审核未通过理由
+     * @param loginUserId 登录id
+     * @param userName    用户名
+     * @param trueName    真实姓名
+     */
+
+    void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName);
 
 }

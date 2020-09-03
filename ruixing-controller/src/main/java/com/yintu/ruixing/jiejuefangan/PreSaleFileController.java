@@ -128,7 +128,7 @@ public class PreSaleFileController extends SessionController {
      * @param reason 已审核未通过
      * @return 已审核未通过理由
      */
-    @PutMapping("/{id}/audit")
+    @PutMapping("/audit/{id}")
     @ResponseBody
     public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
         preSaleFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());

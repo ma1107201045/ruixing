@@ -116,4 +116,20 @@ public class BiddingFileController extends SessionController {
     }
 
 
+    /**
+     * 审核文件
+     *
+     * @param id     文件id
+     * @param isPass 是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
+     * @param reason 已审核未通过
+     * @return 已审核未通过理由
+     */
+    @PutMapping("/audit/{id}")
+    @ResponseBody
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
+        biddingFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
+        return ResponseDataUtil.ok("审核招投标技术支持文件信息成功");
+    }
+
+
 }
