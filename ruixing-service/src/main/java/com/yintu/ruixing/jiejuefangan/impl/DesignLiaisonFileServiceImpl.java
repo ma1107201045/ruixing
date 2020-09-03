@@ -324,7 +324,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     messageEntity.setModifiedBy(userName);
                     messageEntity.setModifiedTime(new Date());
                     messageEntity.setTitle("文件");
-                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被审核，请查看结果");
+                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被审核，请查看结果!");
                     messageEntity.setType((short) 1);
                     messageEntity.setSmallType((short) 3);
                     messageEntity.setMessageType((short) 2);
