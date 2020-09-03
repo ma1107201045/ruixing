@@ -150,7 +150,7 @@ public class PreSaleServiceImpl implements PreSaleService {
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(1L);
             firstTreeNodeUtil.setLabel(String.valueOf(year));
-            firstTreeNodeUtil.setValue(IdUtil.simpleUUID());
+            firstTreeNodeUtil.setValue(String.valueOf(year + 100000));
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
 
@@ -160,7 +160,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
-                secondTreeNodeUtil.setValue(IdUtil.simpleUUID());
+                secondTreeNodeUtil.setValue(String.valueOf(preSaleEntity.getId()));
                 Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(preSaleEntity).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
@@ -169,11 +169,11 @@ public class PreSaleServiceImpl implements PreSaleService {
                 TreeNodeUtil thirdTreeNodeUtil1 = new TreeNodeUtil();
                 thirdTreeNodeUtil1.setId(3L);
                 thirdTreeNodeUtil1.setLabel("输入文件");
-                thirdTreeNodeUtil1.setValue(IdUtil.simpleUUID());
+                thirdTreeNodeUtil1.setValue(String.valueOf(preSaleEntity.getId() + 1000000));
                 TreeNodeUtil thirdTreeNodeUtil2 = new TreeNodeUtil();
                 thirdTreeNodeUtil2.setId(3L);
                 thirdTreeNodeUtil2.setLabel("输出文件");
-                thirdTreeNodeUtil2.setValue(IdUtil.simpleUUID());
+                thirdTreeNodeUtil2.setValue(String.valueOf(preSaleEntity.getId() + 1000001));
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil1);
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil2);
             }

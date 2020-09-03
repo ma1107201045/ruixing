@@ -146,7 +146,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(1L);
             firstTreeNodeUtil.setLabel(String.valueOf(year));
-            firstTreeNodeUtil.setValue(IdUtil.simpleUUID());
+            firstTreeNodeUtil.setValue(String.valueOf(year + 100000));
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
             for (DesignLiaisonEntity designLiaisonEntity : designLiaisonEntities) {
@@ -154,7 +154,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(designLiaisonEntity.getProjectName());
-                secondTreeNodeUtil.setValue(IdUtil.simpleUUID());
+                secondTreeNodeUtil.setValue(String.valueOf(designLiaisonEntity.getId()));
                 Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
                 secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
@@ -162,11 +162,11 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 TreeNodeUtil thirdTreeNodeUtil1 = new TreeNodeUtil();
                 thirdTreeNodeUtil1.setId(3L);
                 thirdTreeNodeUtil1.setLabel("输入文件");
-                thirdTreeNodeUtil1.setValue(IdUtil.simpleUUID());
+                thirdTreeNodeUtil1.setValue(String.valueOf(designLiaisonEntity.getId() + 1000000));
                 TreeNodeUtil thirdTreeNodeUtil2 = new TreeNodeUtil();
                 thirdTreeNodeUtil2.setId(3L);
                 thirdTreeNodeUtil2.setLabel("输出文件");
-                thirdTreeNodeUtil2.setValue(IdUtil.simpleUUID());
+                thirdTreeNodeUtil2.setValue(String.valueOf(designLiaisonEntity.getId() + 1000001));
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil1);
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil2);
             }
