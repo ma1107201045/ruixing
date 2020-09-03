@@ -1,6 +1,5 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
-import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
@@ -69,6 +68,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Override
     public void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
         this.add(preSaleFileEntity);
+        //审核人操作
         Integer id = preSaleFileEntity.getId();
         if (auditorIds != null) {
             List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
@@ -129,8 +129,10 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         List<PreSaleFileAuditorEntity> psfaSources = preSaleFileAuditorService.findByPreSaleFileId(preSaleFileEntity.getId());
         if (psfSource != null) {
             this.edit(preSaleFileEntity);
+
+
             Integer id = preSaleFileEntity.getId();
-            preSaleFileAuditorService.removeByPreSaleFileId(id); //删除
+            preSaleFileAuditorService.removeByPreSaleFileId(id);
             if (auditorIds != null) {
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {

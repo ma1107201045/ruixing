@@ -278,8 +278,8 @@
             <if test="projectId!=null">
                 and project_id =#{projectId,jdbcType=INTEGER}
             </if>
-            <if test="file_id!=null">
-                and file_id =#{file_id,jdbcType=INTEGER}
+            <if test="fileId!=null">
+                and file_id =#{fileId,jdbcType=INTEGER}
             </if>
             <if test="status!=null">
                 and status =#{status,jdbcType=SMALLINT}

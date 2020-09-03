@@ -66,6 +66,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     @Override
     public void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName) {
         this.add(biddingFileEntity);
+        //审核人操作
         Integer id = biddingFileEntity.getId();
         if (auditorIds != null) {
             List<BiddingFileAuditorEntity> biddingFileAuditorEntities = new ArrayList<>(auditorIds.length);
@@ -132,6 +133,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         List<BiddingFileAuditorEntity> bfaSources = biddingFileAuditorService.findByBiddingFileIdId(biddingFileEntity.getId());
         if (bfSource != null) {
             this.edit(biddingFileEntity);
+
+            //审核人操作
             Integer id = biddingFileEntity.getId();
             biddingFileAuditorService.removeByBiddingFileId(id); //删除
             if (auditorIds != null) {

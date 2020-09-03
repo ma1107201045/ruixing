@@ -68,6 +68,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     @Override
     public void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName) {
         this.add(designLiaisonFileEntity);
+        //审核人操作
         Integer id = designLiaisonFileEntity.getId();
         if (auditorIds != null) {
             List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = new ArrayList<>(auditorIds.length);
@@ -125,6 +126,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
         List<DesignLiaisonFileAuditorEntity> dlfaSources = designLiaisonFileAuditorService.findByDesignLiaisonFileId(designLiaisonFileEntity.getId());
         if (dlfSource != null) {
             this.edit(designLiaisonFileEntity);
+
+            //审核人操作
             Integer id = designLiaisonFileEntity.getId();
             designLiaisonFileAuditorService.removeByDesignLiaisonFileId(id);
             if (auditorIds != null) {
