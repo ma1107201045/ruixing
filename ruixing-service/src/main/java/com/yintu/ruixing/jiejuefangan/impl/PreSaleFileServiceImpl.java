@@ -328,7 +328,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     messageEntity.setModifiedBy(userName);
                     messageEntity.setModifiedTime(new Date());
                     messageEntity.setTitle("文件");
-                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被审核，请查看结果");
+                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被审核，请查看结果!");
                     messageEntity.setType((short) 1);
                     messageEntity.setSmallType((short) 1);
                     messageEntity.setMessageType((short) 2);

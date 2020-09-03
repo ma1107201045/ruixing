@@ -1,6 +1,7 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author:mlf
@@ -148,6 +146,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(1L);
             firstTreeNodeUtil.setLabel(String.valueOf(year));
+            firstTreeNodeUtil.setValue(IdUtil.simpleUUID());
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
             for (DesignLiaisonEntity designLiaisonEntity : designLiaisonEntities) {
@@ -155,16 +154,19 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(designLiaisonEntity.getProjectName());
-                Map<String, Object> map = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
-                secondTreeNodeUtil.setA_attr(map);
+                secondTreeNodeUtil.setValue(IdUtil.simpleUUID());
+                Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
+                secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
                 TreeNodeUtil thirdTreeNodeUtil1 = new TreeNodeUtil();
                 thirdTreeNodeUtil1.setId(3L);
                 thirdTreeNodeUtil1.setLabel("输入文件");
+                thirdTreeNodeUtil1.setValue(IdUtil.simpleUUID());
                 TreeNodeUtil thirdTreeNodeUtil2 = new TreeNodeUtil();
                 thirdTreeNodeUtil2.setId(3L);
                 thirdTreeNodeUtil2.setLabel("输出文件");
+                thirdTreeNodeUtil2.setValue(IdUtil.simpleUUID());
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil1);
                 thirdTreeNodeUtils.add(thirdTreeNodeUtil2);
             }
