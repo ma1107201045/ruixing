@@ -98,6 +98,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
         customUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler((HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) -> {
+            System.out.println(httpServletRequest.getSession().getMaxInactiveInterval());
                     sessionRegistryImpl().registerNewSession(httpServletRequest.getSession().getId(), authentication.getPrincipal());
                     httpServletResponse.setContentType("application/json;charset=utf-8");
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);

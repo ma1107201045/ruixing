@@ -170,12 +170,13 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
                                 (short) 1, (short) 1, (short) 2, designLiaisonFileEntity.getDesignLiaisonId(), designLiaisonFileEntity.getId(), null, null, null, null);
                         List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
-                        for (MessageEntity message : messageEntities) {
-                            if (!message.getReceiverId().equals(designLiaisonFileAuditorEntities.get(0).getAuditorId())) {
-                                message.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
-                                message.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
-                                message.setReceiverId(designLiaisonFileAuditorEntities.get(0).getAuditorId());
-                                messageService.edit(message);
+                        for (MessageEntity messageEntity : messageEntities) {
+                            if (!messageEntity.getReceiverId().equals(designLiaisonFileAuditorEntities.get(0).getAuditorId())) {
+                                messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                                messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                                messageEntity.setReceiverId(designLiaisonFileAuditorEntities.get(0).getAuditorId());
+                                messageEntity.setStatus((short)1);
+                                messageService.edit(messageEntity);
                             }
                         }
                     }
@@ -232,14 +233,16 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     @Override
     public DesignLiaisonFileEntity findDesignLiaisonById(Integer id) {
         DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
-        Integer designLiaisonId = designLiaisonFileEntity.getDesignLiaisonId();
-        if (designLiaisonId != null) {
-            DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonId);
-            designLiaisonFileEntity.setDesignLiaisonEntity(designLiaisonEntity);
+        if (designLiaisonFileEntity != null) {
+            Integer designLiaisonId = designLiaisonFileEntity.getDesignLiaisonId();
+            if (designLiaisonId != null) {
+                DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonId);
+                designLiaisonFileEntity.setDesignLiaisonEntity(designLiaisonEntity);
+            }
+            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
+            designLiaisonFileEntity.setDesignLiaisonFileAuditorEntities(designLiaisonFileAuditorEntities);
         }
-        List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
-        designLiaisonFileEntity.setDesignLiaisonFileAuditorEntities(designLiaisonFileAuditorEntities);
-        return designLiaisonFileEntity;
+        return designLiaisonFileEntity == null ? new DesignLiaisonFileEntity() : designLiaisonFileEntity;
     }
 
 
@@ -298,7 +301,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
         DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
         if (designLiaisonFileEntity != null) {
-            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(designLiaisonFileEntity.getDesignLiaisonId());
+            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
             if (!designLiaisonFileAuditorEntities.isEmpty()) {
                 DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = designLiaisonFileAuditorEntities.get(0);
                 if (!designLiaisonFileAuditorEntity.getAuditorId().equals(loginUserId)) {
@@ -315,9 +318,27 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 designLiaisonFileAuditorEntity.setIsPass(isPass);
                 designLiaisonFileAuditorEntity.setReason(isPass == 2 ? reason : null);
                 designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
-                //给被审核人发消息
+
                 DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());
                 if (designLiaisonEntity != null) {
+                    //给审核人发审核结果消息
+                    MessageEntity messageEntity1 = new MessageEntity();
+                    messageEntity1.setCreateBy(userName);
+                    messageEntity1.setCreateTime(new Date());
+                    messageEntity1.setModifiedBy(userName);
+                    messageEntity1.setModifiedTime(new Date());
+                    messageEntity1.setTitle("文件");
+                    messageEntity1.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被您审核！");
+                    messageEntity1.setType((short) 1);
+                    messageEntity1.setSmallType((short) 1);
+                    messageEntity1.setMessageType((short) 2);
+                    messageEntity1.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                    messageEntity1.setFileId(designLiaisonFileEntity.getId());
+                    messageEntity1.setSenderId(null);
+                    messageEntity1.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
+                    messageEntity1.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity1);
+                    //给被审核人发消息
                     MessageEntity messageEntity = new MessageEntity();
                     messageEntity.setCreateBy(userName);
                     messageEntity.setCreateTime(new Date());
@@ -338,7 +359,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 //文件日志记录
                 StringBuilder sb = new StringBuilder();
                 sb.append("   审核人：").append(trueName)
-                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核未通过");
+                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核通过");
                 if (isPass == 2) {
                     sb.append("   理由：").append(reason);
                 }
