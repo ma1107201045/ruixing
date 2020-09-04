@@ -160,29 +160,37 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         //删除中间表的审查人id
         chanPinJiaoFuXiangMuDao.deletAuditor(id);
         //添加审查人
-        for (Integer uid : uids) {
-            ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
-            chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
-            chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
-            chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
+        if (uids != null) {
+            for (Integer uid : uids) {
+                ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
+                chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
+                chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
+                chanPinJiaoFuFileAuditorEntity.setObjectType(2);
+                chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
+            }
         }
         chanPinJiaoFuXiangMuFileEntity.setUid(uId);
         Date nowTime = new Date();
         chanPinJiaoFuXiangMuFileEntity.setUpdatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setUpdatename(username);
         chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
+
         if (!fileEntity.getFileName().equals(chanPinJiaoFuXiangMuFileEntity.getFileName())) {
             sb.append("文件名改为" + chanPinJiaoFuXiangMuFileEntity.getFileName());
         }
-        if (fileEntity.getAuditorState() != chanPinJiaoFuXiangMuFileEntity.getAuditorState()) {
-            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 1) {
-                sb.append("文件审核状态更改为  待审核  ");
-            }
-            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 2) {
-                sb.append("文件审核状态更改为  已审核未通过 ");
-            }
-            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 3) {
-                sb.append("文件审核状态更改为  已审核已通过");
+        if (fileEntity.getAuditorState() == null || fileEntity.getAuditorState() != chanPinJiaoFuXiangMuFileEntity.getAuditorState()) {
+            if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == null) {
+                sb.append(" ");
+            } else {
+                if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 1) {
+                    sb.append("文件审核状态更改为  待审核  ");
+                }
+                if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 2) {
+                    sb.append("文件审核状态更改为  已审核未通过 ");
+                }
+                if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 3) {
+                    sb.append("文件审核状态更改为  已审核已通过");
+                }
             }
         }
         if (fileEntity.getFileType() != chanPinJiaoFuXiangMuFileEntity.getFileType()) {
@@ -227,8 +235,14 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
             chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(xid);
             chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
+            chanPinJiaoFuFileAuditorEntity.setObjectType(2);
             chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
         }
+    }
+
+    @Override
+    public List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id) {
+        return chanPinJiaoFuXiangMuDao.findXiangMuById(id);
     }
 
     @Override
@@ -272,9 +286,20 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
-    public void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id) {
+    public void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids) {
         StringBuilder sb = new StringBuilder();
         Date nowTime = new Date();
+        //添加审查人
+        if (uids != null) {
+            for (Integer uid : uids) {
+                ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
+                chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
+                chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
+                chanPinJiaoFuFileAuditorEntity.setObjectType(1);
+                chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
+            }
+            chanPinJiaoFuXiangMuEntity.setAuditorstate(1);
+        }
         chanPinJiaoFuXiangMuEntity.setUpdateTime(nowTime);
         chanPinJiaoFuXiangMuEntity.setOperatorName(username);
         Integer typenum = 1;

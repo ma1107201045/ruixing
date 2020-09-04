@@ -41,7 +41,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state, 
-    yangong_state, xianchangfuwu, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_id,auditor_state,
+    yangong_state, xianchangfuwu, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,
     createTime,updateTime,operatorName,remarks
   </sql>
 
@@ -71,9 +71,9 @@
     </delete>
     <!--添加审核人-->
     <insert id="addAuditorName" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id)
+        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,addAuditorName)
         values
-        (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER})
+        (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER},#{addAuditorName,jdbcType=INTEGER})
     </insert>
     <!--查询正在执行 尚未完成发货、签收、验工 停滞暂不发货、陆续发货中、工程结束不需发货   的列表；-->
     <select id="findJiaoFuQingKuangLists" parameterType="java.lang.String" resultMap="xiangmu">
@@ -353,10 +353,13 @@
     <!--查询所有的数据-->
     <select id="findAll" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        cx.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
         FROM
-        mro_chanpinjiaofu_xiangmu
-        GROUP BY id DESC
+        mro_chanpinjiaofu_xiangmu cx
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
+        AND cfa.objectType = 1
+        GROUP BY cx.id DESC
     </select>
     <!--根据树形的数据  查对应的数据-->
     <select id="findXiangMuByIds" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -427,6 +430,14 @@
         from mro_chanpinjiaofu_xiangmu
         where
         xiangmu_state=#{xiangmuState}
+    </select>
+
+    <!--根据项目的id  查询对应的数据-->
+    <select id="findXiangMuById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_xiangmu
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

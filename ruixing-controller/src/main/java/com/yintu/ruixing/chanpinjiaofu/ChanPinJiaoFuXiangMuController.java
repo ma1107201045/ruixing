@@ -129,9 +129,9 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     //根据选择的id  修改对应的项目内容
     @ResponseBody
     @PutMapping("/editXiangMuById/{id}")
-    public Map<String, Object> editXiangMuById(@PathVariable Integer id, ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity) {
+    public Map<String, Object> editXiangMuById(@PathVariable Integer id, ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, Integer[] uids) {
         String username = this.getLoginUser().getTrueName();
-        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity, username, id);
+        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity, username, id, uids);
         return ResponseDataUtil.ok("修改项目数据成功");
     }
 
@@ -140,13 +140,14 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @DeleteMapping("/deletXiagMuByIds/{ids}")
     public Map<String, Object> deletXiagMuById(@PathVariable Integer[] ids) {
         for (int i = 0; i < ids.length; i++) {
-            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList=chanPinJiaoFuXiangMuService.findFile(ids[i]);
-            if (fileEntityList.size()==0){
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFile(ids[i]);
+            if (fileEntityList.size() == 0) {
                 chanPinJiaoFuXiangMuService.deletXiagMuById(ids[i]);
-                return ResponseDataUtil.ok("删除数据成功");
+            } else {
+                return ResponseDataUtil.error("项目存在文件，不能删除项目");
             }
         }
-        return ResponseDataUtil.error("项目存在文件，不能删除项目");
+        return ResponseDataUtil.ok("删除数据成功");
     }
 
     //查询所有的数据
@@ -178,6 +179,16 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         PageInfo<ChanPinJiaoFuXiangMuEntity> pageInfo = new PageInfo<>(chanPinJiaoFuXiangMuEntities);
         return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
+
+
+    //根据项目的id  查询对应的数据
+    @ResponseBody
+    @GetMapping("/findXiangMuById/{id}")
+    public Map<String, Object> findXiangMuById(@PathVariable Integer id) {
+        List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuService.findXiangMuById(id);
+        return ResponseDataUtil.ok("查询数据成功", chanPinJiaoFuXiangMuEntities);
+    }
+
 
     ///////////////////////////文件////////////////////////////////////
 
@@ -280,11 +291,11 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @ResponseBody
     @GetMapping("/findAllAuditorName")
     public Map<String, Object> findAllAuditorNamre(String truename) {
-        List<UserEntity> userEntities =new ArrayList<>();
+        List<UserEntity> userEntities = new ArrayList<>();
         String username = this.getLoginUser().getTrueName();
         List<UserEntity> userEntitiess = userService.findByTruename(truename);
         for (UserEntity userEntity : userEntitiess) {
-            if (!userEntity.getTrueName().equals(username)){
+            if (!userEntity.getTrueName().equals(username)) {
                 userEntities.add(userEntity);
             }
         }

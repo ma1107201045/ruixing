@@ -21,6 +21,7 @@ public class ChanPinJiaoFuFileAuditorEntity {
     private Integer auditorId;//审核人id
 
     private Integer isPass;//是否通过 0.未通过 1.已通过
+    private Integer objectType;//是否通过 0.未通过 1.已通过
 
 
 }
