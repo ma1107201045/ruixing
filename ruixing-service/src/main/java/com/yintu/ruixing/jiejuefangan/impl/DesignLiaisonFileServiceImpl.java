@@ -298,7 +298,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
         DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
         if (designLiaisonFileEntity != null) {
-            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(designLiaisonFileEntity.getDesignLiaisonId());
+            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
             if (!designLiaisonFileAuditorEntities.isEmpty()) {
                 DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = designLiaisonFileAuditorEntities.get(0);
                 if (!designLiaisonFileAuditorEntity.getAuditorId().equals(loginUserId)) {
