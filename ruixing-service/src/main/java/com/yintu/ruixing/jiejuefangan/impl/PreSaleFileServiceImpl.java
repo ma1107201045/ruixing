@@ -177,6 +177,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                                 messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
                                 messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
                                 messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
+                                messageEntity.setStatus((short)1);
                                 messageService.edit(messageEntity);
                             }
                         }

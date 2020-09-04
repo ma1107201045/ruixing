@@ -175,6 +175,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                                 messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
                                 messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
                                 messageEntity.setReceiverId(designLiaisonFileAuditorEntities.get(0).getAuditorId());
+                                messageEntity.setStatus((short)1);
                                 messageService.edit(messageEntity);
                             }
                         }

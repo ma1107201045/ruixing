@@ -182,6 +182,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                                 messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
                                 messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
                                 messageEntity.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
+                                messageEntity.setStatus((short)1);
                                 messageService.edit(messageEntity);
                             }
                         }
