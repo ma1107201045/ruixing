@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @Author Mr.liu
  * @Date 2020/7/7 16:12
@@ -22,6 +24,9 @@ public class ChanPinJiaoFuFileAuditorEntity {
 
     private Integer isPass;//是否通过 0.未通过 1.已通过
     private Integer objectType;//是否通过 0.未通过 1.已通过
+    private String reason;//未通过原因
+    private String operatorName;//操作人
+    private Date operatorTime;//操作时间
 
 
 }

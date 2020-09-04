@@ -24,5 +24,7 @@ public interface MessageDao {
 
     List<MessageEntity> selectByExample(MessageEntity messageEntity);
 
-    List<MessageEntity> findXiaoXi();
+    List<MessageEntity> findXiaoXi(Integer senderid);
+
+
 }

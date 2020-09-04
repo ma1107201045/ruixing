@@ -23,6 +23,15 @@
   </sql>
 
 
+    <!-- 根据文件id  查询对应的文件-->
+    <select id="findFileById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_file
+        where
+        id=#{id}
+    </select>
+
     <!-- 根据项目id  查询对应的文件-->
     <select id="findFile" resultMap="BaseResultMap">
         select

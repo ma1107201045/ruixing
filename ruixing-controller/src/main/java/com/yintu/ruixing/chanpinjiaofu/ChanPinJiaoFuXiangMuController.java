@@ -3,6 +3,7 @@ package com.yintu.ruixing.chanpinjiaofu;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
@@ -43,6 +44,9 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MessageService messageService;
+
     //创建三级树
     @GetMapping
     @ResponseBody
@@ -55,9 +59,11 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @ResponseBody
     @GetMapping("/findXiaoXi")
     public Map<String, Object> findXiaoXi() {
-        List<MessageEntity> contextlist = chanPinJiaoFuXiangMuService.findXiaoXi();
-        return ResponseDataUtil.ok("添加消息成功", contextlist);
+        Integer senderid = this.getLoginUser().getId().intValue();
+        List<MessageEntity> contextlist = chanPinJiaoFuXiangMuService.findXiaoXi(senderid);
+        return ResponseDataUtil.ok("查询消息成功", contextlist);
     }
+
 
     //根据消息id   更改信息状态
     @ResponseBody
@@ -77,7 +83,16 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         SimpleDateFormat dateFormat = new SimpleDateFormat(" yyyy-MM-dd ");
         String currentDate = dateFormat.format(new Date());
         Date date1 = dateFormat.parse(currentDate);
-        //System.out.println("12313"+currentDate);
+        List<Integer> uids = new ArrayList<>();
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        Date nowTime = new Date();
+        String truename=null;
+        List<UserEntity> userEntitiess = userService.findByTruename(truename);
+        for (UserEntity entitiess : userEntitiess) {
+            Integer id = entitiess.getId().intValue();
+            uids.add(id);
+        }
         //获取 项目的发货提醒日期
         List<ChanPinJiaoFuXiangMuEntity> xiangMuEntityList = chanPinJiaoFuXiangMuService.findAllXiangMu();
         for (ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity : xiangMuEntityList) {
@@ -86,20 +101,29 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
             Date fahuoTixingTime = chanPinJiaoFuXiangMuEntity.getFahuoTixingTime();
             if (fahuoTixingTime != null) {
                 String currentDate1 = dateFormat.format(fahuoTixingTime);
-                //System.out.println("fahuoTixingTime"+currentDate1);
                 Date date2 = dateFormat.parse(currentDate1);
                 int compareTo = date1.compareTo(date2);
                 if (compareTo == 0) {
-                    MessageEntity messageEntity = new MessageEntity();
-                    //添加一条消息到消息表
-                    messageEntity.setContext(xiangmuName + "项目待发货，请及时联系顾客确认供货计划！");
-                    messageEntity.setType((short) 2);
-                    messageEntity.setStatus((short) 1);
-                    chanPinJiaoFuXiangMuService.addXiaoXi(messageEntity);
+                    for (Integer uid : uids) {
+                        //添加一条消息到消息表
+                        MessageEntity messageEntity = new MessageEntity();
+                        messageEntity.setContext("“"+xiangmuName + "”项目待发货，请及时联系顾客确认供货计划！");
+                        messageEntity.setType((short) 2);
+                        messageEntity.setStatus((short) 1);
+                        messageEntity.setCreateBy(username);//创建人
+                        messageEntity.setCreateTime(nowTime);//创建时间
+                        messageEntity.setMessageType((short) 2);
+                        messageEntity.setProjectId(id);
+                        messageEntity.setSenderId(senderid);
+                        messageEntity.setReceiverId(uid);
+                        messageService.sendMessage(messageEntity);
+                    }
                 }
             }
         }
     }
+
+
 
     //根据项目id 查看更新历史记录
     @ResponseBody
@@ -131,7 +155,8 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @PutMapping("/editXiangMuById/{id}")
     public Map<String, Object> editXiangMuById(@PathVariable Integer id, ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, Integer[] uids) {
         String username = this.getLoginUser().getTrueName();
-        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity, username, id, uids);
+        Integer senderid = this.getLoginUser().getId().intValue();
+        chanPinJiaoFuXiangMuService.editXiangMuById(chanPinJiaoFuXiangMuEntity, username, id, uids, senderid);
         return ResponseDataUtil.ok("修改项目数据成功");
     }
 
@@ -170,7 +195,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
 
-    //根据树的id  查询对应的数据
+    //根据树的id  查询不同项目状态的数据
     @ResponseBody
     @GetMapping("/findXiangMuByIds")
     public Map<String, Object> findXiangMuByIds(Integer stateid, Integer page, Integer size) {
@@ -240,6 +265,15 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuChuFile(xmid, page, size);
         PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
         return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+    }
+
+
+    //根据文件id  查询对应的文件数据
+    @ResponseBody
+    @GetMapping("/findFileById/{id}")
+    public Map<String, Object> findFileById(@PathVariable Integer id) {
+        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileById(id);
+        return ResponseDataUtil.ok("查询输出文件成功", fileEntityList);
     }
 
     //上传文件

@@ -32,12 +32,12 @@
         <result column="fahuo_tixing_time" jdbcType="TIMESTAMP" property="fahuoTixingTime"/>
         <result column="xiangmu_money" property="xiangMuMoney"/>
         <result column="shebei_money" property="sheBeiMoney"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorid"/>
         <result column="auditor_state" jdbcType="INTEGER" property="auditorstate"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorid"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state, 
@@ -71,9 +71,10 @@
     </delete>
     <!--添加审核人-->
     <insert id="addAuditorName" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,addAuditorName)
+        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,objectType,operatorName,operatorTime)
         values
-        (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER},#{addAuditorName,jdbcType=INTEGER})
+        (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER},#{objectType,jdbcType=INTEGER},
+        #{operatorName},#{operatorTime})
     </insert>
     <!--查询正在执行 尚未完成发货、签收、验工 停滞暂不发货、陆续发货中、工程结束不需发货   的列表；-->
     <select id="findJiaoFuQingKuangLists" parameterType="java.lang.String" resultMap="xiangmu">
@@ -285,9 +286,12 @@
     <!--根据项目名 和项目编号 进行模糊查询-->
     <select id="findXiangMuData" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        cx.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
         FROM
-        mro_chanpinjiaofu_xiangmu
+        mro_chanpinjiaofu_xiangmu cx
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
+        AND cfa.objectType = 1
         <where>
             <if test="xiangMuName !=null">
                 xiangmu_name like concat('%',#{xiangMuName},'%')
@@ -364,10 +368,14 @@
     <!--根据树形的数据  查对应的数据-->
     <select id="findXiangMuByIds" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        cx.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
         FROM
-        mro_chanpinjiaofu_xiangmu
+        mro_chanpinjiaofu_xiangmu cx
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
+        AND cfa.objectType = 1
         where xiangmu_state = #{stateid}
+        GROUP BY cx.id DESC
     </select>
 
     <resultMap id="xiangmu" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity">
@@ -435,9 +443,14 @@
     <!--根据项目的id  查询对应的数据-->
     <select id="findXiangMuById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from mro_chanpinjiaofu_xiangmu
-        where id = #{id,jdbcType=INTEGER}
+        cx.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        FROM
+        mro_chanpinjiaofu_xiangmu cx
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
+        AND cfa.objectType = 1
+        WHERE
+        cx.id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -487,9 +500,6 @@
             <if test="fahuoTixingTime != null">
                 fahuo_tixing_time,
             </if>
-            <if test="auditorid != null">
-                auditor_id,
-            </if>
             <if test="auditorstate != null">
                 auditor_state,
             </if>
@@ -536,9 +546,6 @@
             </if>
             <if test="fahuoTixingTime != null">
                 #{fahuoTixingTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="auditorid != null">
-                #{auditorid,jdbcType=INTEGER},
             </if>
             <if test="auditorstate != null">
                 #{auditorstate,jdbcType=INTEGER},
@@ -590,9 +597,6 @@
             </if>
             <if test="operatorName != null">
                 operatorName = #{operatorName,jdbcType=VARCHAR},
-            </if>
-            <if test="auditorid != null">
-                auditor_id = #{auditorid,jdbcType=INTEGER},
             </if>
             <if test="auditorstate != null">
                 auditor_state = #{auditorstate,jdbcType=INTEGER},

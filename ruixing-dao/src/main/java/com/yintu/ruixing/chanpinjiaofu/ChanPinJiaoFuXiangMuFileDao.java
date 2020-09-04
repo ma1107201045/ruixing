@@ -29,4 +29,6 @@ public interface ChanPinJiaoFuXiangMuFileDao {
     List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
 }

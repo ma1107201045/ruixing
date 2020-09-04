@@ -18,7 +18,7 @@ public interface ChanPinJiaoFuXiangMuService {
 
     void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username);
 
-    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids);
+    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids, Integer senderid);
 
     void deletXiagMuById(Integer id);
 
@@ -26,7 +26,7 @@ public interface ChanPinJiaoFuXiangMuService {
 
     void addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer[] uids, String username, Integer uid);
 
-    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uid,String username );
+    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uid, String username);
 
     ChanPinJiaoFuXiangMuFileEntity findById(Integer id);
 
@@ -50,13 +50,13 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuXiangMuEntity> findAllXiangMu();
 
-    List<MessageEntity> findXiaoXi();
+    List<MessageEntity> findXiaoXi(Integer senderid);
 
     void editXiaoXiById(MessageEntity messageEntity);
 
     List<ChanPinJiaoFuRecordMessageEntity> findReordById(Integer id);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid,Integer page, Integer size, Integer filetype, String filename);
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size);
 
@@ -67,4 +67,6 @@ public interface ChanPinJiaoFuXiangMuService {
     List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id);
 
     List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
 }

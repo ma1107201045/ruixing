@@ -2,6 +2,7 @@ package com.yintu.ruixing.chanpinjiaofu.impl;
 
 import com.yintu.ruixing.chanpinjiaofu.*;
 import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.common.MessageDao;
 import com.yintu.ruixing.xitongguanli.UserDao;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.util.*;
 
 /**
@@ -36,6 +38,9 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     @Autowired
     private ChanPinJiaoFuXiangMuFileDao chanPinJiaoFuXiangMuFileDao;
 
+    @Autowired
+    private MessageService messageService;
+
     @Override
     public List<ChanPinJiaoFuXiangMuEntity> findJiaoFuQingKuangList(String choiceTing, Integer page, Integer size) {
         return chanPinJiaoFuXiangMuDao.findJiaoFuQingKuangList(choiceTing);
@@ -49,8 +54,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
-    public List<MessageEntity> findXiaoXi() {
-        return messageDao.findXiaoXi();
+    public List<MessageEntity> findXiaoXi(Integer senderid) {
+        return messageDao.findXiaoXi(senderid);
     }
 
     @Override
@@ -166,6 +171,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                 chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
                 chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
                 chanPinJiaoFuFileAuditorEntity.setObjectType(2);
+                chanPinJiaoFuFileAuditorEntity.setOperatorName(username);
+                chanPinJiaoFuFileAuditorEntity.setOperatorTime(new Date());
                 chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
             }
         }
@@ -174,41 +181,50 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuFileEntity.setUpdatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setUpdatename(username);
         chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
-
+        Integer aa = 0;
         if (!fileEntity.getFileName().equals(chanPinJiaoFuXiangMuFileEntity.getFileName())) {
             sb.append("文件名改为" + chanPinJiaoFuXiangMuFileEntity.getFileName());
+            aa++;
         }
         if (fileEntity.getAuditorState() == null || fileEntity.getAuditorState() != chanPinJiaoFuXiangMuFileEntity.getAuditorState()) {
             if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == null) {
                 sb.append(" ");
             } else {
                 if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 1) {
-                    sb.append("文件审核状态更改为  待审核  ");
+                    sb.append("文件审核状态更改为  待审核,  ");
+                    aa++;
                 }
                 if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 2) {
-                    sb.append("文件审核状态更改为  已审核未通过 ");
+                    sb.append("文件审核状态更改为  已审核未通过, ");
+                    aa++;
                 }
                 if (chanPinJiaoFuXiangMuFileEntity.getAuditorState() == 3) {
-                    sb.append("文件审核状态更改为  已审核已通过");
+                    sb.append("文件审核状态更改为  已审核已通过,");
+                    aa++;
                 }
             }
         }
         if (fileEntity.getFileType() != chanPinJiaoFuXiangMuFileEntity.getFileType()) {
             if (chanPinJiaoFuXiangMuFileEntity.getFileType() == 1) {
-                sb.append("文件类型更改为  输入文件 ");
+                sb.append("文件类型更改为  输入文件, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuFileEntity.getFileType() == 2) {
-                sb.append("文件类型更改为  输出文件 ");
+                sb.append("文件类型更改为  输出文件, ");
+                aa++;
             }
         }
         if (fileEntity.getFabuType() != chanPinJiaoFuXiangMuFileEntity.getFabuType()) {
             if (chanPinJiaoFuXiangMuFileEntity.getFabuType() == 1) {
-                sb.append("发布状态更改为  录入 ");
+                sb.append("发布状态更改为  录入, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuFileEntity.getFabuType() == 2) {
-                sb.append("发布状态更改为  发布 ");
+                sb.append("发布状态更改为  发布, ");
+                aa++;
             }
-        } else {
+        }
+        if (aa == 0) {
             sb.append("没有修改任何状态");
         }
         Integer typenum = 2;
@@ -286,17 +302,34 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
-    public void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids) {
+    public List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id) {
+        return chanPinJiaoFuXiangMuFileDao.findFileById(id);
+    }
+
+    @Override
+    public void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids, Integer senderid) {
         StringBuilder sb = new StringBuilder();
         Date nowTime = new Date();
         //添加审查人
-        if (uids != null) {
+        if (uids.length != 0) {
             for (Integer uid : uids) {
                 ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
                 chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
                 chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
                 chanPinJiaoFuFileAuditorEntity.setObjectType(1);
                 chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
+                //添加消息
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(username);//创建人
+                messageEntity.setCreateTime(nowTime);//创建时间
+                messageEntity.setType((short) 2);
+                messageEntity.setMessageType((short) 2);
+                messageEntity.setProjectId(id);
+                messageEntity.setSenderId(senderid);
+                messageEntity.setReceiverId(uid);
+                messageEntity.setStatus((short) 1);
+                messageEntity.setContext("“" + chanPinJiaoFuXiangMuEntity.getXiangmuName() + "”项目需要您审核,请查看");
+                messageService.sendMessage(messageEntity);
             }
             chanPinJiaoFuXiangMuEntity.setAuditorstate(1);
         }
@@ -306,107 +339,137 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         Integer mid = id;
         ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
         chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
+        Integer aa = 0;
         if (xiangMuEntity.getXiangmuState() != chanPinJiaoFuXiangMuEntity.getXiangmuState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1) {
-                sb.append(" 项目状态改为“正在执行”");
+                sb.append(" 项目状态改为“正在执行”,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 2) {
-                sb.append(" 项目状态改为“仅剩尾款”");
+                sb.append(" 项目状态改为“仅剩尾款”,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 3) {
-                sb.append(" 项目状态改为“项目关闭”");
+                sb.append(" 项目状态改为“项目关闭”,");
+                aa++;
             }
         }
         if (!xiangMuEntity.getXiangmuName().equals(chanPinJiaoFuXiangMuEntity.getXiangmuName())) {
             String xiangmuName = chanPinJiaoFuXiangMuEntity.getXiangmuName();
-            sb.append(" 项目名改为" + xiangmuName);
+            sb.append(" 项目名改为" + xiangmuName + ",");
+            aa++;
         }
         if (xiangMuEntity.getXiaoshouState() != chanPinJiaoFuXiangMuEntity.getXiaoshouState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiaoshouState() == 1) {
-                sb.append(" 销售需求状态改为:前续未办理");
+                sb.append(" 销售需求状态改为 前续未办理,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getXiaoshouState() == 2) {
-                sb.append(" 销售需求状态改为:全部品类/数量已下需求");
+                sb.append(" 销售需求状态改为 全部品类/数量已下需求,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getXiaoshouState() == 3) {
-                sb.append(" 销售需求状态改为:部分品类/数量已下需求");
+                sb.append(" 销售需求状态改为 部分品类/数量已下需求,");
+                aa++;
             }
         }
         if (xiangMuEntity.getFahuoState() != chanPinJiaoFuXiangMuEntity.getFahuoState()) {
             if (chanPinJiaoFuXiangMuEntity.getFahuoState() == 1) {
-                sb.append(" 发货状态改为 项目停滞暂不发货");
+                sb.append(" 发货状态改为 项目停滞暂不发货,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getFahuoState() == 2) {
-                sb.append(" 发货状态改为 暂未开始发货");
+                sb.append(" 发货状态改为 暂未开始发货,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getFahuoState() == 3) {
-                sb.append(" 发货状态改为 陆续发货中");
+                sb.append(" 发货状态改为 陆续发货中,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getFahuoState() == 4) {
-                sb.append(" 发货状态改为 工程结束不需发货");
+                sb.append(" 发货状态改为 工程结束不需发货,");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getFahuoState() == 5) {
-                sb.append(" 发货状态改为 当前订单完成");
+                sb.append(" 发货状态改为 当前订单完成,");
+                aa++;
             }
         }
         if (xiangMuEntity.getYangongState() != chanPinJiaoFuXiangMuEntity.getYangongState()) {
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 1) {
-                sb.append(" 验工状态改为  是否需要验工 ");
+                sb.append(" 验工状态改为  是否需要验工, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 2) {
-                sb.append(" 验工状态改为  前续未办理 ");
+                sb.append(" 验工状态改为  前续未办理, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 3) {
-                sb.append(" 验工状态改为  待验工 ");
+                sb.append(" 验工状态改为  待验工, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 4) {
-                sb.append(" 验工状态改为  顾客要求暂缓验工 ");
+                sb.append(" 验工状态改为  顾客要求暂缓验工, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 5) {
-                sb.append(" 验工状态改为  完成部分验工 ");
+                sb.append(" 验工状态改为  完成部分验工, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getYangongState() == 6) {
-                sb.append(" 验工状态改为  完成验工");
+                sb.append(" 验工状态改为  完成验工, ");
+                aa++;
             }
         }
         if (xiangMuEntity.getQianshouState() != chanPinJiaoFuXiangMuEntity.getQianshouState()) {
             if (chanPinJiaoFuXiangMuEntity.getQianshouState() == 1) {
-                sb.append(" 签收状态改为  前续未办理 ");
+                sb.append(" 签收状态改为  前续未办理, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getQianshouState() == 2) {
-                sb.append(" 签收状态改为  公司暂存不签收 ");
+                sb.append(" 签收状态改为  公司暂存不签收, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getQianshouState() == 3) {
-                sb.append(" 签收状态改为  已转储待签收 ");
+                sb.append(" 签收状态改为  已转储待签收, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getQianshouState() == 4) {
-                sb.append(" 签收状态改为  完成签收 ");
+                sb.append(" 签收状态改为  完成签收, ");
+                aa++;
             }
         }
         if (xiangMuEntity.getXianchangfuwu() != chanPinJiaoFuXiangMuEntity.getXianchangfuwu()) {
             if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu() == 1) {
-                sb.append(" 是否需要现场服务改为 是");
+                sb.append(" 是否需要现场服务改为 是, ");
+                aa++;
             }
             if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu() == 0) {
-                sb.append(" 是否需要现场服务改为 否");
+                sb.append(" 是否需要现场服务改为 否, ");
+                aa++;
             }
         }
         if (xiangMuEntity.getRemarks() == null) {
             if (chanPinJiaoFuXiangMuEntity.getRemarks() != null) {
-                sb.append("新增备注" + chanPinJiaoFuXiangMuEntity.getRemarks());
+                sb.append("新增备注" + chanPinJiaoFuXiangMuEntity.getRemarks() + ",");
+                aa++;
             }
         }
         if (xiangMuEntity.getRemarks() != null && xiangMuEntity.getRemarks() != chanPinJiaoFuXiangMuEntity.getRemarks()) {
-            sb.append("备注改为" + chanPinJiaoFuXiangMuEntity.getRemarks());
+            sb.append("备注改为" + chanPinJiaoFuXiangMuEntity.getRemarks() + ",");
+            aa++;
         }
         if (xiangMuEntity.getFahuoTixingTime() == null) {
             if (chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() != null) {
-                sb.append("新增发货时间" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime());
+                sb.append("新增发货时间" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() + ",");
+                aa++;
             }
         }
         if (xiangMuEntity.getFahuoTixingTime() != null && xiangMuEntity.getFahuoTixingTime().getTime() != chanPinJiaoFuXiangMuEntity.getFahuoTixingTime().getTime()) {
-            sb.append("发货时间改为" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime());
-        } else {
+            sb.append("发货时间改为" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() + ",");
+            aa++;
+        }
+        if (aa == 0) {
             sb.append("没有修改任何状态");
         }
         String context = sb.toString();
@@ -420,7 +483,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuEntity.setOperatorName(username);
         String xiangmuName = chanPinJiaoFuXiangMuEntity.getXiangmuName();
         Integer typenum = 1;
-        String context = "新增“" + xiangmuName + "”项目";
+        String context = "新增“" + xiangmuName + "”项目 , 项目状态为“正在执行”";
         chanPinJiaoFuXiangMuDao.addXiangMu(chanPinJiaoFuXiangMuEntity);
         Integer mid = chanPinJiaoFuXiangMuEntity.getId();
         chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);

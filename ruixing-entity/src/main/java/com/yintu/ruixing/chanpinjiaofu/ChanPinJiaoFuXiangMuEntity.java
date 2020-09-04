@@ -41,7 +41,7 @@ public class ChanPinJiaoFuXiangMuEntity {
 
     private String sbName;//设备名
 
-   // private Integer auditorid;//审核人id
+    private Integer auditorid;//审核人id
     private Integer auditorstate;//审核状态 1：待审核 ，2：已审核，3：审核未通过'
     private Date createTime;
     private Date updateTime;

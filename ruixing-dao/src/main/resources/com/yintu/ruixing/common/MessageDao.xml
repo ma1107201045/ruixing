@@ -239,7 +239,9 @@
         ,
         <include refid="Blob_Column_List"/>
         from mro_message
-        where type = 2
+        where
+         receiver_id = #{senderid}
+        and type = 2
         AND STATUS =1
     </select>
     <select id="selectByTypeAndStatus" resultMap="ResultMapWithBLOBs">
