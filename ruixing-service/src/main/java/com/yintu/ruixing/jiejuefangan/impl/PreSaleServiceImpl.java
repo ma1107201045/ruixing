@@ -9,6 +9,8 @@ import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ public class PreSaleServiceImpl implements PreSaleService {
     private SolutionLogService solutionLogService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -62,19 +66,25 @@ public class PreSaleServiceImpl implements PreSaleService {
         this.add(entity);
         //售后技术支持项目状态为3时发送消息
         if (entity.getProjectStatus() == 3) {
-            MessageEntity messageEntity = new MessageEntity();
-            messageEntity.setCreateBy(entity.getCreateBy());
-            messageEntity.setCreateTime(entity.getCreateTime());
-            messageEntity.setModifiedBy(entity.getModifiedBy());
-            messageEntity.setModifiedTime(entity.getModifiedTime());
-            messageEntity.setTitle("项目");
-            messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
-            messageEntity.setType((short) 1);
-            messageEntity.setSmallType((short) 1);
-            messageEntity.setMessageType((short) 1);
-            messageEntity.setProjectId(entity.getId());
-            messageEntity.setStatus((short) 1);
-            messageService.sendMessage(messageEntity);
+            List<UserEntity> userEntities = userService.findByTruename(null);
+            for (UserEntity userEntity : userEntities) {
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(entity.getCreateBy());
+                messageEntity.setCreateTime(entity.getCreateTime());
+                messageEntity.setModifiedBy(entity.getModifiedBy());
+                messageEntity.setModifiedTime(entity.getModifiedTime());
+                messageEntity.setTitle("项目");
+                messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
+                messageEntity.setType((short) 1);
+                messageEntity.setSmallType((short) 1);
+                messageEntity.setMessageType((short) 1);
+                messageEntity.setProjectId(entity.getId());
+                messageEntity.setSenderId(null);
+                messageEntity.setReceiverId(userEntity.getId().intValue());
+                messageEntity.setStatus((short) 1);
+                messageService.sendMessage(messageEntity);
+            }
+
         }
         //项目日志记录
         StringBuilder sb = new StringBuilder();
@@ -99,7 +109,7 @@ public class PreSaleServiceImpl implements PreSaleService {
         PreSaleEntity source = this.findById(entity.getId());
         if (source != null) {
             this.edit(entity);
-             //售前技术支持项目状态为3时发送消息
+            //售前技术支持项目状态为3时发送消息
             if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3) {
                 //更新项目消息
                 MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
@@ -114,20 +124,25 @@ public class PreSaleServiceImpl implements PreSaleService {
                 }
             }
             if (entity.getProjectStatus() == 3 && source.getProjectStatus() != 3) {
-                //添加项目消息
-                MessageEntity messageEntity = new MessageEntity();
-                messageEntity.setCreateBy(entity.getCreateBy());
-                messageEntity.setCreateTime(entity.getCreateTime());
-                messageEntity.setModifiedBy(entity.getModifiedBy());
-                messageEntity.setModifiedTime(entity.getModifiedTime());
-                messageEntity.setTitle("项目");
-                messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
-                messageEntity.setType((short) 1);
-                messageEntity.setSmallType((short) 1);
-                messageEntity.setMessageType((short) 1);
-                messageEntity.setProjectId(entity.getId());
-                messageEntity.setStatus((short) 1);
-                messageService.sendMessage(messageEntity);
+                List<UserEntity> userEntities = userService.findByTruename(null);
+                for (UserEntity userEntity : userEntities) {
+                    //添加项目消息
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(entity.getModifiedBy());
+                    messageEntity.setCreateTime(entity.getModifiedTime());
+                    messageEntity.setModifiedBy(entity.getModifiedBy());
+                    messageEntity.setModifiedTime(entity.getModifiedTime());
+                    messageEntity.setTitle("项目");
+                    messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setMessageType((short) 1);
+                    messageEntity.setProjectId(entity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(userEntity.getId().intValue());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
             }
             if (entity.getProjectStatus() != 3 && source.getProjectStatus() == 3) {
                 //删除项目消息

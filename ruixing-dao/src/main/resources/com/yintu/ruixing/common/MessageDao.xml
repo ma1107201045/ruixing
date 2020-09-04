@@ -250,12 +250,12 @@
         from mro_message
         <where>
             <if test="type!=null">
-                and type =#{type,jdbcType=SMALLINT}
+                and type = #{type,jdbcType=SMALLINT}
             </if>
             <if test="status!=null">
-                and status =#{status,jdbcType=SMALLINT}
+                and status = #{status,jdbcType=SMALLINT}
             </if>
-            and (message_type= 1 or ((message_type=2 or message_type=3) and receiver_id=#{loginUserId,jdbcType=SMALLINT}))
+            and receiver_id = #{loginUserId,jdbcType=SMALLINT}
         </where>
     </select>
 
