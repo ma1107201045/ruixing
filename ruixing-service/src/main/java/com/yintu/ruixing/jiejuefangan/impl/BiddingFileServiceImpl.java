@@ -238,14 +238,16 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     @Override
     public BiddingFileEntity findBiddingById(Integer id) {
         BiddingFileEntity biddingFileEntity = this.findById(id);
-        Integer biddingId = biddingFileEntity.getBiddingId();
-        if (biddingId != null) {
-            BiddingEntity biddingEntity = biddingService.findById(biddingId);
-            biddingFileEntity.setBiddingEntity(biddingEntity);
+        if (biddingFileEntity != null) {
+            Integer biddingId = biddingFileEntity.getBiddingId();
+            if (biddingId != null) {
+                BiddingEntity biddingEntity = biddingService.findById(biddingId);
+                biddingFileEntity.setBiddingEntity(biddingEntity);
+            }
+            List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByBiddingFileIdId(id);
+            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorEntities);
         }
-        List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByBiddingFileIdId(id);
-        biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorEntities);
-        return biddingFileEntity;
+        return biddingFileEntity == null ? new BiddingFileEntity() : biddingFileEntity;
     }
 
     @Override
@@ -309,9 +311,27 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 biddingFileAuditorEntity.setIsPass(isPass);
                 biddingFileAuditorEntity.setReason(isPass == 2 ? reason : null);
                 biddingFileAuditorService.edit(biddingFileAuditorEntity);
-                //给被审核人发消息
+
                 BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
                 if (biddingEntity != null) {
+                    //给审核人发审核结果消息
+                    MessageEntity messageEntity1 = new MessageEntity();
+                    messageEntity1.setCreateBy(userName);
+                    messageEntity1.setCreateTime(new Date());
+                    messageEntity1.setModifiedBy(userName);
+                    messageEntity1.setModifiedTime(new Date());
+                    messageEntity1.setTitle("文件");
+                    messageEntity1.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件已被您审核！");
+                    messageEntity1.setType((short) 1);
+                    messageEntity1.setSmallType((short) 1);
+                    messageEntity1.setMessageType((short) 2);
+                    messageEntity1.setProjectId(biddingFileEntity.getBiddingId());
+                    messageEntity1.setFileId(biddingFileEntity.getId());
+                    messageEntity1.setSenderId(null);
+                    messageEntity1.setReceiverId(biddingFileAuditorEntity.getAuditorId());
+                    messageEntity1.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity1);
+                    //给被审核人发消息
                     MessageEntity messageEntity = new MessageEntity();
                     messageEntity.setCreateBy(userName);
                     messageEntity.setCreateTime(new Date());

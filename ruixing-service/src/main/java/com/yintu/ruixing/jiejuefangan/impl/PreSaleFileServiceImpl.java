@@ -234,14 +234,16 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Override
     public PreSaleFileEntity findPreSaleById(Integer id) {
         PreSaleFileEntity preSaleFileEntity = this.findById(id);
-        Integer preSaleId = preSaleFileEntity.getPreSaleId();
-        if (preSaleId != null) {
-            PreSaleEntity preSaleEntity = preSaleService.findById(preSaleId);
-            preSaleFileEntity.setPreSaleEntity(preSaleEntity);
+        if (preSaleFileEntity != null) {
+            Integer preSaleId = preSaleFileEntity.getPreSaleId();
+            if (preSaleId != null) {
+                PreSaleEntity preSaleEntity = preSaleService.findById(preSaleId);
+                preSaleFileEntity.setPreSaleEntity(preSaleEntity);
+            }
+            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
+            preSaleFileEntity.setPreSaleFileAuditorEntities(preSaleFileAuditorEntities);
         }
-        List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
-        preSaleFileEntity.setPreSaleFileAuditorEntities(preSaleFileAuditorEntities);
-        return preSaleFileEntity;
+        return preSaleFileEntity == null ? new PreSaleFileEntity() : preSaleFileEntity;
     }
 
     @Override
@@ -319,9 +321,27 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 preSaleFileAuditorEntity.setIsPass(isPass);
                 preSaleFileAuditorEntity.setReason(isPass == 2 ? reason : null);
                 preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
-                //给被审核人发消息
+
                 PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
                 if (preSaleEntity != null) {
+                    //给审核人发审核结果消息
+                    MessageEntity messageEntity1 = new MessageEntity();
+                    messageEntity1.setCreateBy(userName);
+                    messageEntity1.setCreateTime(new Date());
+                    messageEntity1.setModifiedBy(userName);
+                    messageEntity1.setModifiedTime(new Date());
+                    messageEntity1.setTitle("文件");
+                    messageEntity1.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被您审核！");
+                    messageEntity1.setType((short) 1);
+                    messageEntity1.setSmallType((short) 1);
+                    messageEntity1.setMessageType((short) 2);
+                    messageEntity1.setProjectId(preSaleFileEntity.getPreSaleId());
+                    messageEntity1.setFileId(preSaleFileEntity.getId());
+                    messageEntity1.setSenderId(null);
+                    messageEntity1.setReceiverId(preSaleFileAuditorEntity.getAuditorId());
+                    messageEntity1.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity1);
+                    //给被审核人发审核结果消息
                     MessageEntity messageEntity = new MessageEntity();
                     messageEntity.setCreateBy(userName);
                     messageEntity.setCreateTime(new Date());
