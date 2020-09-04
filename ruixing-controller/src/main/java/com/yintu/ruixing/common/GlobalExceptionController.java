@@ -10,6 +10,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -43,6 +44,12 @@ public class GlobalExceptionController {
         }
         logger.error(e.getMessage());
         return ResponseDataUtil.error("数据库异常，操作失败");
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Map<String, Object> sqlException(MaxUploadSizeExceededException e) {
+        logger.error(e.getMessage());
+        return ResponseDataUtil.error("文件上传异常，文件过大");
     }
 
     @ExceptionHandler(BaseRuntimeException.class)
