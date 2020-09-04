@@ -71,7 +71,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
         messageEntity.setModifiedBy(entity.getModifiedBy());
         messageEntity.setModifiedTime(entity.getModifiedTime());
         messageEntity.setTitle("项目");
-        messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
+        messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目进展情况，及时确认产品和服务需求，在SAP中下达！");
         messageEntity.setType((short) 1);
         messageEntity.setSmallType((short) 3);
         messageEntity.setMessageType((short) 1);
