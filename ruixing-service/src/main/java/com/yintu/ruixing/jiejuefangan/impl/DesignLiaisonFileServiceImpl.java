@@ -338,7 +338,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 //文件日志记录
                 StringBuilder sb = new StringBuilder();
                 sb.append("   审核人：").append(trueName)
-                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核未通过");
+                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核通过");
                 if (isPass == 2) {
                     sb.append("   理由：").append(reason);
                 }
