@@ -172,6 +172,7 @@
         <include refid="Base_Column_List"/>
         from mro_pre_sale
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id DESC
     </select>
     <select id="selectByExample" resultMap="BaseResultMap">
         select

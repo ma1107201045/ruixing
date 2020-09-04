@@ -3,6 +3,8 @@ package com.yintu.ruixing.jiejuefangan.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
@@ -24,6 +26,8 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     private DesignLiaisonDao designLiaisonDao;
     @Autowired
     private SolutionLogService solutionLogService;
+    @Autowired
+    private MessageService messageService;
     @Autowired
     private TieLuJuService tieLuJuService;
 
@@ -60,6 +64,20 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     @Override
     public void add(DesignLiaisonEntity entity, String trueName) {
         this.add(entity);
+        //消息
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setCreateBy(entity.getCreateBy());
+        messageEntity.setCreateTime(entity.getCreateTime());
+        messageEntity.setModifiedBy(entity.getModifiedBy());
+        messageEntity.setModifiedTime(entity.getModifiedTime());
+        messageEntity.setTitle("项目");
+        messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
+        messageEntity.setType((short) 1);
+        messageEntity.setSmallType((short) 3);
+        messageEntity.setMessageType((short) 1);
+        messageEntity.setProjectId(entity.getId());
+        messageEntity.setStatus((short) 1);
+        messageService.sendMessage(messageEntity);
         //项目日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))

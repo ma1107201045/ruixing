@@ -232,6 +232,7 @@
         <include refid="Base_Column_List"/>
         from mro_design_liaison
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id DESC
     </select>
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         <id column="dl_id" jdbcType="INTEGER" property="id"/>

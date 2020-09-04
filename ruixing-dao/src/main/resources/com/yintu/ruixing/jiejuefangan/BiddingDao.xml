@@ -208,6 +208,7 @@
         <include refid="Base_Column_List"/>
         from mro_bidding
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id DESC
     </select>
     <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
         select DISTINCT YEAR(project_date)
