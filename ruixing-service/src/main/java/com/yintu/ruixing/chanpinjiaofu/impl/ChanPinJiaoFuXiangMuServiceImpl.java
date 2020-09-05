@@ -171,8 +171,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                 chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(id);
                 chanPinJiaoFuFileAuditorEntity.setAuditorId(uid);
                 chanPinJiaoFuFileAuditorEntity.setObjectType(2);
-                chanPinJiaoFuFileAuditorEntity.setOperatorName(username);
-                chanPinJiaoFuFileAuditorEntity.setOperatorTime(new Date());
+                chanPinJiaoFuFileAuditorEntity.setDoName(username);
+                chanPinJiaoFuFileAuditorEntity.setDoTime(new Date());
                 chanPinJiaoFuXiangMuDao.addAuditorName(chanPinJiaoFuFileAuditorEntity);
             }
         }

@@ -25,8 +25,8 @@ public class ChanPinJiaoFuFileAuditorEntity {
     private Integer isPass;//是否通过 0.未通过 1.已通过
     private Integer objectType;//是否通过 0.未通过 1.已通过
     private String reason;//未通过原因
-    private String operatorName;//操作人
-    private Date operatorTime;//操作时间
+    private String doName;//操作人
+    private Date doTime;//操作时间
 
 
 }
