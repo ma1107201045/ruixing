@@ -22,11 +22,6 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
     @Autowired
     private QuDuanDownloadDao quDuanDownloadDao;
-    @Autowired
-    private CheZhanService cheZhanService;
-    @Autowired
-    private QuDuanInfoService quDuanInfoService;
-
 
     @Override
     public void add(QuDuanDownloadEntity quDuanDownloadEntity) {

@@ -14,9 +14,10 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="switch_status" jdbcType="SMALLINT" property="switchStatus"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="process" jdbcType="INTEGER" property="process"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, cid,  start_time, end_time, status, type,data_status,data_type,user_id,create_time,switch_status,update_time
+        id, cid,  start_time, end_time, status, type,data_status,data_type,user_id,create_time,switch_status,update_time,process
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -30,11 +31,11 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadEntity">
-        insert into mro_quduan_download (id, cid, start_time, end_time, status, type, data_status, data_type, user_id, create_time, switch_status, update_time)
+        insert into mro_quduan_download (id, cid, start_time, end_time, status, type, data_status, data_type, user_id, create_time, switch_status, update_time, process)
         values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP},
                 #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT}, #{type,jdbcType=SMALLINT},
                 #{dataStatus,jdbcType=SMALLINT}, #{dataType,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{create_time,jdbcType=TIMESTAMP},
-                #{switch_status,jdbcType=SMALLINT}, #{update_time,jdbcType=TIMESTAMP})
+                #{switch_status,jdbcType=SMALLINT}, #{update_time,jdbcType=TIMESTAMP}, #{process,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadEntity" useGeneratedKeys="true" keyProperty="id">
         insert into mro_quduan_download
@@ -73,7 +74,10 @@
                 switch_status,
             </if>
             <if test="updateTime != null">
-                update_time
+                update_time,
+            </if>
+            <if test="process != null">
+                process,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -111,7 +115,10 @@
                 #{switchStatus,jdbcType=SMALLINT},
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP}
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="process != null">
+                #{process,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -149,7 +156,10 @@
                 switch_status = #{switchStatus,jdbcType=SMALLINT},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP}
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="process != null">
+                process =  #{process,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -166,7 +176,8 @@
             user_id       = #{userId,jdbcType=INTEGER},
             create_time   = #{createTime,jdbcType=TIMESTAMP},
             switch_status = #{switchStatus,jdbcType=SMALLINT},
-            update_time   = #{updateTime,jdbcType=TIMESTAMP}
+            update_time   = #{updateTime,jdbcType=TIMESTAMP},
+            process       = #{process,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <resultMap id="MuchResultMap" type="com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadEntity">
@@ -182,6 +193,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="switch_status" jdbcType="SMALLINT" property="switchStatus"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="process" jdbcType="INTEGER" property="process"/>
         <association column="qb_cid" property="cheZhanEntity">
             <id column="cz_cid" jdbcType="INTEGER" property="cid"/>
             <result column="cz_id" jdbcType="INTEGER" property="czId"/>
@@ -189,10 +201,9 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        qd.id as qd_id, qd.cid as qb_cid, qd.start_time, qd.end_time,qd.status, qd.type,data_status,data_type,user_id,create_time,switch_status,update_time,
+        qd.id as qd_id, qd.cid as qb_cid, qd.start_time, qd.end_time,qd.status, qd.type,data_status,data_type,user_id,create_time,switch_status,update_time,process,
         cz.cid as cz_cid ,cz.cz_id,cz.cz_name
     </sql>
-
     <select id="selectByDateTime" resultMap="MuchResultMap">
         select
         <include refid="Much_Column_List"/>
@@ -213,7 +224,7 @@
         <include refid="Base_Column_List"/>
         from mro_quduan_download
         where cid = #{cid,jdbcType=INTEGER}
-          and user_id=#{userId,jdbcType=INTEGER}
-          and data_type = #{dataType,jdbcType=SMALLINT}
+        and user_id=#{userId,jdbcType=INTEGER}
+        and data_type = #{dataType,jdbcType=SMALLINT}
     </select>
 </mapper>
