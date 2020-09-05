@@ -127,7 +127,9 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         BiddingFileEntity bfSource = this.findById(biddingFileEntity.getId());
         if (bfSource.getReleaseStatus() == 1) {
             this.edit(biddingFileEntity);
-            if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            Short releaseStatus = biddingFileEntity.getReleaseStatus();
+            Short type = biddingFileEntity.getType();
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 //添加审核人
                 List<BiddingFileAuditorEntity> biddingFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {
@@ -176,7 +178,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             if (bfTarget.getReleaseStatus() != null) {
                 sb.append("   文件状态：").append(biddingFileEntity.getReleaseStatus() == 1 ? "录入" : biddingFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-            if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 sb.append("   审核人：").append(trueName)
                         .append("   审核状态：").append("待审核");
             }

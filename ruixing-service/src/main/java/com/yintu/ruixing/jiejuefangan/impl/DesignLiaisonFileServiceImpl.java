@@ -124,7 +124,9 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
         DesignLiaisonFileEntity dlfSource = this.findById(designLiaisonFileEntity.getId());
         if (dlfSource.getReleaseStatus() == 1) {
             this.edit(designLiaisonFileEntity);
-            if (designLiaisonFileEntity.getReleaseStatus() == 2 && designLiaisonFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            Short releaseStatus = designLiaisonFileEntity.getReleaseStatus();
+            Short type = designLiaisonFileEntity.getType();
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {
                     if (auditorId != null) {
@@ -171,7 +173,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
             if (dlfTarget.getReleaseStatus() != null) {
                 sb.append("   文件状态：").append(designLiaisonFileEntity.getReleaseStatus() == 1 ? "录入" : designLiaisonFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-            if (designLiaisonFileEntity.getReleaseStatus() == 2 && designLiaisonFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 sb.append("   审核人：").append(trueName)
                         .append("   审核状态：").append("待审核");
             }

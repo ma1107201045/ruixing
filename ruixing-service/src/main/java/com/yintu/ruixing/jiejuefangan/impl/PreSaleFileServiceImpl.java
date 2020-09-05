@@ -122,7 +122,9 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         PreSaleFileEntity psfSource = this.findById(preSaleFileEntity.getId());
         if (psfSource.getReleaseStatus() == 1) {
             this.edit(preSaleFileEntity);
-            if (preSaleFileEntity.getReleaseStatus() == 2 && preSaleFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            Short releaseStatus = preSaleFileEntity.getReleaseStatus();
+            Short type = preSaleFileEntity.getType();
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 //添加审核人
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {
@@ -170,10 +172,9 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             if (psfTarget.getReleaseStatus() != null) {
                 sb.append("   文件状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-            if (preSaleFileEntity.getReleaseStatus() == 2 && preSaleFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
                 sb.append("   审核人：").append(trueName)
                         .append("   审核状态：").append("待审核");
-
             }
             if (psfTarget.getRemark() != null) {
                 sb.append("   备注：").append(preSaleFileEntity.getRemark());
