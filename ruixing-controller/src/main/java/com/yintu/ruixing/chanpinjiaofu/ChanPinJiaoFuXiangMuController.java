@@ -273,7 +273,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @GetMapping("/findFileById/{id}")
     public Map<String, Object> findFileById(@PathVariable Integer id) {
         List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileById(id);
-        return ResponseDataUtil.ok("查询输出文件成功", fileEntityList);
+        return ResponseDataUtil.ok("查询文件成功", fileEntityList);
     }
 
     //上传文件

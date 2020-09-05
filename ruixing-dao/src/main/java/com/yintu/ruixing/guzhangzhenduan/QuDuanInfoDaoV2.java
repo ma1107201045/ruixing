@@ -66,4 +66,9 @@ public interface QuDuanInfoDaoV2 {
     List<quduanEntity> findDMHQuDuanData(@Param("starttime") long starttime, @Param("endtime") long endtime,
                                          @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
                                          @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+
+    List<quduanEntity> findQuDuanDayData(@Param("statrtime") long statrtime,@Param("endtime") long endtime,
+                                         @Param("shuxingname") String shuxingname,
+                                         @Param("quduanname")String quduanname,
+                                         @Param("qdid") Integer qdid,@Param("tableName") String tableName);
 }

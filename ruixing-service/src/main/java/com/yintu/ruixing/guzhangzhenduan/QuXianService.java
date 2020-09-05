@@ -49,4 +49,5 @@ public interface QuXianService {
 
     List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
+    List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 }
