@@ -36,6 +36,8 @@ public class QuDuanDownloadEntity implements Serializable {
 
     private Date updateTime;
 
+    private Integer process;
+
     private CheZhanEntity cheZhanEntity;
 
 

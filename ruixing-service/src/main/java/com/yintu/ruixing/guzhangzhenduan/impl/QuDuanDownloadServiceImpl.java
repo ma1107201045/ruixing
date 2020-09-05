@@ -22,12 +22,8 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
     @Autowired
     private QuDuanDownloadDao quDuanDownloadDao;
-    @Autowired
-    private CheZhanService cheZhanService;
-    @Autowired
-    private QuDuanInfoService quDuanInfoService;
 
-
+    //**************************数据下载******************************
     @Override
     public void add(QuDuanDownloadEntity quDuanDownloadEntity) {
         quDuanDownloadDao.insertSelective(quDuanDownloadEntity);
@@ -54,6 +50,7 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
         return quDuanDownloadDao.selectByDateTime(czId, startDateTime, endDateTime);
     }
 
+
     @Override
     public Integer add(Integer czId, Short type, Date startDateTime, Date endDateTime) {
         QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
@@ -68,9 +65,26 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
         return quDuanDownloadEntity.getId();
     }
 
+
+    //**************************数据接收或者关闭******************************
+
+    public void insertData(Integer czId, Integer userId) {
+        QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
+        quDuanDownloadEntity.setCreateTime(new Date());
+        quDuanDownloadEntity.setCid(czId);
+        quDuanDownloadEntity.setUserId(userId);
+        quDuanDownloadEntity.setDataType((short) 2);
+
+        quDuanDownloadEntity.setDataStatus((short) 0);
+        quDuanDownloadEntity.setSwitchStatus((short) 1);
+
+        quDuanDownloadEntity.setUpdateTime(new Date());
+        this.add(quDuanDownloadEntity);
+    }
+
     @Override
     public Integer changeDataStatus(Integer czId, Integer userId, Short dataStatus) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.insertData(czId, userId);
+        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
         quDuanDownloadEntity.setDataStatus(dataStatus);
         if (dataStatus.equals((short) 1)) {
             quDuanDownloadEntity.setCreateTime(new Date());
@@ -85,7 +99,7 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
     @Override
     public Integer changeSwitchStatus(Integer czId, Integer userId, Short switchStatus) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.insertData(czId, userId);
+        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
         quDuanDownloadEntity.setSwitchStatus(switchStatus);
         this.edit(quDuanDownloadEntity);
         return quDuanDownloadEntity.getId();
@@ -93,28 +107,19 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
     @Override
     public Short changeUpdateTime(Integer czId, Integer userId) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.insertData(czId, userId);
+        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
         quDuanDownloadEntity.setUpdateTime(new Date());
         this.edit(quDuanDownloadEntity);
         return quDuanDownloadEntity.getSwitchStatus();
     }
 
-
-    public QuDuanDownloadEntity insertData(Integer czId, Integer userId) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.quDuanDownloadDao.selectByCidAndDataType(czId, userId, (short) 2);
-        if (quDuanDownloadEntity == null) {
-            quDuanDownloadEntity = new QuDuanDownloadEntity();
-            quDuanDownloadEntity.setCid(czId);
-            quDuanDownloadEntity.setUserId(userId);
-            quDuanDownloadEntity.setDataStatus((short) 0);
-            quDuanDownloadEntity.setDataType((short) 2);
-            Date date = new Date();
-            quDuanDownloadEntity.setCreateTime(date);
-            quDuanDownloadEntity.setSwitchStatus((short) 1);
-            quDuanDownloadEntity.setUpdateTime(date);
-            this.add(quDuanDownloadEntity);
-        }
+    @Override
+    public QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId) {
+        QuDuanDownloadEntity quDuanDownloadEntity = quDuanDownloadDao.selectByCidAndDataType(czId, userId, (short) 2);
+        if (quDuanDownloadEntity == null)
+            insertData(czId, userId);
         return quDuanDownloadEntity;
     }
+
 }
 

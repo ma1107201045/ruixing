@@ -37,8 +37,6 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Autowired
     private SolutionLogService solutionLogService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private MessageService messageService;
 
 
@@ -68,14 +66,13 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Override
     public void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
         this.add(preSaleFileEntity);
-        //审核人操作
-        Integer id = preSaleFileEntity.getId();
-        if (auditorIds != null) {
+        if (preSaleFileEntity.getReleaseStatus() == 2 && preSaleFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            //添加审核人
             List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
             for (Integer auditorId : auditorIds) {
                 if (auditorId != null) {
                     PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
-                    preSaleFileAuditorEntity.setPreSaleFileId(id);
+                    preSaleFileAuditorEntity.setPreSaleFileId(preSaleFileEntity.getId());
                     preSaleFileAuditorEntity.setAuditorId(auditorId);
                     preSaleFileAuditorEntity.setIsPass((short) 1);
                     preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
@@ -83,12 +80,12 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             }
             if (preSaleFileAuditorEntities.size() > 0) {
                 preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
-                //给审核人发消息
+                //添加审核人消息
                 PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
                 if (preSaleEntity != null) {
                     MessageEntity messageEntity = new MessageEntity();
-                    messageEntity.setCreateBy(preSaleFileEntity.getCreateBy());
-                    messageEntity.setCreateTime(preSaleFileEntity.getCreateTime());
+                    messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
+                    messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
                     messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
                     messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
                     messageEntity.setTitle("文件");
@@ -104,19 +101,16 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     messageService.sendMessage(messageEntity);
                 }
             }
-
         }
-
         //文件日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   文件类型：").append(preSaleFileEntity.getType() == 1 ? "输入文件" : preSaleFileEntity.getType() == 2 ? "输出文件" : "错误")
                 .append("   文件名称：").append(preSaleFileEntity.getName())
                 .append("   文件状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
-        if (auditorIds != null && auditorIds.length > 0) {
-            UserEntity userEntity = userService.findById(auditorIds[0].longValue());
-            if (userEntity != null)
-                sb.append("   审核人：").append(userEntity.getTrueName())
-                        .append("   审核状态：").append("待审核");
+        if (preSaleFileEntity.getReleaseStatus() == 2 && preSaleFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            sb.append("   审核人：").append(trueName)
+                    .append("   审核状态：").append("待审核");
+
         }
         sb.append("   备注：").append(preSaleFileEntity.getRemark());
         solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, preSaleFileEntity.getId(), sb.toString()));
@@ -126,19 +120,17 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     @Override
     public void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
         PreSaleFileEntity psfSource = this.findById(preSaleFileEntity.getId());
-        List<PreSaleFileAuditorEntity> psfaSources = preSaleFileAuditorService.findByPreSaleFileId(preSaleFileEntity.getId());
-        if (psfSource != null) {
+        if (psfSource.getReleaseStatus() == 1) {
             this.edit(preSaleFileEntity);
-
-            //审核人操作
-            Integer id = preSaleFileEntity.getId();
-            preSaleFileAuditorService.removeByPreSaleFileId(id);
-            if (auditorIds != null) {
+            Short releaseStatus = preSaleFileEntity.getReleaseStatus();
+            Short type = preSaleFileEntity.getType();
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
+                //添加审核人
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {
                     if (auditorId != null) {
                         PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
-                        preSaleFileAuditorEntity.setPreSaleFileId(id);
+                        preSaleFileAuditorEntity.setPreSaleFileId(preSaleFileEntity.getId());
                         preSaleFileAuditorEntity.setAuditorId(auditorId);
                         preSaleFileAuditorEntity.setIsPass((short) 1);
                         preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
@@ -146,54 +138,28 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 }
                 if (preSaleFileAuditorEntities.size() > 0) {
                     preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
-                    if (psfaSources.isEmpty()) {
-                        //添加审核人消息
-                        PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
-                        if (preSaleEntity != null) {
-                            MessageEntity messageEntity = new MessageEntity();
-                            messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
-                            messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
-                            messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
-                            messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
-                            messageEntity.setTitle("文件");
-                            messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
-                            messageEntity.setType((short) 1);
-                            messageEntity.setSmallType((short) 1);
-                            messageEntity.setMessageType((short) 2);
-                            messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
-                            messageEntity.setFileId(preSaleFileEntity.getId());
-                            messageEntity.setSenderId(null);
-                            messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
-                            messageEntity.setStatus((short) 1);
-                            messageService.sendMessage(messageEntity);
-                        }
-                    } else {
-                        //更新审核人消息
-                        MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
-                                (short) 1, (short) 1, (short) 2, preSaleFileEntity.getPreSaleId(), preSaleFileEntity.getId(), null, null, null, null);
-                        List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
-                        for (MessageEntity messageEntity : messageEntities) {
-                            if (!messageEntity.getReceiverId().equals(preSaleFileAuditorEntities.get(0).getAuditorId())) {
-                                messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
-                                messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
-                                messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
-                                messageEntity.setStatus((short)1);
-                                messageService.edit(messageEntity);
-                            }
-                        }
+                    //添加审核人消息
+                    PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
+                    if (preSaleEntity != null) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
+                        messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
+                        messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                        messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                        messageEntity.setTitle("文件");
+                        messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
+                        messageEntity.setType((short) 1);
+                        messageEntity.setSmallType((short) 1);
+                        messageEntity.setMessageType((short) 2);
+                        messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                        messageEntity.setFileId(preSaleFileEntity.getId());
+                        messageEntity.setSenderId(null);
+                        messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
+                        messageEntity.setStatus((short) 1);
+                        messageService.sendMessage(messageEntity);
                     }
                 }
             }
-            //删除审核人消息
-            if ((auditorIds == null || auditorIds.length == 0) && !psfaSources.isEmpty()) {
-                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
-                        (short) 1, (short) 1, (short) 2, preSaleFileEntity.getPreSaleId(), preSaleFileEntity.getId(), null, null, null, null);
-                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
-                for (MessageEntity messageEntity : messageEntities) {
-                    messageService.remove(messageEntity.getId());
-                }
-            }
-
             //文件日志记录
             PreSaleFileEntity psfTarget = BeanUtil.compareFieldValues(psfSource, preSaleFileEntity, PreSaleFileEntity.class);
             StringBuilder sb = new StringBuilder();
@@ -206,20 +172,9 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             if (psfTarget.getReleaseStatus() != null) {
                 sb.append("   文件状态：").append(preSaleFileEntity.getReleaseStatus() == 1 ? "录入" : preSaleFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-
-            if ((auditorIds == null || auditorIds.length == 0) && !psfaSources.isEmpty()) {
-                sb.append("   审核人：").append("   审核状态：");
-            }
-
-            if (auditorIds != null && auditorIds.length > 0) {
-                UserEntity userEntity = userService.findById(auditorIds[0].longValue());
-                if (psfaSources.isEmpty() || !auditorIds[0].equals(psfaSources.get(0).getAuditorId())) {
-                    sb.append("   审核人：").append(userEntity.getTrueName())
-                            .append("   审核状态：").append("待审核");
-                } else {
-//                    sb.append("   审核人：").append(userEntity.getTrueName())
-//                            .append("   审核状态：").append(psfaTarget.getIsPass() == 1 ? "待审核" : psfaTarget.getIsPass() == 2 ? "已审核未通过" : psfaTarget.getIsPass() == 3 ? "已审核未通过" : "错误");
-                }
+            if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
+                sb.append("   审核人：").append(trueName)
+                        .append("   审核状态：").append("待审核");
             }
             if (psfTarget.getRemark() != null) {
                 sb.append("   备注：").append(preSaleFileEntity.getRemark());

@@ -83,10 +83,9 @@ public class QuDuanInfoController extends SessionController {
     @GetMapping("/dailypaper")
     public Map<String, Object> findStatisticsByDate(@RequestParam("page_number") Integer pageNumber,
                                                     @RequestParam("page_size") Integer pageSize,
-                                                    @RequestParam(value = "order_by", required = false, defaultValue = "qb.id ASC") String orderBy,
                                                     @RequestParam("cz_id") Integer cZid,
                                                     @RequestParam("time") Date time) {
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        PageHelper.startPage(pageNumber, pageSize);
         List<Map<String, Object>> maps = quDuanInfoService.findStatisticsByCzIdAndTime(cZid, time);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(maps);
         return ResponseDataUtil.ok("查询日报表成功", pageInfo);
