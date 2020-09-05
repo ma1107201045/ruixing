@@ -7,7 +7,6 @@ import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.xitongguanli.UserService;
-import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +37,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     @Autowired
     private SolutionLogService solutionLogService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private MessageService messageService;
 
     @Override
@@ -67,14 +64,13 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     @Override
     public void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName) {
         this.add(biddingFileEntity);
-        //审核人操作
-        Integer id = biddingFileEntity.getId();
-        if (auditorIds != null) {
+        if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            //添加审核人
             List<BiddingFileAuditorEntity> biddingFileAuditorEntities = new ArrayList<>(auditorIds.length);
             for (Integer auditorId : auditorIds) {
                 if (auditorId != null) {
                     BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
-                    biddingFileAuditorEntity.setBiddingFileId(id);
+                    biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                     biddingFileAuditorEntity.setAuditorId(auditorId);
                     biddingFileAuditorEntity.setIsPass((short) 1);
                     biddingFileAuditorEntities.add(biddingFileAuditorEntity);
@@ -82,12 +78,12 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             }
             if (biddingFileAuditorEntities.size() > 0) {
                 biddingFileAuditorService.addMuch(biddingFileAuditorEntities);
-                //给审核人发消息
+                //添加审核人消息
                 BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
                 if (biddingEntity != null) {
                     MessageEntity messageEntity = new MessageEntity();
-                    messageEntity.setCreateBy(biddingFileEntity.getCreateBy());
-                    messageEntity.setCreateTime(biddingFileEntity.getCreateTime());
+                    messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
+                    messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
                     messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
                     messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
                     messageEntity.setTitle("文件");
@@ -110,11 +106,9 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         sb.append("   文件类型：").append(biddingFileEntity.getType() == 1 ? "输入文件" : biddingFileEntity.getType() == 2 ? "输出文件" : "错误")
                 .append("   文件名称：").append(biddingFileEntity.getName())
                 .append("   文件状态：").append(biddingFileEntity.getReleaseStatus() == 1 ? "录入" : biddingFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
-        if (auditorIds != null && auditorIds.length > 0) {
-            UserEntity userEntity = userService.findById(auditorIds[0].longValue());
-            if (userEntity != null)
-                sb.append("   审核人：").append(userEntity.getTrueName())
-                        .append("   审核状态：").append("待审核");
+        if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+            sb.append("   审核人：").append(trueName)
+                    .append("   审核状态：").append("待审核");
         }
         sb.append("   备注：").append(biddingFileEntity.getRemark());
         solutionLogService.add(new SolutionLogEntity(null, trueName, new Date(), (short) 2, (short) 2, biddingFileEntity.getId(), sb.toString()));
@@ -131,19 +125,15 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     @Override
     public void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName) {
         BiddingFileEntity bfSource = this.findById(biddingFileEntity.getId());
-        List<BiddingFileAuditorEntity> bfaSources = biddingFileAuditorService.findByBiddingFileIdId(biddingFileEntity.getId());
-        if (bfSource != null) {
+        if (bfSource.getReleaseStatus() == 1) {
             this.edit(biddingFileEntity);
-
-            //审核人操作
-            Integer id = biddingFileEntity.getId();
-            biddingFileAuditorService.removeByBiddingFileId(id);
-            if (auditorIds != null) {
+            if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+                //添加审核人
                 List<BiddingFileAuditorEntity> biddingFileAuditorEntities = new ArrayList<>(auditorIds.length);
                 for (Integer auditorId : auditorIds) {
                     if (auditorId != null) {
                         BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
-                        biddingFileAuditorEntity.setBiddingFileId(id);
+                        biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                         biddingFileAuditorEntity.setAuditorId(auditorId);
                         biddingFileAuditorEntity.setIsPass((short) 1);
                         biddingFileAuditorEntities.add(biddingFileAuditorEntity);
@@ -151,52 +141,26 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 }
                 if (biddingFileAuditorEntities.size() > 0) {
                     biddingFileAuditorService.addMuch(biddingFileAuditorEntities);
-                    if (bfaSources.isEmpty()) {
-                        //添加审核人消息
-                        BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
-                        if (biddingEntity != null) {
-                            MessageEntity messageEntity = new MessageEntity();
-                            messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
-                            messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
-                            messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
-                            messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
-                            messageEntity.setTitle("文件");
-                            messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
-                            messageEntity.setType((short) 1);
-                            messageEntity.setSmallType((short) 2);
-                            messageEntity.setMessageType((short) 2);
-                            messageEntity.setProjectId(biddingFileEntity.getBiddingId());
-                            messageEntity.setFileId(biddingFileEntity.getId());
-                            messageEntity.setSenderId(null);
-                            messageEntity.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
-                            messageEntity.setStatus((short) 1);
-                            messageService.sendMessage(messageEntity);
-                        }
-                    } else {
-                        //更新审核人消息
-                        MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
-                                (short) 1, (short) 2, (short) 2, biddingFileEntity.getBiddingId(), biddingFileEntity.getId(), null, null, null, null);
-                        List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
-                        for (MessageEntity messageEntity : messageEntities) {
-                            if (!messageEntity.getReceiverId().equals(biddingFileAuditorEntities.get(0).getAuditorId())) {
-                                messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
-                                messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
-                                messageEntity.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
-                                messageEntity.setStatus((short)1);
-                                messageService.edit(messageEntity);
-                            }
-                        }
+                    //添加审核人消息
+                    BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
+                    if (biddingEntity != null) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
+                        messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
+                        messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
+                        messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
+                        messageEntity.setTitle("文件");
+                        messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
+                        messageEntity.setType((short) 1);
+                        messageEntity.setSmallType((short) 2);
+                        messageEntity.setMessageType((short) 2);
+                        messageEntity.setProjectId(biddingFileEntity.getBiddingId());
+                        messageEntity.setFileId(biddingFileEntity.getId());
+                        messageEntity.setSenderId(null);
+                        messageEntity.setReceiverId(biddingFileAuditorEntities.get(0).getAuditorId());
+                        messageEntity.setStatus((short) 1);
+                        messageService.sendMessage(messageEntity);
                     }
-                }
-            }
-            //删除审核人消息
-            if ((auditorIds == null || auditorIds.length == 0) && !bfaSources.isEmpty()) {
-                //添加审核人消息
-                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
-                        (short) 1, (short) 2, (short) 2, biddingFileEntity.getBiddingId(), biddingFileEntity.getId(), null, null, null, null);
-                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
-                for (MessageEntity messageEntity : messageEntities) {
-                    messageService.remove(messageEntity.getId());
                 }
             }
 
@@ -212,19 +176,9 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             if (bfTarget.getReleaseStatus() != null) {
                 sb.append("   文件状态：").append(biddingFileEntity.getReleaseStatus() == 1 ? "录入" : biddingFileEntity.getReleaseStatus() == 2 ? "发布" : "错误");
             }
-            if ((auditorIds == null || auditorIds.length == 0) && !bfaSources.isEmpty()) {
-                sb.append("   审核人：").append("   审核状态：");
-            }
-
-            if (auditorIds != null && auditorIds.length > 0) {
-                UserEntity userEntity = userService.findById(auditorIds[0].longValue());
-                if (bfaSources.isEmpty() || !auditorIds[0].equals(bfaSources.get(0).getAuditorId())) {
-                    sb.append("   审核人：").append(userEntity.getTrueName())
-                            .append("   审核状态：").append("待审核");
-                } else {
-//                    sb.append("   审核人：").append(userEntity.getTrueName())
-//                            .append("   审核状态：").append(psfaTarget.getIsPass() == 1 ? "待审核" : psfaTarget.getIsPass() == 2 ? "已审核未通过" : psfaTarget.getIsPass() == 3 ? "已审核未通过" : "错误");
-                }
+            if (biddingFileEntity.getReleaseStatus() == 2 && biddingFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
+                sb.append("   审核人：").append(trueName)
+                        .append("   审核状态：").append("待审核");
             }
             if (bfTarget.getRemark() != null) {
                 sb.append("   备注：").append(biddingFileEntity.getRemark());
@@ -324,7 +278,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     messageEntity1.setTitle("文件");
                     messageEntity1.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件已被您审核！");
                     messageEntity1.setType((short) 1);
-                    messageEntity1.setSmallType((short) 1);
+                    messageEntity1.setSmallType((short) 2);
                     messageEntity1.setMessageType((short) 2);
                     messageEntity1.setProjectId(biddingFileEntity.getBiddingId());
                     messageEntity1.setFileId(biddingFileEntity.getId());

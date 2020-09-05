@@ -238,7 +238,7 @@
             <if test="type!=null">
                 and psf.type = #{type,jdbcType=SMALLINT}
             </if>
-            and (psf.user_id = #{userId,jdbcType=SMALLINT} or psf.release_status = #{releaseStatus,jdbcType=INTEGER})
+                and (psf.user_id = #{userId,jdbcType=SMALLINT} or psf.release_status = #{releaseStatus,jdbcType=INTEGER})
         </where>
     </sql>
     <select id="selectByCondition" resultMap="ConnectResultMap">
