@@ -3,20 +3,18 @@
 <mapper namespace="com.yintu.ruixing.guzhangzhenduan.MenXianDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cz_id" jdbcType="INTEGER" property="czId"/>
         <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
         <result column="property_id" jdbcType="INTEGER" property="propertyId"/>
-        <result column="measured_value" jdbcType="VARCHAR" property="measuredValue"/>
-        <result column="measured_value_unit" jdbcType="VARCHAR" property="measuredValueUnit"/>
-        <result column="superior_limit_value" jdbcType="INTEGER" property="superiorLimitValue"/>
+        <result column="superior_limit_value" jdbcType="VARCHAR" property="superiorLimitValue"/>
         <result column="superior_limit_value_unit" jdbcType="VARCHAR" property="superiorLimitValueUnit"/>
-        <result column="lower_limit_value" jdbcType="INTEGER" property="lowerLimitValue"/>
+        <result column="lower_limit_value" jdbcType="VARCHAR" property="lowerLimitValue"/>
         <result column="lower_limit_value_unit" jdbcType="VARCHAR" property="lowerLimitValueUnit"/>
-        <result column="outburst_value" jdbcType="INTEGER" property="outburstValue"/>
+        <result column="outburst_value" jdbcType="VARCHAR" property="outburstValue"/>
         <result column="outburst_value_unit" jdbcType="VARCHAR" property="outburstValueUnit"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, quduan_id, property_id, measured_value, measured_value_unit, superior_limit_value,
-    superior_limit_value_unit, lower_limit_value, lower_limit_value_unit, outburst_value, 
+        id,cz_id, quduan_id, property_id,  superior_limit_value,superior_limit_value_unit, lower_limit_value, lower_limit_value_unit, outburst_value,
     outburst_value_unit
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -31,16 +29,13 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
-        insert into mro_menxian (id, quduan_id, property_id,
-                                 measured_value, measured_value_unit, superior_limit_value,
+        insert into mro_menxian (id, cz_id, quduan_id, property_id, superior_limit_value,
                                  superior_limit_value_unit, lower_limit_value,
                                  lower_limit_value_unit, outburst_value, outburst_value_unit)
-        values (#{id,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER},
-                #{measuredValue,jdbcType=VARCHAR}, #{measuredValueUnit,jdbcType=VARCHAR},
-                #{superiorLimitValue,jdbcType=INTEGER},
-                #{superiorLimitValueUnit,jdbcType=VARCHAR}, #{lowerLimitValue,jdbcType=INTEGER},
-                #{lowerLimitValueUnit,jdbcType=VARCHAR}, #{outburstValue,jdbcType=INTEGER},
-                #{outburstValueUnit,jdbcType=VARCHAR})
+        values (#{id,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER},
+                #{superiorLimitValue,jdbcType=VARCHAR}, #{superiorLimitValueUnit,jdbcType=VARCHAR},
+                #{lowerLimitValue,jdbcType=VARCHAR}, #{lowerLimitValueUnit,jdbcType=VARCHAR},
+                #{outburstValue,jdbcType=VARCHAR}, #{outburstValueUnit,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         insert into mro_menxian
@@ -48,17 +43,14 @@
             <if test="id != null">
                 id,
             </if>
+            <if test="czId != null">
+                cz_id,
+            </if>
             <if test="quduanId != null">
                 quduan_id,
             </if>
             <if test="propertyId != null">
                 property_id,
-            </if>
-            <if test="measuredValue != null">
-                measured_value,
-            </if>
-            <if test="measuredValueUnit != null">
-                measured_value_unit,
             </if>
             <if test="superiorLimitValue != null">
                 superior_limit_value,
@@ -83,32 +75,29 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="czId != null">
+                #{czId,jdbcType=INTEGER},
+            </if>
             <if test="quduanId != null">
                 #{quduanId,jdbcType=INTEGER},
             </if>
             <if test="propertyId != null">
                 #{propertyId,jdbcType=INTEGER},
             </if>
-            <if test="measuredValue != null">
-                #{measuredValue,jdbcType=VARCHAR},
-            </if>
-            <if test="measuredValueUnit != null">
-                #{measuredValueUnit,jdbcType=VARCHAR},
-            </if>
             <if test="superiorLimitValue != null">
-                #{superiorLimitValue,jdbcType=INTEGER},
+                #{superiorLimitValue,jdbcType=VARCHAR},
             </if>
             <if test="superiorLimitValueUnit != null">
                 #{superiorLimitValueUnit,jdbcType=VARCHAR},
             </if>
             <if test="lowerLimitValue != null">
-                #{lowerLimitValue,jdbcType=INTEGER},
+                #{lowerLimitValue,jdbcType=VARCHAR},
             </if>
             <if test="lowerLimitValueUnit != null">
                 #{lowerLimitValueUnit,jdbcType=VARCHAR},
             </if>
             <if test="outburstValue != null">
-                #{outburstValue,jdbcType=INTEGER},
+                #{outburstValue,jdbcType=VARCHAR},
             </if>
             <if test="outburstValueUnit != null">
                 #{outburstValueUnit,jdbcType=VARCHAR},
@@ -118,32 +107,29 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         update mro_menxian
         <set>
+            <if test="czId != null">
+                cz_id = #{czId,jdbcType=INTEGER},
+            </if>
             <if test="quduanId != null">
                 quduan_id = #{quduanId,jdbcType=INTEGER},
             </if>
             <if test="propertyId != null">
                 property_id = #{propertyId,jdbcType=INTEGER},
             </if>
-            <if test="measuredValue != null">
-                measured_value = #{measuredValue,jdbcType=VARCHAR},
-            </if>
-            <if test="measuredValueUnit != null">
-                measured_value_unit = #{measuredValueUnit,jdbcType=VARCHAR},
-            </if>
             <if test="superiorLimitValue != null">
-                superior_limit_value = #{superiorLimitValue,jdbcType=INTEGER},
+                superior_limit_value = #{superiorLimitValue,jdbcType=VARCHAR},
             </if>
             <if test="superiorLimitValueUnit != null">
                 superior_limit_value_unit = #{superiorLimitValueUnit,jdbcType=VARCHAR},
             </if>
             <if test="lowerLimitValue != null">
-                lower_limit_value = #{lowerLimitValue,jdbcType=INTEGER},
+                lower_limit_value = #{lowerLimitValue,jdbcType=VARCHAR},
             </if>
             <if test="lowerLimitValueUnit != null">
                 lower_limit_value_unit = #{lowerLimitValueUnit,jdbcType=VARCHAR},
             </if>
             <if test="outburstValue != null">
-                outburst_value = #{outburstValue,jdbcType=INTEGER},
+                outburst_value = #{outburstValue,jdbcType=VARCHAR},
             </if>
             <if test="outburstValueUnit != null">
                 outburst_value_unit = #{outburstValueUnit,jdbcType=VARCHAR},
@@ -153,66 +139,32 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         update mro_menxian
-        set quduan_id                 = #{quduanId,jdbcType=INTEGER},
+        set cz_id                     = #{czId,jdbcType=INTEGER},
+            quduan_id                 = #{quduanId,jdbcType=INTEGER},
             property_id               = #{propertyId,jdbcType=INTEGER},
-            measured_value            = #{measuredValue,jdbcType=VARCHAR},
-            measured_value_unit       = #{measuredValueUnit,jdbcType=VARCHAR},
-            superior_limit_value      = #{superiorLimitValue,jdbcType=INTEGER},
+            superior_limit_value      = #{superiorLimitValue,jdbcType=VARCHAR},
             superior_limit_value_unit = #{superiorLimitValueUnit,jdbcType=VARCHAR},
-            lower_limit_value         = #{lowerLimitValue,jdbcType=INTEGER},
+            lower_limit_value         = #{lowerLimitValue,jdbcType=VARCHAR},
             lower_limit_value_unit    = #{lowerLimitValueUnit,jdbcType=VARCHAR},
-            outburst_value            = #{outburstValue,jdbcType=INTEGER},
+            outburst_value            = #{outburstValue,jdbcType=VARCHAR},
             outburst_value_unit       = #{outburstValueUnit,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectByQuDuanIdAndPropertyId" resultMap="BaseResultMap">
+
+    <select id="selectByCzIdAndQuduanIdAndPropertyId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_menxian
-        where quduan_id=#{quDuanId,jdbcType=INTEGER} and property_id=#{propertyId,jdbcType=INTEGER}
-    </select>
-
-
-    <resultMap id="AllResultMap" type="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
-        <id column="m_id" jdbcType="INTEGER" property="id"/>
-        <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
-        <result column="property_id" jdbcType="INTEGER" property="propertyId"/>
-        <result column="measured_value" jdbcType="VARCHAR" property="measuredValue"/>
-        <result column="measured_value_unit" jdbcType="VARCHAR" property="measuredValueUnit"/>
-        <result column="superior_limit_value" jdbcType="INTEGER" property="superiorLimitValue"/>
-        <result column="superior_limit_value_unit" jdbcType="VARCHAR" property="superiorLimitValueUnit"/>
-        <result column="lower_limit_value" jdbcType="INTEGER" property="lowerLimitValue"/>
-        <result column="lower_limit_value_unit" jdbcType="VARCHAR" property="lowerLimitValueUnit"/>
-        <result column="outburst_value" jdbcType="INTEGER" property="outburstValue"/>
-        <result column="outburst_value_unit" jdbcType="VARCHAR" property="outburstValueUnit"/>
-        <association column="quduan_id" jdbcType="INTEGER" property="quDuanBaseEntity">
-            <id column="qb_id" jdbcType="INTEGER" property="id"/>
-            <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quduanyunyingName"/>
-        </association>
-        <association column="property_id" jdbcType="INTEGER" property="menXianPropertyEntity">
-            <id column="mp_id" jdbcType="INTEGER" property="id"/>
-            <result column="name" jdbcType="VARCHAR" property="name"/>
-        </association>
-    </resultMap>
-    <sql id="All_Column_List">
-        m.id as m_id, quduan_id, property_id, measured_value, measured_value_unit, superior_limit_value,
-    superior_limit_value_unit, lower_limit_value, lower_limit_value_unit, outburst_value,
-    outburst_value_unit,
-    qb.id as qb_id,qb.quDuanYunYing_name,
-    mp.id as mp_id,mp.name
-    </sql>
-    <select id="selectByPropertyIds" resultMap="AllResultMap">
-        select
-        <include refid="All_Column_List"/>
-        from mro_menxian m inner join mro_quduan_base as qb on m.quduan_id = qb.id
-        inner join mro_menxian_property as mp on m.property_id = mp.id
         <where>
-            <if test="array!=null and array.length>0">
-                and m.property_id in
-                <foreach collection="array" item="property" index="index" open="(" close=")" separator=",">
-                    #{property,jdbcType=INTEGER}
-                </foreach>
+            <if test="czId!=null">
+                and cz_id = #{czId,jdbcType=INTEGER}
+            </if>
+            <if test="quduanId!=null">
+                and quduan_id = #{quduanId,jdbcType=INTEGER}
+            </if>
+            <if test="propertyId!=null">
+                and property_id = #{propertyId,jdbcType=INTEGER}
             </if>
         </where>
     </select>

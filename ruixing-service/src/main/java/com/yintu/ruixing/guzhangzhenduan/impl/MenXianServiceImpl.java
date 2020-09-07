@@ -1,14 +1,21 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.ExportExcelUtil;
+import com.yintu.ruixing.common.util.FileUtil;
+import com.yintu.ruixing.common.util.ImportExcelUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
-import com.yintu.ruixing.guzhangzhenduan.MenXianPropertyService;
-import com.yintu.ruixing.guzhangzhenduan.MenXianService;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,171 +27,18 @@ import java.util.List;
 public class MenXianServiceImpl implements MenXianService {
     @Autowired
     private MenXianDao menXianDao;
-
     @Autowired
-    private MenXianPropertyService menXianPropertyService;
-
+    private CheZhanService cheZhanService;
+    @Autowired
+    private QuDuanBaseService quDuanBaseService;
+    @Autowired
+    private QuDuanInfoPropertyService quDuanInfoPropertyService;
     @Autowired
     private QuDuanInfoService quDuanInfoService;
 
     @Override
     public void add(MenXianEntity menXianEntity) {
-        Integer quDuanId = menXianEntity.getQuduanId();
-        QuDuanInfoEntityV2 quDuanInfoEntity = new QuDuanInfoEntityV2();
-        if (quDuanInfoEntity != null) {
-            Integer propertyId = menXianEntity.getPropertyId();
-            MenXianPropertyEntity menXianPropertyEntity = menXianPropertyService.findById(propertyId);
-            if (menXianPropertyEntity != null) {
-                MenXianEntity menXianEntity1 = this.findByQuDuanIdAndPropertyId(quDuanId, propertyId);
-                if (menXianEntity1 == null) {
-                    String name = menXianPropertyEntity.getName();
-                    String measuredValue;
-                    String measuredValueUnit;
-                    switch (name) {
-                        case "功出电压V":
-                            measuredValue = quDuanInfoEntity.getVOutZhu().toString();
-                            measuredValueUnit = "V";
-                            break;
-                        case "功出电流mA":
-                            measuredValue = quDuanInfoEntity.getMaOutZhu().toString();
-                            measuredValueUnit = "mA";
-                            break;
-                        case "上边频Hz":
-                            measuredValue = quDuanInfoEntity.getHzUpZhu().toString();
-                            measuredValueUnit = "Hz";
-                            break;
-                        case "下边频Hz":
-                            measuredValue = quDuanInfoEntity.getHzDownZhu().toString();
-                            measuredValueUnit = "Hz";
-                            break;
-                        case "发送低频Hz":
-                            measuredValue = quDuanInfoEntity.getHzLowZhu().toString();
-                            measuredValueUnit = "Hz";
-                            break;
-                        case "送端电缆侧电压V":
-                            measuredValue = quDuanInfoEntity.getVSongduanCable().toString();
-                            measuredValueUnit = "V";
-                            break;
-                        case "送端电缆侧电流mA":
-                            measuredValue = quDuanInfoEntity.getMaSongduanCable().toString();
-                            measuredValueUnit = "mA";
-                            break;
-                        case "受端电缆侧主电压V":
-                            measuredValue = quDuanInfoEntity.getVShouduanCableHost().toString();
-                            measuredValueUnit = "V";
-                            break;
-                        case "受端电缆侧调电压V":
-                            measuredValue = quDuanInfoEntity.getVShouduanCableSpare().toString();
-                            measuredValueUnit = "V";
-                            break;
-                        case "轨入电压V":
-                            measuredValue = quDuanInfoEntity.getVInAll().toString();
-                            measuredValueUnit = "V";
-                            break;
-                        case "主接入电压mV":
-                            measuredValue = quDuanInfoEntity.getMvInZhu().toString();
-                            measuredValueUnit = "mV";
-                            break;
-
-                        case "调接入电压mV":
-                            measuredValue = quDuanInfoEntity.getMvInDiaoZhu().toString();
-                            measuredValueUnit = "mV";
-                            break;
-                        case "接收低频Hz":
-                            measuredValue = quDuanInfoEntity.getHzInLowZhu().toString();
-                            measuredValueUnit = "Hz";
-                            break;
-                        case "FBP电缆电流mA":
-                            measuredValue = quDuanInfoEntity.getMaCableFbp().toString();
-                            measuredValueUnit = "mA";
-                            break;
-                        case "FBP长内电流A":
-                            measuredValue = quDuanInfoEntity.getALonginFbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBP长外电流A":
-                            measuredValue = quDuanInfoEntity.getALongoutFbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBP短内电流A":
-                            measuredValue = quDuanInfoEntity.getAShortinFbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBP短外电流A":
-                            measuredValue = quDuanInfoEntity.getAShortoutFbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBP温度°C":
-                            measuredValue = quDuanInfoEntity.getTFbp().toString();
-                            measuredValueUnit = "°C";
-                            break;
-                        case "FBA长内电流A":
-                            measuredValue = quDuanInfoEntity.getALonginFbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBA长外电流A":
-                            measuredValue = quDuanInfoEntity.getALongoutFbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBA短内电流A":
-                            measuredValue = quDuanInfoEntity.getAShortinFbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "FBA短外电流A":
-                            measuredValue = quDuanInfoEntity.getAShortoutFbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBA长内电流A":
-                            measuredValue = quDuanInfoEntity.getALonginJbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBA长外电流A":
-                            measuredValue = quDuanInfoEntity.getALongoutJbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBA短内电流A":
-                            measuredValue = quDuanInfoEntity.getAShortinJbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBA短外电流A":
-                            measuredValue = quDuanInfoEntity.getAShortoutJbaZhu().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBP电缆电流mA":
-                            measuredValue = quDuanInfoEntity.getMaCableJbp().toString();
-                            measuredValueUnit = "mA";
-                            break;
-                        case "JBP长内电流A":
-                            measuredValue = quDuanInfoEntity.getALonginJbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBP长外电流A":
-                            measuredValue = quDuanInfoEntity.getALongoutJbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBP短内电流A":
-                            measuredValue = quDuanInfoEntity.getAShortinJbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBP短外电流A":
-                            measuredValue = quDuanInfoEntity.getAShortoutJbp().toString();
-                            measuredValueUnit = "A";
-                            break;
-                        case "JBP温度°C":
-                            measuredValue = quDuanInfoEntity.getTJbp().toString();
-                            measuredValueUnit = "°C";
-                            break;
-                        default:
-                            measuredValue = new BigDecimal(0.0).toString();
-                            measuredValueUnit = "";
-                    }
-                    menXianEntity.setMeasuredValue(measuredValue);
-                    menXianEntity.setMeasuredValueUnit(measuredValueUnit);
-                    menXianDao.insertSelective(menXianEntity);
-                }
-            }
-        }
-
+        menXianDao.insertSelective(menXianEntity);
     }
 
     @Override
@@ -194,20 +48,6 @@ public class MenXianServiceImpl implements MenXianService {
 
     @Override
     public void edit(MenXianEntity menXianEntity) {
-        Integer quDuanId = menXianEntity.getQuduanId();
-        QuDuanInfoEntity quDuanInfoEntity = null;
-        if (quDuanInfoEntity != null) {
-            Integer propertyId = menXianEntity.getPropertyId();
-            MenXianPropertyEntity menXianPropertyEntity = menXianPropertyService.findById(propertyId);
-            if (menXianPropertyEntity != null) {
-                MenXianEntity menXianEntity1 = this.findByQuDuanIdAndPropertyId(quDuanId, propertyId);
-                if (menXianEntity1 != null && menXianEntity.getId().equals(menXianEntity1.getId())) {
-                    menXianDao.updateByPrimaryKeySelective(menXianEntity);
-                }
-            }
-
-        }
-
         menXianDao.updateByPrimaryKeySelective(menXianEntity);
     }
 
@@ -217,13 +57,81 @@ public class MenXianServiceImpl implements MenXianService {
     }
 
     @Override
-    public MenXianEntity findByQuDuanIdAndPropertyId(Integer quDuanId, Integer propertyId) {
-        return menXianDao.selectByQuDuanIdAndPropertyId(quDuanId, propertyId);
+    public MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId) {
+        return menXianDao.selectByCzIdAndQuduanIdAndPropertyId(czId, quanduanId, propertyId);
+    }
+
+
+    @Override
+    public String[][] importFile(InputStream inputStream, String fileName) throws IOException {
+        //excel标题
+        String title = "门限参数列表";
+        String[][] content;
+        if ("xls".equals(FileUtil.getExtensionName(fileName))) {
+            content = ImportExcelUtil.getHSSFData(title, new HSSFWorkbook(inputStream));
+        } else if ("xlsx".equals(FileUtil.getExtensionName(fileName))) {
+            content = ImportExcelUtil.getXSSFData(title, new XSSFWorkbook(inputStream));
+        } else {
+            throw new BaseRuntimeException("文件格式有误");
+        }
+        return content;
     }
 
     @Override
-    public List<MenXianEntity> findByPropertyIds(Integer[] propertyIds) {
-        return menXianDao.selectByPropertyIds(propertyIds);
+    public void importData(JSONArray ja, String loginUserName) {
+        for (int i = 0; i < ja.size(); i++) {
+            Object obj = ja.get(i);
+            if (obj instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) obj;
+                String czName = jsonArray.getString(1);
+                if (czName != null && !"".equals(czName)) {
+                    List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(czName);
+                    if (cheZhanEntities.isEmpty())
+                        throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站不存在");
+                    Integer czId = (int) cheZhanEntities.get(0).getCzId();
+                    String qdName = jsonArray.getString(2);
+                    if (qdName != null && !"".equals(qdName)) {
+                        QuDuanBaseEntity quDuanBaseEntity = quDuanBaseService.findByCzIdAndQuduanyunyingName(czId, qdName);
+                        if (quDuanBaseEntity == null) {
+                            throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站下边没有此区段");
+                        }
+                        Integer qdId = quDuanBaseEntity.getQdid();
+                        String propertyName = jsonArray.getString(3);
+                        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.finByName(propertyName);
+                        Integer propertyId = quDuanInfoPropertyEntities.get(0).getId();
+                        MenXianEntity menXianEntity = this.findByCzIdAndQuduanIdAndPropertyId(czId, qdId, propertyId);
+                        if (menXianEntity == null) {
+                            menXianEntity = new MenXianEntity();
+                            menXianEntity.setCzId(czId);
+                            menXianEntity.setQuduanId(qdId);
+                            menXianEntity.setPropertyId(propertyId);
+                            menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
+                            menXianEntity.setLowerLimitValue(jsonArray.getString(5));
+                            menXianEntity.setOutburstValue(jsonArray.getString(6));
+                            this.add(menXianEntity);
+                        } else {
+                            menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
+                            menXianEntity.setLowerLimitValue(jsonArray.getString(5));
+                            menXianEntity.setOutburstValue(jsonArray.getString(6));
+                            this.edit(menXianEntity);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void templateFile(OutputStream outputStream) throws IOException {
+        //excel标题
+        String title = "门限参数列表";
+        //excel表名
+        String[] headers = {"序号", "车站名称", "区段名称", "属性名称", "上限", "下限", "跳变系数"};
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
 }
