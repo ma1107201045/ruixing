@@ -37,33 +37,16 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     @Autowired
     private QuDuanInfoPropertyService quDuanInfoPropertyService;
 
-
     @Override
-    public QuDuanInfoEntityV2 findLastBycZId(Integer czId) {
-        String tableName = StringUtil.getTableName(czId, new Date());
-        return quDuanInfoDaoV2.selectLastByCzId(czId, tableName);
+    public boolean isTableExist(String tableName) {
+        return quDuanInfoDaoV2.isTableExist(tableName) > 0;
     }
 
-    @Override
-    public QuDuanInfoEntityV2 findLastByQid(Integer qid) {
-        return quDuanInfoDaoV2.selectLastByQid(qid);
-    }
-
-    @Override
-    public List<QuDuanInfoEntityV2> findByCzIdAndTime(Integer czId, Date time) {
-        String tableName = StringUtil.getTableName(czId, time);
-        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzId(czId, time, tableName) : new ArrayList<>();
-    }
 
     @Override
     public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
         String tableName = StringUtil.getTableName(czId, time);
         return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, time, tableName) : new ArrayList<>();
-    }
-
-    @Override
-    public boolean isTableExist(String tableName) {
-        return quDuanInfoDaoV2.isTableExist(tableName) > 0;
     }
 
     @Override

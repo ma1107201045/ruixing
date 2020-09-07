@@ -30,7 +30,7 @@ public class MenXianServiceImpl implements MenXianService {
     @Override
     public void add(MenXianEntity menXianEntity) {
         Integer quDuanId = menXianEntity.getQuduanId();
-        QuDuanInfoEntityV2 quDuanInfoEntity = quDuanInfoService.findLastByQid(quDuanId);
+        QuDuanInfoEntityV2 quDuanInfoEntity = new QuDuanInfoEntityV2();
         if (quDuanInfoEntity != null) {
             Integer propertyId = menXianEntity.getPropertyId();
             MenXianPropertyEntity menXianPropertyEntity = menXianPropertyService.findById(propertyId);

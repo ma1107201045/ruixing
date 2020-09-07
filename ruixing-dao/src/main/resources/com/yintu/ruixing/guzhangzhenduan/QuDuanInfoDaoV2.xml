@@ -518,51 +518,13 @@
         GROUP BY sb.sb_name
     </select>
 
-    <!--按照车站查询一条区段详情-->
-    <select id="selectLastByCzId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ${tableName} qi right outer join mro_quduan_base qb on
-        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
-        <where>
-            <if test="czId!=null">
-                qb.cz_id=#{czId,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by qi.createtime DESC limit 1
+
+    <!--查询表是否存在-->
+    <select id="isTableExist" parameterType="string" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where table_name = #{tableName}
     </select>
-
-    <!--按照区段id查询一条详情(数据分析)-->
-    <select id="selectLastByQid" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from data_applydata_11_202008 qi right outer join mro_quduan_base qb on
-        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
-        <where>
-            <if test="qid!=null">
-                qb.id=#{qid,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by qi.createtime DESC limit 1
-    </select>
-
-
-    <!--实时报表-->
-    <select id="selectByCzId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        FROM ${tableName} qi inner join mro_quduan_base qb on
-        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
-        <where>
-            <if test="czId!=null">
-                qi.station_id=#{czId,jdbcType=INTEGER}
-            </if>
-            <if test="time!=null">
-                and DATE(FROM_UNIXTIME(qi.createtime)) = DATE(#{time,jdbcType=TIMESTAMP})
-            </if>
-        </where>
-    </select>
-
 
     <resultMap id="StatisticsResultMap" type="Map">
 
@@ -645,8 +607,6 @@
         GROUP BY
         qb.id
     </select>
-
-
     <resultMap id="BaseResultMap1" type="com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2">
         <id column="qiId" jdbcType="INTEGER" property="id"/>
         <result column="cid" jdbcType="INTEGER" property="cid"/>
@@ -765,7 +725,7 @@
 
     v70 as rackAddress , v71, v72, v73, v74, v75, v76,v77, v78
     </sql>
-    <!--查询一条车站区段详情-->
+    <!--查询每个车站每个区段最新一条数据详情-->
     <select id="selectFirstByCzId1" resultMap="BaseResultMap1">
         select
         <include refid="Base_Column_List1"/>
@@ -780,7 +740,7 @@
         </where>
         order by qi.createtime DESC limit 1
     </select>
-    <!--查询时间区间车站区段详情-->
+    <!--查询车站指定时间所有区段数据详情-->
     <select id="selectByCzIdAndTime1" resultMap="BaseResultMap1">
         select
         <include refid="Base_Column_List1"/>
@@ -794,10 +754,5 @@
             </if>
         </where>
     </select>
-    <!--查询表是否存在-->
-    <select id="isTableExist" parameterType="string" resultType="int">
-        select count(*)
-        from information_schema.TABLES
-        where table_name = #{tableName}
-    </select>
+
 </mapper>

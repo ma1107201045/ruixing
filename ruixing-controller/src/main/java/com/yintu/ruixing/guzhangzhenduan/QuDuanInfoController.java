@@ -27,51 +27,6 @@ public class QuDuanInfoController extends SessionController {
     @Autowired
     private QuDuanInfoService quDuanInfoService;
 
-    /**
-     * 按照车站随机取出一条区段详情
-     *
-     * @param czId 区段id
-     * @return
-     */
-    @GetMapping("/random")
-    public Map<String, Object> findLastBycZId(@RequestParam("czId") Integer czId) {
-        QuDuanInfoEntityV2 quDuanInfoEntity = quDuanInfoService.findLastBycZId(czId);
-        return ResponseDataUtil.ok("查询区段详情成功", quDuanInfoEntity);
-    }
-
-    /**
-     * 数据分析
-     *
-     * @param qid 区段id
-     * @return 实时的数据
-     */
-    @GetMapping("/dataanalysis")
-    public Map<String, Object> findLastByQid(@RequestParam("qid") Integer qid) {
-        QuDuanInfoEntityV2 quDuanInfoEntity = quDuanInfoService.findLastByQid(qid);
-        return ResponseDataUtil.ok("查询区段详情", quDuanInfoEntity);
-    }
-
-
-    /**
-     * 实时报表
-     *
-     * @param pageNumber 页码
-     * @param pageSize   页数
-     * @return
-     */
-    @GetMapping("/realreport")
-    public Map<String, Object> findByCzId(@RequestParam("page_number") Integer pageNumber,
-                                          @RequestParam("page_size") Integer pageSize,
-                                          @RequestParam(value = "order_by", required = false, defaultValue = "qb.id ASC") String orderBy,
-                                          @RequestParam("cz_id") Integer cZid) {
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DATE, 5);
-        List<QuDuanInfoEntityV2> quDuanInfoEntities = quDuanInfoService.findByCzIdAndTime(cZid, c.getTime());
-        PageInfo<QuDuanInfoEntityV2> pageInfo = new PageInfo<>(quDuanInfoEntities);
-        return ResponseDataUtil.ok("查询实时报表成功", pageInfo);
-    }
-
 
     /**
      * 日报表
