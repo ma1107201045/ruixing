@@ -98,4 +98,7 @@ public interface ChanPinJiaoFuXiangMuDao {
     List<ChanPinJiaoFuXiangMuFileEntity> findXiangMuAndBianHao();
 
     List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id);
+
+    void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity);
+
 }

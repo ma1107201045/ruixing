@@ -16,7 +16,7 @@ import java.util.Map;
 public interface ChanPinJiaoFuXiangMuService {
     List<TreeNodeUtil> findSanJiShu();
 
-    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username);
+    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username,Integer senderid);
 
     void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids, Integer senderid);
 
@@ -56,11 +56,11 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuRecordMessageEntity> findReordById(Integer id);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename);
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename, Integer uid);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size, Integer uid);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size, Integer uid);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 
@@ -69,4 +69,8 @@ public interface ChanPinJiaoFuXiangMuService {
     List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
+
+    void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid);
+
+    void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid);
 }

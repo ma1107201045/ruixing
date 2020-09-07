@@ -7,6 +7,7 @@ import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.common.MessageDao;
 import com.yintu.ruixing.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,9 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<ChanPinJiaoFuXiangMuEntity> findJiaoFuQingKuangList(String choiceTing, Integer page, Integer size) {
@@ -287,18 +291,84 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
-    public List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size) {
-        return chanPinJiaoFuXiangMuFileDao.findShuChuFile(xmid);
+    public List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size, Integer uid) {
+        return chanPinJiaoFuXiangMuFileDao.findShuChuFile(xmid, uid);
     }
 
     @Override
-    public List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size) {
-        return chanPinJiaoFuXiangMuFileDao.findShuRuFile(xmid);
+    public List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size, Integer uid) {
+        return chanPinJiaoFuXiangMuFileDao.findShuRuFile(xmid, uid);
     }
 
     @Override
-    public List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename) {
-        return chanPinJiaoFuXiangMuFileDao.findFileBySomething(xmid, filetype, filename);
+    public List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename, Integer uid) {
+        return chanPinJiaoFuXiangMuFileDao.findFileBySomething(xmid, filetype, filename, uid);
+    }
+
+    @Override
+    public void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid) {
+        Date nowTime = new Date();
+        if (chanPinJiaoFuFileAuditorEntity.getIsPass() == 0) {//审核未通过
+            ChanPinJiaoFuXiangMuFileEntity onefileEntity = chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+            ChanPinJiaoFuXiangMuFileEntity fileEntity = new ChanPinJiaoFuXiangMuFileEntity();
+            fileEntity.setId(id);
+            fileEntity.setAuditorState(3);
+            chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(fileEntity);
+            //新增消息  提醒发送者查看审核未通过的文件
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setTitle("文件");
+            messageEntity.setCreateBy(username);
+            messageEntity.setCreateTime(nowTime);
+            messageEntity.setContext(onefileEntity.getFileName() + "文件审核未通过,请您查看！");
+            messageEntity.setType((short) 2);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setFileId(id);
+            messageEntity.setReceiverId(receiverid);
+            messageEntity.setStatus((short) 1);
+            messageDao.insertSelective(messageEntity);
+        }
+        if (chanPinJiaoFuFileAuditorEntity.getIsPass() == 1) {//审核通过
+            ChanPinJiaoFuXiangMuFileEntity fileEntity = new ChanPinJiaoFuXiangMuFileEntity();
+            fileEntity.setId(id);
+            fileEntity.setAuditorState(2);
+            chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(fileEntity);
+        }
+        chanPinJiaoFuFileAuditorEntity.setDoTime(nowTime);
+        chanPinJiaoFuFileAuditorEntity.setDoName(username);
+        chanPinJiaoFuXiangMuDao.editAuditorByXMId(chanPinJiaoFuFileAuditorEntity);
+    }
+
+    @Override
+    public void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid) {
+        Date nowTime = new Date();
+        if (chanPinJiaoFuFileAuditorEntity.getIsPass() == 0) {//审核未通过
+            ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
+            ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity = new ChanPinJiaoFuXiangMuEntity();
+            chanPinJiaoFuXiangMuEntity.setId(id);
+            chanPinJiaoFuXiangMuEntity.setAuditorstate(3);
+            chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
+            //新增消息  提醒发送者查看审核未通过的项目
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setTitle("项目");
+            messageEntity.setCreateBy(username);
+            messageEntity.setCreateTime(nowTime);
+            messageEntity.setContext(xiangMuEntity.getXiangmuName() + "项目审核未通过,请您查看！");
+            messageEntity.setType((short) 2);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setProjectId(id);
+            messageEntity.setReceiverId(receiverid);
+            messageEntity.setStatus((short) 1);
+            messageDao.insertSelective(messageEntity);
+        }
+        if (chanPinJiaoFuFileAuditorEntity.getIsPass() == 1) {//审核通过
+            ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity = new ChanPinJiaoFuXiangMuEntity();
+            chanPinJiaoFuXiangMuEntity.setId(id);
+            chanPinJiaoFuXiangMuEntity.setAuditorstate(2);
+            chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
+        }
+        chanPinJiaoFuFileAuditorEntity.setDoTime(nowTime);
+        chanPinJiaoFuFileAuditorEntity.setDoName(username);
+        chanPinJiaoFuXiangMuDao.editAuditorByXMId(chanPinJiaoFuFileAuditorEntity);
     }
 
     @Override
@@ -477,7 +547,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
-    public void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username) {
+    public void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer senderid) {
         Date nowTime = new Date();
         chanPinJiaoFuXiangMuEntity.setCreateTime(nowTime);
         chanPinJiaoFuXiangMuEntity.setOperatorName(username);
@@ -487,6 +557,30 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuDao.addXiangMu(chanPinJiaoFuXiangMuEntity);
         Integer mid = chanPinJiaoFuXiangMuEntity.getId();
         chanPinJiaoFuRecordMessageDao.addRecordMessage(mid, typenum, nowTime, username, context);
+        List<Integer> uids = new ArrayList<>();
+        if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu() == 1) {//“是否需要现场服务”为真
+            //获取所有的人员id  发消息给所有人
+            String truename = null;
+            List<UserEntity> userEntitiess = userService.findByTruename(truename);
+            for (UserEntity entitiess : userEntitiess) {
+                Integer id = entitiess.getId().intValue();
+                uids.add(id);
+            }
+            for (Integer uid : uids) {
+                //添加一条消息到消息表
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setContext("“" + xiangmuName + "”项目需现场服务，请关注项目进展情况，及时安排现场服务计划！");
+                messageEntity.setType((short) 2);
+                messageEntity.setStatus((short) 1);
+                messageEntity.setCreateBy(username);//创建人
+                messageEntity.setCreateTime(nowTime);//创建时间
+                messageEntity.setMessageType((short) 2);
+                messageEntity.setProjectId(mid);
+                messageEntity.setSenderId(senderid);
+                messageEntity.setReceiverId(uid);
+                messageService.sendMessage(messageEntity);
+            }
+        }
     }
 
     //展示树形结构
@@ -498,7 +592,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1 || chanPinJiaoFuXiangMuEntity.getXiangmuState() == 2 || chanPinJiaoFuXiangMuEntity.getXiangmuState() == 3) {
                 //第一级
-
+                Integer xmid = chanPinJiaoFuXiangMuEntity.getId();
+                treeNodeUtil.setValue(xmid.toString());
                 treeNodeUtil.setId((long) chanPinJiaoFuXiangMuEntity.getId());
                 treeNodeUtil.setLabel(chanPinJiaoFuXiangMuEntity.getXiangmuState().toString());
                 List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities1 = chanPinJiaoFuXiangMuDao.findDiErJi(chanPinJiaoFuXiangMuEntity.getXiangmuState());
@@ -507,7 +602,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     //第二级
                     TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                     //Map<String,Object> map=new HashMap();
-
+                    Integer id = pinJiaoFuXiangMuEntity.getId() + 1111;
+                    treeNodeUtil1.setValue(id.toString());
                     treeNodeUtil1.setId((long) pinJiaoFuXiangMuEntity.getId());
                     treeNodeUtil1.setLabel(pinJiaoFuXiangMuEntity.getXiangmuBianhao());
                     // map.put("xiangmu",chanPinJiaoFuXiangMuDao.findOneXiangMU(pinJiaoFuXiangMuEntity.getId()));
@@ -515,17 +611,19 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     treeNodeUtilss.add(treeNodeUtil1);
                     treeNodeUtil.setChildren(treeNodeUtilss);
                     //第三级
+                    Integer aa = id + 2222;
+                    Integer aaa = id + 3333;
                     List<TreeNodeUtil> treeNodeUtilss2 = new ArrayList<>();
                     List<TreeNodeUtil> treeNodeUtilss3 = new ArrayList<>();
                     TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
                     TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
                     treeNodeUtil2.setId((long) 1);
                     treeNodeUtil2.setLabel("输入文件");
-
+                    treeNodeUtil2.setValue(aa.toString());
                     treeNodeUtil2.setChildren(treeNodeUtilss3);
                     treeNodeUtil3.setId((long) 2);
                     treeNodeUtil3.setLabel("输出文件");
-
+                    treeNodeUtil3.setValue(aaa.toString());
                     treeNodeUtil3.setChildren(treeNodeUtilss3);
                     treeNodeUtilss2.add(treeNodeUtil2);
                     treeNodeUtilss2.add(treeNodeUtil3);

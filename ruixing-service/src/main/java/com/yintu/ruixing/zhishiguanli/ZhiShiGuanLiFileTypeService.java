@@ -15,17 +15,17 @@ import java.util.List;
 public interface ZhiShiGuanLiFileTypeService {
     List<ZhiShiGuanLiFileTypeEntity> findSomeFileType(Integer page, Integer size, String fileTypeName);
 
-    void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity);
+    void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
 
-    void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity);
+    void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
 
-    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity);
+    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
 
     ZhiShiGuanLiFileTypeFileEntity findFile(Integer id);
 
-    void addOneFile(String fileName, Date createtime, String filePath, Integer id1);
+    void addOneFile(String fileName, Date createtime, String filePath, Integer id1,String username);
 
-    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id);
+    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName,Integer id);
 

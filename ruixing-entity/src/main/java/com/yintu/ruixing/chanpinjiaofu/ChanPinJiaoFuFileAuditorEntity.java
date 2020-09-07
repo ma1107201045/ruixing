@@ -23,7 +23,7 @@ public class ChanPinJiaoFuFileAuditorEntity {
     private Integer auditorId;//审核人id
 
     private Integer isPass;//是否通过 0.未通过 1.已通过
-    private Integer objectType;//是否通过 0.未通过 1.已通过
+    private Integer objectType;//对象类型  1：项目 2：文件',
     private String reason;//未通过原因
     private String doName;//操作人
     private Date doTime;//操作时间

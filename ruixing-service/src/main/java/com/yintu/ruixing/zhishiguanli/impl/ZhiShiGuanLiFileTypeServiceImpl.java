@@ -68,13 +68,16 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     }
 
     @Override
-    public void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id) {
+    public void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username) {
+        zhiShiGuanLiFileTypeFileEntity.setCreatetime(new Date());
+        zhiShiGuanLiFileTypeFileEntity.setCreateName(username);
         zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeFileEntity);
     }
 
     @Override
-    public void addOneFile(String fileName, Date createtime, String filePath, Integer id1) {
-        zhiShiGuanLiFileTypeFileDao.addOneFile(fileName,createtime,filePath,id1);
+    public void addOneFile(String fileName, Date createtime, String filePath, Integer id1,String username) {
+        createtime=new Date();
+        zhiShiGuanLiFileTypeFileDao.addOneFile(fileName,createtime,filePath,id1,username);
     }
 
     @Override
@@ -83,18 +86,24 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     }
 
     @Override
-    public void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
+    public void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username) {
         zhiShiGuanLiFileTypeFileEntity.setParentid(0);
+        zhiShiGuanLiFileTypeFileEntity.setCreatetime(new Date());
+        zhiShiGuanLiFileTypeFileEntity.setCreateName(username);
         zhiShiGuanLiFileTypeFileDao.insertSelective(zhiShiGuanLiFileTypeFileEntity);
     }
 
     @Override
-    public void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
+    public void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username) {
+        zhiShiGuanLiFileTypeEntity.setUpdateName(username);
+        zhiShiGuanLiFileTypeEntity.setUpdateTime(new Date());
         zhiShiGuanLiFileTypeDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeEntity);
     }
 
     @Override
-    public void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
+    public void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username) {
+        zhiShiGuanLiFileTypeEntity.setCreateTime(new Date());
+        zhiShiGuanLiFileTypeEntity.setCreateName(username);
         zhiShiGuanLiFileTypeDao.insertSelective(zhiShiGuanLiFileTypeEntity);
     }
 

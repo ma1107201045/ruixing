@@ -54,6 +54,8 @@
             cf.xm_id = #{xmid}
             AND cf.file_type = 2
             and cfa.objectType=2
+            AND cf.fabu_type = 2
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 )
         ORDER BY cf.id DESC
     </select>
 
@@ -69,6 +71,8 @@
         cf.xm_id = #{xmid}
         AND cf.file_type = 1
         and cfa.objectType=2
+        AND cf.fabu_type = 2
+        OR ( cf.uid = #{uid} AND cf.fabu_type = 1 )
         ORDER BY cf.id DESC
     </select>
 
@@ -80,7 +84,7 @@
         from mro_chanpinjiaofu_file cf
         LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
         <where>
-            xm_id=#{xmid}
+            cf.xm_id=#{xmid}
             <if test="filetype!=null">
                 and file_type=#{filetype}
             </if>
@@ -88,6 +92,8 @@
                 and file_name like concat('%',#{filename},'%')
             </if>
             and cfa.objectType=2
+            AND cf.fabu_type = 2
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 )
         </where>
         order by id desc
     </select>

@@ -3,8 +3,10 @@ package com.yintu.ruixing.zhishiguanli;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.xitongguanli.UserService;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeService;
@@ -26,9 +28,11 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/zhiShiGuanLiAll")
-public class ZhiShiGuanLiFileTypeController {
+public class ZhiShiGuanLiFileTypeController extends SessionController {
     @Autowired
     private ZhiShiGuanLiFileTypeService zhiShiGuanLiFileTypeService;
+
+
 
     //初始化页面  或者根据文档分类名进行模糊查询
     @GetMapping("findSomeFileType")
@@ -42,14 +46,16 @@ public class ZhiShiGuanLiFileTypeController {
     //新增文件类型
     @PostMapping("/addFileType")
     public Map<String, Object> addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
-        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity);
+        String username = this.getLoginUser().getTrueName();
+        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity,username);
         return ResponseDataUtil.ok("新增文件类型成功");
     }
 
     //根据id 编辑对应的文件类型
     @PutMapping("/editFileTypeById/{id}")
     public Map<String, Object> editFileTypeById(@PathVariable Integer id, ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
-        zhiShiGuanLiFileTypeService.editFileTypeById(zhiShiGuanLiFileTypeEntity);
+        String username = this.getLoginUser().getTrueName();
+        zhiShiGuanLiFileTypeService.editFileTypeById(zhiShiGuanLiFileTypeEntity,username);
         return ResponseDataUtil.ok("编辑文件类型成功");
     }
 
@@ -85,7 +91,9 @@ public class ZhiShiGuanLiFileTypeController {
     //新增文件
     @PostMapping("/addFile")
     public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
-        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity);
+        //登录人名
+        String username = this.getLoginUser().getTrueName();
+        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity,username);
         return ResponseDataUtil.ok("新增文件成功");
     }
 
@@ -93,13 +101,15 @@ public class ZhiShiGuanLiFileTypeController {
     @PutMapping("updateFileById")
     public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
         ZhiShiGuanLiFileTypeFileEntity fileEntity = zhiShiGuanLiFileTypeService.findFile(id);
+        //登录人名
+        String username = this.getLoginUser().getTrueName();
         String fileName = fileEntity.getFileName();
         Date createtime = fileEntity.getCreatetime();
         String filePath = fileEntity.getFilePath();
         Integer id1 = fileEntity.getId();
         Integer tid = fileEntity.getTid();
-        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1);
-        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity,id);
+        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1,username);
+        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity,id,username);
         return ResponseDataUtil.ok("更新成功");
     }
 
