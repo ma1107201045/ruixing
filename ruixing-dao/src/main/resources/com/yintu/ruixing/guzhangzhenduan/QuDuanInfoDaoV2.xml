@@ -392,6 +392,20 @@
           and qi.createtime = "${time}"
     </select>
 
+    <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
+    <select id="findQuDuanDayData" resultMap="quduanResultMap" statementType="STATEMENT">
+        select ${shuxingname}, qi.createtime
+        from ${tableName} qi,
+             mro_quduan_base qb
+        where qi.v1 = qb.qdid
+          and qb.quDuanYunYing_name = "${quduanname}"
+          and qi.v1 = "${qdid}"
+          and qi.createtime
+            BETWEEN
+            "${statrtime}"
+            AND
+            "${endtime}"
+    </select>
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">

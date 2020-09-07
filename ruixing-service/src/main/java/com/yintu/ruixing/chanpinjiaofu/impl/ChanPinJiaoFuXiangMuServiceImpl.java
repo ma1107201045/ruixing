@@ -323,7 +323,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                 messageEntity.setCreateBy(username);//创建人
                 messageEntity.setCreateTime(nowTime);//创建时间
                 messageEntity.setType((short) 2);
-                messageEntity.setMessageType((short) 2);
+                messageEntity.setMessageType((short) 3);
                 messageEntity.setProjectId(id);
                 messageEntity.setSenderId(senderid);
                 messageEntity.setReceiverId(uid);
@@ -498,6 +498,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1 || chanPinJiaoFuXiangMuEntity.getXiangmuState() == 2 || chanPinJiaoFuXiangMuEntity.getXiangmuState() == 3) {
                 //第一级
+
                 treeNodeUtil.setId((long) chanPinJiaoFuXiangMuEntity.getId());
                 treeNodeUtil.setLabel(chanPinJiaoFuXiangMuEntity.getXiangmuState().toString());
                 List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities1 = chanPinJiaoFuXiangMuDao.findDiErJi(chanPinJiaoFuXiangMuEntity.getXiangmuState());
@@ -506,6 +507,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     //第二级
                     TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                     //Map<String,Object> map=new HashMap();
+
                     treeNodeUtil1.setId((long) pinJiaoFuXiangMuEntity.getId());
                     treeNodeUtil1.setLabel(pinJiaoFuXiangMuEntity.getXiangmuBianhao());
                     // map.put("xiangmu",chanPinJiaoFuXiangMuDao.findOneXiangMU(pinJiaoFuXiangMuEntity.getId()));
@@ -519,9 +521,11 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
                     treeNodeUtil2.setId((long) 1);
                     treeNodeUtil2.setLabel("输入文件");
+
                     treeNodeUtil2.setChildren(treeNodeUtilss3);
                     treeNodeUtil3.setId((long) 2);
                     treeNodeUtil3.setLabel("输出文件");
+
                     treeNodeUtil3.setChildren(treeNodeUtilss3);
                     treeNodeUtilss2.add(treeNodeUtil2);
                     treeNodeUtilss2.add(treeNodeUtil3);
