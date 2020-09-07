@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.FileUtil;
 import com.yintu.ruixing.common.util.ImportExcelUtil;
@@ -54,6 +55,13 @@ public interface MenXianService {
      * @return
      */
     MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId);
+
+    /**
+     * @param properties 属性集合
+     * @param czId       车站id
+     * @return
+     */
+    JSONObject findByCzIdAndProperties(Integer czId, Integer[] properties);
 
     /**
      * 批量导入excel数据

@@ -64,15 +64,10 @@ public class MenXianController extends SessionController {
         return ResponseDataUtil.ok("查询门限参数属性树成功", treeNodeUtils);
     }
 
-    /**
-     * 实时报表
-     *
-     * @return
-     */
     @GetMapping("/list")
-    public Map<String, Object> realTimeReport(@RequestParam("cz_id") Integer czId, @RequestParam("properties") Integer[] properties) {
-        JSONObject jo = quDuanInfoService.realTimeReport(czId, properties);
-        return ResponseDataUtil.ok("查询实时报表成功", jo);
+    public Map<String, Object> findByCzIdAndProperties(@RequestParam("czId") Integer czId, @RequestParam("properties") Integer[] properties) {
+        JSONObject jo = menXianService.findByCzIdAndProperties(czId, properties);
+        return ResponseDataUtil.ok("查询门限列表成功", jo);
     }
 
     @PostMapping("/import")
