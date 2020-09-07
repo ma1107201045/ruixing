@@ -1,7 +1,17 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.FileUtil;
+import com.yintu.ruixing.common.util.ImportExcelUtil;
 import com.yintu.ruixing.guzhangzhenduan.MenXianEntity;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -39,20 +49,44 @@ public interface MenXianService {
     MenXianEntity findById(Integer id);
 
     /**
-     * 查询按照区段id和属性id
-     *
-     * @param quDuanId 区段id
-     * @param Property 属性id
-     * @return 门限参数信息
+     * @param czId       车站id
+     * @param quanduanId 区段id
+     * @param propertyId 属性id
+     * @return
      */
-    MenXianEntity findByQuDuanIdAndPropertyId(Integer quDuanId, Integer Property);
+    MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId);
 
     /**
-     * 按照属性id集查询门限参数集
-     *
-     * @return 门限参数集
+     * @param properties 属性集合
+     * @param czId       车站id
+     * @return
      */
-    List<MenXianEntity> findByPropertyIds(Integer[] propertyIds);
+    JSONObject findByCzIdAndProperties(Integer czId, Integer[] properties);
+
+    /**
+     * 批量导入excel数据
+     *
+     * @param inputStream 输入流
+     * @param fileName    文件名
+     * @return 解析后的数据
+     * @throws IOException io异常
+     */
+    String[][] importFile(InputStream inputStream, String fileName) throws IOException;
+
+    /**
+     * 添加预览修改过的数据
+     *
+     * @param ja 文件解析的修改数据
+     */
+    void importData(JSONArray ja, String loginUserName);
+
+    /**
+     * 下载excel数据模板
+     *
+     * @param outputStream 输出流
+     * @throws IOException io异常
+     */
+    void templateFile(OutputStream outputStream) throws IOException;
 
 
 }

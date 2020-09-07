@@ -12,15 +12,7 @@ import java.util.Map;
 public interface QuDuanInfoDaoV2 {
 
 
-    QuDuanInfoEntityV2 selectLastByCzId(Integer czId, String tableName);
-
-    QuDuanInfoEntityV2 selectLastByQid(Integer qid);
-
-
-    List<QuDuanInfoEntityV2> selectByCzId(Integer czId, Date time, String tableName);
-
     List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
-
 
     int isTableExist(String tableName);
 

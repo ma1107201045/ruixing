@@ -3,6 +3,7 @@ package com.yintu.ruixing.guzhangzhenduan;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface MenXianDao {
     int deleteByPrimaryKey(Integer id);
@@ -17,9 +18,6 @@ public interface MenXianDao {
 
     int updateByPrimaryKey(MenXianEntity record);
 
-    MenXianEntity selectByQuDuanIdAndPropertyId(Integer quDuanId, Integer propertyId);
-
-    List<MenXianEntity> selectByPropertyIds(Integer[] propertyIds);
-
+    MenXianEntity selectByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quduanId, Integer propertyId);
 
 }

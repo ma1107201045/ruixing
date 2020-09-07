@@ -13,4 +13,6 @@ public interface QuDuanInfoPropertyService extends BaseService<QuDuanInfoPropert
     List<QuDuanInfoPropertyEntity> findByType(Short type);
 
     List<QuDuanInfoPropertyEntity> findByIds(Integer[] ids);
+
+    List<QuDuanInfoPropertyEntity> finByName(String name);
 }

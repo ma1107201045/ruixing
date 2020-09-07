@@ -13,32 +13,13 @@ import java.util.Map;
  * @date:2020/6/3 11:52
  */
 public interface QuDuanInfoService {
-
     /**
-     * 按照车站查询区段详情
+     * 查询表是否存在
      *
-     * @param czId 车站id
-     * @return 区段详情
-     */
-    QuDuanInfoEntityV2 findLastBycZId(Integer czId);
-
-    /**
-     * 按照车站查询区段详情
-     *
-     * @param qid 区段id
-     * @return 区段详情 多条
-     */
-    QuDuanInfoEntityV2 findLastByQid(Integer qid);
-
-
-    /**
-     * 实时报表
-     *
-     * @param czId 车站id
-     * @param time 时间
+     * @param tableName 表名称
      * @return
      */
-    List<QuDuanInfoEntityV2> findByCzIdAndTime(Integer czId, Date time);
+    boolean isTableExist(String tableName);
 
     /**
      * 日报表
@@ -47,14 +28,6 @@ public interface QuDuanInfoService {
      * @return 统计
      */
     List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time);
-
-    /**
-     * 查询表是否存在
-     *
-     * @param tableName 表名称
-     * @return
-     */
-    boolean isTableExist(String tableName);
 
 
     /**

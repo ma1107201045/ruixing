@@ -87,4 +87,10 @@
             #{id,jdbcType=INTEGER}
         </foreach>
     </select>
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_quduan_info_property
+        where name like concat('%',#{name,jdbcType=VARCHAR},'%')
+    </select>
 </mapper>

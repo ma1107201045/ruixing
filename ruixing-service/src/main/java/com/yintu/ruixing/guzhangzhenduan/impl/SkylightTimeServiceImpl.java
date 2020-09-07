@@ -152,7 +152,7 @@ public class SkylightTimeServiceImpl implements SkylightTimeService {
         //excel标题
         String title = "天窗时间列表";
         //excel表名
-        String[] headers = {"序号", "车站", "区段", "开始时间", "结束时间"};
+        String[] headers = {"序号", "车站名称", "区段名称", "开始时间", "结束时间"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);

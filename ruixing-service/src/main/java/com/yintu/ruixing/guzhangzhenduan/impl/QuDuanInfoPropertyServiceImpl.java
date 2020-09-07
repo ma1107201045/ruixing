@@ -48,4 +48,9 @@ public class QuDuanInfoPropertyServiceImpl implements QuDuanInfoPropertyService 
     public List<QuDuanInfoPropertyEntity> findByIds(Integer[] ids) {
         return quDuanInfoPropertyDao.selectByIds(ids);
     }
+
+    @Override
+    public List<QuDuanInfoPropertyEntity> finByName(String name) {
+        return quDuanInfoPropertyDao.selectByName(name);
+    }
 }
