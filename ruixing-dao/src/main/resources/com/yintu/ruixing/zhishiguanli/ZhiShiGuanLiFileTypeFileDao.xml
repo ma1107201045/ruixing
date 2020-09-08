@@ -7,12 +7,15 @@
     <result column="tid" jdbcType="INTEGER" property="tid" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="createName" jdbcType="VARCHAR" property="createName" />
+    <result column="updateName" jdbcType="VARCHAR" property="updateName" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="fabu_type" jdbcType="INTEGER" property="fabuType" />
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parentid, tid, file_name, file_path, createtime, fabu_type, yuliu
+    id, parentid, tid, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName
   </sql>
 
   <!--根据id 查询对应的文件数据-->
@@ -80,9 +83,9 @@
   <!--新增文件-->
   <insert id="addOneFile" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
     insert into mro_zhishiguanli_filetype_file ( parentid,
-    file_name, file_path, createtime)
+    file_name, file_path, updateTime,updateName)
     values ( #{id1,jdbcType=INTEGER},
-    #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+    #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR})
   </insert>
 
 
@@ -114,6 +117,15 @@
       <if test="yuliu != null">
         yuliu,
       </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="createName != null">
+        createName,
+      </if>
+      <if test="updateName != null">
+        updateName,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -139,6 +151,15 @@
       </if>
       <if test="yuliu != null">
         #{yuliu,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        #{updateName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -167,6 +188,15 @@
       </if>
       <if test="yuliu != null">
         yuliu = #{yuliu,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        createName = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        updateName = #{updateName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

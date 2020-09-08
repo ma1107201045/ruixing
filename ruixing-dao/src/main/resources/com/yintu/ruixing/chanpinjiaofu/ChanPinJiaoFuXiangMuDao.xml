@@ -71,11 +71,32 @@
     </delete>
     <!--添加审核人-->
     <insert id="addAuditorName" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,objectType,operatorName,operatorTime)
+        insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,objectType,doName,doTime)
         values
         (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER},#{objectType,jdbcType=INTEGER},
-        #{operatorName},#{operatorTime})
+        #{doName},#{doTime})
     </insert>
+
+    <!--根据项目id 审核对应的项目-->
+    <update id="editAuditorByXMId" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        update mro_chanpinjiaofu_file_auditor
+        <set>
+            <if test="isPass != null">
+                is_pass = #{isPass,jdbcType=INTEGER},
+            </if>
+            <if test="doName != null">
+                doName = #{doName,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="doTime != null">
+                doTime = #{doTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where chanpinjiaofu_file_id = #{id,jdbcType=INTEGER}
+    </update>
+
     <!--查询正在执行 尚未完成发货、签收、验工 停滞暂不发货、陆续发货中、工程结束不需发货   的列表；-->
     <select id="findJiaoFuQingKuangLists" parameterType="java.lang.String" resultMap="xiangmu">
         <if test="choiceTing=='zhengZaiZhiXing'">
@@ -467,7 +488,8 @@
   </delete>
 
     <!--添加项目-->
-    <insert id="addXiangMu" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="addXiangMu" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_chanpinjiaofu_xiangmu
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

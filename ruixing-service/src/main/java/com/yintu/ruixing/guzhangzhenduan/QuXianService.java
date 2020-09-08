@@ -39,7 +39,7 @@ public interface QuXianService {
     List<quduanEntity> findQuDuanDatas(long starttime, long endtime, String shuxingname,
                                        String quduanname, Integer qdid, String tableName);
 
-    BigDecimal findOneQuDuanDatas(Long time, String shuxingname, String quduanname, Integer qdid, String tableName);
+    List<quduanEntity> findOneQuDuanDatas(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
     List<quduanEntity> findQuDuanShiShiData(  String shuxingname, String quduanname, Integer qdid, String tableName);
 

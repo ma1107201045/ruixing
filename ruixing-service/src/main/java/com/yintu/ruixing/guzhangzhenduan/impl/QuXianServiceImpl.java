@@ -118,8 +118,8 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
-    public BigDecimal findOneQuDuanDatas(Long time, String shuxingname, String quduanname, Integer qdid, String tableName) {
-        return quDuanInfoDaoV2.findOneQuDuanDatas(time,shuxingname,quduanname,qdid,tableName);
+    public List<quduanEntity> findOneQuDuanDatas(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid,String tableName) {
+        return quDuanInfoDaoV2.findOneQuDuanDatas(starttime,endtime,shuxingname,quduanname,qdid,tableName);
     }
 
     @Override

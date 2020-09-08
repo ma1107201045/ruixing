@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+
 @Mapper
 public interface ZhiShiGuanLiFileTypeFileDao {
     int insert(ZhiShiGuanLiFileTypeFileEntity record);
@@ -22,12 +23,12 @@ public interface ZhiShiGuanLiFileTypeFileDao {
 
     int insertSelective(ZhiShiGuanLiFileTypeFileEntity record);
 
-    void addOneFile(@Param("fileName") String fileName,@Param("createtime") Date createtime,
-                    @Param("filePath")String filePath,@Param("id1") Integer id1);
+    void addOneFile(@Param("fileName") String fileName, @Param("createtime") Date createtime,
+                    @Param("filePath") String filePath, @Param("id1") Integer id1, @Param("username") String username);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(@Param("fileName") String fileName,@Param("id")Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(@Param("fileName") String fileName, @Param("id") Integer id);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findFileById(@Param("id") Integer id,@Param("fileName") String fileName);
+    List<ZhiShiGuanLiFileTypeFileEntity> findFileById(@Param("id") Integer id, @Param("fileName") String fileName);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findFiles(Integer id);
 

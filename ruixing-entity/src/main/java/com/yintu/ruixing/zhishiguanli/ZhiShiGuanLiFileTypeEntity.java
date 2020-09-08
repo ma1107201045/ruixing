@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,11 @@ public class ZhiShiGuanLiFileTypeEntity {
     private String filemiaoshu;
 
     private String yuliu;
+
+    private Date createTime;
+    private String createName;
+    private String updateName;
+    private Date updateTime;
 
     public Integer getId() {
         return id;

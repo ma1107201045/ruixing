@@ -1,7 +1,13 @@
 package com.yintu.ruixing.zhishiguanli;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ZhiShiGuanLiFileTypeFileEntity {
     private Integer id;
 
@@ -18,6 +24,10 @@ public class ZhiShiGuanLiFileTypeFileEntity {
     private Integer fabuType;
 
     private String yuliu;
+
+    private String createName;
+    private String updateName;
+    private Date updateTime;
 
     public Integer getId() {
         return id;
