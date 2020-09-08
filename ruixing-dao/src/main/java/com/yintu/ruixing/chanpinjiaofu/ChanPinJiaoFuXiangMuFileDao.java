@@ -25,9 +25,9 @@ public interface ChanPinJiaoFuXiangMuFileDao {
     List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(@Param("xmid") Integer xmid, @Param("filetype") Integer filetype,
                                                              @Param("filename") String filename, @Param("uid") Integer uid);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer uid);
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(@Param("xmid") Integer xmid, @Param("uid") Integer uid);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer uid);
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(@Param("xmid") Integer xmid, @Param("uid") Integer uid);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 
