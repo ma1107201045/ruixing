@@ -35,7 +35,6 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     @Override
     public void add(MaintenancePlanEntity entity) {
-        entity.setCreatedDate(new Date());
         maintenancePlanDao.insertSelective(entity);
     }
 
@@ -92,7 +91,6 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         for (String[] rows : content) {
             MaintenancePlanEntity maintenancePlanEntity = new MaintenancePlanEntity();
             maintenancePlanEntity.setName(rows[1]);
-            maintenancePlanEntity.setCreatedDate(new Date());
             maintenancePlanEntities.add(maintenancePlanEntity);
         }
         if (!maintenancePlanEntities.isEmpty())

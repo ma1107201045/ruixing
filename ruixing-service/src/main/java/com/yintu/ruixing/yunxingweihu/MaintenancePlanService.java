@@ -13,6 +13,12 @@ import java.util.List;
  * @date:2020/7/8 15:50
  */
 public interface MaintenancePlanService extends BaseService<MaintenancePlanEntity, Integer> {
+    /**
+     * 批量添加
+     *
+     * @param maintenancePlanEntities 维护计划实体类集
+     */
+    void add(List<MaintenancePlanEntity> maintenancePlanEntities);
 
     /**
      * 批量删除
@@ -37,12 +43,6 @@ public interface MaintenancePlanService extends BaseService<MaintenancePlanEntit
      */
     List<MaintenancePlanEntity> findByIds(Integer[] ids);
 
-    /**
-     * 批量添加
-     *
-     * @param maintenancePlanEntities 维护计划实体类集
-     */
-    void add(List<MaintenancePlanEntity> maintenancePlanEntities);
 
     /**
      * 批量导入excel数据
