@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.guzhangzhenduan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +35,17 @@ public class MaintenancePlanController extends SessionController implements Base
     @Autowired
     private MaintenancePlanInfoService maintenancePlanInfoService;
 
+    @Autowired
+    private DataStatsService dataStatsService;
+
     @PostMapping
     @ResponseBody
     public Map<String, Object> add(@Validated MaintenancePlanEntity entity) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
+        entity.setIsStart((short) 1);
         maintenancePlanService.add(entity);
         return ResponseDataUtil.ok("添加维护计划信息成功");
     }
@@ -56,6 +66,8 @@ public class MaintenancePlanController extends SessionController implements Base
     @PutMapping("/{id}")
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated MaintenancePlanEntity entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         maintenancePlanService.edit(entity);
         return ResponseDataUtil.ok("修改维护计划信息成功");
     }
@@ -118,6 +130,37 @@ public class MaintenancePlanController extends SessionController implements Base
         List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, id, null);
         PageInfo<MaintenancePlanInfoEntity> pageInfo = new PageInfo<>(maintenancePlanInfoEntities);
         return ResponseDataUtil.ok("查询维护计划详情列表信息成功", pageInfo);
+    }
+
+    @GetMapping("/railways/bureau")
+    @ResponseBody
+    public Map<String, Object> findAllTieLuJu() {
+        List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJu();
+        return ResponseDataUtil.ok("查询铁路局成功", tieLuJuEntities);
+    }
+
+    //根据铁路局的id  查询对应的电务段
+    @GetMapping("/signal/depot")
+    @ResponseBody
+    public Map<String, Object> findDianWuDuanByTid(@RequestParam Integer railwaysBureauId) {
+        List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByTid(railwaysBureauId);
+        return ResponseDataUtil.ok("查询电务段成功", dianWuDuanEntities);
+    }
+
+    //根据电务段的id  查找线段的名字和id
+    @GetMapping("/special/railway/line")
+    @ResponseBody
+    public Map<String, Object> findXianDuanByDid(@RequestParam Integer signalDepotId) {
+        List<XianDuanEntity> xianDuanEntities = dataStatsService.findXianDuanByDid(signalDepotId);
+        return ResponseDataUtil.ok("查询线段成功", xianDuanEntities);
+    }
+
+    //根据线段的id  查找车站的名字和id
+    @GetMapping("/station")
+    @ResponseBody
+    public Map<String, Object> findCheZhanByXid(@RequestParam Integer specialRailwayLineId) {
+        List<CheZhanEntity> cheZhanEntities = dataStatsService.findCheZhanByXid(specialRailwayLineId);
+        return ResponseDataUtil.ok("查询车站成功", cheZhanEntities);
     }
 
 }

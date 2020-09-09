@@ -17,7 +17,7 @@
         <result column="cycle_type" jdbcType="SMALLINT" property="cycleType"/>
         <result column="cycle_value" jdbcType="VARCHAR" property="cycleValue"/>
         <result column="cycle_description" jdbcType="VARCHAR" property="cycleDescription"/>
-        <result column="is_start" jdbcType="VARCHAR" property="isStart"/>
+        <result column="is_start" jdbcType="SMALLINT" property="isStart"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
@@ -55,7 +55,7 @@
                 #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER}, #{specialRailwayLineId,jdbcType=INTEGER},
                 #{stationId,jdbcType=INTEGER}, #{executionMode,jdbcType=SMALLINT}, #{executionTime,jdbcType=TIMESTAMP},
                 #{cycleType,jdbcType=SMALLINT}, #{cycleValue,jdbcType=VARCHAR}, #{cycleDescription,jdbcType=VARCHAR},
-                #{isStart,jdbcType=VARCHAR}, #{context,jdbcType=LONGVARCHAR})
+                #{isStart,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
         insert into mro_maintenance_plan
@@ -159,7 +159,7 @@
                 #{cycleDescription,jdbcType=VARCHAR},
             </if>
             <if test="isStart != null">
-                #{isStart,jdbcType=VARCHAR},
+                #{isStart,jdbcType=SMALLINT},
             </if>
             <if test="context != null">
                 #{context,jdbcType=LONGVARCHAR},
@@ -212,7 +212,7 @@
                 cycle_description = #{cycleDescription,jdbcType=VARCHAR},
             </if>
             <if test="isStart != null">
-                is_start = #{isStart,jdbcType=VARCHAR},
+                is_start = #{isStart,jdbcType=SMALLINT},
             </if>
             <if test="context != null">
                 context = #{context,jdbcType=LONGVARCHAR},
@@ -236,7 +236,7 @@
             cycle_type              = #{cycleType,jdbcType=SMALLINT},
             cycle_value             = #{cycleValue,jdbcType=VARCHAR},
             cycle_description       = #{cycleDescription,jdbcType=VARCHAR},
-            is_start                = #{isStart,jdbcType=VARCHAR},
+            is_start                = #{isStart,jdbcType=SMALLINT},
             context                 = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -255,7 +255,7 @@
             execution_time          = #{executionTime,jdbcType=TIMESTAMP},
             cycle_type              = #{cycleType,jdbcType=SMALLINT},
             cycle_value             = #{cycleValue,jdbcType=VARCHAR},
-            cycle_description       = #{cycleDescription,jdbcType=VARCHAR},
+            cycle_description       = #{cycleDescription,jdbcType=SMALLINT},
             is_start                = #{isStart,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>

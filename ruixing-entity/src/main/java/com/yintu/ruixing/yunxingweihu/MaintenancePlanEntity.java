@@ -43,7 +43,7 @@ public class MaintenancePlanEntity implements Serializable {
 
     private String cycleDescription;
 
-    private String isStart;
+    private Short isStart;
 
     private String context;
 
