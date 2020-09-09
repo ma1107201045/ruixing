@@ -69,6 +69,8 @@
     <delete id="deletAuditor" parameterType="java.lang.Integer">
         delete from mro_chanpinjiaofu_file_auditor where chanpinjiaofu_file_id =#{id}
     </delete>
+
+
     <!--添加审核人-->
     <insert id="addAuditorName" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
         insert into mro_chanpinjiaofu_file_auditor (chanpinjiaofu_file_id,auditor_id,objectType,doName,doTime)
@@ -76,6 +78,17 @@
         (#{chanPinJiaoFuFileId,jdbcType=INTEGER},#{auditorId,jdbcType=INTEGER},#{objectType,jdbcType=INTEGER},
         #{doName},#{doTime})
     </insert>
+
+    <!--根据项目id  查询对应的项目审核数据-->
+    <select id="findXMByXmid" resultType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        SELECT
+            *
+        FROM
+            mro_chanpinjiaofu_file_auditor
+        WHERE
+            chanpinjiaofu_file_id = #{xmid}
+            and objectType=2
+    </select>
 
     <!--根据项目id 审核对应的项目-->
     <update id="editAuditorByXMId" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">

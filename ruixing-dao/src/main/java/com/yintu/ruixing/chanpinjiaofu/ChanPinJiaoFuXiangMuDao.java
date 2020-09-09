@@ -101,4 +101,5 @@ public interface ChanPinJiaoFuXiangMuDao {
 
     void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity);
 
+    List<ChanPinJiaoFuFileAuditorEntity> findXMByXmid(@Param("xmid") Integer xmid);
 }

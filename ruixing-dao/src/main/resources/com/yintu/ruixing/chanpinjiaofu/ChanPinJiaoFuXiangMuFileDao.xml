@@ -72,22 +72,10 @@
     </select>
 
 
-    <!-- 初始化输出文件-->
+    <!-- 初始化输出文件  不需要审核的-->
     <select id="findShuChuFile" resultMap="BaseResultMap">
         SELECT
-        cf.id,
-        uid,
-        xm_id,
-        file_type,
-        file_name,
-        file_path,
-        fabu_type,
-        createTime,
-        updateTime,
-        createName,
-        updateName,
-        auditorState,
-        remarks,
+        cf.<include refid="Base_Column_List"/>,
         cfa.auditor_id
         FROM
             mro_chanpinjiaofu_file cf
@@ -95,13 +83,29 @@
         WHERE
             cf.xm_id = #{xmid}
             AND cf.file_type = 2
-            and cfa.objectType=2
-            AND cf.fabu_type = 2
+            AND (cf.fabu_type = 2 AND cf.uid = #{uid} )
             OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2)
         ORDER BY cf.id DESC
     </select>
 
-    <!-- 初始化输入文件-->
+    <!-- 初始化输出文件  需要审核的-->
+    <select id="findShuChuFilee" resultMap="BaseResultMap">
+        SELECT
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        FROM
+        mro_chanpinjiaofu_file cf
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+        WHERE
+        cf.xm_id = #{xmid}
+        AND cf.file_type = 2
+        and cfa.objectType=2
+        AND (cf.fabu_type = 2 AND cf.uid = #{uid} )
+        OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2)
+        ORDER BY cf.id DESC
+    </select>
+
+    <!-- 初始化输入文件 不需要审核的-->
     <select id="findShuRuFile" resultMap="BaseResultMap">
         SELECT
         cf.<include refid="Base_Column_List"/>,
@@ -109,16 +113,31 @@
         FROM
           mro_chanpinjiaofu_file cf
         LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
-        WHERE
+        where
+            cf.xm_id = #{xmid}
+            AND cf.file_type = 1
+            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
+        ORDER BY cf.id DESC
+    </select>
+    <!-- 初始化输入文件  要审核的-->
+    <select id="findShuRuFilee" resultMap="BaseResultMap">
+        SELECT
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        FROM
+        mro_chanpinjiaofu_file cf
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+        where
         cf.xm_id = #{xmid}
         AND cf.file_type = 1
         and cfa.objectType=2
-        AND cf.fabu_type = 2
+        AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
         OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
         ORDER BY cf.id DESC
     </select>
 
-    <!-- 根据文件类型或者文件名 进行模糊查询-->
+    <!-- 根据文件类型或者文件名 进行模糊查询  不需要审核的-->
     <select id="findFileBySomething" resultMap="BaseResultMap">
         select
         cf.<include refid="Base_Column_List"/>,
@@ -133,13 +152,33 @@
             <if test="filename!=null">
                 and file_name like concat('%',#{filename},'%')
             </if>
-            and cfa.objectType=2
-            AND cf.fabu_type = 2
-            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 )
+            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype})
         </where>
         order by id desc
     </select>
 
+    <!-- 根据文件类型或者文件名 进行模糊查询  需要审核的-->
+    <select id="findFileBySomethingg" resultMap="BaseResultMap">
+        select
+        cf.<include refid="Base_Column_List"/>,
+        cfa.auditor_id
+        from mro_chanpinjiaofu_file cf
+        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+        <where>
+            cf.xm_id=#{xmid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+            and cfa.objectType=2
+            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype})
+        </where>
+        order by id desc
+    </select>
 
     <!--根据id  查询对应的文件数据-->
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
