@@ -1,13 +1,11 @@
-package com.yintu.ruixing.quartz.job;
+package com.yintu.ruixing.quartz.task;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
 @Component
 @Transactional
-public class MaintenancePlanJob {
+public class MaintenancePlanTask {
 
     public void execute() throws Exception {
 
