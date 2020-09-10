@@ -1,5 +1,6 @@
-package com.yintu.ruixing.common;
+package com.yintu.ruixing.quartz.job;
 
+import com.yintu.ruixing.quartz.service.QuartzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

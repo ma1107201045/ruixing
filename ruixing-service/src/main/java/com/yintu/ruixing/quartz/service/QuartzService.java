@@ -1,5 +1,7 @@
-package com.yintu.ruixing.common;
+package com.yintu.ruixing.quartz.service;
 
+import com.yintu.ruixing.common.JobOperateEnum;
+import com.yintu.ruixing.common.ScheduleJobEntity;
 import org.quartz.SchedulerException;
 
 public interface QuartzService {

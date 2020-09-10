@@ -2,6 +2,7 @@ package com.yintu.ruixing.yunxingweihu.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
+import com.yintu.ruixing.common.ScheduleJobService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.FileUtil;
@@ -32,6 +33,8 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     @Autowired
     private MaintenancePlanDao maintenancePlanDao;
+    @Autowired
+    private ScheduleJobService scheduleJobService;
 
     @Override
     public void add(MaintenancePlanEntity entity) {
