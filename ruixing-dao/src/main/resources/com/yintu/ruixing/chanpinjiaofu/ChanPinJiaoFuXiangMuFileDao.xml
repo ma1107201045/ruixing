@@ -83,11 +83,11 @@
         WHERE
             cf.xm_id = #{xmid}
             AND cf.file_type = 2
-            AND (cf.fabu_type = 2 AND cf.uid = #{uid} )
+            AND (cf.fabu_type = 2 )
             OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2)
         ORDER BY cf.id DESC
     </select>
-
+    <!--AND cf.uid = #{uid} -->
     <!-- 初始化输出文件  需要审核的-->
     <select id="findShuChuFilee" resultMap="BaseResultMap">
         SELECT
@@ -100,7 +100,7 @@
         cf.xm_id = #{xmid}
         AND cf.file_type = 2
         and cfa.objectType=2
-        AND (cf.fabu_type = 2 AND cf.uid = #{uid} )
+        AND (cf.fabu_type = 2  )
         OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2)
         ORDER BY cf.id DESC
     </select>
@@ -116,7 +116,7 @@
         where
             cf.xm_id = #{xmid}
             AND cf.file_type = 1
-            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            AND(cf.fabu_type = 2 )
             OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
         ORDER BY cf.id DESC
     </select>
@@ -132,7 +132,7 @@
         cf.xm_id = #{xmid}
         AND cf.file_type = 1
         and cfa.objectType=2
-        AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+        AND(cf.fabu_type = 2 )
         OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
         ORDER BY cf.id DESC
     </select>
@@ -152,7 +152,7 @@
             <if test="filename!=null">
                 and file_name like concat('%',#{filename},'%')
             </if>
-            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            AND(cf.fabu_type = 2  )
             OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype})
         </where>
         order by id desc
@@ -174,7 +174,7 @@
                 and file_name like concat('%',#{filename},'%')
             </if>
             and cfa.objectType=2
-            AND(cf.fabu_type = 2 AND cf.uid = #{uid} )
+            AND(cf.fabu_type = 2  )
             OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype})
         </where>
         order by id desc

@@ -165,6 +165,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     @Override
     public void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uId, String username) {
         ChanPinJiaoFuXiangMuFileEntity fileEntity = chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+        Integer xmId = chanPinJiaoFuXiangMuFileEntity.getXmId();//新增文件的项目id
         StringBuilder sb = new StringBuilder();
         Date nowTime = new Date();
         //删除中间表的审查人id
@@ -185,6 +186,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                 messageEntity.setCreateTime(nowTime);//创建时间
                 messageEntity.setContext("“" + chanPinJiaoFuXiangMuFileEntity.getFileName() + "”文件需要您审核,请查看！");
                 messageEntity.setType((short) 2);
+                messageEntity.setProjectId(xmId);
                 messageEntity.setMessageType((short) 2);
                 messageEntity.setFileId(id);
                 messageEntity.setSenderId(uId);
@@ -196,6 +198,9 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuFileEntity.setUid(uId);
         chanPinJiaoFuXiangMuFileEntity.setUpdatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setUpdatename(username);
+        if (chanPinJiaoFuXiangMuFileEntity.getFileType()==2&&chanPinJiaoFuXiangMuFileEntity.getFabuType()==2){
+            chanPinJiaoFuXiangMuFileEntity.setAuditorState(1);
+        }
         chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
         Integer aa = 0;
         if (!fileEntity.getFileName().equals(chanPinJiaoFuXiangMuFileEntity.getFileName())) {
@@ -269,6 +274,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         Integer typenum = 2;
         String context = "新增“" + fileName + "”文件";
         chanPinJiaoFuRecordMessageDao.addRecordMessage(fid, typenum, nowTime, username, context);
+        Integer xmId = chanPinJiaoFuXiangMuFileEntity.getXmId();//新增文件的项目id
         for (Integer uid : uids) {
             ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity = new ChanPinJiaoFuFileAuditorEntity();
             chanPinJiaoFuFileAuditorEntity.setChanPinJiaoFuFileId(fid);
@@ -282,6 +288,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             messageEntity.setContext("“" + fileName + "”文件需要您审核,请查看！");
             messageEntity.setType((short) 2);
             messageEntity.setMessageType((short) 2);
+            messageEntity.setProjectId(xmId);
             messageEntity.setFileId(fid);
             messageEntity.setSenderId(uId);
             messageEntity.setReceiverId(uid);
@@ -379,9 +386,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             messageDao.insertSelective(messageEntity);
             //新增查看消息
             ChanPinJiaoFuRecordMessageEntity recordMessageEntity = new ChanPinJiaoFuRecordMessageEntity();
-            Integer xmId = chanPinJiaoFuFileAuditorEntity.getChanPinJiaoFuFileId();
             String reason = chanPinJiaoFuFileAuditorEntity.getReason();
-            recordMessageEntity.setTypeid(xmId);
+            recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setTypenum(2);
@@ -393,6 +399,15 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             fileEntity.setId(id);
             fileEntity.setAuditorState(2);
             chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(fileEntity);
+            //新增查看消息
+            ChanPinJiaoFuXiangMuFileEntity onefileEntity = chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+            ChanPinJiaoFuRecordMessageEntity recordMessageEntity = new ChanPinJiaoFuRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(nowTime);
+            recordMessageEntity.setTypenum(2);
+            recordMessageEntity.setContext("“" + onefileEntity.getFileName() + "”文件审核已通过！");
+            chanPinJiaoFuRecordMessageDao.insertSelective(recordMessageEntity);
         }
         chanPinJiaoFuFileAuditorEntity.setDoTime(nowTime);
         chanPinJiaoFuFileAuditorEntity.setDoName(username);
@@ -423,7 +438,6 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             messageDao.insertSelective(messageEntity);
             //新增查看消息
             ChanPinJiaoFuRecordMessageEntity recordMessageEntity = new ChanPinJiaoFuRecordMessageEntity();
-            Integer xmId = chanPinJiaoFuFileAuditorEntity.getChanPinJiaoFuFileId();
             String reason = chanPinJiaoFuFileAuditorEntity.getReason();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
@@ -437,6 +451,15 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             chanPinJiaoFuXiangMuEntity.setId(id);
             chanPinJiaoFuXiangMuEntity.setAuditorstate(2);
             chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
+            //新增查看消息
+            ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
+            ChanPinJiaoFuRecordMessageEntity recordMessageEntity = new ChanPinJiaoFuRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(nowTime);
+            recordMessageEntity.setTypenum(1);
+            recordMessageEntity.setContext("“" + xiangMuEntity.getXiangmuName() + "”项目审核已通过！" );
+            chanPinJiaoFuRecordMessageDao.insertSelective(recordMessageEntity);
         }
         chanPinJiaoFuFileAuditorEntity.setDoTime(nowTime);
         chanPinJiaoFuFileAuditorEntity.setDoName(username);
