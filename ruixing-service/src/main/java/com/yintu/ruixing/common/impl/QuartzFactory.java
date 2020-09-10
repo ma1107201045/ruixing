@@ -13,13 +13,13 @@ public class QuartzFactory implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
         //获取调度数据
-        ScheduleJobEntity scheduleJob = (ScheduleJobEntity) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");
+        ScheduleJobEntity scheduleJobEntity = (ScheduleJobEntity) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");
 
         //获取对应的Bean
-        Object object = SpringUtil.getBean(scheduleJob.getBeanName());
+        Object object = SpringUtil.getBean(scheduleJobEntity.getBeanName());
         try {
             //利用反射执行对应方法
-            Method method = object.getClass().getMethod(scheduleJob.getMethodName());
+            Method method = object.getClass().getMethod(scheduleJobEntity.getMethodName());
             method.invoke(object);
         } catch (Exception e) {
             e.printStackTrace();
