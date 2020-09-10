@@ -87,7 +87,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
         Date nowTime = new Date();
-        String truename=null;
+        String truename = null;
         List<UserEntity> userEntitiess = userService.findByTruename(truename);
         for (UserEntity entitiess : userEntitiess) {
             Integer id = entitiess.getId().intValue();
@@ -107,7 +107,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
                     for (Integer uid : uids) {
                         //添加一条消息到消息表
                         MessageEntity messageEntity = new MessageEntity();
-                        messageEntity.setContext("“"+xiangmuName + "”项目待发货，请及时联系顾客确认供货计划！");
+                        messageEntity.setContext("“" + xiangmuName + "”项目待发货，请及时联系顾客确认供货计划！");
                         messageEntity.setType((short) 2);
                         messageEntity.setStatus((short) 1);
                         messageEntity.setCreateBy(username);//创建人
@@ -122,7 +122,6 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
             }
         }
     }
-
 
 
     //根据项目id 查看更新历史记录
@@ -147,7 +146,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     public Map<String, Object> addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
-        chanPinJiaoFuXiangMuService.addXiangMu(chanPinJiaoFuXiangMuEntity, username,senderid);
+        chanPinJiaoFuXiangMuService.addXiangMu(chanPinJiaoFuXiangMuEntity, username, senderid);
         return ResponseDataUtil.ok("添加项目成功");
     }
 
@@ -179,23 +178,22 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     //根据项目id 编辑审核过程
     @ResponseBody
     @PutMapping("/editAuditorByXMId/{id}")
-    public Map<String,Object>editAuditorByXMId(@PathVariable Integer id,ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity){
+    public Map<String, Object> editAuditorByXMId(@PathVariable Integer id, ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer senderId) {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
-        chanPinJiaoFuXiangMuService.editAuditorByXMId(chanPinJiaoFuFileAuditorEntity,id,username,receiverid);
+        chanPinJiaoFuXiangMuService.editAuditorByXMId(chanPinJiaoFuFileAuditorEntity, id, username, receiverid,senderId);
         return ResponseDataUtil.ok("项目审核成功");
     }
 
     //根据文件id 编辑审核过程
     @ResponseBody
     @PutMapping("/editAuditorByWJId/{id}")
-    public Map<String,Object>editAuditorByWJId(@PathVariable Integer id,ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity){
+    public Map<String, Object> editAuditorByWJId(@PathVariable Integer id, ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer senderId) {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
-        chanPinJiaoFuXiangMuService.editAuditorByWJId(chanPinJiaoFuFileAuditorEntity,id,username,receiverid);
+        chanPinJiaoFuXiangMuService.editAuditorByWJId(chanPinJiaoFuFileAuditorEntity, id, username, receiverid,senderId);
         return ResponseDataUtil.ok("文件审核成功");
     }
-
 
 
     //查询所有的项目数据
@@ -264,33 +262,63 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
     @ResponseBody
     @GetMapping("/findFileBySomething")
     public Map<String, Object> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename) {
-        Integer uid = this.getLoginUser().getId().intValue();
-        PageHelper.startPage(page, size);
-        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileBySomething(xmid, page, size, filetype, filename,uid);
-        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
-        return ResponseDataUtil.ok("查询文件成功", fileEntityPageInfo);
+        List<ChanPinJiaoFuFileAuditorEntity> fuFileAuditorEntityList=chanPinJiaoFuXiangMuService.findXMByXmid(xmid);
+        if (fuFileAuditorEntityList.size()==0){
+            Integer uid = this.getLoginUser().getId().intValue();
+            PageHelper.startPage(page, size);
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileBySomething(xmid, page, size, filetype, filename, uid);
+            System.out.println("asdadasdadasd+"+fileEntityList);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询文件成功", fileEntityPageInfo);
+        }else {
+            Integer uid = this.getLoginUser().getId().intValue();
+            PageHelper.startPage(page, size);
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findFileBySomethingg(xmid, page, size, filetype, filename, uid);
+            System.out.println("asdadasdadasd+"+fileEntityList);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询文件成功", fileEntityPageInfo);
+        }
     }
 
     //根据项目id 初始化输入文件
     @ResponseBody
     @GetMapping("/findShuRuFile")
     public Map<String, Object> findShuRuFile(Integer xmid, Integer page, Integer size) {
-        Integer uid = this.getLoginUser().getId().intValue();
-        PageHelper.startPage(page, size);
-        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuRuFile(xmid, page, size,uid);
-        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
-        return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        List<ChanPinJiaoFuFileAuditorEntity> fuFileAuditorEntityList=chanPinJiaoFuXiangMuService.findXMByXmid(xmid);
+        if (fuFileAuditorEntityList.size()==0){
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuRuFile(xmid, page, size, uid);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuRuFilee(xmid, page, size, uid);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        }
     }
 
     //根据项目id 初始化输出文件
     @ResponseBody
     @GetMapping("/findShuChuFile")
     public Map<String, Object> findShuChuFile(Integer xmid, Integer page, Integer size) {
-        Integer uid = this.getLoginUser().getId().intValue();
-        PageHelper.startPage(page, size);
-        List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuChuFile(xmid, page, size,uid);
-        PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
-        return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        List<ChanPinJiaoFuFileAuditorEntity> fuFileAuditorEntityList=chanPinJiaoFuXiangMuService.findXMByXmid(xmid);
+        if (fuFileAuditorEntityList.size()==0){
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuChuFile(xmid, page, size, uid);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<ChanPinJiaoFuXiangMuFileEntity> fileEntityList = chanPinJiaoFuXiangMuService.findShuChuFilee(xmid, page, size, uid);
+            PageInfo<ChanPinJiaoFuXiangMuFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }
+
     }
 
 

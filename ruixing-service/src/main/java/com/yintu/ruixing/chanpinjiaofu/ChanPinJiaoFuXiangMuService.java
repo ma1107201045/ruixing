@@ -58,9 +58,15 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomething(Integer xmid, Integer page, Integer size, Integer filetype, String filename, Integer uid);
 
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileBySomethingg(Integer xmid, Integer page, Integer size, Integer filetype, String filename, Integer uid);
+
     List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFile(Integer xmid, Integer page, Integer size, Integer uid);
 
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuRuFilee(Integer xmid, Integer page, Integer size, Integer uid);
+
     List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFile(Integer xmid, Integer page, Integer size, Integer uid);
+
+    List<ChanPinJiaoFuXiangMuFileEntity> findShuChuFilee(Integer xmid, Integer page, Integer size, Integer uid);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 
@@ -70,7 +76,9 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
 
-    void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid);
+    void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
 
-    void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid);
+    void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
+
+    List<ChanPinJiaoFuFileAuditorEntity> findXMByXmid(Integer xmid);
 }
