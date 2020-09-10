@@ -84,10 +84,10 @@ public class MaintenancePlanController extends SessionController implements Base
     @ResponseBody
     public Map<String, Object> findByAll(@RequestParam("page_number") Integer pageNumber,
                                          @RequestParam("page_size") Integer pageSize,
-                                         @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
+                                         @RequestParam(value = "order_by", required = false, defaultValue = "mp.id DESC") String orderBy,
                                          @RequestParam(value = "name", required = false) String name) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<MaintenancePlanEntity> maintenancePlanEntities = maintenancePlanService.findByName(name);
+        List<MaintenancePlanEntity> maintenancePlanEntities = maintenancePlanService.findByExample(null, name);
         PageInfo<MaintenancePlanEntity> pageInfo = new PageInfo<>(maintenancePlanEntities);
         return ResponseDataUtil.ok("查询维护计划信息列表成功", pageInfo);
     }

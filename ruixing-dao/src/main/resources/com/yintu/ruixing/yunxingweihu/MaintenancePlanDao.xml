@@ -259,6 +259,7 @@
             is_start                = #{isStart,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
         insert into mro_maintenance_plan
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -272,25 +273,72 @@
             </trim>
         </foreach>
     </insert>
-    <select id="selectByName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_maintenance_plan
+    <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+        <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+        <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="execution_mode" jdbcType="SMALLINT" property="executionMode"/>
+        <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime"/>
+        <result column="cycle_type" jdbcType="SMALLINT" property="cycleType"/>
+        <result column="cycle_value" jdbcType="VARCHAR" property="cycleValue"/>
+        <result column="cycle_description" jdbcType="VARCHAR" property="cycleDescription"/>
+        <result column="is_start" jdbcType="SMALLINT" property="isStart"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+        <association property="tieLuJuEntity" column="railways_bureau_id">
+            <result column="t_id" jdbcType="INTEGER" property="tid"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
+        </association>
+        <association property="dianWuDuanEntity" column="signal_depot_id">
+            <result column="d_id" jdbcType="INTEGER" property="did"/>
+            <result column="dwd_name" jdbcType="VARCHAR" property="dwdName"/>
+        </association>
+        <association property="xianDuanEntity" column="special_railway_line_id">
+            <result column="x_id" jdbcType="INTEGER" property="xid"/>
+            <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        </association>
+        <association property="cheZhanEntity" column="station_id">
+            <id column="c_id" jdbcType="INTEGER" property="cid"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+        </association>
+    </resultMap>
+    <sql id="Example_Column_List">
+        mp.id as mp_id, create_by, create_time, modified_by, modified_time, name, railways_bureau_id,signal_depot_id, special_railway_line_id, station_id, execution_mode, execution_time,cycle_type, cycle_value, cycle_description, is_start,context,
+        t.tid as t_id,tlj_name,
+        d.did as d_id,dwd_name,
+        x.xid as x_id,xd_name,
+        c.cid as c_id,cz_name
+    </sql>
+    <sql id="Example_Table_List">
+        mro_maintenance_plan mp inner join mro_tieluju t on mp.railways_bureau_id=t.tid
+        inner join mro_dianwuduan d on mp.signal_depot_id=d.did
+        inner join mro_xianduan x on mp.special_railway_line_id=x.xid
+        inner join mro_chezhan c on mp.station_id=c.cid
+    </sql>
+    <sql id="Example_Where_List">
         <where>
+            <if test="ids!=null">
+                and mp.id in
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
             <if test="name!=null">
-                name like concat('%',#{name},'%')
+                and mp.name like concat('%',#{name,jdbcType=VARCHAR},'%')
             </if>
         </where>
-    </select>
-    <select id="selectByIds" resultMap="BaseResultMap">
+    </sql>
+    <select id="selectByExample" resultMap="ExampleResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from mro_maintenance_plan
-        <where>
-            id in
-            <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
-                #{id,jdbcType=INTEGER}
-            </foreach>
-        </where>
+        <include refid="Example_Column_List"/>
+        from
+        <include refid="Example_Table_List"/>
+        <include refid="Example_Where_List"/>
     </select>
 </mapper>

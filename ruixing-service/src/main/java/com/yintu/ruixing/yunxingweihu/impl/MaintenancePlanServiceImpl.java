@@ -16,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +47,8 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     @Override
     public MaintenancePlanEntity findById(Integer id) {
-        return maintenancePlanDao.selectByPrimaryKey(id);
+        List<MaintenancePlanEntity> maintenancePlanEntities = maintenancePlanDao.selectByExample(new Integer[]{id}, null);
+        return maintenancePlanEntities.isEmpty() ? null : maintenancePlanEntities.get(0);
     }
 
     @Override
@@ -61,13 +59,8 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
     }
 
     @Override
-    public List<MaintenancePlanEntity> findByName(String name) {
-        return maintenancePlanDao.selectByName(name);
-    }
-
-    @Override
-    public List<MaintenancePlanEntity> findByIds(Integer[] ids) {
-        return maintenancePlanDao.selectByIds(ids);
+    public List<MaintenancePlanEntity> findByExample(Integer[] ids, String name) {
+        return maintenancePlanDao.selectByExample(ids, name);
     }
 
     @Override
@@ -117,7 +110,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         //excel表名
         String[] headers = {"序号", "名称"};
         //获取数据
-        List<MaintenancePlanEntity> maintenancePlanEntities = this.findByIds(ids);
+        List<MaintenancePlanEntity> maintenancePlanEntities = this.findByExample(ids, null);
         maintenancePlanEntities = maintenancePlanEntities.stream()
                 .sorted(Comparator.comparing(MaintenancePlanEntity::getId).reversed())
                 .collect(Collectors.toList());

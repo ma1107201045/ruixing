@@ -22,7 +22,6 @@ public interface MaintenancePlanDao {
 
     void insertMuch(List<MaintenancePlanEntity> maintenancePlanEntities);
 
-    List<MaintenancePlanEntity> selectByName(String name);
 
-    List<MaintenancePlanEntity> selectByIds(Integer[] ids);
+    List<MaintenancePlanEntity> selectByExample(Integer[] ids, String name);
 }

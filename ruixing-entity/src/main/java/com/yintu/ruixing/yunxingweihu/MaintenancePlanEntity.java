@@ -1,5 +1,9 @@
 package com.yintu.ruixing.yunxingweihu;
 
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +50,14 @@ public class MaintenancePlanEntity implements Serializable {
     private Short isStart;
 
     private String context;
+
+    private TieLuJuEntity tieLuJuEntity;
+
+    private DianWuDuanEntity dianWuDuanEntity;
+
+    private XianDuanEntity xianDuanEntity;
+
+    private CheZhanEntity cheZhanEntity;
 
 
 }

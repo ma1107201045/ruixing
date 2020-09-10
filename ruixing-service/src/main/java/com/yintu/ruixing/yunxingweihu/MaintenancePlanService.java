@@ -27,21 +27,15 @@ public interface MaintenancePlanService extends BaseService<MaintenancePlanEntit
      */
     void remove(Integer[] ids);
 
-    /**
-     * 按照名称查询维修计划信息
-     *
-     * @param name 维修计划名称
-     * @return 维修计划信息集
-     */
-    List<MaintenancePlanEntity> findByName(String name);
 
     /**
-     * 按照id集合查询维修计划信息
+     * 多条件查询
      *
-     * @param ids id集合
+     * @param ids  id集合
+     * @param name 名称
      * @return 维修计划信息集
      */
-    List<MaintenancePlanEntity> findByIds(Integer[] ids);
+    List<MaintenancePlanEntity> findByExample(Integer[] ids, String name);
 
 
     /**
