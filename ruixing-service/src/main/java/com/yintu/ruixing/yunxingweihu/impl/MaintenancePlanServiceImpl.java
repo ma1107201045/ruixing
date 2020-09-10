@@ -1,7 +1,10 @@
 package com.yintu.ruixing.yunxingweihu.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.cron.CronUtil;
+import com.yintu.ruixing.common.ScheduleJobEntity;
 import com.yintu.ruixing.common.ScheduleJobService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
@@ -11,6 +14,7 @@ import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanDao;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanService;
+import com.yintu.ruixing.yunxingweihu.TaskEnum;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,8 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     @Override
     public void add(MaintenancePlanEntity entity) {
+        String CronExpression = null;
+
         if (entity.getExecutionMode() == (short) 1) {
             if (!entity.getExecutionTime().after(DateUtil.date()))
                 throw new BaseRuntimeException("执行时间不能小于等于当前时间");
@@ -136,6 +142,18 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             entity.setCycleDescription(cycleDescription);
         }
         maintenancePlanDao.insertSelective(entity);
+        ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
+        scheduleJobEntity.setCreateBy(entity.getCreateBy());
+        scheduleJobEntity.setCreateTime(entity.getCreateTime());
+        scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
+        scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+        scheduleJobEntity.setJobName(UUID.fastUUID().toString());
+        scheduleJobEntity.setCronExpression("");
+        scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
+        scheduleJobEntity.setMethodName("execute");
+        scheduleJobEntity.setStatus(1);
+        scheduleJobEntity.setDeleteFlag(false);
+        scheduleJobService.add(scheduleJobEntity);
     }
 
     @Override
