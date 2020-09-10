@@ -106,16 +106,16 @@ public class MenXianServiceImpl implements MenXianService {
             if (quDuanInfoPropertyEntity.getId() != -1) {
                 List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
                 TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
-                treeNodeUtil1.setId(quDuanInfoPropertyEntity.getId() + 101L);
+                treeNodeUtil1.setId(quDuanInfoPropertyEntity.getId() * 10 + 1L);
                 treeNodeUtil1.setValue("实测值");
                 TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
-                treeNodeUtil2.setId(quDuanInfoPropertyEntity.getId() + 102L);
+                treeNodeUtil2.setId(quDuanInfoPropertyEntity.getId() * 10 + 2L);
                 treeNodeUtil2.setValue("上限");
                 TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
-                treeNodeUtil3.setId(quDuanInfoPropertyEntity.getId() + 103L);
+                treeNodeUtil3.setId(quDuanInfoPropertyEntity.getId() * 10 + 3L);
                 treeNodeUtil3.setValue("下限");
                 TreeNodeUtil treeNodeUtil4 = new TreeNodeUtil();
-                treeNodeUtil4.setId(quDuanInfoPropertyEntity.getId() + 104L);
+                treeNodeUtil4.setId(quDuanInfoPropertyEntity.getId() * 10 + 4L);
                 treeNodeUtil4.setValue("跳变系数");
                 treeNodeUtils.add(treeNodeUtil1);
                 treeNodeUtils.add(treeNodeUtil2);
@@ -146,204 +146,204 @@ public class MenXianServiceImpl implements MenXianService {
             MenXianEntity menXianEntity = this.findByCzIdAndQuduanIdAndPropertyId(quDuanInfoEntityV2.getQuDuanBaseEntity().getCzid(),
                     quDuanInfoEntityV2.getQuDuanBaseEntity().getQdid(), quDuanInfoPropertyEntity.getId());
             menXianEntity = menXianEntity == null ? new MenXianEntity() : menXianEntity;
-            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 102L), menXianEntity.getSuperiorLimitValue() == null ? 0 : menXianEntity.getSuperiorLimitValue());
-            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 103L), menXianEntity.getLowerLimitValue() == null ? 0 : menXianEntity.getLowerLimitValue());
-            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 104L), menXianEntity.getOutburstValue() == null ? 0 : menXianEntity.getOutburstValue());
+            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 2L), menXianEntity.getSuperiorLimitValue() == null ? 0 : menXianEntity.getSuperiorLimitValue());
+            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 3L), menXianEntity.getLowerLimitValue() == null ? 0 : menXianEntity.getLowerLimitValue());
+            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 4L), menXianEntity.getOutburstValue() == null ? 0 : menXianEntity.getOutburstValue());
             String idStr = String.valueOf(quDuanInfoPropertyEntity.getId());
             switch (idStr) {
                 case "1":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getDesignCarrier());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDesignCarrier());
                     break;
                 case "2":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getDirection() == null ? null : quDuanInfoEntityV2.getDirection().equals(1) ? "正向" : quDuanInfoEntityV2.getDirection().equals(2) ? "反向" : "无效");
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDirection() == null ? null : quDuanInfoEntityV2.getDirection().equals(1) ? "正向" : quDuanInfoEntityV2.getDirection().equals(2) ? "反向" : "无效");
                     break;
                 case "3":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getGjcollection() == null ? null : quDuanInfoEntityV2.getGjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getGjcollection().equals("1") ? "吸起" : "无效");
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getGjcollection() == null ? null : quDuanInfoEntityV2.getGjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getGjcollection().equals("1") ? "吸起" : "无效");
                     break;
                 case "4":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getDjcollection() == null ? null : quDuanInfoEntityV2.getDjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getDjcollection().equals("1") ? "吸起" : "无效");
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDjcollection() == null ? null : quDuanInfoEntityV2.getDjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getDjcollection().equals("1") ? "吸起" : "无效");
                     break;
                 case "5":
                     JSONArray jsonArray5 = new JSONArray();
                     jsonArray5.add(quDuanInfoEntityV2.getVOutZhu());
                     jsonArray5.add(quDuanInfoEntityV2.getVOutBei().toString());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray5.get(0) + "/" + jsonArray5.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray5.get(0) + "/" + jsonArray5.get(1));
                     break;
                 case "6":
                     JSONArray jsonArray6 = new JSONArray();
                     jsonArray6.add(quDuanInfoEntityV2.getMaOutZhu());
                     jsonArray6.add(quDuanInfoEntityV2.getMaOutBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray6.get(0) + "/" + jsonArray6.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray6.get(0) + "/" + jsonArray6.get(1));
                     break;
                 case "7":
                     JSONArray jsonArray7 = new JSONArray();
                     jsonArray7.add(quDuanInfoEntityV2.getHzUpZhu());
                     jsonArray7.add(quDuanInfoEntityV2.getHzUpBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray7.get(0) + "/" + jsonArray7.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray7.get(0) + "/" + jsonArray7.get(1));
                     break;
                 case "8":
                     JSONArray jsonArray8 = new JSONArray();
                     jsonArray8.add(quDuanInfoEntityV2.getHzDownZhu());
                     jsonArray8.add(quDuanInfoEntityV2.getHzDownBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray8.get(0) + "/" + jsonArray8.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray8.get(0) + "/" + jsonArray8.get(1));
                     break;
                 case "9":
                     JSONArray jsonArray9 = new JSONArray();
                     jsonArray9.add(quDuanInfoEntityV2.getHzLowZhu());
                     jsonArray9.add(quDuanInfoEntityV2.getHzLowBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray9.get(0) + "/" + jsonArray9.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray9.get(0) + "/" + jsonArray9.get(1));
                     break;
                 case "10":
                     JSONArray jsonArray10 = new JSONArray();
                     jsonArray10.add(quDuanInfoEntityV2.getFbjDriveZhu() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveZhu() == 2 ? "无" : "无效");
                     jsonArray10.add(quDuanInfoEntityV2.getFbjDriveBei() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveBei() == 2 ? "无" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray10.get(0) + "/" + jsonArray10.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray10.get(0) + "/" + jsonArray10.get(1));
                     break;
                 case "11":
                     JSONArray jsonArray11 = new JSONArray();
                     jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionZhu() == null ? null : quDuanInfoEntityV2.getFbjCollectionZhu().equals("10") ? "落下" : quDuanInfoEntityV2.getFbjCollectionZhu().equals("1") ? "吸起" : "无效");
                     jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionBei() == null ? null : quDuanInfoEntityV2.getFbjCollectionBei().equals("10") ? "落下" : quDuanInfoEntityV2.getFbjCollectionBei().equals("1") ? "吸起" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray11.get(0) + "/" + jsonArray11.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray11.get(0) + "/" + jsonArray11.get(1));
                     break;
                 case "12":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getVSongduanCable());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVSongduanCable());
                     break;
                 case "13":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getMaSongduanCable());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaSongduanCable());
                     break;
                 case "14":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getVShouduanCableHost());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVShouduanCableHost());
                     break;
                 case "15":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getVShouduanCableSpare());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVShouduanCableSpare());
                     break;
                 case "16":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getMaShouduanCable());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaShouduanCable());
                     break;
                 case "17":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getVInAll());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVInAll());
                     break;
                 case "18":
                     JSONArray jsonArray18 = new JSONArray();
                     jsonArray18.add(quDuanInfoEntityV2.getMvInZhu());
                     jsonArray18.add(quDuanInfoEntityV2.getMvInBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray18.get(0) + "/" + jsonArray18.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray18.get(0) + "/" + jsonArray18.get(1));
                     break;
                 case "19":
                     JSONArray jsonArray19 = new JSONArray();
                     jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoZhu());
                     jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray19.get(0) + "/" + jsonArray19.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray19.get(0) + "/" + jsonArray19.get(1));
                     break;
                 case "20":
                     JSONArray jsonArray20 = new JSONArray();
                     jsonArray20.add(quDuanInfoEntityV2.getHzInLowZhu());
                     jsonArray20.add(quDuanInfoEntityV2.getHzInLowBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray20.get(0) + "/" + jsonArray20.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray20.get(0) + "/" + jsonArray20.get(1));
                     break;
                 case "21":
                     JSONArray jsonArray21 = new JSONArray();
                     jsonArray21.add(quDuanInfoEntityV2.getGjDriveZhu() == null ? null : quDuanInfoEntityV2.getGjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveZhu() == 2 ? "无" : "无效");
                     jsonArray21.add(quDuanInfoEntityV2.getGjDriveBing() == null ? null : quDuanInfoEntityV2.getGjDriveBing() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveBing() == 2 ? "无" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray21.get(0) + "/" + jsonArray21.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray21.get(0) + "/" + jsonArray21.get(1));
                     break;
                 case "22":
                     JSONArray jsonArray22 = new JSONArray();
                     jsonArray22.add(quDuanInfoEntityV2.getGjRearCollectionZhu() == null ? null : quDuanInfoEntityV2.getGjRearCollectionZhu().equals("10") ? "落下" : quDuanInfoEntityV2.getGjRearCollectionZhu().equals("1") ? "吸起" : "无效");
                     jsonArray22.add(quDuanInfoEntityV2.getGjRearCollectionBing() == null ? null : quDuanInfoEntityV2.getGjRearCollectionBing().equals("10") ? "落下" : quDuanInfoEntityV2.getGjRearCollectionBing().equals("1") ? "吸起" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray22.get(0) + "/" + jsonArray22.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray22.get(0) + "/" + jsonArray22.get(1));
                     break;
                 case "23":
                     JSONArray jsonArray23 = new JSONArray();
                     jsonArray23.add(null == quDuanInfoEntityV2.getBaojingZhu() ? null : quDuanInfoEntityV2.getBaojingZhu() == 1 ? "正常" : quDuanInfoEntityV2.getBaojingZhu() == 2 ? "报警" : "无效");
                     jsonArray23.add(null == quDuanInfoEntityV2.getBaojingBing() ? null : quDuanInfoEntityV2.getBaojingBing() == 1 ? "正常" : quDuanInfoEntityV2.getBaojingZhu() == 2 ? "报警" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray23.get(0) + "/" + jsonArray23.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray23.get(0) + "/" + jsonArray23.get(1));
                     break;
 
                 case "24":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getMaCableFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaCableFbp());
                     break;
                 case "25":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getALonginFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALonginFbp());
                     break;
                 case "26":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getALongoutFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALongoutFbp());
                     break;
                 case "27":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getAShortinFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortinFbp());
                     break;
                 case "28":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getAShortoutFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortoutFbp());
                     break;
                 case "29":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getTFbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getTFbp());
                     break;
 
                 case "30":
                     JSONArray jsonArray30 = new JSONArray();
                     jsonArray30.add(quDuanInfoEntityV2.getALonginFbaZhu());
                     jsonArray30.add(quDuanInfoEntityV2.getALonginFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray30.get(0) + "/" + jsonArray30.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray30.get(0) + "/" + jsonArray30.get(1));
                     break;
                 case "31":
                     JSONArray jsonArray31 = new JSONArray();
                     jsonArray31.add(quDuanInfoEntityV2.getALongoutFbaZhu());
                     jsonArray31.add(quDuanInfoEntityV2.getALongoutFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray31.get(0) + "/" + jsonArray31.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray31.get(0) + "/" + jsonArray31.get(1));
                     break;
                 case "32":
                     JSONArray jsonArray32 = new JSONArray();
                     jsonArray32.add(quDuanInfoEntityV2.getAShortinFbaZhu());
                     jsonArray32.add(quDuanInfoEntityV2.getAShortinFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray32.get(0) + "/" + jsonArray32.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray32.get(0) + "/" + jsonArray32.get(1));
                     break;
                 case "33":
                     JSONArray jsonArray33 = new JSONArray();
                     jsonArray33.add(quDuanInfoEntityV2.getAShortoutFbaZhu());
                     jsonArray33.add(quDuanInfoEntityV2.getAShortoutFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray33.get(0) + "/" + jsonArray33.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray33.get(0) + "/" + jsonArray33.get(1));
                     break;
                 case "34":
                     JSONArray jsonArray34 = new JSONArray();
                     jsonArray34.add(quDuanInfoEntityV2.getALonginJbaZhu());
                     jsonArray34.add(quDuanInfoEntityV2.getALonginJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray34.get(0) + "/" + jsonArray34.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray34.get(0) + "/" + jsonArray34.get(1));
                     break;
                 case "35":
                     JSONArray jsonArray35 = new JSONArray();
                     jsonArray35.add(quDuanInfoEntityV2.getALongoutJbaZhu());
                     jsonArray35.add(quDuanInfoEntityV2.getALongoutJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray35.get(0) + "/" + jsonArray35.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray35.get(0) + "/" + jsonArray35.get(1));
                     break;
                 case "36":
                     JSONArray jsonArray36 = new JSONArray();
                     jsonArray36.add(quDuanInfoEntityV2.getAShortinJbaZhu());
                     jsonArray36.add(quDuanInfoEntityV2.getAShortinJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray36.get(0) + "/" + jsonArray36.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray36.get(0) + "/" + jsonArray36.get(1));
                     break;
                 case "37":
                     JSONArray jsonArray37 = new JSONArray();
                     jsonArray37.add(quDuanInfoEntityV2.getAShortoutJbaZhu());
                     jsonArray37.add(quDuanInfoEntityV2.getAShortoutJbaZhu());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), jsonArray37.get(0) + "/" + jsonArray37.get(1));
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray37.get(0) + "/" + jsonArray37.get(1));
                     break;
                 case "38":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getMaCableJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaCableJbp());
                     break;
                 case "39":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getALonginJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALonginJbp());
                     break;
                 case "40":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getALongoutJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALongoutJbp());
                     break;
                 case "41":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getAShortinJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortinJbp());
                     break;
                 case "42":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getAShortoutJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortoutJbp());
                     break;
                 case "43":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() + 101L), quDuanInfoEntityV2.getTJbp());
+                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getTJbp());
                     break;
             }
 

@@ -1,5 +1,7 @@
 package com.yintu.ruixing.websocket;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -61,18 +63,31 @@ public class WebSocketVideoServer {
             webSocketMap.put(meetingNum, sessions);
             logger.info("创建会议成功，房间号成功" + meetingNum);
         }
+        //发送房间人数
+        JSONObject jo = new JSONObject();
+        jo.put("type", "init");
+        jo.put("roomNum", webSocketMap.get(meetingNum).size() - 1);
+        JSONArray ja = new JSONArray();
         for (Integer s : webSocketMap.keySet()) {
-            System.out.println(webSocketMap.get(s).size());
+            if (s.equals(meetingNum)) {
+                Set<Session> sessions = webSocketMap.get(s);
+                for (Session session1 : sessions) {
+                    ja.add(session1.getId());
+                }
+                break;
+            }
+        }
+        jo.put("userIds", ja);
+        try {
+            this.session.getBasicRemote().sendText(jo.toJSONString());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
         }
     }
 
     @OnMessage
     public void onMessage(String message) {
-        try {
-            this.sendMessage(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.sendMessage(message);
     }
 
     /**
@@ -105,7 +120,7 @@ public class WebSocketVideoServer {
     /**
      * 实现服务器主动推送
      */
-    public void sendMessage(String message) throws IOException {
+    public void sendMessage(String message) {
         logger.info("发送者sessionId：" + this.session.getId());
         Set<Integer> keys = webSocketMap.keySet();
         for (Integer key : keys) {
@@ -113,8 +128,14 @@ public class WebSocketVideoServer {
                 Set<Session> sessions = webSocketMap.get(key);
                 for (Session session : sessions) {
                     if (this.session != session) {
-                        session.getBasicRemote().sendText(message);
-                        logger.info("转发者sessionId：" + session.getId() + message);
+                        try {
+                            JSONObject jo = JSONObject.parseObject(message);
+                            jo.put("userId", session.getId());
+                            session.getBasicRemote().sendText(jo.toJSONString());
+                            logger.info("转发者sessionId：" + session.getId() + jo.toJSONString());
+                        } catch (IOException e) {
+                            logger.error(e.getMessage());
+                        }
                     }
                 }
                 break;
