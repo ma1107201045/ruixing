@@ -27,7 +27,6 @@ public class QuartzServiceImpl implements QuartzService {
 
     @Override
     public void timingTask() {
-
         //查询数据库是否存在需要定时的任务
         List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findAll();
         if (scheduleJobEntities != null) {

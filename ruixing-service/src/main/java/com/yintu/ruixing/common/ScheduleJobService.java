@@ -8,5 +8,11 @@ public interface ScheduleJobService extends BaseService<ScheduleJobEntity, Integ
 
     List<ScheduleJobEntity> findAll();
 
+    void start(Integer id);
 
+    void pause(Integer id);
+
+    void startAllJob();
+
+    void pauseAllJob();
 }
