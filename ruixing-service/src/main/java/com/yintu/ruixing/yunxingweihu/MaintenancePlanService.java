@@ -13,6 +13,9 @@ import java.util.List;
  * @date:2020/7/8 15:50
  */
 public interface MaintenancePlanService extends BaseService<MaintenancePlanEntity, Integer> {
+
+
+
     /**
      * 批量添加
      *

@@ -274,7 +274,7 @@
         </foreach>
     </insert>
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="mp_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
