@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author Mr.liu
@@ -20,6 +21,16 @@ import java.util.Date;
 public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangTiaoShiXiangMuServiceStatusService {
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
+
+    @Override
+    public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus() {
+        return anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllOrSomething(Integer page, Integer size, String serviceName) {
+        return anZhuangTiaoShiXiangMuServiceStatusDao.findAllOrSomething(serviceName);
+    }
 
     @Override
     public void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username) {

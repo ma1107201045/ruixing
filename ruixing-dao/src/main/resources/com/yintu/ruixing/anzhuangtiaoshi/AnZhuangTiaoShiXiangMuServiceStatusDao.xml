@@ -14,6 +14,28 @@
   <sql id="Base_Column_List">
     id, serviceName, choose, timeType, createTime, createName, updateTime, updateName
   </sql>
+
+  <!--查询所有的服务状态标识   用于展示在首页或者新增页面-->
+  <select id="findAllServiceStatus"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus
+    order by id desc
+  </select>
+
+  <!--初始化页面  或者根据服务状态标识名查询-->
+  <select id="findAllOrSomething"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus
+    <where>
+      <if test="serviceName !=null">
+        serviceName like concat('%',#{serviceName},'%')
+      </if>
+    </where>
+    order by id desc
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
