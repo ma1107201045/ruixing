@@ -8,6 +8,8 @@ public interface ScheduleJobService extends BaseService<ScheduleJobEntity, Integ
 
     void batchAdd(List<ScheduleJobEntity> scheduleJobEntities);
 
+    List<ScheduleJobEntity> findByJobName(String jobName);
+
     List<ScheduleJobEntity> findAll();
 
     void start(Integer id);

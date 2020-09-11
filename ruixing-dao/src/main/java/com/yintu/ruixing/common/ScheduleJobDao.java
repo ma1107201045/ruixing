@@ -20,5 +20,9 @@ public interface ScheduleJobDao {
 
     void muchInsert(List<ScheduleJobEntity> scheduleJobEntities);
 
+    void deleteByJobName(String jobName);
+
+    List<ScheduleJobEntity> selectByJobName(String jobName);
+
     List<ScheduleJobEntity> selectAll();
 }

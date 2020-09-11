@@ -181,9 +181,17 @@
             )
         </foreach>
     </insert>
+
+    <select id="selectByJobName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from schedule_job
+        where job_name = #{jobName,jdbcType=VARCHAR}
+    </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from schedule_job
     </select>
+
 </mapper>

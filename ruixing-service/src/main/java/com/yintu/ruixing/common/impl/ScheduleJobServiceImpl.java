@@ -78,6 +78,11 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     }
 
     @Override
+    public List<ScheduleJobEntity> findByJobName(String jobName) {
+        return scheduleJobDao.selectByJobName(jobName);
+    }
+
+    @Override
     public List<ScheduleJobEntity> findAll() {
         return scheduleJobDao.selectAll();
     }
