@@ -118,7 +118,6 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public void pauseAllJob() {
         //此处省去数据验证
         ScheduleJobEntity job = new ScheduleJobEntity();
-
         //执行job
         try {
             quartzService.pauseAllJob();

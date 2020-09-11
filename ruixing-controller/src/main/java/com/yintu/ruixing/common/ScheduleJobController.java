@@ -1,5 +1,7 @@
 package com.yintu.ruixing.common;
 
+import cn.hutool.core.lang.UUID;
+import com.yintu.ruixing.yunxingweihu.TaskEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +29,9 @@ public class ScheduleJobController extends SessionController {
         job.setCreateTime(new Date());
         job.setModifiedBy(this.getLoginUserName());
         job.setModifiedTime(new Date());
-        job.setJobName("任务02");
+        job.setJobName(UUID.fastUUID().toString());
         job.setCronExpression("0/2 * * * * ?");
-        job.setBeanName("testJob02");
+        job.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
         job.setMethodName("execute");
         jobService.add(job);
         return "新增定时任务成功";

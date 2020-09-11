@@ -26,6 +26,9 @@ public class QuartzServiceImpl implements QuartzService {
     @Autowired
     private ScheduleJobService scheduleJobService;
 
+    /**
+     * 开机自启执行任务
+     */
     @Override
     public void timingTask() {
         //查询数据库是否存在需要定时的任务
