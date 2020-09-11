@@ -148,6 +148,8 @@ public class ExportExcelUtil {
             XSSFCell xssfCell = row1.createCell(i);
             xssfCell.setCellValue(headers[i]);
             xssfCell.setCellStyle(xssfCellStyle);
+            //设置表头列的宽度
+            xssfSheet.setColumnWidth(i, (int) (headers[i].getBytes().length * 1.5 * 256));
         }
 
         //创建内容
