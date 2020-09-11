@@ -18,5 +18,7 @@ public interface ScheduleJobDao {
 
     int updateByPrimaryKey(ScheduleJobEntity record);
 
+    void muchInsert(List<ScheduleJobEntity> scheduleJobEntities);
+
     List<ScheduleJobEntity> selectAll();
 }

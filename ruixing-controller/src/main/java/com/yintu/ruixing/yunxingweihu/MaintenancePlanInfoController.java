@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,10 @@ public class MaintenancePlanInfoController extends SessionController implements 
     @PostMapping
     @ResponseBody
     public Map<String, Object> add(@Validated MaintenancePlanInfoEntity entity) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         maintenancePlanInfoService.add(entity);
         return ResponseDataUtil.ok("添加维护计划详情息成功");
     }
@@ -57,6 +62,8 @@ public class MaintenancePlanInfoController extends SessionController implements 
     @PutMapping("/{id}")
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated MaintenancePlanInfoEntity entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         maintenancePlanInfoService.edit(entity);
         return ResponseDataUtil.ok("修改维护计划详情息成功");
     }

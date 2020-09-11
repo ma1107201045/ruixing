@@ -64,6 +64,20 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     }
 
     @Override
+    public void batchAdd(List<ScheduleJobEntity> scheduleJobEntities) {
+        //此处省去数据验证
+        scheduleJobDao.muchInsert(scheduleJobEntities);
+        for (ScheduleJobEntity scheduleJobEntity : scheduleJobEntities) {
+            //批量加入job
+            try {
+                quartzService.addJob(scheduleJobEntity);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public List<ScheduleJobEntity> findAll() {
         return scheduleJobDao.selectAll();
     }
@@ -104,7 +118,10 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     public void startAllJob() {
         //此处省去数据验证
         List<ScheduleJobEntity> scheduleJobEntities = this.findAll();
-
+        for (ScheduleJobEntity scheduleJobEntity : scheduleJobEntities) {
+            scheduleJobEntity.setStatus(1);
+            this.edit(scheduleJobEntity);
+        }
 
         //执行job
         try {
@@ -117,7 +134,11 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     @Override
     public void pauseAllJob() {
         //此处省去数据验证
-        ScheduleJobEntity job = new ScheduleJobEntity();
+        List<ScheduleJobEntity> scheduleJobEntities = this.findAll();
+        for (ScheduleJobEntity scheduleJobEntity : scheduleJobEntities) {
+            scheduleJobEntity.setStatus(2);
+            this.edit(scheduleJobEntity);
+        }
         //执行job
         try {
             quartzService.pauseAllJob();

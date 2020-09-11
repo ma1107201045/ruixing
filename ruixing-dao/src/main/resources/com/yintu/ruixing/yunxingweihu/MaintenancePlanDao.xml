@@ -264,17 +264,30 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
+    <insert id="muchInsert" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_maintenance_plan
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            name, created_date,
-        </trim>
+        (create_by, create_time, modified_by, modified_time, name, railways_bureau_id, signal_depot_id,
+        special_railway_line_id,station_id, execution_mode, execution_time,cycle_type, cycle_value,
+        cycle_description,is_start, context)
         values
         <foreach collection="list" item="maintenancePlanEntity" index="index" separator=",">
-            <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{maintenancePlanEntity.name,jdbcType=VARCHAR},
-                #{maintenancePlanEntity.createdDate,jdbcType=TIMESTAMP},
-            </trim>
+            (#{maintenancePlanEntity.createBy,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.createTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.modifiedBy,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.modifiedTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.name,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.railwaysBureauId,jdbcType=INTEGER},
+            #{maintenancePlanEntity.signalDepotId,jdbcType=INTEGER},
+            #{maintenancePlanEntity.specialRailwayLineId,jdbcType=INTEGER},
+            #{maintenancePlanEntity.stationId,jdbcType=INTEGER},
+            #{maintenancePlanEntity.executionMode,jdbcType=SMALLINT},
+            #{maintenancePlanEntity.executionTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.cycleType,jdbcType=SMALLINT},
+            #{maintenancePlanEntity.cycleValue,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.cycleDescription,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.isStart,jdbcType=SMALLINT},
+            #{maintenancePlanEntity.context,jdbcType=LONGVARCHAR})
         </foreach>
     </insert>
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">

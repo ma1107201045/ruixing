@@ -162,6 +162,25 @@
             delete_flag     = #{deleteFlag,jdbcType=BIT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <insert id="muchInsert" parameterType="com.yintu.ruixing.common.ScheduleJobEntity">
+        insert into schedule_job (create_by, create_time,modified_by, modified_time, job_name,cron_expression,bean_name,
+        method_name,status,delete_flag)
+        values
+        <foreach collection="list" item="maintenancePlanEntity" index="index" separator=",">
+            (
+            #{maintenancePlanEntity.createBy,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.createTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.modifiedBy,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.modifiedTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.jobName,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.cronExpression,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.beanName,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.methodName,jdbcType=VARCHAR},
+            #{maintenancePlanEntity.status,jdbcType=INTEGER},
+            #{maintenancePlanEntity.deleteFlag,jdbcType=BIT}
+            )
+        </foreach>
+    </insert>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

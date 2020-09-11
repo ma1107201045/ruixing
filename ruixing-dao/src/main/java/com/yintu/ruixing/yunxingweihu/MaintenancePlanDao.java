@@ -20,8 +20,7 @@ public interface MaintenancePlanDao {
 
     int updateByPrimaryKey(MaintenancePlanEntity record);
 
-    void insertMuch(List<MaintenancePlanEntity> maintenancePlanEntities);
-
+    void muchInsert(List<MaintenancePlanEntity> maintenancePlanEntities);
 
     List<MaintenancePlanEntity> selectByExample(Integer[] ids, String name);
 }

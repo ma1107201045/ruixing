@@ -96,7 +96,7 @@ public class MaintenancePlanController extends SessionController implements Base
     @PostMapping("/import")
     @ResponseBody
     public Map<String, Object> importFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        maintenancePlanService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        maintenancePlanService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename(), this.getLoginUserName());
         return ResponseDataUtil.ok("导入维护计划信息成功");
     }
 
