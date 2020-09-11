@@ -368,46 +368,44 @@ public class MenXianServiceImpl implements MenXianService {
     }
 
     @Override
-    public void importData(JSONArray ja, String loginUserName) {
-        for (int i = 0; i < ja.size(); i++) {
-            Object obj = ja.get(i);
-            if (obj instanceof JSONArray) {
-                JSONArray jsonArray = (JSONArray) obj;
-                String czName = jsonArray.getString(1);
-                if (czName != null && !"".equals(czName)) {
-                    List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(czName);
-                    if (cheZhanEntities.isEmpty())
-                        throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站不存在");
-                    Integer czId = (int) cheZhanEntities.get(0).getCzId();
-                    String qdName = jsonArray.getString(2);
-                    if (qdName != null && !"".equals(qdName)) {
-                        QuDuanBaseEntity quDuanBaseEntity = quDuanBaseService.findByCzIdAndQuduanyunyingName(czId, qdName);
-                        if (quDuanBaseEntity == null) {
-                            throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站下边没有此区段");
-                        }
-                        Integer qdId = quDuanBaseEntity.getQdid();
-                        String propertyName = jsonArray.getString(3);
-                        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.finByName(propertyName);
-                        Integer propertyId = quDuanInfoPropertyEntities.get(0).getId();
-                        MenXianEntity menXianEntity = this.findByCzIdAndQuduanIdAndPropertyId(czId, qdId, propertyId);
-                        if (menXianEntity == null) {
-                            menXianEntity = new MenXianEntity();
-                            menXianEntity.setCzId(czId);
-                            menXianEntity.setQuduanId(qdId);
-                            menXianEntity.setPropertyId(propertyId);
-                            menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
-                            menXianEntity.setLowerLimitValue(jsonArray.getString(5));
-                            menXianEntity.setOutburstValue(jsonArray.getString(6));
-                            this.add(menXianEntity);
-                        } else {
-                            menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
-                            menXianEntity.setLowerLimitValue(jsonArray.getString(5));
-                            menXianEntity.setOutburstValue(jsonArray.getString(6));
-                            this.edit(menXianEntity);
-                        }
+    public void importData(String[][] context, String loginUserName) {
+        for (int i = 0; i < context.length; i++) {
+            JSONArray jsonArray = (JSONArray) JSONArray.toJSON(context[i]);
+            String czName = jsonArray.getString(1);
+            if (czName != null && !"".equals(czName)) {
+                List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(czName);
+                if (cheZhanEntities.isEmpty())
+                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站不存在");
+                Integer czId = (int) cheZhanEntities.get(0).getCzId();
+                String qdName = jsonArray.getString(2);
+                if (qdName != null && !"".equals(qdName)) {
+                    QuDuanBaseEntity quDuanBaseEntity = quDuanBaseService.findByCzIdAndQuduanyunyingName(czId, qdName);
+                    if (quDuanBaseEntity == null) {
+                        throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "车站下边没有此区段");
+                    }
+                    Integer qdId = quDuanBaseEntity.getQdid();
+                    String propertyName = jsonArray.getString(3);
+                    List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.finByName(propertyName);
+                    Integer propertyId = quDuanInfoPropertyEntities.get(0).getId();
+                    MenXianEntity menXianEntity = this.findByCzIdAndQuduanIdAndPropertyId(czId, qdId, propertyId);
+                    if (menXianEntity == null) {
+                        menXianEntity = new MenXianEntity();
+                        menXianEntity.setCzId(czId);
+                        menXianEntity.setQuduanId(qdId);
+                        menXianEntity.setPropertyId(propertyId);
+                        menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
+                        menXianEntity.setLowerLimitValue(jsonArray.getString(5));
+                        menXianEntity.setOutburstValue(jsonArray.getString(6));
+                        this.add(menXianEntity);
+                    } else {
+                        menXianEntity.setSuperiorLimitValue(jsonArray.getString(4));
+                        menXianEntity.setLowerLimitValue(jsonArray.getString(5));
+                        menXianEntity.setOutburstValue(jsonArray.getString(6));
+                        this.edit(menXianEntity);
                     }
                 }
             }
+
         }
     }
 

@@ -78,8 +78,7 @@ public class MenXianController extends SessionController {
 
     @PostMapping("/import/data")
     public Map<String, Object> importData(@RequestBody String[][] context) {
-        JSONArray ja = (JSONArray) JSONArray.toJSON(context);
-        menXianService.importData(ja, this.getLoginUserName());
+        menXianService.importData(context, this.getLoginUserName());
         return ResponseDataUtil.ok("导入门限参数信息列表成功");
     }
 

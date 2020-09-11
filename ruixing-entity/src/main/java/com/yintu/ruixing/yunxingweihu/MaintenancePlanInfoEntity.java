@@ -24,6 +24,8 @@ public class MaintenancePlanInfoEntity implements Serializable {
 
     private Short isFinish;
 
+    private String documentNames;
+
     private String documentFiles;
 
     private Integer maintenancePlanId;

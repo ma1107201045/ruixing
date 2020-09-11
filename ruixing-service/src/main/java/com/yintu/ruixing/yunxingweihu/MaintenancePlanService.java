@@ -15,7 +15,6 @@ import java.util.List;
 public interface MaintenancePlanService extends BaseService<MaintenancePlanEntity, Integer> {
 
 
-
     /**
      * 批量添加
      *
@@ -46,7 +45,14 @@ public interface MaintenancePlanService extends BaseService<MaintenancePlanEntit
      *
      * @param inputStream 输入流
      */
-    void importFile(InputStream inputStream, String fileName,String loginUsername) throws IOException;
+    String[][] importFile(InputStream inputStream, String fileName) throws IOException;
+
+    /**
+     * 批量导入excel数据
+     *
+     * @param context 数据
+     */
+    void importDate(String[][] context, String loginUsername);
 
     /**
      * 下载excel数据模板

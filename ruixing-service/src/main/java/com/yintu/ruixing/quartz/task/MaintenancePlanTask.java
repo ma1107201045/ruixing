@@ -2,6 +2,8 @@ package com.yintu.ruixing.quartz.task;
 
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.ScheduleJobEntity;
+import com.yintu.ruixing.common.ScheduleJobService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import com.yintu.ruixing.yunxingweihu.*;
@@ -24,10 +26,19 @@ public class MaintenancePlanTask {
     private UserService userService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private ScheduleJobService scheduleJobService;
 
     public void execute(Integer maintenancePlanId) {
         MaintenancePlanEntity maintenancePlanEntity = maintenancePlanService.findById(maintenancePlanId);
         if (maintenancePlanEntity != null) {
+            if (maintenancePlanEntity.getExecutionMode() == 1) { //执行一次的删除任务即可
+                List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findByJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + maintenancePlanId);
+                for (ScheduleJobEntity scheduleJobEntity : scheduleJobEntities) {
+                    scheduleJobService.remove(scheduleJobEntity.getId());
+                }
+            }
+
             List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, null, new Date());
             if (maintenancePlanInfoEntities.isEmpty()) {
                 List<UserEntity> userEntities = userService.findByTruename(null);

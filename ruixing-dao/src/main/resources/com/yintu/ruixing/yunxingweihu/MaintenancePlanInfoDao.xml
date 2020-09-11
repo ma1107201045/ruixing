@@ -8,6 +8,7 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
+        <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
         <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
         <result column="maintenance_plan_id" jdbcType="INTEGER" property="maintenancePlanId"/>
     </resultMap>
@@ -16,7 +17,7 @@
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, is_finish, document_files, maintenance_plan_id
+        id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id
     </sql>
     <sql id="Blob_Column_List">
         context
@@ -36,11 +37,12 @@
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
         insert into mro_maintenance_plan_info (id, create_by, create_time,
-                                               modified_by, modified_time, is_finish,
-                                               document_files, maintenance_plan_id, context)
+                                               modified_by, modified_time, is_finish, document_names, document_files,
+                                               maintenance_plan_id, context)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{isFinish,jdbcType=SMALLINT},
-                #{documentFiles,jdbcType=VARCHAR}, #{maintenancePlanId,jdbcType=INTEGER},
+                #{documentNames,jdbcType=VARCHAR}, #{documentFiles,jdbcType=VARCHAR},
+                #{maintenancePlanId,jdbcType=INTEGER},
                 #{context,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
@@ -63,6 +65,9 @@
             </if>
             <if test="isFinish != null">
                 is_finish,
+            </if>
+            <if test="documentNames != null">
+                document_names,
             </if>
             <if test="documentFiles != null">
                 document_files,
@@ -93,6 +98,9 @@
             <if test="isFinish != null">
                 #{isFinish,jdbcType=SMALLINT},
             </if>
+            <if test="documentNames != null">
+                #{documentNames,jdbcType=VARCHAR},
+            </if>
             <if test="documentFiles != null">
                 #{documentFiles,jdbcType=VARCHAR},
             </if>
@@ -122,6 +130,9 @@
             <if test="isFinish != null">
                 is_finish = #{isFinish,jdbcType=SMALLINT},
             </if>
+            <if test="documentNames != null">
+                document_names = #{documentNames,jdbcType=VARCHAR},
+            </if>
             <if test="documentFiles != null">
                 document_files = #{documentFiles,jdbcType=VARCHAR},
             </if>
@@ -141,6 +152,7 @@
             modified_by         = #{modifiedBy,jdbcType=VARCHAR},
             modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
             is_finish           = #{isFinish,jdbcType=SMALLINT},
+            document_names      = #{documentNames,jdbcType=VARCHAR},
             document_files      = #{documentFiles,jdbcType=VARCHAR},
             maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER},
             context             = #{context,jdbcType=LONGVARCHAR}
@@ -153,6 +165,7 @@
             modified_by         = #{modifiedBy,jdbcType=VARCHAR},
             modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
             is_finish           = #{isFinish,jdbcType=SMALLINT},
+            document_names      = #{documentNames,jdbcType=VARCHAR},
             document_files      = #{documentFiles,jdbcType=VARCHAR},
             maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -161,7 +174,8 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
         insert into mro_maintenance_plan_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            id create_by, create_time, modified_by, modified_time, is_finish, document_files, maintenance_plan_id
+            id create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,
+            maintenance_plan_id
         </trim>
         values
         <foreach collection="list" item="maintenancePlanInfoEntity" index="index" separator=",">
@@ -171,6 +185,7 @@
                 #{maintenancePlanInfoEntity.modified_by,jdbcType=VARCHAR},
                 #{maintenancePlanInfoEntity.modified_time,jdbcType=TIMESTAMP},
                 #{maintenancePlanInfoEntity.is_finish,jdbcType=SMALLINT},
+                #{maintenancePlanInfoEntity.documentNames,jdbcType=VARCHAR},
                 #{maintenancePlanInfoEntity.documentFiles,jdbcType=VARCHAR},
                 #{maintenancePlanInfoEntity.maintenancePlanId,jdbcType=INTEGER},
             </trim>
@@ -184,12 +199,13 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
+        <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
         <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
         <result column="maintenance_plan_id" jdbcType="INTEGER" property="maintenancePlanId"/>
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Much_Column_List">
-        mpi.id as mpi_id, create_by, create_time, modified_by, modified_time, is_finish, document_files, maintenance_plan_id
+        mpi.id as mpi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id
     </sql>
     <sql id="Much_Table_List">
         mro_maintenance_plan_info mpi

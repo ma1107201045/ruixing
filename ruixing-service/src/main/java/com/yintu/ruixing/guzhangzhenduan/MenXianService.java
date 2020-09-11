@@ -1,18 +1,10 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.common.util.FileUtil;
-import com.yintu.ruixing.common.util.ImportExcelUtil;
-import com.yintu.ruixing.guzhangzhenduan.MenXianEntity;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 /**
  * @author:mlf
@@ -76,9 +68,9 @@ public interface MenXianService {
     /**
      * 添加预览修改过的数据
      *
-     * @param ja 文件解析的修改数据
+     * @param context 文件解析的修改数据
      */
-    void importData(JSONArray ja, String loginUserName);
+    void importData(String[][] context, String loginUserName);
 
     /**
      * 下载excel数据模板

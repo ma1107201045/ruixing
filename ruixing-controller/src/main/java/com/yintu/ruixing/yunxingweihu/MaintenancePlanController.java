@@ -96,9 +96,17 @@ public class MaintenancePlanController extends SessionController implements Base
     @PostMapping("/import")
     @ResponseBody
     public Map<String, Object> importFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        maintenancePlanService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename(), this.getLoginUserName());
+        String[][] context = maintenancePlanService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        return ResponseDataUtil.ok("获取导入维护计划信息成功", context);
+    }
+
+    @PostMapping("/import/data")
+    @ResponseBody
+    public Map<String, Object> importDate(@RequestBody String[][] context) {
+        maintenancePlanService.importDate(context, this.getLoginUserName());
         return ResponseDataUtil.ok("导入维护计划信息成功");
     }
+
 
     @GetMapping("/template")
     public void templateFile(HttpServletResponse response) throws IOException {

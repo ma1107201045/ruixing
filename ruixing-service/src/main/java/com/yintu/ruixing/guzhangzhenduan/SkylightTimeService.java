@@ -37,9 +37,9 @@ public interface SkylightTimeService extends BaseService<SkylightTimeEntity, Int
     /**
      * 添加预览修改过的数据
      *
-     * @param ja 文件解析的修改数据
+     * @param context 文件解析的修改数据
      */
-    void importData(JSONArray ja, String loginUserName);
+    void importData(String[][] context, String loginUserName);
 
     /**
      * 下载excel数据模板

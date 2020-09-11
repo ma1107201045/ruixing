@@ -191,141 +191,156 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     @Override
     public void edit(MaintenancePlanEntity entity) {
-        String cronExpression = null;
-        if (entity.getExecutionMode() == (short) 1) {
-            if (!entity.getExecutionTime().after(DateUtil.date()))
-                throw new BaseRuntimeException("执行时间不能小于等于当前时间");
-            String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
-                    "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
-            entity.setCycleDescription(cycleDescription);
-            cronExpression = String.format("%d %d %d %d %d ? *",
-                    DateUtil.second(entity.getExecutionTime()),
-                    DateUtil.minute(entity.getExecutionTime()),
-                    DateUtil.hour(entity.getExecutionTime(), true),
-                    DateUtil.dayOfMonth(entity.getExecutionTime()),
-                    DateUtil.month(entity.getExecutionTime()) + 1);
+        MaintenancePlanEntity source = this.findById(entity.getId());
+        if (source != null) {
+            String cronExpression = null;
+            if (entity.getExecutionMode() == (short) 1) {
+                if (!entity.getExecutionTime().after(DateUtil.date()))
+                    throw new BaseRuntimeException("执行时间不能小于等于当前时间");
+                String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
+                        "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
+                entity.setCycleDescription(cycleDescription);
+                cronExpression = String.format("%d %d %d %d %d ? *",
+                        DateUtil.second(entity.getExecutionTime()),
+                        DateUtil.minute(entity.getExecutionTime()),
+                        DateUtil.hour(entity.getExecutionTime(), true),
+                        DateUtil.dayOfMonth(entity.getExecutionTime()),
+                        DateUtil.month(entity.getExecutionTime()) + 1);
 
-        } else if (entity.getExecutionMode() == (short) 2) {
-            String cycleDescription = null;
-            switch (entity.getCycleType()) {
-                case 1://每日
-                    cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+            } else if (entity.getExecutionMode() == (short) 2) {
+                String cycleDescription = null;
+                switch (entity.getCycleType()) {
+                    case 1://每日
+                        cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
 
-                    cronExpression = String.format("%d %d %d * * ? *",
-                            DateUtil.second(entity.getExecutionTime()),
-                            DateUtil.minute(entity.getExecutionTime()),
-                            DateUtil.hour(entity.getExecutionTime(), true));
-                    break;
-                case 2://每周
-                    String cycleWeekValue = entity.getCycleValue();
-                    String[] weekArray = cycleWeekValue.split(",");
-                    StringBuilder weekStr = new StringBuilder();
-                    for (String s : weekArray) {
-                        switch (Integer.parseInt(s)) {
-                            case 1:
-                                weekStr.append("星期一、");
-                                break;
-                            case 2:
-                                weekStr.append("星期二、");
-                                break;
-                            case 3:
-                                weekStr.append("星期三、");
-                                break;
-                            case 4:
-                                weekStr.append("星期四、");
-                                break;
-                            case 5:
-                                weekStr.append("星期五、");
-                                break;
-                            case 6:
-                                weekStr.append("星期六、");
-                                break;
-                            case 7:
-                                weekStr.append("星期日、");
-                                break;
+                        cronExpression = String.format("%d %d %d * * ? *",
+                                DateUtil.second(entity.getExecutionTime()),
+                                DateUtil.minute(entity.getExecutionTime()),
+                                DateUtil.hour(entity.getExecutionTime(), true));
+                        break;
+                    case 2://每周
+                        String cycleWeekValue = entity.getCycleValue();
+                        String[] weekArray = cycleWeekValue.split(",");
+                        StringBuilder weekStr = new StringBuilder();
+                        for (String s : weekArray) {
+                            switch (Integer.parseInt(s)) {
+                                case 1:
+                                    weekStr.append("星期一、");
+                                    break;
+                                case 2:
+                                    weekStr.append("星期二、");
+                                    break;
+                                case 3:
+                                    weekStr.append("星期三、");
+                                    break;
+                                case 4:
+                                    weekStr.append("星期四、");
+                                    break;
+                                case 5:
+                                    weekStr.append("星期五、");
+                                    break;
+                                case 6:
+                                    weekStr.append("星期六、");
+                                    break;
+                                case 7:
+                                    weekStr.append("星期日、");
+                                    break;
+                            }
                         }
-                    }
-                    cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
-                    cronExpression = String.format("%d %d %d ? * %s *",
-                            DateUtil.second(entity.getExecutionTime()),
-                            DateUtil.minute(entity.getExecutionTime()),
-                            DateUtil.hour(entity.getExecutionTime(), true), cycleWeekValue);
-                    break;
-                case 3://每月
-                    cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
-                    cronExpression = String.format("%d %d %d %d * ? *",
-                            DateUtil.second(entity.getExecutionTime()),
-                            DateUtil.minute(entity.getExecutionTime()),
-                            DateUtil.hour(entity.getExecutionTime(), true),
-                            DateUtil.dayOfMonth(entity.getExecutionTime()));
-                    break;
-                case 4://每年
-                    String cycleMonthValue = entity.getCycleValue();
-                    String[] monthArray = cycleMonthValue.split(",");
-                    StringBuilder monthStr = new StringBuilder();
-                    for (String s : monthArray) {
-                        switch (Integer.parseInt(s)) {
-                            case 1:
-                                monthStr.append("一月、");
-                                break;
-                            case 2:
-                                monthStr.append("二月、");
-                                break;
-                            case 3:
-                                monthStr.append("三月、");
-                                break;
-                            case 4:
-                                monthStr.append("四月、");
-                                break;
-                            case 5:
-                                monthStr.append("五月、");
-                                break;
-                            case 6:
-                                monthStr.append("六月、");
-                                break;
-                            case 7:
-                                monthStr.append("七月、");
-                                break;
-                            case 8:
-                                monthStr.append("八月、");
-                                break;
-                            case 9:
-                                monthStr.append("九月、");
-                                break;
-                            case 10:
-                                monthStr.append("十月、");
-                                break;
-                            case 11:
-                                monthStr.append("十一月、");
-                                break;
-                            case 12:
-                                monthStr.append("十二月、");
-                                break;
+                        cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                        cronExpression = String.format("%d %d %d ? * %s *",
+                                DateUtil.second(entity.getExecutionTime()),
+                                DateUtil.minute(entity.getExecutionTime()),
+                                DateUtil.hour(entity.getExecutionTime(), true), cycleWeekValue);
+                        break;
+                    case 3://每月
+                        cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                        cronExpression = String.format("%d %d %d %d * ? *",
+                                DateUtil.second(entity.getExecutionTime()),
+                                DateUtil.minute(entity.getExecutionTime()),
+                                DateUtil.hour(entity.getExecutionTime(), true),
+                                DateUtil.dayOfMonth(entity.getExecutionTime()));
+                        break;
+                    case 4://每年
+                        String cycleMonthValue = entity.getCycleValue();
+                        String[] monthArray = cycleMonthValue.split(",");
+                        StringBuilder monthStr = new StringBuilder();
+                        for (String s : monthArray) {
+                            switch (Integer.parseInt(s)) {
+                                case 1:
+                                    monthStr.append("一月、");
+                                    break;
+                                case 2:
+                                    monthStr.append("二月、");
+                                    break;
+                                case 3:
+                                    monthStr.append("三月、");
+                                    break;
+                                case 4:
+                                    monthStr.append("四月、");
+                                    break;
+                                case 5:
+                                    monthStr.append("五月、");
+                                    break;
+                                case 6:
+                                    monthStr.append("六月、");
+                                    break;
+                                case 7:
+                                    monthStr.append("七月、");
+                                    break;
+                                case 8:
+                                    monthStr.append("八月、");
+                                    break;
+                                case 9:
+                                    monthStr.append("九月、");
+                                    break;
+                                case 10:
+                                    monthStr.append("十月、");
+                                    break;
+                                case 11:
+                                    monthStr.append("十一月、");
+                                    break;
+                                case 12:
+                                    monthStr.append("十二月、");
+                                    break;
+                            }
                         }
-                    }
-                    cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
-                            "yyyy-MM-dd");
-                    cronExpression = String.format("%d %d %d %d %s ? *",
-                            DateUtil.second(entity.getExecutionTime()),
-                            DateUtil.minute(entity.getExecutionTime()),
-                            DateUtil.hour(entity.getExecutionTime(), true),
-                            DateUtil.dayOfMonth(entity.getExecutionTime()), cycleMonthValue);
-                    break;
+                        cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
+                                "yyyy-MM-dd");
+                        cronExpression = String.format("%d %d %d %d %s ? *",
+                                DateUtil.second(entity.getExecutionTime()),
+                                DateUtil.minute(entity.getExecutionTime()),
+                                DateUtil.hour(entity.getExecutionTime(), true),
+                                DateUtil.dayOfMonth(entity.getExecutionTime()), cycleMonthValue);
+                        break;
+                }
+                entity.setCycleDescription(cycleDescription);
             }
-            entity.setCycleDescription(cycleDescription);
+            maintenancePlanDao.updateByPrimaryKeySelective(entity);
+            if (cronExpression == null)
+                throw new BaseRuntimeException("周期表达式有误");
+            List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findByJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
+            if (!scheduleJobEntities.isEmpty()) {
+                ScheduleJobEntity scheduleJobEntity = scheduleJobEntities.get(0);
+                scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
+                scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setCronExpression(cronExpression);
+                scheduleJobService.edit(scheduleJobEntity);
+            } else if (source.getExecutionMode() == 1) {  //执行一次的结束的需要再添加任务
+                ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
+                scheduleJobEntity.setCreateBy(entity.getCreateBy());
+                scheduleJobEntity.setCreateTime(entity.getCreateTime());
+                scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
+                scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
+                scheduleJobEntity.setCronExpression(cronExpression);
+                scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
+                scheduleJobEntity.setMethodName("execute");
+                scheduleJobEntity.setStatus(1);
+                scheduleJobEntity.setDeleteFlag(false);
+                scheduleJobService.add(scheduleJobEntity);
+            }
         }
-        maintenancePlanDao.updateByPrimaryKeySelective(entity);
-        if (cronExpression == null)
-            throw new BaseRuntimeException("周期表达式有误");
-        List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findByJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
-        if (!scheduleJobEntities.isEmpty()) {
-            ScheduleJobEntity scheduleJobEntity = scheduleJobEntities.get(0);
-            scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
-            scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
-            scheduleJobEntity.setCronExpression(cronExpression);
-            scheduleJobService.edit(scheduleJobEntity);
-        }
-
     }
 
     @Override
@@ -355,8 +370,9 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         return maintenancePlanDao.selectByExample(ids, name);
     }
 
+
     @Override
-    public void importFile(InputStream inputStream, String fileName, String loginUsername) throws IOException {
+    public String[][] importFile(InputStream inputStream, String fileName) throws IOException {
         //excel标题
         String title = "维护计划列表";
         String[][] content;
@@ -367,83 +383,104 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         } else {
             throw new BaseRuntimeException("文件格式有误");
         }
+        return content;
+
+    }
+
+    @Override
+    public void importDate(String[][] context, String loginUsername) {
         List<MaintenancePlanEntity> maintenancePlanEntities = new ArrayList<>();
         List<ScheduleJobEntity> scheduleJobEntities = new ArrayList<>();
-        for (String[] rows : content) {
+        for (int i = 0; i < context.length; i++) {
+            String[] row = context[i];
             MaintenancePlanEntity maintenancePlanEntity = new MaintenancePlanEntity();
             maintenancePlanEntity.setCreateBy(loginUsername);
             maintenancePlanEntity.setCreateTime(new Date());
             maintenancePlanEntity.setModifiedBy(loginUsername);
             maintenancePlanEntity.setModifiedTime(new Date());
-            maintenancePlanEntity.setName(rows[1]);
-            maintenancePlanEntity.setContext(rows[2]);
+            maintenancePlanEntity.setName(row[1]);
+            maintenancePlanEntity.setContext(row[2]);
             //四级联动的参数校对
-            String tljName = rows[3];
+            String tljName = row[3];
             List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJuByName(tljName);
             if (tieLuJuEntities.isEmpty())
-                throw new BaseRuntimeException("没有此铁路局");
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此铁路局");
             long tid = tieLuJuEntities.get(0).getTid();
             maintenancePlanEntity.setRailwaysBureauId((int) tid);
 
-            String dwdName = rows[4];
+            String dwdName = row[4];
             List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByName(dwdName);
             if (tieLuJuEntities.isEmpty())
-                throw new BaseRuntimeException("没有此电务段");
-            long tidOfDid = dianWuDuanEntities.get(0).getTid();
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此电务段");
+            long tidOfDid = dianWuDuanEntities.get(0).getTljDwdId();
             if (tid != tidOfDid)
-                throw new BaseRuntimeException("铁路局下边没有此电务段");
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "铁路局下边没有此电务段");
             long did = dianWuDuanEntities.get(0).getDid();
             maintenancePlanEntity.setSignalDepotId((int) did);
 
-            String xdName = rows[5];
+            String xdName = row[5];
             List<XianDuanEntity> xianDuanEntities = dataStatsService.findAllXianDuanByName(xdName);
             if (xianDuanEntities.isEmpty())
-                throw new BaseRuntimeException("没有此线段");
-            long didOfDid = xianDuanEntities.get(0).getDid();
-            if (did != didOfDid)
-                throw new BaseRuntimeException("电务段下边没有此线段");
-            long xid = xianDuanEntities.get(0).getXid();
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此线段");
+            //一个线段有可能归属于多个电务段，需要逐个判断
+            int index = 0;
+            boolean flag = false;
+            for (int j = 0; j < xianDuanEntities.size(); j++) {
+                long didOfDid = xianDuanEntities.get(j).getDwdXdId();
+                if (did == didOfDid) {
+                    flag = true;
+                    index = j;
+                }
+            }
+            if (!flag)
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "电务段下边没有此线段");
+            long xid = xianDuanEntities.get(index).getXid();
             maintenancePlanEntity.setSpecialRailwayLineId((int) xid);
 
-            String czName = rows[6];
+
+            String czName = row[6];
             List<CheZhanEntity> cheZhanEntities = dataStatsService.findallChezhanByName(czName);
             if (cheZhanEntities.isEmpty())
-                throw new BaseRuntimeException("没有此车站");
-            long xidOfCid = cheZhanEntities.get(0).getXid();
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此车站");
+            long xidOfCid = cheZhanEntities.get(0).getXdCzId();
             if (xid != xidOfCid)
-                throw new BaseRuntimeException("线段下边没有此车站");
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "线段下边没有此车站");
             maintenancePlanEntity.setStationId((int) cheZhanEntities.get(0).getCid());
 
-            if (!"一次".equals(rows[7]) && !"重复".equals(rows[7]))
-                throw new BaseRuntimeException("执行方式有误");
-            maintenancePlanEntity.setExecutionMode("一次".equals(rows[7]) ? (short) 1 : (short) 2);
-            maintenancePlanEntity.setExecutionTime(DateUtil.parseDateTime(rows[8]));
+            if (!"一次".equals(row[7]) && !"重复".equals(row[7]))
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "执行方式有误");
+            maintenancePlanEntity.setExecutionMode("一次".equals(row[7]) ? (short) 1 : (short) 2);
+            maintenancePlanEntity.setExecutionTime(DateUtil.parseDateTime(row[8]));
 
             String cronExpression = null;
             if (maintenancePlanEntity.getExecutionMode() == (short) 1) {
                 if (!maintenancePlanEntity.getExecutionTime().after(DateUtil.date()))
-                    throw new BaseRuntimeException("执行时间不能小于等于当前时间");
+                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "执行时间不能小于等于当前时间");
                 String cycleDescription = "在" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "yyyy-MM-dd") +
                         "的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
                 maintenancePlanEntity.setCycleDescription(cycleDescription);
+                cronExpression = String.format("%d %d %d %d %d ? *",
+                        DateUtil.second(maintenancePlanEntity.getExecutionTime()),
+                        DateUtil.minute(maintenancePlanEntity.getExecutionTime()),
+                        DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true),
+                        DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()),
+                        DateUtil.month(maintenancePlanEntity.getExecutionTime()) + 1);
             } else if (maintenancePlanEntity.getExecutionMode() == (short) 2) {
-                String cycleType = rows[9];
+                String cycleType = row[9];
                 if (!"每日".equals(cycleType) && !"每周".equals(cycleType) && !"每月".equals(cycleType) && !"每年".equals(cycleType))
-                    throw new BaseRuntimeException("周期类型有误");
+                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期类型有误");
                 String cycleDescription = null;
                 switch (cycleType) {
                     case "每日"://1
                         cycleDescription = "在每天的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" +
                                 DateUtil.format(maintenancePlanEntity.getExecutionTime(), "yyyy-MM-dd");
-                        cronExpression = String.format("%d %d %d %d %d ? *",
+                        cronExpression = String.format("%d %d %d * * ? *",
                                 DateUtil.second(maintenancePlanEntity.getExecutionTime()),
                                 DateUtil.minute(maintenancePlanEntity.getExecutionTime()),
-                                DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true),
-                                DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()),
-                                DateUtil.month(maintenancePlanEntity.getExecutionTime()) + 1);
+                                DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true));
                         break;
                     case "每周"://2
-                        String weekStrArray = rows[10];
+                        String weekStrArray = row[10];
                         String[] weekStr = weekStrArray.split("、");
                         StringBuilder cycleValueOfWeek = new StringBuilder();
                         for (String s : weekStr) {
@@ -487,7 +524,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()));
                         break;
                     case "每年"://4
-                        String monthStrArray = rows[10];
+                        String monthStrArray = row[10];
                         String[] monthArray = monthStrArray.split("、");
                         StringBuilder cycleValueOfYear = new StringBuilder();
                         for (String s : monthArray) {
@@ -531,7 +568,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                             }
                         }
                         maintenancePlanEntity.setCycleValue(cycleValueOfYear.toString());
-                        cycleDescription = "在每年的" + cycleValueOfYear + "的" + DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()) + "日的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(maintenancePlanEntity.getExecutionTime(),
+                        cycleDescription = "在每年的" + monthStrArray + "的" + DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()) + "日的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(maintenancePlanEntity.getExecutionTime(),
                                 "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d %s ? *",
                                 DateUtil.second(maintenancePlanEntity.getExecutionTime()),
@@ -542,9 +579,10 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 }
                 maintenancePlanEntity.setCycleDescription(cycleDescription);
             }
+            maintenancePlanEntity.setIsStart((short) 1);
             maintenancePlanEntities.add(maintenancePlanEntity);
             if (cronExpression == null)
-                throw new BaseRuntimeException("周期表达式有误");
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期表达式有误");
             ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
             scheduleJobEntity.setCreateBy(maintenancePlanEntity.getCreateBy());
             scheduleJobEntity.setCreateTime(maintenancePlanEntity.getCreateTime());
@@ -567,6 +605,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             scheduleJobService.batchAdd(scheduleJobEntities);
         }
     }
+
 
     @Override
     public void templateFile(OutputStream outputStream) throws IOException {
@@ -605,7 +644,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             content[i][6] = maintenancePlanEntity.getCheZhanEntity().getCzName();
             content[i][7] = maintenancePlanEntity.getExecutionMode() == 1 ? "一次" : maintenancePlanEntity.getExecutionMode() == 2 ? "重复" : "";
             content[i][8] = DateUtil.formatDateTime(maintenancePlanEntity.getExecutionTime());
-            content[i][9] = maintenancePlanEntity.getCycleType() == 1 ? "每天" : maintenancePlanEntity.getCycleType() == 2 ? "每周" : maintenancePlanEntity.getCycleType() == 3 ? "每月" : maintenancePlanEntity.getCycleType() == 4 ? "每年" : "";
+            content[i][9] = maintenancePlanEntity.getCycleType() == 1 ? "每日" : maintenancePlanEntity.getCycleType() == 2 ? "每周" : maintenancePlanEntity.getCycleType() == 3 ? "每月" : maintenancePlanEntity.getCycleType() == 4 ? "每年" : "";
             if (maintenancePlanEntity.getCycleType() == 2) {
                 String cycleWeekValue = maintenancePlanEntity.getCycleValue();
                 String[] weekArray = cycleWeekValue.split(",");

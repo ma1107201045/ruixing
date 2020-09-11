@@ -25,8 +25,11 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from schedule_job
+        <!--         delete
+           from schedule_job
+           where id = #{id,jdbcType=INTEGER} -->
+        update schedule_job
+        set delete_flag=1
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.common.ScheduleJobEntity">
@@ -186,12 +189,13 @@
         select
         <include refid="Base_Column_List"/>
         from schedule_job
-        where job_name = #{jobName,jdbcType=VARCHAR}
+        where job_name = #{jobName,jdbcType=VARCHAR} and delete_flag = 0
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from schedule_job
+        where delete_flag = 0
     </select>
 
 </mapper>
