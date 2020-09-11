@@ -2,7 +2,9 @@ package com.yintu.ruixing.yunxingweihu;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
+
 @Mapper
 public interface MaintenancePlanInfoDao {
     int deleteByPrimaryKey(Integer id);
@@ -15,9 +17,12 @@ public interface MaintenancePlanInfoDao {
 
     int updateByPrimaryKeySelective(MaintenancePlanInfoEntity record);
 
+    int updateByPrimaryKeyWithBLOBs(MaintenancePlanInfoEntity record);
+
     int updateByPrimaryKey(MaintenancePlanInfoEntity record);
 
-    List<MaintenancePlanInfoEntity> selectByCondition(Integer[] ids, Integer maintenancePlanId, String equipmentName);
-
     void insertMuch(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities);
+
+    List<MaintenancePlanInfoEntity> selectByCondition(Integer[] ids, Integer maintenancePlanId, Date date);
+
 }

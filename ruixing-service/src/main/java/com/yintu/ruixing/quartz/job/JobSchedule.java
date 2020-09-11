@@ -13,8 +13,8 @@ public class JobSchedule implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("任务调度开始==============任务调度开始");
+        System.out.println("服务器启动任务调度开始==============任务调度开始");
         taskService.timingTask();
-        System.out.println("任务调度结束==============任务调度结束");
+        System.out.println("服务器启动任务调度结束==============任务调度结束");
     }
 }

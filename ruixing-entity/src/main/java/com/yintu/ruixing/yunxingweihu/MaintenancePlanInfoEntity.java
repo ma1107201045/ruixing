@@ -1,12 +1,9 @@
 package com.yintu.ruixing.yunxingweihu;
 
-import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,26 +11,25 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaintenancePlanInfoEntity implements Serializable {
-    private static final long serialVersionUID = 5855998045982124844L;
+    private static final long serialVersionUID = -1298317307341852171L;
     private Integer id;
-    @NotNull
-    private Date startDate;
-    @NotNull
-    private Date endDate;
-    @NotNull
-    private Integer maintenancePlanId;
-    @NotNull
-    private Integer cheZhanId;
-    @NotNull
-    private Integer equipmentId;
 
-    private Date createdDate;
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
+
+    private Short isFinish;
+
+    private String documentFiles;
+
+    private Integer maintenancePlanId;
+
+    private String context;
 
     private MaintenancePlanEntity maintenancePlanEntity;
-
-    private CheZhanEntity cheZhanEntity;
-
-    private EquipmentEntity equipmentEntity;
-
 
 }

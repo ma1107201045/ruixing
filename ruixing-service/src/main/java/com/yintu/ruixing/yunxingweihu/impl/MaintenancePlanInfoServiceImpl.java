@@ -28,26 +28,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author:mlf
- * @date:2020/7/9 16:40
- */
 @Service
 @Transactional
 public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoService {
 
     @Autowired
     private MaintenancePlanInfoDao maintenancePlanInfoDao;
-    @Autowired
-    private CheZhanService cheZhanService;
-    @Autowired
-    private EquipmentService equipmentService;
 
     @Override
     public void add(MaintenancePlanInfoEntity entity) {
-        if (entity.getStartDate().after(entity.getEndDate()))
-            throw new BaseRuntimeException("开始日期不能大于结束日期");
-        entity.setCreatedDate(new Date());
         maintenancePlanInfoDao.insertSelective(entity);
     }
 
@@ -58,8 +47,6 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
 
     @Override
     public void edit(MaintenancePlanInfoEntity entity) {
-        if (entity.getStartDate().after(entity.getEndDate()))
-            throw new BaseRuntimeException("开始日期不能大于结束日期");
         maintenancePlanInfoDao.updateByPrimaryKeySelective(entity);
     }
 
@@ -77,9 +64,10 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
     }
 
     @Override
-    public List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, String equipmentName) {
-        return maintenancePlanInfoDao.selectByCondition(ids, maintenancePlanId, equipmentName);
+    public List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date) {
+        return maintenancePlanInfoDao.selectByCondition(ids, maintenancePlanId, date);
     }
+
 
     @Override
     public void add(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities) {
@@ -99,36 +87,36 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
             throw new BaseRuntimeException("文件格式有误");
         }
         List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = new ArrayList<>();
-        for (String[] rows : content) {
-            MaintenancePlanInfoEntity maintenancePlanInfoEntity = new MaintenancePlanInfoEntity();
-            maintenancePlanInfoEntity.setMaintenancePlanId(maintenancePlanId);
-
-            String cheZhanName = rows[1];
-            List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(cheZhanName);
-            if (!cheZhanEntities.isEmpty())
-                maintenancePlanInfoEntity.setCheZhanId((int) cheZhanEntities.get(0).getCid());
-
-            String equipmentName = rows[2];
-            List<EquipmentEntity> equipmentEntities = equipmentService.findByName(equipmentName);
-            if (!equipmentEntities.isEmpty())
-                maintenancePlanInfoEntity.setEquipmentId(equipmentEntities.get(0).getId());
-
-            if (rows[3] == null || rows[4] == null) {
-                throw new BaseRuntimeException("开始日期或者结束日期不能为空");
-            }
-            try {
-                Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[3]);
-                Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[4]);
-                if (endDate.after(startDate) || endDate.getTime() == startDate.getTime()) {
-                    maintenancePlanInfoEntity.setStartDate(startDate);
-                    maintenancePlanInfoEntity.setEndDate(endDate);
-                }
-            } catch (ParseException e) {
-                throw new BaseRuntimeException("日期转换有误");
-            }
-            maintenancePlanInfoEntity.setCreatedDate(new Date());
-            maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
-        }
+//        for (String[] rows : content) {
+//            MaintenancePlanInfoEntity maintenancePlanInfoEntity = new MaintenancePlanInfoEntity();
+//            maintenancePlanInfoEntity.setMaintenancePlanId(maintenancePlanId);
+//
+//            String cheZhanName = rows[1];
+//            List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(cheZhanName);
+//            if (!cheZhanEntities.isEmpty())
+//                maintenancePlanInfoEntity.setCheZhanId((int) cheZhanEntities.get(0).getCid());
+//
+//            String equipmentName = rows[2];
+//            List<EquipmentEntity> equipmentEntities = equipmentService.findByName(equipmentName);
+//            if (!equipmentEntities.isEmpty())
+//                maintenancePlanInfoEntity.setEquipmentId(equipmentEntities.get(0).getId());
+//
+//            if (rows[3] == null || rows[4] == null) {
+//                throw new BaseRuntimeException("开始日期或者结束日期不能为空");
+//            }
+//            try {
+//                Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[3]);
+//                Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[4]);
+//                if (endDate.after(startDate) || endDate.getTime() == startDate.getTime()) {
+//                    maintenancePlanInfoEntity.setStartDate(startDate);
+//                    maintenancePlanInfoEntity.setEndDate(endDate);
+//                }
+//            } catch (ParseException e) {
+//                throw new BaseRuntimeException("日期转换有误");
+//            }
+//            maintenancePlanInfoEntity.setCreatedDate(new Date());
+//            maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
+//        }
         if (!maintenancePlanInfoEntities.isEmpty())
             this.add(maintenancePlanInfoEntities);
     }
@@ -159,15 +147,15 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
                 .collect(Collectors.toList());
         //excel元素
         String[][] content = new String[maintenancePlanInfoEntities.size()][headers.length];
-        for (int i = 0; i < maintenancePlanInfoEntities.size(); i++) {
-            MaintenancePlanInfoEntity maintenancePlanInfoEntity = maintenancePlanInfoEntities.get(i);
-            content[i][0] = maintenancePlanInfoEntity.getId().toString();
-            content[i][1] = maintenancePlanInfoEntity.getCheZhanEntity().getCzName();
-            content[i][2] = maintenancePlanInfoEntity.getEquipmentEntity().getName();
-            content[i][3] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getStartDate());
-            content[i][4] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getEndDate());
-
-        }
+//        for (int i = 0; i < maintenancePlanInfoEntities.size(); i++) {
+//            MaintenancePlanInfoEntity maintenancePlanInfoEntity = maintenancePlanInfoEntities.get(i);
+//            content[i][0] = maintenancePlanInfoEntity.getId().toString();
+//            content[i][1] = maintenancePlanInfoEntity.getCheZhanEntity().getCzName();
+//            content[i][2] = maintenancePlanInfoEntity.getEquipmentEntity().getName();
+//            content[i][3] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getStartDate());
+//            content[i][4] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getEndDate());
+//
+//        }
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
         wb.write(outputStream);

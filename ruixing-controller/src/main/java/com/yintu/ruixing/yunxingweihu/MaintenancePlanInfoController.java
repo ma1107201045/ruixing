@@ -34,12 +34,6 @@ public class MaintenancePlanInfoController extends SessionController implements 
     @Autowired
     private MaintenancePlanInfoService maintenancePlanInfoService;
 
-    @Autowired
-    private CheZhanService cheZhanService;
-
-    @Autowired
-    private EquipmentService equipmentService;
-
 
     @PostMapping
     @ResponseBody
@@ -79,19 +73,11 @@ public class MaintenancePlanInfoController extends SessionController implements 
     public Map<String, Object> findByAll(@RequestParam("page_number") Integer pageNumber,
                                          @RequestParam("page_size") Integer pageSize,
                                          @RequestParam(value = "order_by", required = false, defaultValue = "mpi.id DESC") String orderBy,
-                                         @RequestParam(value = "maintenance_plan_id") Integer maintenancePlanId,
-                                         @RequestParam(value = "equipment_name", required = false) String equipmentName) {
+                                         @RequestParam(value = "maintenance_plan_id") Integer maintenancePlanId) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, maintenancePlanId, equipmentName);
+        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, maintenancePlanId, null);
         PageInfo<MaintenancePlanInfoEntity> pageInfo = new PageInfo<>(maintenancePlanInfoEntities);
         return ResponseDataUtil.ok("查询维护计划详情列表信息成功", pageInfo);
-    }
-
-    @PostMapping("/import")
-    @ResponseBody
-    public Map<String, Object> importInfoFile(@RequestParam("maintenancePlanId") Integer maintenancePlanId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        maintenancePlanInfoService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename(), maintenancePlanId);
-        return ResponseDataUtil.ok("导入维护计划详情信息成功");
     }
 
     @GetMapping("/template")
@@ -104,10 +90,17 @@ public class MaintenancePlanInfoController extends SessionController implements 
         maintenancePlanInfoService.templateFile(response.getOutputStream());
     }
 
+    @PostMapping("/import")
+    @ResponseBody
+    public Map<String, Object> importInfoFile(@RequestParam("maintenancePlanId") Integer maintenancePlanId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        maintenancePlanInfoService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename(), maintenancePlanId);
+        return ResponseDataUtil.ok("导入维护计划详情信息成功");
+    }
+
 
     @GetMapping("/export/{ids}")
     public void exportInfoFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "维护计划详情列表-导入" + DateUtil.now() + ".xlsx";
+        String fileName = "维护计划详情列表-导出" + DateUtil.now() + ".xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
@@ -115,29 +108,5 @@ public class MaintenancePlanInfoController extends SessionController implements 
         maintenancePlanInfoService.exportFile(response.getOutputStream(), ids);
     }
 
-    /**
-     * 查询全部车站信息
-     *
-     * @return
-     */
-    @GetMapping("/chezhans")
-    @ResponseBody
-    public Map<String, Object> findCheZhanAll() {
-        List<CheZhanEntity> cheZhanEntities = cheZhanService.findAll();
-        return ResponseDataUtil.ok("查询车站信息列表成功", cheZhanEntities);
-    }
-
-
-    /**
-     * 查询设备全部信息
-     *
-     * @return
-     */
-    @GetMapping("/equipments")
-    @ResponseBody
-    public Map<String, Object> findEquipmentAll() {
-        List<EquipmentEntity> equipmentEntities = equipmentService.findAll();
-        return ResponseDataUtil.ok("查询设备信息列表成功", equipmentEntities);
-    }
 
 }

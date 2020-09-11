@@ -6,6 +6,7 @@ import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,22 +16,28 @@ import java.util.List;
 public interface MaintenancePlanInfoService extends BaseService<MaintenancePlanInfoEntity, Integer> {
 
 
-    void remove(Integer[] ids);
-
-    /**
-     * @param ids               维护计划详情id
-     * @param maintenancePlanId 维护计划id
-     * @param equipmentName     设备名字
-     * @return
-     */
-    List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, String equipmentName);
-
     /**
      * 批量添加
      *
      * @param maintenancePlanInfoEntities 维护计划详情实体类集
      */
     void add(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities);
+
+    /**
+     * 批量删除
+     *
+     * @param ids id集合
+     */
+    void remove(Integer[] ids);
+
+    /**
+     * @param ids               维护计划详情id
+     * @param maintenancePlanId 维护计划id
+     * @param date 当前日期
+     * @return
+     */
+    List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date);
+
 
     /**
      * 批量导入excel数据

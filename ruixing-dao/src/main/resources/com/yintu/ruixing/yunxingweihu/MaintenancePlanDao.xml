@@ -19,7 +19,8 @@
         <result column="cycle_description" jdbcType="VARCHAR" property="cycleDescription"/>
         <result column="is_start" jdbcType="SMALLINT" property="isStart"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -43,7 +44,8 @@
         from mro_maintenance_plan
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_maintenance_plan (id, create_by, create_time,
                                           modified_by, modified_time, name,
                                           railways_bureau_id, signal_depot_id, special_railway_line_id,
@@ -52,12 +54,14 @@
                                           is_start, context)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
-                #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER}, #{specialRailwayLineId,jdbcType=INTEGER},
+                #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER},
+                #{specialRailwayLineId,jdbcType=INTEGER},
                 #{stationId,jdbcType=INTEGER}, #{executionMode,jdbcType=SMALLINT}, #{executionTime,jdbcType=TIMESTAMP},
                 #{cycleType,jdbcType=SMALLINT}, #{cycleValue,jdbcType=VARCHAR}, #{cycleDescription,jdbcType=VARCHAR},
                 #{isStart,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_maintenance_plan
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

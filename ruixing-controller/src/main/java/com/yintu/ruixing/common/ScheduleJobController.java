@@ -29,7 +29,7 @@ public class ScheduleJobController extends SessionController {
         job.setCreateTime(new Date());
         job.setModifiedBy(this.getLoginUserName());
         job.setModifiedTime(new Date());
-        job.setJobName(UUID.fastUUID().toString());
+        job.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + 1);
         job.setCronExpression("0/2 * * * * ?");
         job.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
         job.setMethodName("execute");
