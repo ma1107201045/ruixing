@@ -68,18 +68,6 @@ public class MaintenancePlanInfoController extends SessionController implements 
         return ResponseDataUtil.ok("查询维护计划详情息成功", maintenancePlanInfoEntity);
     }
 
-    @GetMapping
-    @ResponseBody
-    public Map<String, Object> findByAll(@RequestParam("page_number") Integer pageNumber,
-                                         @RequestParam("page_size") Integer pageSize,
-                                         @RequestParam(value = "order_by", required = false, defaultValue = "mpi.id DESC") String orderBy,
-                                         @RequestParam(value = "maintenance_plan_id") Integer maintenancePlanId) {
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, maintenancePlanId, null);
-        PageInfo<MaintenancePlanInfoEntity> pageInfo = new PageInfo<>(maintenancePlanInfoEntities);
-        return ResponseDataUtil.ok("查询维护计划详情列表信息成功", pageInfo);
-    }
-
     @GetMapping("/template")
     public void templateFile(HttpServletResponse response) throws IOException {
         String fileName = "维护计划详情列表-模板" + DateUtil.now() + ".xlsx";
