@@ -57,6 +57,11 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
     }
 
     @Override
+    public void add(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities) {
+        maintenancePlanInfoDao.insertMuch(maintenancePlanInfoEntities);
+    }
+
+    @Override
     public void remove(Integer[] ids) {
         for (Integer id : ids) {
             this.remove(id);
@@ -68,14 +73,8 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
         return maintenancePlanInfoDao.selectByCondition(ids, maintenancePlanId, date);
     }
 
-
     @Override
-    public void add(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities) {
-        maintenancePlanInfoDao.insertMuch(maintenancePlanInfoEntities);
-    }
-
-    @Override
-    public void importFile(InputStream inputStream, String fileName, Integer maintenancePlanId) throws IOException {
+    public String[][] importFile(InputStream inputStream, String fileName) throws IOException {
         //excel标题
         String title = "维护计划详情列表";
         String[][] content;
@@ -86,45 +85,18 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
         } else {
             throw new BaseRuntimeException("文件格式有误");
         }
-        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = new ArrayList<>();
-//        for (String[] rows : content) {
-//            MaintenancePlanInfoEntity maintenancePlanInfoEntity = new MaintenancePlanInfoEntity();
-//            maintenancePlanInfoEntity.setMaintenancePlanId(maintenancePlanId);
-//
-//            String cheZhanName = rows[1];
-//            List<CheZhanEntity> cheZhanEntities = cheZhanService.findByCzName(cheZhanName);
-//            if (!cheZhanEntities.isEmpty())
-//                maintenancePlanInfoEntity.setCheZhanId((int) cheZhanEntities.get(0).getCid());
-//
-//            String equipmentName = rows[2];
-//            List<EquipmentEntity> equipmentEntities = equipmentService.findByName(equipmentName);
-//            if (!equipmentEntities.isEmpty())
-//                maintenancePlanInfoEntity.setEquipmentId(equipmentEntities.get(0).getId());
-//
-//            if (rows[3] == null || rows[4] == null) {
-//                throw new BaseRuntimeException("开始日期或者结束日期不能为空");
-//            }
-//            try {
-//                Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[3]);
-//                Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(rows[4]);
-//                if (endDate.after(startDate) || endDate.getTime() == startDate.getTime()) {
-//                    maintenancePlanInfoEntity.setStartDate(startDate);
-//                    maintenancePlanInfoEntity.setEndDate(endDate);
-//                }
-//            } catch (ParseException e) {
-//                throw new BaseRuntimeException("日期转换有误");
-//            }
-//            maintenancePlanInfoEntity.setCreatedDate(new Date());
-//            maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
-//        }
-        if (!maintenancePlanInfoEntities.isEmpty())
-            this.add(maintenancePlanInfoEntities);
+        return content;
+    }
+
+    @Override
+    public void importData(Integer maintenancePlanId, String[][] context) {
+
     }
 
     @Override
     public void templateFile(OutputStream outputStream) throws IOException {
         //excel标题
-        String title = "维护计划详情列表";
+        String title = "维护记录信息列表";
         //excel表名
         String[] headers = {"序号", "车站名称", "设备名称", "开始日期", "结束日期"};
         //创建HSSFWorkbook

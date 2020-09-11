@@ -30,11 +30,10 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/maintenance/plan/infos")
-public class MaintenancePlanInfoController extends SessionController implements BaseController<MaintenancePlanInfoEntity, Integer> {
+public class MaintenancePlanInfoController extends SessionController {
 
     @Autowired
     private MaintenancePlanInfoService maintenancePlanInfoService;
-
 
     @PostMapping
     @ResponseBody
@@ -44,40 +43,26 @@ public class MaintenancePlanInfoController extends SessionController implements 
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         maintenancePlanInfoService.add(entity);
-        return ResponseDataUtil.ok("添加维护计划详情息成功");
-    }
-
-    @Override
-    public Map<String, Object> remove(Integer id) {
-        return null;
+        return ResponseDataUtil.ok("添加维护记录信息成功");
     }
 
     @DeleteMapping("/{ids}")
     @ResponseBody
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
         maintenancePlanInfoService.remove(ids);
-        return ResponseDataUtil.ok("删除维护计划详情息成功");
-    }
-
-    @PutMapping("/{id}")
-    @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated MaintenancePlanInfoEntity entity) {
-        entity.setModifiedBy(this.getLoginUserName());
-        entity.setModifiedTime(new Date());
-        maintenancePlanInfoService.edit(entity);
-        return ResponseDataUtil.ok("修改维护计划详情息成功");
+        return ResponseDataUtil.ok("删除维护记录信息成功");
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public Map<String, Object> findById(@PathVariable Integer id) {
         MaintenancePlanInfoEntity maintenancePlanInfoEntity = maintenancePlanInfoService.findById(id);
-        return ResponseDataUtil.ok("查询维护计划详情息成功", maintenancePlanInfoEntity);
+        return ResponseDataUtil.ok("查询维护记录信息成功", maintenancePlanInfoEntity);
     }
 
     @GetMapping("/template")
     public void templateFile(HttpServletResponse response) throws IOException {
-        String fileName = "维护计划详情列表-模板" + DateUtil.now() + ".xlsx";
+        String fileName = "维护记录信息列表-模板" + DateUtil.now() + ".xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
@@ -87,15 +72,22 @@ public class MaintenancePlanInfoController extends SessionController implements 
 
     @PostMapping("/import")
     @ResponseBody
-    public Map<String, Object> importInfoFile(@RequestParam("maintenancePlanId") Integer maintenancePlanId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        maintenancePlanInfoService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename(), maintenancePlanId);
-        return ResponseDataUtil.ok("导入维护计划详情信息成功");
+    public Map<String, Object> importFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        String[][] context = maintenancePlanInfoService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        return ResponseDataUtil.ok("获取导入维护记录信息成功", context);
+    }
+
+    @PostMapping("/import/data")
+    @ResponseBody
+    public Map<String, Object> importData(@RequestParam("maintenancePlanId") Integer maintenancePlanId, String[][] context) {
+        maintenancePlanInfoService.importData(maintenancePlanId, context);
+        return ResponseDataUtil.ok("导入维护记录信息成功");
     }
 
 
     @GetMapping("/export/{ids}")
-    public void exportInfoFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "维护计划详情列表-导出" + DateUtil.now() + ".xlsx";
+    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "维护记录信息列表-导出" + DateUtil.now() + ".xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");

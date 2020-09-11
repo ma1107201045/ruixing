@@ -33,7 +33,7 @@ public interface MaintenancePlanInfoService extends BaseService<MaintenancePlanI
     /**
      * @param ids               维护计划详情id
      * @param maintenancePlanId 维护计划id
-     * @param date 当前日期
+     * @param date              当前日期
      * @return
      */
     List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date);
@@ -44,7 +44,16 @@ public interface MaintenancePlanInfoService extends BaseService<MaintenancePlanI
      *
      * @param inputStream 输入流
      */
-    void importFile(InputStream inputStream, String fileName, Integer maintenancePlanId) throws IOException;
+    String[][] importFile(InputStream inputStream, String fileName) throws IOException;
+
+
+    /**
+     * 批量导入excel数据
+     *
+     * @param maintenancePlanId 维护计划id
+     */
+    void importData(Integer maintenancePlanId, String[][] context);
+
 
     /**
      * 下载excel数据模板
