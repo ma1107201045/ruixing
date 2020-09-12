@@ -92,12 +92,12 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
             sparePartsInfoEntity.setCreateTime(new Date());
             sparePartsInfoEntity.setModifiedBy(loginUsername);
             sparePartsInfoEntity.setModifiedTime(new Date());
-            sparePartsInfoEntity.setContext(row[1] == null ? "" : row[1]);
+            sparePartsInfoEntity.setContext(row[1]);
             if (!"未完成".equals(row[2]) && !"已完成".equals(row[2]))
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "是否完成有误");
             sparePartsInfoEntity.setIsFinish("未完成".equals(row[2]) ? (short) 0 : 1);
-            sparePartsInfoEntity.setDocumentNames(row[3] == null ? "" : row[3]);
-            sparePartsInfoEntity.setDocumentFiles(row[4] == null ? "" : row[4]);
+            sparePartsInfoEntity.setDocumentNames(row[3]);
+            sparePartsInfoEntity.setDocumentFiles(row[4]);
             sparePartsInfoEntity.setSparePartsId(sparePartsId);
             sparePartsInfoEntities.add(sparePartsInfoEntity);
         }

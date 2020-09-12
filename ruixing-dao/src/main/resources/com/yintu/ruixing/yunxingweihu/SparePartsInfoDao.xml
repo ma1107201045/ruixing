@@ -37,8 +37,8 @@
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
         insert into mro_spare_parts_info (id, create_by, create_time,
-                                               modified_by, modified_time, is_finish, document_names, document_files,
-                                               spare_parts_id, context)
+                                          modified_by, modified_time, is_finish, document_names, document_files,
+                                          spare_parts_id, context)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{isFinish,jdbcType=SMALLINT},
                 #{documentNames,jdbcType=VARCHAR}, #{documentFiles,jdbcType=VARCHAR},
@@ -174,17 +174,16 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
         insert into mro_spare_parts_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            id create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,
-            spare_parts_id
+            create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,spare_parts_id
         </trim>
         values
         <foreach collection="list" item="sparePartsInfoEntity" index="index" separator=",">
             <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{sparePartsInfoEntity.create_by,jdbcType=VARCHAR},
-                #{sparePartsInfoEntity.create_time,jdbcType=TIMESTAMP},
-                #{sparePartsInfoEntity.modified_by,jdbcType=VARCHAR},
-                #{sparePartsInfoEntity.modified_time,jdbcType=TIMESTAMP},
-                #{sparePartsInfoEntity.is_finish,jdbcType=SMALLINT},
+                #{sparePartsInfoEntity.createBy,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.createTime,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.modifiedBy,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.modifiedTime,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.isFinish,jdbcType=SMALLINT},
                 #{sparePartsInfoEntity.documentNames,jdbcType=VARCHAR},
                 #{sparePartsInfoEntity.documentFiles,jdbcType=VARCHAR},
                 #{sparePartsInfoEntity.sparePartsId,jdbcType=INTEGER},
