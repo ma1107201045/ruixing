@@ -45,9 +45,9 @@ public interface SparePartsInfoService extends BaseService<SparePartsInfoEntity,
     /**
      * 批量导入excel数据
      *
-     * @param maintenancePlanId 备品试验id
+     * @param sparePartsId 备品试验id
      */
-    void importData(Integer maintenancePlanId, String[][] context, String loginUsername);
+    void importData(Integer sparePartsId, String[][] context, String loginUsername);
 
 
     /**

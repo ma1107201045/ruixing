@@ -94,12 +94,13 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
             maintenancePlanInfoEntity.setCreateTime(new Date());
             maintenancePlanInfoEntity.setModifiedBy(loginUsername);
             maintenancePlanInfoEntity.setModifiedTime(new Date());
-            maintenancePlanInfoEntity.setContext(row[1]);
+            maintenancePlanInfoEntity.setContext(row[1] == null ? "" : row[1]);
             if (!"未完成".equals(row[2]) && !"已完成".equals(row[2]))
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "是否完成有误");
             maintenancePlanInfoEntity.setIsFinish("未完成".equals(row[2]) ? (short) 0 : 1);
-            maintenancePlanInfoEntity.setDocumentNames(row[3]);
-            maintenancePlanInfoEntity.setDocumentFiles(row[4]);
+            maintenancePlanInfoEntity.setDocumentNames(row[3] == null ? "" : row[3]);
+            maintenancePlanInfoEntity.setDocumentFiles(row[4] == null ? "" : row[4]);
+            maintenancePlanInfoEntity.setMaintenancePlanId(maintenancePlanId);
             maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
         }
         if (!maintenancePlanInfoEntities.isEmpty())
