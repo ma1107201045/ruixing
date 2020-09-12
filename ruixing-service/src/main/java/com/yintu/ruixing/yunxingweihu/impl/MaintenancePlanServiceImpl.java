@@ -611,7 +611,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         //excel标题
         String title = "维护计划列表";
         //excel表名
-        String[] headers = {"序号", "项目名称", "维护内容", "铁路局", "电务段", "线段", "车站", "执行方式", "执行时间", "周期类型", "周期值"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -624,7 +624,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         //excel标题
         String title = "维护计划列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "项目名称", "维护内容", "车站", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //获取数据
         List<MaintenancePlanEntity> maintenancePlanEntities = this.findByExample(ids, null);
         maintenancePlanEntities = maintenancePlanEntities.stream()
@@ -635,12 +635,12 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         for (int i = 0; i < maintenancePlanEntities.size(); i++) {
             MaintenancePlanEntity maintenancePlanEntity = maintenancePlanEntities.get(i);
             content[i][0] = maintenancePlanEntity.getId().toString();
-            content[i][1] = maintenancePlanEntity.getName();
-            content[i][2] = maintenancePlanEntity.getContext();
-            content[i][3] = maintenancePlanEntity.getTieLuJuEntity().getTljName();
-            content[i][4] = maintenancePlanEntity.getDianWuDuanEntity().getDwdName();
-            content[i][5] = maintenancePlanEntity.getXianDuanEntity().getXdName();
-            content[i][6] = maintenancePlanEntity.getCheZhanEntity().getCzName();
+            content[i][1] = maintenancePlanEntity.getTieLuJuEntity().getTljName();
+            content[i][2] = maintenancePlanEntity.getDianWuDuanEntity().getDwdName();
+            content[i][3] = maintenancePlanEntity.getXianDuanEntity().getXdName();
+            content[i][4] = maintenancePlanEntity.getCheZhanEntity().getCzName();
+            content[i][5] = maintenancePlanEntity.getName();
+            content[i][6] = maintenancePlanEntity.getContext();
             content[i][7] = maintenancePlanEntity.getExecutionMode() == 1 ? "一次" : maintenancePlanEntity.getExecutionMode() == 2 ? "重复" : "";
             content[i][8] = DateUtil.formatDateTime(maintenancePlanEntity.getExecutionTime());
             if (maintenancePlanEntity.getExecutionMode() == 2) {

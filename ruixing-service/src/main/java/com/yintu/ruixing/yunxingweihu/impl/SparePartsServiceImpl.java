@@ -632,12 +632,12 @@ public class SparePartsServiceImpl implements SparePartsService {
         for (int i = 0; i < sparePartsEntities.size(); i++) {
             SparePartsEntity sparePartsEntity = sparePartsEntities.get(i);
             content[i][0] = sparePartsEntity.getId().toString();
-            content[i][1] = sparePartsEntity.getName();
-            content[i][2] = sparePartsEntity.getContext();
-            content[i][3] = sparePartsEntity.getTieLuJuEntity().getTljName();
-            content[i][4] = sparePartsEntity.getDianWuDuanEntity().getDwdName();
-            content[i][5] = sparePartsEntity.getXianDuanEntity().getXdName();
-            content[i][6] = sparePartsEntity.getCheZhanEntity().getCzName();
+            content[i][1] = sparePartsEntity.getTieLuJuEntity().getTljName();
+            content[i][2] = sparePartsEntity.getDianWuDuanEntity().getDwdName();
+            content[i][3] = sparePartsEntity.getXianDuanEntity().getXdName();
+            content[i][4] = sparePartsEntity.getCheZhanEntity().getCzName();
+            content[i][5] = sparePartsEntity.getName();
+            content[i][6] = sparePartsEntity.getContext();
             content[i][7] = sparePartsEntity.getExecutionMode() == 1 ? "一次" : sparePartsEntity.getExecutionMode() == 2 ? "重复" : "";
             content[i][8] = DateUtil.formatDateTime(sparePartsEntity.getExecutionTime());
             if (sparePartsEntity.getExecutionMode() == 2) {
