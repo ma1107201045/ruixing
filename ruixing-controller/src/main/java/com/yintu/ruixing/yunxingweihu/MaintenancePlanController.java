@@ -110,7 +110,7 @@ public class MaintenancePlanController extends SessionController implements Base
 
     @GetMapping("/template")
     public void templateFile(HttpServletResponse response) throws IOException {
-        String fileName = "维护计划列表-模板" + DateUtil.now() + ".xlsx";
+        String fileName = "维护计划信息列表-模板" + DateUtil.now() + ".xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
@@ -120,7 +120,7 @@ public class MaintenancePlanController extends SessionController implements Base
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "维护计划列表-导出" + DateUtil.now() + ".xlsx";
+        String fileName = "维护计划信息列表-导出" + DateUtil.now() + ".xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
