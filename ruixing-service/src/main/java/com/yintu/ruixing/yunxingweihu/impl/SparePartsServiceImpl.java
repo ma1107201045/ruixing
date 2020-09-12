@@ -612,7 +612,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -625,7 +625,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "备品实验名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //获取数据
         List<SparePartsEntity> sparePartsEntities = this.findByExample(ids, null);
         sparePartsEntities = sparePartsEntities.stream()

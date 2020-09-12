@@ -390,7 +390,6 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     }
 
-    //        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值"};
     @Override
     public void importDate(String[][] context, String loginUsername) {
         List<MaintenancePlanEntity> maintenancePlanEntities = new ArrayList<>();
@@ -616,7 +615,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         //excel标题
         String title = "维护计划列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "维护项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -629,7 +628,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         //excel标题
         String title = "维护计划列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "维护项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //获取数据
         List<MaintenancePlanEntity> maintenancePlanEntities = this.findByExample(ids, null);
         maintenancePlanEntities = maintenancePlanEntities.stream()

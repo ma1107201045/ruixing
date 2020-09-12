@@ -111,7 +111,7 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
         //excel标题
         String title = "备品试验记录信息列表";
         //excel表名
-        String[] headers = {"序号", "维护内容", "是否完成", "记录文档名称集", "记录文档文件集"};
+        String[] headers = {"序号", "试验内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -124,7 +124,7 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
         //excel标题
         String title = "备品试验记录信息列表";
         //excel表名
-        String[] headers = {"序号", "创建时间", "维护内容", "是否完成", "记录文档名称集", "记录文档文件集"};
+        String[] headers = {"序号", "创建时间", "实验内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //获取数据
         List<SparePartsInfoEntity> sparePartsInfoEntities = this.findByCondition(ids, null, null);
         sparePartsInfoEntities = sparePartsInfoEntities.stream()
