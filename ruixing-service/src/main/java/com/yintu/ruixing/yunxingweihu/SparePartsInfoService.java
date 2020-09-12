@@ -1,25 +1,22 @@
 package com.yintu.ruixing.yunxingweihu;
 
 import com.yintu.ruixing.common.util.BaseService;
-import com.yintu.ruixing.yunxingweihu.SparePartsEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
-/**
- * @author:mlf
- * @date:2020/7/11 11:52
- */
-public interface SparePartsService extends BaseService<SparePartsEntity, Integer> {
+public interface SparePartsInfoService extends BaseService<SparePartsInfoEntity, Integer> {
+
 
     /**
      * 批量添加
      *
-     * @param sparePartsEntities 备品试验实体类集
+     * @param sparePartsInfoEntities 备品试验详情实体类集
      */
-    void batchAdd(List<SparePartsEntity> sparePartsEntities);
+    void add(List<SparePartsInfoEntity> sparePartsInfoEntities);
 
     /**
      * 批量删除
@@ -28,15 +25,13 @@ public interface SparePartsService extends BaseService<SparePartsEntity, Integer
      */
     void remove(Integer[] ids);
 
-
     /**
-     * 多条件查询
-     *
-     * @param ids  id集合
-     * @param name 名称
-     * @return 备品试验信息集
+     * @param ids          备品试验详情id
+     * @param sparePartsId 备品试验id
+     * @param date         当前日期
+     * @return
      */
-    List<SparePartsEntity> findByExample(Integer[] ids, String name);
+    List<SparePartsInfoEntity> findByCondition(Integer[] ids, Integer sparePartsId, Date date);
 
 
     /**
@@ -46,12 +41,14 @@ public interface SparePartsService extends BaseService<SparePartsEntity, Integer
      */
     String[][] importFile(InputStream inputStream, String fileName) throws IOException;
 
+
     /**
      * 批量导入excel数据
      *
-     * @param context 数据
+     * @param sparePartsId 备品试验id
      */
-    void importDate(String[][] context, String loginUsername);
+    void importData(Integer sparePartsId, String[][] context, String loginUsername);
+
 
     /**
      * 下载excel数据模板
@@ -61,12 +58,11 @@ public interface SparePartsService extends BaseService<SparePartsEntity, Integer
      */
     void templateFile(OutputStream outputStream) throws IOException;
 
-
     /**
      * 批量导出excel数据
      *
      * @param outputStream 输出流
-     * @param ids          id集合
+     * @param ids          备品试验详情id集
      * @throws IOException io异常
      */
     void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;

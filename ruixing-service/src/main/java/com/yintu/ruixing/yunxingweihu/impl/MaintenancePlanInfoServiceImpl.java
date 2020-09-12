@@ -100,6 +100,7 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
             maintenancePlanInfoEntity.setIsFinish("未完成".equals(row[2]) ? (short) 0 : 1);
             maintenancePlanInfoEntity.setDocumentNames(row[3]);
             maintenancePlanInfoEntity.setDocumentFiles(row[4]);
+            maintenancePlanInfoEntity.setMaintenancePlanId(maintenancePlanId);
             maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
         }
         if (!maintenancePlanInfoEntities.isEmpty())

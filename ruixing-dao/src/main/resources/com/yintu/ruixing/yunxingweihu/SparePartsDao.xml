@@ -3,22 +3,39 @@
 <mapper namespace="com.yintu.ruixing.yunxingweihu.SparePartsDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="che_zhan_id" jdbcType="INTEGER" property="cheZhanId"/>
-        <result column="equipment_id" jdbcType="INTEGER" property="equipmentId"/>
-        <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="equipment_status" jdbcType="SMALLINT" property="equipmentStatus"/>
-        <result column="is_replace" jdbcType="SMALLINT" property="isReplace"/>
-        <result column="create_date" jdbcType="DATE" property="createDate"/>
-        <result column="storage_time" jdbcType="SMALLINT" property="storageTime"/>
-        <result column="end_date" jdbcType="DATE" property="endDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+        <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+        <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="execution_mode" jdbcType="SMALLINT" property="executionMode"/>
+        <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime"/>
+        <result column="cycle_type" jdbcType="SMALLINT" property="cycleType"/>
+        <result column="cycle_value" jdbcType="VARCHAR" property="cycleValue"/>
+        <result column="cycle_description" jdbcType="VARCHAR" property="cycleDescription"/>
+        <result column="is_start" jdbcType="SMALLINT" property="isStart"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, che_zhan_id, equipment_id, equipment_number, equipment_status, is_replace, create_date,
-    storage_time, end_date
+        id, create_by, create_time, modified_by, modified_time, name, railways_bureau_id,
+    signal_depot_id, special_railway_line_id, station_id, execution_mode, execution_time,
+    cycle_type, cycle_value, cycle_description, is_start
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <sql id="Blob_Column_List">
+        context
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_spare_parts
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -27,190 +44,318 @@
         from mro_spare_parts
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <delete id="deleteMuch" parameterType="java.lang.Integer">
-        delete
-        from mro_spare_parts
-        where id in
-        <foreach collection="array" open="(" close=")" index="index" item="id" separator=",">
-            #{id,jdbcType=INTEGER}
-        </foreach>
-    </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
-        insert into mro_spare_parts (id, che_zhan_id, equipment_id,
-                                     equipment_number, equipment_status, is_replace,
-                                     create_date, storage_time, end_date)
-        values (#{id,jdbcType=INTEGER}, #{cheZhanId,jdbcType=INTEGER}, #{equipmentId,jdbcType=INTEGER},
-                #{equipmentNumber,jdbcType=VARCHAR}, #{equipmentStatus,jdbcType=SMALLINT}, #{isReplace,jdbcType=SMALLINT},
-                #{createDate,jdbcType=DATE}, #{storageTime,jdbcType=SMALLINT}, #{endDate,jdbcType=DATE})
+    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into mro_spare_parts (id, create_by, create_time,
+                                     modified_by, modified_time, name,
+                                     railways_bureau_id, signal_depot_id, special_railway_line_id,
+                                     station_id, execution_mode, execution_time,
+                                     cycle_type, cycle_value, cycle_description,
+                                     is_start, context)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
+                #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER},
+                #{specialRailwayLineId,jdbcType=INTEGER},
+                #{stationId,jdbcType=INTEGER}, #{executionMode,jdbcType=SMALLINT}, #{executionTime,jdbcType=TIMESTAMP},
+                #{cycleType,jdbcType=SMALLINT}, #{cycleValue,jdbcType=VARCHAR}, #{cycleDescription,jdbcType=VARCHAR},
+                #{isStart,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_spare_parts
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="cheZhanId != null">
-                che_zhan_id,
+            <if test="createBy != null">
+                create_by,
             </if>
-            <if test="equipmentId != null">
-                equipment_id,
+            <if test="createTime != null">
+                create_time,
             </if>
-            <if test="equipmentNumber != null">
-                equipment_number,
+            <if test="modifiedBy != null">
+                modified_by,
             </if>
-            <if test="equipmentStatus != null">
-                equipment_status,
+            <if test="modifiedTime != null">
+                modified_time,
             </if>
-            <if test="isReplace != null">
-                is_replace,
+            <if test="name != null">
+                name,
             </if>
-            <if test="createDate != null">
-                create_date,
+            <if test="railwaysBureauId != null">
+                railways_bureau_id,
             </if>
-            <if test="storageTime != null">
-                storage_time,
+            <if test="signalDepotId != null">
+                signal_depot_id,
             </if>
-            <if test="endDate != null">
-                end_date,
+            <if test="specialRailwayLineId != null">
+                special_railway_line_id,
+            </if>
+            <if test="stationId != null">
+                station_id,
+            </if>
+            <if test="executionMode != null">
+                execution_mode,
+            </if>
+            <if test="executionTime != null">
+                execution_time,
+            </if>
+            <if test="cycleType != null">
+                cycle_type,
+            </if>
+            <if test="cycleValue != null">
+                cycle_value,
+            </if>
+            <if test="cycleDescription != null">
+                cycle_description,
+            </if>
+            <if test="isStart != null">
+                is_start,
+            </if>
+            <if test="context != null">
+                context,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="cheZhanId != null">
-                #{cheZhanId,jdbcType=INTEGER},
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentId != null">
-                #{equipmentId,jdbcType=INTEGER},
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="equipmentNumber != null">
-                #{equipmentNumber,jdbcType=VARCHAR},
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentStatus != null">
-                #{equipmentStatus,jdbcType=SMALLINT},
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="isReplace != null">
-                #{isReplace,jdbcType=SMALLINT},
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
             </if>
-            <if test="createDate != null">
-                #{createDate,jdbcType=DATE},
+            <if test="railwaysBureauId != null">
+                #{railwaysBureauId,jdbcType=INTEGER},
             </if>
-            <if test="storageTime != null">
-                #{storageTime,jdbcType=SMALLINT},
+            <if test="signalDepotId != null">
+                #{signalDepotId,jdbcType=INTEGER},
             </if>
-            <if test="endDate != null">
-                #{endDate,jdbcType=DATE},
+            <if test="specialRailwayLineId != null">
+                #{specialRailwayLineId,jdbcType=INTEGER},
+            </if>
+            <if test="stationId != null">
+                #{stationId,jdbcType=INTEGER},
+            </if>
+            <if test="executionMode != null">
+                #{executionMode,jdbcType=SMALLINT},
+            </if>
+            <if test="executionTime != null">
+                #{executionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cycleType != null">
+                #{cycleType,jdbcType=SMALLINT},
+            </if>
+            <if test="cycleValue != null">
+                #{cycleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="cycleDescription != null">
+                #{cycleDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="isStart != null">
+                #{isStart,jdbcType=SMALLINT},
+            </if>
+            <if test="context != null">
+                #{context,jdbcType=LONGVARCHAR},
             </if>
         </trim>
-    </insert>
-    <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
-        insert into mro_spare_parts
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          che_zhan_id, equipment_id, equipment_number, equipment_status, is_replace, create_date,storage_time, end_date
-        </trim>
-        values
-        <foreach collection="list" item="sparePartsEntity" index="index" separator=",">
-            <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{sparePartsEntity.cheZhanId,jdbcType=BIGINT},
-                #{sparePartsEntity.equipmentId,jdbcType=INTEGER},
-                #{sparePartsEntity.equipmentNumber,jdbcType=VARCHAR},
-                #{sparePartsEntity.equipmentStatus,jdbcType=SMALLINT},
-                #{sparePartsEntity.isReplace,jdbcType=SMALLINT},
-                #{sparePartsEntity.createDate,jdbcType=DATE},
-                #{sparePartsEntity.storageTime,jdbcType=SMALLINT},
-                #{sparePartsEntity.endDate,jdbcType=DATE},
-            </trim>
-        </foreach>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
         update mro_spare_parts
         <set>
-            <if test="cheZhanId != null">
-                che_zhan_id = #{cheZhanId,jdbcType=INTEGER},
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentId != null">
-                equipment_id = #{equipmentId,jdbcType=INTEGER},
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="equipmentNumber != null">
-                equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentStatus != null">
-                equipment_status = #{equipmentStatus,jdbcType=SMALLINT},
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="isReplace != null">
-                is_replace = #{isReplace,jdbcType=SMALLINT},
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="createDate != null">
-                create_date = #{createDate,jdbcType=DATE},
+            <if test="railwaysBureauId != null">
+                railways_bureau_id = #{railwaysBureauId,jdbcType=INTEGER},
             </if>
-            <if test="storageTime != null">
-                storage_time = #{storageTime,jdbcType=SMALLINT},
+            <if test="signalDepotId != null">
+                signal_depot_id = #{signalDepotId,jdbcType=INTEGER},
             </if>
-            <if test="endDate != null">
-                end_date = #{endDate,jdbcType=DATE},
+            <if test="specialRailwayLineId != null">
+                special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
+            </if>
+            <if test="stationId != null">
+                station_id = #{stationId,jdbcType=INTEGER},
+            </if>
+            <if test="executionMode != null">
+                execution_mode = #{executionMode,jdbcType=SMALLINT},
+            </if>
+            <if test="executionTime != null">
+                execution_time = #{executionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cycleType != null">
+                cycle_type = #{cycleType,jdbcType=SMALLINT},
+            </if>
+            <if test="cycleValue != null">
+                cycle_value = #{cycleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="cycleDescription != null">
+                cycle_description = #{cycleDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="isStart != null">
+                is_start = #{isStart,jdbcType=SMALLINT},
+            </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
+        update mro_spare_parts
+        set create_by               = #{createBy,jdbcType=VARCHAR},
+            create_time             = #{createTime,jdbcType=TIMESTAMP},
+            modified_by             = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time           = #{modifiedTime,jdbcType=TIMESTAMP},
+            name                    = #{name,jdbcType=VARCHAR},
+            railways_bureau_id      = #{railwaysBureauId,jdbcType=INTEGER},
+            signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
+            special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
+            station_id              = #{stationId,jdbcType=INTEGER},
+            execution_mode          = #{executionMode,jdbcType=SMALLINT},
+            execution_time          = #{executionTime,jdbcType=TIMESTAMP},
+            cycle_type              = #{cycleType,jdbcType=SMALLINT},
+            cycle_value             = #{cycleValue,jdbcType=VARCHAR},
+            cycle_description       = #{cycleDescription,jdbcType=VARCHAR},
+            is_start                = #{isStart,jdbcType=SMALLINT},
+            context                 = #{context,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
         update mro_spare_parts
-        set che_zhan_id      = #{cheZhanId,jdbcType=INTEGER},
-            equipment_id     = #{equipmentId,jdbcType=INTEGER},
-            equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
-            equipment_status = #{equipmentStatus,jdbcType=SMALLINT},
-            is_replace       = #{isReplace,jdbcType=SMALLINT},
-            create_date      = #{createDate,jdbcType=DATE},
-            storage_time     = #{storageTime,jdbcType=SMALLINT},
-            end_date         = #{endDate,jdbcType=DATE}
+        set create_by               = #{createBy,jdbcType=VARCHAR},
+            create_time             = #{createTime,jdbcType=TIMESTAMP},
+            modified_by             = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time           = #{modifiedTime,jdbcType=TIMESTAMP},
+            name                    = #{name,jdbcType=VARCHAR},
+            railways_bureau_id      = #{railwaysBureauId,jdbcType=INTEGER},
+            signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
+            special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
+            station_id              = #{stationId,jdbcType=INTEGER},
+            execution_mode          = #{executionMode,jdbcType=SMALLINT},
+            execution_time          = #{executionTime,jdbcType=TIMESTAMP},
+            cycle_type              = #{cycleType,jdbcType=SMALLINT},
+            cycle_value             = #{cycleValue,jdbcType=VARCHAR},
+            cycle_description       = #{cycleDescription,jdbcType=SMALLINT},
+            is_start                = #{isStart,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-
-    <resultMap id="MuchResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
-        <id column="sp_id" jdbcType="INTEGER" property="id"/>
-        <result column="che_zhan_id" jdbcType="INTEGER" property="cheZhanId"/>
-        <result column="equipment_id" jdbcType="INTEGER" property="equipmentId"/>
-        <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="equipment_status" jdbcType="SMALLINT" property="equipmentStatus"/>
-        <result column="is_replace" jdbcType="SMALLINT" property="isReplace"/>
-        <result column="create_date" jdbcType="DATE" property="createDate"/>
-        <result column="storage_time" jdbcType="SMALLINT" property="storageTime"/>
-        <result column="end_date" jdbcType="DATE" property="endDate"/>
-        <association column="che_zhan_id" property="cheZhanEntity">
-            <result column="c_id" property="cid"/>
-            <result column="c_name" property="czName"/>
+    <insert id="muchInsert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into mro_spare_parts
+        (create_by, create_time, modified_by, modified_time, name, railways_bureau_id, signal_depot_id,
+        special_railway_line_id,station_id, execution_mode, execution_time,cycle_type, cycle_value,
+        cycle_description,is_start, context)
+        values
+        <foreach collection="list" item="sparePartsEntity" index="index" separator=",">
+            (#{sparePartsEntity.createBy,jdbcType=VARCHAR},
+            #{sparePartsEntity.createTime,jdbcType=TIMESTAMP},
+            #{sparePartsEntity.modifiedBy,jdbcType=VARCHAR},
+            #{sparePartsEntity.modifiedTime,jdbcType=TIMESTAMP},
+            #{sparePartsEntity.name,jdbcType=VARCHAR},
+            #{sparePartsEntity.railwaysBureauId,jdbcType=INTEGER},
+            #{sparePartsEntity.signalDepotId,jdbcType=INTEGER},
+            #{sparePartsEntity.specialRailwayLineId,jdbcType=INTEGER},
+            #{sparePartsEntity.stationId,jdbcType=INTEGER},
+            #{sparePartsEntity.executionMode,jdbcType=SMALLINT},
+            #{sparePartsEntity.executionTime,jdbcType=TIMESTAMP},
+            #{sparePartsEntity.cycleType,jdbcType=SMALLINT},
+            #{sparePartsEntity.cycleValue,jdbcType=VARCHAR},
+            #{sparePartsEntity.cycleDescription,jdbcType=VARCHAR},
+            #{sparePartsEntity.isStart,jdbcType=SMALLINT},
+            #{SparePartsEntity.context,jdbcType=LONGVARCHAR})
+        </foreach>
+    </insert>
+    <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsEntity">
+        <id column="mp_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+        <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+        <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="execution_mode" jdbcType="SMALLINT" property="executionMode"/>
+        <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime"/>
+        <result column="cycle_type" jdbcType="SMALLINT" property="cycleType"/>
+        <result column="cycle_value" jdbcType="VARCHAR" property="cycleValue"/>
+        <result column="cycle_description" jdbcType="VARCHAR" property="cycleDescription"/>
+        <result column="is_start" jdbcType="SMALLINT" property="isStart"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+        <association property="tieLuJuEntity" column="railways_bureau_id">
+            <result column="t_id" jdbcType="INTEGER" property="tid"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
         </association>
-        <association column="equipment_id" property="equipmentEntity">
-            <id column="e_id" jdbcType="INTEGER" property="id"/>
-            <result column="e_name" jdbcType="VARCHAR" property="name"/>
-            <result column="e_created_date" jdbcType="TIMESTAMP" property="createdTime"/>
+        <association property="dianWuDuanEntity" column="signal_depot_id">
+            <result column="d_id" jdbcType="INTEGER" property="did"/>
+            <result column="dwd_name" jdbcType="VARCHAR" property="dwdName"/>
+        </association>
+        <association property="xianDuanEntity" column="special_railway_line_id">
+            <result column="x_id" jdbcType="INTEGER" property="xid"/>
+            <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        </association>
+        <association property="cheZhanEntity" column="station_id">
+            <id column="c_id" jdbcType="INTEGER" property="cid"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
         </association>
     </resultMap>
-    <sql id="Much_Column_List">
-        sp.id as sp_id,che_zhan_id, equipment_id, equipment_number, equipment_status, is_replace, create_date, storage_time, end_date,
-          c.cid as c_id,c.cz_name as c_name,
-          e.id as e_id, e.name as e_name, e.created_time as e_created_date
+    <sql id="Example_Column_List">
+        mp.id as mp_id, create_by, create_time, modified_by, modified_time, name, railways_bureau_id,signal_depot_id, special_railway_line_id, station_id, execution_mode, execution_time,cycle_type, cycle_value, cycle_description, is_start,context,
+        t.tid as t_id,tlj_name,
+        d.did as d_id,dwd_name,
+        x.xid as x_id,xd_name,
+        c.cid as c_id,cz_name
     </sql>
-    <sql id="Much_Condition">
+    <sql id="Example_Table_List">
+        mro_spare_parts mp inner join mro_tieluju t on mp.railways_bureau_id=t.tid
+        inner join mro_dianwuduan d on mp.signal_depot_id=d.did
+        inner join mro_xianduan x on mp.special_railway_line_id=x.xid
+        inner join mro_chezhan c on mp.station_id=c.cid
+    </sql>
+    <sql id="Example_Where_List">
         <where>
-            <if test="ids != null">
-                sp.id in
-                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+            <if test="ids!=null">
+                and mp.id in
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                     #{id,jdbcType=INTEGER}
                 </foreach>
             </if>
-            <if test="equipmentName != null">
-                and e.name like concat('%', #{equipmentName,jdbcType=VARCHAR},'%')
+            <if test="name!=null">
+                and mp.name like concat('%',#{name,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </sql>
-    <select id="selectByCondition" resultMap="MuchResultMap">
+    <select id="selectByExample" resultMap="ExampleResultMap">
         select
-        <include refid="Much_Column_List"/>
-        from mro_spare_parts sp
-        inner join mro_chezhan c on sp.che_zhan_id=c.cid
-        inner join mro_equipment e on sp.equipment_id=e.id
-        <include refid="Much_Condition"/>
+        <include refid="Example_Column_List"/>
+        from
+        <include refid="Example_Table_List"/>
+        <include refid="Example_Where_List"/>
     </select>
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoDao">
-    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
+<mapper namespace="com.yintu.ruixing.yunxingweihu.SparePartsInfoDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -10,14 +10,14 @@
         <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
         <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
         <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
-        <result column="maintenance_plan_id" jdbcType="INTEGER" property="maintenancePlanId"/>
+        <result column="spare_parts_id" jdbcType="INTEGER" property="sparePartsId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
+               type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id
+        id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, spare_parts_id
     </sql>
     <sql id="Blob_Column_List">
         context
@@ -27,26 +27,26 @@
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        from mro_maintenance_plan_info
+        from mro_spare_parts_info
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
-        from mro_maintenance_plan_info
+        from mro_spare_parts_info
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        insert into mro_maintenance_plan_info (id, create_by, create_time,
-                                               modified_by, modified_time, is_finish, document_names, document_files,
-                                               maintenance_plan_id, context)
+    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info (id, create_by, create_time,
+                                          modified_by, modified_time, is_finish, document_names, document_files,
+                                          spare_parts_id, context)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{isFinish,jdbcType=SMALLINT},
                 #{documentNames,jdbcType=VARCHAR}, #{documentFiles,jdbcType=VARCHAR},
-                #{maintenancePlanId,jdbcType=INTEGER},
+                #{sparePartsId,jdbcType=INTEGER},
                 #{context,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        insert into mro_maintenance_plan_info
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -72,8 +72,8 @@
             <if test="documentFiles != null">
                 document_files,
             </if>
-            <if test="maintenancePlanId != null">
-                maintenance_plan_id,
+            <if test="sparePartsId != null">
+                spare_parts_id,
             </if>
             <if test="context != null">
                 context,
@@ -104,16 +104,16 @@
             <if test="documentFiles != null">
                 #{documentFiles,jdbcType=VARCHAR},
             </if>
-            <if test="maintenancePlanId != null">
-                #{maintenancePlanId,jdbcType=INTEGER},
+            <if test="sparePartsId != null">
+                #{sparePartsId,jdbcType=INTEGER},
             </if>
             <if test="context != null">
                 #{context,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        update mro_maintenance_plan_info
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
         <set>
             <if test="createBy != null">
                 create_by = #{createBy,jdbcType=VARCHAR},
@@ -136,8 +136,8 @@
             <if test="documentFiles != null">
                 document_files = #{documentFiles,jdbcType=VARCHAR},
             </if>
-            <if test="maintenancePlanId != null">
-                maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER},
+            <if test="sparePartsId != null">
+                spare_parts_id = #{sparePartsId,jdbcType=INTEGER},
             </if>
             <if test="context != null">
                 context = #{context,jdbcType=LONGVARCHAR},
@@ -145,54 +145,54 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        update mro_maintenance_plan_info
-        set create_by           = #{createBy,jdbcType=VARCHAR},
-            create_time         = #{createTime,jdbcType=TIMESTAMP},
-            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
-            is_finish           = #{isFinish,jdbcType=SMALLINT},
-            document_names      = #{documentNames,jdbcType=VARCHAR},
-            document_files      = #{documentFiles,jdbcType=VARCHAR},
-            maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER},
-            context             = #{context,jdbcType=LONGVARCHAR}
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
+        set create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            modified_by    = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time  = #{modifiedTime,jdbcType=TIMESTAMP},
+            is_finish      = #{isFinish,jdbcType=SMALLINT},
+            document_names = #{documentNames,jdbcType=VARCHAR},
+            document_files = #{documentFiles,jdbcType=VARCHAR},
+            spare_parts_id = #{sparePartsId,jdbcType=INTEGER},
+            context        = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        update mro_maintenance_plan_info
-        set create_by           = #{createBy,jdbcType=VARCHAR},
-            create_time         = #{createTime,jdbcType=TIMESTAMP},
-            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
-            is_finish           = #{isFinish,jdbcType=SMALLINT},
-            document_names      = #{documentNames,jdbcType=VARCHAR},
-            document_files      = #{documentFiles,jdbcType=VARCHAR},
-            maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER}
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
+        set create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            modified_by    = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time  = #{modifiedTime,jdbcType=TIMESTAMP},
+            is_finish      = #{isFinish,jdbcType=SMALLINT},
+            document_names = #{documentNames,jdbcType=VARCHAR},
+            document_files = #{documentFiles,jdbcType=VARCHAR},
+            spare_parts_id = #{sparePartsId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        insert into mro_maintenance_plan_info
+    <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,maintenance_plan_id
+            create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,spare_parts_id
         </trim>
         values
-        <foreach collection="list" item="maintenancePlanInfoEntity" index="index" separator=",">
+        <foreach collection="list" item="sparePartsInfoEntity" index="index" separator=",">
             <trim prefix=" (" suffix=")" suffixOverrides=",">
-                #{maintenancePlanInfoEntity.createBy,jdbcType=VARCHAR},
-                #{maintenancePlanInfoEntity.createTime,jdbcType=TIMESTAMP},
-                #{maintenancePlanInfoEntity.modifiedBy,jdbcType=VARCHAR},
-                #{maintenancePlanInfoEntity.modifiedTime,jdbcType=TIMESTAMP},
-                #{maintenancePlanInfoEntity.isFinish,jdbcType=SMALLINT},
-                #{maintenancePlanInfoEntity.documentNames,jdbcType=VARCHAR},
-                #{maintenancePlanInfoEntity.documentFiles,jdbcType=VARCHAR},
-                #{maintenancePlanInfoEntity.maintenancePlanId,jdbcType=INTEGER},
+                #{sparePartsInfoEntity.createBy,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.createTime,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.modifiedBy,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.modifiedTime,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.isFinish,jdbcType=SMALLINT},
+                #{sparePartsInfoEntity.documentNames,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.documentFiles,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.sparePartsId,jdbcType=INTEGER},
             </trim>
         </foreach>
     </insert>
 
-    <resultMap id="MuchResultMap" type="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
-        <id column="mpi_id" jdbcType="INTEGER" property="id"/>
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        <id column="spi_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
@@ -200,28 +200,28 @@
         <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
         <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
         <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
-        <result column="maintenance_plan_id" jdbcType="INTEGER" property="maintenancePlanId"/>
+        <result column="spare_parts_id" jdbcType="INTEGER" property="sparePartsId"/>
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Much_Column_List">
-        mpi.id as mpi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id,context
+        spi.id as spi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, spare_parts_id,context
     </sql>
     <sql id="Much_Table_List">
-        mro_maintenance_plan_info mpi
+        mro_spare_parts_info spi
     </sql>
     <sql id="Much_Where_List">
         <where>
             <if test="ids!=null">
-                and mpi.id in
+                and spi.id in
                 <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                     #{id}
                 </foreach>
             </if>
-            <if test="maintenancePlanId != null">
-                and mpi.maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER}
+            <if test="sparePartsId != null">
+                and spi.spare_parts_id = #{sparePartsId,jdbcType=INTEGER}
             </if>
             <if test="date != null">
-                and DATE(mpi.create_time) = DATE(#{date,jdbcType=TIMESTAMP})
+                and DATE(spi.create_time) = DATE(#{date,jdbcType=TIMESTAMP})
             </if>
         </where>
     </sql>
