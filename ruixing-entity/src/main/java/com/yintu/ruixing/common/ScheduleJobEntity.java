@@ -22,6 +22,8 @@ public class ScheduleJobEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private Date executionTime;
+
     private String jobName;
 
     private String cronExpression;

@@ -42,9 +42,11 @@ public class QuartzServiceImpl implements QuartzService {
     public void addJob(ScheduleJobEntity scheduleJobEntity) {
         try {
             //创建触发器
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(scheduleJobEntity.getJobName())
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(scheduleJobEntity.getJobName())
                     .withSchedule(CronScheduleBuilder.cronSchedule(scheduleJobEntity.getCronExpression()))
-                    .startNow()
+                    // .startNow() 立即执行
+                    .startAt(scheduleJobEntity.getExecutionTime())//延时执行
                     .build();
 
             //创建任务

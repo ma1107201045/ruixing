@@ -175,6 +175,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
         scheduleJobEntity.setCreateTime(entity.getCreateTime());
         scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
         scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+        scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
         scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
         scheduleJobEntity.setCronExpression(cronExpression);
         scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
@@ -324,6 +325,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 ScheduleJobEntity scheduleJobEntity = scheduleJobEntities.get(0);
                 scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
                 scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
                 scheduleJobEntity.setCronExpression(cronExpression);
                 scheduleJobService.edit(scheduleJobEntity);
             } else if (source.getExecutionMode() == 1) {  //执行一次的结束的需要再添加任务
@@ -332,6 +334,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 scheduleJobEntity.setCreateTime(entity.getCreateTime());
                 scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
                 scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
                 scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
                 scheduleJobEntity.setCronExpression(cronExpression);
                 scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
@@ -387,6 +390,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
 
     }
 
+    //        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值"};
     @Override
     public void importDate(String[][] context, String loginUsername) {
         List<MaintenancePlanEntity> maintenancePlanEntities = new ArrayList<>();
@@ -398,17 +402,17 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             maintenancePlanEntity.setCreateTime(new Date());
             maintenancePlanEntity.setModifiedBy(loginUsername);
             maintenancePlanEntity.setModifiedTime(new Date());
-            maintenancePlanEntity.setName(row[1]);
-            maintenancePlanEntity.setContext(row[2]);
+            maintenancePlanEntity.setName(row[5]);
+            maintenancePlanEntity.setContext(row[6]);
             //四级联动的参数校对
-            String tljName = row[3];
+            String tljName = row[1];
             List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJuByName(tljName);
             if (tieLuJuEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此铁路局");
             long tid = tieLuJuEntities.get(0).getTid();
             maintenancePlanEntity.setRailwaysBureauId((int) tid);
 
-            String dwdName = row[4];
+            String dwdName = row[2];
             List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByName(dwdName);
             if (tieLuJuEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此电务段");
@@ -418,7 +422,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             long did = dianWuDuanEntities.get(0).getDid();
             maintenancePlanEntity.setSignalDepotId((int) did);
 
-            String xdName = row[5];
+            String xdName = row[3];
             List<XianDuanEntity> xianDuanEntities = dataStatsService.findAllXianDuanByName(xdName);
             if (xianDuanEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此线段");
@@ -438,7 +442,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             maintenancePlanEntity.setSpecialRailwayLineId((int) xid);
 
 
-            String czName = row[6];
+            String czName = row[4];
             List<CheZhanEntity> cheZhanEntities = dataStatsService.findallChezhanByName(czName);
             if (cheZhanEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此车站");
@@ -588,6 +592,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             scheduleJobEntity.setCreateTime(maintenancePlanEntity.getCreateTime());
             scheduleJobEntity.setModifiedBy(maintenancePlanEntity.getModifiedBy());
             scheduleJobEntity.setModifiedTime(maintenancePlanEntity.getModifiedTime());
+            scheduleJobEntity.setExecutionTime(maintenancePlanEntity.getExecutionTime());
             scheduleJobEntity.setCronExpression(cronExpression);
             //scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
             scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());

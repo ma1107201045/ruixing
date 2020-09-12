@@ -7,6 +7,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime"/>
         <result column="job_name" jdbcType="VARCHAR" property="jobName"/>
         <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression"/>
         <result column="bean_name" jdbcType="VARCHAR" property="beanName"/>
@@ -15,7 +16,7 @@
         <result column="delete_flag" jdbcType="BIT" property="deleteFlag"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, job_name, cron_expression,
+        id, create_by, create_time, modified_by, modified_time,execution_time, job_name, cron_expression,
     bean_name, method_name, status, delete_flag
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -34,11 +35,12 @@
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.common.ScheduleJobEntity">
         insert into schedule_job (id, create_by, create_time,
-                                  modified_by, modified_time, job_name,
+                                  modified_by, modified_time, execution_time, job_name,
                                   cron_expression, bean_name, method_name,
                                   status, delete_flag)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{jobName,jdbcType=VARCHAR},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{jobName,jdbcType=VARCHAR},
                 #{cronExpression,jdbcType=VARCHAR}, #{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR},
                 #{status,jdbcType=INTEGER}, #{deleteFlag,jdbcType=BIT})
     </insert>
@@ -59,6 +61,9 @@
             </if>
             <if test="modifiedTime != null">
                 modified_time,
+            </if>
+            <if test="executionTime != null">
+                execution_time,
             </if>
             <if test="jobName != null">
                 job_name,
@@ -95,6 +100,9 @@
             <if test="modifiedTime != null">
                 #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="executionTime != null">
+                #{executionTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="jobName != null">
                 #{jobName,jdbcType=VARCHAR},
             </if>
@@ -130,6 +138,9 @@
             <if test="modifiedTime != null">
                 modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="executionTime != null">
+                execution_time= #{executionTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="jobName != null">
                 job_name = #{jobName,jdbcType=VARCHAR},
             </if>
@@ -157,6 +168,7 @@
             create_time     = #{createTime,jdbcType=TIMESTAMP},
             modified_by     = #{modifiedBy,jdbcType=VARCHAR},
             modified_time   = #{modifiedTime,jdbcType=TIMESTAMP},
+            execution_time  = #{executionTime,jdbcType=TIMESTAMP},
             job_name        = #{jobName,jdbcType=VARCHAR},
             cron_expression = #{cronExpression,jdbcType=VARCHAR},
             bean_name       = #{beanName,jdbcType=VARCHAR},
@@ -166,7 +178,8 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <insert id="muchInsert" parameterType="com.yintu.ruixing.common.ScheduleJobEntity">
-        insert into schedule_job (create_by, create_time,modified_by, modified_time, job_name,cron_expression,bean_name,
+        insert into schedule_job (create_by, create_time,modified_by, modified_time,execution_time,
+        job_name,cron_expression,bean_name,
         method_name,status,delete_flag)
         values
         <foreach collection="list" item="maintenancePlanEntity" index="index" separator=",">
@@ -175,6 +188,7 @@
             #{maintenancePlanEntity.createTime,jdbcType=TIMESTAMP},
             #{maintenancePlanEntity.modifiedBy,jdbcType=VARCHAR},
             #{maintenancePlanEntity.modifiedTime,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.execution_time,jdbcType=TIMESTAMP},
             #{maintenancePlanEntity.jobName,jdbcType=VARCHAR},
             #{maintenancePlanEntity.cronExpression,jdbcType=VARCHAR},
             #{maintenancePlanEntity.beanName,jdbcType=VARCHAR},

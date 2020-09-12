@@ -172,6 +172,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         scheduleJobEntity.setCreateTime(entity.getCreateTime());
         scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
         scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+        scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
         scheduleJobEntity.setJobName(TaskEnum.SPARETEST.getValue() + "-" + entity.getId());
         scheduleJobEntity.setCronExpression(cronExpression);
         scheduleJobEntity.setBeanName(TaskEnum.SPARETEST.getValue());
@@ -321,6 +322,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 ScheduleJobEntity scheduleJobEntity = scheduleJobEntities.get(0);
                 scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
                 scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
                 scheduleJobEntity.setCronExpression(cronExpression);
                 scheduleJobService.edit(scheduleJobEntity);
             } else if (source.getExecutionMode() == 1) {  //执行一次的结束的需要再添加任务
@@ -329,6 +331,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 scheduleJobEntity.setCreateTime(entity.getCreateTime());
                 scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
                 scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+                scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
                 scheduleJobEntity.setJobName(TaskEnum.SPARETEST.getValue() + "-" + entity.getId());
                 scheduleJobEntity.setCronExpression(cronExpression);
                 scheduleJobEntity.setBeanName(TaskEnum.SPARETEST.getValue());
@@ -395,17 +398,17 @@ public class SparePartsServiceImpl implements SparePartsService {
             sparePartsEntity.setCreateTime(new Date());
             sparePartsEntity.setModifiedBy(loginUsername);
             sparePartsEntity.setModifiedTime(new Date());
-            sparePartsEntity.setName(row[1]);
-            sparePartsEntity.setContext(row[2]);
+            sparePartsEntity.setName(row[5]);
+            sparePartsEntity.setContext(row[6]);
             //四级联动的参数校对
-            String tljName = row[3];
+            String tljName = row[1];
             List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJuByName(tljName);
             if (tieLuJuEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此铁路局");
             long tid = tieLuJuEntities.get(0).getTid();
             sparePartsEntity.setRailwaysBureauId((int) tid);
 
-            String dwdName = row[4];
+            String dwdName = row[2];
             List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByName(dwdName);
             if (tieLuJuEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此电务段");
@@ -415,7 +418,7 @@ public class SparePartsServiceImpl implements SparePartsService {
             long did = dianWuDuanEntities.get(0).getDid();
             sparePartsEntity.setSignalDepotId((int) did);
 
-            String xdName = row[5];
+            String xdName = row[3];
             List<XianDuanEntity> xianDuanEntities = dataStatsService.findAllXianDuanByName(xdName);
             if (xianDuanEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此线段");
@@ -435,7 +438,7 @@ public class SparePartsServiceImpl implements SparePartsService {
             sparePartsEntity.setSpecialRailwayLineId((int) xid);
 
 
-            String czName = row[6];
+            String czName = row[4];
             List<CheZhanEntity> cheZhanEntities = dataStatsService.findallChezhanByName(czName);
             if (cheZhanEntities.isEmpty())
                 throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "没有此车站");
@@ -585,9 +588,10 @@ public class SparePartsServiceImpl implements SparePartsService {
             scheduleJobEntity.setCreateTime(sparePartsEntity.getCreateTime());
             scheduleJobEntity.setModifiedBy(sparePartsEntity.getModifiedBy());
             scheduleJobEntity.setModifiedTime(sparePartsEntity.getModifiedTime());
+            scheduleJobEntity.setExecutionTime(sparePartsEntity.getExecutionTime());
             scheduleJobEntity.setCronExpression(cronExpression);
             //scheduleJobEntity.setJobName(TaskEnum.SPARETEST.getValue() + "-" + entity.getId());
-            scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
+            scheduleJobEntity.setBeanName(TaskEnum.SPARETEST.getValue());
             scheduleJobEntity.setMethodName("execute");
             scheduleJobEntity.setStatus(1);
             scheduleJobEntity.setDeleteFlag(false);
@@ -608,7 +612,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "项目名称", "维护内容", "铁路局", "电务段", "线段", "车站", "执行方式", "执行时间", "周期类型", "周期值"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -621,7 +625,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "项目名称", "维护内容", "车站", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "维护内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //获取数据
         List<SparePartsEntity> sparePartsEntities = this.findByExample(ids, null);
         sparePartsEntities = sparePartsEntities.stream()
