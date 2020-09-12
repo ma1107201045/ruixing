@@ -52,7 +52,7 @@ public interface MaintenancePlanInfoService extends BaseService<MaintenancePlanI
      *
      * @param maintenancePlanId 维护计划id
      */
-    void importData(Integer maintenancePlanId, String[][] context);
+    void importData(Integer maintenancePlanId, String[][] context, String loginUsername);
 
 
     /**

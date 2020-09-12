@@ -205,7 +205,7 @@
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Much_Column_List">
-        mpi.id as mpi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id
+        mpi.id as mpi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, maintenance_plan_id,context
     </sql>
     <sql id="Much_Table_List">
         mro_maintenance_plan_info mpi

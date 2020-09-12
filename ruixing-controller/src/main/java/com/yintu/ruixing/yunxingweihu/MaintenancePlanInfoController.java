@@ -1,6 +1,7 @@
 package com.yintu.ruixing.yunxingweihu;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -60,15 +61,6 @@ public class MaintenancePlanInfoController extends SessionController {
         return ResponseDataUtil.ok("查询维护记录信息成功", maintenancePlanInfoEntity);
     }
 
-    @GetMapping("/template")
-    public void templateFile(HttpServletResponse response) throws IOException {
-        String fileName = "维护记录信息列表-模板" + DateUtil.now() + ".xlsx";
-        response.setContentType("application/octet-stream;charset=ISO8859-1");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-        response.addHeader("Pargam", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        maintenancePlanInfoService.templateFile(response.getOutputStream());
-    }
 
     @PostMapping("/import")
     @ResponseBody
@@ -79,11 +71,22 @@ public class MaintenancePlanInfoController extends SessionController {
 
     @PostMapping("/import/data")
     @ResponseBody
-    public Map<String, Object> importData(@RequestParam("maintenancePlanId") Integer maintenancePlanId, String[][] context) {
-        maintenancePlanInfoService.importData(maintenancePlanId, context);
+    public Map<String, Object> importData(@RequestBody JSONObject jo) {
+        Integer maintenancePlanId = jo.getInt("maintenancePlanId");
+        String[][] context = jo.get("data", String[][].class);
+        maintenancePlanInfoService.importData(maintenancePlanId, context, this.getLoginUserName());
         return ResponseDataUtil.ok("导入维护记录信息成功");
     }
 
+    @GetMapping("/template")
+    public void templateFile(HttpServletResponse response) throws IOException {
+        String fileName = "维护记录信息列表-模板" + DateUtil.now() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        maintenancePlanInfoService.templateFile(response.getOutputStream());
+    }
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {

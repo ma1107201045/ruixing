@@ -1,15 +1,12 @@
 package com.yintu.ruixing.yunxingweihu.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.FileUtil;
 import com.yintu.ruixing.common.util.ImportExcelUtil;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoDao;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
-import com.yintu.ruixing.weixiudaxiu.EquipmentService;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -76,7 +71,7 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
     @Override
     public String[][] importFile(InputStream inputStream, String fileName) throws IOException {
         //excel标题
-        String title = "维护计划详情列表";
+        String title = "维护记录信息列表";
         String[][] content;
         if ("xls".equals(FileUtil.getExtensionName(fileName))) {
             content = ImportExcelUtil.getHSSFData(title, new HSSFWorkbook(inputStream));
@@ -88,17 +83,36 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
         return content;
     }
 
-    @Override
-    public void importData(Integer maintenancePlanId, String[][] context) {
 
+    @Override
+    public void importData(Integer maintenancePlanId, String[][] context, String loginUsername) {
+        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = new ArrayList<>();
+        for (int i = 0; i < context.length; i++) {
+            String[] row = context[i];
+            MaintenancePlanInfoEntity maintenancePlanInfoEntity = new MaintenancePlanInfoEntity();
+            maintenancePlanInfoEntity.setCreateBy(loginUsername);
+            maintenancePlanInfoEntity.setCreateTime(new Date());
+            maintenancePlanInfoEntity.setModifiedBy(loginUsername);
+            maintenancePlanInfoEntity.setModifiedTime(new Date());
+            maintenancePlanInfoEntity.setContext(row[1]);
+            if (!"未完成".equals(row[2]) && !"已完成".equals(row[2]))
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "是否完成有误");
+            maintenancePlanInfoEntity.setIsFinish("未完成".equals(row[2]) ? (short) 0 : 1);
+            maintenancePlanInfoEntity.setDocumentNames(row[3]);
+            maintenancePlanInfoEntity.setDocumentFiles(row[4]);
+            maintenancePlanInfoEntities.add(maintenancePlanInfoEntity);
+        }
+        if (!maintenancePlanInfoEntities.isEmpty())
+            this.add(maintenancePlanInfoEntities);
     }
+
 
     @Override
     public void templateFile(OutputStream outputStream) throws IOException {
         //excel标题
         String title = "维护记录信息列表";
         //excel表名
-        String[] headers = {"序号", "车站名称", "设备名称", "开始日期", "结束日期"};
+        String[] headers = {"序号", "维护内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -109,9 +123,9 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
     @Override
     public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
         //excel标题
-        String title = "维护计划详情列表";
+        String title = "维护记录信息列表";
         //excel表名
-        String[] headers = {"序号", "车站名称", "设备名称", "开始日期", "结束日期"};
+        String[] headers = {"序号", "创建时间", "维护内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //获取数据
         List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = this.findByCondition(ids, null, null);
         maintenancePlanInfoEntities = maintenancePlanInfoEntities.stream()
@@ -119,15 +133,15 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
                 .collect(Collectors.toList());
         //excel元素
         String[][] content = new String[maintenancePlanInfoEntities.size()][headers.length];
-//        for (int i = 0; i < maintenancePlanInfoEntities.size(); i++) {
-//            MaintenancePlanInfoEntity maintenancePlanInfoEntity = maintenancePlanInfoEntities.get(i);
-//            content[i][0] = maintenancePlanInfoEntity.getId().toString();
-//            content[i][1] = maintenancePlanInfoEntity.getCheZhanEntity().getCzName();
-//            content[i][2] = maintenancePlanInfoEntity.getEquipmentEntity().getName();
-//            content[i][3] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getStartDate());
-//            content[i][4] = new SimpleDateFormat("yyyy-MM-dd").format(maintenancePlanInfoEntity.getEndDate());
-//
-//        }
+        for (int i = 0; i < maintenancePlanInfoEntities.size(); i++) {
+            MaintenancePlanInfoEntity maintenancePlanInfoEntity = maintenancePlanInfoEntities.get(i);
+            content[i][0] = maintenancePlanInfoEntity.getId().toString();
+            content[i][1] = DateUtil.formatDateTime(maintenancePlanInfoEntity.getCreateTime());
+            content[i][2] = maintenancePlanInfoEntity.getContext();
+            content[i][3] = maintenancePlanInfoEntity.getIsFinish() == 1 ? "已完成" : maintenancePlanInfoEntity.getIsFinish() == 2 ? "未完成" : "";
+            content[i][4] = maintenancePlanInfoEntity.getDocumentNames();
+            content[i][5] = maintenancePlanInfoEntity.getDocumentFiles();
+        }
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
         wb.write(outputStream);
