@@ -19,7 +19,7 @@ public interface SparePartsDao {
 
     int updateByPrimaryKey(SparePartsEntity record);
 
-    void muchInsert(List<SparePartsEntity> maintenancePlanEntities);
+    void muchInsert(List<SparePartsEntity> sparePartsEntities);
 
     List<SparePartsEntity> selectByExample(Integer[] ids, String name);
 }

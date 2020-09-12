@@ -98,7 +98,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每周的" + weekStr.toString().substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                    cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d ? * %s *",
                             DateUtil.second(entity.getExecutionTime()),
                             DateUtil.minute(entity.getExecutionTime()),
@@ -156,7 +156,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每年的" + monthStr.toString().substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
+                    cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
                             "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d %d %s ? *",
                             DateUtil.second(entity.getExecutionTime()),

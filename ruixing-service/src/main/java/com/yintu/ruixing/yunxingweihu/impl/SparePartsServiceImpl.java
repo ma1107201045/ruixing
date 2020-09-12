@@ -95,7 +95,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每周的" + weekStr.toString().substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                    cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d ? * %s *",
                             DateUtil.second(entity.getExecutionTime()),
                             DateUtil.minute(entity.getExecutionTime()),
@@ -153,7 +153,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每年的" + monthStr.toString().substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
+                    cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
                             "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d %d %s ? *",
                             DateUtil.second(entity.getExecutionTime()),
@@ -612,7 +612,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "项目名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "器材名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
         wb.write(outputStream);
@@ -625,7 +625,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         //excel标题
         String title = "备品试验列表";
         //excel表名
-        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "备品实验名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
+        String[] headers = {"序号", "铁路局", "电务段", "线段", "车站", "器材名称", "实验内容", "执行方式", "执行时间", "周期类型", "周期值", "周期描述"};
         //获取数据
         List<SparePartsEntity> sparePartsEntities = this.findByExample(ids, null);
         sparePartsEntities = sparePartsEntities.stream()
