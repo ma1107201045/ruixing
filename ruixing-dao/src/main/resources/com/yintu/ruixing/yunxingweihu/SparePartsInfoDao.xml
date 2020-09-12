@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.yunxingweihu.SparePartsInfoDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
+        <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
+        <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
+        <result column="spare_parts_id" jdbcType="INTEGER" property="sparePartsId"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, spare_parts_id
+    </sql>
+    <sql id="Blob_Column_List">
+        context
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_spare_parts_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_spare_parts_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info (id, create_by, create_time,
+                                               modified_by, modified_time, is_finish, document_names, document_files,
+                                               spare_parts_id, context)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{isFinish,jdbcType=SMALLINT},
+                #{documentNames,jdbcType=VARCHAR}, #{documentFiles,jdbcType=VARCHAR},
+                #{sparePartsId,jdbcType=INTEGER},
+                #{context,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="isFinish != null">
+                is_finish,
+            </if>
+            <if test="documentNames != null">
+                document_names,
+            </if>
+            <if test="documentFiles != null">
+                document_files,
+            </if>
+            <if test="sparePartsId != null">
+                spare_parts_id,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isFinish != null">
+                #{isFinish,jdbcType=SMALLINT},
+            </if>
+            <if test="documentNames != null">
+                #{documentNames,jdbcType=VARCHAR},
+            </if>
+            <if test="documentFiles != null">
+                #{documentFiles,jdbcType=VARCHAR},
+            </if>
+            <if test="sparePartsId != null">
+                #{sparePartsId,jdbcType=INTEGER},
+            </if>
+            <if test="context != null">
+                #{context,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isFinish != null">
+                is_finish = #{isFinish,jdbcType=SMALLINT},
+            </if>
+            <if test="documentNames != null">
+                document_names = #{documentNames,jdbcType=VARCHAR},
+            </if>
+            <if test="documentFiles != null">
+                document_files = #{documentFiles,jdbcType=VARCHAR},
+            </if>
+            <if test="sparePartsId != null">
+                spare_parts_id = #{sparePartsId,jdbcType=INTEGER},
+            </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
+        set create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            modified_by    = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time  = #{modifiedTime,jdbcType=TIMESTAMP},
+            is_finish      = #{isFinish,jdbcType=SMALLINT},
+            document_names = #{documentNames,jdbcType=VARCHAR},
+            document_files = #{documentFiles,jdbcType=VARCHAR},
+            spare_parts_id = #{sparePartsId,jdbcType=INTEGER},
+            context        = #{context,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        update mro_spare_parts_info
+        set create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            modified_by    = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time  = #{modifiedTime,jdbcType=TIMESTAMP},
+            is_finish      = #{isFinish,jdbcType=SMALLINT},
+            document_names = #{documentNames,jdbcType=VARCHAR},
+            document_files = #{documentFiles,jdbcType=VARCHAR},
+            spare_parts_id = #{sparePartsId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        insert into mro_spare_parts_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,
+            spare_parts_id
+        </trim>
+        values
+        <foreach collection="list" item="sparePartsInfoEntity" index="index" separator=",">
+            <trim prefix=" (" suffix=")" suffixOverrides=",">
+                #{sparePartsInfoEntity.create_by,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.create_time,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.modified_by,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.modified_time,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.is_finish,jdbcType=SMALLINT},
+                #{sparePartsInfoEntity.documentNames,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.documentFiles,jdbcType=VARCHAR},
+                #{sparePartsInfoEntity.sparePartsId,jdbcType=INTEGER},
+            </trim>
+        </foreach>
+    </insert>
+
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
+        <id column="spi_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="is_finish" jdbcType="SMALLINT" property="isFinish"/>
+        <result column="document_names" jdbcType="VARCHAR" property="documentNames"/>
+        <result column="document_files" jdbcType="VARCHAR" property="documentFiles"/>
+        <result column="spare_parts_id" jdbcType="INTEGER" property="sparePartsId"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+    </resultMap>
+    <sql id="Much_Column_List">
+        spi.id as spi_id, create_by, create_time, modified_by, modified_time, is_finish,document_names, document_files, spare_parts_id,context
+    </sql>
+    <sql id="Much_Table_List">
+        mro_spare_parts_info spi
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="ids!=null">
+                and spi.id in
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="sparePartsId != null">
+                and spi.spare_parts_id = #{sparePartsId,jdbcType=INTEGER}
+            </if>
+            <if test="date != null">
+                and DATE(spi.create_time) = DATE(#{date,jdbcType=TIMESTAMP})
+            </if>
+        </where>
+    </sql>
+    <select id="selectByCondition" parameterType="java.lang.String" resultMap="MuchResultMap">
+        select
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
+    </select>
+</mapper>

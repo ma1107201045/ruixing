@@ -52,7 +52,7 @@ public class SparePartsController extends SessionController implements BaseContr
 
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
-        sparePartsService.delete(ids);
+        sparePartsService.remove(ids);
         return ResponseDataUtil.ok("删除备品实验信息成功");
     }
 
@@ -75,7 +75,7 @@ public class SparePartsController extends SessionController implements BaseContr
                                        @RequestParam(value = "order_by", required = false, defaultValue = "sp.id DESC") String orderBy,
                                        @RequestParam(value = "equipment_name", required = false) String equipmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<SparePartsEntity> sparePartsEntities = sparePartsService.findByCondition(null, equipmentName);
+        List<SparePartsEntity> sparePartsEntities = sparePartsService.findByExample(null, equipmentName);
         PageInfo<SparePartsEntity> pageInfo = new PageInfo<>(sparePartsEntities);
         return ResponseDataUtil.ok("查询备品实验列表信息成功", pageInfo);
     }
@@ -83,7 +83,7 @@ public class SparePartsController extends SessionController implements BaseContr
     @PostMapping("/import")
     @ResponseBody
     public Map<String, Object> importFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        sparePartsService.importFile(multipartFile.getInputStream(),multipartFile.getOriginalFilename());
+        sparePartsService.importFile(multipartFile.getInputStream(), multipartFile.getOriginalFilename());
         return ResponseDataUtil.ok("导入备品实验信息成功");
     }
 

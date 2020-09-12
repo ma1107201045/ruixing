@@ -590,7 +590,6 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
             scheduleJobEntity.setModifiedTime(maintenancePlanEntity.getModifiedTime());
             scheduleJobEntity.setCronExpression(cronExpression);
             //scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
-            scheduleJobEntity.setCronExpression(cronExpression);
             scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
             scheduleJobEntity.setMethodName("execute");
             scheduleJobEntity.setStatus(1);

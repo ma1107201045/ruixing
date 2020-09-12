@@ -15,11 +15,11 @@ public interface SparePartsDao {
 
     int updateByPrimaryKeySelective(SparePartsEntity record);
 
+    int updateByPrimaryKeyWithBLOBs(SparePartsEntity record);
+
     int updateByPrimaryKey(SparePartsEntity record);
 
-    List<SparePartsEntity> selectByCondition(Integer[] ids,String equipmentName);
+    void muchInsert(List<SparePartsEntity> maintenancePlanEntities);
 
-    void insertMuch(List<SparePartsEntity> sparePartsEntities);
-
-    void deleteMuch(Integer[] ids);
+    List<SparePartsEntity> selectByExample(Integer[] ids, String name);
 }
