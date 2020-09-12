@@ -1,8 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusDao;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusService;
+
+import com.yintu.ruixing.anzhuangtiaoshi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,27 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
 
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
+
+    @Override
+    public void deleteServiceStatusByIds(Integer[] ids) {
+        for (int i = 0; i < ids.length; i++) {
+            AnZhuangTiaoShiXiangMuServiceStatusEntity serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(ids[i]);
+            if (!serviceStatusEntityList.getChoose().equals("是否")){
+                anZhuangTiaoShiXiangMuServiceStatusChooseDao.deleteBySid(serviceStatusEntityList.getId());
+            }
+            anZhuangTiaoShiXiangMuServiceStatusDao.deleteByPrimaryKey(ids[i]);
+        }
+    }
+
     @Override
     public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus() {
-        return anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : serviceStatusEntityList) {
+            anZhuangTiaoShiXiangMuServiceStatusEntity.setCheckbox("ture");
+        }
+        return serviceStatusEntityList;
     }
 
     @Override
@@ -33,18 +50,47 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     }
 
     @Override
-    public void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username) {
-        Date today=new Date();
+    public void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username,Integer id) {
+        Date today = new Date();
         anZhuangTiaoShiXiangMuServiceStatusEntity.setUpdatename(username);
         anZhuangTiaoShiXiangMuServiceStatusEntity.setUpdatetime(today);
+        String choose = anZhuangTiaoShiXiangMuServiceStatusEntity.getChoose();
+        if (!choose.equals("是否")) {
+            anZhuangTiaoShiXiangMuServiceStatusEntity.setTimetype(1);
+        }
         anZhuangTiaoShiXiangMuServiceStatusDao.updateByPrimaryKeySelective(anZhuangTiaoShiXiangMuServiceStatusEntity);
+        Integer statusEntityId = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+        if (!choose.equals("是否")) {
+            anZhuangTiaoShiXiangMuServiceStatusChooseDao.deleteBySid(id);
+            for (String s : choose.split(",")) {
+                AnZhuangTiaoShiXiangMuServiceStatusChooseEntity chooseEntity = new AnZhuangTiaoShiXiangMuServiceStatusChooseEntity();
+                chooseEntity.setSid(statusEntityId);
+                chooseEntity.setName(s);
+                chooseEntity.setCreatetime(today);
+                chooseEntity.setCreatename(username);
+                anZhuangTiaoShiXiangMuServiceStatusChooseDao.insertSelective(chooseEntity);
+            }
+        }
+
     }
 
     @Override
     public void addServiceStatus(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username) {
-        Date today=new Date();
+        Date today = new Date();
         anZhuangTiaoShiXiangMuServiceStatusEntity.setCreatename(username);
         anZhuangTiaoShiXiangMuServiceStatusEntity.setCreatetime(today);
         anZhuangTiaoShiXiangMuServiceStatusDao.insertSelective(anZhuangTiaoShiXiangMuServiceStatusEntity);
+        Integer statusEntityId = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+        String choose = anZhuangTiaoShiXiangMuServiceStatusEntity.getChoose();
+        if (!choose.equals("是否")) {
+            for (String s : choose.split(",")) {
+                AnZhuangTiaoShiXiangMuServiceStatusChooseEntity chooseEntity = new AnZhuangTiaoShiXiangMuServiceStatusChooseEntity();
+                chooseEntity.setSid(statusEntityId);
+                chooseEntity.setName(s);
+                chooseEntity.setCreatetime(today);
+                chooseEntity.setCreatename(username);
+                anZhuangTiaoShiXiangMuServiceStatusChooseDao.insertSelective(chooseEntity);
+            }
+        }
     }
 }

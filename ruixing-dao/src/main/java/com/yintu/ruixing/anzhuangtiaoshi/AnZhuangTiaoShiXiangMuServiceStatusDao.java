@@ -7,15 +7,15 @@ import java.util.List;
 
 @Mapper
 public interface AnZhuangTiaoShiXiangMuServiceStatusDao {
-    int deleteByPrimaryKey(Integer id);
-
     int insert(AnZhuangTiaoShiXiangMuServiceStatusEntity record);
 
     AnZhuangTiaoShiXiangMuServiceStatusEntity selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKey(AnZhuangTiaoShiXiangMuServiceStatusEntity record);
 
+
     //////////////////////////////////////////////////////////////////////////
+    int deleteByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(AnZhuangTiaoShiXiangMuServiceStatusEntity record);
 

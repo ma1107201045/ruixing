@@ -13,6 +13,8 @@ public class AnZhuangTiaoShiXiangMuEntity {
 
     private Integer id;
 
+    private Integer worksid; //作业项配置id
+
     private Date xianduantime;//线段创建的时间
 
     private String tljName;//铁路局名
@@ -26,6 +28,15 @@ public class AnZhuangTiaoShiXiangMuEntity {
     private Integer xdFenlei;//线段状态 1：正在进行 ，2：已完成，3：长期停滞
 
     private String guanlianxiangmu;//关联项目名和编号
+
+    private Date createtime;
+
+    private String createname;
+
+    private Date updatetime;
+
+    private String updatename;
+
 
     private  Integer cheZhanTotal;//车站总数
     private  Integer jiGuiTotal;//机柜总数

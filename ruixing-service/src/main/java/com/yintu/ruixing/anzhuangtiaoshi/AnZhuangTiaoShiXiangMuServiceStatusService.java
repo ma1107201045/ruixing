@@ -11,10 +11,11 @@ import java.util.List;
 public interface AnZhuangTiaoShiXiangMuServiceStatusService {
     void addServiceStatus(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username);
 
-    void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username);
+    void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username,Integer id);
 
     List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllOrSomething(Integer page, Integer size, String serviceName);
 
     List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus();
 
+    void deleteServiceStatusByIds(Integer[] ids);
 }

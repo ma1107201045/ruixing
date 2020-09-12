@@ -17,10 +17,11 @@
 
   <!--查询所有的服务状态标识   用于展示在首页或者新增页面-->
   <select id="findAllServiceStatus"  resultMap="BaseResultMap">
-    select
+    SELECT
     <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_xiangmuServiceStatus
-    order by id desc
+    FROM
+        mro_anzhuangtiaoshi_xiangmuServiceStatus
+    ORDER BY id DESC
   </select>
 
   <!--初始化页面  或者根据服务状态标识名查询-->
@@ -42,13 +43,16 @@
     from mro_anzhuangtiaoshi_xiangmuServiceStatus
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!--根据id  删除对应的服务状态标识-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_anzhuangtiaoshi_xiangmuServiceStatus
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <!--新增状态服务标识-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity">
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity"
+          useGeneratedKeys="true" keyProperty="id">
     insert into mro_anzhuangtiaoshi_xiangmuServiceStatus
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

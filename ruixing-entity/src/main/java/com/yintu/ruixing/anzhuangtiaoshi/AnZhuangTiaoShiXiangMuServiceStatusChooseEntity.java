@@ -9,15 +9,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
+public class AnZhuangTiaoShiXiangMuServiceStatusChooseEntity {
     private Integer id;
 
-    private String servicename;
+    private Integer sid;
 
-    private String choose;
-
-    private Integer timetype;
+    private String name;
 
     private Date createtime;
 
@@ -27,12 +24,6 @@ public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
 
     private String updatename;
 
-    private String checkbox;
-
-
-
-
-
     public Integer getId() {
         return id;
     }
@@ -41,28 +32,20 @@ public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
         this.id = id;
     }
 
-    public String getServicename() {
-        return servicename;
+    public Integer getSid() {
+        return sid;
     }
 
-    public void setServicename(String servicename) {
-        this.servicename = servicename == null ? null : servicename.trim();
+    public void setSid(Integer sid) {
+        this.sid = sid;
     }
 
-    public String getChoose() {
-        return choose;
+    public String getName() {
+        return name;
     }
 
-    public void setChoose(String choose) {
-        this.choose = choose == null ? null : choose.trim();
-    }
-
-    public Integer getTimetype() {
-        return timetype;
-    }
-
-    public void setTimetype(Integer timetype) {
-        this.timetype = timetype;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Date getCreatetime() {

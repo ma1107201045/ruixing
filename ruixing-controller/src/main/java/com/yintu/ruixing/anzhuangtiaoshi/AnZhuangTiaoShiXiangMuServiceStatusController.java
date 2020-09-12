@@ -34,7 +34,7 @@ public class AnZhuangTiaoShiXiangMuServiceStatusController extends SessionContro
     @PutMapping("/editServiceStatusById/{id}")
     public Map<String, Object> editServiceStatusById(@PathVariable Integer id, AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity) {
         String username = this.getLoginUser().getTrueName();
-        anZhuangTiaoShiXiangMuServiceStatusService.editServiceStatusById(anZhuangTiaoShiXiangMuServiceStatusEntity, username);
+        anZhuangTiaoShiXiangMuServiceStatusService.editServiceStatusById(anZhuangTiaoShiXiangMuServiceStatusEntity, username,id);
         return ResponseDataUtil.ok("编辑服务状态标识成功");
     }
 
@@ -53,5 +53,13 @@ public class AnZhuangTiaoShiXiangMuServiceStatusController extends SessionContro
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusService.findAllServiceStatus();
         return ResponseDataUtil.ok("查询成功", serviceStatusEntityList);
     }
+
+    //根据id  批量或者单个删除服务状态标识
+    @DeleteMapping("/deleteServiceStatusByIds/{ids}")
+    public Map<String,Object>deleteServiceStatusByIds(@PathVariable Integer[] ids){
+        anZhuangTiaoShiXiangMuServiceStatusService.deleteServiceStatusByIds(ids);
+        return ResponseDataUtil.ok("删除成功");
+    }
+
 
 }

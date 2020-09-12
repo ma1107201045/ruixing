@@ -3,6 +3,7 @@
 <mapper namespace="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuDao">
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="worksid" jdbcType="INTEGER" property="worksid" />
     <result column="xianduantime" jdbcType="TIMESTAMP" property="xianduantime" />
     <result column="tlj_name" jdbcType="VARCHAR" property="tljName" />
     <result column="dwd_name" jdbcType="VARCHAR" property="dwdName" />
@@ -10,9 +11,14 @@
     <result column="xd_type" jdbcType="VARCHAR" property="xdType" />
     <result column="xd_fenlei" jdbcType="INTEGER" property="xdFenlei" />
     <result column="guanlianxiangmu" jdbcType="VARCHAR" property="guanlianxiangmu" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, xianduantime, tlj_name, dwd_name, xd_name, xd_type, xd_fenlei, guanlianxiangmu
+    id, xianduantime, tlj_name, dwd_name, xd_name, xd_type, xd_fenlei,
+     guanlianxiangmu,worksid, createTime, createName, updateTime, updateName
   </sql>
 
   <!-- 查询近一个月开通的项目-->
@@ -164,6 +170,21 @@
       <if test="guanlianxiangmu != null">
         guanlianxiangmu,
       </if>
+      <if test="worksid != null">
+        worksid,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -189,6 +210,21 @@
       </if>
       <if test="guanlianxiangmu != null">
         #{guanlianxiangmu,jdbcType=VARCHAR},
+      </if>
+      <if test="worksid != null">
+        #{worksid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -217,6 +253,21 @@
       </if>
       <if test="guanlianxiangmu != null">
         guanlianxiangmu = #{guanlianxiangmu,jdbcType=VARCHAR},
+      </if>
+      <if test="worksid != null">
+        worksid = #{worksid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
