@@ -1,8 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberDao;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberService;
+import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +17,22 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
 
     @Autowired
     private EquipmentNumberDao equipmentNumberDao;
+    @Autowired
+    private EquipmentNumberRecordService equipmentNumberRecordService;
 
     @Override
     public void add(EquipmentNumberEntity entity) {
         equipmentNumberDao.insertSelective(entity);
+        EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
+        equipmentNumberRecordEntity.setCreateBy(entity.getCreateBy());
+        equipmentNumberRecordEntity.setCreateTime(entity.getCreateTime());
+        equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
+        equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
+        equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
+        equipmentNumberRecordEntity.setName(entity.getName());
+        equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
+        equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
+        equipmentNumberRecordService.add(equipmentNumberRecordEntity);
     }
 
     @Override
@@ -33,6 +43,16 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     @Override
     public void edit(EquipmentNumberEntity entity) {
         equipmentNumberDao.updateByPrimaryKeySelective(entity);
+        EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
+        equipmentNumberRecordEntity.setCreateBy(entity.getModifiedBy());
+        equipmentNumberRecordEntity.setCreateTime(entity.getModifiedTime());
+        equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
+        equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
+        equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
+        equipmentNumberRecordEntity.setName(entity.getName());
+        equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
+        equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
+        equipmentNumberRecordService.add(equipmentNumberRecordEntity);
     }
 
     @Override
@@ -47,7 +67,9 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     }
 
     @Override
-    public void removeMuch(Integer[] ids) {
-        equipmentNumberDao.deleteMuch(ids);
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
     }
 }

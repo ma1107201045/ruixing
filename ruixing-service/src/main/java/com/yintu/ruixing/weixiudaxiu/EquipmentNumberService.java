@@ -11,9 +11,8 @@ import java.util.List;
  */
 public interface EquipmentNumberService extends BaseService<EquipmentNumberEntity, Integer> {
 
+    void remove(Integer[] ids);
 
     List<EquipmentNumberEntity> findByCondition(Integer[] ids, String equipmentNumber);
-
-    void removeMuch(Integer[] ids);
 
 }
