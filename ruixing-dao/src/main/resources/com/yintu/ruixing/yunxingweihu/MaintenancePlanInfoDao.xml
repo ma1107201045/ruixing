@@ -174,8 +174,8 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
         insert into mro_maintenance_plan_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            create_by, create_time, modified_by, modified_time, is_finish, document_names,
-            document_files,maintenance_plan_id
+            create_by, create_time, modified_by, modified_time,context, is_finish,
+            document_names,document_files,maintenance_plan_id
         </trim>
         values
         <foreach collection="list" item="maintenancePlanInfoEntity" index="index" separator=",">
@@ -184,6 +184,7 @@
                 #{maintenancePlanInfoEntity.createTime,jdbcType=TIMESTAMP},
                 #{maintenancePlanInfoEntity.modifiedBy,jdbcType=VARCHAR},
                 #{maintenancePlanInfoEntity.modifiedTime,jdbcType=TIMESTAMP},
+                #{maintenancePlanInfoEntity.context,jdbcType=LONGVARCHAR},
                 #{maintenancePlanInfoEntity.isFinish,jdbcType=SMALLINT},
                 #{maintenancePlanInfoEntity.documentNames,jdbcType=VARCHAR},
                 #{maintenancePlanInfoEntity.documentFiles,jdbcType=VARCHAR},

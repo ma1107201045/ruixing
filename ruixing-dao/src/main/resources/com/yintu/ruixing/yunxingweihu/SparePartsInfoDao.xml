@@ -174,7 +174,8 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.SparePartsInfoEntity">
         insert into mro_spare_parts_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,spare_parts_id
+            create_by, create_time, modified_by, modified_time,context, is_finish, document_names,
+            document_files,spare_parts_id
         </trim>
         values
         <foreach collection="list" item="sparePartsInfoEntity" index="index" separator=",">
@@ -183,6 +184,7 @@
                 #{sparePartsInfoEntity.createTime,jdbcType=TIMESTAMP},
                 #{sparePartsInfoEntity.modifiedBy,jdbcType=VARCHAR},
                 #{sparePartsInfoEntity.modifiedTime,jdbcType=TIMESTAMP},
+                #{sparePartsInfoEntity.context,jdbcType=LONGVARCHAR},
                 #{sparePartsInfoEntity.isFinish,jdbcType=SMALLINT},
                 #{sparePartsInfoEntity.documentNames,jdbcType=VARCHAR},
                 #{sparePartsInfoEntity.documentFiles,jdbcType=VARCHAR},
