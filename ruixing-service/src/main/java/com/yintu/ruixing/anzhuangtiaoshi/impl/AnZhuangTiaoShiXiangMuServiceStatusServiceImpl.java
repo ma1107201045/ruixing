@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     public void deleteServiceStatusByIds(Integer[] ids) {
         for (int i = 0; i < ids.length; i++) {
             AnZhuangTiaoShiXiangMuServiceStatusEntity serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(ids[i]);
-            if (!serviceStatusEntityList.getChoose().equals("是否")){
+            if (!serviceStatusEntityList.getChoose().equals("是否")) {
                 anZhuangTiaoShiXiangMuServiceStatusChooseDao.deleteBySid(serviceStatusEntityList.getId());
             }
             anZhuangTiaoShiXiangMuServiceStatusDao.deleteByPrimaryKey(ids[i]);
@@ -38,8 +39,22 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     @Override
     public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus() {
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        System.out.println("2222222" + serviceStatusEntityList);
+        List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
         for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : serviceStatusEntityList) {
-            anZhuangTiaoShiXiangMuServiceStatusEntity.setCheckbox("ture");
+            anZhuangTiaoShiXiangMuServiceStatusEntity.setCheckbox(true);
+            anZhuangTiaoShiXiangMuServiceStatusEntity.setChoose("");
+            Integer id = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+            List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntityList = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findAllBySid(id);
+            if (chooseEntityList.size() != 0) {
+                for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity chooseEntity : chooseEntityList) {
+                    chooseEntity.setIsNotChoose(false);
+                    chooseList.add(chooseEntity);
+                }
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setList(chooseList);
+            }else {
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setList(null);
+            }
         }
         return serviceStatusEntityList;
     }
@@ -50,7 +65,7 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     }
 
     @Override
-    public void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username,Integer id) {
+    public void editServiceStatusById(AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity, String username, Integer id) {
         Date today = new Date();
         anZhuangTiaoShiXiangMuServiceStatusEntity.setUpdatename(username);
         anZhuangTiaoShiXiangMuServiceStatusEntity.setUpdatetime(today);
