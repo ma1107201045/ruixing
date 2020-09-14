@@ -39,7 +39,7 @@ public class MaintenancePlanTask {
                 }
             }
 
-            List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, null, new Date());
+            List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoService.findByCondition(null, null, null, new Date());
             if (maintenancePlanInfoEntities.isEmpty()) {
                 List<UserEntity> userEntities = userService.findByTruename(null);
                 for (UserEntity userEntity : userEntities) {

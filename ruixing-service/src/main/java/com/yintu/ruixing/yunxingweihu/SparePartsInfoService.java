@@ -27,11 +27,12 @@ public interface SparePartsInfoService extends BaseService<SparePartsInfoEntity,
 
     /**
      * @param ids          备品试验详情id
+     * @param context      维护内容
      * @param sparePartsId 备品试验id
      * @param date         当前日期
      * @return
      */
-    List<SparePartsInfoEntity> findByCondition(Integer[] ids, Integer sparePartsId, Date date);
+    List<SparePartsInfoEntity> findByCondition(Integer[] ids, String context, Integer sparePartsId, Date date);
 
 
     /**

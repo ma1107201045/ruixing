@@ -47,7 +47,7 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
 
     @Override
     public MaintenancePlanInfoEntity findById(Integer id) {
-        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoDao.selectByCondition(new Integer[]{id}, null, null);
+        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = maintenancePlanInfoDao.selectByCondition(new Integer[]{id}, null, null, null);
         return maintenancePlanInfoEntities.size() > 0 ? maintenancePlanInfoEntities.get(0) : null;
     }
 
@@ -64,8 +64,8 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
     }
 
     @Override
-    public List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date) {
-        return maintenancePlanInfoDao.selectByCondition(ids, maintenancePlanId, date);
+    public List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, String context, Integer maintenancePlanId, Date date) {
+        return maintenancePlanInfoDao.selectByCondition(ids, context, maintenancePlanId, date);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class MaintenancePlanInfoServiceImpl implements MaintenancePlanInfoServic
         //excel表名
         String[] headers = {"序号", "创建时间", "维护内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //获取数据
-        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = this.findByCondition(ids, null, null);
+        List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities = this.findByCondition(ids, null, null, null);
         maintenancePlanInfoEntities = maintenancePlanInfoEntities.stream()
                 .sorted(Comparator.comparing(MaintenancePlanInfoEntity::getId).reversed())
                 .collect(Collectors.toList());

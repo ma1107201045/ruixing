@@ -28,7 +28,7 @@ public class GlobalExceptionController {
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(BindException.class)
-    public Map<String, Object> BindException(BindException e) {
+    public Map<String, Object> bindException(BindException e) {
         StringBuilder sb = new StringBuilder();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
@@ -42,12 +42,12 @@ public class GlobalExceptionController {
         if (e instanceof SQLIntegrityConstraintViolationException) {
             return ResponseDataUtil.error("该数据有关联数据，操作失败");
         }
-        logger.error(e.getMessage());
+        logger.error("11111111111111111111111111111111111111111111111111111111111111111111111111111111"+e.getMessage());
         return ResponseDataUtil.error("数据库异常，操作失败");
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public Map<String, Object> sqlException(MaxUploadSizeExceededException e) {
+    public Map<String, Object> maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         logger.error(e.getMessage());
         return ResponseDataUtil.error("文件上传异常，文件过大");
     }
@@ -59,7 +59,7 @@ public class GlobalExceptionController {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public Map<String, Object> baseRuntimeException(RuntimeException e) {
+    public Map<String, Object> runtimeException(RuntimeException e) {
         logger.error(e.getMessage());
         return ResponseDataUtil.error(e.getMessage());
     }

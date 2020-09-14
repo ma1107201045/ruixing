@@ -23,6 +23,6 @@ public interface MaintenancePlanInfoDao {
 
     void insertMuch(List<MaintenancePlanInfoEntity> maintenancePlanInfoEntities);
 
-    List<MaintenancePlanInfoEntity> selectByCondition(Integer[] ids, Integer maintenancePlanId, Date date);
+    List<MaintenancePlanInfoEntity> selectByCondition(Integer[] ids, String context, Integer maintenancePlanId, Date date);
 
 }

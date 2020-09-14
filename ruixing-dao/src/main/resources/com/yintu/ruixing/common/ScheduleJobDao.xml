@@ -188,7 +188,7 @@
             #{maintenancePlanEntity.createTime,jdbcType=TIMESTAMP},
             #{maintenancePlanEntity.modifiedBy,jdbcType=VARCHAR},
             #{maintenancePlanEntity.modifiedTime,jdbcType=TIMESTAMP},
-            #{maintenancePlanEntity.execution_time,jdbcType=TIMESTAMP},
+            #{maintenancePlanEntity.executionTime,jdbcType=TIMESTAMP},
             #{maintenancePlanEntity.jobName,jdbcType=VARCHAR},
             #{maintenancePlanEntity.cronExpression,jdbcType=VARCHAR},
             #{maintenancePlanEntity.beanName,jdbcType=VARCHAR},
