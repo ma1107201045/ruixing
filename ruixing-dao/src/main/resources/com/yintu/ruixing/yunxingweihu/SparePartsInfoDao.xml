@@ -217,6 +217,9 @@
                     #{id}
                 </foreach>
             </if>
+            <if test="context!=null">
+                and spi.context like concat('%',#{context,jdbcType=VARCHAR},'%')
+            </if>
             <if test="sparePartsId != null">
                 and spi.spare_parts_id = #{sparePartsId,jdbcType=INTEGER}
             </if>

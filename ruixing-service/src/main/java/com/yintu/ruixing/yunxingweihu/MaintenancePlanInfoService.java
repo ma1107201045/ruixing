@@ -33,10 +33,11 @@ public interface MaintenancePlanInfoService extends BaseService<MaintenancePlanI
     /**
      * @param ids               维护计划详情id
      * @param maintenancePlanId 维护计划id
+     * @param context           维护内容
      * @param date              当前日期
      * @return
      */
-    List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date);
+    List<MaintenancePlanInfoEntity> findByCondition(Integer[] ids, String context, Integer maintenancePlanId, Date date);
 
 
     /**

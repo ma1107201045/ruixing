@@ -136,9 +136,10 @@ public class SparePartsController extends SessionController implements BaseContr
     @ResponseBody
     public Map<String, Object> findMaintenancePlanInfoById(@PathVariable Integer id, @RequestParam("page_number") Integer pageNumber,
                                                            @RequestParam("page_size") Integer pageSize,
-                                                           @RequestParam(value = "order_by", required = false, defaultValue = "spi.id DESC") String orderBy) {
+                                                           @RequestParam(value = "order_by", required = false, defaultValue = "spi.id DESC") String orderBy,
+                                                           @RequestParam(value = "context", required = false) String context) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoService.findByCondition(null, id, null);
+        List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoService.findByCondition(null, context, id, null);
         PageInfo<SparePartsInfoEntity> pageInfo = new PageInfo<>(sparePartsInfoEntities);
         return ResponseDataUtil.ok("查询备品试验记录列表信息成功", pageInfo);
     }

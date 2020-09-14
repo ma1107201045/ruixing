@@ -23,6 +23,6 @@ public interface SparePartsInfoDao {
 
     void insertMuch(List<SparePartsInfoEntity> sparePartsInfoEntities);
 
-    List<SparePartsInfoEntity> selectByCondition(Integer[] ids, Integer sparePartsId, Date date);
+    List<SparePartsInfoEntity> selectByCondition(Integer[] ids, String context, Integer sparePartsId, Date date);
 
 }

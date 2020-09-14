@@ -45,7 +45,7 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
 
     @Override
     public SparePartsInfoEntity findById(Integer id) {
-        List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoDao.selectByCondition(new Integer[]{id}, null, null);
+        List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoDao.selectByCondition(new Integer[]{id}, null, null, null);
         return sparePartsInfoEntities.size() > 0 ? sparePartsInfoEntities.get(0) : null;
     }
 
@@ -62,8 +62,8 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
     }
 
     @Override
-    public List<SparePartsInfoEntity> findByCondition(Integer[] ids, Integer maintenancePlanId, Date date) {
-        return sparePartsInfoDao.selectByCondition(ids, maintenancePlanId, date);
+    public List<SparePartsInfoEntity> findByCondition(Integer[] ids, String context, Integer maintenancePlanId, Date date) {
+        return sparePartsInfoDao.selectByCondition(ids, context, maintenancePlanId, date);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class SparePartsInfoServiceImpl implements SparePartsInfoService {
         //excel表名
         String[] headers = {"序号", "创建时间", "实验内容", "是否完成", "记录文档名称集", "记录文档文件集"};
         //获取数据
-        List<SparePartsInfoEntity> sparePartsInfoEntities = this.findByCondition(ids, null, null);
+        List<SparePartsInfoEntity> sparePartsInfoEntities = this.findByCondition(ids, null, null, null);
         sparePartsInfoEntities = sparePartsInfoEntities.stream()
                 .sorted(Comparator.comparing(SparePartsInfoEntity::getId).reversed())
                 .collect(Collectors.toList());

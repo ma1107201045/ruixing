@@ -174,7 +174,8 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity">
         insert into mro_maintenance_plan_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            create_by, create_time, modified_by, modified_time, is_finish, document_names, document_files,maintenance_plan_id
+            create_by, create_time, modified_by, modified_time, is_finish, document_names,
+            document_files,maintenance_plan_id
         </trim>
         values
         <foreach collection="list" item="maintenancePlanInfoEntity" index="index" separator=",">
@@ -216,6 +217,9 @@
                 <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                     #{id}
                 </foreach>
+            </if>
+            <if test="context!=null">
+                and mpi.context like concat('%',#{context,jdbcType=VARCHAR},'%')
             </if>
             <if test="maintenancePlanId != null">
                 and mpi.maintenance_plan_id = #{maintenancePlanId,jdbcType=INTEGER}

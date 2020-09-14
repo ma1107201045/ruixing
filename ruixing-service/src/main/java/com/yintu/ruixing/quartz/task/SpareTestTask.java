@@ -38,7 +38,7 @@ public class SpareTestTask {
                     scheduleJobService.remove(scheduleJobEntity.getId());
                 }
             }
-            List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoService.findByCondition(null, null, new Date());
+            List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoService.findByCondition(null, null, null, new Date());
             if (sparePartsInfoEntities.isEmpty()) {
                 List<UserEntity> userEntities = userService.findByTruename(null);
                 for (UserEntity userEntity : userEntities) {
