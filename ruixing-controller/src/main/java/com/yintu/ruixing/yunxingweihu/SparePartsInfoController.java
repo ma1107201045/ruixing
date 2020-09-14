@@ -57,9 +57,9 @@ public class SparePartsInfoController extends SessionController {
     @PostMapping("/import/data")
     @ResponseBody
     public Map<String, Object> importData(@RequestBody JSONObject jo) {
-        Integer maintenancePlanId = jo.getInt("maintenancePlanId");
+        Integer sparePartsId = jo.getInt("sparePartsId");
         String[][] context = jo.get("data", String[][].class);
-        sparePartsInfoService.importData(maintenancePlanId, context, this.getLoginUserName());
+        sparePartsInfoService.importData(sparePartsId, context, this.getLoginUserName());
         return ResponseDataUtil.ok("导入备品试验记录信息成功");
     }
 
