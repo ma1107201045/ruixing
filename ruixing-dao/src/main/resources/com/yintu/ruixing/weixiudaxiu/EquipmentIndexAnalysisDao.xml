@@ -15,6 +15,7 @@
         <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
         <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
         <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
         <result column="station_MTBF" jdbcType="VARCHAR" property="stationMtbf"/>
         <result column="quduan_MTBF" jdbcType="VARCHAR" property="quduanMtbf"/>
         <result column="interior_fault_MTTR" jdbcType="VARCHAR" property="interiorFaultMttr"/>
@@ -22,7 +23,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, statistics_data, type, equipment_number_id,
-    equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id, 
+    equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id, quduan_id,
     station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -41,7 +42,7 @@
                                                   modified_by, modified_time, statistics_data,
                                                   type, equipment_number_id, equipment_MTTF,
                                                   railways_bureau_id, signal_depot_id, special_railway_line_id,
-                                                  station_id, station_MTBF, quduan_MTBF,
+                                                  station_id, quduan_id, station_MTBF, quduan_MTBF,
                                                   interior_fault_MTTR, outdoor_fault_MTTR)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
@@ -49,7 +50,8 @@
                 #{type,jdbcType=SMALLINT}, #{equipmentNumberId,jdbcType=INTEGER}, #{equipmentMttf,jdbcType=VARCHAR},
                 #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER},
                 #{specialRailwayLineId,jdbcType=INTEGER},
-                #{stationId,jdbcType=INTEGER}, #{stationMtbf,jdbcType=VARCHAR}, #{quduanMtbf,jdbcType=VARCHAR},
+                #{stationId,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER},
+                #{stationMtbf,jdbcType=VARCHAR}, #{quduanMtbf,jdbcType=VARCHAR},
                 #{interiorFaultMttr,jdbcType=VARCHAR}, #{outdoorFaultMttr,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
@@ -93,6 +95,9 @@
             </if>
             <if test="stationId != null">
                 station_id,
+            </if>
+            <if test="quduanId != null">
+                quduan_id,
             </if>
             <if test="stationMtbf != null">
                 station_MTBF,
@@ -147,6 +152,9 @@
             <if test="stationId != null">
                 #{stationId,jdbcType=INTEGER},
             </if>
+            <if test="quduanId != null">
+                #{quduanId,jdbcType=INTEGER},
+            </if>
             <if test="stationMtbf != null">
                 #{stationMtbf,jdbcType=VARCHAR},
             </if>
@@ -200,6 +208,9 @@
             <if test="stationId != null">
                 station_id = #{stationId,jdbcType=INTEGER},
             </if>
+            <if test="quduanId != null">
+                quduan_id = #{quduanId,jdbcType=INTEGER},
+            </if>
             <if test="stationMtbf != null">
                 station_MTBF = #{stationMtbf,jdbcType=VARCHAR},
             </if>
@@ -229,10 +240,82 @@
             signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
             special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
             station_id              = #{stationId,jdbcType=INTEGER},
+            quduan_id               = #{quduanId,jdbcType=INTEGER},
             station_MTBF            = #{stationMtbf,jdbcType=VARCHAR},
             quduan_MTBF             = #{quduanMtbf,jdbcType=VARCHAR},
             interior_fault_MTTR     = #{interiorFaultMttr,jdbcType=VARCHAR},
             outdoor_fault_MTTR      = #{outdoorFaultMttr,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
+        <id column="eia_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="statistics_data" jdbcType="TIMESTAMP" property="statisticsData"/>
+        <result column="type" jdbcType="SMALLINT" property="type"/>
+        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="equipment_MTTF" jdbcType="VARCHAR" property="equipmentMttf"/>
+        <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+        <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+        <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
+        <result column="station_MTBF" jdbcType="VARCHAR" property="stationMtbf"/>
+        <result column="quduan_MTBF" jdbcType="VARCHAR" property="quduanMtbf"/>
+        <result column="interior_fault_MTTR" jdbcType="VARCHAR" property="interiorFaultMttr"/>
+        <result column="outdoor_fault_MTTR" jdbcType="VARCHAR" property="outdoorFaultMttr"/>
+        <association property="tieLuJuEntity" column="railways_bureau_id">
+            <result column="t_id" jdbcType="INTEGER" property="tid"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
+        </association>
+        <association property="dianWuDuanEntity" column="signal_depot_id">
+            <result column="d_id" jdbcType="INTEGER" property="did"/>
+            <result column="dwd_name" jdbcType="VARCHAR" property="dwdName"/>
+        </association>
+        <association property="xianDuanEntity" column="special_railway_line_id">
+            <result column="x_id" jdbcType="INTEGER" property="xid"/>
+            <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        </association>
+        <association property="cheZhanEntity" column="station_id">
+            <id column="c_id" jdbcType="INTEGER" property="cid"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+        </association>
+        <association property="quDuanBaseEntity" column="quduan_id">
+            <id column="q_id" jdbcType="INTEGER" property="id"/>
+            <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quduanyunyingName"/>
+        </association>
+    </resultMap>
+    <sql id="Much_Column_List">
+        eia.id as eia_id , create_by, create_time, modified_by, modified_time, statistics_data, type, equipment_number_id, equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,
+        t.tid as t_id,tlj_name,
+        d.did as d_id,dwd_name,
+        x.xid as x_id,xd_name,
+        c.cid as c_id,cz_name,
+        q.id as q_id,quDuanYunYing_name
+    </sql>
+    <sql id="Much_Table_List">
+        mro_equipment_index_analysis eia
+        inner join mro_tieluju t on eia.railways_bureau_id=t.tid
+        inner join mro_dianwuduan d on eia.signal_depot_id=d.did
+        inner join mro_xianduan x on eia.special_railway_line_id=x.xid
+        inner join mro_chezhan c on eia.station_id=c.cid
+        inner join mro_quduan_base q on eia.quduan_id= q.id
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="quDuanYunYingName != null ">
+                and q.quDuanYunYing_name=#{quDuanYunYingName,jdbcType=VARCHAR}
+            </if>
+<!--             and eia.type=2-->
+        </where>
+    </sql>
+    <select id="selectByCondition" resultMap="MuchResultMap">
+        select
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
+    </select>
 </mapper>
