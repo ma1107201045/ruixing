@@ -306,7 +306,7 @@
     <sql id="Much_Where_List">
         <where>
             <if test="quDuanYunYingName != null ">
-                and q.quDuanYunYing_name like concat('%',{quDuanYunYingName,jdbcType=VARCHAR},'%')
+                and q.quDuanYunYing_name like concat('%',#{quDuanYunYingName,jdbcType=VARCHAR},'%')
             </if>
              and eia.type = 2
         </where>
