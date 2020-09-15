@@ -297,7 +297,7 @@
             <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
         </association>
         <association property="equipmentNumberEntity" column="equipment_number_id">
-            <id column="eb_id" jdbcType="INTEGER" property="id"/>
+            <id column="en_id" jdbcType="INTEGER" property="id"/>
             <result column="en_create_by" jdbcType="VARCHAR" property="createBy"/>
             <result column="en_create_time" jdbcType="TIMESTAMP" property="createTime"/>
             <result column="en_modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
@@ -311,6 +311,7 @@
             <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
             <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+            <result column="configuration" jdbcType="LONGVARCHAR" property="configuration"/>
         </association>
     </resultMap>
     <sql id="Equipment_Much_Column_List">
@@ -319,7 +320,7 @@
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
         c.cid as c_id,cz_name,
-        en.id as en_id , en.create_by as en_create_by, en.create_time as en_create_time , en.modified_by as en_modified_by, en.modified_time as en_modified_time, en.railways_bureau_id as en_railways_bureau_id , en.signal_depot_id as en_signal_depot_id,en.special_railway_line_id as en_special_railway_line_id, en.station_id as en_station_id, rack_number, hierarchy, equipment_number, name,quantity
+        en.id as en_id , en.create_by as en_create_by, en.create_time as en_create_time , en.modified_by as en_modified_by, en.modified_time as en_modified_time, en.railways_bureau_id as en_railways_bureau_id , en.signal_depot_id as en_signal_depot_id,en.special_railway_line_id as en_special_railway_line_id, en.station_id as en_station_id, rack_number, hierarchy, equipment_number, name,quantity,configuration
     </sql>
     <sql id="Equipment_Much_Table_List">
         mro_equipment_index_analysis eia
