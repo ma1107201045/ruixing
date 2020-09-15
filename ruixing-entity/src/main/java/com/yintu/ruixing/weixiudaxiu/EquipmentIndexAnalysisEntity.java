@@ -26,12 +26,6 @@ public class EquipmentIndexAnalysisEntity implements Serializable {
 
     private Date statisticsData;
 
-    private Short type;
-
-    private Integer equipmentNumberId;
-
-    private String equipmentMttf;
-
     private Integer railwaysBureauId;
 
     private Integer signalDepotId;
@@ -49,6 +43,16 @@ public class EquipmentIndexAnalysisEntity implements Serializable {
     private String interiorFaultMttr;
 
     private String outdoorFaultMttr;
+
+    private Integer equipmentNumberId;
+
+    private Integer runDay;
+
+    private String equipmentMttf;
+
+    private Short type;
+
+    private EquipmentNumberEntity equipmentNumberEntity;
 
     private TieLuJuEntity tieLuJuEntity;
 

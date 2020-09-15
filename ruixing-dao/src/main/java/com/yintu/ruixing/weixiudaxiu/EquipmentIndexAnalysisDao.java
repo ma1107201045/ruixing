@@ -18,6 +18,9 @@ public interface EquipmentIndexAnalysisDao {
 
     int updateByPrimaryKey(EquipmentIndexAnalysisEntity record);
 
-    List<EquipmentIndexAnalysisEntity> selectByCondition(String quDuanYunYingName);
+    List<EquipmentIndexAnalysisEntity> selectEquipmentByCondition(String equipmentNumber);
+
+    List<EquipmentIndexAnalysisEntity> selectQuduanByCondition(String quDuanYunYingName);
+
 
 }

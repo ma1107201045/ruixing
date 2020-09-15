@@ -37,7 +37,14 @@ public class EquipmentIndexAnalysisServiceImpl implements EquipmentIndexAnalysis
     }
 
     @Override
-    public List<EquipmentIndexAnalysisEntity> findByCondition(String quDuanYunYingName) {
-        return equipmentIndexAnalysisDao.selectByCondition(quDuanYunYingName);
+    public List<EquipmentIndexAnalysisEntity> findEquipmentByCondition(String equipmentNumber) {
+        return equipmentIndexAnalysisDao.selectEquipmentByCondition(equipmentNumber);
     }
+
+    @Override
+    public List<EquipmentIndexAnalysisEntity> findQuduanByCondition(String quDuanYunYingName) {
+        return equipmentIndexAnalysisDao.selectQuduanByCondition(quDuanYunYingName);
+    }
+
+
 }

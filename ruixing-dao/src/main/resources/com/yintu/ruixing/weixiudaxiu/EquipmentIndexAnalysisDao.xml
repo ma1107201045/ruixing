@@ -10,6 +10,7 @@
         <result column="statistics_data" jdbcType="TIMESTAMP" property="statisticsData"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="run_day" jdbcType="INTEGER" property="runDay"/>
         <result column="equipment_MTTF" jdbcType="VARCHAR" property="equipmentMttf"/>
         <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
         <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
@@ -22,7 +23,7 @@
         <result column="outdoor_fault_MTTR" jdbcType="VARCHAR" property="outdoorFaultMttr"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, statistics_data, type, equipment_number_id,
+        id, create_by, create_time, modified_by, modified_time, statistics_data, type, equipment_number_id,run_day
     equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id, quduan_id,
     station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR
     </sql>
@@ -40,14 +41,15 @@
     <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
         insert into mro_equipment_index_analysis (id, create_by, create_time,
                                                   modified_by, modified_time, statistics_data,
-                                                  type, equipment_number_id, equipment_MTTF,
+                                                  type, equipment_number_id, run_day, equipment_MTTF,
                                                   railways_bureau_id, signal_depot_id, special_railway_line_id,
                                                   station_id, quduan_id, station_MTBF, quduan_MTBF,
                                                   interior_fault_MTTR, outdoor_fault_MTTR)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
                 #{statisticsData,jdbcType=TIMESTAMP},
-                #{type,jdbcType=SMALLINT}, #{equipmentNumberId,jdbcType=INTEGER}, #{equipmentMttf,jdbcType=VARCHAR},
+                #{type,jdbcType=SMALLINT}, #{equipmentNumberId,jdbcType=INTEGER},
+                #{run_day,jdbcType=INTEGER}, #{equipmentMttf,jdbcType=VARCHAR},
                 #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER},
                 #{specialRailwayLineId,jdbcType=INTEGER},
                 #{stationId,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER},
@@ -77,6 +79,9 @@
             </if>
             <if test="type != null">
                 type,
+            </if>
+            <if test="run_day != null">
+                run_day,
             </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id,
@@ -137,6 +142,9 @@
             <if test="equipmentNumberId != null">
                 #{equipmentNumberId,jdbcType=INTEGER},
             </if>
+            <if test="runDay != null">
+                #{runDay,jdbcType=INTEGER},
+            </if>
             <if test="equipmentMttf != null">
                 #{equipmentMttf,jdbcType=VARCHAR},
             </if>
@@ -190,6 +198,9 @@
             <if test="type != null">
                 type = #{type,jdbcType=SMALLINT},
             </if>
+            <if test="runDay != null">
+                run_day = #{runDay,jdbcType=INTEGER},
+            </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             </if>
@@ -235,6 +246,7 @@
             statistics_data         = #{statisticsData,jdbcType=TIMESTAMP},
             type                    = #{type,jdbcType=SMALLINT},
             equipment_number_id     = #{equipmentNumberId,jdbcType=INTEGER},
+            run_day                 = #{runDay,jdbcType=INTEGER},
             equipment_MTTF          = #{equipmentMttf,jdbcType=VARCHAR},
             railways_bureau_id      = #{railwaysBureauId,jdbcType=INTEGER},
             signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
@@ -247,16 +259,101 @@
             outdoor_fault_MTTR      = #{outdoorFaultMttr,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
+    <!--器材指标分析-->
+    <resultMap id="EquipmentMuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
+        <id column="eia_id" jdbcType="INTEGER" property="id"/>
+        <result column="eia_create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="eia_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="eia_modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="eia_modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="statistics_data" jdbcType="TIMESTAMP" property="statisticsData"/>
+        <result column="eia_railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+        <result column="eia_signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+        <result column="eia_special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+        <result column="eia_station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
+        <result column="station_MTBF" jdbcType="VARCHAR" property="stationMtbf"/>
+        <result column="quduan_MTBF" jdbcType="VARCHAR" property="quduanMtbf"/>
+        <result column="interior_fault_MTTR" jdbcType="VARCHAR" property="interiorFaultMttr"/>
+        <result column="outdoor_fault_MTTR" jdbcType="VARCHAR" property="outdoorFaultMttr"/>
+        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="run_day" jdbcType="INTEGER" property="runDay"/>
+        <result column="equipment_MTTF" jdbcType="VARCHAR" property="equipmentMttf"/>
+        <result column="type" jdbcType="SMALLINT" property="type"/>
+        <association property="tieLuJuEntity" column="eia_railways_bureau_id">
+            <result column="t_id" jdbcType="INTEGER" property="tid"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
+        </association>
+        <association property="dianWuDuanEntity" column="eia_signal_depot_id">
+            <result column="d_id" jdbcType="INTEGER" property="did"/>
+            <result column="dwd_name" jdbcType="VARCHAR" property="dwdName"/>
+        </association>
+        <association property="xianDuanEntity" column="eia_special_railway_line_id">
+            <result column="x_id" jdbcType="INTEGER" property="xid"/>
+            <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        </association>
+        <association property="cheZhanEntity" column="eia_station_id">
+            <id column="c_id" jdbcType="INTEGER" property="cid"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+        </association>
+        <association property="equipmentNumberEntity" column="equipment_number_id">
+            <id column="eb_id" jdbcType="INTEGER" property="id"/>
+            <result column="en_create_by" jdbcType="VARCHAR" property="createBy"/>
+            <result column="en_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="en_modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+            <result column="en_modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+            <result column="en_railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
+            <result column="en_signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
+            <result column="en_special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
+            <result column="en_station_id" jdbcType="INTEGER" property="stationId"/>
+            <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
+            <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
+            <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        </association>
+    </resultMap>
+    <sql id="Equipment_Much_Column_List">
+        eia.id as eia_id , eia.create_by as eia_create_by, eia.create_time as eia_create_time , eia.modified_by as eia_modified_by, eia.modified_time as eia_modified_time, statistics_data, eia.type,  eia.railways_bureau_id as eia_railways_bureau_id, eia.signal_depot_id as eia_signal_depot_id , eia.special_railway_line_id as eia_special_railway_line_id, eia.station_id as eia_station_id ,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,equipment_number_id,run_day, equipment_MTTF,
+        t.tid as t_id,tlj_name,
+        d.did as d_id,dwd_name,
+        x.xid as x_id,xd_name,
+        c.cid as c_id,cz_name,
+        en.id as en_id , en.create_by as en_create_by, en.create_time as en_create_time , en.modified_by as en_modified_by, en.modified_time as en_modified_time, en.railways_bureau_id as en_railways_bureau_id , en.signal_depot_id as en_signal_depot_id,en.special_railway_line_id as en_special_railway_line_id, en.station_id as en_station_id, rack_number, hierarchy, equipment_number, name,quantity
+    </sql>
+    <sql id="Equipment_Much_Table_List">
+        mro_equipment_index_analysis eia
+        inner join mro_tieluju t on eia.railways_bureau_id=t.tid
+        inner join mro_dianwuduan d on eia.signal_depot_id=d.did
+        inner join mro_xianduan x on eia.special_railway_line_id=x.xid
+        inner join mro_chezhan c on eia.station_id=c.cid
+        inner join mro_equipment_number en on eia.equipment_number_id=en.id
+    </sql>
+    <sql id="Equipment_Much_Where_List">
+        <where>
+            <if test="quDuanYunYingName != null ">
+                and en.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
+            </if>
+            and eia.type = 1
+        </where>
+    </sql>
+    <select id="selectEquipmentByCondition" resultMap="EquipmentMuchResultMap">
+        select
+        <include refid="Equipment_Much_Column_List"/>
+        from
+        <include refid="Equipment_Much_Table_List"/>
+        <include refid="Equipment_Much_Where_List"/>
+    </select>
+
+
+    <!--区段指标分析-->
+    <resultMap id="QuduanMuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity">
         <id column="eia_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="statistics_data" jdbcType="TIMESTAMP" property="statisticsData"/>
-        <result column="type" jdbcType="SMALLINT" property="type"/>
-        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
-        <result column="equipment_MTTF" jdbcType="VARCHAR" property="equipmentMttf"/>
         <result column="railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
         <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
         <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
@@ -266,6 +363,10 @@
         <result column="quduan_MTBF" jdbcType="VARCHAR" property="quduanMtbf"/>
         <result column="interior_fault_MTTR" jdbcType="VARCHAR" property="interiorFaultMttr"/>
         <result column="outdoor_fault_MTTR" jdbcType="VARCHAR" property="outdoorFaultMttr"/>
+        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="run_day" jdbcType="INTEGER" property="runDay"/>
+        <result column="equipment_MTTF" jdbcType="VARCHAR" property="equipmentMttf"/>
+        <result column="type" jdbcType="SMALLINT" property="type"/>
         <association property="tieLuJuEntity" column="railways_bureau_id">
             <result column="t_id" jdbcType="INTEGER" property="tid"/>
             <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
@@ -287,15 +388,15 @@
             <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quduanyunyingName"/>
         </association>
     </resultMap>
-    <sql id="Much_Column_List">
-        eia.id as eia_id , create_by, create_time, modified_by, modified_time, statistics_data, eia.type, equipment_number_id, equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,
+    <sql id="Quduan_Much_Column_List">
+        eia.id as eia_id , create_by, create_time, modified_by, modified_time, statistics_data, eia.type,  railways_bureau_id, signal_depot_id, special_railway_line_id, station_id,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,equipment_number_id,run_day, equipment_MTTF,
         t.tid as t_id,tlj_name,
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
         c.cid as c_id,cz_name,
         q.id as q_id,quDuanYunYing_name
     </sql>
-    <sql id="Much_Table_List">
+    <sql id="Quduan_Much_Table_List">
         mro_equipment_index_analysis eia
         inner join mro_tieluju t on eia.railways_bureau_id=t.tid
         inner join mro_dianwuduan d on eia.signal_depot_id=d.did
@@ -303,19 +404,19 @@
         inner join mro_chezhan c on eia.station_id=c.cid
         inner join mro_quduan_base q on eia.quduan_id= q.id
     </sql>
-    <sql id="Much_Where_List">
+    <sql id="Quduan_Much_Where_List">
         <where>
             <if test="quDuanYunYingName != null ">
                 and q.quDuanYunYing_name like concat('%',#{quDuanYunYingName,jdbcType=VARCHAR},'%')
             </if>
-             and eia.type = 2
+            and eia.type = 2
         </where>
     </sql>
-    <select id="selectByCondition" resultMap="MuchResultMap">
+    <select id="selectQuduanByCondition" resultMap="QuduanMuchResultMap">
         select
-        <include refid="Much_Column_List"/>
+        <include refid="Quduan_Much_Column_List"/>
         from
-        <include refid="Much_Table_List"/>
-        <include refid="Much_Where_List"/>
+        <include refid="Quduan_Much_Table_List"/>
+        <include refid="Quduan_Much_Where_List"/>
     </select>
 </mapper>

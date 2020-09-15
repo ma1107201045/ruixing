@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface EquipmentIndexAnalysisService extends BaseService<EquipmentIndexAnalysisEntity, Integer> {
 
-    List<EquipmentIndexAnalysisEntity> findByCondition(String quDuanYunYingName);
+    List<EquipmentIndexAnalysisEntity> findEquipmentByCondition(String equipmentNumber);
+
+    List<EquipmentIndexAnalysisEntity> findQuduanByCondition(String quDuanYunYingName);
 }

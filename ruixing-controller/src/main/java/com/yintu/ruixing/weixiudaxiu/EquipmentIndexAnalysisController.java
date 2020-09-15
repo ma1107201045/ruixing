@@ -19,16 +19,29 @@ public class EquipmentIndexAnalysisController extends SessionController {
     @Autowired
     private EquipmentIndexAnalysisService equipmentIndexAnalysisService;
 
-    @GetMapping
-    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
-                                       @RequestParam("page_size") Integer pageSize,
-                                       @RequestParam(value = "order_by", required = false, defaultValue = "eia.id DESC") String orderBy,
-                                       @RequestParam(value = "q_name", required = false) String quDuanYunYingName) {
+    @GetMapping("/equipment")
+    public Map<String, Object> findEquipment(@RequestParam("page_number") Integer pageNumber,
+                                             @RequestParam("page_size") Integer pageSize,
+                                             @RequestParam(value = "order_by", required = false, defaultValue = "eia.id DESC") String orderBy,
+                                             @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentIndexAnalysisEntity> equipmentIndexAnalysisEntities = equipmentIndexAnalysisService.findByCondition(quDuanYunYingName);
+        List<EquipmentIndexAnalysisEntity> equipmentIndexAnalysisEntities = equipmentIndexAnalysisService.findEquipmentByCondition(equipmentNumber);
+        PageInfo<EquipmentIndexAnalysisEntity> pageInfo = new PageInfo<>(equipmentIndexAnalysisEntities);
+        return ResponseDataUtil.ok("查询器材指标性分析列表信息成功", pageInfo);
+
+    }
+
+    @GetMapping("/quduan")
+    public Map<String, Object> findQuduan(@RequestParam("page_number") Integer pageNumber,
+                                          @RequestParam("page_size") Integer pageSize,
+                                          @RequestParam(value = "order_by", required = false, defaultValue = "eia.id DESC") String orderBy,
+                                          @RequestParam(value = "q_name", required = false) String quDuanYunYingName) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<EquipmentIndexAnalysisEntity> equipmentIndexAnalysisEntities = equipmentIndexAnalysisService.findQuduanByCondition(quDuanYunYingName);
         PageInfo<EquipmentIndexAnalysisEntity> pageInfo = new PageInfo<>(equipmentIndexAnalysisEntities);
         return ResponseDataUtil.ok("查询区段指标性分析列表信息成功", pageInfo);
 
     }
+
 
 }
