@@ -16,7 +16,9 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
 
     private Integer serid;
 
-    private Integer cid;
+    private Integer choid;
+
+    private Integer czid;
 
     private String chezhanname;
 
@@ -43,6 +45,13 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
     private Date updatetime;
 
     private String updatename;
+
+    private String servicename;
+    private String chroosname;
+    private Integer PlanToalTime;
+    private Integer PlanOneTime;
+
+
 
     private AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;

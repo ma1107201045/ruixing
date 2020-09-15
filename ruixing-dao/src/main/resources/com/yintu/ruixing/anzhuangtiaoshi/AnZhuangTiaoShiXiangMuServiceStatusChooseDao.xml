@@ -15,6 +15,16 @@
     id, sid, name, isNotDaoHuo,createTime, createName, updateTime, updateName
   </sql>
 
+  <!--根据sid 查询对应的名字-->
+  <select id="findNameBysid" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select
+    name
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus_choose
+    where id = #{choid,jdbcType=INTEGER}
+  </select>
+
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

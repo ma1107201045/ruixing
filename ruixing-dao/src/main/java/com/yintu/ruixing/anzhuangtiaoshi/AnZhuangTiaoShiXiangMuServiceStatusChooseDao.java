@@ -23,4 +23,6 @@ public interface AnZhuangTiaoShiXiangMuServiceStatusChooseDao {
     void deleteBySid(Integer sid);
 
     List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> findAllBySid(Integer id);
+
+    String findNameBysid(Integer choid);
 }

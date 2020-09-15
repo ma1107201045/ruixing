@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -50,6 +51,9 @@ public class AnZhuangTiaoShiXiangMuEntity {
     private  Integer shiYunXingTotal;//完成试运行总数
     private  Integer kaiTongTotal;//完成开通总数
 
+
+    private List titlelist;
+    private List chooselist;
 
 
 

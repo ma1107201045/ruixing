@@ -23,4 +23,7 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByXDid(Integer xdid);
 
+    List<Integer> findCZidByXDid(Integer xdid);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByCZid(Integer czid);
 }

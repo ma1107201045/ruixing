@@ -39,7 +39,6 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     @Override
     public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus() {
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
-        System.out.println("2222222" + serviceStatusEntityList);
         List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
         for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : serviceStatusEntityList) {
             anZhuangTiaoShiXiangMuServiceStatusEntity.setCheckbox(true);

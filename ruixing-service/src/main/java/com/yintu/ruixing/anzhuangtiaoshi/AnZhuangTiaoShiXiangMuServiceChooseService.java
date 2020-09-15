@@ -9,5 +9,5 @@ import java.util.List;
  * 需求:
  */
 public interface AnZhuangTiaoShiXiangMuServiceChooseService {
-    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByXDid(Integer xdid, Integer page, Integer size);
+    List<AnZhuangTiaoShiXiangMuEntity> findAllByXDid( Integer xdid, Integer page, Integer size);
 }

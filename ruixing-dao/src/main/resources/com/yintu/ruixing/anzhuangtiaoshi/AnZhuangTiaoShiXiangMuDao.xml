@@ -21,6 +21,15 @@
      guanlianxiangmu,worksid, createTime, createName, updateTime, updateName
   </sql>
 
+  <!--根据项目id  查询对应的项目-->
+  <select id="findXiangMuById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    FROM
+    mro_anzhuangtiaoshi_xiangmu
+    WHERE id=#{xdid}
+  </select>
+
   <!-- 查询近一个月开通的项目-->
   <select id="findLastMonthXiangMu" resultMap="BaseResultMap">
     SELECT
