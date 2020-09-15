@@ -37,21 +37,11 @@ public class EquipmentFaultManagementServiceImpl implements EquipmentFaultManage
 
     @Override
     public EquipmentFaultManagementEntity findById(Integer id) {
-        List<EquipmentFaultManagementEntity> equipmentFaultManagementEntities = equipmentFaultManagementDao.connectSelectByCondition(id, null, null);
-        return equipmentFaultManagementEntities.isEmpty() ? null : equipmentFaultManagementEntities.get(0);
+        return equipmentFaultManagementDao.selectByPrimaryKey(id);
     }
 
     @Override
-    public void remove(Integer[] ids) {
-        for (Integer id : ids) {
-            this.remove(id);
-        }
+    public List<EquipmentFaultManagementEntity> findByCondition(Date startDate, Date endDate) {
+        return equipmentFaultManagementDao.selectByCondition(startDate, endDate);
     }
-
-    @Override
-    public List<EquipmentFaultManagementEntity> findByStartDateAndEndDate(Date startDate, Date endDate) {
-        return equipmentFaultManagementDao.connectSelectByCondition(null, startDate, endDate);
-    }
-
-
 }

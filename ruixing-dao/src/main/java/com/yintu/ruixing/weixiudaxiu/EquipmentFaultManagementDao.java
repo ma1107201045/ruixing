@@ -18,5 +18,5 @@ public interface EquipmentFaultManagementDao {
 
     int updateByPrimaryKey(EquipmentFaultManagementEntity record);
 
-    List<EquipmentFaultManagementEntity> connectSelectByCondition(Integer id, Date startDate, Date endDate);
+    List<EquipmentFaultManagementEntity> selectByCondition(Date startDate,Date endDate);
 }

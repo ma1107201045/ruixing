@@ -1,5 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu;
 
+import com.yintu.ruixing.guzhangzhenduan.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,6 @@ public class EquipmentIndexAnalysisEntity implements Serializable {
 
     private Date statisticsData;
 
-    private Short type;
-
-    private Integer equipmentNumberId;
-
-    private String equipmentMttf;
-
     private Integer railwaysBureauId;
 
     private Integer signalDepotId;
@@ -39,6 +34,8 @@ public class EquipmentIndexAnalysisEntity implements Serializable {
 
     private Integer stationId;
 
+    private Integer quduanId;
+
     private String stationMtbf;
 
     private String quduanMtbf;
@@ -46,5 +43,25 @@ public class EquipmentIndexAnalysisEntity implements Serializable {
     private String interiorFaultMttr;
 
     private String outdoorFaultMttr;
+
+    private Integer equipmentNumberId;
+
+    private Integer runDay;
+
+    private String equipmentMttf;
+
+    private Short type;
+
+    private EquipmentNumberEntity equipmentNumberEntity;
+
+    private TieLuJuEntity tieLuJuEntity;
+
+    private DianWuDuanEntity dianWuDuanEntity;
+
+    private XianDuanEntity xianDuanEntity;
+
+    private CheZhanEntity cheZhanEntity;
+
+    private QuDuanBaseEntity quDuanBaseEntity;
 
 }
