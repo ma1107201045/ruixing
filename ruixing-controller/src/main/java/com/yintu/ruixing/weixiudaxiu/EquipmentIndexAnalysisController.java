@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/equipments/index/analysis")
+@RequestMapping("/equipment/index/analysis")
 public class EquipmentIndexAnalysisController extends SessionController {
     @Autowired
     private EquipmentIndexAnalysisService equipmentIndexAnalysisService;

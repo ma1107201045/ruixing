@@ -288,7 +288,7 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        eia.id as eia_id , create_by, create_time, modified_by, modified_time, statistics_data, type, equipment_number_id, equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,
+        eia.id as eia_id , create_by, create_time, modified_by, modified_time, statistics_data, eia.type, equipment_number_id, equipment_MTTF, railways_bureau_id, signal_depot_id, special_railway_line_id, station_id,quduan_id,station_MTBF, quduan_MTBF, interior_fault_MTTR, outdoor_fault_MTTR,
         t.tid as t_id,tlj_name,
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
@@ -306,9 +306,9 @@
     <sql id="Much_Where_List">
         <where>
             <if test="quDuanYunYingName != null ">
-                and q.quDuanYunYing_name=#{quDuanYunYingName,jdbcType=VARCHAR}
+                and q.quDuanYunYing_name like concat('%',{quDuanYunYingName,jdbcType=VARCHAR},'%')
             </if>
-<!--             and eia.type=2-->
+             and eia.type = 2
         </where>
     </sql>
     <select id="selectByCondition" resultMap="MuchResultMap">
