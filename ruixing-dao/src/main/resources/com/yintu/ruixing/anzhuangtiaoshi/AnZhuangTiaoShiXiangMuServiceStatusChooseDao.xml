@@ -5,19 +5,29 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="sid" jdbcType="INTEGER" property="sid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="isNotDaoHuo" jdbcType="INTEGER" property="isNotDaoHuo" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="createName" jdbcType="VARCHAR" property="createname" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, sid, name, createTime, createName, updateTime, updateName
+    id, sid, name, isNotDaoHuo,createTime, createName, updateTime, updateName
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mro_anzhuangtiaoshi_xiangmuServiceStatus_choose
     where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据sid  查询所有的数据-->
+  <select id="findAllBySid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    id, sid, name, isNotDaoHuo
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus_choose
+    where sid = #{id,jdbcType=INTEGER}
   </select>
 
   <!--根据sid 删除对应的数据-->
@@ -54,6 +64,9 @@
       <if test="name != null">
         name,
       </if>
+      <if test="isNotDaoHuo != null">
+        isNotDaoHuo,
+      </if>
       <if test="createtime != null">
         createTime,
       </if>
@@ -77,6 +90,9 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="isNotDaoHuo != null">
+        #{isNotDaoHuo,jdbcType=INTEGER},
+      </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
       </if>
@@ -99,6 +115,9 @@
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isNotDaoHuo != null">
+        isNotDaoHuo = #{isNotDaoHuo,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=TIMESTAMP},

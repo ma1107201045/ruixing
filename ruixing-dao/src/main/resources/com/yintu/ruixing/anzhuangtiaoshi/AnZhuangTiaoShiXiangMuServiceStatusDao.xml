@@ -6,22 +6,32 @@
     <result column="serviceName" jdbcType="VARCHAR" property="servicename" />
     <result column="choose" jdbcType="VARCHAR" property="choose" />
     <result column="timeType" jdbcType="INTEGER" property="timetype" />
+    <result column="isNotOver" jdbcType="INTEGER" property="isNotOver" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="createName" jdbcType="VARCHAR" property="createname" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <!--<association property="anZhuangTiaoShiXiangMuServiceStatusChooseEntity" javaType="AnZhuangTiaoShiXiangMuServiceStatusChooseEntity">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="sid" jdbcType="INTEGER" property="sid" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="isNotDaoHuo" jdbcType="INTEGER" property="isNotDaoHuo" />
+    </association>-->
   </resultMap>
   <sql id="Base_Column_List">
-    id, serviceName, choose, timeType, createTime, createName, updateTime, updateName
+    id, serviceName, choose, timeType,isNotOver, createTime, createName, updateTime, updateName
   </sql>
 
   <!--查询所有的服务状态标识   用于展示在首页或者新增页面-->
   <select id="findAllServiceStatus"  resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM
-        mro_anzhuangtiaoshi_xiangmuServiceStatus
-    ORDER BY id DESC
+      SELECT
+          axs.id,
+          serviceName,
+          timeType,
+          choose,
+          isNotOver
+      FROM
+          mro_anzhuangtiaoshi_xiangmuServiceStatus axs
   </select>
 
   <!--初始化页面  或者根据服务状态标识名查询-->
@@ -67,6 +77,9 @@
       <if test="timetype != null">
         timeType,
       </if>
+      <if test="isNotOver != null">
+        isNotOver,
+      </if>
       <if test="createtime != null">
         createTime,
       </if>
@@ -92,6 +105,9 @@
       </if>
       <if test="timetype != null">
         #{timetype,jdbcType=INTEGER},
+      </if>
+      <if test="isNotOver != null">
+        #{isNotOver,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
@@ -120,6 +136,9 @@
       </if>
       <if test="timetype != null">
         timeType = #{timetype,jdbcType=INTEGER},
+      </if>
+      <if test="isNotOver != null">
+        isNotOver = #{isNotOver,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=TIMESTAMP},
