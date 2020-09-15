@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,22 +15,32 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipmentFaultManagementEntity implements Serializable {
-    private static final long serialVersionUID = 5819619126955981241L;
+    private static final long serialVersionUID = -9049983778072100836L;
     private Integer id;
-    @NotNull
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
+
+    private Date statisticsData;
+
+    private Integer railwaysBureauId;
+
+    private Integer signalDepotId;
+
+    private Integer specialRailwayLineId;
+
+    private Integer stationId;
+
+    private String callPolice;
+
+    private String faultData;
+
     private Integer equipmentNumberId;
-    @NotNull
-    private Integer tielujuId;
-    @NotNull
-    private Integer dianwuduanId;
-    @NotNull
-    private Integer xianduanId;
-    @NotNull
-    private Integer chezhanId;
-    @NotNull
-    private Date startDate;
-    @NotNull
-    private Date endDate;
 
     private EquipmentNumberEntity equipmentNumberEntity;
 

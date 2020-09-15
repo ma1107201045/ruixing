@@ -11,8 +11,5 @@ import java.util.List;
  * @date:2020/7/29 16:26
  */
 public interface EquipmentFaultManagementService extends BaseService<EquipmentFaultManagementEntity, Integer> {
-
-    void remove(Integer[] ids);
-
-    List<EquipmentFaultManagementEntity> findByStartDateAndEndDate(Date startDate, Date endDate);
+    List<EquipmentFaultManagementEntity> findByCondition(Date startDate, Date endDate);
 }
