@@ -1,5 +1,6 @@
 package com.yintu.ruixing.common;
 
+import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.yunxingweihu.TaskEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,11 @@ public class ScheduleJobController extends SessionController {
         job.setModifiedTime(new Date());
         job.setExecutionTime(startDate);
         job.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + 1);
-        job.setCronExpression("0/3 * * * * ? *");
+        String cronExpression = String.format("%d %d %d * * ? *",
+                DateUtil.second(startDate),
+                DateUtil.minute(startDate),
+                DateUtil.hour(startDate, true));
+        job.setCronExpression(cronExpression);
         job.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
         job.setMethodName("execute");
         jobService.add(job);

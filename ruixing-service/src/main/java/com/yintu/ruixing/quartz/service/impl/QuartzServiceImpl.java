@@ -45,9 +45,7 @@ public class QuartzServiceImpl implements QuartzService {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(scheduleJobEntity.getJobName())
                     .withSchedule(CronScheduleBuilder.cronSchedule(scheduleJobEntity.getCronExpression())
-                            .withMisfireHandlingInstructionDoNothing()//立即执行必须是执行时间小于当前时间会立即执行一次
-                    )
-
+                            .withMisfireHandlingInstructionDoNothing())//立即执行必须是执行时间小于当前时间会立即执行一次
                     //.startNow() //ewAS立即执行
                     .startAt(scheduleJobEntity.getExecutionTime())//延时执行
                     .build();
