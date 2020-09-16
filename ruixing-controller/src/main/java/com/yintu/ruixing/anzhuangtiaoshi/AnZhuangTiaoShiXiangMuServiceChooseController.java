@@ -28,10 +28,10 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
     //根据线段id  查询对应的
     @GetMapping("/findAllByXDid/{xdid}")
-    public Map<String,Object>findAllByXDid(@PathVariable Integer xdid,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuServiceChooseEntityList=anZhuangTiaoShiXiangMuServiceChooseService.findAllByXDid(xdid,page,size);
-        PageInfo<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuServiceChooseEntityPageInfo=new PageInfo<>(xiangMuServiceChooseEntityList);
-        return ResponseDataUtil.ok("查询车站数据成功",xiangMuServiceChooseEntityPageInfo);
+    public Map<String, Object> findAllByXDid(@PathVariable Integer xdid, Integer page, Integer size) {
+        // PageHelper.startPage(page,size);
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuServiceChooseEntityList = anZhuangTiaoShiXiangMuServiceChooseService.findAllByXDid(xdid, page, size);
+        // PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuServiceChooseEntityPageInfo=new PageInfo<>(xiangMuServiceChooseEntityList);
+        return ResponseDataUtil.ok("查询车站数据成功", xiangMuServiceChooseEntityList);
     }
 }
