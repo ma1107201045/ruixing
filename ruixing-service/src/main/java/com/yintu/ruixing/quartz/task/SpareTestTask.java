@@ -32,12 +32,6 @@ public class SpareTestTask {
     public void execute(Integer sparePartsId) {
         SparePartsEntity sparePartsEntity = sparePartsService.findById(sparePartsId);
         if (sparePartsEntity != null) {
-            if (sparePartsEntity.getExecutionMode() == 1) { //执行一次的删除任务即可
-                List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findByJobName(TaskEnum.SPARETEST.getValue() + "-" + sparePartsId);
-                for (ScheduleJobEntity scheduleJobEntity : scheduleJobEntities) {
-                    scheduleJobService.remove(scheduleJobEntity.getId());
-                }
-            }
             List<SparePartsInfoEntity> sparePartsInfoEntities = sparePartsInfoService.findByCondition(null, null, null, new Date());
             if (sparePartsInfoEntities.isEmpty()) {
                 List<UserEntity> userEntities = userService.findByTruename(null);
