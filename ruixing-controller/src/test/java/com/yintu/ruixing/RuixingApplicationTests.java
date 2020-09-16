@@ -121,7 +121,7 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads8() {
-        System.out.println(solutionService.workCompletion(new Date()));
+        System.out.println(DateUtil.year(new Date()));
     }
 
 }

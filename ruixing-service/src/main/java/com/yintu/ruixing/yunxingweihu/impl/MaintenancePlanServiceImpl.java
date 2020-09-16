@@ -51,12 +51,13 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 throw new BaseRuntimeException("执行时间不能小于等于当前时间");
             String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
                     "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
-            cronExpression = String.format("%d %d %d %d %d ? *",
+            cronExpression = String.format("%d %d %d %d %d ? %d",
                     DateUtil.second(entity.getExecutionTime()),
                     DateUtil.minute(entity.getExecutionTime()),
                     DateUtil.hour(entity.getExecutionTime(), true),
                     DateUtil.dayOfMonth(entity.getExecutionTime()),
-                    DateUtil.month(entity.getExecutionTime()) + 1);
+                    DateUtil.month(entity.getExecutionTime()) + 1,
+                    DateUtil.year(entity.getExecutionTime()));
 
             entity.setCycleDescription(cycleDescription);
         } else if (entity.getExecutionMode() == (short) 2) {
@@ -201,13 +202,13 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
                         "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
                 entity.setCycleDescription(cycleDescription);
-                cronExpression = String.format("%d %d %d %d %d ? *",
+                cronExpression = String.format("%d %d %d %d %d ? %d",
                         DateUtil.second(entity.getExecutionTime()),
                         DateUtil.minute(entity.getExecutionTime()),
                         DateUtil.hour(entity.getExecutionTime(), true),
                         DateUtil.dayOfMonth(entity.getExecutionTime()),
-                        DateUtil.month(entity.getExecutionTime()) + 1);
-
+                        DateUtil.month(entity.getExecutionTime()) + 1,
+                        DateUtil.year(entity.getExecutionTime()));
             } else if (entity.getExecutionMode() == (short) 2) {
                 String cycleDescription = null;
                 switch (entity.getCycleType()) {
@@ -328,20 +329,6 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
                 scheduleJobEntity.setCronExpression(cronExpression);
                 scheduleJobService.edit(scheduleJobEntity);
-            } else if (source.getExecutionMode() == 1) {  //执行一次的结束的需要再添加任务
-                ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
-                scheduleJobEntity.setCreateBy(entity.getCreateBy());
-                scheduleJobEntity.setCreateTime(entity.getCreateTime());
-                scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
-                scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
-                scheduleJobEntity.setExecutionTime(entity.getExecutionTime());
-                scheduleJobEntity.setJobName(TaskEnum.MAINTENANCEPLAN.getValue() + "-" + entity.getId());
-                scheduleJobEntity.setCronExpression(cronExpression);
-                scheduleJobEntity.setBeanName(TaskEnum.MAINTENANCEPLAN.getValue());
-                scheduleJobEntity.setMethodName("execute");
-                scheduleJobEntity.setStatus(1);
-                scheduleJobEntity.setDeleteFlag(false);
-                scheduleJobService.add(scheduleJobEntity);
             }
         }
     }
@@ -462,12 +449,13 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 String cycleDescription = "在" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "yyyy-MM-dd") +
                         "的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
                 maintenancePlanEntity.setCycleDescription(cycleDescription);
-                cronExpression = String.format("%d %d %d %d %d ? *",
+                cronExpression = String.format("%d %d %d %d %d ? %d",
                         DateUtil.second(maintenancePlanEntity.getExecutionTime()),
                         DateUtil.minute(maintenancePlanEntity.getExecutionTime()),
                         DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true),
                         DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()),
-                        DateUtil.month(maintenancePlanEntity.getExecutionTime()) + 1);
+                        DateUtil.month(maintenancePlanEntity.getExecutionTime()) + 1,
+                        DateUtil.year(maintenancePlanEntity.getExecutionTime()));
             } else if (maintenancePlanEntity.getExecutionMode() == (short) 2) {
                 String cycleType = row[9];
                 if (!"每日".equals(cycleType) && !"每周".equals(cycleType) && !"每月".equals(cycleType) && !"每年".equals(cycleType))
