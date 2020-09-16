@@ -15,6 +15,8 @@
     id, sid, name, isNotDaoHuo,createTime, createName, updateTime, updateName
   </sql>
 
+
+
   <!--根据sid 查询对应的名字-->
   <select id="findNameBysid" parameterType="java.lang.Integer" resultType="java.lang.String">
     select

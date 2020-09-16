@@ -35,6 +35,6 @@ public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;
 
     private List list;
-
+    private Integer titleTotal;
 
 }

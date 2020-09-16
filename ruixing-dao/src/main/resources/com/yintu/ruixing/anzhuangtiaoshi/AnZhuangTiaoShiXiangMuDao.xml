@@ -152,7 +152,8 @@
   </delete>
 
   <!--添加三级树的项目-->
-  <insert id="addSanJiShuXiangMu" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity">
+  <insert id="addSanJiShuXiangMu" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity"
+          useGeneratedKeys="true" keyProperty="id">
     insert into mro_anzhuangtiaoshi_xiangmu
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

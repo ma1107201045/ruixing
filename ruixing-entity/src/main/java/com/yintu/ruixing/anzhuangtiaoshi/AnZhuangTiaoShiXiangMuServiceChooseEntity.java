@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
+
     private Integer id;
 
     private Integer xdid;
@@ -25,6 +26,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
     private Integer typetime;
 
     private Integer isnot;
+
+    private Integer isNotFinish;
 
     private Date planStartTime;
 

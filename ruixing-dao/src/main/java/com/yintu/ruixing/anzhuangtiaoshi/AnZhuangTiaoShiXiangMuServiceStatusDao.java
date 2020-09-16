@@ -25,4 +25,5 @@ public interface AnZhuangTiaoShiXiangMuServiceStatusDao {
 
     List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus();
 
+
 }
