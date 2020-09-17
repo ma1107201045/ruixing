@@ -39,7 +39,7 @@ public class EquipmentOverhaulManagementServiceImpl implements EquipmentOverhaul
 
     @Override
     public EquipmentOverhaulManagementEntityWithBLOBs findById(Integer id) {
-        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntities = equipmentOverhaulManagementDao.selectByCondition(id, null);
+        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntities = equipmentOverhaulManagementDao.selectByCondition(new Integer[]{id}, null);
         return equipmentOverhaulManagementEntities.isEmpty() ? null : equipmentOverhaulManagementEntities.get(0);
     }
 
@@ -51,7 +51,7 @@ public class EquipmentOverhaulManagementServiceImpl implements EquipmentOverhaul
     }
 
     @Override
-    public List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(Integer id, String equipmentNumber) {
-        return equipmentOverhaulManagementDao.selectByCondition(id, equipmentNumber);
+    public List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(String equipmentNumber) {
+        return equipmentOverhaulManagementDao.selectByCondition(null, equipmentNumber);
     }
 }

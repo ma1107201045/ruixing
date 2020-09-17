@@ -6,13 +6,7 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
-import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberService;
-import com.yintu.ruixing.weixiudaxiu.EquipmentService;
-import com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +49,11 @@ public class EquipmentNumberController extends SessionController implements Base
         return null;
     }
 
+    @Override
+    public Map<String, Object> edit(Integer id, EquipmentNumberEntity entity) {
+        return null;
+    }
+
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
         equipmentNumberService.remove(ids);
@@ -62,12 +61,17 @@ public class EquipmentNumberController extends SessionController implements Base
 
     }
 
-    @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentNumberEntity entity) {
-        entity.setModifiedBy(this.getLoginUserName());
-        entity.setModifiedTime(new Date());
-        equipmentNumberService.edit(entity);
-        return ResponseDataUtil.ok("修改器材编号信息成功");
+    /**
+     * 更换器材编号
+     *
+     * @param id            id
+     * @param configuration 配置
+     * @return 返回成功提示
+     */
+    @PutMapping("/{id}/change")
+    public Map<String, Object> change(@PathVariable Integer id, String equipmentNumber, String configuration) {
+        equipmentNumberService.change(this.getLoginUserName(), this.getLoginTrueName(), id, equipmentNumber, configuration);
+        return ResponseDataUtil.ok("更换器材编号信息成功");
     }
 
     @GetMapping("/{id}")

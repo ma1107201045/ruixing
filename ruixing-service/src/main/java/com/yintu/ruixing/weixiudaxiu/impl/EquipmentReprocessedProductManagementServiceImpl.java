@@ -2,6 +2,7 @@ package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity;
+import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
     private EquipmentReprocessedProductManagementDao equipmentReprocessedProductManagementDao;
 
     @Override
-    public void add(EquipmentReprocessedProductManagementEntity entity) {
+    public void add(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
         equipmentReprocessedProductManagementDao.insertSelective(entity);
     }
 
@@ -31,14 +32,14 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
     }
 
     @Override
-    public void edit(EquipmentReprocessedProductManagementEntity entity) {
+    public void edit(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
         equipmentReprocessedProductManagementDao.updateByPrimaryKeySelective(entity);
     }
 
     @Override
-    public EquipmentReprocessedProductManagementEntity findById(Integer id) {
-        List<EquipmentReprocessedProductManagementEntity> equipmentFaultManagementEntities = equipmentReprocessedProductManagementDao.connectSelectByCondition(id, null);
-        return equipmentFaultManagementEntities.isEmpty() ? null : equipmentFaultManagementEntities.get(0);
+    public EquipmentReprocessedProductManagementEntityWithBLOBs findById(Integer id) {
+        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntities = equipmentReprocessedProductManagementDao.selectByCondition(new Integer[]{id}, null);
+        return equipmentReprocessedProductManagementEntities.isEmpty() ? null : equipmentReprocessedProductManagementEntities.get(0);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
     }
 
     @Override
-    public List<EquipmentReprocessedProductManagementEntity> findByEquipmentNumber(String equipmentNumber) {
-        return equipmentReprocessedProductManagementDao.connectSelectByCondition(null, equipmentNumber);
+    public List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber) {
+        return equipmentReprocessedProductManagementDao.selectByCondition(null, equipmentNumber);
     }
 }

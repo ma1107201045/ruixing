@@ -3,6 +3,7 @@ package com.yintu.ruixing.weixiudaxiu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface EquipmentSparePartsManagementDbDao {
     int deleteByPrimaryKey(Integer id);
@@ -17,6 +18,6 @@ public interface EquipmentSparePartsManagementDbDao {
 
     int updateByPrimaryKey(EquipmentSparePartsManagementDbEntity record);
 
-    List<EquipmentSparePartsManagementDbEntity> connectSelectByCondition(Integer id, String equipmentName, String materialNumber);
+    List<EquipmentSparePartsManagementDbEntity> selectByCondition(Integer[] ids, String equipmentNumber);
 
 }

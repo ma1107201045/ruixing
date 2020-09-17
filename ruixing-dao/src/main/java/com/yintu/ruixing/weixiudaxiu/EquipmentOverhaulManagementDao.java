@@ -19,5 +19,5 @@ public interface EquipmentOverhaulManagementDao {
 
     int updateByPrimaryKey(EquipmentOverhaulManagementEntity record);
 
-    List<EquipmentOverhaulManagementEntityWithBLOBs> selectByCondition(Integer id, String equipmentNumber);
+    List<EquipmentOverhaulManagementEntityWithBLOBs> selectByCondition(Integer[] ids, String equipmentNumber);
 }

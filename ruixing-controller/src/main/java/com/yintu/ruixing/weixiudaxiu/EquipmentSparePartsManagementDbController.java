@@ -59,11 +59,10 @@ public class EquipmentSparePartsManagementDbController extends SessionController
     @GetMapping
     public Map<String, Object> findById(@RequestParam("page_number") Integer pageNumber,
                                         @RequestParam("page_size") Integer pageSize,
-                                        @RequestParam(value = "order_by", required = false, defaultValue = "espmd.id DESC") String orderBy,
-                                        @RequestParam(value = "equipment_name", required = false) String equipmentName,
-                                        @RequestParam(value = "material_number", required = false) String materialNumber) {
+                                        @RequestParam(value = "order_by", required = false, defaultValue = "espd.id DESC") String orderBy,
+                                        @RequestParam(value = "equipment_name", required = false) String equipmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByEquipmentNameAndMaterialNumber(null, equipmentName, materialNumber);
+        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByCondition(null, equipmentName);
         PageInfo<EquipmentSparePartsManagementDbEntity> pageInfo = new PageInfo<>(equipmentSparePartsManagementDbEntities);
         return ResponseDataUtil.ok("查询应急备品管理发货单信息列表成功", pageInfo);
     }

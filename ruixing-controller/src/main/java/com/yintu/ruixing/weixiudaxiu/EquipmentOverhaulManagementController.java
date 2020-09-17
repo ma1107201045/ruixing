@@ -70,7 +70,7 @@ public class EquipmentOverhaulManagementController extends SessionController imp
                                        @RequestParam(value = "order_by", required = false, defaultValue = "eom.id DESC") String orderBy,
                                        @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntityWithBLOBs = equipmentOverhaulManagementService.findByCondition(null, equipmentNumber);
+        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntityWithBLOBs = equipmentOverhaulManagementService.findByCondition(equipmentNumber);
         PageInfo<EquipmentOverhaulManagementEntityWithBLOBs> pageInfo = new PageInfo<>(equipmentOverhaulManagementEntityWithBLOBs);
         return ResponseDataUtil.ok("查询整改管理信息列表成功", pageInfo);
     }

@@ -13,6 +13,6 @@ public interface EquipmentOverhaulManagementService extends BaseService<Equipmen
 
     void remove(Integer[] ids);
 
-    List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(Integer id, String equipmentNumber);
+    List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(String equipmentNumber);
 
 }

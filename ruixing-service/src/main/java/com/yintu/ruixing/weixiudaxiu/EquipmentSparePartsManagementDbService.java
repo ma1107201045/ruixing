@@ -13,6 +13,6 @@ public interface EquipmentSparePartsManagementDbService extends BaseService<Equi
 
     void remove(Integer[] ids);
 
-    List<EquipmentSparePartsManagementDbEntity> findByEquipmentNameAndMaterialNumber(Integer id, String equipmentName, String materialNumber);
+    List<EquipmentSparePartsManagementDbEntity> findByCondition(Integer id, String equipmentName);
 
 }

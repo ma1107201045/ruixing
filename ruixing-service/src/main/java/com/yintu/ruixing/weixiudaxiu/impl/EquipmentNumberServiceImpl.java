@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,15 +43,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     @Override
     public void edit(EquipmentNumberEntity entity) {
         equipmentNumberDao.updateByPrimaryKeySelective(entity);
-        EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
-        equipmentNumberRecordEntity.setCreateBy(entity.getModifiedBy());
-        equipmentNumberRecordEntity.setCreateTime(entity.getModifiedTime());
-        equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
-        equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
-        equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
-        equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
-        equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
-        equipmentNumberRecordService.add(equipmentNumberRecordEntity);
+
     }
 
     @Override
@@ -59,9 +52,31 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
         return equipmentNumberEntities.isEmpty() ? null : equipmentNumberEntities.get(0);
     }
 
+
     @Override
-    public List<EquipmentNumberEntity> findByCondition(Integer[] ids, String equipmentNumber) {
-        return equipmentNumberDao.selectByCondition(ids, equipmentNumber);
+    public void change(String loginUserName, String loginTrueName, Integer id, String equipmentNumber, String configuration) {
+        EquipmentNumberEntity equipmentNumberEntity = this.findById(id);
+        if (equipmentNumberEntity != null) {
+            equipmentNumberEntity.setModifiedBy(loginUserName);
+            equipmentNumberEntity.setModifiedTime(new Date());
+            equipmentNumberEntity.setEquipmentNumber(equipmentNumber);
+            equipmentNumberEntity.setConfiguration(configuration);
+            this.edit(equipmentNumberEntity);//更新器材编号以及配置
+
+            EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
+            equipmentNumberRecordEntity.setCreateBy(equipmentNumberEntity.getModifiedBy());
+            equipmentNumberRecordEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
+            equipmentNumberRecordEntity.setModifiedBy(equipmentNumberEntity.getModifiedBy());
+            equipmentNumberRecordEntity.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentNumberRecordEntity.setEquipmentNumber(equipmentNumberEntity.getEquipmentNumber());
+            equipmentNumberRecordEntity.setConfiguration(equipmentNumberEntity.getConfiguration());
+            equipmentNumberRecordEntity.setEquipmentNumberId(equipmentNumberEntity.getId());
+            equipmentNumberRecordService.add(equipmentNumberRecordEntity);//生成更换记录
+            //生成发货单
+
+            //生成返修品记录
+
+        }
     }
 
     @Override
@@ -69,5 +84,10 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
         for (Integer id : ids) {
             this.remove(id);
         }
+    }
+
+    @Override
+    public List<EquipmentNumberEntity> findByCondition(Integer[] ids, String equipmentNumber) {
+        return equipmentNumberDao.selectByCondition(ids, equipmentNumber);
     }
 }
