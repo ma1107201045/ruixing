@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 系统可靠性指标分析
+ *
+ */
 @RestController
 @RequestMapping("/equipment/index/analysis")
 public class EquipmentIndexAnalysisController extends SessionController {

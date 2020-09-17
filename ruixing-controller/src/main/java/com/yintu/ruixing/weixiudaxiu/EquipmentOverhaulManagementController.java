@@ -2,9 +2,9 @@ package com.yintu.ruixing.weixiudaxiu;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.common.SessionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +20,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/equipment/overhaul/managements")
-public class EquipmentOverhaulManagementController extends SessionController implements BaseController<EquipmentOverhaulManagementEntity, Integer> {
+public class EquipmentOverhaulManagementController extends SessionController implements BaseController<EquipmentOverhaulManagementEntityWithBLOBs, Integer> {
     @Autowired
     private EquipmentOverhaulManagementService equipmentOverhaulManagementService;
     @Autowired
     private EquipmentNumberService equipmentNumberService;
 
     @PostMapping
-    public Map<String, Object> add(@Validated EquipmentOverhaulManagementEntity entity) {
+    public Map<String, Object> add(@Validated EquipmentOverhaulManagementEntityWithBLOBs entity) {
         equipmentOverhaulManagementService.add(entity);
         return ResponseDataUtil.ok("添加整改管理信息成功");
     }
@@ -44,15 +44,15 @@ public class EquipmentOverhaulManagementController extends SessionController imp
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentOverhaulManagementEntity entity) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentOverhaulManagementEntityWithBLOBs entity) {
         equipmentOverhaulManagementService.edit(entity);
         return ResponseDataUtil.ok("修改整改管理信息成功");
     }
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        EquipmentOverhaulManagementEntity equipmentOverhaulManagementEntity = equipmentOverhaulManagementService.findById(id);
-        return ResponseDataUtil.ok("查询整改管理信息成功", equipmentOverhaulManagementEntity);
+        EquipmentOverhaulManagementEntityWithBLOBs equipmentOverhaulManagementEntityWithBLOBs = equipmentOverhaulManagementService.findById(id);
+        return ResponseDataUtil.ok("查询整改管理信息成功", equipmentOverhaulManagementEntityWithBLOBs);
     }
 
     @GetMapping
@@ -61,8 +61,8 @@ public class EquipmentOverhaulManagementController extends SessionController imp
                                        @RequestParam(value = "order_by", required = false, defaultValue = "eom.id DESC") String orderBy,
                                        @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentOverhaulManagementEntity> equipmentOverhaulManagementEntities = equipmentOverhaulManagementService.findByEquipmentNumber(equipmentNumber);
-        PageInfo<EquipmentOverhaulManagementEntity> pageInfo = new PageInfo<>(equipmentOverhaulManagementEntities);
+        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntityWithBLOBs = equipmentOverhaulManagementService.findByCondition(null, equipmentNumber);
+        PageInfo<EquipmentOverhaulManagementEntityWithBLOBs> pageInfo = new PageInfo<>(equipmentOverhaulManagementEntityWithBLOBs);
         return ResponseDataUtil.ok("查询整改管理信息列表成功", pageInfo);
     }
 
