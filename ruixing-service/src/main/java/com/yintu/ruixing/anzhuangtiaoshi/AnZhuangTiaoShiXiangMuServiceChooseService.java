@@ -14,4 +14,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseService {
     AnZhuangTiaoShiXiangMuServiceStatusEntity findServiceStatusById(Integer id);
 
     void addXiangMu(AnZhuangTiaoShiXiangMuEntity xiangMuEntity);
+
+    void addXiangMuServiceChooseEntity(AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity);
 }

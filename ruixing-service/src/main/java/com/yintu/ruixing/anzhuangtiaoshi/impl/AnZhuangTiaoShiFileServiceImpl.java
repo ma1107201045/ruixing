@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +43,10 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
     }
 
     @Override
-    public void addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity) {
+    public void addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity, String username,Integer senderid) {
+        anZhuangTiaoShiFileEntity.setCreateName(username);
+        anZhuangTiaoShiFileEntity.setUid(senderid);
+        anZhuangTiaoShiFileEntity.setCreatetime(new Date());
         anZhuangTiaoShiFileDao.addFile(anZhuangTiaoShiFileEntity);
     }
 

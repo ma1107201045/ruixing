@@ -9,6 +9,7 @@ import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +38,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
     //新增车站数据
     @PostMapping("/addXiangMuServiceChoose")
-    public Map<String, Object> addXiangMuServiceChoose(@RequestBody JSONArray cheZhanDatas) {
-       /* String aa="[{\"addForm\":{\"statusdata\":[{\"id\":5,\"servicename\":\"是否完成静态验收\",\"choose\":\"\",\"timetype\":2,\"isNotOver\":0,\"checkbox\":true,\"planStartTimes\":\"2020-09-07T16:00:00.000Z\",\"planStartTime\":\"2020/9/8\",\"planEndTimes\":\"2020-09-15T16:00:00.000Z\",\"planEndTime\":\"2020/9/16\"},{\"id\":8,\"servicename\":\"是否完成配线\",\"choose\":\"\",\"timetype\":1,\"isNotOver\":0,\"checkbox\":true},{\"id\":9,\"servicename\":\"设备是否到货\",\"choose\":\"\",\"checkbox\":true,\"list\":[{\"id\":6,\"sid\":9,\"name\":\"机柜\",\"isNotDaoHuo\":0,\"isNotChoose\":true},{\"id\":7,\"sid\":9,\"name\":\"室外设备\",\"isNotDaoHuo\":0,\"isNotChoose\":true},{\"id\":8,\"sid\":9,\"name\":\"室内板卡\",\"isNotDaoHuo\":0,\"isNotChoose\":true}]},{\"id\":12,\"servicename\":\"是否开通\",\"choose\":\"\",\"timetype\":3,\"checkbox\":true,\"planOpenTimes\":\"2020-09-15T16:00:00.000Z\",\"planOpenTime\":\"2020/9/16\"}],\"xianduantime\":2020,\"tljName\":{\"value\":81,\"label\":\"哈尔滨局\"},\"dwdName\":{\"value\":52,\"label\":\"哈尔滨电务段\"},\"xdName\":{\"value\":165,\"label\":\"哈牡客专线\"},\"chezhanname\":{\"value\":98,\"label\":\"太平桥哈牡场\"},\"xdType\":\"2000R继电编码N+1区间轨道电路\",\"xdFenlei\":\"1\",\"worksid\":4,\"guanlianxiangmu\":\"111 / 111\"}},{\"addForm\":{\"statusdata\":[{\"id\":5,\"servicename\":\"是否完成静态验收\",\"choose\":\"\",\"timetype\":2,\"isNotOver\":0,\"checkbox\":true,\"planStartTimes\":\"2020-09-07T16:00:00.000Z\",\"planStartTime\":\"2020/9/8\",\"planEndTimes\":\"2020-09-15T16:00:00.000Z\",\"planEndTime\":\"2020/9/16\"},{\"id\":8,\"servicename\":\"是否完成配线\",\"choose\":\"\",\"timetype\":1,\"isNotOver\":0,\"checkbox\":true},{\"id\":9,\"servicename\":\"设备是否到货\",\"choose\":\"\",\"checkbox\":true,\"list\":[{\"id\":6,\"sid\":9,\"name\":\"机柜\",\"isNotDaoHuo\":0,\"isNotChoose\":true},{\"id\":7,\"sid\":9,\"name\":\"室外设备\",\"isNotDaoHuo\":0,\"isNotChoose\":true},{\"id\":8,\"sid\":9,\"name\":\"室内板卡\",\"isNotDaoHuo\":0,\"isNotChoose\":true}]},{\"id\":12,\"servicename\":\"是否开通\",\"choose\":\"\",\"timetype\":3,\"checkbox\":true,\"planOpenTimes\":\"2020-09-15T16:00:00.000Z\",\"planOpenTime\":\"2020/9/16\"}],\"xianduantime\":2020,\"tljName\":{\"value\":81,\"label\":\"哈尔滨局\"},\"dwdName\":{\"value\":52,\"label\":\"哈尔滨电务段\"},\"xdName\":{\"value\":165,\"label\":\"哈牡客专线\"},\"chezhanname\":{\"value\":98,\"label\":\"太平桥哈牡场\"},\"xdType\":\"2000R继电编码N+1区间轨道电路\",\"xdFenlei\":\"1\",\"worksid\":4,\"guanlianxiangmu\":\"111 / 111\"}}]";
-         cheZhanDatas=(JSONArray)(JSONArray.parse(aa));*/
-        /*JSONArray o1 =(JSONArray) JSONArray.toJSON(cheZhanDatas);
-        System.out.println("dfadf"+o1);*/
+    public Map<String, Object> addXiangMuServiceChoose(@RequestBody JSONArray cheZhanDatas) throws Exception {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
         Date today = new Date();
@@ -61,17 +58,21 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
             Integer xdid = (Integer) xdName.get("value");
             String czname = (String) czName.get("label");
             Integer czid = (Integer) czName.get("value");
-            Integer xianduanTime = (Integer) label.get("xianduantime");
+            Long xianduanTime = (long) label.get("xianduantime");
             Integer worksid = (Integer) label.get("worksid");
             String xdFenlei = (String) label.get("xdFenlei");
             String guanlianxiangmu = (String) label.get("guanlianxiangmu");
             String xdType = (String) label.get("xdType");
 
+            Date date = new Date(xianduanTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date xianduantime = sdf.parse(sdf.format(date));
+            //新增项目
             AnZhuangTiaoShiXiangMuEntity xiangMuEntity = new AnZhuangTiaoShiXiangMuEntity();
             xiangMuEntity.setTljName(tljname);
             xiangMuEntity.setDwdName(dwdname);
             xiangMuEntity.setXdName(xdname);
-            //xiangMuEntity.setXianduantime((Date) xianduanTime);
+            xiangMuEntity.setXianduantime(xianduantime);
             xiangMuEntity.setXdFenlei(Integer.parseInt(xdFenlei));
             xiangMuEntity.setWorksid(worksid);
             xiangMuEntity.setXdType(xdType);
@@ -83,31 +84,82 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
             for (Object statusdatum : statusdata) {
                 Map<String, Object> statusdatu = (Map) statusdatum;
-                Integer titleid = (Integer) statusdatu.get("id");
-                String servicename = (String) statusdatu.get("servicename");
+                Integer titleid = (Integer) statusdatu.get("id");//服务状态标识id
+                String servicename = (String) statusdatu.get("servicename");//服务状态标识名
                 AnZhuangTiaoShiXiangMuServiceStatusEntity serviceStatusEntity = anZhuangTiaoShiXiangMuServiceChooseService.findServiceStatusById(titleid);
-                if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 2) {
+                if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 2) {//有状态标识  且有计划和实际开始结束时间
                     Integer timetype = (Integer) statusdatu.get("timetype");
-                    Integer planStartTime = (Integer) statusdatu.get("planStartTime");
-                    Integer planEndTime = (Integer) statusdatu.get("planEndTime");
+                    Long planStartTime = (long) statusdatu.get("planStartTime");
+                    Long planEndTime = (long) statusdatu.get("planEndTime");
+                    Date datee = new Date(planStartTime);
+                    Date dateee = new Date(planEndTime);
+                    Date planStarttime = sdf.parse(sdf.format(datee));
+                    Date planEndtime = sdf.parse(sdf.format(dateee));
+                    Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
 
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    xiangMuServiceChooseEntity.setXdid(xmid);
+                    xiangMuServiceChooseEntity.setSerid(titleid);
+                    xiangMuServiceChooseEntity.setCzid(czid);
+                    xiangMuServiceChooseEntity.setChezhanname(czname);
+                    xiangMuServiceChooseEntity.setTypetime(2);
+                    xiangMuServiceChooseEntity.setIsNotFinish(isNotFinish);
+                    xiangMuServiceChooseEntity.setPlanStartTime(planStarttime);
+                    xiangMuServiceChooseEntity.setPlanEndTime(planEndtime);
+                    xiangMuServiceChooseEntity.setCreatename(username);
+                    xiangMuServiceChooseEntity.setCreatetime(today);
+                    anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
-                if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 1) {
+                if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 1) {//有状态标识  没有计划和实际开始结束时间
                     Integer timetype = (Integer) statusdatu.get("timetype");
-
+                    Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    xiangMuServiceChooseEntity.setXdid(xmid);
+                    xiangMuServiceChooseEntity.setSerid(titleid);
+                    xiangMuServiceChooseEntity.setCzid(czid);
+                    xiangMuServiceChooseEntity.setChezhanname(czname);
+                    xiangMuServiceChooseEntity.setTypetime(1);
+                    xiangMuServiceChooseEntity.setIsNotFinish(isNotFinish);
+                    xiangMuServiceChooseEntity.setCreatename(username);
+                    xiangMuServiceChooseEntity.setCreatetime(today);
+                    anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
 
                 }
                 if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 3) {
                     Integer timetype = (Integer) statusdatu.get("timetype");
-                    Integer planOpenTime = (Integer) statusdatu.get("planOpenTime");
-
+                    Long planOpenTime = (long) statusdatu.get("planOpenTime");
+                    Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
+                    Date datee = new Date(planOpenTime);
+                    Date planOpentime = sdf.parse(sdf.format(datee));
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    xiangMuServiceChooseEntity.setXdid(xmid);
+                    xiangMuServiceChooseEntity.setSerid(titleid);
+                    xiangMuServiceChooseEntity.setCzid(czid);
+                    xiangMuServiceChooseEntity.setChezhanname(czname);
+                    xiangMuServiceChooseEntity.setTypetime(3);
+                    xiangMuServiceChooseEntity.setIsNotFinish(isNotFinish);
+                    xiangMuServiceChooseEntity.setPlanOpenTime(planOpentime);
+                    xiangMuServiceChooseEntity.setCreatename(username);
+                    xiangMuServiceChooseEntity.setCreatetime(today);
+                    anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
                 if (!serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == null) {
                     List list = (List) statusdatu.get("list");
                     for (Object chroose : list) {
                         Map<String, Object> chroosee = (Map) chroose;
                         Integer chrooseid = (Integer) chroosee.get("id");
-                        Integer isNotDaoHuo = (Integer) chroosee.get("isNotDaoHuo");
+                        Integer isnot = (Integer) chroosee.get("isnot");
+                        AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                        xiangMuServiceChooseEntity.setXdid(xmid);
+                        xiangMuServiceChooseEntity.setSerid(titleid);
+                        xiangMuServiceChooseEntity.setCzid(czid);
+                        xiangMuServiceChooseEntity.setChezhanname(czname);
+                        xiangMuServiceChooseEntity.setTypetime(null);
+                        xiangMuServiceChooseEntity.setIsnot(isnot);
+                        xiangMuServiceChooseEntity.setChoid(chrooseid);
+                        xiangMuServiceChooseEntity.setCreatename(username);
+                        xiangMuServiceChooseEntity.setCreatetime(today);
+                        anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                     }
                 }
                 System.out.println(servicename);

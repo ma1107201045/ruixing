@@ -211,6 +211,7 @@ WHERE
         WHERE
         axsc.serid = ax.id
         and axsc.czid = #{czid,jdbcType=INTEGER}
+        GROUP BY serid
     </select>
 
 

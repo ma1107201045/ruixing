@@ -13,6 +13,8 @@ public class AnZhuangTiaoShiFileEntity {
 
     private Integer xdid;
 
+    private Integer uid;
+
     private String xdName;
 
     private Date createtime;
@@ -27,75 +29,14 @@ public class AnZhuangTiaoShiFileEntity {
 
     private String yuliu;
 
-    public Integer getId() {
-        return id;
-    }
+    private String remarks;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public Integer getXdid() {
-        return xdid;
-    }
 
-    public void setXdid(Integer xdid) {
-        this.xdid = xdid;
-    }
+    private String createName;
 
-    public String getXdName() {
-        return xdName;
-    }
+    private Date updateTime;
 
-    public void setXdName(String xdName) {
-        this.xdName = xdName == null ? null : xdName.trim();
-    }
+    private String updateName;
 
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public Integer getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(Integer fileType) {
-        this.fileType = fileType;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath == null ? null : filePath.trim();
-    }
-
-    public Integer getFabuType() {
-        return fabuType;
-    }
-
-    public void setFabuType(Integer fabuType) {
-        this.fabuType = fabuType;
-    }
-
-    public String getYuliu() {
-        return yuliu;
-    }
-
-    public void setYuliu(String yuliu) {
-        this.yuliu = yuliu == null ? null : yuliu.trim();
-    }
 }

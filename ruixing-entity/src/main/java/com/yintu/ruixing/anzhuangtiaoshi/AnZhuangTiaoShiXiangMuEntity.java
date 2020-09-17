@@ -23,6 +23,7 @@ public class AnZhuangTiaoShiXiangMuEntity {
     private String dwdName;//电务段名
 
     private String xdName;//线段名
+    private String chezhanname;//车站名
 
     private String xdType;//项目类型
 

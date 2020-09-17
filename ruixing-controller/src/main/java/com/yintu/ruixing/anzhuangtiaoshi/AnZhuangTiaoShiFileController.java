@@ -3,6 +3,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/AnZhuangTiaoShiFileAll")
-public class AnZhuangTiaoShiFileController {
+public class AnZhuangTiaoShiFileController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiFileService anZhuangTiaoShiFileService;
 
@@ -61,7 +62,9 @@ public class AnZhuangTiaoShiFileController {
     //添加线段的文件
     @PostMapping("/addFile")
     public Map<String,Object>addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity){
-        anZhuangTiaoShiFileService.addFile(anZhuangTiaoShiFileEntity);
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        anZhuangTiaoShiFileService.addFile(anZhuangTiaoShiFileEntity,username,senderid);
         return ResponseDataUtil.ok("新增文件成功");
     }
     //根据文件id  编辑对应的文件

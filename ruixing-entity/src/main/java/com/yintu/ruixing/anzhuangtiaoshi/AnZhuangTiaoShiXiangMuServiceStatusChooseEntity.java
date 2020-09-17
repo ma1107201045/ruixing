@@ -27,6 +27,7 @@ public class AnZhuangTiaoShiXiangMuServiceStatusChooseEntity {
 
     private String updatename;
 
+    private Integer isnot;
 
     private Boolean isNotChoose;
     private Integer chooseTotal;

@@ -15,7 +15,7 @@ public interface AnZhuangTiaoShiFileService {
 
     List<AnZhuangTiaoShiFileEntity> findShuChuFileByXid(Integer id, Integer page, Integer size);
 
-    void addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity);
+    void addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity, String username,Integer senderid);
 
     void editFileById(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity);
 

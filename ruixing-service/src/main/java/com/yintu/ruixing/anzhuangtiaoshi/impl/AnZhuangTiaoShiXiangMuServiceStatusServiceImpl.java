@@ -39,19 +39,33 @@ public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangT
     @Override
     public List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus() {
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
-        List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
         for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : serviceStatusEntityList) {
             anZhuangTiaoShiXiangMuServiceStatusEntity.setCheckbox(true);
+            if (anZhuangTiaoShiXiangMuServiceStatusEntity.getChoose().equals("是否") && anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype() == 2) {
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setPlanStartTimes("");
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setPlanEndTimes("");
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setIsNotFinish(1);
+            }
+            if (anZhuangTiaoShiXiangMuServiceStatusEntity.getChoose().equals("是否") && anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype() == 3) {
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setPlanOpenTimes("");
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setIsNotFinish(1);
+            }
+            if (anZhuangTiaoShiXiangMuServiceStatusEntity.getChoose().equals("是否") && anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype() == 1) {
+                anZhuangTiaoShiXiangMuServiceStatusEntity.setIsNotFinish(1);
+            }
             anZhuangTiaoShiXiangMuServiceStatusEntity.setChoose("");
+
             Integer id = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
             List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntityList = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findAllBySid(id);
+            List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
             if (chooseEntityList.size() != 0) {
                 for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity chooseEntity : chooseEntityList) {
                     chooseEntity.setIsNotChoose(false);
+                    chooseEntity.setIsnot(0);
                     chooseList.add(chooseEntity);
                 }
                 anZhuangTiaoShiXiangMuServiceStatusEntity.setList(chooseList);
-            }else {
+            } else {
                 anZhuangTiaoShiXiangMuServiceStatusEntity.setList(null);
             }
         }

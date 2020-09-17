@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
-    private Integer id;
+    private Integer id;//安装调试的服务状态标识id',
 
     private String servicename;
 
@@ -29,12 +29,16 @@ public class AnZhuangTiaoShiXiangMuServiceStatusEntity {
     private Date updatetime;
 
     private String updatename;
-
+    private String planStartTimes;
+    private String planEndTimes;
+    private String planOpenTimes;
+    private Integer isNotFinish;
     private boolean checkbox;
 
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;
 
     private List list;
+    private List chooselist;
     private Integer titleTotal;
 
 }
