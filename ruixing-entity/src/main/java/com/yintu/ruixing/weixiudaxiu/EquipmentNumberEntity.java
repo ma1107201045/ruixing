@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,25 +27,25 @@ public class EquipmentNumberEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-
+    @NotNull
     private Integer railwaysBureauId;
-
+    @NotNull
     private Integer signalDepotId;
-
+    @NotNull
     private Integer specialRailwayLineId;
-
+    @NotNull
     private Integer stationId;
-
+    @NotNull
+    private Integer equipmentSparePartsManagementId;
+    @NotBlank
     private String rackNumber;
-
+    @NotBlank
     private String hierarchy;
     @NotBlank
     private String equipmentNumber;
-
-    private String name;
-
+    @NotNull
     private Integer quantity;
-
+    @NotBlank
     private String configuration;
 
     private TieLuJuEntity tieLuJuEntity;
@@ -54,6 +55,8 @@ public class EquipmentNumberEntity implements Serializable {
     private XianDuanEntity xianDuanEntity;
 
     private CheZhanEntity cheZhanEntity;
+
+    private EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity;
 
     private EquipmentEntity equipmentEntity;
 

@@ -11,10 +11,11 @@
         <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
         <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
         <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="equipment_spare_parts_management_id" jdbcType="INTEGER"
+                property="equipmentSparePartsManagementId"/>
         <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
         <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
         <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="quantity" jdbcType="INTEGER" property="quantity"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -23,7 +24,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, railways_bureau_id, signal_depot_id,
-    special_railway_line_id, station_id, rack_number, hierarchy, equipment_number, name, 
+    special_railway_line_id, station_id,equipment_spare_parts_management_id, rack_number, hierarchy, equipment_number,
     quantity
     </sql>
     <sql id="Blob_Column_List">
@@ -47,15 +48,15 @@
         insert into mro_equipment_number (id, create_by, create_time,
                                           modified_by, modified_time, railways_bureau_id,
                                           signal_depot_id, special_railway_line_id, station_id,
-                                          rack_number, hierarchy, equipment_number,
-                                          name, quantity, configuration)
+                                          equipment_spare_parts_management_id, rack_number, hierarchy, equipment_number,
+                                          quantity, configuration)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
-                #{railwaysBureauId,jdbcType=INTEGER},
-                #{signalDepotId,jdbcType=INTEGER}, #{specialRailwayLineId,jdbcType=INTEGER},
-                #{stationId,jdbcType=INTEGER},
+                #{railwaysBureauId,jdbcType=INTEGER}, #{signalDepotId,jdbcType=INTEGER},
+                #{specialRailwayLineId,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER},
+                #{equipmentSparePartsManagementId,jdbcType=INTEGER},
                 #{rackNumber,jdbcType=VARCHAR}, #{hierarchy,jdbcType=VARCHAR}, #{equipmentNumber,jdbcType=VARCHAR},
-                #{name,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, #{configuration,jdbcType=LONGVARCHAR})
+                #{quantity,jdbcType=INTEGER}, #{configuration,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity"
             useGeneratedKeys="true" keyProperty="id">
@@ -88,6 +89,9 @@
             <if test="stationId != null">
                 station_id,
             </if>
+            <if test="equipmentSparePartsManagementId != null">
+                equipment_spare_parts_management_id,
+            </if>
             <if test="rackNumber != null">
                 rack_number,
             </if>
@@ -96,9 +100,6 @@
             </if>
             <if test="equipmentNumber != null">
                 equipment_number,
-            </if>
-            <if test="name != null">
-                name,
             </if>
             <if test="quantity != null">
                 quantity,
@@ -135,6 +136,9 @@
             <if test="stationId != null">
                 #{stationId,jdbcType=INTEGER},
             </if>
+            <if test="equipmentSparePartsManagementId != null">
+                #{equipmentSparePartsManagementId,jdbcType=INTEGER},
+            </if>
             <if test="rackNumber != null">
                 #{rackNumber,jdbcType=VARCHAR},
             </if>
@@ -143,9 +147,6 @@
             </if>
             <if test="equipmentNumber != null">
                 #{equipmentNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
             </if>
             <if test="quantity != null">
                 #{quantity,jdbcType=INTEGER},
@@ -182,6 +183,9 @@
             <if test="stationId != null">
                 station_id = #{stationId,jdbcType=INTEGER},
             </if>
+            <if test="equipmentSparePartsManagementId != null">
+                equipment_spare_parts_management_id = #{equipmentSparePartsManagementId,jdbcType=INTEGER},
+            </if>
             <if test="rackNumber != null">
                 rack_number = #{rackNumber,jdbcType=VARCHAR},
             </if>
@@ -190,9 +194,6 @@
             </if>
             <if test="equipmentNumber != null">
                 equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="quantity != null">
                 quantity = #{quantity,jdbcType=INTEGER},
@@ -205,37 +206,37 @@
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity">
         update mro_equipment_number
-        set create_by               = #{createBy,jdbcType=VARCHAR},
-            create_time             = #{createTime,jdbcType=TIMESTAMP},
-            modified_by             = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time           = #{modifiedTime,jdbcType=TIMESTAMP},
-            railways_bureau_id      = #{railwaysBureauId,jdbcType=INTEGER},
-            signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
-            special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
-            station_id              = #{stationId,jdbcType=INTEGER},
-            rack_number             = #{rackNumber,jdbcType=VARCHAR},
-            hierarchy               = #{hierarchy,jdbcType=VARCHAR},
-            equipment_number        = #{equipmentNumber,jdbcType=VARCHAR},
-            name                    = #{name,jdbcType=VARCHAR},
-            quantity                = #{quantity,jdbcType=INTEGER},
-            configuration           = #{configuration,jdbcType=LONGVARCHAR}
+        set create_by                           = #{createBy,jdbcType=VARCHAR},
+            create_time                         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by                         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time                       = #{modifiedTime,jdbcType=TIMESTAMP},
+            railways_bureau_id                  = #{railwaysBureauId,jdbcType=INTEGER},
+            signal_depot_id                     = #{signalDepotId,jdbcType=INTEGER},
+            special_railway_line_id             = #{specialRailwayLineId,jdbcType=INTEGER},
+            station_id                          = #{stationId,jdbcType=INTEGER},
+            equipment_spare_parts_management_id = #{equipmentSparePartsManagementId,jdbcType=INTEGER},
+            rack_number                         = #{rackNumber,jdbcType=VARCHAR},
+            hierarchy                           = #{hierarchy,jdbcType=VARCHAR},
+            equipment_number                    = #{equipmentNumber,jdbcType=VARCHAR},
+            quantity                            = #{quantity,jdbcType=INTEGER},
+            configuration                       = #{configuration,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity">
         update mro_equipment_number
-        set create_by               = #{createBy,jdbcType=VARCHAR},
-            create_time             = #{createTime,jdbcType=TIMESTAMP},
-            modified_by             = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time           = #{modifiedTime,jdbcType=TIMESTAMP},
-            railways_bureau_id      = #{railwaysBureauId,jdbcType=INTEGER},
-            signal_depot_id         = #{signalDepotId,jdbcType=INTEGER},
-            special_railway_line_id = #{specialRailwayLineId,jdbcType=INTEGER},
-            station_id              = #{stationId,jdbcType=INTEGER},
-            rack_number             = #{rackNumber,jdbcType=VARCHAR},
-            hierarchy               = #{hierarchy,jdbcType=VARCHAR},
-            equipment_number        = #{equipmentNumber,jdbcType=VARCHAR},
-            name                    = #{name,jdbcType=VARCHAR},
-            quantity                = #{quantity,jdbcType=INTEGER}
+        set create_by                           = #{createBy,jdbcType=VARCHAR},
+            create_time                         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by                         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time                       = #{modifiedTime,jdbcType=TIMESTAMP},
+            railways_bureau_id                  = #{railwaysBureauId,jdbcType=INTEGER},
+            signal_depot_id                     = #{signalDepotId,jdbcType=INTEGER},
+            special_railway_line_id             = #{specialRailwayLineId,jdbcType=INTEGER},
+            station_id                          = #{stationId,jdbcType=INTEGER},
+            equipment_spare_parts_management_id = #{equipmentSparePartsManagementId,jdbcType=INTEGER},
+            rack_number                         = #{rackNumber,jdbcType=VARCHAR},
+            hierarchy                           = #{hierarchy,jdbcType=VARCHAR},
+            equipment_number                    = #{equipmentNumber,jdbcType=VARCHAR},
+            quantity                            = #{quantity,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -249,10 +250,11 @@
         <result column="signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
         <result column="special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
         <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="equipment_spare_parts_management_id" jdbcType="INTEGER"
+                property="equipmentSparePartsManagementId"/>
         <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
         <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
         <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="quantity" jdbcType="INTEGER" property="quantity"/>
         <result column="configuration" jdbcType="LONGVARCHAR" property="configuration"/>
         <association property="tieLuJuEntity" column="railways_bureau_id">
@@ -271,19 +273,25 @@
             <id column="c_id" jdbcType="INTEGER" property="cid"/>
             <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
         </association>
+        <association property="equipmentSparePartsManagementEntity" column="equipment_spare_parts_management_id">
+            <id column="espm_id" jdbcType="INTEGER" property="id"/>
+            <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        </association>
     </resultMap>
     <sql id="Much_Column_List">
-        id as en_id, create_by, create_time, modified_by, modified_time, railways_bureau_id, signal_depot_id,special_railway_line_id, station_id, rack_number, hierarchy, equipment_number, name, quantity,configuration,
+        en.id as en_id, en.create_by, en.create_time, en.modified_by, en.modified_time, railways_bureau_id, signal_depot_id,special_railway_line_id, station_id,equipment_spare_parts_management_id, rack_number, hierarchy, equipment_number, quantity,configuration,
         t.tid as t_id,tlj_name,
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
-        c.cid as c_id,cz_name
+        c.cid as c_id,cz_name,
+        espm.id as espm_id,equipment_name
     </sql>
     <sql id="Much_Table_List">
         mro_equipment_number en inner join mro_tieluju t on en.railways_bureau_id=t.tid
         inner join mro_dianwuduan d on en.signal_depot_id=d.did
         inner join mro_xianduan x on en.special_railway_line_id=x.xid
         inner join mro_chezhan c on en.station_id=c.cid
+        inner join mro_equipment_spare_parts_management espm on en.equipment_spare_parts_management_id=espm.id
     </sql>
     <sql id="Much_Where_List">
         <where>

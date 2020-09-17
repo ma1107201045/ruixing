@@ -20,17 +20,15 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/equipment/reprocessed/product/managements")
-public class EquipmentReprocessedProductManagementController extends SessionController implements BaseController<EquipmentReprocessedProductManagementEntity, Integer> {
+public class EquipmentReprocessedProductManagementController extends SessionController implements BaseController<EquipmentReprocessedProductManagementEntityWithBLOBs, Integer> {
 
     @Autowired
     private EquipmentReprocessedProductManagementService equipmentReprocessedProductManagementService;
-    @Autowired
-    private EquipmentNumberService equipmentNumberService;
 
-    @PostMapping
-    public Map<String, Object> add(@Validated EquipmentReprocessedProductManagementEntity entity) {
-        equipmentReprocessedProductManagementService.add(entity);
-        return ResponseDataUtil.ok("添加返修品信息成功");
+
+    @Override
+    public Map<String, Object> add(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
+        return null;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentReprocessedProductManagementEntity entity) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
         equipmentReprocessedProductManagementService.edit(entity);
         return ResponseDataUtil.ok("修改返修品信息成功");
     }
@@ -62,21 +60,9 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
                                        @RequestParam(value = "order_by", required = false, defaultValue = "erpm.id DESC") String orderBy,
                                        @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentReprocessedProductManagementEntity> equipmentReprocessedProductManagementEntities = equipmentReprocessedProductManagementService.findByEquipmentNumber(equipmentNumber);
-        PageInfo<EquipmentReprocessedProductManagementEntity> pageInfo = new PageInfo<>(equipmentReprocessedProductManagementEntities);
+        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntityWithBLOBs = equipmentReprocessedProductManagementService.findByCondition(equipmentNumber);
+        PageInfo<EquipmentReprocessedProductManagementEntityWithBLOBs> pageInfo = new PageInfo<>(equipmentReprocessedProductManagementEntityWithBLOBs);
         return ResponseDataUtil.ok("查询返修品列表信息成功", pageInfo);
     }
 
-
-    /**
-     * 查询器材编号全部信息
-     *
-     * @return 返回信息
-     */
-    @GetMapping("/equipment/numbers")
-    @ResponseBody
-    public Map<String, Object> findEquipmentNumberAll() {
-        List<EquipmentNumberEntity> equipmentNumberEntities = equipmentNumberService.findByCondition(null, null);
-        return ResponseDataUtil.ok("查询器材编号信息列表成功", equipmentNumberEntities);
-    }
 }

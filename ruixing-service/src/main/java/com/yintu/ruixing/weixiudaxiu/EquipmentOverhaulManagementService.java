@@ -9,12 +9,10 @@ import java.util.List;
  * @author:mlf
  * @date:2020/7/28 16:32
  */
-public interface EquipmentOverhaulManagementService extends BaseService<EquipmentOverhaulManagementEntity, Integer> {
-
-    EquipmentOverhaulManagementEntity findById(Integer id);
+public interface EquipmentOverhaulManagementService extends BaseService<EquipmentOverhaulManagementEntityWithBLOBs, Integer> {
 
     void remove(Integer[] ids);
 
-    List<EquipmentOverhaulManagementEntity> findByEquipmentNumber(String equipmentNumber);
+    List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(String equipmentNumber);
 
 }

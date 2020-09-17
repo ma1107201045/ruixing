@@ -3,19 +3,23 @@ package com.yintu.ruixing.weixiudaxiu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 @Mapper
 public interface EquipmentReprocessedProductManagementDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(EquipmentReprocessedProductManagementEntity record);
+    int insert(EquipmentReprocessedProductManagementEntityWithBLOBs record);
 
-    int insertSelective(EquipmentReprocessedProductManagementEntity record);
+    int insertSelective(EquipmentReprocessedProductManagementEntityWithBLOBs record);
 
-    EquipmentReprocessedProductManagementEntity selectByPrimaryKey(Integer id);
+    EquipmentReprocessedProductManagementEntityWithBLOBs selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(EquipmentReprocessedProductManagementEntity record);
+    int updateByPrimaryKeySelective(EquipmentReprocessedProductManagementEntityWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(EquipmentReprocessedProductManagementEntityWithBLOBs record);
 
     int updateByPrimaryKey(EquipmentReprocessedProductManagementEntity record);
 
-    List<EquipmentReprocessedProductManagementEntity> connectSelectByCondition(Integer id, String equipmentNumber);
+    List<EquipmentReprocessedProductManagementEntityWithBLOBs> selectByCondition(Integer[] ids, String equipmentNumber);
+
 }

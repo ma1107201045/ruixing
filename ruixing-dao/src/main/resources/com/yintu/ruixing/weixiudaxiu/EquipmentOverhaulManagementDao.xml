@@ -3,22 +3,30 @@
 <mapper namespace="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
-        <result column="problem_analysis" jdbcType="VARCHAR" property="problemAnalysis"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
-        <result column="procedure" jdbcType="VARCHAR" property="procedure"/>
-        <result column="evaluate" jdbcType="VARCHAR" property="evaluate"/>
-        <result column="number" jdbcType="INTEGER" property="number"/>
-        <result column="send_number" jdbcType="INTEGER" property="sendNumber"/>
-        <result column="return_number" jdbcType="INTEGER" property="returnNumber"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
+        <result column="reason" jdbcType="LONGVARCHAR" property="reason"/>
+        <result column="evaluate" jdbcType="LONGVARCHAR" property="evaluate"/>
+        <result column="problem_analysis" jdbcType="LONGVARCHAR" property="problemAnalysis"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, equipment_number_id, problem_analysis, reason, `procedure`, evaluate, `number`, send_number,
-    return_number
+        id, create_by, create_time, modified_by, modified_time, equipment_number_id, amount
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <sql id="Blob_Column_List">
+        reason, evaluate, problem_analysis
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_equipment_overhaul_management
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -27,170 +35,192 @@
         from mro_equipment_overhaul_management
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
-        insert into mro_equipment_overhaul_management (id, equipment_number_id, problem_analysis,
-                                                       reason, `procedure`, evaluate,
-                                                       number, send_number, return_number)
-        values (#{id,jdbcType=INTEGER}, #{equipmentNumberId,jdbcType=INTEGER}, #{problemAnalysis,jdbcType=VARCHAR},
-                #{reason,jdbcType=VARCHAR}, #{procedure,jdbcType=VARCHAR}, #{evaluate,jdbcType=VARCHAR},
-                #{number,jdbcType=INTEGER}, #{sendNumber,jdbcType=INTEGER}, #{returnNumber,jdbcType=INTEGER})
+    <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
+        insert into mro_equipment_overhaul_management (id, create_by, create_time,
+                                                       modified_by, modified_time, equipment_number_id,
+                                                       amount, reason, evaluate,
+                                                       problem_analysis)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{equipmentNumberId,jdbcType=INTEGER},
+                #{amount,jdbcType=INTEGER}, #{reason,jdbcType=LONGVARCHAR}, #{evaluate,jdbcType=LONGVARCHAR},
+                #{problemAnalysis,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
+    <insert id="insertSelective"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
         insert into mro_equipment_overhaul_management
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id,
             </if>
-            <if test="problemAnalysis != null">
-                problem_analysis,
+            <if test="amount != null">
+                amount,
             </if>
             <if test="reason != null">
                 reason,
             </if>
-            <if test="procedure != null">
-                `procedure`,
-            </if>
             <if test="evaluate != null">
                 evaluate,
             </if>
-            <if test="number != null">
-                `number`,
-            </if>
-            <if test="sendNumber != null">
-                send_number,
-            </if>
-            <if test="returnNumber != null">
-                return_number,
+            <if test="problemAnalysis != null">
+                problem_analysis,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="equipmentNumberId != null">
                 #{equipmentNumberId,jdbcType=INTEGER},
             </if>
-            <if test="problemAnalysis != null">
-                #{problemAnalysis,jdbcType=VARCHAR},
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
             </if>
             <if test="reason != null">
-                #{reason,jdbcType=VARCHAR},
-            </if>
-            <if test="procedure != null">
-                #{procedure,jdbcType=VARCHAR},
+                #{reason,jdbcType=LONGVARCHAR},
             </if>
             <if test="evaluate != null">
-                #{evaluate,jdbcType=VARCHAR},
+                #{evaluate,jdbcType=LONGVARCHAR},
             </if>
-            <if test="number != null">
-                #{number,jdbcType=INTEGER},
-            </if>
-            <if test="sendNumber != null">
-                #{sendNumber,jdbcType=INTEGER},
-            </if>
-            <if test="returnNumber != null">
-                #{returnNumber,jdbcType=INTEGER},
+            <if test="problemAnalysis != null">
+                #{problemAnalysis,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
         update mro_equipment_overhaul_management
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             </if>
-            <if test="problemAnalysis != null">
-                problem_analysis = #{problemAnalysis,jdbcType=VARCHAR},
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
             </if>
             <if test="reason != null">
-                reason = #{reason,jdbcType=VARCHAR},
-            </if>
-            <if test="procedure != null">
-                `procedure` = #{procedure,jdbcType=VARCHAR},
+                reason = #{reason,jdbcType=LONGVARCHAR},
             </if>
             <if test="evaluate != null">
-                evaluate = #{evaluate,jdbcType=VARCHAR},
+                evaluate = #{evaluate,jdbcType=LONGVARCHAR},
             </if>
-            <if test="number != null">
-                `number` = #{number,jdbcType=INTEGER},
-            </if>
-            <if test="sendNumber != null">
-                send_number = #{sendNumber,jdbcType=INTEGER},
-            </if>
-            <if test="returnNumber != null">
-                return_number = #{returnNumber,jdbcType=INTEGER},
+            <if test="problemAnalysis != null">
+                problem_analysis = #{problemAnalysis,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
         update mro_equipment_overhaul_management
-        set equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
-            problem_analysis    = #{problemAnalysis,jdbcType=VARCHAR},
-            reason              = #{reason,jdbcType=VARCHAR},
-            `procedure`         = #{procedure,jdbcType=VARCHAR},
-            evaluate            = #{evaluate,jdbcType=VARCHAR},
-            number              = #{number,jdbcType=INTEGER},
-            send_number         = #{sendNumber,jdbcType=INTEGER},
-            return_number       = #{returnNumber,jdbcType=INTEGER}
+        set create_by           = #{createBy,jdbcType=VARCHAR},
+            create_time         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
+            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
+            amount              = #{amount,jdbcType=INTEGER},
+            reason              = #{reason,jdbcType=LONGVARCHAR},
+            evaluate            = #{evaluate,jdbcType=LONGVARCHAR},
+            problem_analysis    = #{problemAnalysis,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <resultMap id="ConnectResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity">
+        update mro_equipment_overhaul_management
+        set create_by           = #{createBy,jdbcType=VARCHAR},
+            create_time         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
+            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
+            amount              = #{amount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs">
         <id column="eom_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="reason" jdbcType="LONGVARCHAR" property="reason"/>
+        <result column="evaluate" jdbcType="LONGVARCHAR" property="evaluate"/>
+        <result column="problem_analysis" jdbcType="LONGVARCHAR" property="problemAnalysis"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
-        <result column="problem_analysis" jdbcType="VARCHAR" property="problemAnalysis"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
-        <result column="procedure" jdbcType="VARCHAR" property="procedure"/>
-        <result column="evaluate" jdbcType="VARCHAR" property="evaluate"/>
-        <result column="number" jdbcType="INTEGER" property="number"/>
-        <result column="send_number" jdbcType="INTEGER" property="sendNumber"/>
-        <result column="return_number" jdbcType="INTEGER" property="returnNumber"/>
-        <association column="equipment_number_id"  property="equipmentNumberEntity">
+        <association column="equipment_number_id" property="equipmentNumberEntity">
             <id column="en_id" jdbcType="INTEGER" property="id"/>
-            <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
             <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-            <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
-            <result column="en_created_date" jdbcType="DATE" property="createdDate"/>
-            <result column="operator" jdbcType="VARCHAR" property="operator"/>
-            <result column="photo_path" jdbcType="VARCHAR" property="photoPath"/>
-            <result column="photo_name" jdbcType="VARCHAR" property="photoName"/>
-            <result column="equipment_id" jdbcType="INTEGER" property="equipmentId"/>
-            <association column="equipment_id" property="equipmentEntity">
-                <id column="e_id" jdbcType="INTEGER" property="id"/>
-                <result column="e_name" jdbcType="VARCHAR" property="name"/>
-                <result column="e_created_date" jdbcType="DATE" property="createdTime"/>
+            <association column="equipment_spare_parts_management_id" property="equipmentSparePartsManagementEntity">
+                <id column="espm_id" jdbcType="INTEGER" property="id"/>
+                <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
             </association>
         </association>
     </resultMap>
-    <sql id="Connect_Column_List">
-        eom.id as eom_id, equipment_number_id, problem_analysis, reason, `procedure`, evaluate, `number`, send_number, return_number,
-        en.id as en_id, rack_number, equipment_number, hierarchy, created_date as en_created_date, operator, photo_path, photo_name, equipment_id,
-        e.id as e_id, e.name as e_name, e.created_time as e_created_date
+    <sql id="Much_Column_List">
+        eom.id as eom_id, eom.create_by, eom.create_time, eom.modified_by, eom.modified_time, amount, reason, evaluate, problem_analysis,equipment_number_id
+        en.id as en_id, equipment_number,
+        espm.id as espm_id,equipment_name
     </sql>
-    <sql id="Connect_Table_List">
+    <sql id="Much_Table_List">
         mro_equipment_overhaul_management eom
-        inner join mro_equipment_number en on eom.equipment_number_id = en.id
-        inner join mro_equipment e on en.equipment_id = e.id
+        inner join mro_equipment_number en on eom.equipment_number_id=en.id
+        inner join mro_equipment_spare_parts_management espm on en.equipment_spare_parts_management_id=espm.id
     </sql>
-    <sql id="Connect_Condition_List">
+    <sql id="Much_Where_List">
         <where>
-            <if test="id != null">
-                eom.id = #{id,jdbcType=INTEGER}
+            <if test="ids != null">
+                and eom.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
             </if>
             <if test="equipmentNumber != null">
-                and en.equipment_number like concat('%', #{equipmentNumber,jdbcType=VARCHAR},'%')
+                and en.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </sql>
-    <select id="connectSelectByCondition" resultMap="ConnectResultMap">
+    <select id="selectByCondition" resultMap="MuchResultMap">
         select
-        <include refid="Connect_Column_List"/>
+        <include refid="Much_Column_List"/>
         from
-        <include refid="Connect_Table_List"/>
-        <include refid="Connect_Condition_List"/>
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
     </select>
-
 </mapper>

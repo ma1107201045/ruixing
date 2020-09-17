@@ -3,24 +3,32 @@
 <mapper namespace="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="record_time" jdbcType="TIMESTAMP" property="recordTime"/>
+        <result column="repair_time" jdbcType="TIMESTAMP" property="repairTime"/>
+        <result column="return_time" jdbcType="TIMESTAMP" property="returnTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
-        <result column="factory_information" jdbcType="VARCHAR" property="factoryInformation"/>
-        <result column="repair_request" jdbcType="VARCHAR" property="repairRequest"/>
-        <result column="disposition_request" jdbcType="VARCHAR" property="dispositionRequest"/>
-        <result column="test_information" jdbcType="VARCHAR" property="testInformation"/>
-        <result column="repair_information" jdbcType="VARCHAR" property="repairInformation"/>
-        <result column="checkout_information" jdbcType="VARCHAR" property="checkoutInformation"/>
-        <result column="incoming_information" jdbcType="VARCHAR" property="incomingInformation"/>
-        <result column="delivery_information" jdbcType="VARCHAR" property="deliveryInformation"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
+        <result column="user_demand" jdbcType="LONGVARCHAR" property="userDemand"/>
+        <result column="disposition_opinion" jdbcType="LONGVARCHAR" property="dispositionOpinion"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, equipment_number_id, factory_information, repair_request, disposition_request,
-    test_information, repair_information, checkout_information, incoming_information, 
-    delivery_information
+        id, create_by, create_time, modified_by, modified_time, record_time, repair_time,
+    return_time, equipment_number_id
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <sql id="Blob_Column_List">
+        user_demand, disposition_opinion
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_equipment_reprocessed_product_management
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -29,184 +37,206 @@
         from mro_equipment_reprocessed_product_management
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
-        insert into mro_equipment_reprocessed_product_management (id, equipment_number_id, factory_information,
-                                                                  repair_request, disposition_request, test_information,
-                                                                  repair_information, checkout_information,
-                                                                  incoming_information, delivery_information)
-        values (#{id,jdbcType=INTEGER}, #{equipmentNumberId,jdbcType=INTEGER}, #{factoryInformation,jdbcType=VARCHAR},
-                #{repairRequest,jdbcType=VARCHAR}, #{dispositionRequest,jdbcType=VARCHAR}, #{testInformation,jdbcType=VARCHAR},
-                #{repairInformation,jdbcType=VARCHAR}, #{checkoutInformation,jdbcType=VARCHAR},
-                #{incomingInformation,jdbcType=VARCHAR}, #{deliveryInformation,jdbcType=VARCHAR})
+    <insert id="insert"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
+        insert into mro_equipment_reprocessed_product_management (id, create_by, create_time,
+                                                                  modified_by, modified_time, record_time,
+                                                                  repair_time, return_time, equipment_number_id,
+                                                                  user_demand, disposition_opinion)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{recordTime,jdbcType=TIMESTAMP},
+                #{repairTime,jdbcType=TIMESTAMP}, #{returnTime,jdbcType=TIMESTAMP},
+                #{equipmentNumberId,jdbcType=INTEGER},
+                #{userDemand,jdbcType=LONGVARCHAR}, #{dispositionOpinion,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
+    <insert id="insertSelective"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
         insert into mro_equipment_reprocessed_product_management
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="recordTime != null">
+                record_time,
+            </if>
+            <if test="repairTime != null">
+                repair_time,
+            </if>
+            <if test="returnTime != null">
+                return_time,
+            </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id,
             </if>
-            <if test="factoryInformation != null">
-                factory_information,
+            <if test="userDemand != null">
+                user_demand,
             </if>
-            <if test="repairRequest != null">
-                repair_request,
-            </if>
-            <if test="dispositionRequest != null">
-                disposition_request,
-            </if>
-            <if test="testInformation != null">
-                test_information,
-            </if>
-            <if test="repairInformation != null">
-                repair_information,
-            </if>
-            <if test="checkoutInformation != null">
-                checkout_information,
-            </if>
-            <if test="incomingInformation != null">
-                incoming_information,
-            </if>
-            <if test="deliveryInformation != null">
-                delivery_information,
+            <if test="dispositionOpinion != null">
+                disposition_opinion,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recordTime != null">
+                #{recordTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repairTime != null">
+                #{repairTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTime != null">
+                #{returnTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="equipmentNumberId != null">
                 #{equipmentNumberId,jdbcType=INTEGER},
             </if>
-            <if test="factoryInformation != null">
-                #{factoryInformation,jdbcType=VARCHAR},
+            <if test="userDemand != null">
+                #{userDemand,jdbcType=LONGVARCHAR},
             </if>
-            <if test="repairRequest != null">
-                #{repairRequest,jdbcType=VARCHAR},
-            </if>
-            <if test="dispositionRequest != null">
-                #{dispositionRequest,jdbcType=VARCHAR},
-            </if>
-            <if test="testInformation != null">
-                #{testInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="repairInformation != null">
-                #{repairInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="checkoutInformation != null">
-                #{checkoutInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="incomingInformation != null">
-                #{incomingInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="deliveryInformation != null">
-                #{deliveryInformation,jdbcType=VARCHAR},
+            <if test="dispositionOpinion != null">
+                #{dispositionOpinion,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
         update mro_equipment_reprocessed_product_management
         <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recordTime != null">
+                record_time = #{recordTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repairTime != null">
+                repair_time = #{repairTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTime != null">
+                return_time = #{returnTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             </if>
-            <if test="factoryInformation != null">
-                factory_information = #{factoryInformation,jdbcType=VARCHAR},
+            <if test="userDemand != null">
+                user_demand = #{userDemand,jdbcType=LONGVARCHAR},
             </if>
-            <if test="repairRequest != null">
-                repair_request = #{repairRequest,jdbcType=VARCHAR},
-            </if>
-            <if test="dispositionRequest != null">
-                disposition_request = #{dispositionRequest,jdbcType=VARCHAR},
-            </if>
-            <if test="testInformation != null">
-                test_information = #{testInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="repairInformation != null">
-                repair_information = #{repairInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="checkoutInformation != null">
-                checkout_information = #{checkoutInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="incomingInformation != null">
-                incoming_information = #{incomingInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="deliveryInformation != null">
-                delivery_information = #{deliveryInformation,jdbcType=VARCHAR},
+            <if test="dispositionOpinion != null">
+                disposition_opinion = #{dispositionOpinion,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
         update mro_equipment_reprocessed_product_management
-        set equipment_number_id  = #{equipmentNumberId,jdbcType=INTEGER},
-            factory_information  = #{factoryInformation,jdbcType=VARCHAR},
-            repair_request       = #{repairRequest,jdbcType=VARCHAR},
-            disposition_request  = #{dispositionRequest,jdbcType=VARCHAR},
-            test_information     = #{testInformation,jdbcType=VARCHAR},
-            repair_information   = #{repairInformation,jdbcType=VARCHAR},
-            checkout_information = #{checkoutInformation,jdbcType=VARCHAR},
-            incoming_information = #{incomingInformation,jdbcType=VARCHAR},
-            delivery_information = #{deliveryInformation,jdbcType=VARCHAR}
+        set create_by           = #{createBy,jdbcType=VARCHAR},
+            create_time         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
+            record_time         = #{recordTime,jdbcType=TIMESTAMP},
+            repair_time         = #{repairTime,jdbcType=TIMESTAMP},
+            return_time         = #{returnTime,jdbcType=TIMESTAMP},
+            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
+            user_demand         = #{userDemand,jdbcType=LONGVARCHAR},
+            disposition_opinion = #{dispositionOpinion,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
-
-    <resultMap id="ConnectResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
+    <update id="updateByPrimaryKey"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity">
+        update mro_equipment_reprocessed_product_management
+        set create_by           = #{createBy,jdbcType=VARCHAR},
+            create_time         = #{createTime,jdbcType=TIMESTAMP},
+            modified_by         = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
+            record_time         = #{recordTime,jdbcType=TIMESTAMP},
+            repair_time         = #{repairTime,jdbcType=TIMESTAMP},
+            return_time         = #{returnTime,jdbcType=TIMESTAMP},
+            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
         <id column="erpm_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="record_time" jdbcType="TIMESTAMP" property="recordTime"/>
+        <result column="repair_time" jdbcType="TIMESTAMP" property="repairTime"/>
+        <result column="return_time" jdbcType="TIMESTAMP" property="returnTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
-        <result column="factory_information" jdbcType="VARCHAR" property="factoryInformation"/>
-        <result column="repair_request" jdbcType="VARCHAR" property="repairRequest"/>
-        <result column="disposition_request" jdbcType="VARCHAR" property="dispositionRequest"/>
-        <result column="test_information" jdbcType="VARCHAR" property="testInformation"/>
-        <result column="repair_information" jdbcType="VARCHAR" property="repairInformation"/>
-        <result column="checkout_information" jdbcType="VARCHAR" property="checkoutInformation"/>
-        <result column="incoming_information" jdbcType="VARCHAR" property="incomingInformation"/>
-        <result column="delivery_information" jdbcType="VARCHAR" property="deliveryInformation"/>
+        <result column="user_demand" jdbcType="LONGVARCHAR" property="userDemand"/>
+        <result column="disposition_opinion" jdbcType="LONGVARCHAR" property="dispositionOpinion"/>
         <association column="equipment_number_id" property="equipmentNumberEntity">
             <id column="en_id" jdbcType="INTEGER" property="id"/>
-            <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
             <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-            <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
-            <result column="en_created_date" jdbcType="DATE" property="createdDate"/>
-            <result column="operator" jdbcType="VARCHAR" property="operator"/>
-            <result column="photo_path" jdbcType="VARCHAR" property="photoPath"/>
-            <result column="photo_name" jdbcType="VARCHAR" property="photoName"/>
-            <result column="equipment_id" jdbcType="INTEGER" property="equipmentId"/>
-            <association column="equipment_id" property="equipmentEntity">
-                <id column="e_id" jdbcType="INTEGER" property="id"/>
-                <result column="e_name" jdbcType="VARCHAR" property="name"/>
-                <result column="e_created_date" jdbcType="DATE" property="createdTime"/>
+            <association column="equipment_spare_parts_management_id" property="equipmentSparePartsManagementEntity">
+                <id column="espm_id" jdbcType="INTEGER" property="id"/>
+                <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
             </association>
         </association>
     </resultMap>
-    <sql id="Connect_Column_List">
-        erpm.id as erpm_id, equipment_number_id, factory_information, repair_request, disposition_request,test_information, repair_information, checkout_information, incoming_information, delivery_information,
-        en.id as en_id, rack_number, equipment_number, hierarchy, created_date as en_created_date, operator, photo_path, photo_name, equipment_id,
-        e.id as e_id, e.name as e_name, e.created_time as e_created_date
+    <sql id="Much_Column_List">
+        erpm.id as erpm_id , erpm.create_by, erpm.create_time, erpm.modified_by, erpm.modified_time, record_time, repair_time,return_time, equipment_number_id, user_demand, disposition_opinion,
+        en.id as en_id, equipment_number,
+        espm.id as espm_id,equipment_name
     </sql>
-    <sql id="Connect_Table_List">
+    <sql id="Much_Table_List">
         mro_equipment_reprocessed_product_management erpm
-        inner join mro_equipment_number en on erpm.equipment_number_id = en.id
-        inner join mro_equipment e on en.equipment_id = e.id
+        inner join mro_equipment_number en on erpm.equipment_number_id=en.id
+        inner join mro_equipment_spare_parts_management espm on en.equipment_spare_parts_management_id=espm.id
     </sql>
-    <sql id="Connect_Condition_List">
+    <sql id="Much_Where_List">
         <where>
-            <if test="id != null">
-                erpm.id=#{id,jdbcType=INTEGER}
+            <if test="ids != null">
+                and erpm.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
             </if>
             <if test="equipmentNumber != null">
                 and en.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </sql>
-    <select id="connectSelectByCondition" resultMap="ConnectResultMap">
+    <select id="selectByCondition" resultMap="MuchResultMap">
         select
-        <include refid="Connect_Column_List"/>
+        <include refid="Much_Column_List"/>
         from
-        <include refid="Connect_Table_List"/>
-        <include refid="Connect_Condition_List"/>
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
     </select>
 </mapper>

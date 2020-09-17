@@ -18,5 +18,5 @@ public interface EquipmentSparePartsManagementDao {
 
     int updateByPrimaryKey(EquipmentSparePartsManagementEntity record);
 
-    List<EquipmentSparePartsManagementEntity> selectByCondition(Integer id, String materialNumber, String equipmentName);
+    List<EquipmentSparePartsManagementEntity> selectByCondition(Integer[] ids, String materialNumber, String equipmentName);
 }

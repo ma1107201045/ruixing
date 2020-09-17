@@ -208,8 +208,11 @@
     </sql>
     <sql id="Connect_Condition_List">
         <where>
-            <if test="id != null">
-                ffim.id=#{id,jdbcType=INTEGER}
+            <if test="ids != null">
+                ffim.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
             </if>
             <if test="startDate != null and endDate != null">
                 and ffim.start_date &gt;= #{startDate,jdbcType=DATE} and ffim.end_date &lt;= #{endDate,jdbcType=DATE}

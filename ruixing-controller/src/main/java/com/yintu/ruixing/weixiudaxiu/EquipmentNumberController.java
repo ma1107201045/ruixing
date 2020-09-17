@@ -6,18 +6,15 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
-import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberService;
-import com.yintu.ruixing.weixiudaxiu.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 器材编号管理
@@ -34,6 +31,8 @@ public class EquipmentNumberController extends SessionController implements Base
     private EquipmentNumberRecordService equipmentNumberRecordService;
     @Autowired
     private DataStatsService dataStatsService;
+    @Autowired
+    private EquipmentSparePartsManagementService equipmentSparePartsManagementService;
 
     @PostMapping
     public Map<String, Object> add(@Validated EquipmentNumberEntity entity) {
@@ -50,6 +49,11 @@ public class EquipmentNumberController extends SessionController implements Base
         return null;
     }
 
+    @Override
+    public Map<String, Object> edit(Integer id, EquipmentNumberEntity entity) {
+        return null;
+    }
+
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
         equipmentNumberService.remove(ids);
@@ -57,12 +61,17 @@ public class EquipmentNumberController extends SessionController implements Base
 
     }
 
-    @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentNumberEntity entity) {
-        entity.setModifiedBy(this.getLoginUserName());
-        entity.setModifiedTime(new Date());
-        equipmentNumberService.edit(entity);
-        return ResponseDataUtil.ok("修改器材编号信息成功");
+    /**
+     * 更换器材编号
+     *
+     * @param id            id
+     * @param configuration 配置
+     * @return 返回成功提示
+     */
+    @PutMapping("/{id}/change")
+    public Map<String, Object> change(@PathVariable Integer id, String equipmentNumber, String configuration) {
+        equipmentNumberService.change(this.getLoginUserName(), this.getLoginTrueName(), id, equipmentNumber, configuration);
+        return ResponseDataUtil.ok("更换器材编号信息成功");
     }
 
     @GetMapping("/{id}")
@@ -111,10 +120,20 @@ public class EquipmentNumberController extends SessionController implements Base
         return ResponseDataUtil.ok("查询车站成功", cheZhanEntities);
     }
 
+    //查询全部器材成功
+    @GetMapping("/equipment/spare/parts/managements")
+    public Map<String, Object> findEquipmentSparePartsManagement() {
+        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, null);
+        equipmentSparePartsManagementEntities = equipmentSparePartsManagementEntities.stream()
+                .sorted(Comparator.comparing(EquipmentSparePartsManagementEntity::getId).reversed())
+                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询应急备品管理列表信息成功", equipmentSparePartsManagementEntities);
+    }
+
     @GetMapping("/{id}/equipment/number/records")
     public Map<String, Object> findEquipmentNumberRecord(@PathVariable Integer id) {
         List<EquipmentNumberRecordEntity> equipmentNumberRecordEntities = equipmentNumberRecordService.findByCondition(null, id);
         return ResponseDataUtil.ok("查询器材编号更换记录列表信息成功", equipmentNumberRecordEntities);
     }
-
 }
+
