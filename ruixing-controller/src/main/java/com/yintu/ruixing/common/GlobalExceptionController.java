@@ -37,35 +37,23 @@ public class GlobalExceptionController {
         return ResponseDataUtil.error(sb.toString());
     }
 
-    @ExceptionHandler(SQLException.class)
-    public Map<String, Object> sqlException(SQLException e) {
-        if (e instanceof SQLIntegrityConstraintViolationException) {
-            return ResponseDataUtil.error("该数据有关联数据，操作失败");
-        }
-        logger.error("11111111111111111111111111111111111111111111111111111111111111111111111111111111"+e.getMessage());
-        return ResponseDataUtil.error("数据库异常，操作失败");
-    }
-
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Map<String, Object> maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         logger.error(e.getMessage());
         return ResponseDataUtil.error("文件上传异常，文件过大");
     }
 
+    @ExceptionHandler(SQLException.class)
+    public Map<String, Object> sqlException(SQLException e) {
+        if (e instanceof SQLIntegrityConstraintViolationException) {
+            return ResponseDataUtil.error("该数据有关联数据，操作失败");
+        }
+        logger.error("" + e.getMessage());
+        return ResponseDataUtil.error("数据库异常，操作失败");
+    }
+
     @ExceptionHandler(BaseRuntimeException.class)
     public Map<String, Object> baseRuntimeException(BaseRuntimeException e) {
-        logger.error(e.getMessage());
-        return ResponseDataUtil.error(e.getMessage());
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public Map<String, Object> runtimeException(RuntimeException e) {
-        logger.error(e.getMessage());
-        return ResponseDataUtil.error(e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public Map<String, Object> exception(Exception e) {
         logger.error(e.getMessage());
         return ResponseDataUtil.error(e.getMessage());
     }
