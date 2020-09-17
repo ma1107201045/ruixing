@@ -6,32 +6,27 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipmentOverhaulManagementEntity implements Serializable {
-
-    private static final long serialVersionUID = 1380796148705602000L;
-
+    private static final long serialVersionUID = 1043221803387269161L;
     private Integer id;
+
+    private String createBy;
+
+    private Date createTime;
+
+    private String modifiedBy;
+
+    private Date modifiedTime;
     @NotNull
     private Integer equipmentNumberId;
-
-    private String problemAnalysis;
-
-    private String reason;
-
-    private String procedure;
-
-    private String evaluate;
     @NotNull
-    private Integer number;
-    @NotNull
-    private Integer sendNumber;
-    @NotNull
-    private Integer returnNumber;
+    private Integer amount;
 
-    private EquipmentNumberEntity equipmentNumberEntity;
+
 
 }

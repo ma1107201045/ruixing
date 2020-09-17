@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class EquipmentOverhaulManagementController extends SessionController imp
 
     @PostMapping
     public Map<String, Object> add(@Validated EquipmentOverhaulManagementEntityWithBLOBs entity) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         equipmentOverhaulManagementService.add(entity);
         return ResponseDataUtil.ok("添加整改管理信息成功");
     }
@@ -45,6 +50,8 @@ public class EquipmentOverhaulManagementController extends SessionController imp
 
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentOverhaulManagementEntityWithBLOBs entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         equipmentOverhaulManagementService.edit(entity);
         return ResponseDataUtil.ok("修改整改管理信息成功");
     }

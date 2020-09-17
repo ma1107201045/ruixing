@@ -2,6 +2,7 @@ package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity;
+import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs;
 import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class EquipmentOverhaulManagementServiceImpl implements EquipmentOverhaul
 
 
     @Override
-    public void add(EquipmentOverhaulManagementEntity entity) {
+    public void add(EquipmentOverhaulManagementEntityWithBLOBs entity) {
         equipmentOverhaulManagementDao.insertSelective(entity);
     }
 
@@ -32,13 +33,13 @@ public class EquipmentOverhaulManagementServiceImpl implements EquipmentOverhaul
     }
 
     @Override
-    public void edit(EquipmentOverhaulManagementEntity entity) {
+    public void edit(EquipmentOverhaulManagementEntityWithBLOBs entity) {
         equipmentOverhaulManagementDao.updateByPrimaryKeySelective(entity);
     }
 
     @Override
-    public EquipmentOverhaulManagementEntity findById(Integer id) {
-        List<EquipmentOverhaulManagementEntity> equipmentOverhaulManagementEntities = equipmentOverhaulManagementDao.connectSelectByCondition(id, null);
+    public EquipmentOverhaulManagementEntityWithBLOBs findById(Integer id) {
+        List<EquipmentOverhaulManagementEntityWithBLOBs> equipmentOverhaulManagementEntities = equipmentOverhaulManagementDao.selectByCondition(id, null);
         return equipmentOverhaulManagementEntities.isEmpty() ? null : equipmentOverhaulManagementEntities.get(0);
     }
 
@@ -50,7 +51,7 @@ public class EquipmentOverhaulManagementServiceImpl implements EquipmentOverhaul
     }
 
     @Override
-    public List<EquipmentOverhaulManagementEntity> findByEquipmentNumber(String equipmentNumber) {
-        return equipmentOverhaulManagementDao.connectSelectByCondition(null, equipmentNumber);
+    public List<EquipmentOverhaulManagementEntityWithBLOBs> findByCondition(Integer id, String equipmentNumber) {
+        return equipmentOverhaulManagementDao.selectByCondition(id, equipmentNumber);
     }
 }

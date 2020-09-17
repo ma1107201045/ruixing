@@ -7,15 +7,17 @@ import java.util.List;
 public interface EquipmentOverhaulManagementDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(EquipmentOverhaulManagementEntity record);
+    int insert(EquipmentOverhaulManagementEntityWithBLOBs record);
 
-    int insertSelective(EquipmentOverhaulManagementEntity record);
+    int insertSelective(EquipmentOverhaulManagementEntityWithBLOBs record);
 
-    EquipmentOverhaulManagementEntity selectByPrimaryKey(Integer id);
+    EquipmentOverhaulManagementEntityWithBLOBs selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(EquipmentOverhaulManagementEntity record);
+    int updateByPrimaryKeySelective(EquipmentOverhaulManagementEntityWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(EquipmentOverhaulManagementEntityWithBLOBs record);
 
     int updateByPrimaryKey(EquipmentOverhaulManagementEntity record);
 
-    List<EquipmentOverhaulManagementEntity> connectSelectByCondition(Integer id, String equipmentNumber);
+    List<EquipmentOverhaulManagementEntityWithBLOBs> selectByCondition(Integer id, String equipmentNumber);
 }
