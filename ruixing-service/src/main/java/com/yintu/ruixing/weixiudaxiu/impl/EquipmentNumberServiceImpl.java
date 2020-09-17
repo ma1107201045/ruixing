@@ -29,7 +29,6 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
         equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
         equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
         equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
-        equipmentNumberRecordEntity.setName(entity.getName());
         equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
         equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
         equipmentNumberRecordService.add(equipmentNumberRecordEntity);
@@ -49,7 +48,6 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
         equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
         equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
         equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
-        equipmentNumberRecordEntity.setName(entity.getName());
         equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
         equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
         equipmentNumberRecordService.add(equipmentNumberRecordEntity);

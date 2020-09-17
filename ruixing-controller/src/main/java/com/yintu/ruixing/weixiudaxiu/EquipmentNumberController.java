@@ -34,6 +34,8 @@ public class EquipmentNumberController extends SessionController implements Base
     private EquipmentNumberRecordService equipmentNumberRecordService;
     @Autowired
     private DataStatsService dataStatsService;
+    @Autowired
+    private EquipmentSparePartsManagementService equipmentSparePartsManagementService;
 
     @PostMapping
     public Map<String, Object> add(@Validated EquipmentNumberEntity entity) {
@@ -111,10 +113,17 @@ public class EquipmentNumberController extends SessionController implements Base
         return ResponseDataUtil.ok("查询车站成功", cheZhanEntities);
     }
 
+    //查询全部器材成功
+    @GetMapping("/equipment/spare/parts/managements")
+    public Map<String, Object> findEquipmentSparePartsManagement() {
+        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, null, null);
+        return ResponseDataUtil.ok("查询应急备品管理列表信息成功", equipmentSparePartsManagementEntities);
+    }
+
     @GetMapping("/{id}/equipment/number/records")
     public Map<String, Object> findEquipmentNumberRecord(@PathVariable Integer id) {
         List<EquipmentNumberRecordEntity> equipmentNumberRecordEntities = equipmentNumberRecordService.findByCondition(null, id);
         return ResponseDataUtil.ok("查询器材编号更换记录列表信息成功", equipmentNumberRecordEntities);
     }
-
 }
+
