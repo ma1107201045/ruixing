@@ -43,9 +43,18 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     @Autowired
     private AnZhuangTiaoShiCheZhanDao anZhuangTiaoShiCheZhanDao;
 
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceChooseDao anZhuangTiaoShiXiangMuServiceChooseDao;
+
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
+
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
+
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay) {
-        return anZhuangTiaoShiXiangMuDao.findLastMonthXiangMu(today,lastMothDay);
+        return anZhuangTiaoShiXiangMuDao.findLastMonthXiangMu(today, lastMothDay);
     }
 
     @Override
@@ -149,11 +158,37 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findXianDuanDataByLeiXing(Integer leiXingId, Integer page, Integer size) {
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanDataByLeiXing(leiXingId);
+        List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> titleList = new ArrayList<>();
+
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
             Integer id = xiangMuEntity.getId();
-            Integer chezhantotal = anZhuangTiaoShiCheZhanDao.findCheZhanTotal(id);
+            //获取线段下面车站的个数
+            Integer chezhantotal = anZhuangTiaoShiXiangMuServiceChooseDao.findCheZhanTotal(id);
             xiangMuEntity.setCheZhanTotal(chezhantotal);
-            Integer jiGuitotal = anZhuangTiaoShiCheZhanDao.findJiGuiTotal(id);
+            //查询属性的完成和到货个数
+            List<Integer> serId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllSeridByXDid(id);
+            for (Integer serid : serId) {
+                List<Integer> choId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllChoidBySerid(serid);
+                if (choId.size() == 0 || choId.get(0) == null) {
+                    Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
+                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
+                    xiangMuServiceStatusEntity.setTitleTotal(total);
+                    titleList.add(xiangMuServiceStatusEntity);
+                }
+                if (choId.size() != 0 && choId.get(0) != null) {
+                    for (Integer choid : choId) {
+                        Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findChooseTotal(choid, id);
+                        AnZhuangTiaoShiXiangMuServiceStatusChooseEntity xiangMuServiceStatusChooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.selectByPrimaryKey(choid);
+                        xiangMuServiceStatusChooseEntity.setChooseTotal(total);
+                        chooseList.add(xiangMuServiceStatusChooseEntity);
+                    }
+                }
+                xiangMuEntity.setTitlelist(titleList);
+                xiangMuEntity.setChooselist(chooseList);
+            }
+
+            /*Integer jiGuitotal = anZhuangTiaoShiCheZhanDao.findJiGuiTotal(id);
             xiangMuEntity.setJiGuiTotal(jiGuitotal);
             Integer indoorKaBantotal = anZhuangTiaoShiCheZhanDao.findIndoorKaBantotal(id);
             xiangMuEntity.setIndoorKaBanTotal(indoorKaBantotal);
@@ -172,7 +207,9 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
             Integer shiyunxingtotal = anZhuangTiaoShiCheZhanDao.findShiYunXingTotal(id);
             xiangMuEntity.setShiYunXingTotal(shiyunxingtotal);
             Integer kaitongtotal = anZhuangTiaoShiCheZhanDao.findKaiTongTotal(id);
-            xiangMuEntity.setKaiTongTotal(kaitongtotal);
+            xiangMuEntity.setKaiTongTotal(kaitongtotal);*/
+
+
         }
         return xiangMuEntities;
     }

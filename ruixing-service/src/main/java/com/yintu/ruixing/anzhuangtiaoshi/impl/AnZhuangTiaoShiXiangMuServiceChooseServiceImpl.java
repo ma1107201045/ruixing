@@ -31,8 +31,21 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
 
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
+
     @Override
-    public List<AnZhuangTiaoShiXiangMuEntity> findAllByXDid(Integer xdid, Integer page, Integer size) {
+    public void addXiangMu(AnZhuangTiaoShiXiangMuEntity xiangMuEntity) {
+        anZhuangTiaoShiXiangMuDao.addSanJiShuXiangMu(xiangMuEntity);
+    }
+
+    @Override
+    public AnZhuangTiaoShiXiangMuServiceStatusEntity findServiceStatusById(Integer id) {
+        return anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiXiangMuEntity> findAllByXDid(Integer xdid) {
         AnZhuangTiaoShiXiangMuEntity xiangMuEntityList = anZhuangTiaoShiXiangMuDao.findXiangMuById(xdid);
         Integer id = xiangMuEntityList.getId();
         Integer worksid = xiangMuEntityList.getWorksid();

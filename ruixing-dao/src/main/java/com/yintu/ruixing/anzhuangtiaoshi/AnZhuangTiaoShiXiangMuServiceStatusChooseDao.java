@@ -11,13 +11,14 @@ public interface AnZhuangTiaoShiXiangMuServiceStatusChooseDao {
 
     int insert(AnZhuangTiaoShiXiangMuServiceStatusChooseEntity record);
 
-    AnZhuangTiaoShiXiangMuServiceStatusChooseEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(AnZhuangTiaoShiXiangMuServiceStatusChooseEntity record);
 
     int updateByPrimaryKey(AnZhuangTiaoShiXiangMuServiceStatusChooseEntity record);
 
     ////////////////////////////////////////////////////////////////////
+
+    AnZhuangTiaoShiXiangMuServiceStatusChooseEntity selectByPrimaryKey(Integer id);
+
     int insertSelective(AnZhuangTiaoShiXiangMuServiceStatusChooseEntity record);
 
     void deleteBySid(Integer sid);

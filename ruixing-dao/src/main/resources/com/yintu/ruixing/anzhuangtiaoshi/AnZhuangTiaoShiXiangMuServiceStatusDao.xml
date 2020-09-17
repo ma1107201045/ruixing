@@ -22,6 +22,8 @@
     id, serviceName, choose, timeType,isNotOver, createTime, createName, updateTime, updateName
   </sql>
 
+
+
   <!--查询所有的服务状态标识   用于展示在首页或者新增页面-->
   <select id="findAllServiceStatus"  resultMap="BaseResultMap">
       SELECT

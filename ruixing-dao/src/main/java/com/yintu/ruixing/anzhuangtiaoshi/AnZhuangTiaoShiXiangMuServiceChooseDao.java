@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceChooseEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,4 +27,14 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     List<Integer> findCZidByXDid(Integer xdid);
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByCZid(Integer czid);
+
+    Integer findCheZhanTotal(Integer id);
+
+    List<Integer> findAllSeridByXDid(Integer id);
+
+    List<Integer> findAllChoidBySerid(@Param("serid")Integer serid);
+
+    Integer findTitleTotal(@Param("serid")Integer serid,@Param("id") Integer id);
+
+    Integer findChooseTotal(@Param("choid") Integer choid,@Param("id") Integer id);
 }
