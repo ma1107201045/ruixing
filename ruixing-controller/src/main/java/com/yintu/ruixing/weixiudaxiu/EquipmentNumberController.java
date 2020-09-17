@@ -10,14 +10,17 @@ import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentNumberService;
 import com.yintu.ruixing.weixiudaxiu.EquipmentService;
+import com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 器材编号管理
@@ -117,6 +120,9 @@ public class EquipmentNumberController extends SessionController implements Base
     @GetMapping("/equipment/spare/parts/managements")
     public Map<String, Object> findEquipmentSparePartsManagement() {
         List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, null, null);
+        equipmentSparePartsManagementEntities = equipmentSparePartsManagementEntities.stream()
+                .sorted(Comparator.comparing(EquipmentSparePartsManagementEntity::getId).reversed())
+                .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询应急备品管理列表信息成功", equipmentSparePartsManagementEntities);
     }
 

@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 整改管理
@@ -82,6 +84,9 @@ public class EquipmentOverhaulManagementController extends SessionController imp
     @ResponseBody
     public Map<String, Object> findEquipmentNumberAll() {
         List<EquipmentNumberEntity> equipmentNumberEntities = equipmentNumberService.findByCondition(null, null);
+        equipmentNumberEntities = equipmentNumberEntities.stream()
+                .sorted(Comparator.comparing(EquipmentNumberEntity::getId).reversed())
+                .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询器材编号信息列表成功", equipmentNumberEntities);
     }
 }
