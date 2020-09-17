@@ -123,7 +123,7 @@ public class EquipmentNumberController extends SessionController implements Base
     //查询全部器材成功
     @GetMapping("/equipment/spare/parts/managements")
     public Map<String, Object> findEquipmentSparePartsManagement() {
-        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, null, null);
+        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, null);
         equipmentSparePartsManagementEntities = equipmentSparePartsManagementEntities.stream()
                 .sorted(Comparator.comparing(EquipmentSparePartsManagementEntity::getId).reversed())
                 .collect(Collectors.toList());

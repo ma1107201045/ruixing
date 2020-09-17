@@ -76,7 +76,7 @@ public class EquipmentSparePartsManagementController extends SessionController i
                                         @RequestParam(value = "material_number", required = false) String materialNumber,
                                         @RequestParam(value = "equipment_name", required = false) String equipmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(null, materialNumber, equipmentName);
+        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(materialNumber, equipmentName);
         PageInfo<EquipmentSparePartsManagementEntity> pageInfo = new PageInfo<>(equipmentSparePartsManagementEntities);
         return ResponseDataUtil.ok("查询应急备品管理信息列表成功", pageInfo);
     }

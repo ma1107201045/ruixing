@@ -24,13 +24,11 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
 
     @Autowired
     private EquipmentReprocessedProductManagementService equipmentReprocessedProductManagementService;
-    @Autowired
-    private EquipmentNumberService equipmentNumberService;
 
-    @PostMapping
-    public Map<String, Object> add(@Validated EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
-        equipmentReprocessedProductManagementService.add(entity);
-        return ResponseDataUtil.ok("添加返修品信息成功");
+
+    @Override
+    public Map<String, Object> add(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
+        return null;
     }
 
     @Override
@@ -67,16 +65,4 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
         return ResponseDataUtil.ok("查询返修品列表信息成功", pageInfo);
     }
 
-
-    /**
-     * 查询器材编号全部信息
-     *
-     * @return 返回信息
-     */
-    @GetMapping("/equipment/numbers")
-    @ResponseBody
-    public Map<String, Object> findEquipmentNumberAll() {
-        List<EquipmentNumberEntity> equipmentNumberEntities = equipmentNumberService.findByCondition(null, null);
-        return ResponseDataUtil.ok("查询器材编号信息列表成功", equipmentNumberEntities);
-    }
 }

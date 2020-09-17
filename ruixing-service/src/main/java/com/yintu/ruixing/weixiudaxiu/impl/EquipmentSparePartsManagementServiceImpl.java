@@ -40,7 +40,7 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
 
     @Override
     public EquipmentSparePartsManagementEntity findById(Integer id) {
-        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementDao.selectByCondition(id, null, null);
+        List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementDao.selectByCondition(new Integer[]{id}, null, null);
         return equipmentSparePartsManagementEntities.isEmpty() ? null : equipmentSparePartsManagementEntities.get(0);
     }
 
@@ -87,8 +87,8 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
     }
 
     @Override
-    public List<EquipmentSparePartsManagementEntity> findByCondition(Integer id, String materialNumber, String equipmentName) {
-        return equipmentSparePartsManagementDao.selectByCondition(id, materialNumber, equipmentName);
+    public List<EquipmentSparePartsManagementEntity> findByCondition(String materialNumber, String equipmentName) {
+        return equipmentSparePartsManagementDao.selectByCondition(null, materialNumber, equipmentName);
     }
 
 }

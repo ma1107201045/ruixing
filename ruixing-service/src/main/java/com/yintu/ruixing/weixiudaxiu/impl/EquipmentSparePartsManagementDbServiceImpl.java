@@ -49,7 +49,7 @@ public class EquipmentSparePartsManagementDbServiceImpl implements EquipmentSpar
     }
 
     @Override
-    public List<EquipmentSparePartsManagementDbEntity> findByCondition(Integer id, String equipmentName) {
-        return equipmentSparePartsManagementDbDao.selectByCondition(null, equipmentName);
+    public List<EquipmentSparePartsManagementDbEntity> findByCondition(Integer id, String equipmentNumber) {
+        return equipmentSparePartsManagementDbDao.selectByCondition(null, equipmentNumber);
     }
 }

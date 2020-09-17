@@ -24,13 +24,11 @@ public class EquipmentSparePartsManagementDbController extends SessionController
 
     @Autowired
     private EquipmentSparePartsManagementDbService equipmentSparePartsManagementDbService;
-    @Autowired
-    private EquipmentService equipmentService;
 
-    @PostMapping
-    public Map<String, Object> add(@Validated EquipmentSparePartsManagementDbEntity entity) {
-        equipmentSparePartsManagementDbService.add(entity);
-        return ResponseDataUtil.ok("添加应急备品管理发货单信息成功");
+
+    @Override
+    public Map<String, Object> add(EquipmentSparePartsManagementDbEntity entity) {
+        return null;
     }
 
     @Override
@@ -57,25 +55,14 @@ public class EquipmentSparePartsManagementDbController extends SessionController
     }
 
     @GetMapping
-    public Map<String, Object> findById(@RequestParam("page_number") Integer pageNumber,
-                                        @RequestParam("page_size") Integer pageSize,
-                                        @RequestParam(value = "order_by", required = false, defaultValue = "espd.id DESC") String orderBy,
-                                        @RequestParam(value = "equipment_name", required = false) String equipmentName) {
+    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
+                                       @RequestParam("page_size") Integer pageSize,
+                                       @RequestParam(value = "order_by", required = false, defaultValue = "espmd.id DESC") String orderBy,
+                                       @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByCondition(null, equipmentName);
+        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByCondition(null, equipmentNumber);
         PageInfo<EquipmentSparePartsManagementDbEntity> pageInfo = new PageInfo<>(equipmentSparePartsManagementDbEntities);
         return ResponseDataUtil.ok("查询应急备品管理发货单信息列表成功", pageInfo);
     }
 
-    /**
-     * 查询设备全部信息
-     *
-     * @return
-     */
-    @GetMapping("/equipments")
-    @ResponseBody
-    public Map<String, Object> findEquipmentAll() {
-        List<EquipmentEntity> equipmentEntities = equipmentService.findAll();
-        return ResponseDataUtil.ok("查询设备信息列表成功", equipmentEntities);
-    }
 }

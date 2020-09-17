@@ -225,8 +225,11 @@
     </sql>
     <sql id="Much_Where_List">
         <where>
-            <if test="id != null">
-                and espmd.id=#{id,jdbcType=INTEGER}
+            <if test="ids != null">
+                and espmd.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
             </if>
             <if test="equipmentNumber != null">
                 and en.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')

@@ -1,5 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,12 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     private EquipmentNumberDao equipmentNumberDao;
     @Autowired
     private EquipmentNumberRecordService equipmentNumberRecordService;
+    @Autowired
+    private EquipmentSparePartsManagementService equipmentSparePartsManagementService;
+    @Autowired
+    private EquipmentSparePartsManagementDbService equipmentSparePartsManagementDbService;
+    @Autowired
+    private EquipmentReprocessedProductManagementService equipmentReprocessedProductManagementService;
 
     @Override
     public void add(EquipmentNumberEntity entity) {
@@ -63,6 +70,20 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentNumberEntity.setConfiguration(configuration);
             this.edit(equipmentNumberEntity);//更新器材编号以及配置
 
+            Integer equipmentSparePartsManagementId = equipmentNumberEntity.getEquipmentSparePartsManagementId();
+            EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity = equipmentSparePartsManagementService.findById(equipmentSparePartsManagementId);
+            if (equipmentSparePartsManagementEntity == null)
+                throw new BaseRuntimeException("应急备品信息有误");
+            Integer inventoryAmount = equipmentSparePartsManagementEntity.getInventoryAmount();
+            if (inventoryAmount < 1)
+                throw new BaseRuntimeException("库存不足，请及时入库");
+            equipmentSparePartsManagementEntity.setModifiedBy(equipmentNumberEntity.getModifiedBy());
+            equipmentSparePartsManagementEntity.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentSparePartsManagementEntity.setInventoryAmount(inventoryAmount - 1);
+            equipmentSparePartsManagementService.edit(equipmentSparePartsManagementEntity);//库存减1
+
+
+
             EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
             equipmentNumberRecordEntity.setCreateBy(equipmentNumberEntity.getModifiedBy());
             equipmentNumberRecordEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
@@ -72,10 +93,30 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentNumberRecordEntity.setConfiguration(equipmentNumberEntity.getConfiguration());
             equipmentNumberRecordEntity.setEquipmentNumberId(equipmentNumberEntity.getId());
             equipmentNumberRecordService.add(equipmentNumberRecordEntity);//生成更换记录
-            //生成发货单
 
-            //生成返修品记录
+            EquipmentSparePartsManagementDbEntity equipmentSparePartsManagementDbEntity = new EquipmentSparePartsManagementDbEntity();
+            equipmentSparePartsManagementDbEntity.setCreateBy(equipmentNumberEntity.getModifiedBy());
+            equipmentSparePartsManagementDbEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
+            equipmentSparePartsManagementDbEntity.setModifiedBy(equipmentNumberEntity.getModifiedBy());
+            equipmentSparePartsManagementDbEntity.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentSparePartsManagementDbEntity.setQuantity(equipmentNumberEntity.getQuantity());
 
+            equipmentSparePartsManagementDbEntity.setProvinceId(equipmentSparePartsManagementEntity.getProvinceId());
+            equipmentSparePartsManagementDbEntity.setCityId(equipmentSparePartsManagementEntity.getCityId());
+            equipmentSparePartsManagementDbEntity.setDistrictId(equipmentSparePartsManagementEntity.getDistrictId());
+            equipmentSparePartsManagementDbEntity.setDetailedAddress(equipmentSparePartsManagementEntity.getDetailedAddress());
+            equipmentSparePartsManagementDbEntity.setContactPerson(equipmentSparePartsManagementEntity.getContactPerson());
+            equipmentSparePartsManagementDbEntity.setContactPhone(equipmentSparePartsManagementEntity.getContactPhone());
+            equipmentSparePartsManagementDbEntity.setEquipmentNumberId(id);
+            equipmentSparePartsManagementDbService.add(equipmentSparePartsManagementDbEntity);  //生成发货单
+
+            EquipmentReprocessedProductManagementEntityWithBLOBs equipmentReprocessedProductManagementEntityWithBLOBs = new EquipmentReprocessedProductManagementEntityWithBLOBs();
+            equipmentReprocessedProductManagementEntityWithBLOBs.setCreateBy(equipmentNumberEntity.getModifiedBy());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setCreateTime(equipmentNumberEntity.getModifiedTime());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedBy(equipmentNumberEntity.getModifiedBy());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumberId(id);
+            equipmentReprocessedProductManagementService.add(equipmentReprocessedProductManagementEntityWithBLOBs);//生成返修品记录
         }
     }
 
