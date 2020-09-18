@@ -37,13 +37,13 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private String contactPhone;
 
-    private Integer equipmentNumberId;
-
     private DistrictEntity provinceEntity;
 
     private DistrictEntity cityEntity;
 
     private DistrictEntity districtEntity;
+
+    private Integer equipmentNumberId;
 
     private EquipmentNumberEntity equipmentNumberEntity;
 

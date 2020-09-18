@@ -204,6 +204,18 @@
         <result column="contact_person" jdbcType="VARCHAR" property="contactPerson"/>
         <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <association column="province_id" property="provinceEntity">
+            <id column="p_id" jdbcType="INTEGER" property="id"/>
+            <result column="p_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="city_id" property="cityEntity">
+            <id column="c_id" jdbcType="INTEGER" property="id"/>
+            <result column="c_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="district_id" property="districtEntity">
+            <id column="d_id" jdbcType="INTEGER" property="id"/>
+            <result column="d_name" jdbcType="VARCHAR" property="name"/>
+        </association>
         <association column="equipment_number_id" property="equipmentNumberEntity">
             <id column="en_id" jdbcType="INTEGER" property="id"/>
             <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
@@ -215,11 +227,17 @@
     </resultMap>
     <sql id="Much_Column_List">
         espmd.id as espmd_id, espmd.create_by, espmd.create_time, espmd.modified_by, espmd.modified_time, espmd.quantity, espmd.province_id, espmd.city_id,espmd.district_id, espmd.detailed_address, espmd.contact_person, espmd.contact_phone, espmd.equipment_number_id,
+        p.id as p_id,p.name as p_name,
+        c.id as c_id,c.name as c_name,
+        d.id as d_id,d.name as d_name,
         en.id as en_id, equipment_number,
         espm.id as espm_id,equipment_name
     </sql>
     <sql id="Much_Table_List">
         mro_equipment_spare_parts_management_db espmd
+        inner join mro_district p on espmd.province_id = p.id
+        inner join mro_district c on espmd.city_id = c.id
+        inner join mro_district d on espmd.district_id = d.id
         inner join mro_equipment_number en on espmd.equipment_number_id=en.id
         inner join mro_equipment_spare_parts_management espm on en.equipment_spare_parts_management_id=espm.id
     </sql>
