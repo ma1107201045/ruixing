@@ -98,6 +98,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentSparePartsManagementDbEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
             equipmentSparePartsManagementDbEntity.setModifiedBy(equipmentNumberEntity.getModifiedBy());
             equipmentSparePartsManagementDbEntity.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentSparePartsManagementDbEntity.setOperator(loginTrueName);
             equipmentSparePartsManagementDbEntity.setQuantity(equipmentNumberEntity.getQuantity());
 
             equipmentSparePartsManagementDbEntity.setProvinceId(equipmentSparePartsManagementEntity.getProvinceId());
@@ -108,6 +109,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentSparePartsManagementDbEntity.setContactPhone(equipmentSparePartsManagementEntity.getContactPhone());
             equipmentSparePartsManagementDbEntity.setEquipmentNumberId(id);
             equipmentSparePartsManagementDbEntity.setEquipmentNumber(equipmentNumber);
+            equipmentSparePartsManagementDbEntity.setEquipmentSparePartsManagementId(equipmentSparePartsManagementEntity.getId());
             equipmentSparePartsManagementDbEntity.setEquipmentName(equipmentSparePartsManagementEntity.getEquipmentName());
             equipmentSparePartsManagementDbService.add(equipmentSparePartsManagementDbEntity);  //生成发货单
 

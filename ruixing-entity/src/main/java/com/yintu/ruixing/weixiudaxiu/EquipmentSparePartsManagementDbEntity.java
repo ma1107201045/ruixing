@@ -24,6 +24,8 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private String operator;
+
     private Integer quantity;
 
     private Integer provinceId;
@@ -47,6 +49,8 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
     private Integer equipmentNumberId;
 
     private String equipmentNumber;
+
+    private Integer equipmentSparePartsManagementId;
 
     private String equipmentName;
 
