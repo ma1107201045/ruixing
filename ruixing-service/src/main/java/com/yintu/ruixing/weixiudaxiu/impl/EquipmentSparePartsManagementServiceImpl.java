@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -98,7 +99,7 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
 
     @Override
     public List<Object> findRecordById(Integer id) {
-        JSONArray ja = new JSONArray();
+        List<JSONObject> jsonObjects = new ArrayList<>();
         List<EquipmentSparePartsManagementPutEntity> equipmentSparePartsManagementPutEntities = equipmentSparePartsManagementPutService.findByCondition(id);
         for (EquipmentSparePartsManagementPutEntity equipmentSparePartsManagementPutEntity : equipmentSparePartsManagementPutEntities) {
             JSONObject jo = new JSONObject(true);
@@ -106,7 +107,7 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
             jo.put("operator", equipmentSparePartsManagementPutEntity.getOperator());
             jo.put("quantity", equipmentSparePartsManagementPutEntity.getPutAmount());
             jo.put("type", "put");
-            ja.add(jo);
+            jsonObjects.add(jo);
         }
         List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByCondition(null, null, id, null);
         for (EquipmentSparePartsManagementDbEntity equipmentSparePartsManagementDbEntity : equipmentSparePartsManagementDbEntities) {
@@ -115,11 +116,12 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
             jo.put("operator", equipmentSparePartsManagementDbEntity.getOperator());
             jo.put("quantity", equipmentSparePartsManagementDbEntity.getQuantity());
             jo.put("type", "out");
-            ja.add(jo);
+            jsonObjects.add(jo);
         }
-        return ja.stream()
-                .sorted(Comparator.comparing(obj -> ((JSONObject) obj).getDate("createTime")).reversed())
+        return jsonObjects.stream()
+                .sorted((a, b) -> Long.compare(b.getDate("createTime").getTime(), a.getDate("createTime").getTime()))
                 .collect(Collectors.toList());
+
     }
 
 }

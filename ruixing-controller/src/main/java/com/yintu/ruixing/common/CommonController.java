@@ -108,9 +108,9 @@ public class CommonController extends SessionController {
      * @param id 消息id
      * @return 返回信息
      */
-    @PutMapping("/message/{id}")
-    public Map<String, Object> changeMessageStatus(@PathVariable Integer id) {
-        messageService.changeStatus(id);
+    @PutMapping("/message/{ids}")
+    public Map<String, Object> changeMessageStatus(@PathVariable Integer[] ids) {
+        messageService.changeStatus(ids);
         return ResponseDataUtil.ok("修改消息信息成功");
     }
 
