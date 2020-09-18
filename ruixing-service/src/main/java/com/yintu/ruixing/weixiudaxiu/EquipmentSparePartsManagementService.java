@@ -1,6 +1,5 @@
 package com.yintu.ruixing.weixiudaxiu;
 
-import com.alibaba.fastjson.JSONArray;
 import com.yintu.ruixing.common.util.BaseService;
 
 import java.util.List;
@@ -16,5 +15,5 @@ public interface EquipmentSparePartsManagementService extends BaseService<Equipm
     List<EquipmentSparePartsManagementEntity> findByCondition(String materialNumber, String equipmentName);
 
 
-    JSONArray findRecordById(Integer id);
+    List<Object> findRecordById(Integer id);
 }

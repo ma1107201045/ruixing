@@ -89,8 +89,9 @@ public class EquipmentSparePartsManagementController extends SessionController i
 
     @GetMapping("/{id}/record")
     public Map<String, Object> findRecordById(@PathVariable Integer id) {
+        List<Object> objects = equipmentSparePartsManagementService.findRecordById(id);
+        return ResponseDataUtil.ok("查看应急备品管理信息列表成功", objects);
 
-        return null;
     }
 
 }

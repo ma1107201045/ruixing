@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EquipmentReprocessedProductManagementEntityWithBLOBs extends EquipmentReprocessedProductManagementEntity {
     private static final long serialVersionUID = 2755332817900398343L;
+
     private String userDemand;
 
     private String dispositionOpinion;

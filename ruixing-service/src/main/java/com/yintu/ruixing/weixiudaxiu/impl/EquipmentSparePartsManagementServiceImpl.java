@@ -1,14 +1,17 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -94,8 +97,29 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
     }
 
     @Override
-    public JSONArray findRecordById(Integer id) {
-        return null;
+    public List<Object> findRecordById(Integer id) {
+        JSONArray ja = new JSONArray();
+        List<EquipmentSparePartsManagementPutEntity> equipmentSparePartsManagementPutEntities = equipmentSparePartsManagementPutService.findByCondition(id);
+        for (EquipmentSparePartsManagementPutEntity equipmentSparePartsManagementPutEntity : equipmentSparePartsManagementPutEntities) {
+            JSONObject jo = new JSONObject(true);
+            jo.put("createTime", equipmentSparePartsManagementPutEntity.getCreateTime());
+            jo.put("operator", equipmentSparePartsManagementPutEntity.getOperator());
+            jo.put("quantity", equipmentSparePartsManagementPutEntity.getPutAmount());
+            jo.put("type", "put");
+            ja.add(jo);
+        }
+        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbService.findByCondition(null, null, id, null);
+        for (EquipmentSparePartsManagementDbEntity equipmentSparePartsManagementDbEntity : equipmentSparePartsManagementDbEntities) {
+            JSONObject jo = new JSONObject(true);
+            jo.put("createTime", equipmentSparePartsManagementDbEntity.getCreateTime());
+            jo.put("operator", equipmentSparePartsManagementDbEntity.getOperator());
+            jo.put("quantity", equipmentSparePartsManagementDbEntity.getQuantity());
+            jo.put("type", "out");
+            ja.add(jo);
+        }
+        return ja.stream()
+                .sorted(Comparator.comparing(obj -> ((JSONObject) obj).getDate("createTime")).reversed())
+                .collect(Collectors.toList());
     }
 
 }
