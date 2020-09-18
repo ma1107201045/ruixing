@@ -33,7 +33,7 @@ public interface MessageService extends BaseService<MessageEntity, Integer> {
      *
      * @param id 主键
      */
-    void changeStatus(Integer id);
+    void changeStatus(Integer[] ids);
 
     /**
      * @param messageEntity 消息实体类

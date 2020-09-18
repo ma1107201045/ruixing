@@ -31,4 +31,9 @@ public class EquipmentReprocessedProductManagementEntity implements Serializable
 
     private Integer equipmentNumberId;
 
+    private String equipmentNumber;
+
+    private String equipmentName;
+
+
 }

@@ -15,5 +15,5 @@ public class EquipmentOverhaulManagementEntityWithBLOBs extends EquipmentOverhau
 
     private String problemAnalysis;
 
-    private EquipmentNumberEntity equipmentNumberEntity;
+
 }

@@ -151,7 +151,7 @@
     <sql id="Much_Where_List">
         <where>
             <if test="equipmentSparePartsManagementId != null">
-                and espm.equipment_spare_parts_management_id =#{equipmentSparePartsManagementId,jdbcType=INTEGER}
+                and espmp.equipment_spare_parts_management_id =#{equipmentSparePartsManagementId,jdbcType=INTEGER}
             </if>
         </where>
     </sql>

@@ -37,7 +37,7 @@ public class EquipmentSparePartsManagementDbServiceImpl implements EquipmentSpar
 
     @Override
     public EquipmentSparePartsManagementDbEntity findById(Integer id) {
-        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbDao.selectByCondition(new Integer[]{id}, null);
+        List<EquipmentSparePartsManagementDbEntity> equipmentSparePartsManagementDbEntities = equipmentSparePartsManagementDbDao.selectByCondition(new Integer[]{id}, null, null, null);
         return equipmentSparePartsManagementDbEntities.isEmpty() ? null : equipmentSparePartsManagementDbEntities.get(0);
     }
 
@@ -49,7 +49,7 @@ public class EquipmentSparePartsManagementDbServiceImpl implements EquipmentSpar
     }
 
     @Override
-    public List<EquipmentSparePartsManagementDbEntity> findByCondition(Integer id, String equipmentNumber) {
-        return equipmentSparePartsManagementDbDao.selectByCondition(null, equipmentNumber);
+    public List<EquipmentSparePartsManagementDbEntity> findByCondition(Integer id, String equipmentNumber, Integer equipmentSparePartsManagementId, String equipmentName) {
+        return equipmentSparePartsManagementDbDao.selectByCondition(null, equipmentNumber, equipmentSparePartsManagementId, equipmentName);
     }
 }

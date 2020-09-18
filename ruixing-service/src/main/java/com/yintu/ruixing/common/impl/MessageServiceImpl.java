@@ -56,13 +56,14 @@ public class MessageServiceImpl implements MessageService {
 
 
     @Override
-    public void changeStatus(Integer id) {
-        MessageEntity messageEntity = this.findById(id);
-        if (messageEntity != null && messageEntity.getStatus().equals((short) 1)) {
-            messageEntity.setStatus((short) 2);
-            this.edit(messageEntity);
+    public void changeStatus(Integer[] ids) {
+        for (Integer id : ids) {
+            MessageEntity messageEntity = this.findById(id);
+            if (messageEntity != null && messageEntity.getStatus().equals((short) 1)) {
+                messageEntity.setStatus((short) 2);
+                this.edit(messageEntity);
+            }
         }
-
     }
 
     @Override

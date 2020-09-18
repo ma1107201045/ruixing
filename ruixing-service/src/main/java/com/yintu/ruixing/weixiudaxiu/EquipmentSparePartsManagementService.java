@@ -13,4 +13,7 @@ public interface EquipmentSparePartsManagementService extends BaseService<Equipm
     void put(String loginUserName, String loginTrueName, Integer id, Integer putAmount);
 
     List<EquipmentSparePartsManagementEntity> findByCondition(String materialNumber, String equipmentName);
+
+
+    List<Object> findRecordById(Integer id);
 }

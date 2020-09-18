@@ -23,14 +23,15 @@ public class EquipmentNumberRecordEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
+    @NotNull
+    private Integer equipmentNumberId;
     @NotBlank
     private String equipmentNumber;
 
-    private String name;
-
     private String configuration;
-    @NotNull
-    private Integer equipmentNumberId;
-    
+
+    private String equipmentName;
+
+
 
 }

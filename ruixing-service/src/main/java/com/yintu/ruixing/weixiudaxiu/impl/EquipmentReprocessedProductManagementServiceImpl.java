@@ -38,7 +38,7 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
 
     @Override
     public EquipmentReprocessedProductManagementEntityWithBLOBs findById(Integer id) {
-        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntities = equipmentReprocessedProductManagementDao.selectByCondition(new Integer[]{id}, null);
+        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntities = equipmentReprocessedProductManagementDao.selectByCondition(new Integer[]{id}, null, null);
         return equipmentReprocessedProductManagementEntities.isEmpty() ? null : equipmentReprocessedProductManagementEntities.get(0);
     }
 
@@ -50,7 +50,7 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
     }
 
     @Override
-    public List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber) {
-        return equipmentReprocessedProductManagementDao.selectByCondition(null, equipmentNumber);
+    public List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber,String equipmentName) {
+        return equipmentReprocessedProductManagementDao.selectByCondition(null, equipmentNumber,equipmentName);
     }
 }

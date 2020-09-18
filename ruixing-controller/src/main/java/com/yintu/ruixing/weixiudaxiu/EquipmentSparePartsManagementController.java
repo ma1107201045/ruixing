@@ -13,6 +13,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 应急备品管理->应急备品管理
+ *
+ * @author:mlf
+ * @date:2020/09/18 11:19
+ */
 @RestController
 @RequestMapping("/equipment/spare/parts/managements")
 public class EquipmentSparePartsManagementController extends SessionController implements BaseController<EquipmentSparePartsManagementEntity, Integer> {
@@ -70,16 +76,22 @@ public class EquipmentSparePartsManagementController extends SessionController i
     }
 
     @GetMapping
-    public Map<String, Object> findById(@RequestParam("page_number") Integer pageNumber,
-                                        @RequestParam("page_size") Integer pageSize,
-                                        @RequestParam(value = "order_by", required = false, defaultValue = "espm.id DESC") String orderBy,
-                                        @RequestParam(value = "material_number", required = false) String materialNumber,
-                                        @RequestParam(value = "equipment_name", required = false) String equipmentName) {
+    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
+                                       @RequestParam("page_size") Integer pageSize,
+                                       @RequestParam(value = "order_by", required = false, defaultValue = "espm.id DESC") String orderBy,
+                                       @RequestParam(value = "material_number", required = false) String materialNumber,
+                                       @RequestParam(value = "equipment_name", required = false) String equipmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<EquipmentSparePartsManagementEntity> equipmentSparePartsManagementEntities = equipmentSparePartsManagementService.findByCondition(materialNumber, equipmentName);
         PageInfo<EquipmentSparePartsManagementEntity> pageInfo = new PageInfo<>(equipmentSparePartsManagementEntities);
         return ResponseDataUtil.ok("查询应急备品管理信息列表成功", pageInfo);
     }
 
+    @GetMapping("/{id}/record")
+    public Map<String, Object> findRecordById(@PathVariable Integer id) {
+        List<Object> objects = equipmentSparePartsManagementService.findRecordById(id);
+        return ResponseDataUtil.ok("查看应急备品管理信息列表成功", objects);
+
+    }
 
 }

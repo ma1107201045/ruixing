@@ -11,6 +11,8 @@
         <result column="repair_time" jdbcType="TIMESTAMP" property="repairTime"/>
         <result column="return_time" jdbcType="TIMESTAMP" property="returnTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
@@ -19,7 +21,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, record_time, repair_time,
-    return_time, equipment_number_id
+    return_time, equipment_number_id,equipment_number,equipment_name
     </sql>
     <sql id="Blob_Column_List">
         user_demand, disposition_opinion
@@ -42,12 +44,14 @@
         insert into mro_equipment_reprocessed_product_management (id, create_by, create_time,
                                                                   modified_by, modified_time, record_time,
                                                                   repair_time, return_time, equipment_number_id,
+                                                                  equipment_number, equipment_name,
                                                                   user_demand, disposition_opinion)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{recordTime,jdbcType=TIMESTAMP},
                 #{repairTime,jdbcType=TIMESTAMP}, #{returnTime,jdbcType=TIMESTAMP},
-                #{equipmentNumberId,jdbcType=INTEGER},
-                #{userDemand,jdbcType=LONGVARCHAR}, #{dispositionOpinion,jdbcType=LONGVARCHAR})
+                #{equipmentNumberId,jdbcType=INTEGER}, #{equipmentNumber,jdbcType=VARCHAR},
+                #{equipmentName,jdbcType=VARCHAR}, #{userDemand,jdbcType=LONGVARCHAR},
+                #{dispositionOpinion,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective"
             parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
@@ -79,6 +83,12 @@
             </if>
             <if test="equipmentNumberId != null">
                 equipment_number_id,
+            </if>
+            <if test="equipmentNumber != null">
+                equipment_number,
+            </if>
+            <if test="equipmentName != null">
+                equipment_name,
             </if>
             <if test="userDemand != null">
                 user_demand,
@@ -114,6 +124,12 @@
             </if>
             <if test="equipmentNumberId != null">
                 #{equipmentNumberId,jdbcType=INTEGER},
+            </if>
+            <if test="equipmentNumber != null">
+                #{equipmentNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null">
+                #{equipmentName,jdbcType=VARCHAR},
             </if>
             <if test="userDemand != null">
                 #{userDemand,jdbcType=LONGVARCHAR},
@@ -151,6 +167,12 @@
             <if test="equipmentNumberId != null">
                 equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             </if>
+            <if test="equipmentNumber != null">
+                equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null">
+                equipment_name = #{equipmentName,jdbcType=VARCHAR}
+            </if>
             <if test="userDemand != null">
                 user_demand = #{userDemand,jdbcType=LONGVARCHAR},
             </if>
@@ -171,6 +193,8 @@
             repair_time         = #{repairTime,jdbcType=TIMESTAMP},
             return_time         = #{returnTime,jdbcType=TIMESTAMP},
             equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
+            equipment_number    = #{equipmentNumber,jdbcType=VARCHAR},
+            equipment_name      = #{equipmentName,jdbcType=VARCHAR},
             user_demand         = #{userDemand,jdbcType=LONGVARCHAR},
             disposition_opinion = #{dispositionOpinion,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
@@ -185,10 +209,13 @@
             record_time         = #{recordTime,jdbcType=TIMESTAMP},
             repair_time         = #{repairTime,jdbcType=TIMESTAMP},
             return_time         = #{returnTime,jdbcType=TIMESTAMP},
-            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER}
+            equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
+            equipment_number    = #{equipmentNumber,jdbcType=VARCHAR},
+            equipment_name      = #{equipmentName,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
+    <resultMap id="MuchResultMap"
+               type="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs">
         <id column="erpm_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -197,27 +224,18 @@
         <result column="record_time" jdbcType="TIMESTAMP" property="recordTime"/>
         <result column="repair_time" jdbcType="TIMESTAMP" property="repairTime"/>
         <result column="return_time" jdbcType="TIMESTAMP" property="returnTime"/>
-        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
         <result column="user_demand" jdbcType="LONGVARCHAR" property="userDemand"/>
         <result column="disposition_opinion" jdbcType="LONGVARCHAR" property="dispositionOpinion"/>
-        <association column="equipment_number_id" property="equipmentNumberEntity">
-            <id column="en_id" jdbcType="INTEGER" property="id"/>
-            <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-            <association column="equipment_spare_parts_management_id" property="equipmentSparePartsManagementEntity">
-                <id column="espm_id" jdbcType="INTEGER" property="id"/>
-                <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
-            </association>
-        </association>
+        <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
+        <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+
     </resultMap>
     <sql id="Much_Column_List">
-        erpm.id as erpm_id , erpm.create_by, erpm.create_time, erpm.modified_by, erpm.modified_time, record_time, repair_time,return_time, equipment_number_id, user_demand, disposition_opinion,
-        en.id as en_id, equipment_number,
-        espm.id as espm_id,equipment_name
+        erpm.id as erpm_id , erpm.create_by, erpm.create_time, erpm.modified_by, erpm.modified_time, record_time, repair_time,return_time, equipment_number_id,equipment_number, equipment_name,user_demand, disposition_opinion
     </sql>
     <sql id="Much_Table_List">
         mro_equipment_reprocessed_product_management erpm
-        inner join mro_equipment_number en on erpm.equipment_number_id=en.id
-        inner join mro_equipment_spare_parts_management espm on en.equipment_spare_parts_management_id=espm.id
     </sql>
     <sql id="Much_Where_List">
         <where>
@@ -228,7 +246,10 @@
                 </foreach>
             </if>
             <if test="equipmentNumber != null">
-                and en.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
+                and erpm.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="equipmentName != null">
+                and erpm.equipment_name like concat('%',#{equipmentName,jdbcType=VARCHAR},'%')
             </if>
         </where>
     </sql>

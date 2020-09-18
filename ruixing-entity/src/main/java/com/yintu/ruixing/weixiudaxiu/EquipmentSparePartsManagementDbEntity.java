@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +24,8 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private String operator;
+
     private Integer quantity;
 
     private Integer provinceId;
@@ -37,14 +40,18 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private String contactPhone;
 
-    private Integer equipmentNumberId;
-
     private DistrictEntity provinceEntity;
 
     private DistrictEntity cityEntity;
 
     private DistrictEntity districtEntity;
 
-    private EquipmentNumberEntity equipmentNumberEntity;
+    private Integer equipmentNumberId;
+
+    private String equipmentNumber;
+
+    private Integer equipmentSparePartsManagementId;
+
+    private String equipmentName;
 
 }

@@ -298,18 +298,10 @@
         </association>
         <association property="equipmentNumberEntity" column="equipment_number_id">
             <id column="en_id" jdbcType="INTEGER" property="id"/>
-            <result column="en_create_by" jdbcType="VARCHAR" property="createBy"/>
             <result column="en_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-            <result column="en_modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
-            <result column="en_modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
-            <result column="en_railways_bureau_id" jdbcType="INTEGER" property="railwaysBureauId"/>
-            <result column="en_signal_depot_id" jdbcType="INTEGER" property="signalDepotId"/>
-            <result column="en_special_railway_line_id" jdbcType="INTEGER" property="specialRailwayLineId"/>
-            <result column="en_station_id" jdbcType="INTEGER" property="stationId"/>
             <result column="rack_number" jdbcType="VARCHAR" property="rackNumber"/>
             <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy"/>
             <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-            <result column="name" jdbcType="VARCHAR" property="name"/>
             <result column="quantity" jdbcType="INTEGER" property="quantity"/>
             <result column="configuration" jdbcType="LONGVARCHAR" property="configuration"/>
         </association>
@@ -320,7 +312,7 @@
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
         c.cid as c_id,cz_name,
-        en.id as en_id , en.create_by as en_create_by, en.create_time as en_create_time , en.modified_by as en_modified_by, en.modified_time as en_modified_time, en.railways_bureau_id as en_railways_bureau_id , en.signal_depot_id as en_signal_depot_id,en.special_railway_line_id as en_special_railway_line_id, en.station_id as en_station_id, rack_number, hierarchy, equipment_number, name,quantity,configuration
+        en.id as en_id,en.create_time as en_create_time,rack_number, hierarchy, equipment_number,quantity,configuration
     </sql>
     <sql id="Equipment_Much_Table_List">
         mro_equipment_index_analysis eia

@@ -58,6 +58,4 @@ public class EquipmentNumberEntity implements Serializable {
 
     private EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity;
 
-    private EquipmentEntity equipmentEntity;
-
 }

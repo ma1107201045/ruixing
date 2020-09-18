@@ -83,7 +83,6 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentSparePartsManagementService.edit(equipmentSparePartsManagementEntity);//库存减1
 
 
-
             EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
             equipmentNumberRecordEntity.setCreateBy(equipmentNumberEntity.getModifiedBy());
             equipmentNumberRecordEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
@@ -99,6 +98,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentSparePartsManagementDbEntity.setCreateTime(equipmentNumberEntity.getModifiedTime());
             equipmentSparePartsManagementDbEntity.setModifiedBy(equipmentNumberEntity.getModifiedBy());
             equipmentSparePartsManagementDbEntity.setModifiedTime(equipmentNumberEntity.getModifiedTime());
+            equipmentSparePartsManagementDbEntity.setOperator(loginTrueName);
             equipmentSparePartsManagementDbEntity.setQuantity(equipmentNumberEntity.getQuantity());
 
             equipmentSparePartsManagementDbEntity.setProvinceId(equipmentSparePartsManagementEntity.getProvinceId());
@@ -108,6 +108,9 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentSparePartsManagementDbEntity.setContactPerson(equipmentSparePartsManagementEntity.getContactPerson());
             equipmentSparePartsManagementDbEntity.setContactPhone(equipmentSparePartsManagementEntity.getContactPhone());
             equipmentSparePartsManagementDbEntity.setEquipmentNumberId(id);
+            equipmentSparePartsManagementDbEntity.setEquipmentNumber(equipmentNumber);
+            equipmentSparePartsManagementDbEntity.setEquipmentSparePartsManagementId(equipmentSparePartsManagementEntity.getId());
+            equipmentSparePartsManagementDbEntity.setEquipmentName(equipmentSparePartsManagementEntity.getEquipmentName());
             equipmentSparePartsManagementDbService.add(equipmentSparePartsManagementDbEntity);  //生成发货单
 
             EquipmentReprocessedProductManagementEntityWithBLOBs equipmentReprocessedProductManagementEntityWithBLOBs = new EquipmentReprocessedProductManagementEntityWithBLOBs();
@@ -116,6 +119,8 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedBy(equipmentNumberEntity.getModifiedBy());
             equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedTime(equipmentNumberEntity.getModifiedTime());
             equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumberId(id);
+            equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumber(equipmentNumberEntity.getEquipmentNumber());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentName(equipmentSparePartsManagementEntity.getEquipmentName());
             equipmentReprocessedProductManagementService.add(equipmentReprocessedProductManagementEntityWithBLOBs);//生成返修品记录
         }
     }

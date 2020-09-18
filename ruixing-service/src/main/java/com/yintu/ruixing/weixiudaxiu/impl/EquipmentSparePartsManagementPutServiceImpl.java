@@ -17,7 +17,7 @@ public class EquipmentSparePartsManagementPutServiceImpl implements EquipmentSpa
 
     @Override
     public void add(EquipmentSparePartsManagementPutEntity entity) {
-        EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity = equipmentSparePartsManagementService.findById(entity.getId());
+        EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity = equipmentSparePartsManagementService.findById(entity.getEquipmentSparePartsManagementId());
         if (equipmentSparePartsManagementEntity != null) {
             equipmentSparePartsManagementEntity.setModifiedBy(entity.getCreateBy());
             equipmentSparePartsManagementEntity.setModifiedTime(entity.getCreateTime());
