@@ -1,13 +1,19 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
+import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.ScheduleJobEntity;
+import com.yintu.ruixing.common.ScheduleJobService;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs;
 import com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementService;
+import com.yintu.ruixing.yunxingweihu.TaskEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +26,9 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
 
     @Autowired
     private EquipmentReprocessedProductManagementDao equipmentReprocessedProductManagementDao;
+    @Autowired
+    private ScheduleJobService scheduleJobService;
+
 
     @Override
     public void add(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
@@ -33,7 +42,31 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
 
     @Override
     public void edit(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
+        if (entity.getReturnTime() != null) {
+            if (!entity.getReturnTime().after(new Date()))
+                throw new BaseRuntimeException("返还时间不能小于或等于当前时间");
+            ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
+            scheduleJobEntity.setCreateBy(entity.getModifiedBy());
+            scheduleJobEntity.setCreateTime(entity.getModifiedTime());
+            scheduleJobEntity.setModifiedBy(entity.getModifiedBy());
+            scheduleJobEntity.setModifiedTime(entity.getModifiedTime());
+            scheduleJobEntity.setExecutionTime(new Date());
+            scheduleJobEntity.setJobName("equipmentReprocessedProductManagementTask" + "-" + entity.getId());
+            scheduleJobEntity.setCronExpression(String.format("%d %d %d %d %d ? %d",
+                    DateUtil.second(entity.getReturnTime()),
+                    DateUtil.minute(entity.getReturnTime()),
+                    DateUtil.hour(entity.getReturnTime(), true),
+                    DateUtil.dayOfMonth(entity.getReturnTime()),
+                    DateUtil.month(entity.getReturnTime()) + 1,
+                    DateUtil.year(entity.getReturnTime())));
+            scheduleJobEntity.setBeanName("equipmentReprocessedProductManagementTask");
+            scheduleJobEntity.setMethodName("execute");
+            scheduleJobEntity.setStatus(1);
+            scheduleJobEntity.setDeleteFlag(false);
+            scheduleJobService.add(scheduleJobEntity);
+        }
         equipmentReprocessedProductManagementDao.updateByPrimaryKeySelective(entity);
+
     }
 
     @Override
@@ -50,7 +83,7 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
     }
 
     @Override
-    public List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber,String equipmentName) {
-        return equipmentReprocessedProductManagementDao.selectByCondition(null, equipmentNumber,equipmentName);
+    public List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber, String equipmentName) {
+        return equipmentReprocessedProductManagementDao.selectByCondition(null, equipmentNumber, equipmentName);
     }
 }
