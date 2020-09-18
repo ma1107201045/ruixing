@@ -294,6 +294,9 @@
             <if test="equipmentNumber != null">
                 and espmd.equipment_number like concat('%',#{equipmentNumber,jdbcType=VARCHAR},'%')
             </if>
+            <if test="equipmentSparePartsManagementId != null">
+                and espmd.equipment_spare_parts_management_id =#{equipmentSparePartsManagementId,jdbcType=INTEGER}
+            </if>
             <if test="equipmentName != null">
                 and espmd.equipment_name like concat('%',#{equipmentName,jdbcType=VARCHAR},'%')
             </if>

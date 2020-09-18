@@ -25,7 +25,6 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
     @Autowired
     private EquipmentReprocessedProductManagementService equipmentReprocessedProductManagementService;
 
-
     @Override
     public Map<String, Object> add(EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
         return null;

@@ -1,5 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,10 @@ import java.util.List;
 public class EquipmentSparePartsManagementServiceImpl implements EquipmentSparePartsManagementService {
     @Autowired
     private EquipmentSparePartsManagementDao equipmentSparePartsManagementDao;
-
     @Autowired
     private EquipmentSparePartsManagementPutService equipmentSparePartsManagementPutService;
+    @Autowired
+    private EquipmentSparePartsManagementDbService equipmentSparePartsManagementDbService;
 
     @Override
     public void add(EquipmentSparePartsManagementEntity entity) {
@@ -89,6 +91,11 @@ public class EquipmentSparePartsManagementServiceImpl implements EquipmentSpareP
     @Override
     public List<EquipmentSparePartsManagementEntity> findByCondition(String materialNumber, String equipmentName) {
         return equipmentSparePartsManagementDao.selectByCondition(null, materialNumber, equipmentName);
+    }
+
+    @Override
+    public JSONArray findRecordById(Integer id) {
+        return null;
     }
 
 }
