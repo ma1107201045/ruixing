@@ -13,5 +13,6 @@ public class EquipmentReprocessedProductManagementEntityWithBLOBs extends Equipm
 
     private String dispositionOpinion;
 
-    private EquipmentNumberEntity equipmentNumberEntity;
+
+
 }

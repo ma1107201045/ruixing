@@ -185,10 +185,10 @@
             <if test="equipmentNumberId != null">
                 equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             </if>
-            <if test="equipmentNumberNumber != null">
+            <if test="equipmentNumber != null">
                 equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
             </if>
-            <if test="equipmentNumberName != null">
+            <if test="equipmentName != null">
                 equipment_name = #{equipmentName,jdbcType=VARCHAR}
             </if>
         </set>

@@ -46,7 +46,6 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private Integer equipmentNumberId;
 
-    @NotBlank
     private String equipmentNumber;
 
     private String equipmentName;

@@ -23,10 +23,10 @@ public class EquipmentOverhaulManagementEntity implements Serializable {
 
     private Date modifiedTime;
     @NotNull
-    private Integer equipmentNumberId;
-    @NotNull
     private Integer amount;
+    @NotNull
+    private Integer equipmentNumberId;
 
-
+    private EquipmentNumberEntity equipmentNumberEntity;
 
 }

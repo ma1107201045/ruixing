@@ -14,6 +14,6 @@ public interface EquipmentReprocessedProductManagementService extends BaseServic
 
     void remove(Integer[] ids);
 
-    List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber);
+    List<EquipmentReprocessedProductManagementEntityWithBLOBs> findByCondition(String equipmentNumber, String equipmentName);
 
 }

@@ -58,9 +58,10 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "erpm.id DESC") String orderBy,
-                                       @RequestParam(value = "equipment_number", required = false) String equipmentNumber) {
+                                       @RequestParam(value = "equipment_number", required = false) String equipmentNumber,
+                                       @RequestParam(value = "equipment_name", required = false) String equipmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntityWithBLOBs = equipmentReprocessedProductManagementService.findByCondition(equipmentNumber);
+        List<EquipmentReprocessedProductManagementEntityWithBLOBs> equipmentReprocessedProductManagementEntityWithBLOBs = equipmentReprocessedProductManagementService.findByCondition(equipmentNumber, equipmentName);
         PageInfo<EquipmentReprocessedProductManagementEntityWithBLOBs> pageInfo = new PageInfo<>(equipmentReprocessedProductManagementEntityWithBLOBs);
         return ResponseDataUtil.ok("查询返修品列表信息成功", pageInfo);
     }

@@ -20,6 +20,6 @@ public interface EquipmentReprocessedProductManagementDao {
 
     int updateByPrimaryKey(EquipmentReprocessedProductManagementEntity record);
 
-    List<EquipmentReprocessedProductManagementEntityWithBLOBs> selectByCondition(Integer[] ids, String equipmentNumber);
+    List<EquipmentReprocessedProductManagementEntityWithBLOBs> selectByCondition(Integer[] ids, String equipmentNumber, String equipmentName);
 
 }
