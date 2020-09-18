@@ -7,6 +7,7 @@
     <result column="xianduantime" jdbcType="TIMESTAMP" property="xianduantime" />
     <result column="tlj_name" jdbcType="VARCHAR" property="tljName" />
     <result column="dwd_name" jdbcType="VARCHAR" property="dwdName" />
+    <result column="chezhanName" jdbcType="VARCHAR" property="chezhanname" />
     <result column="xd_name" jdbcType="VARCHAR" property="xdName" />
     <result column="xd_type" jdbcType="VARCHAR" property="xdType" />
     <result column="xd_fenlei" jdbcType="INTEGER" property="xdFenlei" />
@@ -103,10 +104,22 @@
   <!--根据项目类型  查询对应的数据-->
   <select id="findXianDuanDataByLeiXing" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
-    <include refid="Base_Column_List"/>
+    axm.id,
+	xianduantime,
+	tlj_name,
+	dwd_name,
+	xd_name,
+	xd_type,
+	xd_fenlei,
+	guanlianxiangmu,
+	worksid,
+    axsc.chezhanName
     FROM
-    mro_anzhuangtiaoshi_xiangmu
+    mro_anzhuangtiaoshi_xiangmu axm,
+    mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc
     WHERE
+    axm.id = axsc.xdid
+    and
     xd_fenlei =#{leiXingId}
   </select>
 

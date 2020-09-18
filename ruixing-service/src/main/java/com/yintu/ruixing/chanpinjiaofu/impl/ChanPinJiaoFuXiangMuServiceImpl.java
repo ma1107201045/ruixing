@@ -198,7 +198,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         chanPinJiaoFuXiangMuFileEntity.setUid(uId);
         chanPinJiaoFuXiangMuFileEntity.setUpdatetime(nowTime);
         chanPinJiaoFuXiangMuFileEntity.setUpdatename(username);
-        if (chanPinJiaoFuXiangMuFileEntity.getFileType()==2&&chanPinJiaoFuXiangMuFileEntity.getFabuType()==2){
+        if (chanPinJiaoFuXiangMuFileEntity.getFileType() == 2 && chanPinJiaoFuXiangMuFileEntity.getFabuType() == 2) {
             chanPinJiaoFuXiangMuFileEntity.setAuditorState(1);
         }
         chanPinJiaoFuXiangMuFileDao.updateByPrimaryKeySelective(chanPinJiaoFuXiangMuFileEntity);
@@ -458,7 +458,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setTypenum(1);
-            recordMessageEntity.setContext("“" + xiangMuEntity.getXiangmuName() + "”项目审核已通过！" );
+            recordMessageEntity.setContext("“" + xiangMuEntity.getXiangmuName() + "”项目审核已通过！");
             chanPinJiaoFuRecordMessageDao.insertSelective(recordMessageEntity);
         }
         chanPinJiaoFuFileAuditorEntity.setDoTime(nowTime);

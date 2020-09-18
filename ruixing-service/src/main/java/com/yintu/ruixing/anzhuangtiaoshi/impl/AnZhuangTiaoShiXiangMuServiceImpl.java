@@ -158,18 +158,51 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findXianDuanDataByLeiXing(Integer leiXingId, Integer page, Integer size) {
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanDataByLeiXing(leiXingId);
-        List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
-        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> titleList = new ArrayList<>();
+
 
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
-            Integer id = xiangMuEntity.getId();
+
+            List<AnZhuangTiaoShiXiangMuServiceStatusEntity> titleList = new ArrayList<>();
+            Integer id = xiangMuEntity.getId();//线段id
             //获取线段下面车站的个数
             Integer chezhantotal = anZhuangTiaoShiXiangMuServiceChooseDao.findCheZhanTotal(id);
             xiangMuEntity.setCheZhanTotal(chezhantotal);
             //查询属性的完成和到货个数
             List<Integer> serId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllSeridByXDid(id);
-            for (Integer serid : serId) {
-                List<Integer> choId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllChoidBySerid(serid);
+            for (Integer serid : serId) {//5 9 12 13
+                List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
+                List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
+                if (chooseEntity.size()==0){
+                    Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
+                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
+                    xiangMuServiceStatusEntity.setTitleTotal(total);
+                    titleList.add(xiangMuServiceStatusEntity);
+                }
+
+                if (chooseEntity.size()!=0){
+                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity =null;
+                    for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity statusChooseEntity : chooseEntity) {
+                        System.out.println("123"+statusChooseEntity);
+                        Integer chooseid = statusChooseEntity.getId();
+                        Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findChooseTotal(chooseid, id);
+                        Integer sid = statusChooseEntity.getSid();
+                        statusChooseEntity.setChooseTotal(total);
+                         xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(sid);
+                        chooseList.add(statusChooseEntity);
+                        xiangMuServiceStatusEntity.setList(chooseList);
+                    }
+                    titleList.add(xiangMuServiceStatusEntity);
+                }
+
+            }
+            xiangMuEntity.setTitlelist(titleList);
+
+        }
+        return xiangMuEntities;
+    }
+
+
+     /*List<Integer> choId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllChoidBySerid(serid);
                 if (choId.size() == 0 || choId.get(0) == null) {
                     Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
                     AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
@@ -183,12 +216,8 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                         xiangMuServiceStatusChooseEntity.setChooseTotal(total);
                         chooseList.add(xiangMuServiceStatusChooseEntity);
                     }
-                }
-                xiangMuEntity.setTitlelist(titleList);
-                xiangMuEntity.setChooselist(chooseList);
-            }
-
-            /*Integer jiGuitotal = anZhuangTiaoShiCheZhanDao.findJiGuiTotal(id);
+                }*/
+    /*Integer jiGuitotal = anZhuangTiaoShiCheZhanDao.findJiGuiTotal(id);
             xiangMuEntity.setJiGuiTotal(jiGuitotal);
             Integer indoorKaBantotal = anZhuangTiaoShiCheZhanDao.findIndoorKaBantotal(id);
             xiangMuEntity.setIndoorKaBanTotal(indoorKaBantotal);
@@ -210,9 +239,6 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
             xiangMuEntity.setKaiTongTotal(kaitongtotal);*/
 
 
-        }
-        return xiangMuEntities;
-    }
 
     @Override
     public AnZhuangTiaoShiFileEntity findById(Integer id) {
@@ -256,6 +282,37 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 treeNodeUtil1.setChildren(treeNodeUtilss2);
             }
             treeNodeUtils.add(treeNodeUtil);
+        }
+
+        Integer a = 0;
+        Integer b = 0;
+        Integer c = 0;
+        for (TreeNodeUtil nodeUtil : treeNodeUtils) {
+            if (nodeUtil.getLabel().equals("1")) {
+                a++;
+            }
+            if (nodeUtil.getLabel().equals("2")) {
+                b++;
+            }
+            if (nodeUtil.getLabel().equals("3")) {
+                c++;
+            }
+        }
+
+        if (a == 0) {
+            TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
+            treeNodeUtil1.setLabel("正在进行");
+            treeNodeUtils.add(0, treeNodeUtil1);
+        }
+        if (b == 0) {
+            TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
+            treeNodeUtil2.setLabel("已完成");
+            treeNodeUtils.add(1, treeNodeUtil2);
+        }
+        if (c == 0) {
+            TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
+            treeNodeUtil3.setLabel("长期停滞");
+            treeNodeUtils.add(2, treeNodeUtil3);
         }
         return treeNodeUtils;
     }

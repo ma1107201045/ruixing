@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -54,7 +55,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
     private Integer PlanToalTime;
     private Integer PlanOneTime;
 
-
+    private List chooselist;
 
     private AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;

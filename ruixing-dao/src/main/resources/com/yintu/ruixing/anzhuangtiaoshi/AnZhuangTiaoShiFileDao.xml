@@ -4,7 +4,12 @@
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="xdid" jdbcType="INTEGER" property="xdid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="xd_name" jdbcType="VARCHAR" property="xdName" />
+    <result column="createName" jdbcType="VARCHAR" property="createName" />
+    <result column="updateName" jdbcType="VARCHAR" property="updateName" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="file_type" jdbcType="INTEGER" property="fileType" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
@@ -13,7 +18,7 @@
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, xdid, xd_name, createtime, file_type, file_name, file_path, fabu_type, yuliu
+    id, xdid, xd_name, createtime, file_type, file_name, file_path, fabu_type, yuliu,uid,createName,updateName,remarks,updateTime
   </sql>
 
   <!--根据文件名 查询对应的文件-->
@@ -93,6 +98,21 @@
       <if test="fileName != null">
         file_name,
       </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="createName != null">
+        createName,
+      </if>
+      <if test="updateName != null">
+        updateName,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
       <if test="filePath != null">
         file_path,
       </if>
@@ -118,6 +138,22 @@
       </if>
       <if test="fileType != null">
         #{fileType,jdbcType=INTEGER},
+      </if>
+
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="fileName != null">
         #{fileName,jdbcType=VARCHAR},
@@ -150,6 +186,21 @@
       </if>
       <if test="fileType != null">
         file_type = #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="createName != null">
+        createName = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateName != null">
+        updateName = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="fileName != null">
         file_name = #{fileName,jdbcType=VARCHAR},

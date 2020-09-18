@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusChooseEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface AnZhuangTiaoShiXiangMuServiceStatusChooseDao {
     List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> findAllBySid(Integer id);
 
     String findNameBysid(Integer choid);
+
+    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> findOneChooseBySidid(@Param("serid") Integer serid);
 }
