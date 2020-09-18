@@ -18,6 +18,6 @@ public interface EquipmentSparePartsManagementDbDao {
 
     int updateByPrimaryKey(EquipmentSparePartsManagementDbEntity record);
 
-    List<EquipmentSparePartsManagementDbEntity> selectByCondition(Integer[] ids, String equipmentNumber);
+    List<EquipmentSparePartsManagementDbEntity> selectByCondition(Integer[] ids, String equipmentNumber,String equipmentName);
 
 }

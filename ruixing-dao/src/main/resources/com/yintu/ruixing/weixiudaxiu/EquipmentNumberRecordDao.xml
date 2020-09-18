@@ -9,14 +9,14 @@
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
         <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordEntity">
         <result column="configuration" jdbcType="LONGVARCHAR" property="configuration"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, equipment_number_id, equipment_number,name
+        id, create_by, create_time, modified_by, modified_time, equipment_number_id, equipment_number,equipment_name
     </sql>
     <sql id="Blob_Column_List">
         configuration
@@ -37,11 +37,12 @@
     <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordEntity">
         insert into mro_equipment_number_record (id, create_by, create_time,
                                                  modified_by, modified_time, equipment_number_id,
-                                                 equipment_number, name, configuration)
+                                                 equipment_number, equipment_name, configuration)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
                 #{equipmentNumberId,jdbcType=INTEGER},
-                #{equipmentNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{configuration,jdbcType=LONGVARCHAR})
+                #{equipmentNumber,jdbcType=VARCHAR}, #{equipmentName,jdbcType=VARCHAR},
+                #{configuration,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordEntity">
         insert into mro_equipment_number_record
@@ -67,8 +68,8 @@
             <if test="equipmentNumber != null">
                 equipment_number,
             </if>
-            <if test="name != null">
-                name,
+            <if test="equipmentName != null">
+                equipment_name,
             </if>
             <if test="configuration != null">
                 configuration,
@@ -96,8 +97,8 @@
             <if test="equipmentNumber != null">
                 #{equipmentNumber,jdbcType=VARCHAR},
             </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
+            <if test="equipmentName != null">
+                #{equipmentName,jdbcType=VARCHAR},
             </if>
             <if test="configuration != null">
                 #{configuration,jdbcType=LONGVARCHAR},
@@ -125,8 +126,8 @@
             <if test="equipmentNumber != null">
                 equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
             </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+            <if test="equipmentName != null">
+                equipment_name = #{equipmentName,jdbcType=VARCHAR},
             </if>
             <if test="configuration != null">
                 configuration = #{configuration,jdbcType=LONGVARCHAR},
@@ -142,7 +143,7 @@
             modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
             equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             equipment_number    = #{equipmentNumber,jdbcType=VARCHAR},
-            name                = #{name,jdbcType=VARCHAR},
+            equipment_name      = #{equipmentName,jdbcType=VARCHAR},
             configuration       = #{configuration,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -154,7 +155,7 @@
             modified_time       = #{modifiedTime,jdbcType=TIMESTAMP},
             equipment_number_id = #{equipmentNumberId,jdbcType=INTEGER},
             equipment_number    = #{equipmentNumber,jdbcType=VARCHAR},
-            name                = #{name,jdbcType=VARCHAR}
+            equipment_name      = #{equipmentName,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -167,11 +168,11 @@
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="equipment_number_id" jdbcType="INTEGER" property="equipmentNumberId"/>
         <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="configuration" jdbcType="LONGVARCHAR" property="configuration"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
     </resultMap>
     <sql id="Much_Column_List">
-        enr.id enr_id, create_by, create_time, modified_by, modified_time, equipment_number_id, equipment_number,name,configuration
+        enr.id enr_id, create_by, create_time, modified_by, modified_time, equipment_number_id, equipment_number,configuration,equipment_name
     </sql>
     <sql id="Much_Table_List">
         mro_equipment_number_record enr
@@ -190,8 +191,7 @@
         </where>
     </sql>
     <sql id="Much_Order_List">
-        order by enr.id
-        DESC
+        order by enr.id DESC
     </sql>
     <select id="selectByCondition" resultMap="MuchResultMap">
         select

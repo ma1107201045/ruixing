@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -45,6 +46,9 @@ public class EquipmentSparePartsManagementDbEntity implements Serializable {
 
     private Integer equipmentNumberId;
 
-    private EquipmentNumberEntity equipmentNumberEntity;
+    @NotBlank
+    private String equipmentNumber;
+
+    private String equipmentName;
 
 }

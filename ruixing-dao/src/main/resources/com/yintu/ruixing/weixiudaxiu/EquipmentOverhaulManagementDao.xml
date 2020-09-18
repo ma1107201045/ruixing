@@ -194,7 +194,7 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        eom.id as eom_id, eom.create_by, eom.create_time, eom.modified_by, eom.modified_time, amount, reason, evaluate, problem_analysis,equipment_number_id
+        eom.id as eom_id, eom.create_by, eom.create_time, eom.modified_by, eom.modified_time, amount, reason, evaluate, problem_analysis,equipment_number_id,
         en.id as en_id, equipment_number,
         espm.id as espm_id,equipment_name
     </sql>
