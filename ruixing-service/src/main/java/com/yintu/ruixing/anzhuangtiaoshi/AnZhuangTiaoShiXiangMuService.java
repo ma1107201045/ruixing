@@ -1,6 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import javax.servlet.ServletOutputStream;
@@ -39,4 +40,6 @@ public interface AnZhuangTiaoShiXiangMuService {
     void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
 
     List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay);
+
+    List<MessageEntity> findXiaoXi(Integer senderid);
 }

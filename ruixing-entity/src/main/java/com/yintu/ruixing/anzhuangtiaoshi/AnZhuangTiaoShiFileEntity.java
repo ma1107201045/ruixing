@@ -27,6 +27,8 @@ public class AnZhuangTiaoShiFileEntity {
 
     private Integer fabuType;
 
+    private Integer auditorState;
+
     private String yuliu;
 
     private String remarks;

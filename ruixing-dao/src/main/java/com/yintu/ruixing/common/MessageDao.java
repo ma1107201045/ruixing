@@ -1,6 +1,7 @@
 package com.yintu.ruixing.common;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface MessageDao {
 
     List<MessageEntity> selectByExample(MessageEntity messageEntity);
 
-    List<MessageEntity> findXiaoXi(Integer senderid);
+    List<MessageEntity> findXiaoXi(@Param("senderid") Integer senderid,@Param("type") Integer type);
 
 
 }
