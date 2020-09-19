@@ -5,18 +5,45 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
         <result column="customer" jdbcType="VARCHAR" property="customer"/>
-        <result column="trainType" jdbcType="VARCHAR" property="traintype"/>
+        <result column="trainType" jdbcType="INTEGER" property="traintype"/>
         <result column="trainContent" jdbcType="VARCHAR" property="traincontent"/>
         <result column="trainMode" jdbcType="VARCHAR" property="trainmode"/>
         <result column="trainAddress" jdbcType="VARCHAR" property="trainaddress"/>
         <result column="trainStartTime" jdbcType="TIMESTAMP" property="trainstarttime"/>
         <result column="trainEndTime" jdbcType="TIMESTAMP" property="trainendtime"/>
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="createName" jdbcType="VARCHAR" property="createname" />
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+        <result column="updateName" jdbcType="VARCHAR" property="updatename" />
     </resultMap>
     <sql id="Base_Column_List">
     id, xd_name, customer, trainType, trainContent, trainMode, trainAddress, trainStartTime, 
-    trainEndTime, yuliu
+    trainEndTime, yuliu, createTime, createName, updateTime, updateName
   </sql>
+
+    <select id="findTrainByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--查询所有的数据-->
+    <select id="findTrainBytraintype" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        where trainType=#{traintype}
+    </select>
+
+    <!--查询所有的数据的分类-->
+    <select id="findReJiShu"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        group by trainType
+    </select>
 
     <!--根据线段名  或者顾客名进行模糊查询 也是初始化页面-->
     <select id="findAllTrain" resultMap="BaseResultMap">
@@ -82,6 +109,18 @@
             <if test="yuliu != null">
                 yuliu,
             </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="createname != null">
+                createName,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="updatename != null">
+                updateName,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -94,7 +133,7 @@
                 #{customer,jdbcType=VARCHAR},
             </if>
             <if test="traintype != null">
-                #{traintype,jdbcType=VARCHAR},
+                #{traintype,jdbcType=INTEGER},
             </if>
             <if test="traincontent != null">
                 #{traincontent,jdbcType=VARCHAR},
@@ -114,6 +153,18 @@
             <if test="yuliu != null">
                 #{yuliu,jdbcType=VARCHAR},
             </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -128,7 +179,7 @@
                 customer = #{customer,jdbcType=VARCHAR},
             </if>
             <if test="traintype != null">
-                trainType = #{traintype,jdbcType=VARCHAR},
+                trainType = #{traintype,jdbcType=INTEGER},
             </if>
             <if test="traincontent != null">
                 trainContent = #{traincontent,jdbcType=VARCHAR},
@@ -147,6 +198,18 @@
             </if>
             <if test="yuliu != null">
                 yuliu = #{yuliu,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                createName = #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                updateName = #{updatename,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

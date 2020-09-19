@@ -70,6 +70,32 @@ public class AnZhuangTiaoShiFileController extends SessionController {
         }
     }
 
+
+    //根据文件名 查询对应的文件
+    @GetMapping("/findFileByNmae")
+    public Map<String,Object>findFileByNmae(Integer page,Integer size,Integer xdid,Integer filetype,String filename){
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList=anZhuangTiaoShiFileService.findXMByid(xdid);
+        if (fuFileAuditorEntityList.size()==0){
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findFileByNmae(page,size,xdid,filetype,filename,uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findFileByNmaee(page,size,xdid,filetype,filename,uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }
+
+       /* PageHelper.startPage(page,size);
+        List<AnZhuangTiaoShiFileEntity>fileEntities=anZhuangTiaoShiFileService.findFileByNmae(page,size,xdid,filetype,filename);
+        PageInfo<AnZhuangTiaoShiFileEntity>fileEntityPageInfo=new PageInfo<>(fileEntities);
+        return ResponseDataUtil.ok("查询成功",fileEntityPageInfo);*/
+    }
+
+
     //上传文件
     @PostMapping("/uploads")
     @ResponseBody
@@ -116,14 +142,7 @@ public class AnZhuangTiaoShiFileController extends SessionController {
         return ResponseDataUtil.ok("删除文件成功");
     }
 
-    //根据文件名 查询对应的文件
-    @GetMapping("/findFileByNmae")
-    public Map<String,Object>findFileByNmae(Integer page,Integer size,Integer xdid,Integer filetype,String filename){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiFileEntity>fileEntities=anZhuangTiaoShiFileService.findFileByNmae(page,size,xdid,filetype,filename);
-        PageInfo<AnZhuangTiaoShiFileEntity>fileEntityPageInfo=new PageInfo<>(fileEntities);
-        return ResponseDataUtil.ok("查询成功",fileEntityPageInfo);
-    }
+
     //根据id 下载文件
     @GetMapping("/downloads/{id}")
     public void downloadFile(@PathVariable Integer id, HttpServletResponse response) throws IOException {
@@ -144,10 +163,16 @@ public class AnZhuangTiaoShiFileController extends SessionController {
     @GetMapping("/findReordById/{id}")
     public Map<String, Object> findReordById(@PathVariable Integer id) {
         List<AnZhuangTiaoShiRecordMessageEntity> recordMessageEntityList = anZhuangTiaoShiFileService.findReordById(id);
-        return ResponseDataUtil.ok("查询项目记录成功", recordMessageEntityList);
+        return ResponseDataUtil.ok("查询文件记录成功", recordMessageEntityList);
     }
 
 
+    //根据文件id 查询对应的文件数据
+    @GetMapping("/findFileById/{id}")
+    public Map<String,Object>findFileById(@PathVariable Integer id){
+        List<AnZhuangTiaoShiFileEntity> fileEntityList=anZhuangTiaoShiFileService.findFileById(id);
+        return ResponseDataUtil.ok("查询文件成功",fileEntityList);
+    }
 
 
 }

@@ -33,7 +33,7 @@ public class AnZhuangTiaoShiFileEntity {
 
     private String remarks;
 
-
+    private Integer auditorId;
 
     private String createName;
 

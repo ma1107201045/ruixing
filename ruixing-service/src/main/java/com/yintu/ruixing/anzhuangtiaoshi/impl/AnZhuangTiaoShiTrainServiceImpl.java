@@ -7,10 +7,13 @@ import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainService;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +33,79 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
 
     @Autowired
     private AnZhuangTiaoShiTrainFileDao anZhuangTiaoShiTrainFileDao;
+
+    @Override
+    public List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id, Integer page, Integer size) {
+        return anZhuangTiaoShiTrainDao.findTrainByid(id);
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(Integer typeId, Integer page, Integer size) {
+        return anZhuangTiaoShiTrainDao.findTrainBytraintype(typeId);
+    }
+
+    @Override
+    public List<TreeNodeUtil> findReJiShu() {
+        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainDao.findReJiShu();
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (AnZhuangTiaoShiTrainEntity trainEntity : trainEntityList) {
+            //第一级
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            //treeNodeUtil.setId(trainEntity.getId().longValue());
+            treeNodeUtil.setLabel(trainEntity.getTraintype().toString());
+            List<AnZhuangTiaoShiTrainEntity> trainEntities=anZhuangTiaoShiTrainDao.findTrainBytraintype(trainEntity.getTraintype());
+            List<TreeNodeUtil> treeNodeUtilss = new ArrayList<>();
+            for (AnZhuangTiaoShiTrainEntity shiTrainEntity : trainEntities) {
+                //第二级
+                TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
+                treeNodeUtil1.setId(shiTrainEntity.getId().longValue());
+                treeNodeUtil1.setLabel(shiTrainEntity.getCustomer());
+                treeNodeUtilss.add(treeNodeUtil1);
+                treeNodeUtil.setChildren(treeNodeUtilss);
+            }
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        Integer a = 0;
+        Integer b = 0;
+        Integer c = 0;
+        Integer d = 0;
+        for (TreeNodeUtil nodeUtil : treeNodeUtils) {
+            if (nodeUtil.getLabel().equals("1")) {
+                a++;
+            }
+            if (nodeUtil.getLabel().equals("2")) {
+                b++;
+            }
+            if (nodeUtil.getLabel().equals("3")) {
+                c++;
+            }
+            if (nodeUtil.getLabel().equals("4")) {
+                d++;
+            }
+        }
+
+        if (a == 0) {
+            TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
+            treeNodeUtil1.setLabel("施工单位");
+            treeNodeUtils.add(0, treeNodeUtil1);
+        }
+        if (b == 0) {
+            TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
+            treeNodeUtil2.setLabel("设计单位");
+            treeNodeUtils.add(1, treeNodeUtil2);
+        }
+        if (c == 0) {
+            TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
+            treeNodeUtil3.setLabel("运用维护单位");
+            treeNodeUtils.add(2, treeNodeUtil3);
+        }
+        if (d == 0) {
+            TreeNodeUtil treeNodeUtil4 = new TreeNodeUtil();
+            treeNodeUtil4.setLabel("其他单位");
+            treeNodeUtils.add(3, treeNodeUtil4);
+        }
+        return treeNodeUtils;
+    }
 
     @Override
     public List<AnZhuangTiaoShiTrainFileEntity> findTrainFile(Integer id) {
@@ -71,12 +147,16 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
     }
 
     @Override
-    public void editTrainById(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity) {
+    public void editTrainById(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity,String username) {
+        anZhuangTiaoShiTrainEntity.setUpdatename(username);
+        anZhuangTiaoShiTrainEntity.setUpdatetime(new Date());
         anZhuangTiaoShiTrainDao.updateByPrimaryKeySelective(anZhuangTiaoShiTrainEntity);
     }
 
     @Override
-    public void addTrain(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity) {
+    public void addTrain(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity,String username) {
+        anZhuangTiaoShiTrainEntity.setCreatename(username);
+        anZhuangTiaoShiTrainEntity.setCreatetime(new Date());
         anZhuangTiaoShiTrainDao.insertSelective(anZhuangTiaoShiTrainEntity);
     }
 

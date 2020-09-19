@@ -12,9 +12,9 @@ public interface AnZhuangTiaoShiFileDao {
 
     int insertSelective(AnZhuangTiaoShiFileEntity record);
 
-    int updateByPrimaryKeySelective(AnZhuangTiaoShiFileEntity record);
-
     int updateByPrimaryKey(AnZhuangTiaoShiFileEntity record);
+
+    int updateByPrimaryKeySelective(AnZhuangTiaoShiFileEntity record);
 
     //////////////////////////////////////////////////////
 
@@ -30,7 +30,9 @@ public interface AnZhuangTiaoShiFileDao {
 
     AnZhuangTiaoShiFileEntity selectByPrimaryKey(Integer id);
 
-    List<AnZhuangTiaoShiFileEntity> findFileByNmae(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename);
+    List<AnZhuangTiaoShiFileEntity> findFileByNmae(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename,@Param("uid")Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findFileByNmaee(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename,@Param("uid")Integer uid);
 
     List<AnZhuangTiaoShiFileEntity> findShuRuFile(@Param("id")Integer id,@Param("uid") Integer uid);
 
@@ -39,4 +41,6 @@ public interface AnZhuangTiaoShiFileDao {
     List<AnZhuangTiaoShiFileEntity> findShuChuFile(@Param("id")Integer id,@Param("uid") Integer uid);
 
     List<AnZhuangTiaoShiFileEntity> findShuChuFilee(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findFileById(Integer id);
 }
