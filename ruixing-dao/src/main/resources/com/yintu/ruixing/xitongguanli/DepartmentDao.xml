@@ -9,7 +9,6 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="customer_units_id" jdbcType="BIGINT" property="customerUnitsId"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -29,7 +28,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -58,7 +58,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -70,9 +71,10 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, parent_id, create_by, create_time, modified_by, modified_time, name, customer_units_id
+        id, parent_id, create_by, create_time, modified_by, modified_time, name
     </sql>
-    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntityExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntityExample"
+            resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -106,10 +108,10 @@
     <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntity">
         insert into tb_department (id, parent_id, create_by,
                                    create_time, modified_by, modified_time,
-                                   name, customer_units_id)
+                                   name)
         values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR},
                 #{createTime,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
-                #{name,jdbcType=VARCHAR}, #{customerUnitsId,jdbcType=BIGINT})
+                #{name,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntity">
         insert into tb_department
@@ -135,9 +137,6 @@
             <if test="name != null">
                 name,
             </if>
-            <if test="customerUnitsId != null">
-                customer_units_id,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -161,12 +160,10 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
-            <if test="customerUnitsId != null">
-                #{customerUnitsId,jdbcType=BIGINT},
-            </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntityExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntityExample"
+            resultType="java.lang.Long">
         select count(*) from tb_department
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -196,9 +193,6 @@
             <if test="record.name != null">
                 name = #{record.name,jdbcType=VARCHAR},
             </if>
-            <if test="record.customerUnitsId != null">
-                customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT},
-            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -212,8 +206,7 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
         modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
         modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
-        name = #{record.name,jdbcType=VARCHAR},
-        customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT}
+        name = #{record.name,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -239,21 +232,17 @@
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="customerUnitsId != null">
-                customer_units_id = #{customerUnitsId,jdbcType=BIGINT},
-            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.xitongguanli.DepartmentEntity">
         update tb_department
-        set parent_id         = #{parentId,jdbcType=BIGINT},
-            create_by         = #{createBy,jdbcType=VARCHAR},
-            create_time       = #{createTime,jdbcType=TIMESTAMP},
-            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
-            name              = #{name,jdbcType=VARCHAR},
-            customer_units_id = #{customerUnitsId,jdbcType=BIGINT}
+        set parent_id     = #{parentId,jdbcType=BIGINT},
+            create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            name          = #{name,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

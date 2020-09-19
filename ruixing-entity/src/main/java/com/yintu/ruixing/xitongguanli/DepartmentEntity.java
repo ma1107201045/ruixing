@@ -1,6 +1,5 @@
 package com.yintu.ruixing.xitongguanli;
 
-import com.yintu.ruixing.danganguanli.CustomerUnitsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

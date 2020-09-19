@@ -52,9 +52,9 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
                 PaiGongGuanLiRiQinEntity riQinEntityList = paiGongGuanLiRiQinDao.selectByPrimaryKey(aLong.intValue());
                 UserEntity userEntity = userDao.selectByPrimaryKey(aLong);
                 String trueName = userEntity.getTrueName();
-                String danwei = userEntity.getCustomerUnitsEntity().getName();
-                String bumen = userEntity.getDepartmentEntities().get(0).getName();
-                String zhiwei = userEntity.getCustomerDutyEntity().getName();
+                String danwei = "";//userEntity.getCustomerUnitsEntity().getName();
+                String bumen = "";//userEntity.getDepartmentEntities().get(0).getName();
+                String zhiwei = "";//userEntity.getCustomerDutyEntity().getName();
                 riQinEntityList.setUsername(trueName);
                 riQinEntityList.setDanwei(danwei);
                 riQinEntityList.setBumen(bumen);
@@ -72,10 +72,10 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
             Integer uid = paiGongGuanLiRiQinEntity.getUid();
             UserEntity userEntity = userDao.selectByPrimaryKey((long) uid);
             String trueName = userEntity.getTrueName();
-            String danwei = userEntity.getCustomerUnitsEntity().getName();
+            String danwei = "";//userEntity.getCustomerUnitsEntity().getName();
             // departmentEntities  customerDutyEntity  roleEntities
             String bumen = userEntity.getDepartmentEntities().get(0).getName();
-            String zhiwei = userEntity.getCustomerDutyEntity().getName();
+            String zhiwei = "";//userEntity.getCustomerDutyEntity().getName();
             paiGongGuanLiRiQinEntity.setUsername(trueName);
             paiGongGuanLiRiQinEntity.setDanwei(danwei);
             paiGongGuanLiRiQinEntity.setBumen(bumen);

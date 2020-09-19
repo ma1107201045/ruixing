@@ -29,8 +29,6 @@ public class UserController extends SessionController {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private CustomerUnitsService customerUnitsService;
-    @Autowired
     private DepartmentService departmentService;
     @Autowired
     private PermissionService permissionService;
@@ -91,12 +89,6 @@ public class UserController extends SessionController {
         return ResponseDataUtil.ok("查询角色列表信息成功", roleEntities);
     }
 
-
-    @GetMapping("/customer/units")
-    public Map<String, Object> findCustomerUnits() {
-        List<CustomerUnitsEntity> customerUnitsEntities = customerUnitsService.findByExample(new CustomerUnitsEntity());
-        return ResponseDataUtil.ok("查询客户单位列表信息成功", customerUnitsEntities);
-    }
 
     @GetMapping("/departments")
     public Map<String, Object> findDepartments() {

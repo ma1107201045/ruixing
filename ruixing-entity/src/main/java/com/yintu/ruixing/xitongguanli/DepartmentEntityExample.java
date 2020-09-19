@@ -554,66 +554,6 @@ public class DepartmentEntityExample {
             addCriterion("name not between", value1, value2, "name");
             return (Criteria) this;
         }
-
-        public Criteria andCustomerUnitsIdIsNull() {
-            addCriterion("customer_units_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdIsNotNull() {
-            addCriterion("customer_units_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdEqualTo(Long value) {
-            addCriterion("customer_units_id =", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdNotEqualTo(Long value) {
-            addCriterion("customer_units_id <>", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdGreaterThan(Long value) {
-            addCriterion("customer_units_id >", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("customer_units_id >=", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdLessThan(Long value) {
-            addCriterion("customer_units_id <", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdLessThanOrEqualTo(Long value) {
-            addCriterion("customer_units_id <=", value, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdIn(List<Long> values) {
-            addCriterion("customer_units_id in", values, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdNotIn(List<Long> values) {
-            addCriterion("customer_units_id not in", values, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdBetween(Long value1, Long value2) {
-            addCriterion("customer_units_id between", value1, value2, "customerUnitsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCustomerUnitsIdNotBetween(Long value1, Long value2) {
-            addCriterion("customer_units_id not between", value1, value2, "customerUnitsId");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

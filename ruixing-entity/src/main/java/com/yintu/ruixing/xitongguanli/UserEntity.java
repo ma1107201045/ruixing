@@ -59,17 +59,9 @@ public class UserEntity implements UserDetails {
 
     private String address;
 
-    private Long customerUnitsId;
-
-    private Long customerDutyId;
-
     private Short isCustomer;
 
-    private CustomerUnitsEntity customerUnitsEntity;
-
     private List<DepartmentEntity> departmentEntities;
-
-    private CustomerDutyEntity customerDutyEntity;
 
     private List<RoleEntity> roleEntities;
 

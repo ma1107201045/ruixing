@@ -7,8 +7,6 @@ import com.yintu.ruixing.common.enumobject.EnumFlag;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.CustomerDutyService;
-import com.yintu.ruixing.danganguanli.CustomerUnitsService;
 import com.yintu.ruixing.xitongguanli.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -389,26 +387,25 @@ public class UserServiceImpl implements UserService {
         String[][] content = new String[userEntities.size()][headers.length];
         for (int i = 0; i < userEntities.size(); i++) {
             content[i][0] = userEntities.get(i).getId().toString();
-            content[i][1] = userEntities.get(i).getCustomerUnitsEntity().getName();
+
             List<DepartmentEntity> departmentEntities = userEntities.get(i).getDepartmentEntities();
             StringBuilder sb = new StringBuilder();
             for (DepartmentEntity departmentEntity : departmentEntities) {
                 sb.append(departmentEntity.getName()).append("\r\n");
             }
-            content[i][2] = sb.toString();
-            content[i][3] = userEntities.get(i).getCustomerDutyEntity().getName();
-            content[i][4] = userEntities.get(i).getTrueName();
-            content[i][5] = userEntities.get(i).getPhone();
-            content[i][6] = userEntities.get(i).getTelephone();
-            content[i][7] = userEntities.get(i).getEmail();
-            content[i][8] = userEntities.get(i).getProvinceEntity().getName();
-            content[i][9] = userEntities.get(i).getCityEntity().getName();
-            content[i][10] = userEntities.get(i).getDistrictEntity().getName();
-            content[i][11] = userEntities.get(i).getAddress() + content[i][8] + content[i][9] + content[i][10];
-            content[i][12] = userEntities.get(i).getCreateBy();
-            content[i][13] = DateUtil.format(userEntities.get(i).getCreateTime(), "yyy-MM-dd hh:ss:mm");
-            content[i][14] = userEntities.get(i).getModifiedBy();
-            content[i][15] = DateUtil.format(userEntities.get(i).getModifiedTime(), "yyy-MM-dd hh:ss:mm");
+            content[i][1] = sb.toString();
+            content[i][2] = userEntities.get(i).getTrueName();
+            content[i][3] = userEntities.get(i).getPhone();
+            content[i][4] = userEntities.get(i).getTelephone();
+            content[i][5] = userEntities.get(i).getEmail();
+            content[i][6] = userEntities.get(i).getProvinceEntity().getName();
+            content[i][7] = userEntities.get(i).getCityEntity().getName();
+            content[i][8] = userEntities.get(i).getDistrictEntity().getName();
+            content[i][9] = userEntities.get(i).getAddress() + content[i][8] + content[i][9] + content[i][10];
+            content[i][10] = userEntities.get(i).getCreateBy();
+            content[i][11] = DateUtil.format(userEntities.get(i).getCreateTime(), "yyy-MM-dd hh:ss:mm");
+            content[i][12] = userEntities.get(i).getModifiedBy();
+            content[i][13] = DateUtil.format(userEntities.get(i).getModifiedTime(), "yyy-MM-dd hh:ss:mm");
         }
         //创建XSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);

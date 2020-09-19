@@ -3,8 +3,6 @@ package com.yintu.ruixing.xitongguanli;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.CustomerUnitsEntity;
-import com.yintu.ruixing.danganguanli.CustomerUnitsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

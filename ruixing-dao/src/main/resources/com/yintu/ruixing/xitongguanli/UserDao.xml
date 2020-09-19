@@ -20,8 +20,6 @@
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
-        <result column="customer_units_id" jdbcType="BIGINT" property="customerUnitsId"/>
-        <result column="customer_duty_id" jdbcType="BIGINT" property="customerDutyId"/>
         <result column="is_customer" jdbcType="SMALLINT" property="isCustomer"/>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -87,23 +85,8 @@
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, username, password, true_name,
     phone, telephone, email, auth_type, locked, enableds, province_id, city_id, district_id, 
-    address, customer_units_id, customer_duty_id, is_customer
+    address, is_customer
     </sql>
-
-    <select id="findid" resultType="java.lang.Integer">
-        select
-        id
-        from tb_user
-        where true_name = #{truename}
-    </select>
-
-    <select id="findId" resultType="java.lang.Long">
-        select
-        id
-        from tb_user
-        where true_name like concat('%'.#{username},'%')
-    </select>
-
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
             resultMap="BaseResultMap">
         select
@@ -136,25 +119,23 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
         insert into tb_user (id, create_by, create_time,
                              modified_by, modified_time, username,
                              password, true_name, phone,
                              telephone, email, auth_type,
                              locked, enableds, province_id,
                              city_id, district_id, address,
-                             customer_units_id, customer_duty_id, is_customer)
+                             is_customer)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
                 #{password,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
                 #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{authType,jdbcType=SMALLINT},
                 #{locked,jdbcType=SMALLINT}, #{enableds,jdbcType=SMALLINT}, #{provinceId,jdbcType=INTEGER},
                 #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
-                #{customerUnitsId,jdbcType=BIGINT}, #{customerDutyId,jdbcType=BIGINT}, #{isCustomer,jdbcType=SMALLINT})
+                #{isCustomer,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
         insert into tb_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -210,12 +191,6 @@
             </if>
             <if test="address != null">
                 address,
-            </if>
-            <if test="customerUnitsId != null">
-                customer_units_id,
-            </if>
-            <if test="customerDutyId != null">
-                customer_duty_id,
             </if>
             <if test="isCustomer != null">
                 is_customer,
@@ -275,12 +250,6 @@
             </if>
             <if test="address != null">
                 #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="customerUnitsId != null">
-                #{customerUnitsId,jdbcType=BIGINT},
-            </if>
-            <if test="customerDutyId != null">
-                #{customerDutyId,jdbcType=BIGINT},
             </if>
             <if test="isCustomer != null">
                 #{isCustomer,jdbcType=SMALLINT},
@@ -351,12 +320,6 @@
             <if test="record.address != null">
                 address = #{record.address,jdbcType=VARCHAR},
             </if>
-            <if test="record.customerUnitsId != null">
-                customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT},
-            </if>
-            <if test="record.customerDutyId != null">
-                customer_duty_id = #{record.customerDutyId,jdbcType=BIGINT},
-            </if>
             <if test="record.isCustomer != null">
                 is_customer = #{record.isCustomer,jdbcType=SMALLINT},
             </if>
@@ -385,8 +348,6 @@
         city_id = #{record.cityId,jdbcType=INTEGER},
         district_id = #{record.districtId,jdbcType=INTEGER},
         address = #{record.address,jdbcType=VARCHAR},
-        customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT},
-        customer_duty_id = #{record.customerDutyId,jdbcType=BIGINT},
         is_customer = #{record.isCustomer,jdbcType=SMALLINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -446,12 +407,6 @@
             <if test="address != null">
                 address = #{address,jdbcType=VARCHAR},
             </if>
-            <if test="customerUnitsId != null">
-                customer_units_id = #{customerUnitsId,jdbcType=BIGINT},
-            </if>
-            <if test="customerDutyId != null">
-                customer_duty_id = #{customerDutyId,jdbcType=BIGINT},
-            </if>
             <if test="isCustomer != null">
                 is_customer = #{isCustomer,jdbcType=SMALLINT},
             </if>
@@ -460,26 +415,24 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
         update tb_user
-        set create_by         = #{createBy,jdbcType=VARCHAR},
-            create_time       = #{createTime,jdbcType=TIMESTAMP},
-            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
-            username          = #{username,jdbcType=VARCHAR},
-            password          = #{password,jdbcType=VARCHAR},
-            true_name         = #{trueName,jdbcType=VARCHAR},
-            phone             = #{phone,jdbcType=VARCHAR},
-            telephone         = #{telephone,jdbcType=VARCHAR},
-            email             = #{email,jdbcType=VARCHAR},
-            auth_type         = #{authType,jdbcType=SMALLINT},
-            locked            = #{locked,jdbcType=SMALLINT},
-            enableds          = #{enableds,jdbcType=SMALLINT},
-            province_id       = #{provinceId,jdbcType=INTEGER},
-            city_id           = #{cityId,jdbcType=INTEGER},
-            district_id       = #{districtId,jdbcType=INTEGER},
-            address           = #{address,jdbcType=VARCHAR},
-            customer_units_id = #{customerUnitsId,jdbcType=BIGINT},
-            customer_duty_id  = #{customerDutyId,jdbcType=BIGINT},
-            is_customer       = #{isCustomer,jdbcType=SMALLINT}
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            username      = #{username,jdbcType=VARCHAR},
+            password      = #{password,jdbcType=VARCHAR},
+            true_name     = #{trueName,jdbcType=VARCHAR},
+            phone         = #{phone,jdbcType=VARCHAR},
+            telephone     = #{telephone,jdbcType=VARCHAR},
+            email         = #{email,jdbcType=VARCHAR},
+            auth_type     = #{authType,jdbcType=SMALLINT},
+            locked        = #{locked,jdbcType=SMALLINT},
+            enableds      = #{enableds,jdbcType=SMALLINT},
+            province_id   = #{provinceId,jdbcType=INTEGER},
+            city_id       = #{cityId,jdbcType=INTEGER},
+            district_id   = #{districtId,jdbcType=INTEGER},
+            address       = #{address,jdbcType=VARCHAR},
+            is_customer   = #{isCustomer,jdbcType=SMALLINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <resultMap id="BasePermissionResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
@@ -493,6 +446,20 @@
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
+
+
+    <select id="findid" resultType="java.lang.Integer">
+        select id
+        from tb_user
+        where true_name = #{truename}
+    </select>
+
+    <select id="findId" resultType="java.lang.Long">
+        select id
+        from tb_user
+        where true_name like concat('%'.#{username}, '%')
+    </select>
+
     <select id="selectPermissionById" resultMap="BasePermissionResultMap">
         SELECT p.*
         FROM tb_user u
