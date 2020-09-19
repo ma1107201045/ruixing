@@ -41,7 +41,7 @@
     </delete>
     <insert id="insert"
             parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs"
-            useGeneratedKeys="true" keyProperty="true">
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_equipment_reprocessed_product_management (id, create_by, create_time,
                                                                   modified_by, modified_time, record_time,
                                                                   repair_time, return_time, equipment_number_id,
@@ -56,7 +56,7 @@
     </insert>
     <insert id="insertSelective"
             parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentReprocessedProductManagementEntityWithBLOBs"
-            useGeneratedKeys="true" keyProperty="true">
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_equipment_reprocessed_product_management
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

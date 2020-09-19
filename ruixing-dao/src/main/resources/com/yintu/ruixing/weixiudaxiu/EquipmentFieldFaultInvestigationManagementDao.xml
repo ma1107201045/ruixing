@@ -272,6 +272,7 @@
         <result column="document_name" jdbcType="VARCHAR" property="documentName"/>
         <result column="document_file" jdbcType="VARCHAR" property="documentFile"/>
         <result column="fault_data" jdbcType="VARCHAR" property="faultData"/>
+        <result column="meeting_context" jdbcType="LONGVARCHAR" property="meetingContext"/>
         <association property="tieLuJuEntity" column="railways_bureau_id">
             <result column="t_id" jdbcType="INTEGER" property="tid"/>
             <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
@@ -290,7 +291,7 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        effim.id as  effim_id, effim.create_by, effim.create_time, effim.modified_by, effim.modified_time, effim.railways_bureau_id, effim.signal_depot_id,effim.special_railway_line_id, effim.station_id, start_date, end_date, meeting_theme, document_name,document_file, fault_data,
+        effim.id as  effim_id, effim.create_by, effim.create_time, effim.modified_by, effim.modified_time, effim.railways_bureau_id, effim.signal_depot_id,effim.special_railway_line_id, effim.station_id, start_date, end_date, meeting_theme, document_name,document_file, fault_data,meeting_context,
         t.tid as t_id,tlj_name,
         d.did as d_id,dwd_name,
         x.xid as x_id,xd_name,
