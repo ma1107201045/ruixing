@@ -12,19 +12,10 @@ import java.util.List;
 public class EquipmentSparePartsManagementPutServiceImpl implements EquipmentSparePartsManagementPutService {
     @Autowired
     private EquipmentSparePartsManagementPutDao equipmentSparePartsManagementPutDao;
-    @Autowired
-    private EquipmentSparePartsManagementService equipmentSparePartsManagementService;
 
     @Override
     public void add(EquipmentSparePartsManagementPutEntity entity) {
-        EquipmentSparePartsManagementEntity equipmentSparePartsManagementEntity = equipmentSparePartsManagementService.findById(entity.getEquipmentSparePartsManagementId());
-        if (equipmentSparePartsManagementEntity != null) {
-            equipmentSparePartsManagementEntity.setModifiedBy(entity.getCreateBy());
-            equipmentSparePartsManagementEntity.setModifiedTime(entity.getCreateTime());
-            equipmentSparePartsManagementEntity.setInventoryAmount(equipmentSparePartsManagementEntity.getInventoryAmount() + entity.getPutAmount());
-            equipmentSparePartsManagementService.edit(equipmentSparePartsManagementEntity);
-            equipmentSparePartsManagementPutDao.insertSelective(entity);
-        }
+        equipmentSparePartsManagementPutDao.insertSelective(entity);
     }
 
     @Override

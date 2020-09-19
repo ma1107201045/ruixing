@@ -45,6 +45,23 @@ public class EquipmentReprocessedProductManagementServiceImpl implements Equipme
         if (entity.getReturnTime() != null) {
             if (!entity.getReturnTime().after(new Date()))
                 throw new BaseRuntimeException("返还时间不能小于或等于当前时间");
+            List<ScheduleJobEntity> scheduleJobEntities = scheduleJobService.findByJobName("equipmentReprocessedProductManagementTask" + "-" + entity.getId());
+            if (!scheduleJobEntities.isEmpty()) {
+                for (ScheduleJobEntity jobEntity : scheduleJobEntities) {
+                    jobEntity.setModifiedBy(entity.getModifiedBy());
+                    jobEntity.setModifiedTime(entity.getModifiedTime());
+                    jobEntity.setExecutionTime(new Date());
+                    jobEntity.setCronExpression(String.format("%d %d %d %d %d ? %d",
+                            DateUtil.second(entity.getReturnTime()),
+                            DateUtil.minute(entity.getReturnTime()),
+                            DateUtil.hour(entity.getReturnTime(), true),
+                            DateUtil.dayOfMonth(entity.getReturnTime()),
+                            DateUtil.month(entity.getReturnTime()) + 1,
+                            DateUtil.year(entity.getReturnTime())));
+                    scheduleJobService.edit(jobEntity);
+                }
+                return;
+            }
             ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
             scheduleJobEntity.setCreateBy(entity.getModifiedBy());
             scheduleJobEntity.setCreateTime(entity.getModifiedTime());
