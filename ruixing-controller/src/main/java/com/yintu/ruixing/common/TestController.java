@@ -1,4 +1,4 @@
-/*
+
 package com.yintu.ruixing.guzhangzhenduan;
 
 import cn.hutool.core.img.ImgUtil;
@@ -31,11 +31,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-*/
+
 /**
  * @author:mlf
  * @date:2020/6/1 16:06
- *//*
+ */
 
 @Controller
 @RequestMapping("/test")
@@ -132,17 +132,6 @@ public class TestController {
         return ResponseDataUtil.ok("上传售前技术支持文件信息成功", jo);
     }
 
-    @GetMapping("/test7")
-    public void test7(String czId, HttpServletResponse resp) throws IOException {
-        QrConfig config = new QrConfig(1024, 768);// 设置边距，既二维码和背景之间的边距
-        config.setMargin(3);// 设置前景色，既二维码颜色（青色）
-        config.setForeColor(Color.CYAN);// 设置背景色（灰色）
-        config.setBackColor(Color.GRAY);
-        config.setRatio(1);
-        QrCodeUtil.generate("http://ruixing.iypic.com/welcome/" + RandomUtil.randomNumbers(10) + czId, config, ImgUtil.IMAGE_TYPE_PNG, resp.getOutputStream());// 生成二维码到文件，也可以到流
-        resp.getOutputStream().flush();
-        resp.getOutputStream().close();
-    }
 
 }
-*/
+
