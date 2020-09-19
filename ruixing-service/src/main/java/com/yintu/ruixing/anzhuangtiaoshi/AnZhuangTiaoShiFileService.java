@@ -23,8 +23,6 @@ public interface AnZhuangTiaoShiFileService {
 
     AnZhuangTiaoShiFileEntity findById(Integer id);
 
-    List<AnZhuangTiaoShiFileEntity> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename);
-
     void editAuditorByWJId(AnZhuangTiaoShiObjectAuditorEntity anZhuangTiaoShiObjectAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
 
     List<AnZhuangTiaoShiRecordMessageEntity> findReordById(Integer id);
@@ -38,4 +36,10 @@ public interface AnZhuangTiaoShiFileService {
     List<AnZhuangTiaoShiFileEntity> findShuChuFile(Integer id, Integer page, Integer size, Integer uid);
 
     List<AnZhuangTiaoShiFileEntity> findShuChuFilee(Integer id, Integer page, Integer size, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename,Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findFileByNmaee(Integer page, Integer size, Integer xdid, Integer filetype, String filename,Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findFileById(Integer id);
 }

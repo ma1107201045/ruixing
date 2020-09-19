@@ -3,12 +3,14 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainService;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +28,35 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/TrainAll")
-public class AnZhuangTiaoShiTrainController {
+public class AnZhuangTiaoShiTrainController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiTrainService anZhuangTiaoShiTrainService;
 
+
+    //创建二级树
+    @RequestMapping
+    public Map<String, Object> findSanJiShu() {
+        List<TreeNodeUtil> treeNodeUtils = anZhuangTiaoShiTrainService.findReJiShu();
+        return ResponseDataUtil.ok("查询成功", treeNodeUtils);
+    }
+
+    //根据单位类型  查询对应的数据
+    @GetMapping("/findAllTrainByType/{typeId}")
+    public Map<String,Object>findAllTrainByType(@PathVariable Integer typeId,Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findAllTrainByType(typeId,page,size);
+        PageInfo<AnZhuangTiaoShiTrainEntity> trainEntityPageInfo=new PageInfo<>(trainEntityList);
+        return ResponseDataUtil.ok("查询培训内容成功",trainEntityPageInfo);
+    }
+
+    //根据id  查询对应的培训内容
+    @GetMapping("/findTrainByid/{id}")
+    public Map<String,Object>findTrainByid(@PathVariable Integer id,Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findTrainByid(id,page,size);
+        PageInfo<AnZhuangTiaoShiTrainEntity> trainEntityPageInfo=new PageInfo<>(trainEntityList);
+        return ResponseDataUtil.ok("查询培训内容成功",trainEntityPageInfo);
+    }
     //查询对应的线段名
     @GetMapping("/findXianDuan")
     public Map<String,Object>findXianDuan(){
@@ -40,14 +67,16 @@ public class AnZhuangTiaoShiTrainController {
     //新增培训数据
     @PostMapping("/addTrain")
     public Map<String,Object>addTrain(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity){
-        anZhuangTiaoShiTrainService.addTrain(anZhuangTiaoShiTrainEntity);
+        String username = this.getLoginUser().getTrueName();
+        anZhuangTiaoShiTrainService.addTrain(anZhuangTiaoShiTrainEntity,username);
         return ResponseDataUtil.ok("新增培训成功");
     }
 
     //根据id 编辑对应的培训数据
     @PutMapping("/editTrainById/{id}")
     public Map<String,Object>editTrainById(@PathVariable Integer id,AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity){
-        anZhuangTiaoShiTrainService.editTrainById(anZhuangTiaoShiTrainEntity);
+        String username = this.getLoginUser().getTrueName();
+        anZhuangTiaoShiTrainService.editTrainById(anZhuangTiaoShiTrainEntity,username);
         return ResponseDataUtil.ok("编辑培训成功");
     }
     //根据线段名  或者顾客名进行模糊查询 也是初始化页面

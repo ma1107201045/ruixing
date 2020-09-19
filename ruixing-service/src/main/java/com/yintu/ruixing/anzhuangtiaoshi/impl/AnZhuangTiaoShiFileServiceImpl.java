@@ -35,8 +35,13 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
     private MessageDao messageDao;
 
     @Override
-    public List<AnZhuangTiaoShiFileEntity> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename) {
-        return anZhuangTiaoShiFileDao.findFileByNmae(xdid,filetype,filename);
+    public List<AnZhuangTiaoShiFileEntity> findFileByNmaee(Integer page, Integer size, Integer xdid, Integer filetype, String filename,Integer uid) {
+        return anZhuangTiaoShiFileDao.findFileByNmaee(xdid,filetype,filename,uid);
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiFileEntity> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename,Integer uid) {
+        return anZhuangTiaoShiFileDao.findFileByNmae(xdid,filetype,filename,uid);
     }
 
     @Override
@@ -52,6 +57,11 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
     @Override
     public List<AnZhuangTiaoShiFileEntity> findShuChuFile(Integer id, Integer page, Integer size, Integer uid) {
         return anZhuangTiaoShiFileDao.findShuChuFile(id,uid);
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiFileEntity> findFileById(Integer id) {
+        return anZhuangTiaoShiFileDao.findFileById(id);
     }
 
     @Override
@@ -87,7 +97,7 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
             AnZhuangTiaoShiFileEntity fileEntity=new AnZhuangTiaoShiFileEntity();
             fileEntity.setId(id);
             fileEntity.setAuditorState(3);
-            anZhuangTiaoShiFileDao.updateByPrimaryKeySelective(fileEntity);
+            anZhuangTiaoShiFileDao.editFileById(fileEntity);
             //新增消息  提醒发送者查看审核未通过的文件
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setTitle("文件");
@@ -115,7 +125,7 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
             AnZhuangTiaoShiFileEntity fileEntity=new AnZhuangTiaoShiFileEntity();
             fileEntity.setId(id);
             fileEntity.setAuditorState(2);
-            anZhuangTiaoShiFileDao.updateByPrimaryKeySelective(fileEntity);
+            anZhuangTiaoShiFileDao.editFileById(fileEntity);
             //新增查看消息
             AnZhuangTiaoShiFileEntity onefileEntity = anZhuangTiaoShiFileDao.selectByPrimaryKey(id);
             AnZhuangTiaoShiRecordMessageEntity recordMessageEntity=new AnZhuangTiaoShiRecordMessageEntity();

@@ -16,7 +16,7 @@ public class AnZhuangTiaoShiTrainEntity {
 
     private String customer;
 
-    private String traintype;
+    private Integer traintype;
 
     private String traincontent;
 
@@ -30,83 +30,12 @@ public class AnZhuangTiaoShiTrainEntity {
 
     private String yuliu;
 
-    public Integer getId() {
-        return id;
-    }
+    private Date createtime;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String createname;
 
-    public String getXdName() {
-        return xdName;
-    }
+    private Date updatetime;
 
-    public void setXdName(String xdName) {
-        this.xdName = xdName == null ? null : xdName.trim();
-    }
+    private String updatename;
 
-    public String getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(String customer) {
-        this.customer = customer == null ? null : customer.trim();
-    }
-
-    public String getTraintype() {
-        return traintype;
-    }
-
-    public void setTraintype(String traintype) {
-        this.traintype = traintype == null ? null : traintype.trim();
-    }
-
-    public String getTraincontent() {
-        return traincontent;
-    }
-
-    public void setTraincontent(String traincontent) {
-        this.traincontent = traincontent == null ? null : traincontent.trim();
-    }
-
-    public String getTrainmode() {
-        return trainmode;
-    }
-
-    public void setTrainmode(String trainmode) {
-        this.trainmode = trainmode == null ? null : trainmode.trim();
-    }
-
-    public String getTrainaddress() {
-        return trainaddress;
-    }
-
-    public void setTrainaddress(String trainaddress) {
-        this.trainaddress = trainaddress == null ? null : trainaddress.trim();
-    }
-
-    public Date getTrainstarttime() {
-        return trainstarttime;
-    }
-
-    public void setTrainstarttime(Date trainstarttime) {
-        this.trainstarttime = trainstarttime;
-    }
-
-    public Date getTrainendtime() {
-        return trainendtime;
-    }
-
-    public void setTrainendtime(Date trainendtime) {
-        this.trainendtime = trainendtime;
-    }
-
-    public String getYuliu() {
-        return yuliu;
-    }
-
-    public void setYuliu(String yuliu) {
-        this.yuliu = yuliu == null ? null : yuliu.trim();
-    }
 }

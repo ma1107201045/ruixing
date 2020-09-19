@@ -3,6 +3,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ import java.util.List;
 public interface AnZhuangTiaoShiTrainService {
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuan();
 
-    void addTrain(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity);
+    void addTrain(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity,String username);
 
-    void editTrainById(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity);
+    void editTrainById(AnZhuangTiaoShiTrainEntity anZhuangTiaoShiTrainEntity,String username);
 
     List<AnZhuangTiaoShiTrainEntity> findAllTrain(Integer page, Integer size, String xdName, String customer);
 
@@ -32,4 +33,10 @@ public interface AnZhuangTiaoShiTrainService {
     void deleteTrainFilesByIds(Integer[] ids);
 
     List<AnZhuangTiaoShiTrainFileEntity> findTrainFile(Integer id);
+
+    List<TreeNodeUtil> findReJiShu();
+
+    List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(Integer typeId, Integer page, Integer size);
+
+    List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id, Integer page, Integer size);
 }

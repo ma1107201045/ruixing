@@ -21,4 +21,10 @@ public interface AnZhuangTiaoShiTrainDao {
     int insertSelective(AnZhuangTiaoShiTrainEntity record);
 
     List<AnZhuangTiaoShiTrainEntity> findAllTrain(@Param("xdName") String xdName,@Param("customer") String customer);
+
+    List<AnZhuangTiaoShiTrainEntity> findReJiShu();
+
+    List<AnZhuangTiaoShiTrainEntity> findTrainBytraintype(@Param("traintype") Integer traintype);
+
+    List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id);
 }
