@@ -3,6 +3,8 @@ package com.yintu.ruixing.anzhuangtiaoshi.impl;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.MessageDao;
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuService;
@@ -51,6 +53,15 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
 
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
+
+    @Autowired
+    private MessageDao messageDao;
+
+    @Override
+    public List<MessageEntity> findXiaoXi(Integer senderid) {
+        Integer type=3;
+        return messageDao.findXiaoXi(senderid,type);
+    }
 
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay) {
@@ -161,7 +172,6 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
 
 
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
-
             List<AnZhuangTiaoShiXiangMuServiceStatusEntity> titleList = new ArrayList<>();
             Integer id = xiangMuEntity.getId();//线段id
             //获取线段下面车站的个数
@@ -169,19 +179,19 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
             xiangMuEntity.setCheZhanTotal(chezhantotal);
             //查询属性的完成和到货个数
             List<Integer> serId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllSeridByXDid(id);
+
             for (Integer serid : serId) {//5 9 12 13
                 List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
                 List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
                 if (chooseEntity.size()==0){
                     Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
-                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
-                    xiangMuServiceStatusEntity.setTitleTotal(total);
-                    titleList.add(xiangMuServiceStatusEntity);
+                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntityy  = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
+                    xiangMuServiceStatusEntityy.setTitleTotal(total);
+                    titleList.add(xiangMuServiceStatusEntityy);
                 }
-
                 if (chooseEntity.size()!=0){
-                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity =null;
                     for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity statusChooseEntity : chooseEntity) {
+                        AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity =null;
                         System.out.println("123"+statusChooseEntity);
                         Integer chooseid = statusChooseEntity.getId();
                         Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findChooseTotal(chooseid, id);
@@ -190,13 +200,12 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                          xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(sid);
                         chooseList.add(statusChooseEntity);
                         xiangMuServiceStatusEntity.setList(chooseList);
+                        titleList.add(xiangMuServiceStatusEntity);
                     }
-                    titleList.add(xiangMuServiceStatusEntity);
+                    xiangMuEntity.setTitlelist(titleList);
                 }
-
+                System.out.println("cccccccc"+xiangMuEntity);
             }
-            xiangMuEntity.setTitlelist(titleList);
-
         }
         return xiangMuEntities;
     }
@@ -252,6 +261,8 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         for (AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity : anZhuangTiaoShiXiangMuEntities) {
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             //第一级
+            Integer xmid = anZhuangTiaoShiXiangMuEntity.getId();
+            treeNodeUtil.setValue(xmid.toString());
             treeNodeUtil.setId((long) anZhuangTiaoShiXiangMuEntity.getId());
             treeNodeUtil.setLabel(anZhuangTiaoShiXiangMuEntity.getXdFenlei().toString());
             List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities1 = anZhuangTiaoShiXiangMuDao.findDiErJi(anZhuangTiaoShiXiangMuEntity.getXdFenlei());
@@ -260,6 +271,8 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 //第二级
                 TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                 Map<String, Object> map = new HashMap();
+                Integer id = zhuangTiaoShiXiangMuEntity.getId()+1568;
+                treeNodeUtil1.setValue(id.toString());
                 treeNodeUtil1.setId((long) zhuangTiaoShiXiangMuEntity.getId());
                 treeNodeUtil1.setLabel(zhuangTiaoShiXiangMuEntity.getXdName());
                 map.put("xiangmu", anZhuangTiaoShiXiangMuDao.findOneXiangMU(zhuangTiaoShiXiangMuEntity.getId()));
@@ -267,15 +280,19 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 treeNodeUtilss.add(treeNodeUtil1);
                 treeNodeUtil.setChildren(treeNodeUtilss);
                 //第三级
+                Integer idd=id+2365;
+                Integer iddd=id+1457;
                 List<TreeNodeUtil> treeNodeUtilss2 = new ArrayList<>();
                 List<TreeNodeUtil> treeNodeUtilss3 = new ArrayList<>();
                 TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
                 TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
                 treeNodeUtil2.setId((long) 1);
                 treeNodeUtil2.setLabel("输入文件");
+                treeNodeUtil2.setValue(idd.toString());
                 treeNodeUtil2.setChildren(treeNodeUtilss3);
                 treeNodeUtil3.setId((long) 2);
                 treeNodeUtil3.setLabel("输出文件");
+                treeNodeUtil3.setValue(iddd.toString());
                 treeNodeUtil3.setChildren(treeNodeUtilss3);
                 treeNodeUtilss2.add(treeNodeUtil2);
                 treeNodeUtilss2.add(treeNodeUtil3);

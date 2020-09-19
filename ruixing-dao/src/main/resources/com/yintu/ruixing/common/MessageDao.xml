@@ -241,7 +241,7 @@
         from mro_message
         where
          receiver_id = #{senderid}
-        and type = 2
+        and type = #{type}
         AND STATUS =1
     </select>
     <select id="selectByTypeAndStatus" resultMap="ResultMapWithBLOBs">

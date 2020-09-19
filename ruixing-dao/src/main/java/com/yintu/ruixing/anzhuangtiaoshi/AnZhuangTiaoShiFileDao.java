@@ -31,4 +31,12 @@ public interface AnZhuangTiaoShiFileDao {
     AnZhuangTiaoShiFileEntity selectByPrimaryKey(Integer id);
 
     List<AnZhuangTiaoShiFileEntity> findFileByNmae(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename);
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFile(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFilee(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFile(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFilee(@Param("id")Integer id,@Param("uid") Integer uid);
 }

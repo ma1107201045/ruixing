@@ -107,18 +107,18 @@
 
     <!-- 初始化输入文件 不需要审核的-->
     <select id="findShuRuFile" resultMap="BaseResultMap">
-        SELECT
-        cf.<include refid="Base_Column_List"/>,
-        cfa.auditor_id
-        FROM
-          mro_chanpinjiaofu_file cf
-        LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
-        where
-            cf.xm_id = #{xmid}
-            AND cf.file_type = 1
-            AND(cf.fabu_type = 2 )
-            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
-        ORDER BY cf.id DESC
+            SELECT
+            cf.<include refid="Base_Column_List"/>,
+            cfa.auditor_id
+            FROM
+              mro_chanpinjiaofu_file cf
+            LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cf.id = cfa.chanpinjiaofu_file_id
+            where
+                cf.xm_id = #{xmid}
+                AND cf.file_type = 1
+                AND(cf.fabu_type = 2 )
+                OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1)
+            ORDER BY cf.id DESC
     </select>
     <!-- 初始化输入文件  要审核的-->
     <select id="findShuRuFilee" resultMap="BaseResultMap">

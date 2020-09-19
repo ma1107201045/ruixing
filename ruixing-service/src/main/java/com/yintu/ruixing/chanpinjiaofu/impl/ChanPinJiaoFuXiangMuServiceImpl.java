@@ -59,7 +59,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
 
     @Override
     public List<MessageEntity> findXiaoXi(Integer senderid) {
-        return messageDao.findXiaoXi(senderid);
+        Integer type=2;
+        return messageDao.findXiaoXi(senderid,type);
     }
 
     @Override

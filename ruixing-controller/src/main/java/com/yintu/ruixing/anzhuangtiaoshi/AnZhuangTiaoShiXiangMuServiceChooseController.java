@@ -162,17 +162,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                         anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                     }
                 }
-                System.out.println(servicename);
             }
-
-            System.out.println(tljname);
-            System.out.println(dwdname);
-            System.out.println(xdname);
-            System.out.println(statusdata);
-
-
         }
-
         return ResponseDataUtil.ok("新增成功");
     }
 

@@ -3,6 +3,9 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity;
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuRecordMessageEntity;
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
@@ -32,19 +35,39 @@ public class AnZhuangTiaoShiFileController extends SessionController {
     //根据 线段id  查询对应的所有的输入文件
     @GetMapping("/findShuRuFileByXid/{id}")
     public Map<String,Object>findShuRuFileByXid(@PathVariable Integer id,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiFileEntity> fileEntities=anZhuangTiaoShiFileService.findShuRuFileByXid(id,page,size);
-        PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo=new PageInfo<>(fileEntities);
-        return ResponseDataUtil.ok("查询输入文件成功",fileEntityPageInfo);
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList=anZhuangTiaoShiFileService.findXMByid(id);
+        if (fuFileAuditorEntityList.size()==0){
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findShuRuFile(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findShuRuFilee(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        }
     }
 
     //根据 线段id  查询对应的所有的输出文件
     @GetMapping("/findShuChuFileByXid/{id}")
     public Map<String,Object>findShuChuFileByXid(@PathVariable Integer id,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiFileEntity> fileEntities=anZhuangTiaoShiFileService.findShuChuFileByXid(id,page,size);
-        PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo=new PageInfo<>(fileEntities);
-        return ResponseDataUtil.ok("查询输出文件成功",fileEntityPageInfo);
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList=anZhuangTiaoShiFileService.findXMByid(id);
+        if (fuFileAuditorEntityList.size()==0){
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findShuChuFile(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiFileService.findShuChuFilee(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }
     }
 
     //上传文件
@@ -61,17 +84,29 @@ public class AnZhuangTiaoShiFileController extends SessionController {
 
     //添加线段的文件
     @PostMapping("/addFile")
-    public Map<String,Object>addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity){
+    public Map<String,Object>addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity,Integer[] uids){
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
-        anZhuangTiaoShiFileService.addFile(anZhuangTiaoShiFileEntity,username,senderid);
+        anZhuangTiaoShiFileService.addFile(anZhuangTiaoShiFileEntity,username,senderid,uids);
         return ResponseDataUtil.ok("新增文件成功");
     }
     //根据文件id  编辑对应的文件
     @PutMapping("/editFileById/{id}")
-    public Map<String,Object>editFileById(@PathVariable Integer id,AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity){
-        anZhuangTiaoShiFileService.editFileById(anZhuangTiaoShiFileEntity);
+    public Map<String,Object>editFileById(@PathVariable Integer id,Integer[] uids,AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity){
+        String username = this.getLoginUser().getTrueName();
+        Integer userid = this.getLoginUser().getId().intValue();
+        anZhuangTiaoShiFileService.editFileById(anZhuangTiaoShiFileEntity,id,uids,userid,username);
         return ResponseDataUtil.ok("编辑文件成功");
+    }
+
+
+    //根据文件id 编辑审核过程
+    @PutMapping("/editAuditorByWJId/{id}")
+    public Map<String, Object> editAuditorByWJId(@PathVariable Integer id, AnZhuangTiaoShiObjectAuditorEntity anZhuangTiaoShiObjectAuditorEntity, Integer senderId) {
+        String username = this.getLoginUser().getTrueName();
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        anZhuangTiaoShiFileService.editAuditorByWJId(anZhuangTiaoShiObjectAuditorEntity, id, username, receiverid,senderId);
+        return ResponseDataUtil.ok("文件审核成功");
     }
 
     //根据文件id  批量删除 或者单个删除文件
@@ -105,4 +140,14 @@ public class AnZhuangTiaoShiFileController extends SessionController {
             }
         }
     }
+    //根据文件id  查询备注信息
+    @GetMapping("/findReordById/{id}")
+    public Map<String, Object> findReordById(@PathVariable Integer id) {
+        List<AnZhuangTiaoShiRecordMessageEntity> recordMessageEntityList = anZhuangTiaoShiFileService.findReordById(id);
+        return ResponseDataUtil.ok("查询项目记录成功", recordMessageEntityList);
+    }
+
+
+
+
 }

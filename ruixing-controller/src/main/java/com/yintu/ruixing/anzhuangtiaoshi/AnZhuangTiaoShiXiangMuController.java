@@ -3,6 +3,8 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/AnZhuangTiaoShiAll")
-public class AnZhuangTiaoShiXiangMuController {
+public class AnZhuangTiaoShiXiangMuController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiXiangMuService anZhuangTiaoShiXiangMuService;
 
@@ -58,6 +60,15 @@ public class AnZhuangTiaoShiXiangMuController {
         }else {
             return ResponseDataUtil.error("此线段下有车站,不能删除");
         }
+    }
+
+
+    //查询消息提醒
+    @GetMapping("/findXiaoXi")
+    public Map<String, Object> findXiaoXi() {
+        Integer senderid = this.getLoginUser().getId().intValue();
+        List<MessageEntity> contextlist = anZhuangTiaoShiXiangMuService.findXiaoXi(senderid);
+        return ResponseDataUtil.ok("查询消息成功", contextlist);
     }
 
     //查询所有的项目类型
