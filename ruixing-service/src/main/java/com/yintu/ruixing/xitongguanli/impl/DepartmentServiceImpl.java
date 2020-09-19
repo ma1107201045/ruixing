@@ -28,14 +28,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentDao departmentDao;
 
-    @Autowired
-    private CustomerUnitsService customerUnitsService;
-
-    @Autowired
-    private DepartmentCustomerDutyService departmentCustomerDutyService;
-
-    @Autowired
-    private CustomerDutyService customerDutyService;
 
     @Override
     public void add(DepartmentEntity departmentEntity) {
@@ -76,15 +68,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentEntity findById(Long id) {
-        DepartmentEntity departmentEntity = departmentDao.selectByPrimaryKey(id);
-        if (departmentEntity != null) {
-            Long customerUnitsId = departmentEntity.getCustomerUnitsId();
-            if (customerUnitsId != null) {
-                CustomerUnitsEntity customerUnitsEntity = customerUnitsService.findById(customerUnitsId);
-                departmentEntity.setCustomerUnitsEntity(customerUnitsEntity);
-            }
-        }
-        return departmentEntity;
+        return departmentDao.selectByPrimaryKey(id);
     }
 
     @Override
@@ -101,13 +85,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<TreeNodeUtil> findDepartmentTree(Long parentId, Long customerUnitsId) {
+    public List<TreeNodeUtil> findDepartmentTree(Long parentId) {
         DepartmentEntityExample departmentEntityExample = new DepartmentEntityExample();
         DepartmentEntityExample.Criteria criteria = departmentEntityExample.createCriteria();
         criteria.andParentIdEqualTo(parentId);
-        if (customerUnitsId != null) {
-            criteria.andCustomerUnitsIdEqualTo(customerUnitsId);
-        }
         List<DepartmentEntity> departmentEntities = departmentDao.selectByExample(departmentEntityExample);
 
         List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
@@ -122,10 +103,8 @@ public class DepartmentServiceImpl implements DepartmentService {
             map.put("createTime", departmentEntity.getCreateTime());
             map.put("modifiedBy", departmentEntity.getModifiedBy());
             map.put("modifiedTime", departmentEntity.getModifiedTime());
-            map.put("customerUnitsId", departmentEntity.getCustomerUnitsId());
             treeNodeUtil.setA_attr(map);
-            treeNodeUtil.setChildren(customerUnitsId != null ? this.findDepartmentTree(departmentEntity.getId(), customerUnitsId) :
-                    this.findDepartmentTree(departmentEntity.getId(), null));
+            treeNodeUtil.setChildren(this.findDepartmentTree(departmentEntity.getId()));
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;
@@ -151,21 +130,5 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    @Override
-    public List<CustomerDutyEntity> findCustomerDutiesByIds(Long[] ids) {
-        DepartmentCustomerDutyEntityExample departmentCustomerDutyEntityExample = new DepartmentCustomerDutyEntityExample();
-        DepartmentCustomerDutyEntityExample.Criteria criteria = departmentCustomerDutyEntityExample.createCriteria();
-        criteria.andDepartmentIdIn(Arrays.asList(ids));
-        List<DepartmentCustomerDutyEntity> departmentCustomerDutyEntities = departmentCustomerDutyService.findByExample(departmentCustomerDutyEntityExample);
-        if (departmentCustomerDutyEntities.isEmpty())
-            return new ArrayList<>();
-        List<Long> dutyIds = departmentCustomerDutyEntities.stream()
-                .map(DepartmentCustomerDutyEntity::getDutyId)
-                .distinct().collect(Collectors.toList());
-        CustomerDutyEntityExample customerDutyEntityExample = new CustomerDutyEntityExample();
-        CustomerDutyEntityExample.Criteria criteria1 = customerDutyEntityExample.createCriteria();
-        criteria1.andIdIn(dutyIds);
-        return customerDutyService.findByExample(customerDutyEntityExample);
-    }
 
 }

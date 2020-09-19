@@ -3,9 +3,9 @@ package com.yintu.ruixing.danganguanli;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,8 +28,6 @@ public class CustomerController extends SessionController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private CustomerUnitsService customerUnitsService;
     @Autowired
     private DepartmentService departmentService;
     @Autowired
@@ -95,26 +93,11 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询角色列表信息成功", roleEntities);
     }
 
-
-    @GetMapping("/customer/units")
-    @ResponseBody
-    public Map<String, Object> findCustomerUnits() {
-        List<CustomerUnitsEntity> customerUnitsEntities = customerUnitsService.findByExample(new CustomerUnitsEntity());
-        return ResponseDataUtil.ok("查询客户单位列表信息成功", customerUnitsEntities);
-    }
-
     @GetMapping("/departments")
     @ResponseBody
-    public Map<String, Object> findDepartments(@RequestParam Long customerUnitsId) {
-        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L, customerUnitsId);
+    public Map<String, Object> findDepartments() {
+        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
         return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
-    }
-
-    @GetMapping("/customer/duties")
-    @ResponseBody
-    public Map<String, Object> findCustomerDuties(@RequestParam Long[] departmentIds) {
-        List<CustomerDutyEntity> customerDutyEntities = departmentService.findCustomerDutiesByIds(departmentIds);
-        return ResponseDataUtil.ok("查询职务列表信息成功", customerDutyEntities);
     }
 
     @GetMapping("/export/{ids}")

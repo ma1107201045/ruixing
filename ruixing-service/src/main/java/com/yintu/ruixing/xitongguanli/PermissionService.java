@@ -2,8 +2,6 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.xitongguanli.PermissionEntity;
-import com.yintu.ruixing.xitongguanli.PermissionEntityExample;
 
 import java.util.List;
 

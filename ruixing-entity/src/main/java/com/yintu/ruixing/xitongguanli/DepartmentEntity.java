@@ -28,10 +28,5 @@ public class DepartmentEntity implements Serializable {
     private Date modifiedTime;
     @NotBlank
     private String name;
-    @NotNull
-    private Long customerUnitsId;
-
-    private CustomerUnitsEntity customerUnitsEntity;
-
 
 }

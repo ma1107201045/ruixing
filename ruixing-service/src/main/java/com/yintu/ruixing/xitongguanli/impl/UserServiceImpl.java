@@ -37,13 +37,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRoleService userRoleService;
     @Autowired
-    private CustomerUnitsService customerUnitsService;
-    @Autowired
     private DepartmentUserService departmentUserService;
     @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private CustomerDutyService customerDutyService;
+
     @Autowired
     private DistrictService districtService;
 
@@ -97,9 +94,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity findById(Long id) {
         UserEntity userEntity = userDao.selectByPrimaryKey(id);
         if (userEntity != null) {
-            userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
-            userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
             if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
                 userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
@@ -173,9 +168,7 @@ public class UserServiceImpl implements UserService {
             userEntities = this.findByExample(userEntityExample);
         }
         for (UserEntity userEntity : userEntities) {
-            userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
-            userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
             if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
                 userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
@@ -376,7 +369,7 @@ public class UserServiceImpl implements UserService {
         //excel标题
         String title = "顾客档案列表信息";
         //excel表名
-        String[] headers = {"序号", "单位", "部门", "职务", "姓名", "手机", "座机", "邮箱", "省份", "城市", "县区", "邮寄地址", "创建人", "创建时间", "更新人", "更新时间"};
+        String[] headers = {"序号", "部门", "姓名", "手机", "座机", "邮箱", "省份", "城市", "县区", "邮寄地址", "创建人", "创建时间", "更新人", "更新时间"};
         //获取数据
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
@@ -386,9 +379,7 @@ public class UserServiceImpl implements UserService {
                 sorted(Comparator.comparing(UserEntity::getId).reversed())
                 .collect(Collectors.toList());
         for (UserEntity userEntity : userEntities) {
-            userEntity.setCustomerUnitsEntity(customerUnitsService.findById(userEntity.getCustomerUnitsId()));
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
-            userEntity.setCustomerDutyEntity(customerDutyService.findSimpleById(userEntity.getCustomerDutyId()));
             userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
             userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
             userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));

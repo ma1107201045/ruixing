@@ -21,8 +21,6 @@ import java.util.Map;
 public class DepartmentController extends SessionController {
     @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private CustomerUnitsService customerUnitsService;
 
     @PostMapping
     public Map<String, Object> add(@Validated DepartmentEntity departmentEntity) {
@@ -53,7 +51,7 @@ public class DepartmentController extends SessionController {
 
     @GetMapping
     public Map<String, Object> findAll() {
-        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L, null);
+        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
         return ResponseDataUtil.ok("查询部门树信息成功", treeNodeUtils);
     }
 
@@ -61,13 +59,6 @@ public class DepartmentController extends SessionController {
     public Map<String, Object> findList() {
         List<DepartmentEntity> departmentEntities = departmentService.findByExample(new DepartmentEntityExample());
         return ResponseDataUtil.ok("查询部门列表信息成功", departmentEntities);
-    }
-
-
-    @GetMapping("/customer/units")
-    public Map<String, Object> findCustomerUnits() {
-        List<CustomerUnitsEntity> customerUnitsEntities = customerUnitsService.findByExample(new CustomerUnitsEntity());
-        return ResponseDataUtil.ok("查询顾客单位列表信息成功", customerUnitsEntities);
     }
 
 

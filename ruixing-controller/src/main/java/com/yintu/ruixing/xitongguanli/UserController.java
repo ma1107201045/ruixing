@@ -99,16 +99,12 @@ public class UserController extends SessionController {
     }
 
     @GetMapping("/departments")
-    public Map<String, Object> findDepartments(@RequestParam Long customerUnitsId) {
-        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L, customerUnitsId);
+    public Map<String, Object> findDepartments() {
+        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
         return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
     }
 
-    @GetMapping("/customer/duties")
-    public Map<String, Object> findCustomerDuties(@RequestParam Long[] departmentIds) {
-        List<CustomerDutyEntity> customerDutyEntities = departmentService.findCustomerDutiesByIds(departmentIds);
-        return ResponseDataUtil.ok("查询职务列表信息成功", customerDutyEntities);
-    }
+
 
 
 }

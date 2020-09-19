@@ -2,9 +2,6 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.CustomerDutyEntity;
-import com.yintu.ruixing.xitongguanli.DepartmentEntity;
-import com.yintu.ruixing.xitongguanli.DepartmentEntityExample;
 
 import java.util.List;
 
@@ -43,7 +40,7 @@ public interface DepartmentService extends BaseService<DepartmentEntity, Long> {
      * @param parentId 父级id
      * @return 部门树
      */
-    List<TreeNodeUtil> findDepartmentTree(Long parentId, Long customerUnitsId);
+    List<TreeNodeUtil> findDepartmentTree(Long parentId);
 
     /**
      * 按照id删除部门
@@ -52,14 +49,6 @@ public interface DepartmentService extends BaseService<DepartmentEntity, Long> {
      * @param isFirst 是否第一次
      */
     void removeByIdAndIsFirst(Long id, Boolean isFirst);
-
-    /**
-     * 通过部门id集合
-     *
-     * @param ids 部门id集合
-     * @return 职位信息集合
-     */
-    List<CustomerDutyEntity> findCustomerDutiesByIds(Long[] ids);
 
 
 }
