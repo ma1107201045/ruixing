@@ -1,9 +1,9 @@
 package com.yintu.ruixing.xitongguanli;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 @Mapper
 public interface DepartmentUserDao {
     long countByExample(DepartmentUserEntityExample example);

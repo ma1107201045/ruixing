@@ -2,10 +2,6 @@ package com.yintu.ruixing.xitongguanli.impl;
 
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.*;
-import com.yintu.ruixing.danganguanli.CustomerDutyService;
-import com.yintu.ruixing.danganguanli.CustomerUnitsService;
-import com.yintu.ruixing.danganguanli.DepartmentCustomerDutyService;
 import com.yintu.ruixing.xitongguanli.DepartmentDao;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntityExample;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author:mlf
