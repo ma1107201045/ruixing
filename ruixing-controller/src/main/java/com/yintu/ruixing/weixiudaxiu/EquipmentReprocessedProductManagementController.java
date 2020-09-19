@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,8 @@ public class EquipmentReprocessedProductManagementController extends SessionCont
 
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated EquipmentReprocessedProductManagementEntityWithBLOBs entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         equipmentReprocessedProductManagementService.edit(entity);
         return ResponseDataUtil.ok("修改返修品信息成功");
     }

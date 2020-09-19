@@ -26,8 +26,6 @@ public class SpareTestTask {
     private UserService userService;
     @Autowired
     private MessageService messageService;
-    @Autowired
-    private ScheduleJobService scheduleJobService;
 
     public void execute(Integer sparePartsId) {
         SparePartsEntity sparePartsEntity = sparePartsService.findById(sparePartsId);
