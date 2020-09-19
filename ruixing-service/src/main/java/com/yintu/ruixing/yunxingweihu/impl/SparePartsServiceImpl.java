@@ -9,8 +9,6 @@ import com.yintu.ruixing.common.util.FileUtil;
 import com.yintu.ruixing.common.util.ImportExcelUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.yunxingweihu.*;
-import com.yintu.ruixing.weixiudaxiu.EquipmentEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
