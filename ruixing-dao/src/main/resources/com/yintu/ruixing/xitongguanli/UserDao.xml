@@ -11,16 +11,10 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="auth_type" jdbcType="SMALLINT" property="authType"/>
         <result column="locked" jdbcType="SMALLINT" property="locked"/>
         <result column="enableds" jdbcType="SMALLINT" property="enableds"/>
-        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
-        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
-        <result column="district_id" jdbcType="INTEGER" property="districtId"/>
-        <result column="address" jdbcType="VARCHAR" property="address"/>
-        <result column="is_customer" jdbcType="SMALLINT" property="isCustomer"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -84,8 +78,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, username, password, true_name,
-    phone, telephone, email, auth_type, locked, enableds, province_id, city_id, district_id, 
-    address, is_customer
+    phone, email, auth_type, locked, enableds
     </sql>
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
             resultMap="BaseResultMap">
@@ -123,17 +116,13 @@
         insert into tb_user (id, create_by, create_time,
                              modified_by, modified_time, username,
                              password, true_name, phone,
-                             telephone, email, auth_type,
-                             locked, enableds, province_id,
-                             city_id, district_id, address,
-                             is_customer)
+                             email, auth_type, locked,
+                             enableds)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
                 #{password,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-                #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{authType,jdbcType=SMALLINT},
-                #{locked,jdbcType=SMALLINT}, #{enableds,jdbcType=SMALLINT}, #{provinceId,jdbcType=INTEGER},
-                #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
-                #{isCustomer,jdbcType=SMALLINT})
+                #{email,jdbcType=VARCHAR}, #{authType,jdbcType=SMALLINT}, #{locked,jdbcType=SMALLINT},
+                #{enableds,jdbcType=SMALLINT})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
         insert into tb_user
@@ -165,9 +154,6 @@
             <if test="phone != null">
                 phone,
             </if>
-            <if test="telephone != null">
-                telephone,
-            </if>
             <if test="email != null">
                 email,
             </if>
@@ -179,21 +165,6 @@
             </if>
             <if test="enableds != null">
                 enableds,
-            </if>
-            <if test="provinceId != null">
-                province_id,
-            </if>
-            <if test="cityId != null">
-                city_id,
-            </if>
-            <if test="districtId != null">
-                district_id,
-            </if>
-            <if test="address != null">
-                address,
-            </if>
-            <if test="isCustomer != null">
-                is_customer,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -224,9 +195,6 @@
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="telephone != null">
-                #{telephone,jdbcType=VARCHAR},
-            </if>
             <if test="email != null">
                 #{email,jdbcType=VARCHAR},
             </if>
@@ -238,21 +206,6 @@
             </if>
             <if test="enableds != null">
                 #{enableds,jdbcType=SMALLINT},
-            </if>
-            <if test="provinceId != null">
-                #{provinceId,jdbcType=INTEGER},
-            </if>
-            <if test="cityId != null">
-                #{cityId,jdbcType=INTEGER},
-            </if>
-            <if test="districtId != null">
-                #{districtId,jdbcType=INTEGER},
-            </if>
-            <if test="address != null">
-                #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="isCustomer != null">
-                #{isCustomer,jdbcType=SMALLINT},
             </if>
         </trim>
     </insert>
@@ -293,9 +246,6 @@
             <if test="record.phone != null">
                 phone = #{record.phone,jdbcType=VARCHAR},
             </if>
-            <if test="record.telephone != null">
-                telephone = #{record.telephone,jdbcType=VARCHAR},
-            </if>
             <if test="record.email != null">
                 email = #{record.email,jdbcType=VARCHAR},
             </if>
@@ -307,21 +257,6 @@
             </if>
             <if test="record.enableds != null">
                 enableds = #{record.enableds,jdbcType=SMALLINT},
-            </if>
-            <if test="record.provinceId != null">
-                province_id = #{record.provinceId,jdbcType=INTEGER},
-            </if>
-            <if test="record.cityId != null">
-                city_id = #{record.cityId,jdbcType=INTEGER},
-            </if>
-            <if test="record.districtId != null">
-                district_id = #{record.districtId,jdbcType=INTEGER},
-            </if>
-            <if test="record.address != null">
-                address = #{record.address,jdbcType=VARCHAR},
-            </if>
-            <if test="record.isCustomer != null">
-                is_customer = #{record.isCustomer,jdbcType=SMALLINT},
             </if>
         </set>
         <if test="_parameter != null">
@@ -339,16 +274,10 @@
         password = #{record.password,jdbcType=VARCHAR},
         true_name = #{record.trueName,jdbcType=VARCHAR},
         phone = #{record.phone,jdbcType=VARCHAR},
-        telephone = #{record.telephone,jdbcType=VARCHAR},
         email = #{record.email,jdbcType=VARCHAR},
         auth_type = #{record.authType,jdbcType=SMALLINT},
         locked = #{record.locked,jdbcType=SMALLINT},
-        enableds = #{record.enableds,jdbcType=SMALLINT},
-        province_id = #{record.provinceId,jdbcType=INTEGER},
-        city_id = #{record.cityId,jdbcType=INTEGER},
-        district_id = #{record.districtId,jdbcType=INTEGER},
-        address = #{record.address,jdbcType=VARCHAR},
-        is_customer = #{record.isCustomer,jdbcType=SMALLINT}
+        enableds = #{record.enableds,jdbcType=SMALLINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -380,9 +309,6 @@
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="telephone != null">
-                telephone = #{telephone,jdbcType=VARCHAR},
-            </if>
             <if test="email != null">
                 email = #{email,jdbcType=VARCHAR},
             </if>
@@ -394,21 +320,6 @@
             </if>
             <if test="enableds != null">
                 enableds = #{enableds,jdbcType=SMALLINT},
-            </if>
-            <if test="provinceId != null">
-                province_id = #{provinceId,jdbcType=INTEGER},
-            </if>
-            <if test="cityId != null">
-                city_id = #{cityId,jdbcType=INTEGER},
-            </if>
-            <if test="districtId != null">
-                district_id = #{districtId,jdbcType=INTEGER},
-            </if>
-            <if test="address != null">
-                address = #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="isCustomer != null">
-                is_customer = #{isCustomer,jdbcType=SMALLINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -423,31 +334,12 @@
             password      = #{password,jdbcType=VARCHAR},
             true_name     = #{trueName,jdbcType=VARCHAR},
             phone         = #{phone,jdbcType=VARCHAR},
-            telephone     = #{telephone,jdbcType=VARCHAR},
             email         = #{email,jdbcType=VARCHAR},
             auth_type     = #{authType,jdbcType=SMALLINT},
             locked        = #{locked,jdbcType=SMALLINT},
-            enableds      = #{enableds,jdbcType=SMALLINT},
-            province_id   = #{provinceId,jdbcType=INTEGER},
-            city_id       = #{cityId,jdbcType=INTEGER},
-            district_id   = #{districtId,jdbcType=INTEGER},
-            address       = #{address,jdbcType=VARCHAR},
-            is_customer   = #{isCustomer,jdbcType=SMALLINT}
+            enableds      = #{enableds,jdbcType=SMALLINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <resultMap id="BasePermissionResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="url" jdbcType="VARCHAR" property="url"/>
-        <result column="method" jdbcType="VARCHAR" property="method"/>
-        <result column="is_menu" jdbcType="SMALLINT" property="isMenu"/>
-        <result column="path" jdbcType="VARCHAR" property="path"/>
-        <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-    </resultMap>
-
-
     <select id="findid" resultType="java.lang.Integer">
         select id
         from tb_user
@@ -460,6 +352,18 @@
         where true_name like concat('%'.#{username}, '%')
     </select>
 
+
+    <resultMap id="BasePermissionResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="is_menu" jdbcType="SMALLINT" property="isMenu"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
     <select id="selectPermissionById" resultMap="BasePermissionResultMap">
         SELECT p.*
         FROM tb_user u

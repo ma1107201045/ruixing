@@ -1,10 +1,6 @@
 
 package com.yintu.ruixing.guzhangzhenduan;
 
-import cn.hutool.core.img.ImgUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.extra.qrcode.QrCodeUtil;
-import cn.hutool.extra.qrcode.QrConfig;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
@@ -23,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -99,7 +94,6 @@ public class TestController {
                         userEntity.setUsername("1111");
                         userEntity.setPassword("123456");
                         userEntity.setTrueName("马葳严");
-                        userEntity.setIsCustomer((short) 0);
                         userEntity.setEnableds((short) 1);
                         userService.add(userEntity);
                     }

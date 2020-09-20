@@ -41,8 +41,6 @@ public class UserEntity implements UserDetails {
 
     private String phone;
 
-    private String telephone;
-
     private String email;
 
     private Short authType;
@@ -59,17 +57,10 @@ public class UserEntity implements UserDetails {
 
     private String address;
 
-    private Short isCustomer;
-
     private List<DepartmentEntity> departmentEntities;
 
     private List<RoleEntity> roleEntities;
 
-    private DistrictEntity provinceEntity;
-
-    private DistrictEntity cityEntity;
-
-    private DistrictEntity districtEntity;
 
 
     @Override
