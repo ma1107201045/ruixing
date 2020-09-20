@@ -54,11 +54,7 @@ public class CustomerController extends SessionController {
         return null;
     }
 
-    @GetMapping("/roles")
-    @ResponseBody
-    public Map<String, Object> findRoles() {
-        return null;
-    }
+
 
     @GetMapping("/departments")
     @ResponseBody
