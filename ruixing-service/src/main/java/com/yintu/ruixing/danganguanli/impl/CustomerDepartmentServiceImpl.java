@@ -1,9 +1,7 @@
 package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.CustomerDepartmentDao;
-import com.yintu.ruixing.danganguanli.CustomerDepartmentEntity;
-import com.yintu.ruixing.danganguanli.CustomerDepartmentService;
+import com.yintu.ruixing.danganguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +21,8 @@ import java.util.Map;
 public class CustomerDepartmentServiceImpl implements CustomerDepartmentService {
     @Autowired
     private CustomerDepartmentDao customerDepartmentDao;
+    @Autowired
+    private CustomerTypeService customerTypeService;
 
     @Override
     public void add(CustomerDepartmentEntity entity) {
@@ -65,4 +65,27 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
         }
         return treeNodeUtils;
     }
+
+    @Override
+    public List<TreeNodeUtil> findCustomerTypeAndCustomerDepartmentTree() {
+        List<CustomerTypeEntity> customerTypeEntities = customerTypeService.findAll();
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (CustomerTypeEntity customerTypeEntity : customerTypeEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setId(customerTypeEntity.getId().longValue());
+            treeNodeUtil.setLabel(customerTypeEntity.getName());
+            treeNodeUtil.setValue(customerTypeEntity.getId().toString());
+            Map<String, Object> map = new HashMap<>();
+            map.put("createBy", customerTypeEntity.getCreateBy());
+            map.put("createTime", customerTypeEntity.getCreateTime());
+            map.put("modifiedBy", customerTypeEntity.getModifiedBy());
+            map.put("modifiedTime", customerTypeEntity.getModifiedTime());
+            treeNodeUtil.setA_attr(map);
+            treeNodeUtil.setChildren(this.findByParentIdAndTypeId(-1, customerTypeEntity.getId().shortValue()));
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        return treeNodeUtils;
+    }
+
+
 }

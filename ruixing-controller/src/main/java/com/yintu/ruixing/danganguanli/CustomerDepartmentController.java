@@ -3,11 +3,13 @@ package com.yintu.ruixing.danganguanli;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,5 +51,17 @@ public class CustomerDepartmentController extends SessionController implements B
     public Map<String, Object> findById(@PathVariable Integer id) {
         CustomerDepartmentEntity customerDepartmentEntity = customerDepartmentService.findById(id);
         return ResponseDataUtil.ok("查询客户部门信息成功", customerDepartmentEntity);
+    }
+
+    @GetMapping
+    public Map<String, Object> findByParentIdAndTypeId(@RequestParam Short typeId) {
+        List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findByParentIdAndTypeId(-1, typeId);
+        return ResponseDataUtil.ok("查询客户部门树信息成功", treeNodeUtils);
+    }
+
+    @GetMapping("/customer/type")
+    public Map<String, Object> findCustomerTypeAndCustomerDepartmentTree() {
+        List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findCustomerTypeAndCustomerDepartmentTree();
+        return ResponseDataUtil.ok("查询客户类型以及部门树信息成功", treeNodeUtils);
     }
 }

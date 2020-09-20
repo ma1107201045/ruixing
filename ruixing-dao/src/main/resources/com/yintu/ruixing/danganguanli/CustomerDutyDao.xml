@@ -2,115 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.danganguanli.CustomerDutyDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="customer_units_id" jdbcType="BIGINT" property="customerUnitsId"/>
     </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" prefixOverrides="and" suffix=")">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, name, customer_units_id
+        id, create_by, create_time, modified_by, modified_time, name
     </sql>
-    <select id="selectByExample" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntityExample" resultMap="BaseResultMap">
-        select
-        <if test="distinct">
-            distinct
-        </if>
-        <include refid="Base_Column_List"/>
-        from mro_customer_duty
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_customer_duty
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mro_customer_duty
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </delete>
-    <delete id="deleteByExample" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntityExample">
-        delete from mro_customer_duty
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
         insert into mro_customer_duty (id, create_by, create_time,
-                                       modified_by, modified_time, name,
-                                       customer_units_id)
-        values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
-                #{customerUnitsId,jdbcType=BIGINT})
+                                       modified_by, modified_time, name)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
         insert into mro_customer_duty
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -131,13 +50,10 @@
             <if test="name != null">
                 name,
             </if>
-            <if test="customerUnitsId != null">
-                customer_units_id,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=BIGINT},
+                #{id,jdbcType=INTEGER},
             </if>
             <if test="createBy != null">
                 #{createBy,jdbcType=VARCHAR},
@@ -154,59 +70,8 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
-            <if test="customerUnitsId != null">
-                #{customerUnitsId,jdbcType=BIGINT},
-            </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntityExample" resultType="java.lang.Long">
-        select count(*) from mro_customer_duty
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update mro_customer_duty
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
-            <if test="record.createBy != null">
-                create_by = #{record.createBy,jdbcType=VARCHAR},
-            </if>
-            <if test="record.createTime != null">
-                create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.modifiedBy != null">
-                modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
-            </if>
-            <if test="record.modifiedTime != null">
-                modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.name != null">
-                name = #{record.name,jdbcType=VARCHAR},
-            </if>
-            <if test="record.customerUnitsId != null">
-                customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update mro_customer_duty
-        set id = #{record.id,jdbcType=BIGINT},
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
-        modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
-        name = #{record.name,jdbcType=VARCHAR},
-        customer_units_id = #{record.customerUnitsId,jdbcType=BIGINT}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
         update mro_customer_duty
         <set>
@@ -225,20 +90,26 @@
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="customerUnitsId != null">
-                customer_units_id = #{customerUnitsId,jdbcType=BIGINT},
-            </if>
         </set>
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
         update mro_customer_duty
-        set create_by         = #{createBy,jdbcType=VARCHAR},
-            create_time       = #{createTime,jdbcType=TIMESTAMP},
-            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
-            name              = #{name,jdbcType=VARCHAR},
-            customer_units_id = #{customerUnitsId,jdbcType=BIGINT}
-        where id = #{id,jdbcType=BIGINT}
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            name          = #{name,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
     </update>
+    <select id="selectByExample" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_customer_duty
+        <where>
+            <if test="name !=null">
+                and name like concat('%',#{name,jdbcType=VARCHAR},'%');
+            </if>
+        </where>
+    </select>
 </mapper>

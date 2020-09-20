@@ -13,4 +13,6 @@ import java.util.List;
 public interface CustomerDepartmentService extends BaseService<CustomerDepartmentEntity, Integer> {
 
     List<TreeNodeUtil> findByParentIdAndTypeId(Integer parentId, Short type);
+
+    List<TreeNodeUtil> findCustomerTypeAndCustomerDepartmentTree();
 }

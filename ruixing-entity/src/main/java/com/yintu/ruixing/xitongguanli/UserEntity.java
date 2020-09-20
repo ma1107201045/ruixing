@@ -2,9 +2,6 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yintu.ruixing.common.DistrictEntity;
-import com.yintu.ruixing.danganguanli.CustomerDutyEntity;
-import com.yintu.ruixing.danganguanli.CustomerUnitsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

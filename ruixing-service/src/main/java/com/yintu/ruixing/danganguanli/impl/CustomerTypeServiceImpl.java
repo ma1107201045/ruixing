@@ -1,5 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.CustomerTypeDao;
 import com.yintu.ruixing.danganguanli.CustomerTypeEntity;
 import com.yintu.ruixing.danganguanli.CustomerTypeService;
@@ -45,4 +46,5 @@ public class CustomerTypeServiceImpl implements CustomerTypeService {
     public List<CustomerTypeEntity> findAll() {
         return customerTypeDao.selectAll();
     }
+
 }

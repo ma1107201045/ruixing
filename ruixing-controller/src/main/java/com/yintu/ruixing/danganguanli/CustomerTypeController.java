@@ -51,4 +51,7 @@ public class CustomerTypeController extends SessionController implements BaseCon
         List<CustomerTypeEntity> customerTypeEntities = customerTypeService.findAll();
         return ResponseDataUtil.ok("查询顾客类型信息列表成功", customerTypeEntities);
     }
+
+
+
 }

@@ -13,4 +13,5 @@ public interface CustomerTypeService extends BaseService<CustomerTypeEntity, Int
 
 
     List<CustomerTypeEntity> findAll();
+
 }
