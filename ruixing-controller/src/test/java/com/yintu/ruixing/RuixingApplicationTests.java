@@ -6,6 +6,7 @@ import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.danganguanli.CustomerService;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyService;
@@ -45,9 +46,10 @@ class RuixingApplicationTests {
     private QuDuanInfoTypesPropertyService quDuanInfoTypesPropertyService;
     @Autowired
     private QuDuanInfoService quDuanInfoService;
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private CustomerService customerService;
 
     @Autowired
     private SkylightTimeService skylightTimeService;
@@ -130,10 +132,8 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads9() {
-
+        System.out.println(customerService.findByExample(null, null, null, null));
     }
-
-
 
 
 }

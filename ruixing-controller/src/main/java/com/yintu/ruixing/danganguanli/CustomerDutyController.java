@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ public class CustomerDutyController extends SessionController {
 
 
     @PostMapping
-    public Map<String, Object> add(@Validated CustomerDutyEntity entity, @RequestParam Long[] departmentIds) {
+    public Map<String, Object> add(@Validated CustomerDutyEntity entity) {
         entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         customerDutyService.add(entity);
         return ResponseDataUtil.ok("添加顾客职务信息成功");
     }
@@ -41,6 +44,7 @@ public class CustomerDutyController extends SessionController {
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @Validated CustomerDutyEntity entity) {
         entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         customerDutyService.edit(entity);
         return ResponseDataUtil.ok("修改顾客职务信息成功");
     }
