@@ -317,7 +317,7 @@
             </if>
         </where>
     </sql>
-    <select id="selectByCondition" resultMap="MuchResultMap">
+    <select id="selectByExample" resultMap="MuchResultMap">
         select
         <include refid="Much_Column_List"/>
         from
