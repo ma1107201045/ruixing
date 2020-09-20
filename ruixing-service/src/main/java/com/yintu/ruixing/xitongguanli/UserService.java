@@ -119,13 +119,5 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      */
     void editTruenameById(Long id, String truename);
 
-    /**
-     * 顾客文件导出
-     *
-     * @param outputStream 输出流
-     * @param ids          id集合
-     */
-    void exportFile(OutputStream outputStream, Long[] ids) throws IOException;
-
 
 }

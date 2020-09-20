@@ -1,14 +1,10 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.DistrictService;
 import com.yintu.ruixing.common.enumobject.EnumAuthType;
-import com.yintu.ruixing.common.enumobject.EnumFlag;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -19,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,15 +33,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DepartmentService departmentService;
 
-    @Autowired
-    private DistrictService districtService;
-
 
     @Override
     public void add(UserEntity userEntity) {
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
-        criteria.andIsCustomerEqualTo(userEntity.getIsCustomer());
         criteria.andUsernameEqualTo(userEntity.getUsername());
         List<UserEntity> userEntities = this.findByExample(userEntityExample);
         if (userEntities.size() > 0) {
@@ -69,7 +59,6 @@ public class UserServiceImpl implements UserService {
     public void edit(UserEntity userEntity) {
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
-        criteria.andIsCustomerEqualTo(userEntity.getIsCustomer());
         criteria.andUsernameEqualTo(userEntity.getUsername());
         List<UserEntity> userEntities = this.findByExample(userEntityExample);
         if (userEntities.size() > 0 && !userEntities.get(0).getId().equals(userEntity.getId())) {
@@ -94,11 +83,6 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
-            if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
-                userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
-                userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
-                userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));
-            }
         }
         return userEntity;
     }
@@ -114,8 +98,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> findAll(Short isCustomer) {
         UserEntityExample userEntityExample = new UserEntityExample();
-        UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
-        criteria.andIsCustomerEqualTo(isCustomer);
         return userDao.selectByExample(userEntityExample);
     }
 
@@ -149,7 +131,7 @@ public class UserServiceImpl implements UserService {
     public List<UserEntity> findByTruename(String truename) {
         truename = truename == null ? "" : truename;
         UserEntityExample userEntityExample = new UserEntityExample();
-        userEntityExample.createCriteria().andTrueNameLike("%" + truename + "%").andIsCustomerEqualTo((short) 0);
+        userEntityExample.createCriteria().andTrueNameLike("%" + truename + "%");
         return this.findByExample(userEntityExample);
     }
 
@@ -161,18 +143,13 @@ public class UserServiceImpl implements UserService {
         } else {
             UserEntityExample userEntityExample = new UserEntityExample();
             UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
-            criteria.andIsCustomerEqualTo(isCustermer);
+
             criteria.andUsernameLike("%" + username + "%");
             userEntities = this.findByExample(userEntityExample);
         }
         for (UserEntity userEntity : userEntities) {
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
-            if (userEntity.getIsCustomer().equals(EnumFlag.FlagTrue.getValue())) {
-                userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
-                userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
-                userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));
-            }
         }
         return userEntities;
     }
@@ -361,58 +338,5 @@ public class UserServiceImpl implements UserService {
         userEntity.setTrueName(truename);
         userDao.updateByPrimaryKeySelective(userEntity);
     }
-
-    @Override
-    public void exportFile(OutputStream outputStream, Long[] ids) throws IOException {
-        //excel标题
-        String title = "顾客档案列表信息";
-        //excel表名
-        String[] headers = {"序号", "部门", "姓名", "手机", "座机", "邮箱", "省份", "城市", "县区", "邮寄地址", "创建人", "创建时间", "更新人", "更新时间"};
-        //获取数据
-        UserEntityExample userEntityExample = new UserEntityExample();
-        UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
-        criteria.andIsCustomerEqualTo(EnumFlag.FlagTrue.getValue());
-        criteria.andIdIn(Arrays.asList(ids));
-        List<UserEntity> userEntities = this.findByExample(userEntityExample).stream().
-                sorted(Comparator.comparing(UserEntity::getId).reversed())
-                .collect(Collectors.toList());
-        for (UserEntity userEntity : userEntities) {
-            userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
-            userEntity.setProvinceEntity(districtService.findById(userEntity.getProvinceId()));
-            userEntity.setCityEntity(districtService.findById(userEntity.getCityId()));
-            userEntity.setDistrictEntity(districtService.findById(userEntity.getDistrictId()));
-        }
-
-        //excel元素
-        String[][] content = new String[userEntities.size()][headers.length];
-        for (int i = 0; i < userEntities.size(); i++) {
-            content[i][0] = userEntities.get(i).getId().toString();
-
-            List<DepartmentEntity> departmentEntities = userEntities.get(i).getDepartmentEntities();
-            StringBuilder sb = new StringBuilder();
-            for (DepartmentEntity departmentEntity : departmentEntities) {
-                sb.append(departmentEntity.getName()).append("\r\n");
-            }
-            content[i][1] = sb.toString();
-            content[i][2] = userEntities.get(i).getTrueName();
-            content[i][3] = userEntities.get(i).getPhone();
-            content[i][4] = userEntities.get(i).getTelephone();
-            content[i][5] = userEntities.get(i).getEmail();
-            content[i][6] = userEntities.get(i).getProvinceEntity().getName();
-            content[i][7] = userEntities.get(i).getCityEntity().getName();
-            content[i][8] = userEntities.get(i).getDistrictEntity().getName();
-            content[i][9] = userEntities.get(i).getAddress() + content[i][8] + content[i][9] + content[i][10];
-            content[i][10] = userEntities.get(i).getCreateBy();
-            content[i][11] = DateUtil.format(userEntities.get(i).getCreateTime(), "yyy-MM-dd hh:ss:mm");
-            content[i][12] = userEntities.get(i).getModifiedBy();
-            content[i][13] = DateUtil.format(userEntities.get(i).getModifiedTime(), "yyy-MM-dd hh:ss:mm");
-        }
-        //创建XSSFWorkbook
-        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
-        wb.write(outputStream);
-        outputStream.flush();
-        outputStream.close();
-    }
-
 
 }

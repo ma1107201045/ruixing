@@ -37,7 +37,6 @@ public class UserController extends SessionController {
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
-        userEntity.setIsCustomer((short) 0);
         userService.addUserAndRoles(userEntity, roleIds, departmentIds, this.getLoginUserName());
         return ResponseDataUtil.ok("添加用户成功");
     }
@@ -54,7 +53,6 @@ public class UserController extends SessionController {
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
-        userEntity.setIsCustomer((short) 0);
         userService.editUserAndRoles(userEntity, roleIds, departmentIds, this.getLoginUserName());
         return ResponseDataUtil.ok("修改用户成功");
     }
@@ -92,8 +90,6 @@ public class UserController extends SessionController {
         List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
         return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
     }
-
-
 
 
 }

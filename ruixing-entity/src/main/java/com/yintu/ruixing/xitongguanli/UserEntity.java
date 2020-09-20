@@ -2,9 +2,6 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.yintu.ruixing.common.DistrictEntity;
-import com.yintu.ruixing.danganguanli.CustomerDutyEntity;
-import com.yintu.ruixing.danganguanli.CustomerUnitsEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,8 +38,6 @@ public class UserEntity implements UserDetails {
 
     private String phone;
 
-    private String telephone;
-
     private String email;
 
     private Short authType;
@@ -59,17 +54,10 @@ public class UserEntity implements UserDetails {
 
     private String address;
 
-    private Short isCustomer;
-
     private List<DepartmentEntity> departmentEntities;
 
     private List<RoleEntity> roleEntities;
 
-    private DistrictEntity provinceEntity;
-
-    private DistrictEntity cityEntity;
-
-    private DistrictEntity districtEntity;
 
 
     @Override

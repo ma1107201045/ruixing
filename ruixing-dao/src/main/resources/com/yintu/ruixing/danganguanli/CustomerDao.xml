@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.danganguanli.CustomerDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="special_plane" jdbcType="VARCHAR" property="specialPlane"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="district_id" jdbcType="INTEGER" property="districtId"/>
+        <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="auditor_id" jdbcType="VARCHAR" property="auditorId"/>
+        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, type_id, duty_id, name, phone,
+    special_plane, email, province_id, city_id, district_id, detailed_address, auditor_id, 
+    audit_status
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_customer
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_customer
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into mro_customer (id, create_by, create_time,
+                                  modified_by, modified_time, type_id,
+                                  duty_id, name, phone,
+                                  special_plane, email, province_id,
+                                  city_id, district_id, detailed_address,
+                                  auditor_id, audit_status)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{typeId,jdbcType=INTEGER},
+                #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+                #{specialPlane,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
+                #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR},
+                #{auditorId,jdbcType=VARCHAR}, #{auditStatus,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into mro_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="typeId != null">
+                type_id,
+            </if>
+            <if test="dutyId != null">
+                duty_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="specialPlane != null">
+                special_plane,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="districtId != null">
+                district_id,
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=INTEGER},
+            </if>
+            <if test="dutyId != null">
+                #{dutyId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="specialPlane != null">
+                #{specialPlane,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="districtId != null">
+                #{districtId,jdbcType=INTEGER},
+            </if>
+            <if test="detailedAddress != null">
+                #{detailedAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity">
+        update mro_customer
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId,jdbcType=INTEGER},
+            </if>
+            <if test="dutyId != null">
+                duty_id = #{dutyId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="specialPlane != null">
+                special_plane = #{specialPlane,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="districtId != null">
+                district_id = #{districtId,jdbcType=INTEGER},
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity">
+        update mro_customer
+        set create_by        = #{createBy,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            modified_by      = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
+            type_id          = #{typeId,jdbcType=INTEGER},
+            duty_id          = #{dutyId,jdbcType=INTEGER},
+            name             = #{name,jdbcType=VARCHAR},
+            phone            = #{phone,jdbcType=VARCHAR},
+            special_plane    = #{specialPlane,jdbcType=VARCHAR},
+            email            = #{email,jdbcType=VARCHAR},
+            province_id      = #{provinceId,jdbcType=INTEGER},
+            city_id          = #{cityId,jdbcType=INTEGER},
+            district_id      = #{districtId,jdbcType=INTEGER},
+            detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            auditor_id       = #{auditorId,jdbcType=VARCHAR},
+            audit_status     = #{auditStatus,jdbcType=SMALLINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.CustomerEntity">
+        <id column="cer_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
+        <result column="cer_name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="special_plane" jdbcType="VARCHAR" property="specialPlane"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="district_id" jdbcType="INTEGER" property="districtId"/>
+        <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="auditor_id" jdbcType="VARCHAR" property="auditorId"/>
+        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <association column="type_id" property="customerTypeEntity">
+            <id column="ct_id" jdbcType="INTEGER" property="id"/>
+            <result column="ct_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="duty_id" property="customerDutyEntity">
+            <id column="d1_id" jdbcType="INTEGER" property="id"/>
+            <result column="d1_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="province_id" property="provinceEntity">
+            <id column="p_id" jdbcType="INTEGER" property="id"/>
+            <result column="p_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="city_id" property="cityEntity">
+            <id column="c_id" jdbcType="INTEGER" property="id"/>
+            <result column="c_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="district_id" property="districtEntity">
+            <id column="d_id" jdbcType="INTEGER" property="id"/>
+            <result column="d_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <collection property="customerDepartmentEntities"
+                    ofType="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
+            <id column="cd_id" jdbcType="INTEGER" property="id"/>
+            <result column="cd_name" jdbcType="VARCHAR" property="name"/>
+        </collection>
+    </resultMap>
+    <sql id="Much_Column_List">
+        cer.id as cer_id, cer.create_by , cer.create_time, cer.modified_by, cer.modified_time, cer.type_id, cer.duty_id, cer.name as cer_name, cer.phone,cer.special_plane, cer.email,cer.province_id, cer.city_id, cer.district_id, cer.detailed_address, cer.auditor_id,cer.audit_status,
+        ct.id as ct_id,ct.name as ct_name,
+        d1.id as d1_id,d1.name as d1_name,
+
+        p.id as p_id,p.name as p_name,
+        c.id as c_id,c.name as c_name,
+        d.id as d_id,d.name as d_name,
+
+        cd.id as cd_id,cd.name as cd_name
+    </sql>
+    <sql id="Much_Table_List">
+        mro_customer cer
+        inner join mro_customer_type ct on cer.type_id=ct.id
+        inner join mro_customer_duty d1  on cer.duty_id= d1.id
+        inner join mro_district p on cer.province_id = p.id
+        inner join mro_district c on cer.city_id = c.id
+        inner join mro_district d on cer.district_id = d.id
+        inner join mro_customer_customer_department ccd on cer.id= ccd.customer_id
+        inner join mro_customer_department cd on cd.id=ccd.department_id
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="ids != null">
+                and cer.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <if test="typeId != null">
+                and cer.type_id=#{typeId,jdbcType=INTEGER}
+            </if>
+            <if test="departmentId != null">
+                and cd.id=#{departmentId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </sql>
+    <select id="selectByExample" resultMap="MuchResultMap">
+        select
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
+    </select>
+</mapper>

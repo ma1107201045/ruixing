@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentCustomerDutyEntity implements Serializable {
-    private static final long serialVersionUID = -4699541066870052967L;
-    private Long id;
+public class CustomerTypeEntity implements Serializable {
+    private static final long serialVersionUID = 2945766096231276530L;
+    private Integer id;
 
     private String createBy;
 
@@ -21,10 +22,7 @@ public class DepartmentCustomerDutyEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-
-    private Long departmentId;
-
-    private Long dutyId;
-
+    @NotBlank
+    private String name;
 
 }

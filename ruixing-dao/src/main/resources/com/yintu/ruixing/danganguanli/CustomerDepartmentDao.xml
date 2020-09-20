@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.danganguanli.CustomerDutyDao">
-    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
+<mapper namespace="com.yintu.ruixing.danganguanli.CustomerDepartmentDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="type_id" jdbcType="SMALLINT" property="typeId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, name
+        id, create_by, create_time, modified_by, modified_time, name, parent_id, type_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from mro_customer_duty
+        from mro_customer_department
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
-        from mro_customer_duty
+        from mro_customer_department
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        insert into mro_customer_duty (id, create_by, create_time,
-                                       modified_by, modified_time, name)
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
+        insert into mro_customer_department (id, create_by, create_time,
+                                             modified_by, modified_time, name,
+                                             parent_id, type_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR})
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
+                #{parentId,jdbcType=INTEGER}, #{typeId,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        insert into mro_customer_duty
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
+        insert into mro_customer_department
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -49,6 +53,12 @@
             </if>
             <if test="name != null">
                 name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="typeId != null">
+                type_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -70,10 +80,16 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=SMALLINT},
+            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        update mro_customer_duty
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
+        update mro_customer_department
         <set>
             <if test="createBy != null">
                 create_by = #{createBy,jdbcType=VARCHAR},
@@ -90,25 +106,37 @@
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId,jdbcType=SMALLINT},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        update mro_customer_duty
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerDepartmentEntity">
+        update mro_customer_department
         set create_by     = #{createBy,jdbcType=VARCHAR},
             create_time   = #{createTime,jdbcType=TIMESTAMP},
             modified_by   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-            name          = #{name,jdbcType=VARCHAR}
+            name          = #{name,jdbcType=VARCHAR},
+            parent_id     = #{parentId,jdbcType=INTEGER},
+            type_id       = #{typeId,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="selectByExample" resultMap="BaseResultMap">
+
+    <select id="selectByParentIdAndTypeId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from mro_customer_duty
+        from mro_customer_department
         <where>
-            <if test="name !=null">
-                and name like concat('%',#{name,jdbcType=VARCHAR},'%');
+            <if test="parentId!=null">
+                and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="typeId!=null">
+                and type_id = #{typeId,jdbcType=SMALLINT}
             </if>
         </where>
     </select>

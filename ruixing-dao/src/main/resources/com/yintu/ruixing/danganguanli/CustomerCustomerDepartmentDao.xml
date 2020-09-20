@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.danganguanli.CustomerDutyDao">
-    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
+<mapper namespace="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="customer_id" jdbcType="INTEGER" property="customerId"/>
+        <result column="department_id" jdbcType="INTEGER" property="departmentId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, name
+        id, create_by, create_time, modified_by, modified_time, customer_id, department_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from mro_customer_duty
+        from mro_customer_customer_department
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
-        from mro_customer_duty
+        from mro_customer_customer_department
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        insert into mro_customer_duty (id, create_by, create_time,
-                                       modified_by, modified_time, name)
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity">
+        insert into mro_customer_customer_department (id, create_by, create_time,
+                                                      modified_by, modified_time, customer_id,
+                                                      department_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR})
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{customerId,jdbcType=INTEGER},
+                #{departmentId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        insert into mro_customer_duty
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity">
+        insert into mro_customer_customer_department
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -47,8 +50,11 @@
             <if test="modifiedTime != null">
                 modified_time,
             </if>
-            <if test="name != null">
-                name,
+            <if test="customerId != null">
+                customer_id,
+            </if>
+            <if test="departmentId != null">
+                department_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -67,13 +73,17 @@
             <if test="modifiedTime != null">
                 #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
+            <if test="customerId != null">
+                #{customerId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        update mro_customer_duty
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity">
+        update mro_customer_customer_department
         <set>
             <if test="createBy != null">
                 create_by = #{createBy,jdbcType=VARCHAR},
@@ -87,29 +97,30 @@
             <if test="modifiedTime != null">
                 modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+            <if test="customerId != null">
+                customer_id = #{customerId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerDutyEntity">
-        update mro_customer_duty
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity">
+        update mro_customer_customer_department
         set create_by     = #{createBy,jdbcType=VARCHAR},
             create_time   = #{createTime,jdbcType=TIMESTAMP},
             modified_by   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-            name          = #{name,jdbcType=VARCHAR}
+            customer_id   = #{customerId,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="selectByExample" resultMap="BaseResultMap">
+
+    <select id="selectByCustomerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from mro_customer_duty
-        <where>
-            <if test="name !=null">
-                and name like concat('%',#{name,jdbcType=VARCHAR},'%');
-            </if>
-        </where>
+        from mro_customer_customer_department
+        where customer_id = #{customerId,jdbcType=INTEGER}
     </select>
 </mapper>
