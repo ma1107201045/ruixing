@@ -8,11 +8,11 @@ import java.util.List;
 public interface AnZhuangTiaoShiWenTiDao {
     int insert(AnZhuangTiaoShiWenTiEntity record);
 
-    AnZhuangTiaoShiWenTiEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKey(AnZhuangTiaoShiWenTiEntity record);
 
+
     ///////////////////////////////////////////////////////
+    AnZhuangTiaoShiWenTiEntity selectByPrimaryKey(Integer id);
 
     int deleteByPrimaryKey(Integer id);
 

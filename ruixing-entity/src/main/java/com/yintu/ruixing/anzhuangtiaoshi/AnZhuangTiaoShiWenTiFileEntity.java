@@ -5,11 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnZhuangTiaoShiWenTiFileEntity {
     private Integer id;
+
+    private Integer uid;
 
     private Integer wid;
 
@@ -23,59 +27,13 @@ public class AnZhuangTiaoShiWenTiFileEntity {
 
     private String yuliu;
 
-    public Integer getId() {
-        return id;
-    }
+    private Integer auditorState;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Date createtime;
 
-    public Integer getWid() {
-        return wid;
-    }
+    private String createname;
 
-    public void setWid(Integer wid) {
-        this.wid = wid;
-    }
+    private Date updatetime;
 
-    public Integer getFenlei() {
-        return fenlei;
-    }
-
-    public void setFenlei(Integer fenlei) {
-        this.fenlei = fenlei;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath == null ? null : filePath.trim();
-    }
-
-    public Integer getFileState() {
-        return fileState;
-    }
-
-    public void setFileState(Integer fileState) {
-        this.fileState = fileState;
-    }
-
-    public String getYuliu() {
-        return yuliu;
-    }
-
-    public void setYuliu(String yuliu) {
-        this.yuliu = yuliu == null ? null : yuliu.trim();
-    }
+    private String updatename;
 }

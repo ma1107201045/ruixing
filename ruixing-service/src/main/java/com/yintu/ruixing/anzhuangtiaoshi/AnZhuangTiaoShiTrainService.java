@@ -38,5 +38,5 @@ public interface AnZhuangTiaoShiTrainService {
 
     List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(Integer typeId, Integer page, Integer size);
 
-    List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id, Integer page, Integer size);
+    List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id);
 }

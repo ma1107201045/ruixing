@@ -51,11 +51,9 @@ public class AnZhuangTiaoShiTrainController extends SessionController {
 
     //根据id  查询对应的培训内容
     @GetMapping("/findTrainByid/{id}")
-    public Map<String,Object>findTrainByid(@PathVariable Integer id,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findTrainByid(id,page,size);
-        PageInfo<AnZhuangTiaoShiTrainEntity> trainEntityPageInfo=new PageInfo<>(trainEntityList);
-        return ResponseDataUtil.ok("查询培训内容成功",trainEntityPageInfo);
+    public Map<String,Object>findTrainByid(@PathVariable Integer id){
+        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findTrainByid(id);
+        return ResponseDataUtil.ok("查询培训内容成功",trainEntityList);
     }
     //查询对应的线段名
     @GetMapping("/findXianDuan")

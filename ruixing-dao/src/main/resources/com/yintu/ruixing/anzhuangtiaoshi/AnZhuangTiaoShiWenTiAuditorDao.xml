@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="object_id" jdbcType="INTEGER" property="objectId" />
+    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
+    <result column="objectType" jdbcType="INTEGER" property="objecttype" />
+    <result column="is_pass" jdbcType="INTEGER" property="isPass" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="doName" jdbcType="VARCHAR" property="doname" />
+    <result column="doTime" jdbcType="TIMESTAMP" property="dotime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, object_id, auditor_id, objectType, is_pass, reason, doName, doTime , updateTime, updateName
+  </sql>
+
+  <!--根据项目id  查询此问题通过的数量-->
+  <select id="findIsPassByObjid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    is_pass
+    from mro_anzhuangtiaoshi_wenti_auditor
+    where object_id = #{id,jdbcType=INTEGER}
+    and objectType=1
+    group by is_pass
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_auditor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_wenti_auditor
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
+    insert into mro_anzhuangtiaoshi_wenti_auditor (id, object_id, auditor_id, 
+      objectType, is_pass, reason, 
+      doName, doTime)
+    values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
+      #{objecttype,jdbcType=INTEGER}, #{isPass,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
+      #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
+    insert into mro_anzhuangtiaoshi_wenti_auditor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="objectId != null">
+        object_id,
+      </if>
+      <if test="auditorId != null">
+        auditor_id,
+      </if>
+      <if test="objecttype != null">
+        objectType,
+      </if>
+      <if test="isPass != null">
+        is_pass,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="doname != null">
+        doName,
+      </if>
+      <if test="dotime != null">
+        doTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="objectId != null">
+        #{objectId,jdbcType=INTEGER},
+      </if>
+      <if test="auditorId != null">
+        #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="objecttype != null">
+        #{objecttype,jdbcType=INTEGER},
+      </if>
+      <if test="isPass != null">
+        #{isPass,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="doname != null">
+        #{doname,jdbcType=VARCHAR},
+      </if>
+      <if test="dotime != null">
+        #{dotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
+    update mro_anzhuangtiaoshi_wenti_auditor
+    <set>
+      <if test="objectId != null">
+        object_id = #{objectId,jdbcType=INTEGER},
+      </if>
+      <if test="auditorId != null">
+        auditor_id = #{auditorId,jdbcType=INTEGER},
+      </if>
+      <if test="objecttype != null">
+        objectType = #{objecttype,jdbcType=INTEGER},
+      </if>
+      <if test="isPass != null">
+        is_pass = #{isPass,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="doname != null">
+        doName = #{doname,jdbcType=VARCHAR},
+      </if>
+      <if test="dotime != null">
+        doTime = #{dotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
+    update mro_anzhuangtiaoshi_wenti_auditor
+    set object_id = #{objectId,jdbcType=INTEGER},
+      auditor_id = #{auditorId,jdbcType=INTEGER},
+      objectType = #{objecttype,jdbcType=INTEGER},
+      is_pass = #{isPass,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR},
+      doName = #{doname,jdbcType=VARCHAR},
+      doTime = #{dotime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -35,7 +35,7 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
     private AnZhuangTiaoShiTrainFileDao anZhuangTiaoShiTrainFileDao;
 
     @Override
-    public List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id, Integer page, Integer size) {
+    public List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id) {
         return anZhuangTiaoShiTrainDao.findTrainByid(id);
     }
 

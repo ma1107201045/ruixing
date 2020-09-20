@@ -15,9 +15,9 @@ import java.util.List;
  * 需求:安装调试 问题跟踪
  */
 public interface AnZhuangTiaoShiWenTiService {
-    void addWenTi(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity);
+    void addWenTi(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity, Integer[] uids, String username, Integer senderid);
 
-    void editWenTiById(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity);
+    void editWenTiById(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity, Integer id, Integer senderid, String username);
 
     List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu);
 
@@ -25,11 +25,11 @@ public interface AnZhuangTiaoShiWenTiService {
 
     List<AnZhuangTiaoShiWenTiFileEntity> findAllFanKuiFileById(Integer wid, Integer page, Integer size, String fileName);
 
-    List<AnZhuangTiaoShiWenTiFileEntity> findAllShuChuFileById(Integer wid, Integer page, Integer size,String fileName);
+    List<AnZhuangTiaoShiWenTiFileEntity> findAllShuChuFileById(Integer wid, Integer page, Integer size, String fileName);
 
-    void addFanKuiFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity);
+    void addFanKuiFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity, Integer[] uids, String username, Integer senderid);
 
-    void addShuRuFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity);
+    void addShuRuFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity, Integer[] uids, String username, Integer senderid);
 
     AnZhuangTiaoShiWenTiFileEntity findById(Integer id);
 
@@ -41,4 +41,13 @@ public interface AnZhuangTiaoShiWenTiService {
 
     List<AnZhuangTiaoShiWenTiEntity> findAllNotDoWellWenTi(Integer page, Integer size);
 
+    List<AnZhuangTiaoShiRecordMessageEntity> findRecordMessageById(Integer id);
+
+    void editAuditorByWTId(Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, String username, Integer receiverid, Integer senderId);
+
+    AnZhuangTiaoShiWenTiEntity findWenTiById(Integer id);
+
+    void editAuditorByWJId(Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, String username, Integer receiverid, Integer senderId);
+
+    AnZhuangTiaoShiWenTiFileEntity findWenTiFileById(Integer id);
 }
