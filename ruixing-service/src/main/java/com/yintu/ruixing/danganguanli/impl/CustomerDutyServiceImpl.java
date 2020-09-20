@@ -1,11 +1,8 @@
 package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.danganguanli.*;
-import com.yintu.ruixing.danganguanli.CustomerDutyService;
-import com.yintu.ruixing.danganguanli.CustomerUnitsService;
-import com.yintu.ruixing.danganguanli.DepartmentCustomerDutyService;
-import com.yintu.ruixing.xitongguanli.DepartmentService;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
+import com.yintu.ruixing.xitongguanli.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +23,8 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
     @Autowired
     private CustomerDutyDao customerDutyDao;
     @Autowired
-    private CustomerUnitsService customerUnitsService;
-    @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private DepartmentCustomerDutyService departmentCustomerDutyService;
+
 
 
     @Override
@@ -57,7 +51,7 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
         CustomerDutyEntity customerDutyEntity = customerDutyDao.selectByPrimaryKey(id);
         if (customerDutyEntity != null) {
             customerDutyEntity.setDepartmentEntities(this.findDepartmentsById(customerDutyEntity.getId()));
-            customerDutyEntity.setCustomerUnitsEntity(customerUnitsService.findById(customerDutyEntity.getCustomerUnitsId()));
+//            customerDutyEntity.setCustomerUnitsEntity(customerUnitsService.findById(customerDutyEntity.getCustomerUnitsId()));
         }
         return customerDutyEntity;
     }
@@ -74,7 +68,7 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
             departmentCustomerDutyEntity.setModifiedTime(new Date());
             departmentCustomerDutyEntity.setDepartmentId(departmentId);
             departmentCustomerDutyEntity.setDutyId(entity.getId());
-            departmentCustomerDutyService.add(departmentCustomerDutyEntity);
+//            departmentCustomerDutyService.add(departmentCustomerDutyEntity);
         }
     }
 
@@ -89,7 +83,7 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
         DepartmentCustomerDutyEntityExample departmentCustomerDutyEntityExample = new DepartmentCustomerDutyEntityExample();
         DepartmentCustomerDutyEntityExample.Criteria criteria = departmentCustomerDutyEntityExample.createCriteria();
         criteria.andDutyIdEqualTo(entity.getId());
-        departmentCustomerDutyService.removeByExample(departmentCustomerDutyEntityExample);
+//        departmentCustomerDutyService.removeByExample(departmentCustomerDutyEntityExample);
         for (Long departmentId : departmentIds) {
             DepartmentCustomerDutyEntity departmentCustomerDutyEntity = new DepartmentCustomerDutyEntity();
             departmentCustomerDutyEntity.setCreateBy(loginUserName);
@@ -98,7 +92,7 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
             departmentCustomerDutyEntity.setModifiedTime(new Date());
             departmentCustomerDutyEntity.setDepartmentId(departmentId);
             departmentCustomerDutyEntity.setDutyId(entity.getId());
-            departmentCustomerDutyService.add(departmentCustomerDutyEntity);
+//            departmentCustomerDutyService.add(departmentCustomerDutyEntity);
         }
     }
 
@@ -117,9 +111,11 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
         DepartmentCustomerDutyEntityExample departmentCustomerDutyEntityExample = new DepartmentCustomerDutyEntityExample();
         DepartmentCustomerDutyEntityExample.Criteria criteria = departmentCustomerDutyEntityExample.createCriteria();
         criteria.andDutyIdEqualTo(id);
-        List<DepartmentCustomerDutyEntity> departmentCustomerDutyEntities = departmentCustomerDutyService.findByExample(departmentCustomerDutyEntityExample);
-        List<Long> departmentIds = departmentCustomerDutyEntities.stream().map(DepartmentCustomerDutyEntity::getDepartmentId).collect(Collectors.toList());
-        return departmentService.findByIds(departmentIds);
+//        List<DepartmentCustomerDutyEntity> departmentCustomerDutyEntities = departmentCustomerDutyService.findByExample(departmentCustomerDutyEntityExample);
+//        List<Long> departmentIds = departmentCustomerDutyEntities.stream().map(DepartmentCustomerDutyEntity::getDepartmentId).collect(Collectors.toList());
+//        return departmentService.findByIds(departmentIds);
+
+        return null;
     }
 
     @Override
@@ -132,7 +128,7 @@ public class CustomerDutyServiceImpl implements CustomerDutyService {
         for (CustomerDutyEntity customerDutyEntity : customerDutyEntities) {
             if (customerDutyEntity != null) {
                 customerDutyEntity.setDepartmentEntities(this.findDepartmentsById(customerDutyEntity.getId()));
-                customerDutyEntity.setCustomerUnitsEntity(customerUnitsService.findById(customerDutyEntity.getCustomerUnitsId()));
+//                customerDutyEntity.setCustomerUnitsEntity(customerUnitsService.findById(customerDutyEntity.getCustomerUnitsId()));
             }
         }
         return customerDutyEntities;
