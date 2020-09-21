@@ -1,5 +1,7 @@
 package com.yintu.ruixing.danganguanli.impl;
 
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.danganguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerCustomerDepartmentService customerCustomerDepartmentService;
     @Autowired
     private CustomerAuditRecordService customerAuditRecordService;
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public void add(CustomerEntity entity) {
@@ -105,7 +109,35 @@ public class CustomerServiceImpl implements CustomerService {
             customerAuditRecordEntity.setCustomerId(customerEntity.getId());
             customerAuditRecordEntity.setAuditorId(auditorId);
             customerAuditRecordEntity.setAuditStatus((short) 1);
-            customerAuditRecordService.add(customerAuditRecordEntity);
+            customerAuditRecordService.add(customerAuditRecordEntity);//添加审核记录
+            //去重
+            Set<Integer> set = new HashSet<>(Arrays.asList(customerDepartmentIds));
+            for (Integer customerDepartmentId : set) {
+                CustomerCustomerDepartmentEntity customerCustomerDepartmentEntity = new CustomerCustomerDepartmentEntity();
+                customerCustomerDepartmentEntity.setCreateBy(customerEntity.getModifiedBy());
+                customerCustomerDepartmentEntity.setCreateTime(customerEntity.getModifiedTime());
+                customerCustomerDepartmentEntity.setModifiedBy(customerEntity.getModifiedBy());
+                customerCustomerDepartmentEntity.setModifiedTime(customerEntity.getModifiedTime());
+                customerCustomerDepartmentEntity.setCustomerAuditRecordId(customerAuditRecordEntity.getId());
+                customerCustomerDepartmentEntity.setCustomerAuditRecordDepartmentId(customerDepartmentId);
+                customerCustomerDepartmentService.add(customerCustomerDepartmentEntity);//审核记录中部门信息
+            }
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(customerEntity.getModifiedBy());
+            messageEntity.setCreateTime(customerEntity.getModifiedTime());
+            messageEntity.setModifiedBy(customerEntity.getModifiedBy());
+            messageEntity.setModifiedTime(customerEntity.getModifiedTime());
+            messageEntity.setTitle("文件");
+            messageEntity.setContext("客户“" + customerEntity.getName() + "”的档案信息的修改，需要您审核！");
+            messageEntity.setType((short) 7);
+            messageEntity.setSmallType((short) 1);
+            messageEntity.setMessageType((short) 2);
+            messageEntity.setProjectId(customerEntity.getId());
+            messageEntity.setFileId(null);
+            messageEntity.setSenderId(null);
+            messageEntity.setReceiverId(auditorId);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
         }
     }
 

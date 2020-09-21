@@ -46,7 +46,8 @@
         from mro_customer_audit_record
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_customer_audit_record (id, create_by, create_time,
                                                modified_by, modified_time, type_id,
                                                duty_id, name, phone,
@@ -62,7 +63,8 @@
                 #{customerId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, #{auditStatus,jdbcType=SMALLINT},
                 #{reason,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_customer_audit_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -360,8 +362,8 @@
         inner join mro_district d on car.district_id = d.id
         inner join tb_user u on car.auditor_id=u.id
 
-        inner join mro_customer_customer_department ccd on car.id= ccd.customer_id
-        inner join mro_customer_department cd on cd.id=ccd.department_id
+        inner join mro_customer_customer_department ccd on car.id= ccd.customer_audit_record_id
+        inner join mro_customer_department cd on cd.id=ccd.customer_audit_record_department_id
     </sql>
     <sql id="Much_Where_List">
         <where>

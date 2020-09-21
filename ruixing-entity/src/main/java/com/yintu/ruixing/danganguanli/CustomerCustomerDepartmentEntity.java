@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerCustomerDepartmentEntity implements Serializable {
-    private static final long serialVersionUID = 8655924966795860505L;
+    private static final long serialVersionUID = -6033416116857374850L;
     private Integer id;
 
     private String createBy;
@@ -25,6 +25,10 @@ public class CustomerCustomerDepartmentEntity implements Serializable {
     private Integer customerId;
 
     private Integer departmentId;
+
+    private Integer customerAuditRecordId;
+
+    private Integer customerAuditRecordDepartmentId;
 
 
 }

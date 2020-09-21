@@ -78,7 +78,7 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询顾客信息成功", customerEntity);
     }
 
-    @GetMapping("/{id}/audit/record")
+    @GetMapping("/{id}/audit/records")
     @ResponseBody
     public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
         List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByExample(null, id);

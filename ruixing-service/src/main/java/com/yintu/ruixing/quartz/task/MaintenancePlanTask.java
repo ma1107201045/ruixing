@@ -41,7 +41,7 @@ public class MaintenancePlanTask {
                     messageEntity.setModifiedTime(new Date());
                     messageEntity.setTitle(TaskEnum.MAINTENANCEPLAN.getName());
                     messageEntity.setContext("“" + "”维护计划项目中，没有进行维护工作！");
-                    messageEntity.setType((short) 6);
+                    messageEntity.setType((short) 5);
                     messageEntity.setSmallType((short) 1);
                     messageEntity.setMessageType((short) 1);
                     messageEntity.setProjectId(null);
