@@ -47,6 +47,8 @@ public class CustomerEntity implements Serializable {
 
     private String detailedAddress;
 
+    private Short status;
+
     private CustomerTypeEntity customerTypeEntity;
 
     private List<CustomerDepartmentEntity> customerDepartmentEntities;

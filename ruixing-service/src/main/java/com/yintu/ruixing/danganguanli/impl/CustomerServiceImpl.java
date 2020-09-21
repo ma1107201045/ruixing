@@ -25,6 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void add(CustomerEntity entity) {
+        entity.setStatus((short) 1);
         customerDao.insertSelective(entity);
     }
 
@@ -35,6 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void edit(CustomerEntity entity) {
+        entity.setStatus((short) 2);
         customerDao.updateByPrimaryKeySelective(entity);
     }
 
