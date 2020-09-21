@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -24,11 +26,11 @@ public class CustomerEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-
+    @NotNull
     private Integer typeId;
-
+    @NotNull
     private Integer dutyId;
-
+    @NotBlank
     private String name;
 
     private String phone;
@@ -36,15 +38,15 @@ public class CustomerEntity implements Serializable {
     private String specialPlane;
 
     private String email;
-
+    @NotNull
     private Integer provinceId;
-
+    @NotNull
     private Integer cityId;
-
+    @NotNull
     private Integer districtId;
 
     private String detailedAddress;
-
+    @NotNull
     private String auditorId;
 
     private Short auditStatus;

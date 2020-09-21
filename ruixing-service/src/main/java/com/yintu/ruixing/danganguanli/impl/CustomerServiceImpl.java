@@ -40,7 +40,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerEntity findById(Integer id) {
-        return customerDao.selectByPrimaryKey(id);
+        List<CustomerEntity> customerEntities = customerDao.selectByExample(new Integer[]{id}, null, null, null);
+        return customerEntities.isEmpty() ? null : customerEntities.get(0);
     }
 
     @Override
@@ -52,6 +53,13 @@ public class CustomerServiceImpl implements CustomerService {
     public void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds) {
         this.add(customerEntity);
         this.addOrEditCustomerCustomerDepartment(customerEntity, customerDepartmentIds);
+    }
+
+    @Override
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
     }
 
     @Override

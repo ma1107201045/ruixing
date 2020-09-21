@@ -1,5 +1,7 @@
 package com.yintu.ruixing.danganguanli;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
@@ -47,11 +49,14 @@ public class CustomerTypeController extends SessionController implements BaseCon
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
+    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
+                                       @RequestParam("page_size") Integer pageSize,
+                                       @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<CustomerTypeEntity> customerTypeEntities = customerTypeService.findAll();
-        return ResponseDataUtil.ok("查询顾客类型信息列表成功", customerTypeEntities);
+        PageInfo<CustomerTypeEntity> pageInfo = new PageInfo<>(customerTypeEntities);
+        return ResponseDataUtil.ok("查询顾客类型信息列表成功", pageInfo);
     }
-
 
 
 }

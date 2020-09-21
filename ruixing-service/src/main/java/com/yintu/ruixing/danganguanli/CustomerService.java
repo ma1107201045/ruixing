@@ -13,6 +13,8 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
 
     void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
+    void remove(Integer[] ids);
+
     void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
     void addOrEditCustomerCustomerDepartment(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
