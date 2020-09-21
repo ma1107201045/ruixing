@@ -20,4 +20,6 @@ public interface AnZhuangTiaoShiWenTiRecordMessageDao {
     int updateByPrimaryKey(AnZhuangTiaoShiWenTiRecordMessageEntity record);
 
     List<AnZhuangTiaoShiRecordMessageEntity> findRecordMessageById(Integer id);
+
+    List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id);
 }

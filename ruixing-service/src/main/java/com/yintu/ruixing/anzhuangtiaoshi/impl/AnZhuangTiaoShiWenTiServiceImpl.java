@@ -43,6 +43,11 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     private AnZhuangTiaoShiWenTiAuditorDao anZhuangTiaoShiWenTiAuditorDao;
 
     @Override
+    public List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id) {
+        return anZhuangTiaoShiWenTiRecordMessageDao.findFileRecordMessageById(id);
+    }
+
+    @Override
     public AnZhuangTiaoShiWenTiFileEntity findWenTiFileById(Integer id) {
         return anZhuangTiaoShiWenTiFileDao.selectByPrimaryKey(id);
     }
@@ -52,11 +57,9 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         Date nowTime = new Date();
         AnZhuangTiaoShiWenTiFileEntity fileEntity = anZhuangTiaoShiWenTiFileDao.selectByPrimaryKey(id);
         if (anZhuangTiaoShiWenTiAuditorEntity.getIsPass() == 0) {//审核未通过
-            AnZhuangTiaoShiWenTiFileEntity wenTiFileEntity=new AnZhuangTiaoShiWenTiFileEntity();
+            AnZhuangTiaoShiWenTiFileEntity wenTiFileEntity = new AnZhuangTiaoShiWenTiFileEntity();
             wenTiFileEntity.setId(id);
             wenTiFileEntity.setAuditorState(3);
-            wenTiFileEntity.setUpdatetime(nowTime);
-            wenTiFileEntity.setUpdatename(username);
             anZhuangTiaoShiWenTiFileDao.updateByPrimaryKeySelective(wenTiFileEntity);
             //添加一条消息到消息表
             MessageEntity messageEntity = new MessageEntity();
@@ -64,40 +67,46 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setCreateTime(nowTime);//创建时间
             messageEntity.setContext("“" + fileEntity.getFileName() + "”文件审核未通过,请您查看！");
             messageEntity.setType((short) 3);
-            messageEntity.setMessageType((short) 2);
-            messageEntity.setProjectId(id);
+            //messageEntity.setMessageType((short) 2);
+            messageEntity.setFileId(id);
             messageEntity.setSenderId(receiverid);
             messageEntity.setReceiverId(senderId);
             messageEntity.setStatus((short) 1);
+            Integer fenlei = fileEntity.getFenlei();
+            if (fenlei==1){
+                messageEntity.setSmallType((short) 2);
+            }
+            if (fenlei==2){
+                messageEntity.setSmallType((short) 3);
+            }
             messageService.sendMessage(messageEntity);
-           /* //新增查看消息
+            //新增查看消息
             AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
             String reason = anZhuangTiaoShiWenTiAuditorEntity.getReason();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
-            recordMessageEntity.setContext("“" + wenTiEntity.getWentiMiaoshu() + "”问题审核未通过,原因是:" + reason);
-            recordMessageEntity.setTypenum(1);
-            anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);*/
+            recordMessageEntity.setContext("“" + fileEntity.getFileName() + "”问题审核未通过,原因是:" + reason);
+            recordMessageEntity.setTypenum(2);
+            anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);
         }
         if (anZhuangTiaoShiWenTiAuditorEntity.getIsPass() == 1) {//审核通过
-            AnZhuangTiaoShiWenTiFileEntity wenTiFileEntity=new AnZhuangTiaoShiWenTiFileEntity();
+            AnZhuangTiaoShiWenTiFileEntity wenTiFileEntity = new AnZhuangTiaoShiWenTiFileEntity();
             wenTiFileEntity.setId(id);
             wenTiFileEntity.setAuditorState(2);
             wenTiFileEntity.setUpdatetime(nowTime);
             wenTiFileEntity.setUpdatename(username);
             anZhuangTiaoShiWenTiFileDao.updateByPrimaryKeySelective(wenTiFileEntity);
-
-
-           /* //新增查看消息
+            //新增查看消息
             AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setContext("“" + fileEntity.getFileName() + "”问题审核通过 ");
-            recordMessageEntity.setTypenum(1);
-            anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);*/
+            recordMessageEntity.setTypenum(2);
+            anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);
         }
+        anZhuangTiaoShiWenTiAuditorEntity.setObjectId(id);
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWenTiAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWenTiAuditorEntity);
@@ -119,11 +128,12 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setCreateTime(nowTime);//创建时间
             messageEntity.setContext("“" + wenTiEntity.getWentiMiaoshu() + "”问题审核未通过,请您查看！");
             messageEntity.setType((short) 3);
-            messageEntity.setMessageType((short) 2);
+            //messageEntity.setMessageType((short) 2);
             messageEntity.setProjectId(id);
             messageEntity.setSenderId(receiverid);
             messageEntity.setReceiverId(senderId);
             messageEntity.setStatus((short) 1);
+            messageEntity.setSmallType((short) 1);
             messageService.sendMessage(messageEntity);
             //新增查看消息
             AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
@@ -148,24 +158,31 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         }
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatetime(nowTime);
+        anZhuangTiaoShiWenTiAuditorEntity.setAuditorId(receiverid);
         anZhuangTiaoShiWenTiAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWenTiAuditorEntity);
         List<Integer> ispass = anZhuangTiaoShiWenTiAuditorDao.findIsPassByObjid(id);
-        if (ispass.size() == 1 && ispass.get(0) == 1) {
+        if (ispass.size() == 1 && ispass.get(0) == null) {
+            AnZhuangTiaoShiWenTiEntity wenTiEntity = new AnZhuangTiaoShiWenTiEntity();
+            wenTiEntity.setId(id);
+            wenTiEntity.setAuditorState(1);
+            anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(wenTiEntity);
+        }
+        if (ispass.size() == 1 && ispass.get(0) != null && ispass.get(0) == 1) {
             AnZhuangTiaoShiWenTiEntity wenTiEntity = new AnZhuangTiaoShiWenTiEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(2);
             anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(wenTiEntity);
         }
-        if (ispass.size() == 1 && ispass.get(0) == 0) {
+        if (ispass.size() == 1 && ispass.get(0) != null && ispass.get(0) == 0) {
             AnZhuangTiaoShiWenTiEntity wenTiEntity = new AnZhuangTiaoShiWenTiEntity();
             wenTiEntity.setId(id);
-            wenTiEntity.setAuditorState(3);
+            wenTiEntity.setAuditorState(1);
             anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(wenTiEntity);
         }
         if (ispass.size() > 1) {
             AnZhuangTiaoShiWenTiEntity wenTiEntity = new AnZhuangTiaoShiWenTiEntity();
             wenTiEntity.setId(id);
-            wenTiEntity.setAuditorState(3);
+            wenTiEntity.setAuditorState(1);
             anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(wenTiEntity);
         }
     }
@@ -203,9 +220,13 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     }
 
     @Override
-    public void addFanKuiFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity,Integer[] uids, String username, Integer senderid) {
-        Date nowTime=new Date();
+    public void addFanKuiFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity, Integer[] uids, String username, Integer senderid) {
+        Date nowTime = new Date();
         anZhuangTiaoShiWenTiFileEntity.setFenlei(1);
+        anZhuangTiaoShiWenTiFileEntity.setUid(senderid);
+        anZhuangTiaoShiWenTiFileEntity.setCreatename(username);
+        anZhuangTiaoShiWenTiFileEntity.setCreatetime(nowTime);
+        anZhuangTiaoShiWenTiFileEntity.setAuditorState(1);
         anZhuangTiaoShiWenTiFileDao.insertSelective(anZhuangTiaoShiWenTiFileEntity);
         Integer fileid = anZhuangTiaoShiWenTiFileEntity.getId();
         Integer wid = anZhuangTiaoShiWenTiFileEntity.getWid();
@@ -223,20 +244,32 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setCreateTime(nowTime);//创建时间
             messageEntity.setContext("“" + anZhuangTiaoShiWenTiFileEntity.getFileName() + "”反馈文件需要您审核,请查看！");
             messageEntity.setType((short) 3);
-            messageEntity.setMessageType((short) 2);
+            //messageEntity.setMessageType((short) 2);
             messageEntity.setProjectId(wid);
             messageEntity.setFileId(fileid);
             messageEntity.setSenderId(senderid);
             messageEntity.setReceiverId(uid);
             messageEntity.setStatus((short) 1);
+            messageEntity.setSmallType((short) 2);
             messageService.sendMessage(messageEntity);
         }
+        AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
+        recordMessageEntity.setTypeid(fileid);
+        recordMessageEntity.setOperatorname(username);
+        recordMessageEntity.setOperatortime(nowTime);
+        recordMessageEntity.setContext("新增" + anZhuangTiaoShiWenTiFileEntity.getFileName() + "反馈文件");
+        recordMessageEntity.setTypenum(2);
+        anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);
     }
 
     @Override
-    public void addShuRuFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity,Integer[] uids, String username, Integer senderid) {
-        Date nowTime=new Date();
+    public void addShuRuFile(AnZhuangTiaoShiWenTiFileEntity anZhuangTiaoShiWenTiFileEntity, Integer[] uids, String username, Integer senderid) {
+        Date nowTime = new Date();
         anZhuangTiaoShiWenTiFileEntity.setFenlei(2);
+        anZhuangTiaoShiWenTiFileEntity.setUid(senderid);
+        anZhuangTiaoShiWenTiFileEntity.setCreatename(username);
+        anZhuangTiaoShiWenTiFileEntity.setCreatetime(nowTime);
+        anZhuangTiaoShiWenTiFileEntity.setAuditorState(1);
         anZhuangTiaoShiWenTiFileDao.insertSelective(anZhuangTiaoShiWenTiFileEntity);
         Integer fileid = anZhuangTiaoShiWenTiFileEntity.getId();
         Integer wid = anZhuangTiaoShiWenTiFileEntity.getWid();
@@ -254,14 +287,22 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setCreateTime(nowTime);//创建时间
             messageEntity.setContext("“" + anZhuangTiaoShiWenTiFileEntity.getFileName() + "”输出文件需要您审核,请查看！");
             messageEntity.setType((short) 3);
-            messageEntity.setMessageType((short) 2);
+            //messageEntity.setMessageType((short) 2);
             messageEntity.setProjectId(wid);
             messageEntity.setFileId(fileid);
             messageEntity.setSenderId(senderid);
             messageEntity.setReceiverId(uid);
             messageEntity.setStatus((short) 1);
+            messageEntity.setSmallType((short) 3);
             messageService.sendMessage(messageEntity);
         }
+        AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
+        recordMessageEntity.setTypeid(fileid);
+        recordMessageEntity.setOperatorname(username);
+        recordMessageEntity.setOperatortime(nowTime);
+        recordMessageEntity.setContext("新增" + anZhuangTiaoShiWenTiFileEntity.getFileName() + "输出文件");
+        recordMessageEntity.setTypenum(2);
+        anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);
     }
 
     @Override
@@ -282,8 +323,8 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     }
 
     @Override
-    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu) {
-        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, wenTiMiaoShu);
+    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu,Integer receiverid ) {
+        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, wenTiMiaoShu,receiverid);
     }
 
     @Override
@@ -375,6 +416,8 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         anZhuangTiaoShiWenTiEntity.setWentiisover(0);
         anZhuangTiaoShiWenTiEntity.setCreatename(username);
         anZhuangTiaoShiWenTiEntity.setCreatetime(nowTime);
+        anZhuangTiaoShiWenTiEntity.setAuditorState(1);
+        anZhuangTiaoShiWenTiEntity.setUserid(senderid);
         anZhuangTiaoShiWenTiDao.insertSelective(anZhuangTiaoShiWenTiEntity);
         Integer wtid = anZhuangTiaoShiWenTiEntity.getId();
         AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
@@ -398,11 +441,12 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setCreateTime(nowTime);//创建时间
             messageEntity.setContext("“" + anZhuangTiaoShiWenTiEntity.getWentiMiaoshu() + "”问题需要您审核,请查看！");
             messageEntity.setType((short) 3);
-            messageEntity.setMessageType((short) 2);
+            //messageEntity.setMessageType((short) 2);
             messageEntity.setProjectId(wtid);
             messageEntity.setSenderId(senderid);
             messageEntity.setReceiverId(uid);
             messageEntity.setStatus((short) 1);
+            messageEntity.setSmallType((short)1);
             messageService.sendMessage(messageEntity);
         }
 

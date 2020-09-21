@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     @Override
     public void addInMaterial(AnZhuangTiaoShiMaterialOutInEntity anZhuangTiaoShiMaterialOutInEntity) {
         anZhuangTiaoShiMaterialOutInEntity.setInoutstate(1);
+        anZhuangTiaoShiMaterialOutInEntity.setCreatetime(new Date());
         anZhuangTiaoShiMaterialOutInDao.insertSelective(anZhuangTiaoShiMaterialOutInEntity);
     }
 
@@ -55,6 +57,7 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     @Override
     public void addOutMaterial(AnZhuangTiaoShiMaterialOutInEntity anZhuangTiaoShiMaterialOutInEntity) {
         anZhuangTiaoShiMaterialOutInEntity.setInoutstate(2);
+        anZhuangTiaoShiMaterialOutInEntity.setCreatetime(new Date());
         anZhuangTiaoShiMaterialOutInDao.insertSelective(anZhuangTiaoShiMaterialOutInEntity);
     }
 
@@ -85,7 +88,7 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
 
     @Override
     public void addMaterial(AnZhuangTiaoShiMaterialEntity anZhuangTiaoShiMaterialEntity) {
-        anZhuangTiaoShiMaterialEntity.setTotalnumber(0);
+       // anZhuangTiaoShiMaterialEntity.setTotalnumber(0);
         anZhuangTiaoShiMaterialDao.insertSelective(anZhuangTiaoShiMaterialEntity);
     }
 

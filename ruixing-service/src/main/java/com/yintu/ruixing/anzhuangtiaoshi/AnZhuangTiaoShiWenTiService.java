@@ -19,7 +19,7 @@ public interface AnZhuangTiaoShiWenTiService {
 
     void editWenTiById(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity, Integer id, Integer senderid, String username);
 
-    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu);
+    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu,Integer receiverid );
 
     void deleteWenTiByIds(Integer[] ids);
 
@@ -50,4 +50,7 @@ public interface AnZhuangTiaoShiWenTiService {
     void editAuditorByWJId(Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, String username, Integer receiverid, Integer senderId);
 
     AnZhuangTiaoShiWenTiFileEntity findWenTiFileById(Integer id);
+
+    List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id);
+
 }

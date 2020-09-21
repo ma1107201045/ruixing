@@ -36,4 +36,6 @@ public class AnZhuangTiaoShiWenTiFileEntity {
     private Date updatetime;
 
     private String updatename;
+
+    private Integer auditorId;
 }

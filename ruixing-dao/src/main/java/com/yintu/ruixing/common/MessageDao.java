@@ -21,7 +21,7 @@ public interface MessageDao {
 
     int updateByPrimaryKey(MessageEntity record);
 
-    List<MessageEntity> selectByTypeAndStatus(Short type, Integer loginUserId, Short status);
+    List<MessageEntity> selectByTypeAndStatus(@Param("type")Short type,@Param("loginUserId") Integer loginUserId,@Param("status") Short status);
 
     List<MessageEntity> selectByExample(MessageEntity messageEntity);
 

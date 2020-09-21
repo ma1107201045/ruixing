@@ -20,7 +20,9 @@ public interface AnZhuangTiaoShiWenTiDao {
 
     int insertSelective(AnZhuangTiaoShiWenTiEntity record);
 
-    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(@Param("xdname") String xdname,@Param("wenTiMiaoShu") String wenTiMiaoShu);
+    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(@Param("xdname") String xdname,
+                                                   @Param("wenTiMiaoShu") String wenTiMiaoShu,
+                                                   @Param("receiverid") Integer receiverid );
 
     List<AnZhuangTiaoShiWenTiEntity> findAllNotDoWellWenTi();
 
