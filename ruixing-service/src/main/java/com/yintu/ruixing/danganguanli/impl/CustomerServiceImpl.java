@@ -2,6 +2,7 @@ package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.danganguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,6 +88,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Integer auditorId) {
+        if (auditorId == null)
+            throw new BaseRuntimeException("审批人id不能为空");
         CustomerEntity source = this.findById(customerEntity.getId());
         if (source != null) {
             source.setStatus((short) 2);//改为待审批状态
