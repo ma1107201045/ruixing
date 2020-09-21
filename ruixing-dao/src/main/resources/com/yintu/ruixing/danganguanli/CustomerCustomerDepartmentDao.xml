@@ -116,7 +116,15 @@
             department_id = #{departmentId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
+    <select id="countExample" parameterType="java.lang.Integer" resultType="java.lang.Long">
+        select count(*)
+        from mro_customer_customer_department
+        <where>
+            <if test="departmentId != null">
+                and department_id=#{departmentId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
     <select id="selectByCustomerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

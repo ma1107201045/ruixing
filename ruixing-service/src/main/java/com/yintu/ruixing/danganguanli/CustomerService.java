@@ -11,11 +11,15 @@ import java.util.List;
  */
 public interface CustomerService extends BaseService<CustomerEntity, Integer> {
 
+    Long countExample(Integer typeId, String name);
+
     void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
     void remove(Integer[] ids);
 
     void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
+
+    void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Integer auditorId);
 
     void addOrEditCustomerCustomerDepartment(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 

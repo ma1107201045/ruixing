@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.RequestWrapper;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,9 +30,13 @@ public class CustomerController extends SessionController {
     @Autowired
     private CustomerService customerService;
     @Autowired
+    private CustomerAuditRecordService customerAuditRecordService;
+    @Autowired
     private CustomerTypeService customerTypeService;
     @Autowired
     private CustomerDepartmentService customerDepartmentService;
+    @Autowired
+    private CustomerCustomerDepartmentService customerCustomerDepartmentService;
     @Autowired
     private CustomerDutyService customerDutyService;
     @Autowired
@@ -39,6 +45,10 @@ public class CustomerController extends SessionController {
     @PostMapping
     @ResponseBody
     public Map<String, Object> add(@Validated CustomerEntity customerEntity, @RequestParam("departmentIds") Integer[] customerDepartmentIds) {
+        customerEntity.setCreateBy(this.getLoginUserName());
+        customerEntity.setCreateTime(new Date());
+        customerEntity.setModifiedBy(this.getLoginUserName());
+        customerEntity.setModifiedTime(new Date());
         customerService.add(customerEntity, customerDepartmentIds);
         return ResponseDataUtil.ok("添加顾客信息成功");
     }
@@ -52,7 +62,11 @@ public class CustomerController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated CustomerEntity customerEntity, @RequestParam("departmentIds") Integer[] customerDepartmentIds) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated CustomerEntity customerEntity,
+                                    @RequestParam("departmentIds") Integer[] customerDepartmentIds,
+                                    @RequestParam("auditorId") Integer auditorId) {
+        customerEntity.setModifiedBy(this.getLoginUserName());
+        customerEntity.setModifiedTime(new Date());
         customerService.edit(customerEntity, customerDepartmentIds);
         return ResponseDataUtil.ok("修改顾客信息成功");
     }
@@ -62,6 +76,13 @@ public class CustomerController extends SessionController {
     public Map<String, Object> findById(@PathVariable Integer id) {
         CustomerEntity customerEntity = customerService.findById(id);
         return ResponseDataUtil.ok("查询顾客信息成功", customerEntity);
+    }
+
+    @GetMapping("/{id}/audit/record")
+    @ResponseBody
+    public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
+        List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByExample(null, id);
+        return ResponseDataUtil.ok("查询顾客审核记录信息成功", customerAuditRecordEntities);
     }
 
     @GetMapping
@@ -75,6 +96,10 @@ public class CustomerController extends SessionController {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<CustomerEntity> customerEntities = customerService.findByExample(null, typeId, departmentId, name);
         PageInfo<CustomerEntity> pageInfo = new PageInfo<>(customerEntities);
+        if (departmentId != null) {
+            pageInfo.setTotal(customerCustomerDepartmentService.countExample(departmentId));
+        }
+        pageInfo.setTotal(customerService.countExample(typeId, name));
         return ResponseDataUtil.ok("查询顾客信息列表成功", pageInfo);
     }
 

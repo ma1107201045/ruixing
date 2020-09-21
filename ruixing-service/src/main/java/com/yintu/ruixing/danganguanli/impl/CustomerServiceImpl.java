@@ -22,6 +22,8 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
     @Autowired
     private CustomerCustomerDepartmentService customerCustomerDepartmentService;
+    @Autowired
+    private CustomerAuditRecordService customerAuditRecordService;
 
     @Override
     public void add(CustomerEntity entity) {
@@ -52,6 +54,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Long countExample(Integer typeId, String name) {
+        return customerDao.count(typeId, name);
+    }
+
+    @Override
     public void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds) {
         this.add(customerEntity);
         this.addOrEditCustomerCustomerDepartment(customerEntity, customerDepartmentIds);
@@ -71,6 +78,34 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Integer auditorId) {
+        CustomerEntity source = this.findById(customerEntity.getId());
+        if (source != null) {
+            source.setStatus((short) 2);//改为待审批状态
+            this.edit(customerEntity);
+            CustomerAuditRecordEntity customerAuditRecordEntity = new CustomerAuditRecordEntity();
+            customerAuditRecordEntity.setCreateBy(customerEntity.getModifiedBy());
+            customerAuditRecordEntity.setCreateTime(customerEntity.getModifiedTime());
+            customerAuditRecordEntity.setModifiedBy(customerEntity.getModifiedBy());
+            customerAuditRecordEntity.setModifiedTime(customerEntity.getModifiedTime());
+            customerAuditRecordEntity.setTypeId(customerEntity.getTypeId());
+            customerAuditRecordEntity.setDutyId(customerEntity.getDutyId());
+            customerAuditRecordEntity.setName(customerEntity.getName());
+            customerAuditRecordEntity.setPhone(customerEntity.getPhone());
+            customerAuditRecordEntity.setSpecialPlane(customerEntity.getSpecialPlane());
+            customerAuditRecordEntity.setEmail(customerEntity.getSpecialPlane());
+            customerAuditRecordEntity.setProvinceId(customerEntity.getProvinceId());
+            customerAuditRecordEntity.setCityId(customerEntity.getCityId());
+            customerAuditRecordEntity.setDistrictId(customerEntity.getDistrictId());
+            customerAuditRecordEntity.setDetailedAddress(customerEntity.getDetailedAddress());
+            customerAuditRecordEntity.setCustomerId(customerEntity.getId());
+            customerAuditRecordEntity.setAuditorId(auditorId);
+            customerAuditRecordEntity.setAuditStatus((short) 1);
+            customerAuditRecordService.add(customerAuditRecordEntity);
+        }
+    }
+
+    @Override
     public void addOrEditCustomerCustomerDepartment(CustomerEntity customerEntity, Integer[] customerDepartmentIds) {
         List<CustomerCustomerDepartmentEntity> customerCustomerDepartmentEntities = customerCustomerDepartmentService.findByCustomerId(customerEntity.getId());
         for (CustomerCustomerDepartmentEntity customerCustomerDepartmentEntity : customerCustomerDepartmentEntities) {
@@ -80,8 +115,8 @@ public class CustomerServiceImpl implements CustomerService {
         Set<Integer> set = new HashSet<>(Arrays.asList(customerDepartmentIds));
         for (Integer customerDepartmentId : set) {
             CustomerCustomerDepartmentEntity customerCustomerDepartmentEntity = new CustomerCustomerDepartmentEntity();
-            customerCustomerDepartmentEntity.setCreateBy(customerEntity.getCreateBy());
-            customerCustomerDepartmentEntity.setCreateTime(customerEntity.getCreateTime());
+            customerCustomerDepartmentEntity.setCreateBy(customerEntity.getModifiedBy());
+            customerCustomerDepartmentEntity.setCreateTime(customerEntity.getModifiedTime());
             customerCustomerDepartmentEntity.setModifiedBy(customerEntity.getModifiedBy());
             customerCustomerDepartmentEntity.setModifiedTime(customerEntity.getModifiedTime());
             customerCustomerDepartmentEntity.setCustomerId(customerEntity.getId());
