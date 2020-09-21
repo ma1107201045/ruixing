@@ -82,6 +82,9 @@ public class CustomerController extends SessionController {
     @ResponseBody
     public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
         List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByExample(null, id);
+        customerAuditRecordEntities = customerAuditRecordEntities.stream().
+                sorted(Comparator.comparing(CustomerAuditRecordEntity::getId).reversed())
+                .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询顾客审核记录信息成功", customerAuditRecordEntities);
     }
 
