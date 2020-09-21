@@ -54,8 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Long countExample(Integer typeId, String name) {
-        return customerDao.count(typeId, name);
+    public Long countByExample(Integer typeId, String name) {
+        return customerDao.countByExample(typeId, name);
     }
 
     @Override
@@ -67,6 +67,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void remove(Integer[] ids) {
         for (Integer id : ids) {
+            List<CustomerCustomerDepartmentEntity> customerCustomerDepartmentEntities = customerCustomerDepartmentService.findByCustomerId(id);
+            for (CustomerCustomerDepartmentEntity customerCustomerDepartmentEntity : customerCustomerDepartmentEntities) {
+                customerCustomerDepartmentService.remove(customerCustomerDepartmentEntity.getId());
+            }
             this.remove(id);
         }
     }

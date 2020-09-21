@@ -222,7 +222,7 @@
             status           =#{status,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="countExample" resultType="java.lang.Long">
+    <select id="countByExample" resultType="java.lang.Long">
         select count(*)
         from mro_customer
         <where>

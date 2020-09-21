@@ -18,7 +18,7 @@ public interface CustomerCustomerDepartmentDao {
 
     int updateByPrimaryKey(CustomerCustomerDepartmentEntity record);
 
-    Long countExample(Integer departmentId);
+    Long countByExample(Integer departmentId);
 
     List<CustomerCustomerDepartmentEntity> selectByCustomerId(Integer customerId);
 }

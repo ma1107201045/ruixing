@@ -67,7 +67,7 @@ public class CustomerController extends SessionController {
                                     @RequestParam("auditorId") Integer auditorId) {
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
-        customerService.edit(customerEntity, customerDepartmentIds);
+        customerService.edit(customerEntity, customerDepartmentIds,auditorId);
         return ResponseDataUtil.ok("修改顾客信息成功");
     }
 
@@ -97,9 +97,10 @@ public class CustomerController extends SessionController {
         List<CustomerEntity> customerEntities = customerService.findByExample(null, typeId, departmentId, name);
         PageInfo<CustomerEntity> pageInfo = new PageInfo<>(customerEntities);
         if (departmentId != null) {
-            pageInfo.setTotal(customerCustomerDepartmentService.countExample(departmentId));
+            pageInfo.setTotal(customerCustomerDepartmentService.countByExample(departmentId));
+        } else {
+            pageInfo.setTotal(customerService.countByExample(typeId, name));
         }
-        pageInfo.setTotal(customerService.countExample(typeId, name));
         return ResponseDataUtil.ok("查询顾客信息列表成功", pageInfo);
     }
 

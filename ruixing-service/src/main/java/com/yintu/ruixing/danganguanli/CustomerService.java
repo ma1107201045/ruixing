@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CustomerService extends BaseService<CustomerEntity, Integer> {
 
-    Long countExample(Integer typeId, String name);
+    Long countByExample(Integer typeId, String name);
 
     void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
