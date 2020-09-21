@@ -118,8 +118,8 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
 
     ////////////////////////文件/////////////////////////////
     //根据文件id 编辑审核过程
-    @PutMapping("/editAuditorByWTId/{id}")
-    public Map<String, Object> editAuditorByWJId(@PathVariable Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, Integer senderId) {
+    @PutMapping("/editAuditorByWTFileId/{id}")
+    public Map<String, Object> editAuditorByWTFileId(@PathVariable Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, Integer senderId) {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
         anZhuangTiaoShiWenTiService.editAuditorByWJId(id, anZhuangTiaoShiWenTiAuditorEntity, username, receiverid, senderId);
