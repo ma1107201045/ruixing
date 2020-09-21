@@ -46,11 +46,6 @@ public class CustomerEntity implements Serializable {
     private Integer districtId;
 
     private String detailedAddress;
-    @NotNull
-    private String auditorId;
-
-    private Short auditStatus;
-
 
     private CustomerTypeEntity customerTypeEntity;
 

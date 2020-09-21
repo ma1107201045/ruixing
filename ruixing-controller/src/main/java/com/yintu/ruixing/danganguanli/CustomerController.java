@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +33,8 @@ public class CustomerController extends SessionController {
     private CustomerDepartmentService customerDepartmentService;
     @Autowired
     private CustomerDutyService customerDutyService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     @ResponseBody
@@ -74,28 +78,39 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询顾客信息列表成功", pageInfo);
     }
 
-    @GetMapping("/type")
+    @GetMapping("/customer/types")
     @ResponseBody
     public Map<String, Object> findTypes() {
         List<CustomerTypeEntity> customerTypeEntities = customerTypeService.findAll();
         return ResponseDataUtil.ok("查询顾客类型信息列表成功", customerTypeEntities);
     }
 
-    @GetMapping("/department")
+    @GetMapping("/customer/departments")
     @ResponseBody
     public Map<String, Object> findDepartments(@RequestParam Short typeId) {
         List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findByParentIdAndTypeId(-1, typeId);
         return ResponseDataUtil.ok("查询顾客部门信息列表成功", treeNodeUtils);
     }
 
-    @GetMapping("/duty")
+    @GetMapping("/customer/duties")
     @ResponseBody
-    public Map<String, Object> findDyties() {
+    public Map<String, Object> findDuties() {
         List<CustomerDutyEntity> customerDutyEntities = customerDutyService.findByExample(null);
         customerDutyEntities = customerDutyEntities.stream().
                 sorted(Comparator.comparing(CustomerDutyEntity::getId).reversed())
                 .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询顾客职位信息列表成功", customerDutyEntities);
+    }
+
+    @GetMapping("/auditors")
+    @ResponseBody
+    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
+        List<UserEntity> userEntities = userService.findByTruename(trueName);
+        userEntities = userEntities
+                .stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
 

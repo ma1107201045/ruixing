@@ -17,8 +17,6 @@
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
-        <result column="auditor_id" jdbcType="VARCHAR" property="auditorId"/>
-        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, type_id, duty_id, name, phone,
@@ -42,14 +40,12 @@
                                   modified_by, modified_time, type_id,
                                   duty_id, name, phone,
                                   special_plane, email, province_id,
-                                  city_id, district_id, detailed_address,
-                                  auditor_id, audit_status)
+                                  city_id, district_id, detailed_address)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{typeId,jdbcType=INTEGER},
                 #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
                 #{specialPlane,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
-                #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR},
-                #{auditorId,jdbcType=VARCHAR}, #{auditStatus,jdbcType=SMALLINT})
+                #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity" useGeneratedKeys="true"
             keyProperty="id">
@@ -153,12 +149,6 @@
             <if test="detailedAddress != null">
                 #{detailedAddress,jdbcType=VARCHAR},
             </if>
-            <if test="auditorId != null">
-                #{auditorId,jdbcType=VARCHAR},
-            </if>
-            <if test="auditStatus != null">
-                #{auditStatus,jdbcType=SMALLINT},
-            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity">
@@ -206,12 +196,6 @@
             <if test="detailedAddress != null">
                 detailed_address = #{detailedAddress,jdbcType=VARCHAR},
             </if>
-            <if test="auditorId != null">
-                auditor_id = #{auditorId,jdbcType=VARCHAR},
-            </if>
-            <if test="auditStatus != null">
-                audit_status = #{auditStatus,jdbcType=SMALLINT},
-            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -230,9 +214,7 @@
             province_id      = #{provinceId,jdbcType=INTEGER},
             city_id          = #{cityId,jdbcType=INTEGER},
             district_id      = #{districtId,jdbcType=INTEGER},
-            detailed_address = #{detailedAddress,jdbcType=VARCHAR},
-            auditor_id       = #{auditorId,jdbcType=VARCHAR},
-            audit_status     = #{auditStatus,jdbcType=SMALLINT}
+            detailed_address = #{detailedAddress,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -252,8 +234,6 @@
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
-        <result column="auditor_id" jdbcType="VARCHAR" property="auditorId"/>
-        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <association column="type_id" property="customerTypeEntity">
             <id column="ct_id" jdbcType="INTEGER" property="id"/>
             <result column="ct_name" jdbcType="VARCHAR" property="name"/>
@@ -281,7 +261,7 @@
         </collection>
     </resultMap>
     <sql id="Much_Column_List">
-        cer.id as cer_id, cer.create_by , cer.create_time, cer.modified_by, cer.modified_time, cer.type_id, cer.duty_id, cer.name as cer_name, cer.phone,cer.special_plane, cer.email,cer.province_id, cer.city_id, cer.district_id, cer.detailed_address, cer.auditor_id,cer.audit_status,
+        cer.id as cer_id, cer.create_by , cer.create_time, cer.modified_by, cer.modified_time, cer.type_id, cer.duty_id, cer.name as cer_name, cer.phone,cer.special_plane, cer.email,cer.province_id, cer.city_id, cer.district_id, cer.detailed_address,
         ct.id as ct_id,ct.name as ct_name,
         d1.id as d1_id,d1.name as d1_name,
 
