@@ -59,6 +59,8 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
             map.put("createTime", customerDepartmentEntity.getCreateTime());
             map.put("modifiedBy", customerDepartmentEntity.getModifiedBy());
             map.put("modifiedTime", customerDepartmentEntity.getModifiedTime());
+            map.put("isFirst", false);
+            map.put("typeId", type);
             treeNodeUtil.setA_attr(map);
             treeNodeUtil.setChildren(this.findByParentIdAndTypeId(customerDepartmentEntity.getId(), customerDepartmentEntity.getTypeId()));
             treeNodeUtils.add(treeNodeUtil);
@@ -74,12 +76,13 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             treeNodeUtil.setId(customerTypeEntity.getId().longValue());
             treeNodeUtil.setLabel(customerTypeEntity.getName());
-            treeNodeUtil.setValue(customerTypeEntity.getId().toString());
+            treeNodeUtil.setValue(String.valueOf(customerTypeEntity.getId() - 4));
             Map<String, Object> map = new HashMap<>();
             map.put("createBy", customerTypeEntity.getCreateBy());
             map.put("createTime", customerTypeEntity.getCreateTime());
             map.put("modifiedBy", customerTypeEntity.getModifiedBy());
             map.put("modifiedTime", customerTypeEntity.getModifiedTime());
+            map.put("isFirst", true);
             treeNodeUtil.setA_attr(map);
             treeNodeUtil.setChildren(this.findByParentIdAndTypeId(-1, customerTypeEntity.getId().shortValue()));
             treeNodeUtils.add(treeNodeUtil);

@@ -41,7 +41,12 @@ public class CustomerCustomerDepartmentServiceImpl implements CustomerCustomerDe
     }
 
     @Override
-    public List<CustomerCustomerDepartmentEntity> findByCustomerId(Integer customerId) {
-        return customerCustomerDepartmentDao.selectByCustomerId(customerId);
+    public Long countByExample(Integer departmentId) {
+        return customerCustomerDepartmentDao.countByExample(departmentId);
+    }
+
+    @Override
+    public List<CustomerCustomerDepartmentEntity> findByExample(Integer customerId, Integer customerAuditRecordId) {
+        return customerCustomerDepartmentDao.selectByExample(customerId, customerAuditRecordId);
     }
 }

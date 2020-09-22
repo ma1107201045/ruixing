@@ -72,7 +72,7 @@ public class UserController extends SessionController {
         List<String> requestMethods = permissionService.findRequestMethodsByUserIdAndUrl(this.getLoginUserId(), "/users");
         jo.put("requestMethods", requestMethods);
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<UserEntity> userEntities = userService.findAllOrByUsername(username, (short) 0);
+        List<UserEntity> userEntities = userService.findAllOrByUsername(username);
         PageInfo<UserEntity> pageInfo = new PageInfo<>(userEntities);
         jo.put("pageInfo", pageInfo);
         return ResponseDataUtil.ok("查询用户列表成功", jo);

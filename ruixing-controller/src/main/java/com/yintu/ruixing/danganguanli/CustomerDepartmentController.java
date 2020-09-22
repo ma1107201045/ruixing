@@ -54,12 +54,6 @@ public class CustomerDepartmentController extends SessionController implements B
     }
 
     @GetMapping
-    public Map<String, Object> findByParentIdAndTypeId(@RequestParam Short typeId) {
-        List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findByParentIdAndTypeId(-1, typeId);
-        return ResponseDataUtil.ok("查询客户部门树信息成功", treeNodeUtils);
-    }
-
-    @GetMapping("/customer/type")
     public Map<String, Object> findCustomerTypeAndCustomerDepartmentTree() {
         List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findCustomerTypeAndCustomerDepartmentTree();
         return ResponseDataUtil.ok("查询客户类型以及部门树信息成功", treeNodeUtils);

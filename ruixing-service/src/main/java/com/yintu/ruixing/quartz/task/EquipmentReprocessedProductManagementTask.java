@@ -42,7 +42,7 @@ public class EquipmentReprocessedProductManagementTask {
                     messageEntity.setModifiedTime(new Date());
                     messageEntity.setTitle(TaskEnum.MAINTENANCEPLAN.getName());
                     messageEntity.setContext("“" + "”");
-                    messageEntity.setType((short) 5);
+                    messageEntity.setType((short) 6);
                     messageEntity.setSmallType((short) 1);
                     messageEntity.setMessageType((short) 1);
                     messageEntity.setProjectId(null);

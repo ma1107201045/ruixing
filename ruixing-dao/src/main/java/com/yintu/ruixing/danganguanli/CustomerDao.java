@@ -18,5 +18,7 @@ public interface CustomerDao {
 
     int updateByPrimaryKey(CustomerEntity record);
 
+    Long countByExample(Integer typeId,String name);
+
     List<CustomerEntity> selectByExample(Integer[] ids, Integer typeId, Integer departmentId, String name);
 }
