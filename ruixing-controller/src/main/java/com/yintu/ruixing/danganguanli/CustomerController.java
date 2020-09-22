@@ -63,12 +63,18 @@ public class CustomerController extends SessionController {
     @PutMapping("/{id}")
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated CustomerEntity customerEntity,
-                                    @RequestParam("departmentIds") Integer[] customerDepartmentIds,
-                                    @RequestParam("auditorId") Integer auditorId) {
+                                    @RequestParam("departmentIds") Integer[] customerDepartmentIds) {
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
-        customerService.edit(customerEntity, customerDepartmentIds,auditorId);
+        customerService.addCustomerAuditRecord(customerEntity, customerDepartmentIds, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改顾客信息成功");
+    }
+
+    @PutMapping("/{id}/audit")
+    @ResponseBody
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("auditStatus") Short auditStatus, String reason) {
+        customerService.audit(id, auditStatus, reason, this.getLoginUserId().intValue(), this.getLoginUserName());
+        return ResponseDataUtil.ok("审核顾客信息成功");
     }
 
     @GetMapping("/{id}")

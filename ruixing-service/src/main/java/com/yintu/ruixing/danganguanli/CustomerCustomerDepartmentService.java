@@ -13,5 +13,5 @@ import java.util.List;
 public interface CustomerCustomerDepartmentService extends BaseService<CustomerCustomerDepartmentEntity, Integer> {
     Long countByExample(Integer departmentId);
 
-    List<CustomerCustomerDepartmentEntity> findByCustomerId(Integer customerId);
+    List<CustomerCustomerDepartmentEntity> findByExample(Integer customerId, Integer customerAuditRecordId);
 }

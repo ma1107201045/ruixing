@@ -19,9 +19,13 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
 
     void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
-    void edit(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Integer auditorId);
-
     void addOrEditCustomerCustomerDepartment(CustomerEntity customerEntity, Integer[] customerDepartmentIds);
 
     List<CustomerEntity> findByExample(Integer[] ids, Integer typeId, Integer departmentId, String name);
+
+
+    void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, String trueName);
+
+    void audit(Integer id, Short auditStatus, String reason, Integer loginUserId, String userName);
+
 }

@@ -22,4 +22,6 @@ public interface CustomerAuditRecordDao {
 
     List<CustomerAuditRecordEntity> selectByExample(Integer[] ids, Integer customerId);
 
+    List<CustomerAuditRecordEntity> selectByCustomerIdAndAuditStatus(Integer customerId, Short auditStatus);
+
 }

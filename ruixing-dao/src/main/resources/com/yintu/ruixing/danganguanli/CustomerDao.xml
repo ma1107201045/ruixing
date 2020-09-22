@@ -17,6 +17,7 @@
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -40,13 +41,13 @@
                                   modified_by, modified_time, type_id,
                                   duty_id, name, phone,
                                   special_plane, email, province_id,
-                                  city_id, district_id, detailed_address, status)
+                                  city_id, district_id, detailed_address, auditor_id, status)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{typeId,jdbcType=INTEGER},
                 #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
                 #{specialPlane,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
                 #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR},
-                #{status,jdbcType=SMALLINT})
+                #{auditor_id,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerEntity" useGeneratedKeys="true"
             keyProperty="id">
@@ -96,6 +97,9 @@
             </if>
             <if test="detailedAddress != null">
                 detailed_address,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
             </if>
             <if test="status != null">
                 status,
@@ -147,6 +151,9 @@
             <if test="detailedAddress != null">
                 #{detailedAddress,jdbcType=VARCHAR},
             </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=INTEGER},
+            </if>
             <if test="status != null">
                 #{status,jdbcType=SMALLINT},
             </if>
@@ -197,6 +204,9 @@
             <if test="detailedAddress != null">
                 detailed_address = #{detailedAddress,jdbcType=VARCHAR},
             </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=INTEGER},
+            </if>
             <if test="status != null">
                 status = #{status,jdbcType=SMALLINT},
             </if>
@@ -219,6 +229,7 @@
             city_id          = #{cityId,jdbcType=INTEGER},
             district_id      = #{districtId,jdbcType=INTEGER},
             detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            auditor_id       = #{auditorId,jdbcType=INTEGER},
             status           =#{status,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -250,6 +261,7 @@
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
         <association column="type_id" property="customerTypeEntity">
             <id column="ct_id" jdbcType="INTEGER" property="id"/>
@@ -278,7 +290,7 @@
         </collection>
     </resultMap>
     <sql id="Much_Column_List">
-        cer.id as cer_id, cer.create_by , cer.create_time, cer.modified_by, cer.modified_time, cer.type_id, cer.duty_id, cer.name as cer_name, cer.phone,cer.special_plane, cer.email,cer.province_id, cer.city_id, cer.district_id, cer.detailed_address,cer.status,
+        cer.id as cer_id, cer.create_by , cer.create_time, cer.modified_by, cer.modified_time, cer.type_id, cer.duty_id, cer.name as cer_name, cer.phone,cer.special_plane, cer.email,cer.province_id, cer.city_id, cer.district_id, cer.detailed_address,cer.auditor_id,cer.status,
         ct.id as ct_id,ct.name as ct_name,
         d1.id as d1_id,d1.name as d1_name,
 

@@ -17,7 +17,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      *
      * @return 用户信息
      */
-    List<UserEntity> findAll(Short isCustomer);
+    List<UserEntity> findAll();
 
 
     /**
@@ -60,7 +60,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      * @param username 用户名
      * @return 用户列表信息
      */
-    List<UserEntity> findAllOrByUsername(String username, Short isCustomer);
+    List<UserEntity> findAllOrByUsername(String username);
 
     /**
      * 通过用户id查询角色

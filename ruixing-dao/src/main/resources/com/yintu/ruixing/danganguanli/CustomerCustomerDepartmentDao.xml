@@ -151,10 +151,17 @@
             </if>
         </where>
     </select>
-    <select id="selectByCustomerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByExample" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_customer_customer_department
-        where customer_id = #{customerId,jdbcType=INTEGER}
+        <where>
+            <if test="customerId !=null ">
+                and customer_id=#{customerId,jdbcType=INTEGER}
+            </if>
+            <if test="customerAuditRecordId !=null">
+                and customer_audit_record_id=#{customerAuditRecordId,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 </mapper>

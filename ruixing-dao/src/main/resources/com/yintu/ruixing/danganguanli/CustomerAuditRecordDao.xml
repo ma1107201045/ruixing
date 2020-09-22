@@ -7,6 +7,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -26,7 +27,7 @@
         <result column="reason" jdbcType="LONGVARCHAR" property="reason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, type_id, duty_id, name, phone,
+        id, create_by, create_time, modified_by, modified_time,operator, type_id, duty_id, name, phone,
     special_plane, email, province_id, city_id, district_id, detailed_address, customer_id, 
     auditor_id, audit_status
     </sql>
@@ -49,15 +50,16 @@
     <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into mro_customer_audit_record (id, create_by, create_time,
-                                               modified_by, modified_time, type_id,
+                                               modified_by, modified_time, operator, type_id,
                                                duty_id, name, phone,
                                                special_plane, email, province_id,
                                                city_id, district_id, detailed_address,
                                                customer_id, auditor_id, audit_status,
                                                reason)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{typeId,jdbcType=INTEGER},
-                #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
+                #{typeId,jdbcType=INTEGER}, #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR},
                 #{specialPlane,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
                 #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR},
                 #{customerId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, #{auditStatus,jdbcType=SMALLINT},
@@ -81,6 +83,9 @@
             </if>
             <if test="modifiedTime != null">
                 modified_time,
+            </if>
+            <if test="operator != null">
+                operator,
             </if>
             <if test="typeId != null">
                 type_id,
@@ -141,6 +146,9 @@
             <if test="modifiedTime != null">
                 #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
             <if test="typeId != null">
                 #{typeId,jdbcType=INTEGER},
             </if>
@@ -200,6 +208,9 @@
             <if test="modifiedTime != null">
                 modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="operator != null">
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
             <if test="typeId != null">
                 type_id = #{typeId,jdbcType=INTEGER},
             </if>
@@ -251,6 +262,7 @@
             create_time      = #{createTime,jdbcType=TIMESTAMP},
             modified_by      = #{modifiedBy,jdbcType=VARCHAR},
             modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
+            operator         = #{operator,jdbcType=VARCHAR},
             type_id          = #{typeId,jdbcType=INTEGER},
             duty_id          = #{dutyId,jdbcType=INTEGER},
             name             = #{name,jdbcType=VARCHAR},
@@ -273,6 +285,7 @@
             create_time      = #{createTime,jdbcType=TIMESTAMP},
             modified_by      = #{modifiedBy,jdbcType=VARCHAR},
             modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
+            operator         = #{operator,jdbcType=VARCHAR},
             type_id          = #{typeId,jdbcType=INTEGER},
             duty_id          = #{dutyId,jdbcType=INTEGER},
             name             = #{name,jdbcType=VARCHAR},
@@ -294,6 +307,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
         <result column="cer_name" jdbcType="VARCHAR" property="name"/>
@@ -341,7 +355,7 @@
         </collection>
     </resultMap>
     <sql id="Much_Column_List">
-        car.id as car_id, car.create_by , car.create_time, car.modified_by, car.modified_time, car.type_id, car.duty_id, car.name as cer_name, car.phone,car.special_plane, car.email,car.province_id, car.city_id, car.district_id, car.detailed_address,car.customer_id,car.auditor_id,car.audit_status,car.reason,
+        car.id as car_id, car.create_by , car.create_time, car.modified_by, car.modified_time, car.operator, car.type_id, car.duty_id, car.name as cer_name, car.phone,car.special_plane, car.email,car.province_id, car.city_id, car.district_id, car.detailed_address,car.customer_id,car.auditor_id,car.audit_status,car.reason,
         ct.id as ct_id,ct.name as ct_name,
         d1.id as d1_id,d1.name as d1_name,
 
@@ -386,4 +400,10 @@
         <include refid="Much_Where_List"/>
     </select>
 
+    <select id="selectByCustomerIdAndAuditStatus" resultMap="BaseResultMap">
+        select *
+        from mro_customer_audit_record
+        where customer_id = #{customerId,jdbcType=INTEGER}
+          and audit_status = #{auditStatus,jdbcType=SMALLINT}
+    </select>
 </mapper>

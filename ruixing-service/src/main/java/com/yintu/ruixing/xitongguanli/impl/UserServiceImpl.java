@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findAll(Short isCustomer) {
+    public List<UserEntity> findAll() {
         UserEntityExample userEntityExample = new UserEntityExample();
         return userDao.selectByExample(userEntityExample);
     }
@@ -136,10 +136,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findAllOrByUsername(String username, Short isCustermer) {
+    public List<UserEntity> findAllOrByUsername(String username) {
         List<UserEntity> userEntities;
         if (username == null || "".equals(username)) {
-            userEntities = this.findAll(isCustermer);
+            userEntities = this.findAll();
         } else {
             UserEntityExample userEntityExample = new UserEntityExample();
             UserEntityExample.Criteria criteria = userEntityExample.createCriteria();

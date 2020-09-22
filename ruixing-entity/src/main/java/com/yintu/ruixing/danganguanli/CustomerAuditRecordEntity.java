@@ -25,6 +25,8 @@ public class CustomerAuditRecordEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private String operator;
+
     private Integer typeId;
 
     private Integer dutyId;

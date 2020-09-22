@@ -44,4 +44,9 @@ public class CustomerAuditRecordServiceImpl implements CustomerAuditRecordServic
     public List<CustomerAuditRecordEntity> findByExample(Integer[] ids, Integer customerId) {
         return customerAuditRecordDao.selectByExample(ids, customerId);
     }
+
+    @Override
+    public List<CustomerAuditRecordEntity> findByCustomerIdAndAuditStatus(Integer customerId, Short auditStatus) {
+        return customerAuditRecordDao.selectByCustomerIdAndAuditStatus(customerId, auditStatus);
+    }
 }

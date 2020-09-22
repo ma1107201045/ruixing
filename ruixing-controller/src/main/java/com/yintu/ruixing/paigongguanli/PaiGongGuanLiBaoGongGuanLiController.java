@@ -36,7 +36,7 @@ public class PaiGongGuanLiBaoGongGuanLiController {
     //查询员工姓名  等信息
     @GetMapping("/findAllUserName")
     public Map<String, Object> findAllUserName(String truename) {
-        List<UserEntity> userEntities = userService.findAllOrByUsername(truename, (short) 0);
+        List<UserEntity> userEntities = userService.findAllOrByUsername(truename);
         return ResponseDataUtil.ok("查询姓名成功", userEntities);
     }
 

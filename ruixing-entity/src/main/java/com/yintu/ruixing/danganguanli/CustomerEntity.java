@@ -49,6 +49,8 @@ public class CustomerEntity implements Serializable {
 
     private Short status;
 
+    private Integer auditorId;
+
     private CustomerTypeEntity customerTypeEntity;
 
     private List<CustomerDepartmentEntity> customerDepartmentEntities;

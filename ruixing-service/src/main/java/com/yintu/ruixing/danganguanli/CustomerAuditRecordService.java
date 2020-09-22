@@ -12,4 +12,6 @@ import java.util.List;
 public interface CustomerAuditRecordService extends BaseService<CustomerAuditRecordEntity, Integer> {
 
     List<CustomerAuditRecordEntity> findByExample(Integer[] ids, Integer customerId);
+
+    List<CustomerAuditRecordEntity> findByCustomerIdAndAuditStatus(Integer customerId, Short auditStatus);
 }
