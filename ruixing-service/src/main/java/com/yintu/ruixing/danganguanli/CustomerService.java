@@ -2,6 +2,8 @@ package com.yintu.ruixing.danganguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -27,5 +29,14 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
     void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, String trueName);
 
     void audit(Integer id, Short auditStatus, String reason, Integer loginUserId, String userName);
+
+    /**
+     * 批量导出excel数据
+     *
+     * @param outputStream 输出流
+     * @param ids          id集合
+     * @throws IOException io异常
+     */
+    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
 
 }
