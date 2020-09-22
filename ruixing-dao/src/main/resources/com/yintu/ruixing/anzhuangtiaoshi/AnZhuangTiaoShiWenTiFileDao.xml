@@ -15,6 +15,7 @@
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
     <result column="auditorState" jdbcType="INTEGER" property="auditorState" />
+    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, wid, fenlei, file_name, file_path, file_state, yuliu,uid,
@@ -55,7 +56,7 @@
       <if test="fileName!=null">
         and  file_name like concat('%',#{fileName},'%')
       </if>
-      group by id desc
+      group by wtfi.id desc
     </where>
   </select>
 
@@ -106,7 +107,6 @@
     mro_anzhuangtiaoshi_wenti_auditor wa
     where
     wtfi.id = wa.object_id
-    AND objectType = 2
     and wtfi.id = #{id,jdbcType=INTEGER}
   </select>
 

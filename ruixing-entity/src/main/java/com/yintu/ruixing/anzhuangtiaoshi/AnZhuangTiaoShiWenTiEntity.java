@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class AnZhuangTiaoShiWenTiEntity {
     private Integer id;
+    private Integer userid;
 
     private String xdName;
 

@@ -116,9 +116,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
     update mro_anzhuangtiaoshi_wenti_auditor
     <set>
-      <if test="objectId != null">
-        object_id = #{objectId,jdbcType=INTEGER},
-      </if>
       <if test="auditorId != null">
         auditor_id = #{auditorId,jdbcType=INTEGER},
       </if>
@@ -144,7 +141,7 @@
         updateName = #{updatename,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where auditor_id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity">
     update mro_anzhuangtiaoshi_wenti_auditor

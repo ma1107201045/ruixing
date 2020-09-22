@@ -40,7 +40,7 @@
   <!--初始化类别数据  或者根据物料编号模糊查询类别-->
   <select id="findAllMaterialDatas"  resultMap="BaseResultMap">
     select
-    id, MaterialsName, MaterialsNumber, MaterialsType, useMode, MaterialsGuiGe, yuJingNumber
+    <include refid="Base_Column_List" />
     from mro_anzhuangtiaoshi_material
     <where>
       <if test="materialNumber!=null">

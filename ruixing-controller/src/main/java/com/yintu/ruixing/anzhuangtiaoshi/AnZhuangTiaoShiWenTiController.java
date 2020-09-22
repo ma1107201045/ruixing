@@ -86,8 +86,9 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
     //初始化页面   或者根据线段名 或问题描述查询数据
     @GetMapping("/findSomeWenTi")
     public Map<String, Object> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu) {
+        Integer receiverid = this.getLoginUser().getId().intValue();
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiWenTiEntity> wenTiEntityList = anZhuangTiaoShiWenTiService.findSomeWenTi(page, size, xdname, wenTiMiaoShu);
+        List<AnZhuangTiaoShiWenTiEntity> wenTiEntityList = anZhuangTiaoShiWenTiService.findSomeWenTi(page, size, xdname, wenTiMiaoShu,receiverid);
         PageInfo<AnZhuangTiaoShiWenTiEntity> wenTiEntityPageInfo = new PageInfo<>(wenTiEntityList);
         return ResponseDataUtil.ok("查询成功", wenTiEntityPageInfo);
     }
@@ -123,8 +124,17 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
         anZhuangTiaoShiWenTiService.editAuditorByWJId(id, anZhuangTiaoShiWenTiAuditorEntity, username, receiverid, senderId);
-        return ResponseDataUtil.ok("问题审核成功");
+        return ResponseDataUtil.ok("文件审核成功");
     }
+
+    //根据文件id  查看时间轴
+    @GetMapping("/findFileRecordMessageById/{id}")
+    public Map<String, Object> findFileRecordMessageById(@PathVariable Integer id) {
+        List<AnZhuangTiaoShiRecordMessageEntity> recordMessageEntityList = anZhuangTiaoShiWenTiService.findFileRecordMessageById(id);
+        return ResponseDataUtil.ok("查询时间轴数据成功", recordMessageEntityList);
+    }
+
+
 
     //根据文件id  查看对应的文件数据
     @GetMapping("/findFileById/{id}")
