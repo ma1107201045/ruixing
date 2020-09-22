@@ -104,22 +104,10 @@
   <!--根据项目类型  查询对应的数据-->
   <select id="findXianDuanDataByLeiXing" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
-    axm.id,
-	xianduantime,
-	tlj_name,
-	dwd_name,
-	xd_name,
-	xd_type,
-	xd_fenlei,
-	guanlianxiangmu,
-	worksid,
-    axsc.chezhanName
+    <include refid="Base_Column_List"/>
     FROM
-    mro_anzhuangtiaoshi_xiangmu axm,
-    mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc
+    mro_anzhuangtiaoshi_xiangmu
     WHERE
-    axm.id = axsc.xdid
-    and
     xd_fenlei =#{leiXingId}
   </select>
 

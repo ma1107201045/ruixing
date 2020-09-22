@@ -21,4 +21,5 @@ public interface AnZhuangTiaoShiWorkNameLibraryService {
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorkName();
 
+    List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id);
 }

@@ -1,103 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="workname" jdbcType="VARCHAR" property="workname" />
-    <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1" />
-    <result column="yuliu2" jdbcType="VARCHAR" property="yuliu2" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="workname" jdbcType="VARCHAR" property="workname"/>
+        <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1"/>
+        <result column="yuliu2" jdbcType="VARCHAR" property="yuliu2"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, workname, yuliu1, yuliu2
   </sql>
 
-  <!--查询所有的作业项-->
-  <select id="findAllWorkName" resultMap="BaseResultMap">
+    <!--查询所有的作业项-->
+    <select id="findAllWorksById" resultMap="BaseResultMap">
+        SELECT
+            awl.id,
+            awl.workname
+        FROM
+            mro_anzhuangtiaoshi_worknamelibrary awl,
+            mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww
+        WHERE
+            awl.id = aww.wnlid
+            AND aww.wntid = #{id}
+    </select>
+
+
+    <!--根据id  查询对应的作业项名-->
+    <select id="findWorkNameByid" resultType="java.lang.String">
     select
-    <include refid="Base_Column_List" />
+    workname
     from mro_anzhuangtiaoshi_worknamelibrary
+    where id=#{wnlid}
   </select>
 
-  <!--根据作业项名 模糊查询  或者查询全部-->
-  <select id="findWorkName"  resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_worknamelibrary
-    <where>
-      <if test="workname !=null">
-        workname like concat ('%',#{workname},'%')
-      </if>
-    </where>
-    GROUP BY id DESC
-  </select>
 
-  <!--根据id  单个或者批量删除-->
-  <delete id="deleteWorkNameByIds" parameterType="java.lang.Integer">
-    delete from mro_anzhuangtiaoshi_worknamelibrary
-    where id
-    in
-    <foreach collection="array" item="ids" open="(" separator="," close=")">
-      #{ids}
-    </foreach>
-  </delete>
+    <!--查询所有的作业项-->
+    <select id="findAllWorkName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_worknamelibrary
+    </select>
 
-  <!--添加作业项名称-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
-    insert into mro_anzhuangtiaoshi_worknamelibrary
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="workname != null">
-        workname,
-      </if>
-      <if test="yuliu1 != null">
-        yuliu1,
-      </if>
-      <if test="yuliu2 != null">
-        yuliu2,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="workname != null">
-        #{workname,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu1 != null">
-        #{yuliu1,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu2 != null">
-        #{yuliu2,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <!--根据作业项名 模糊查询  或者查询全部-->
+    <select id="findWorkName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_worknamelibrary
+        <where>
+            <if test="workname !=null">
+                workname like concat ('%',#{workname},'%')
+            </if>
+        </where>
+        GROUP BY id DESC
+    </select>
 
-  <!--根据id 编辑对应的作业项名称-->
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
-    update mro_anzhuangtiaoshi_worknamelibrary
-    <set>
-      <if test="workname != null">
-        workname = #{workname,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu1 != null">
-        yuliu1 = #{yuliu1,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu2 != null">
-        yuliu2 = #{yuliu2,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+    <!--根据id  单个或者批量删除-->
+    <delete id="deleteWorkNameByIds" parameterType="java.lang.Integer">
+        delete from mro_anzhuangtiaoshi_worknamelibrary
+        where id
+        in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!--添加作业项名称-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+        insert into mro_anzhuangtiaoshi_worknamelibrary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="workname != null">
+                workname,
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1,
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="workname != null">
+                #{workname,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu1 != null">
+                #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                #{yuliu2,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id 编辑对应的作业项名称-->
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+        update mro_anzhuangtiaoshi_worknamelibrary
+        <set>
+            <if test="workname != null">
+                workname = #{workname,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1 = #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2 = #{yuliu2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
     update mro_anzhuangtiaoshi_worknamelibrary
     set workname = #{workname,jdbcType=VARCHAR},
       yuliu1 = #{yuliu1,jdbcType=VARCHAR},
       yuliu2 = #{yuliu2,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
     insert into mro_anzhuangtiaoshi_worknamelibrary (id, workname, yuliu1,
       yuliu2)
     values (#{id,jdbcType=INTEGER}, #{workname,jdbcType=VARCHAR}, #{yuliu1,jdbcType=VARCHAR},

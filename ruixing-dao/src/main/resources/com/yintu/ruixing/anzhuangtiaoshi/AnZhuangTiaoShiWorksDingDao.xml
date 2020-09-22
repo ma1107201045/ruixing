@@ -32,6 +32,17 @@
     id, cid, wntid, wnlid, worker_name, work_state, work_time, yuliu1, yuliu2
   </sql>
 
+
+    <!--g根据ids   查询对应的数据-->
+    <select id="findDataByIDS" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        worker_name, work_state, work_time
+        from mro_anzhuangtiaoshi_works_doing
+        where cid = #{czid,jdbcType=INTEGER}
+        and wntid = #{worksid,jdbcType=INTEGER}
+        and wnlid = #{wnlid,jdbcType=INTEGER}
+    </select>
+
     <!--根据线段xid  查询对应的作业项数据-->
     <select id="findWorksDatasByCid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       SELECT

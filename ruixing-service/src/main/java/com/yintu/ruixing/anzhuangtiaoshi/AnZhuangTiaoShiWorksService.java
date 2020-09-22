@@ -1,5 +1,6 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public interface AnZhuangTiaoShiWorksService {
     List<AnZhuangTiaoShiWorksFileEntity> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename);
 
     void deletFileByIds(Integer[] ids);
+
+    JSONObject findAllCheZhanDatasByXDid(Integer id, Integer worksid);
 }

@@ -27,6 +27,11 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
     private AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao;
 
     @Override
+    public List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id) {
+        return anZhuangTiaoShiWorkNameLibraryDao.findAllWorksById(id);
+    }
+
+    @Override
     public List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorkName() {
         return anZhuangTiaoShiWorkNameLibraryDao.findAllWorkName();
     }

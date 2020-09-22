@@ -27,4 +27,8 @@ public interface AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao {
     Integer findWorkNameTatol(Integer id);
 
     void deleteWorkNameByIdss(Integer[] ids);
+
+    List<Integer> findAllwnlidByWorksid(@Param("worksid")Integer worksid);
+
+    Integer findWorkStateByIDS(@Param("worksid") Integer worksid,@Param("wnlid") Integer wnlid);
 }

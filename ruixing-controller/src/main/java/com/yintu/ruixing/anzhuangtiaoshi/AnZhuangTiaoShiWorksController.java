@@ -86,6 +86,15 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
         List<AnZhuangTiaoShiWorkNameTotalEntity> workNameTotalEntityList = anZhuangTiaoShiWorksService.findAllWorks();
         return ResponseDataUtil.ok("查询所有的版本数据成功", workNameTotalEntityList);
     }
+    /////////////////////////新增///////////////////////////////////////////
+
+    //根据线段id 查询所有的车站数据
+    @GetMapping("/findAllCheZhanDatasByXDid/{id}")
+    public Map<String, Object> findAllCheZhanDatasByXDid(@PathVariable Integer id, Integer worksid) {
+        JSONObject js = anZhuangTiaoShiWorksService.findAllCheZhanDatasByXDid(id, worksid);
+        return ResponseDataUtil.ok("查询数据成功", js);
+    }
+
 
     //////////////////////////文件////////////////////////////////////
 

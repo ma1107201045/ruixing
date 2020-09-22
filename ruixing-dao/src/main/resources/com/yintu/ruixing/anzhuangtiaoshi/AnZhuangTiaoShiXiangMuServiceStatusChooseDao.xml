@@ -14,7 +14,6 @@
   <sql id="Base_Column_List">
     id, sid, name, isNotDaoHuo,createTime, createName, updateTime, updateName
   </sql>
-
   <!--根据sid 和id 查询对应的数据-->
   <select id="findOneChooseBySidid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
