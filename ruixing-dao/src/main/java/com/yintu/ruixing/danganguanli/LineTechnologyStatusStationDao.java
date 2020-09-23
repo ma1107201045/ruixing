@@ -1,7 +1,9 @@
 package com.yintu.ruixing.danganguanli;
 
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusStationEntity;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface LineTechnologyStatusStationDao {
@@ -16,4 +18,9 @@ public interface LineTechnologyStatusStationDao {
     int updateByPrimaryKeySelective(LineTechnologyStatusStationEntity record);
 
     int updateByPrimaryKey(LineTechnologyStatusStationEntity record);
+
+    List<LineTechnologyStatusStationEntity> selectByExample(Integer xid);
+
+    Map<String, Object> selectLineStatistics(Integer cid);
+
 }

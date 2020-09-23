@@ -23,5 +23,10 @@ public interface LineTechnologyStatusDao {
 
     List<LineTechnologyStatusEntityWithBLOBs> selectByExample(Integer xid);
 
+    Map<String, Object> selectRailwaysBureauStatistics(Integer tid);
+
+    Map<String, Object> selectSignalDepotStatistics(Integer did);
+
     Map<String, Object> selectLineStatistics(Integer xid);
+
 }

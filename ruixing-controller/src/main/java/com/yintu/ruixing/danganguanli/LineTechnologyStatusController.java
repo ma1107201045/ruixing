@@ -36,10 +36,22 @@ public class LineTechnologyStatusController extends SessionController {
         return ResponseDataUtil.ok("修改线段技术状态信息成功");
     }
 
-    @GetMapping
+    @GetMapping("/railways/bureau")
+    public Map<String, Object> findRailwaysBureauStatistics(@RequestParam Integer tid) {
+        Map<String, Object> map = lineTechnologyStatusService.findRailwaysBureauStatistics(tid);
+        return ResponseDataUtil.ok("查询线段技术状态铁路局统计信息成功", map);
+    }
+
+    @GetMapping("/signal/depot")
+    public Map<String, Object> findSignalDepotStatistics(@RequestParam Integer did) {
+        Map<String, Object> map = lineTechnologyStatusService.findSignalDepotStatistics(did);
+        return ResponseDataUtil.ok("查询线段技术状态电务段统计信息成功", map);
+    }
+
+    @GetMapping("/special/railway/line")
     public Map<String, Object> findLineInfoAndStatistics(@RequestParam Integer xid) {
         JSONObject jo = lineTechnologyStatusService.findLineInfoAndStatistics(xid, this.getLoginUserName());
-        return ResponseDataUtil.ok("查询线段技术状态信息成功", jo);
+        return ResponseDataUtil.ok("查询线段技术状态线段统计信息成功", jo);
     }
 
     @GetMapping("/xiangmutypes")

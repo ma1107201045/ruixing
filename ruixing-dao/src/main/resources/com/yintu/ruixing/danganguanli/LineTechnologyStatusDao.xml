@@ -272,14 +272,46 @@
         <include refid="Much_Where_List"/>
     </select>
 
-    <select id="selectLineStatistics" resultType="java.util.Map">
-        SELECT COUNT(c.cid)                                                       AS stationQuantity,
-               SUM(c.tongXinBianMaGuiDaoNumber + c.tongXinBianMaZhanNeiOneGuiDaoNumber +
-                   c.jiDianOneToOneGuiDaoNumber + c.jiDianNToOneGuiDaoNumber + c.jiDianNToOneSheBeiNumber +
-                   c.tongXinBianMaDianMaHuaSheBeiNumber + c.jiDianNToOneDianMaHuaSheBeiNumber +
-                   c.jiDianJiaShiGuiDaoNumber)                                    AS totalTrackQuduanQuantity,
-               SUM(c.jiDianJiaShiDianMaHuaSheBeiNumber + c.jiDianDianMaHuaNumber) AS dianmahuaQuantity
-        FROM mro_chezhan c
-        WHERE c.xd_cz_id = #{xid,jdbcType=INTEGER}
+
+    <select id="selectRailwaysBureauStatistics" resultType="java.util.Map">
+        SELECT IFNULL(t.tlj_name, '')      AS tluName,
+               IFNULL(SUM(ltss.lenght), 0) AS lengthMileage,
+               IFNULL(COUNT(c.cid), 0)     AS stationQuantity,
+               IFNULL(t.tlj_miaoshu, '')   AS runSituation
+        FROM mro_tieluju t
+                 INNER JOIN mro_dianwuduan d on t.tid = d.tlj_dwd_id
+                 INNER JOIN mro_xianduan x on d.did = x.dwd_xd_id
+                 INNER JOIN mro_chezhan c on xid = c.xd_cz_id
+                 LEFT OUTER JOIN mro_line_technology_status_station ltss on c.cid = ltss.cid
+        WHERE t.tid = #{tid,jdbcType=INTEGER}
     </select>
+    <select id="selectSignalDepotStatistics" resultType="java.util.Map">
+        SELECT IFNULL(d.dwd_name, '')      AS dwnName,
+               IFNULL(SUM(ltss.lenght), 0) AS lengthMileage,
+               IFNULL(COUNT(c.cid), 0)     AS stationQuantity,
+               IFNULL(d.dwd_miaoshu, '')   AS runSituation
+        FROM mro_dianwuduan d
+                 INNER JOIN mro_xianduan x on d.did = x.dwd_xd_id
+                 INNER JOIN mro_chezhan c on xid = c.xd_cz_id
+                 LEFT OUTER JOIN mro_line_technology_status_station ltss on c.cid = ltss.cid
+        WHERE d.did = #{did,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectLineStatistics" resultType="java.util.Map">
+        SELECT IFNULL(x.xd_name, '')                                                         AS dwnName,
+               IFNULL(SUM(ltss.lenght), 0)                                                   AS lengthMileage,
+               IFNULL(COUNT(c.cid), 0)                                                       AS stationQuantity,
+               IFNULL(x.xd_miaoshu, '')                                                      AS runSituation,
+               IFNULL(SUM(c.tongXinBianMaGuiDaoNumber + c.tongXinBianMaZhanNeiOneGuiDaoNumber +
+                          c.jiDianOneToOneGuiDaoNumber + c.jiDianNToOneGuiDaoNumber + c.jiDianNToOneSheBeiNumber +
+                          c.tongXinBianMaDianMaHuaSheBeiNumber + c.jiDianNToOneDianMaHuaSheBeiNumber +
+                          c.jiDianJiaShiGuiDaoNumber),
+                      0)                                                                     AS totalTrackQuduanQuantity,
+               IFNULL(SUM(c.jiDianJiaShiDianMaHuaSheBeiNumber + c.jiDianDianMaHuaNumber), 0) AS dianmahuaQuantity
+        FROM mro_xianduan x
+                 INNER JOIN mro_chezhan c on x.xid = c.xd_cz_id
+                 LEFT OUTER JOIN mro_line_technology_status_station ltss on c.cid = ltss.cid
+        WHERE x.xid = #{xid,jdbcType=INTEGER}
+    </select>
+
 </mapper>

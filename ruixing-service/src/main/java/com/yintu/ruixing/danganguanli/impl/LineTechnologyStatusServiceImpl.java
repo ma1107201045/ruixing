@@ -72,6 +72,16 @@ public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusServ
     }
 
     @Override
+    public Map<String, Object> findRailwaysBureauStatistics(Integer tid) {
+        return lineTechnologyStatusDao.selectRailwaysBureauStatistics(tid);
+    }
+
+    @Override
+    public Map<String, Object> findSignalDepotStatistics(Integer did) {
+        return lineTechnologyStatusDao.selectSignalDepotStatistics(did);
+    }
+
+    @Override
     public Map<String, Object> findLineStatistics(Integer xid) {
         return lineTechnologyStatusDao.selectLineStatistics(xid);
     }
@@ -93,10 +103,7 @@ public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusServ
         JSONObject jo = (JSONObject) JSONObject.toJSON(lineTechnologyStatusEntityWithBLOBs.get(0));
         Map<String, Object> map = this.findLineStatistics(xid);
         jo.putAll(map);
-        XianDuanEntity xianDuanEntity = xianDuanService.findXianDuanById(xid.longValue());
-        jo.put("xdName", xianDuanEntity.getXdName());
-        jo.put("runSituation", xianDuanEntity.getXdMiaoShu());
-        jo.put("lengthMileage", 0);
+        jo.put("lengthMileage", jo.get("lengthMileage") == null ? 0 : jo.get("lengthMileage"));
         return jo;
     }
 }

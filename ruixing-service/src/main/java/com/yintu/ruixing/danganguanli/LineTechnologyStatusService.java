@@ -18,6 +18,11 @@ public interface LineTechnologyStatusService extends BaseService<LineTechnologyS
 
     List<LineTechnologyStatusEntityWithBLOBs> findByExample(Integer xid);
 
+
+    Map<String, Object> findRailwaysBureauStatistics(Integer tid);
+
+    Map<String, Object> findSignalDepotStatistics(Integer did);
+
     Map<String, Object> findLineStatistics(Integer xid);
 
     /**
