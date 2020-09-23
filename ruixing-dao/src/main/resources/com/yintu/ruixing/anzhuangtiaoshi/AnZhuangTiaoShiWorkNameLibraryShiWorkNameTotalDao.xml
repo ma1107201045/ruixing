@@ -13,13 +13,32 @@
       <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall" />
     </association>
     <association property="anZhuangTiaoShiWorkNameLibraryEntity" javaType="AnZhuangTiaoShiWorkNameLibraryEntity">
-      <id column="id" jdbcType="INTEGER" property="id" />
+      <id column="lid" jdbcType="INTEGER" property="id" />
       <result column="workname" jdbcType="VARCHAR" property="workname" />
     </association>
   </resultMap>
   <sql id="Base_Column_List">
     id, wntid, wnlid, work_state, yuliu1, yuliu2
   </sql>
+
+  <!--根据wntid 和wnlid  查询对应的作业状态-->
+  <select id="findWorkStateByIDS" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    work_state
+    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+    where wntid = #{worksid,jdbcType=INTEGER}
+    and wnlid = #{wnlid,jdbcType=INTEGER}
+  </select>
+
+
+  <!--根据wnlid  查询对应的作业项id集合-->
+  <select id="findAllwnlidByWorksid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    wnlid
+    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+    where wntid = #{worksid,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -86,6 +105,7 @@
         aww.id,
         awt.worknamesall,
         awl.workname,
+        awl.id lid,
         aww.work_state
     FROM
         mro_anzhuangtiaoshi_worknametotal awt,

@@ -56,4 +56,11 @@ public class AnZhuangTiaoShiWorkNameLibraryController {
         List<AnZhuangTiaoShiWorkNameLibraryEntity>workNameLibraryEntities=anZhuangTiaoShiWorkNameLibraryService.findAllWorkName();
         return ResponseDataUtil.ok("查询所有作业项成功",workNameLibraryEntities);
     }
+
+    //根据作业版本id  查询对应的作业项
+    @GetMapping("/findAllWorksById/{id}")
+    public Map<String,Object>findAllWorksById(@PathVariable Integer id){
+        List<AnZhuangTiaoShiWorkNameLibraryEntity>workNameLibraryEntityList=anZhuangTiaoShiWorkNameLibraryService.findAllWorksById(id);
+        return ResponseDataUtil.ok("查询作业项成功",workNameLibraryEntityList);
+    }
 }

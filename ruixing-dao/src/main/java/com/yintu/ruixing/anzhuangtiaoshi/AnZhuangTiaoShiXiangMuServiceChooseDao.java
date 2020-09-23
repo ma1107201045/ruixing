@@ -37,4 +37,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     Integer findTitleTotal(@Param("serid")Integer serid,@Param("id") Integer id);
 
     Integer findChooseTotal(@Param("choid") Integer choid,@Param("id") Integer id);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findCheZhanByXDid(Integer id);
 }

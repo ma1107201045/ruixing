@@ -59,8 +59,8 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
 
     @Override
     public List<MessageEntity> findXiaoXi(Integer senderid) {
-        Integer type=3;
-        return messageDao.findXiaoXi(senderid,type);
+        Integer type = 3;
+        return messageDao.findXiaoXi(senderid, type);
     }
 
     @Override
@@ -169,8 +169,6 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findXianDuanDataByLeiXing(Integer leiXingId, Integer page, Integer size) {
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanDataByLeiXing(leiXingId);
-
-
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
             List<AnZhuangTiaoShiXiangMuServiceStatusEntity> titleList = new ArrayList<>();
             Integer id = xiangMuEntity.getId();//线段id
@@ -179,32 +177,33 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
             xiangMuEntity.setCheZhanTotal(chezhantotal);
             //查询属性的完成和到货个数
             List<Integer> serId = anZhuangTiaoShiXiangMuServiceChooseDao.findAllSeridByXDid(id);
-
-            for (Integer serid : serId) {//5 9 12 13
-                List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
-                List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
-                if (chooseEntity.size()==0){
-                    Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
-                    AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntityy  = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
-                    xiangMuServiceStatusEntityy.setTitleTotal(total);
-                    titleList.add(xiangMuServiceStatusEntityy);
-                }
-                if (chooseEntity.size()!=0){
-                    for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity statusChooseEntity : chooseEntity) {
-                        AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity =null;
-                        System.out.println("123"+statusChooseEntity);
-                        Integer chooseid = statusChooseEntity.getId();
-                        Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findChooseTotal(chooseid, id);
-                        Integer sid = statusChooseEntity.getSid();
-                        statusChooseEntity.setChooseTotal(total);
-                         xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(sid);
-                        chooseList.add(statusChooseEntity);
-                        xiangMuServiceStatusEntity.setList(chooseList);
+            if (serId.size() > 1) {
+                for (Integer serid : serId) {//5 9 12
+                    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseList = new ArrayList<>();
+                    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
+                    if (chooseEntity.size() == 0) {
+                        Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findTitleTotal(serid, id);
+                        AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntityy = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(serid);
+                        xiangMuServiceStatusEntityy.setTitleTotal(total);
+                        titleList.add(xiangMuServiceStatusEntityy);
+                    }
+                    if (chooseEntity.size() != 0) {
+                        AnZhuangTiaoShiXiangMuServiceStatusEntity xiangMuServiceStatusEntity = null;
+                        for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity statusChooseEntity : chooseEntity) {
+                            System.out.println("123" + statusChooseEntity);
+                            Integer chooseid = statusChooseEntity.getId();
+                            Integer total = anZhuangTiaoShiXiangMuServiceChooseDao.findChooseTotal(chooseid, id);
+                            Integer sid = statusChooseEntity.getSid();
+                            statusChooseEntity.setChooseTotal(total);
+                            xiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(sid);
+                            chooseList.add(statusChooseEntity);
+                            xiangMuServiceStatusEntity.setList(chooseList);
+                        }
                         titleList.add(xiangMuServiceStatusEntity);
                     }
                     xiangMuEntity.setTitlelist(titleList);
+                    System.out.println("cccccccc" + xiangMuEntity);
                 }
-                System.out.println("cccccccc"+xiangMuEntity);
             }
         }
         return xiangMuEntities;
@@ -248,7 +247,6 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
             xiangMuEntity.setKaiTongTotal(kaitongtotal);*/
 
 
-
     @Override
     public AnZhuangTiaoShiFileEntity findById(Integer id) {
         return anZhuangTiaoShiFileDao.selectByPrimaryKey(id);
@@ -271,7 +269,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 //第二级
                 TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                 Map<String, Object> map = new HashMap();
-                Integer id = zhuangTiaoShiXiangMuEntity.getId()+1568;
+                Integer id = zhuangTiaoShiXiangMuEntity.getId() + 1568;
                 treeNodeUtil1.setValue(id.toString());
                 treeNodeUtil1.setId((long) zhuangTiaoShiXiangMuEntity.getId());
                 treeNodeUtil1.setLabel(zhuangTiaoShiXiangMuEntity.getXdName());
@@ -280,8 +278,8 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 treeNodeUtilss.add(treeNodeUtil1);
                 treeNodeUtil.setChildren(treeNodeUtilss);
                 //第三级
-                Integer idd=id+2365;
-                Integer iddd=id+1457;
+                Integer idd = id + 2365;
+                Integer iddd = id + 1457;
                 List<TreeNodeUtil> treeNodeUtilss2 = new ArrayList<>();
                 List<TreeNodeUtil> treeNodeUtilss3 = new ArrayList<>();
                 TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
