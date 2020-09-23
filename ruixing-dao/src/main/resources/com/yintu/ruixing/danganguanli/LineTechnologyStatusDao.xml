@@ -298,7 +298,7 @@
     </select>
 
     <select id="selectLineStatistics" resultType="java.util.Map">
-        SELECT IFNULL(x.xd_name, '')                                                         AS dwnName,
+        SELECT IFNULL(x.xd_name, '')                                                         AS xdName,
                IFNULL(SUM(ltss.lenght), 0)                                                   AS lengthMileage,
                IFNULL(COUNT(c.cid), 0)                                                       AS stationQuantity,
                IFNULL(x.xd_miaoshu, '')                                                      AS runSituation,
