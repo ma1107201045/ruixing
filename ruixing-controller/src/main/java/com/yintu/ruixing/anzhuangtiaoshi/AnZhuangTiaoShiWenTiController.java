@@ -78,7 +78,8 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
     //根据问题id  查询对应的数据
     @GetMapping("/findWenTiById/{id}")
     public Map<String, Object> findWenTiById(@PathVariable Integer id) {
-        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiService.findWenTiById(id);
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiService.findWenTiById(id,receiverid);
         return ResponseDataUtil.ok("查询问题数据成功", wenTiEntity);
     }
 

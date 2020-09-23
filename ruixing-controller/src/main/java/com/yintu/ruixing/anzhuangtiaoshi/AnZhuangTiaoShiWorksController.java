@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -68,10 +69,26 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
 
     //对车站下的作业项 进行编辑
     @PostMapping("/addWorksDatas")
-    public Map<String, Object> addWorksDatas(AnZhuangTiaoShiWorksDingEntity anZhuangTiaoShiWorksDingEntity) {
-        anZhuangTiaoShiWorksService.addWorksDatas(anZhuangTiaoShiWorksDingEntity);
+    public Map<String, Object> addWorksDatas(AnZhuangTiaoShiWorksDingEntity anZhuangTiaoShiWorksDingEntity, Integer[] wnlIds) {
+        String username = this.getLoginUser().getTrueName();
+        for (Integer wnlid : wnlIds) {
+            Integer cid = anZhuangTiaoShiWorksDingEntity.getCid();
+            Integer wntid = anZhuangTiaoShiWorksDingEntity.getWntid();
+            AnZhuangTiaoShiWorksDingEntity worksDingEntity = anZhuangTiaoShiWorksService.findOneWork(cid, wntid, wnlid);
+            if (worksDingEntity != null) {
+                Integer id = worksDingEntity.getId();
+                anZhuangTiaoShiWorksService.deleteById(id);
+            }
+            if (worksDingEntity == null) {
+                anZhuangTiaoShiWorksDingEntity.setWnlid(wnlid);
+                anZhuangTiaoShiWorksDingEntity.setWorkerName(username);
+                anZhuangTiaoShiWorksDingEntity.setWorkTime(new Date());
+                anZhuangTiaoShiWorksService.addWorksDatas(anZhuangTiaoShiWorksDingEntity);
+            }
+        }
         return ResponseDataUtil.ok("编辑成功");
     }
+
 
     //自动显示登录人的名字
     @GetMapping("/findWorker")
@@ -98,6 +115,65 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
 
     //////////////////////////文件////////////////////////////////////
 
+
+    //根据 线段id  查询对应的所有的输入文件
+    @GetMapping("/findShuRuFileByXid/{id}")
+    public Map<String, Object> findShuRuFileByXid(@PathVariable Integer id, Integer page, Integer size) {
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList = anZhuangTiaoShiWorksService.findXMByid(id);
+        if (fuFileAuditorEntityList.size() == 0) {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findShuRuFileByid(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        } else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findShuRuFileByidd(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
+        }
+    }
+
+    //根据 线段id  查询对应的所有的输出文件
+    @GetMapping("/findShuChuFileByXid/{id}")
+    public Map<String, Object> findShuChuFileByXid(@PathVariable Integer id, Integer page, Integer size) {
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList = anZhuangTiaoShiWorksService.findXMByid(id);
+        if (fuFileAuditorEntityList.size() == 0) {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findShuChuFileByid(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        } else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findShuChuFileeByidd(id, page, size, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }
+    }
+
+    //根据文件名 查询对应的文件
+    @GetMapping("/findFileByNmae")
+    public Map<String, Object> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename,Integer id) {
+        List<AnZhuangTiaoShiObjectAuditorEntity> fuFileAuditorEntityList = anZhuangTiaoShiWorksService.findXMByid(id);
+        if (fuFileAuditorEntityList.size() == 0) {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findsomeFileByNmae(page, size, xdid, filetype, filename, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        } else {
+            PageHelper.startPage(page, size);
+            Integer uid = this.getLoginUser().getId().intValue();
+            List<AnZhuangTiaoShiFileEntity> fileEntityList = anZhuangTiaoShiWorksService.findsomeFileByNmaee(page, size, xdid, filetype, filename, uid);
+            PageInfo<AnZhuangTiaoShiFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
+        }
+    }
+
+    //////////////////旧文件/////////////////////////
     //文件上传
     @PostMapping("/uploads")
     @ResponseBody
@@ -110,37 +186,64 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
         return ResponseDataUtil.ok("上传文件成功", jo);
     }
 
-    //根据 线段id  查询对应的所有的输入文件
+   /* //根据 线段id  查询对应的所有的输入文件
     @GetMapping("/findShuRuFileByXid/{id}")
     public Map<String, Object> findShuRuFileByXid(@PathVariable Integer id, Integer page, Integer size) {
         PageHelper.startPage(page, size);
         List<AnZhuangTiaoShiWorksFileEntity> fileEntities = anZhuangTiaoShiWorksService.findShuRuFileByXid(id, page, size);
         PageInfo<AnZhuangTiaoShiWorksFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntities);
         return ResponseDataUtil.ok("查询输入文件成功", fileEntityPageInfo);
-    }
+    }*/
 
-    //根据 线段id  查询对应的所有的输出文件
+   /* //根据 线段id  查询对应的所有的输出文件
     @GetMapping("/findShuChuFileByXid/{id}")
     public Map<String, Object> findShuChuFileByXid(@PathVariable Integer id, Integer page, Integer size) {
         PageHelper.startPage(page, size);
         List<AnZhuangTiaoShiWorksFileEntity> fileEntities = anZhuangTiaoShiWorksService.findShuChuFileByXid(id, page, size);
         PageInfo<AnZhuangTiaoShiWorksFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntities);
         return ResponseDataUtil.ok("查询输出文件成功", fileEntityPageInfo);
-    }
+    }*/
 
-    //新增文件
+  /*  //新增文件
     @PostMapping("/addFile")
     public Map<String, Object> addFile(AnZhuangTiaoShiWorksFileEntity anZhuangTiaoShiWorksFileEntity) {
         anZhuangTiaoShiWorksService.addFile(anZhuangTiaoShiWorksFileEntity);
         return ResponseDataUtil.ok("添加文件数据成功");
+    }*/
+  //添加线段的文件
+  @PostMapping("/addFile")
+  public Map<String,Object>addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity,Integer[] uids){
+      String username = this.getLoginUser().getTrueName();
+      Integer senderid = this.getLoginUser().getId().intValue();
+      anZhuangTiaoShiWorksService.addFile(anZhuangTiaoShiFileEntity,username,senderid,uids);
+      return ResponseDataUtil.ok("新增文件成功");
+  }
+
+    //根据文件id  编辑对应的文件
+    @PutMapping("/editFileById/{id}")
+    public Map<String,Object>editFileById(@PathVariable Integer id,Integer[] uids,AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity){
+        String username = this.getLoginUser().getTrueName();
+        Integer userid = this.getLoginUser().getId().intValue();
+        anZhuangTiaoShiWorksService.editFileById(anZhuangTiaoShiFileEntity,id,uids,userid,username);
+        return ResponseDataUtil.ok("编辑文件成功");
     }
 
-    //根据文件id  编辑对应的文件数据
+
+    //根据文件id 编辑审核过程
+    @PutMapping("/editAuditorByWJId/{id}")
+    public Map<String, Object> editAuditorByWJId(@PathVariable Integer id, AnZhuangTiaoShiObjectAuditorEntity anZhuangTiaoShiObjectAuditorEntity, Integer senderId) {
+        String username = this.getLoginUser().getTrueName();
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        anZhuangTiaoShiWorksService.editAuditorByWJId(anZhuangTiaoShiObjectAuditorEntity, id, username, receiverid,senderId);
+        return ResponseDataUtil.ok("文件审核成功");
+    }
+
+    /*//根据文件id  编辑对应的文件数据
     @PutMapping("/editFileById/{id}")
     public Map<String, Object> editFileById(@PathVariable Integer id, AnZhuangTiaoShiWorksFileEntity anZhuangTiaoShiWorksFileEntity) {
         anZhuangTiaoShiWorksService.editFileById(anZhuangTiaoShiWorksFileEntity);
         return ResponseDataUtil.ok("编辑文件数据成功");
-    }
+    }*/
 
     //根据id 下载文件
     @GetMapping("/downLoads/{id}")
@@ -159,14 +262,14 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
         }
     }
 
-    //根据文件名 查询对应的文件
+    /*//根据文件名 查询对应的文件
     @GetMapping("/findFileByNmae")
     public Map<String, Object> findFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename) {
         PageHelper.startPage(page, size);
         List<AnZhuangTiaoShiWorksFileEntity> fileEntities = anZhuangTiaoShiWorksService.findFileByNmae(page, size, xdid, filetype, filename);
         PageInfo<AnZhuangTiaoShiWorksFileEntity> fileEntityPageInfo = new PageInfo<>(fileEntities);
         return ResponseDataUtil.ok("查询成功", fileEntityPageInfo);
-    }
+    }*/
 
     //根据文件id  批量删除 或者单个删除文件
     @DeleteMapping("/deletFileByIds/{ids}")

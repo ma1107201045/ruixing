@@ -37,7 +37,7 @@
         <include refid="Base_Column_List"/>
         from mro_anzhuangtiaoshi_wenti
         where wenTiIsOver=0
-        group by id desc
+        order by id desc
     </select>
 
     <!--初始化页面   或者根据线段名 或问题描述查询数据-->
@@ -74,7 +74,7 @@
             and
             wenti_miaoshu like concat('%',#{wenTiMiaoShu},'%')
         </if>
-        ORDER BY wt.id
+        ORDER BY wt.id desc
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -103,8 +103,17 @@
     wt.id = wa.object_id
     AND objectType = 1
     and  wt.id = #{id,jdbcType=INTEGER}
+    and  wa.auditor_id=#{receiverid}
     group by wt.id
   </select>
+
+    <!--根据id 查询数据-->
+    <select id="findOneWentById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_wenti
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
     <!--根据id 删除数据-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

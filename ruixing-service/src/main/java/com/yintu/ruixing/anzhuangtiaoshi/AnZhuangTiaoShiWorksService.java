@@ -30,9 +30,9 @@ public interface AnZhuangTiaoShiWorksService {
 
     List<AnZhuangTiaoShiWorksFileEntity> findShuChuFileByXid(Integer id, Integer page, Integer size);
 
-    void addFile(AnZhuangTiaoShiWorksFileEntity anZhuangTiaoShiWorksFileEntity);
+    void addFile(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity, String username,Integer senderid,Integer[] uids);
 
-    void editFileById(AnZhuangTiaoShiWorksFileEntity anZhuangTiaoShiWorksFileEntity);
+    void editFileById(AnZhuangTiaoShiFileEntity anZhuangTiaoShiFileEntity, Integer id, Integer[] uids, Integer userid, String username);
 
     AnZhuangTiaoShiWorksFileEntity findById(Integer id);
 
@@ -41,4 +41,26 @@ public interface AnZhuangTiaoShiWorksService {
     void deletFileByIds(Integer[] ids);
 
     JSONObject findAllCheZhanDatasByXDid(Integer id, Integer worksid);
+
+    AnZhuangTiaoShiWorksDingEntity findOneWork(Integer cid, Integer wntid, Integer wnlId);
+
+    void deleteById(Integer id);
+
+    List<AnZhuangTiaoShiObjectAuditorEntity> findXMByid(Integer id);
+
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFileByid(Integer id, Integer page, Integer size, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFileByidd(Integer id, Integer page, Integer size, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFileByid(Integer id, Integer page, Integer size, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFileeByidd(Integer id, Integer page, Integer size, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findsomeFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename, Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findsomeFileByNmaee(Integer page, Integer size, Integer xdid, Integer filetype, String filename, Integer uid);
+
+    void editAuditorByWJId(AnZhuangTiaoShiObjectAuditorEntity anZhuangTiaoShiObjectAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
+
 }

@@ -12,7 +12,7 @@ public interface AnZhuangTiaoShiWenTiDao {
 
 
     ///////////////////////////////////////////////////////
-    AnZhuangTiaoShiWenTiEntity selectByPrimaryKey(Integer id);
+    AnZhuangTiaoShiWenTiEntity selectByPrimaryKey(@Param("id")Integer id,@Param("receiverid") Integer receiverid);
 
     int deleteByPrimaryKey(Integer id);
 
@@ -26,4 +26,5 @@ public interface AnZhuangTiaoShiWenTiDao {
 
     List<AnZhuangTiaoShiWenTiEntity> findAllNotDoWellWenTi();
 
+    AnZhuangTiaoShiWenTiEntity findOneWentById(Integer id);
 }

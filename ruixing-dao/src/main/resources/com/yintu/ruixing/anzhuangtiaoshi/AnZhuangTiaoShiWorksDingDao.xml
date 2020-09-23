@@ -32,6 +32,15 @@
     id, cid, wntid, wnlid, worker_name, work_state, work_time, yuliu1, yuliu2
   </sql>
 
+    <!--根据ids   查询对应的数据-->
+    <select id="findOneWork" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_works_doing
+        where cid = #{cid,jdbcType=INTEGER}
+        and wntid = #{wntid,jdbcType=INTEGER}
+        and wnlid = #{wnlId,jdbcType=INTEGER}
+    </select>
 
     <!--g根据ids   查询对应的数据-->
     <select id="findDataByIDS" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -134,6 +143,8 @@
         from mro_anzhuangtiaoshi_works_doing
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <!--根据id  删除数据-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_anzhuangtiaoshi_works_doing
     where id = #{id,jdbcType=INTEGER}

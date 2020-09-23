@@ -7,8 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface AnZhuangTiaoShiWorksDingDao {
-    int deleteByPrimaryKey(Integer id);
-
     int insert(AnZhuangTiaoShiWorksDingEntity record);
 
     AnZhuangTiaoShiWorksDingEntity selectByPrimaryKey(Integer id);
@@ -18,7 +16,9 @@ public interface AnZhuangTiaoShiWorksDingDao {
     int updateByPrimaryKey(AnZhuangTiaoShiWorksDingEntity record);
 
 
+
     ////////////////////////////////////////////////////////
+    int deleteByPrimaryKey(Integer id);
 
     int insertSelective(AnZhuangTiaoShiWorksDingEntity record);
 
@@ -29,4 +29,10 @@ public interface AnZhuangTiaoShiWorksDingDao {
     AnZhuangTiaoShiWorksDingEntity findDataByIDS(@Param("czid") Integer czid,
                                                  @Param("worksid") Integer worksid,
                                                  @Param("wnlid") Integer wnlid);
+
+    AnZhuangTiaoShiWorksDingEntity findOneWork(@Param("cid")Integer cid,
+                                               @Param("wntid") Integer wntid,
+                                               @Param("wnlId") Integer wnlId);
+
+
 }
