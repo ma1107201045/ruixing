@@ -28,7 +28,8 @@
         from mro_line_technology_status_station
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineTechnologyStatusStationEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineTechnologyStatusStationEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_line_technology_status_station (id, create_by, create_time,
                                                         modified_by, modified_time, skill_shaft_count,
                                                         maintenance_terminal, open_date, lenght,
@@ -38,7 +39,8 @@
                 #{maintenanceTerminal,jdbcType=VARCHAR}, #{openDate,jdbcType=DATE}, #{lenght,jdbcType=VARCHAR},
                 #{cid,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineTechnologyStatusStationEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineTechnologyStatusStationEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_line_technology_status_station
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -161,11 +163,12 @@
     </select>
 
     <select id="selectLineStatistics" resultType="java.util.Map">
-        SELECT SUM(c.tongXinBianMaGuiDaoNumber + c.tongXinBianMaZhanNeiOneGuiDaoNumber +
+        SELECT
+        IFNULL(SUM(c.tongXinBianMaGuiDaoNumber + c.tongXinBianMaZhanNeiOneGuiDaoNumber +
         c.jiDianOneToOneGuiDaoNumber + c.jiDianNToOneGuiDaoNumber + c.jiDianNToOneSheBeiNumber +
         c.tongXinBianMaDianMaHuaSheBeiNumber + c.jiDianNToOneDianMaHuaSheBeiNumber +
-        c.jiDianJiaShiGuiDaoNumber) AS totalTrackQuduanQuantity,
-        SUM(c.jiDianJiaShiDianMaHuaSheBeiNumber + c.jiDianDianMaHuaNumber) AS dianmahuaQuantity
+        c.jiDianJiaShiGuiDaoNumber) ,0)AS totalTrackQuduanQuantity,
+        IFNULL(SUM(c.jiDianJiaShiDianMaHuaSheBeiNumber + c.jiDianDianMaHuaNumber) ,0) AS dianmahuaQuantity
         FROM mro_chezhan c
         <where>
             <if test="cid!=null">
