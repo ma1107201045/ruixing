@@ -1,5 +1,6 @@
 package com.yintu.ruixing.danganguanli;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.RequestWrapper;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -149,10 +153,15 @@ public class CustomerController extends SessionController {
     }
 
 
-//    @GetMapping("/export/{ids}")
-//    public void exportFile(@PathVariable Long[] ids, HttpServletResponse response) throws IOException {
-//        return;
-//    }
+    @GetMapping("/export/{ids}")
+    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "顾客档案信息列表-导出" + DateUtil.now() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        customerService.exportFile(response.getOutputStream(), ids);
+    }
 
 
 }
