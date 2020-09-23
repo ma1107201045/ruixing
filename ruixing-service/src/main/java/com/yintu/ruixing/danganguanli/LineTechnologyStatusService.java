@@ -13,6 +13,9 @@ import java.util.Map;
  */
 public interface LineTechnologyStatusService extends BaseService<LineTechnologyStatusEntityWithBLOBs, Integer> {
 
+
+    void edit(LineTechnologyStatusEntityWithBLOBs lineTechnologyStatusEntityWithBLOBs, Integer[] xiangmutypeIds);
+
     List<LineTechnologyStatusEntityWithBLOBs> findByExample(Integer xid);
 
     Map<String, Object> findLineStatistics(Integer xid);

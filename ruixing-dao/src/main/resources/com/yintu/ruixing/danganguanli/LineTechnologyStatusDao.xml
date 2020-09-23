@@ -8,7 +8,6 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="management_unit" jdbcType="VARCHAR" property="managementUnit"/>
-        <result column="device_type" jdbcType="VARCHAR" property="deviceType"/>
         <result column="skill_shaft_count" jdbcType="VARCHAR" property="skillShaftCount"/>
         <result column="safety_information" jdbcType="VARCHAR" property="safetyInformation"/>
         <result column="technology_status" jdbcType="VARCHAR" property="technologyStatus"/>
@@ -22,7 +21,7 @@
         <result column="reorganize" jdbcType="LONGVARCHAR" property="reorganize"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, management_unit, device_type,
+        id, create_by, create_time, modified_by, modified_time, management_unit,
     skill_shaft_count, safety_information, technology_status, open_date, guarantee_period, 
     xid
     </sql>
@@ -45,13 +44,13 @@
     <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineTechnologyStatusEntityWithBLOBs"
             useGeneratedKeys="true" keyProperty="id">
         insert into mro_line_technology_status (id, create_by, create_time,
-                                                modified_by, modified_time, management_unit,
-                                                device_type, skill_shaft_count, safety_information,
+                                                modified_by, modified_time, management_unit
+            , skill_shaft_count, safety_information,
                                                 technology_status, open_date, guarantee_period,
                                                 xid, guarantee_message, reorganize)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{managementUnit,jdbcType=VARCHAR},
-                #{deviceType,jdbcType=VARCHAR}, #{skillShaftCount,jdbcType=VARCHAR},
+                #{skillShaftCount,jdbcType=VARCHAR},
                 #{safetyInformation,jdbcType=VARCHAR},
                 #{technologyStatus,jdbcType=VARCHAR}, #{openDate,jdbcType=DATE}, #{guaranteePeriod,jdbcType=DATE},
                 #{xid,jdbcType=INTEGER}, #{guaranteeMessage,jdbcType=LONGVARCHAR}, #{reorganize,jdbcType=LONGVARCHAR})
@@ -77,9 +76,6 @@
             </if>
             <if test="managementUnit != null">
                 management_unit,
-            </if>
-            <if test="deviceType != null">
-                device_type,
             </if>
             <if test="skillShaftCount != null">
                 skill_shaft_count,
@@ -124,9 +120,6 @@
             </if>
             <if test="managementUnit != null">
                 #{managementUnit,jdbcType=VARCHAR},
-            </if>
-            <if test="deviceType != null">
-                #{deviceType,jdbcType=VARCHAR},
             </if>
             <if test="skillShaftCount != null">
                 #{skillShaftCount,jdbcType=VARCHAR},
@@ -173,9 +166,6 @@
             <if test="managementUnit != null">
                 management_unit = #{managementUnit,jdbcType=VARCHAR},
             </if>
-            <if test="deviceType != null">
-                device_type = #{deviceType,jdbcType=VARCHAR},
-            </if>
             <if test="skillShaftCount != null">
                 skill_shaft_count = #{skillShaftCount,jdbcType=VARCHAR},
             </if>
@@ -211,7 +201,6 @@
             modified_by        = #{modifiedBy,jdbcType=VARCHAR},
             modified_time      = #{modifiedTime,jdbcType=TIMESTAMP},
             management_unit    = #{managementUnit,jdbcType=VARCHAR},
-            device_type        = #{deviceType,jdbcType=VARCHAR},
             skill_shaft_count  = #{skillShaftCount,jdbcType=VARCHAR},
             safety_information = #{safetyInformation,jdbcType=VARCHAR},
             technology_status  = #{technologyStatus,jdbcType=VARCHAR},
@@ -229,7 +218,6 @@
             modified_by        = #{modifiedBy,jdbcType=VARCHAR},
             modified_time      = #{modifiedTime,jdbcType=TIMESTAMP},
             management_unit    = #{managementUnit,jdbcType=VARCHAR},
-            device_type        = #{deviceType,jdbcType=VARCHAR},
             skill_shaft_count  = #{skillShaftCount,jdbcType=VARCHAR},
             safety_information = #{safetyInformation,jdbcType=VARCHAR},
             technology_status  = #{technologyStatus,jdbcType=VARCHAR},
@@ -239,13 +227,49 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectByExample" resultMap="ResultMapWithBLOBs">
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.LineTechnologyStatusEntityWithBLOBs">
+        <id column="lts_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="management_unit" jdbcType="VARCHAR" property="managementUnit"/>
+        <result column="skill_shaft_count" jdbcType="VARCHAR" property="skillShaftCount"/>
+        <result column="safety_information" jdbcType="VARCHAR" property="safetyInformation"/>
+        <result column="technology_status" jdbcType="VARCHAR" property="technologyStatus"/>
+        <result column="open_date" jdbcType="DATE" property="openDate"/>
+        <result column="guarantee_period" jdbcType="DATE" property="guaranteePeriod"/>
+        <result column="xid" jdbcType="INTEGER" property="xid"/>
+        <result column="guarantee_message" jdbcType="LONGVARCHAR" property="guaranteeMessage"/>
+        <result column="reorganize" jdbcType="LONGVARCHAR" property="reorganize"/>
+        <collection property="anZhuangTiaoShiCheZhanXiangMuTypeEntities"
+                    ofType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity">
+            <id column="ax_id" jdbcType="INTEGER" property="id"/>
+            <result column="xiangmuleixing" jdbcType="VARCHAR" property="xiangmuleixing"/>
+        </collection>
+    </resultMap>
+    <sql id="Much_Column_List">
+        lts.id as lts_id, lts.create_by,lts. create_time,lts. modified_by, lts.modified_time,lts. management_unit,lts.skill_shaft_count, lts.safety_information, lts.technology_status, lts.open_date, lts.guarantee_period,lts.xid,lts.guarantee_message, lts.reorganize,
+        ax.id as ax_id,ax.xiangmuleixing
+    </sql>
+    <sql id="Much_Table_List">
+        mro_line_technology_status lts
+             left outer join mro_line_technology_status_xiangmutype ltsx on lts.id=ltsx.line_technology_status_id
+             left outer join mro_anzhuangtiaoshi_xiangmutype ax on ax.id=ltsx.xiangmutype_id
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="xid !=null">
+                lts.xid= #{xid,jdbcType=INTEGER}
+            </if>
+        </where>
+    </sql>
+    <select id="selectByExample" resultMap="MuchResultMap">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        from mro_line_technology_status
-        where xid = #{xid,jdbcType=INTEGER}
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
     </select>
 
     <select id="selectLineStatistics" resultType="java.util.Map">
@@ -255,7 +279,7 @@
                    c.tongXinBianMaDianMaHuaSheBeiNumber + c.jiDianNToOneDianMaHuaSheBeiNumber +
                    c.jiDianJiaShiGuiDaoNumber)                                    AS totalTrackQuduanQuantity,
                SUM(c.jiDianJiaShiDianMaHuaSheBeiNumber + c.jiDianDianMaHuaNumber) AS dianmahuaQuantity
-        FROM  mro_chezhan c
+        FROM mro_chezhan c
         WHERE c.xd_cz_id = #{xid,jdbcType=INTEGER}
     </select>
 </mapper>

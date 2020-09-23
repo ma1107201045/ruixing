@@ -1,14 +1,19 @@
 package com.yintu.ruixing.danganguanli;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeService;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author mlf
@@ -20,12 +25,14 @@ import java.util.Map;
 public class LineTechnologyStatusController extends SessionController {
     @Autowired
     private LineTechnologyStatusService lineTechnologyStatusService;
+    @Autowired
+    private AnZhuangTiaoShiCheZhanXiangMuTypeService anZhuangTiaoShiCheZhanXiangMuTypeService;
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated LineTechnologyStatusEntityWithBLOBs lineTechnologyStatusEntityWithBLOBs) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated LineTechnologyStatusEntityWithBLOBs lineTechnologyStatusEntityWithBLOBs, Integer[] xiangmutypeIds) {
         lineTechnologyStatusEntityWithBLOBs.setModifiedBy(this.getLoginUserName());
         lineTechnologyStatusEntityWithBLOBs.setModifiedTime(new Date());
-        lineTechnologyStatusService.edit(lineTechnologyStatusEntityWithBLOBs);
+        lineTechnologyStatusService.edit(lineTechnologyStatusEntityWithBLOBs, xiangmutypeIds);
         return ResponseDataUtil.ok("修改线段技术状态信息成功");
     }
 
@@ -35,4 +42,13 @@ public class LineTechnologyStatusController extends SessionController {
         return ResponseDataUtil.ok("查询线段技术状态信息成功", jo);
     }
 
+    @GetMapping("/xiangmutypes")
+    public Map<String, Object> findXiangmuTypes() {
+        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> anZhuangTiaoShiCheZhanXiangMuTypeEntities = anZhuangTiaoShiCheZhanXiangMuTypeService.findAllXiangMuType(null, null);
+        anZhuangTiaoShiCheZhanXiangMuTypeEntities = anZhuangTiaoShiCheZhanXiangMuTypeEntities
+                .stream()
+                .sorted(Comparator.comparing(AnZhuangTiaoShiCheZhanXiangMuTypeEntity::getId).reversed())
+                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询设备类型信息列表成功", anZhuangTiaoShiCheZhanXiangMuTypeEntities);
+    }
 }

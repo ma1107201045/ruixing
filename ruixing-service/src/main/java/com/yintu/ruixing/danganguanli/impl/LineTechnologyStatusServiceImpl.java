@@ -1,18 +1,14 @@
 package com.yintu.ruixing.danganguanli.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusDao;
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusEntityWithBLOBs;
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusService;
+import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mlf
@@ -24,6 +20,8 @@ import java.util.Map;
 public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusService {
     @Autowired
     private LineTechnologyStatusDao lineTechnologyStatusDao;
+    @Autowired
+    private LineTechnologyStatusXiangemutypeService lineTechnologyStatusXiangemutypeService;
     @Autowired
     private XianDuanService xianDuanService;
 
@@ -48,6 +46,27 @@ public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusServ
     }
 
     @Override
+    public void edit(LineTechnologyStatusEntityWithBLOBs lineTechnologyStatusEntityWithBLOBs, Integer[] xiangmutypeIds) {
+        List<LineTechnologyStatusXiangemutypeEntity> lineTechnologyStatusXiangemutypeEntities = lineTechnologyStatusXiangemutypeService.findByExample(lineTechnologyStatusEntityWithBLOBs.getId());
+        for (LineTechnologyStatusXiangemutypeEntity lineTechnologyStatusXiangemutypeEntity : lineTechnologyStatusXiangemutypeEntities) {
+            lineTechnologyStatusXiangemutypeService.remove(lineTechnologyStatusXiangemutypeEntity.getId());
+        }
+        //去重
+        Set<Integer> set = new HashSet<>(Arrays.asList(xiangmutypeIds));
+        for (Integer xiangmutypeId : set) {
+            LineTechnologyStatusXiangemutypeEntity lineTechnologyStatusXiangemutypeEntity = new LineTechnologyStatusXiangemutypeEntity();
+            lineTechnologyStatusXiangemutypeEntity.setCreateBy(lineTechnologyStatusEntityWithBLOBs.getModifiedBy());
+            lineTechnologyStatusXiangemutypeEntity.setCreateTime(lineTechnologyStatusEntityWithBLOBs.getModifiedTime());
+            lineTechnologyStatusXiangemutypeEntity.setModifiedBy(lineTechnologyStatusEntityWithBLOBs.getModifiedBy());
+            lineTechnologyStatusXiangemutypeEntity.setModifiedTime(lineTechnologyStatusEntityWithBLOBs.getModifiedTime());
+            lineTechnologyStatusXiangemutypeEntity.setLineTechnologyStatusId(lineTechnologyStatusEntityWithBLOBs.getId());
+            lineTechnologyStatusXiangemutypeEntity.setXiangmutypeId(xiangmutypeId);
+            lineTechnologyStatusXiangemutypeService.add(lineTechnologyStatusXiangemutypeEntity);
+        }
+        this.edit(lineTechnologyStatusEntityWithBLOBs);
+    }
+
+    @Override
     public List<LineTechnologyStatusEntityWithBLOBs> findByExample(Integer xid) {
         return lineTechnologyStatusDao.selectByExample(xid);
     }
@@ -60,7 +79,6 @@ public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusServ
 
     @Override
     public JSONObject findLineInfoAndStatistics(Integer xid, String username) {
-        JSONObject jo = null;
         List<LineTechnologyStatusEntityWithBLOBs> lineTechnologyStatusEntityWithBLOBs = this.findByExample(xid);
         if (lineTechnologyStatusEntityWithBLOBs.isEmpty()) {
             LineTechnologyStatusEntityWithBLOBs entity = new LineTechnologyStatusEntityWithBLOBs();
@@ -72,11 +90,12 @@ public class LineTechnologyStatusServiceImpl implements LineTechnologyStatusServ
             this.add(entity);
             lineTechnologyStatusEntityWithBLOBs.add(entity);
         }
-        jo = (JSONObject) JSONObject.toJSON(lineTechnologyStatusEntityWithBLOBs.get(0));
+        JSONObject jo = (JSONObject) JSONObject.toJSON(lineTechnologyStatusEntityWithBLOBs.get(0));
         Map<String, Object> map = this.findLineStatistics(xid);
         jo.putAll(map);
         XianDuanEntity xianDuanEntity = xianDuanService.findXianDuanById(xid.longValue());
         jo.put("xdName", xianDuanEntity.getXdName());
+        jo.put("runSituation", xianDuanEntity.getXdMiaoShu());
         jo.put("lengthMileage", 0);
         return jo;
     }

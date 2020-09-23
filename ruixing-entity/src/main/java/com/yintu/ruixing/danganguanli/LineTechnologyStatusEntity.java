@@ -1,11 +1,14 @@
 package com.yintu.ruixing.danganguanli;
 
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
 
 @Data
 @NoArgsConstructor
@@ -39,5 +42,7 @@ public class LineTechnologyStatusEntity implements Serializable {
     private Date guaranteePeriod;
 
     private Integer xid;
+
+    List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> anZhuangTiaoShiCheZhanXiangMuTypeEntities;
 
 }
