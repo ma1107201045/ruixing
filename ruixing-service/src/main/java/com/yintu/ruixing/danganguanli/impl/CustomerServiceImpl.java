@@ -1,5 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
@@ -7,7 +8,6 @@ import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
-import com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -282,7 +282,20 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerEntity customerEntity = customerEntities.get(0);
             content[i][0] = customerEntity.getId().toString();
             content[i][1] = customerEntity.getCustomerTypeEntity().getName();
-//            content[i][2] = customerEntity.getCustomerDepartmentEntities()
+            StringBuilder sb = new StringBuilder();
+            List<CustomerDepartmentEntity> customerDepartmentEntities = customerEntity.getCustomerDepartmentEntities();
+            for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
+                sb.append(customerDepartmentEntity.getName()).append("\n");
+            }
+            content[i][2] = sb.toString();
+            content[i][3] = customerEntity.getCustomerDutyEntity().getName();
+            content[i][4] = customerEntity.getName();
+            content[i][5] = customerEntity.getPhone();
+            content[i][6] = customerEntity.getSpecialPlane();
+            content[i][7] = customerEntity.getEmail();
+            content[i][8] = customerEntity.getDetailedAddress();
+            content[i][9] = DateUtil.formatDateTime(customerEntity.getCreateTime());
+            content[i][10] = customerEntity.getStatus() == 1 ? "正常" : "审批中";
         }
 
         //创建HSSFWorkbook
