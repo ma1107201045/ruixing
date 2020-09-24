@@ -2,6 +2,8 @@ package com.yintu.ruixing.danganguanli;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface LineTechnologyStatusProductModelNumberDao {
     int deleteByPrimaryKey(Integer id);
@@ -15,4 +17,6 @@ public interface LineTechnologyStatusProductModelNumberDao {
     int updateByPrimaryKeySelective(LineTechnologyStatusProductModelNumberEntity record);
 
     int updateByPrimaryKey(LineTechnologyStatusProductModelNumberEntity record);
+
+    List<LineTechnologyStatusProductModelNumberEntity> selectAll();
 }

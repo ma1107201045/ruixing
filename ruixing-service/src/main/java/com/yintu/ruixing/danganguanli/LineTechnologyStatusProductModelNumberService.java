@@ -4,6 +4,8 @@ import com.yintu.ruixing.common.util.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author mlf
  * @version 1.0
@@ -13,5 +15,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface LineTechnologyStatusProductModelNumberService extends BaseService<LineTechnologyStatusProductModelNumberEntity, Integer> {
 
-
+    List<LineTechnologyStatusProductModelNumberEntity> findAll();
 }
