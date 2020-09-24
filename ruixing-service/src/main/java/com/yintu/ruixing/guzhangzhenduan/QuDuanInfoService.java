@@ -13,6 +13,15 @@ import java.util.Map;
  * @date:2020/6/3 11:52
  */
 public interface QuDuanInfoService {
+
+    /**
+     * 按照车站查询区段详情
+     *
+     * @param czId 车站id
+     * @return 区段详情
+     */
+    QuDuanInfoEntityV2 findLastBycZId(Integer czId);
+
     /**
      * 查询表是否存在
      *

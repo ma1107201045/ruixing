@@ -14,5 +14,7 @@ public interface LineTechnologyStatusStationService extends BaseService<LineTech
 
     List<LineTechnologyStatusStationEntity> findByExample(Integer cid);
 
-    Map<String, Object> findLineInfoAndStatistics(Integer cid);
+    Map<String, Object> findStationStatistics(Integer cid);
+
+    Map<String, Object> findStationInfoAndStatistics(Integer cid, String username);
 }

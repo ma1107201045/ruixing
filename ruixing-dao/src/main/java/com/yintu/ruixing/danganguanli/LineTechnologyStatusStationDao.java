@@ -21,6 +21,9 @@ public interface LineTechnologyStatusStationDao {
 
     List<LineTechnologyStatusStationEntity> selectByExample(Integer xid);
 
-    Map<String, Object> selectLineStatistics(Integer cid);
+    Map<String, Object> selectStationStatistics(Integer cid);
+
+
+    long countByStationId(Integer stationId);
 
 }

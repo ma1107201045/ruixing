@@ -546,6 +546,22 @@
     </select>
 
 
+
+
+    <!--按照车站查询一条区段详情-->
+    <select id="selectLastByCzId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName} qi right outer join mro_quduan_base qb on
+        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
+        <where>
+            <if test="czId!=null">
+                qb.cz_id=#{czId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by qi.createtime DESC limit 1
+    </select>
+
     <!--查询表是否存在-->
     <select id="isTableExist" parameterType="string" resultType="int">
         select count(*)
