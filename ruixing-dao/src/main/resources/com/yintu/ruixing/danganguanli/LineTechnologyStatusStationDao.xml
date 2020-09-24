@@ -162,7 +162,7 @@
         where cid = #{cid,jdbcType=INTEGER}
     </select>
 
-    <select id="selectLineStatistics" resultType="java.util.Map">
+    <select id="selectStationStatistics" resultType="java.util.Map">
         SELECT
         IFNULL(SUM(c.tongXinBianMaGuiDaoNumber + c.tongXinBianMaZhanNeiOneGuiDaoNumber +
         c.jiDianOneToOneGuiDaoNumber + c.jiDianNToOneGuiDaoNumber + c.jiDianNToOneSheBeiNumber +

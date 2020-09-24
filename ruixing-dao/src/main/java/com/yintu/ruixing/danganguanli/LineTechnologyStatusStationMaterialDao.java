@@ -1,7 +1,10 @@
 package com.yintu.ruixing.danganguanli;
 
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusStationMaterialEntity;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface LineTechnologyStatusStationMaterialDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +17,9 @@ public interface LineTechnologyStatusStationMaterialDao {
     int updateByPrimaryKeySelective(LineTechnologyStatusStationMaterialEntity record);
 
     int updateByPrimaryKey(LineTechnologyStatusStationMaterialEntity record);
+
+    List<LineTechnologyStatusStationMaterialEntity> selectAll();
+
+
+    long countByStationId(Integer stationId);
 }

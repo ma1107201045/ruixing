@@ -11,6 +11,7 @@ import java.util.Map;
 @Mapper
 public interface QuDuanInfoDaoV2 {
 
+    QuDuanInfoEntityV2 selectLastByCzId(Integer czId, String tableName);
 
     List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
 
@@ -46,10 +47,10 @@ public interface QuDuanInfoDaoV2 {
 
     List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(@Param("czid") Integer czid, @Param("tableName") String tableName);
 
-    List<quduanEntity> findOneQuDuanDatas(@Param("statrtime") long statrtime,@Param("endtime") long endtime,
-                                  @Param("shuxingname") String shuxingname,
-                                  @Param("quduanname")String quduanname,
-                                  @Param("qdid") Integer qdid,@Param("tableName") String tableName);
+    List<quduanEntity> findOneQuDuanDatas(@Param("statrtime") long statrtime, @Param("endtime") long endtime,
+                                          @Param("shuxingname") String shuxingname,
+                                          @Param("quduanname") String quduanname,
+                                          @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
     List<quduanEntity> findQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
                                             @Param("qdid") Integer qdid, @Param("tableName") String tableName);
@@ -61,8 +62,8 @@ public interface QuDuanInfoDaoV2 {
                                          @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
                                          @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
-    List<quduanEntity> findQuDuanDayData(@Param("statrtime") long statrtime,@Param("endtime") long endtime,
+    List<quduanEntity> findQuDuanDayData(@Param("statrtime") long statrtime, @Param("endtime") long endtime,
                                          @Param("shuxingname") String shuxingname,
-                                         @Param("quduanname")String quduanname,
-                                         @Param("qdid") Integer qdid,@Param("tableName") String tableName);
+                                         @Param("quduanname") String quduanname,
+                                         @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 }

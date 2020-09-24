@@ -27,6 +27,17 @@ public class QuDuanInfoController extends SessionController {
     @Autowired
     private QuDuanInfoService quDuanInfoService;
 
+    /**
+     * 按照车站随机取出一条区段详情
+     *
+     * @param czId 区段id
+     * @return
+     */
+    @GetMapping("/random")
+    public Map<String, Object> findLastBycZId(@RequestParam("czId") Integer czId) {
+        QuDuanInfoEntityV2 quDuanInfoEntity = quDuanInfoService.findLastBycZId(czId);
+        return ResponseDataUtil.ok("查询区段详情成功", quDuanInfoEntity);
+    }
 
     /**
      * 日报表
@@ -72,9 +83,6 @@ public class QuDuanInfoController extends SessionController {
         JSONObject jsonObjects = quDuanInfoService.findNullProperties(czId);
         return ResponseDataUtil.ok("查询区段属性成功", jsonObjects);
     }
-
-
-
 
 
     /**

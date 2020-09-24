@@ -38,6 +38,12 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     private QuDuanInfoPropertyService quDuanInfoPropertyService;
 
     @Override
+    public QuDuanInfoEntityV2 findLastBycZId(Integer czId) {
+        String tableName = StringUtil.getTableName(czId, new Date());
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectLastByCzId(czId, tableName) : null;
+    }
+
+    @Override
     public boolean isTableExist(String tableName) {
         return quDuanInfoDaoV2.isTableExist(tableName) > 0;
     }
