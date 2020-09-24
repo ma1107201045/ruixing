@@ -197,4 +197,19 @@
             cid              = #{cid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <select id="selectByExample" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_line_technology_status_station_product ltssp
+        <where>
+            <if test="name!=null">
+                and ltssp.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="cid!=null">
+                and ltssp.cid = #{cid,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
 </mapper>
