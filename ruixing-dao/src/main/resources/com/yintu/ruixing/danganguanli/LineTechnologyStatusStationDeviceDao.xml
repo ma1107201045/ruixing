@@ -117,10 +117,11 @@
             station_id    = #{stationId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectByExample" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_line_technology_status_station_device
+        where station_id = #{stationId,jdbcType=INTEGER}
     </select>
     <select id="countByStationId" resultType="java.lang.Long">
         select count(*)

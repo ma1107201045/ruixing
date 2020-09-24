@@ -13,6 +13,6 @@ public interface LineTechnologyStatusStationSafetyInformationService extends
         BaseService<LineTechnologyStatusStationSafetyInformationEntity, Integer> {
     long countByStationId(Integer stationId);
 
-    List<LineTechnologyStatusStationSafetyInformationEntity> findAll();
+    List<LineTechnologyStatusStationSafetyInformationEntity> findByExample(Integer stationId);
 
 }

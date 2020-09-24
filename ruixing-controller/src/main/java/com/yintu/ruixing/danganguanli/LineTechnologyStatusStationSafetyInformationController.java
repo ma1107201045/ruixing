@@ -55,8 +55,8 @@ public class LineTechnologyStatusStationSafetyInformationController extends Sess
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationSafetyInformationEntity> lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationSafetyInformationEntity> lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationService.findByExample(stationId);
         lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationSafetyInformationEntity::getId).reversed())

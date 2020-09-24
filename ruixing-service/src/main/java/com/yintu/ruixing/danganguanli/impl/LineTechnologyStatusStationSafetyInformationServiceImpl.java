@@ -46,7 +46,7 @@ public class LineTechnologyStatusStationSafetyInformationServiceImpl implements 
     }
 
     @Override
-    public List<LineTechnologyStatusStationSafetyInformationEntity> findAll() {
-        return lineTechnologyStatusStationSafetyInformationDao.selectAll();
+    public List<LineTechnologyStatusStationSafetyInformationEntity> findByExample(Integer stationId) {
+        return lineTechnologyStatusStationSafetyInformationDao.selectByExample(stationId);
     }
 }

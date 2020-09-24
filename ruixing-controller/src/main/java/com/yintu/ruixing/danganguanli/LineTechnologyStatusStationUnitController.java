@@ -54,8 +54,8 @@ public class LineTechnologyStatusStationUnitController extends SessionController
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationUnitEntity> lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationUnitEntity> lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitService.findByExample(stationId);
         lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationUnitEntity::getId).reversed())
