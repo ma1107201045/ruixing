@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

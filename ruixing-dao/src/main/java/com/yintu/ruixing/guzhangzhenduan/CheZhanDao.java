@@ -107,4 +107,6 @@ public interface CheZhanDao {
     List<CheZhanEntity> findXiangLinFiveCheZhanByXdid(Integer xdid);
 
     List<CheZhanEntity> findXiangLinSixCheZhanByXdid(Integer xdid);
+
+    Integer findNumBycid(Integer id);
 }

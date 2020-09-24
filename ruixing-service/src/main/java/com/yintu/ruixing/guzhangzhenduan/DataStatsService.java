@@ -163,4 +163,6 @@ public interface DataStatsService {
     void editDMHStaCteByCid(CheZhanEntity cheZhanEntity);
 
     void qingChuaDMHByCid(CheZhanEntity cheZhanEntity);
+
+    Integer findNumBycid(Integer id);
 }

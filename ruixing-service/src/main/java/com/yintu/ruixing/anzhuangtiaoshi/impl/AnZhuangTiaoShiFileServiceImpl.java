@@ -254,6 +254,7 @@ public class AnZhuangTiaoShiFileServiceImpl implements AnZhuangTiaoShiFileServic
         }
         String fileName = anZhuangTiaoShiFileEntity.getFileName();
         Integer xdid = anZhuangTiaoShiFileEntity.getXdid();
+        anZhuangTiaoShiFileEntity.setLeibie(1);
         anZhuangTiaoShiFileDao.addFile(anZhuangTiaoShiFileEntity);
         Integer fileid = anZhuangTiaoShiFileEntity.getId();
         AnZhuangTiaoShiRecordMessageEntity recordMessageEntity=new AnZhuangTiaoShiRecordMessageEntity();

@@ -435,9 +435,10 @@ public class DataStatsServiceImpl implements DataStatsService {
         return dataStatsDao.findAllCheZhan();
     }
 
-
-
-
+    @Override
+    public Integer findNumBycid(Integer id) {
+        return cheZhanDao.findNumBycid(id);
+    }
 
 
 

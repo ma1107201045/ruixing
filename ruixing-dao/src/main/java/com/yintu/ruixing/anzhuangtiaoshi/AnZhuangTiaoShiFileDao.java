@@ -43,4 +43,16 @@ public interface AnZhuangTiaoShiFileDao {
     List<AnZhuangTiaoShiFileEntity> findShuChuFilee(@Param("id")Integer id,@Param("uid") Integer uid);
 
     List<AnZhuangTiaoShiFileEntity> findFileById(Integer id);
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFileByid(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuRuFileByidd(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFileByid(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findShuChuFileByidd(@Param("id")Integer id,@Param("uid") Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findsomeFileByNmae(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename,@Param("uid")Integer uid);
+
+    List<AnZhuangTiaoShiFileEntity> findsomeFileByNmaee(@Param("xdid") Integer xdid,@Param("filetype") Integer filetype,@Param("filename") String filename,@Param("uid")Integer uid);
 }

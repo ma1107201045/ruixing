@@ -11,6 +11,7 @@ import com.yintu.ruixing.common.util.POIUtils;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -807,6 +808,13 @@ public class DataStatsController {
         return ResponseDataUtil.ok("文件上传成功");
     }
 
+
+    //根据车站id 判断是否有站内数据
+    @GetMapping("/findNumBycid/{id}")
+    public Map<String,Object>findNumBycid(@PathVariable Integer id){
+        Integer number=dataStatsService.findNumBycid(id);
+        return ResponseDataUtil.ok("查询成功",number);
+    }
     //查询所有车站信息
     @GetMapping("/findAll")
     public Result findAll() {

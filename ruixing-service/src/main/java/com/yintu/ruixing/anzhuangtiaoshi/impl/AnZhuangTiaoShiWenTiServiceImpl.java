@@ -109,19 +109,20 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         anZhuangTiaoShiWenTiAuditorEntity.setObjectId(id);
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWenTiAuditorEntity.setUpdatetime(nowTime);
+        anZhuangTiaoShiWenTiAuditorEntity.setAuditorId(receiverid);
         anZhuangTiaoShiWenTiAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWenTiAuditorEntity);
     }
 
     @Override
-    public AnZhuangTiaoShiWenTiEntity findWenTiById(Integer id) {
-        return anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id);
+    public AnZhuangTiaoShiWenTiEntity findWenTiById(Integer id, Integer receiverid) {
+        return anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id,receiverid);
     }
 
     @Override
     public void editAuditorByWTId(Integer id, AnZhuangTiaoShiWenTiAuditorEntity anZhuangTiaoShiWenTiAuditorEntity, String username, Integer receiverid, Integer senderId) {
         Date nowTime = new Date();
         if (anZhuangTiaoShiWenTiAuditorEntity.getIsPass() == 0) {//审核未通过
-            AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id);
+            AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.findOneWentById(id);
             //添加一条消息到消息表
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setCreateBy(username);//创建人
@@ -146,7 +147,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             anZhuangTiaoShiWenTiRecordMessageDao.insertSelective(recordMessageEntity);
         }
         if (anZhuangTiaoShiWenTiAuditorEntity.getIsPass() == 1) {//审核通过
-            AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id);
+            AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.findOneWentById(id);
             //新增查看消息
             AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
@@ -182,7 +183,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         if (ispass.size() > 1) {
             AnZhuangTiaoShiWenTiEntity wenTiEntity = new AnZhuangTiaoShiWenTiEntity();
             wenTiEntity.setId(id);
-            wenTiEntity.setAuditorState(1);
+            wenTiEntity.setAuditorState(3);
             anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(wenTiEntity);
         }
     }
@@ -334,7 +335,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         anZhuangTiaoShiWenTiEntity.setUpdatename(username);
         anZhuangTiaoShiWenTiEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWenTiDao.updateByPrimaryKeySelective(anZhuangTiaoShiWenTiEntity);
-        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id);
+        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.findOneWentById(id);
         Integer aa = 0;
         if (!wenTiEntity.getXdName().equals(anZhuangTiaoShiWenTiEntity.getXdName())) {
             sb.append(" 线段名改为" + anZhuangTiaoShiWenTiEntity.getXdName() + ",");

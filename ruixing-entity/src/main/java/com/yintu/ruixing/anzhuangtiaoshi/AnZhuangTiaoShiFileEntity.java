@@ -41,4 +41,5 @@ public class AnZhuangTiaoShiFileEntity {
 
     private String updateName;
 
+    private Integer leibie;
 }
