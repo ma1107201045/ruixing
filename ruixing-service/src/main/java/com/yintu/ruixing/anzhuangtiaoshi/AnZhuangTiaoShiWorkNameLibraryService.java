@@ -11,15 +11,21 @@ import java.util.List;
  * 需求:
  */
 public interface AnZhuangTiaoShiWorkNameLibraryService {
-    void addWorkName(AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity);
+    void addWorkName(AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, Integer[] uids, String username, Integer receiverid);
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkName(Integer page, Integer size, String workname);
 
-    void editWorkNameById(AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity);
+    void editWorkNameById(Integer id,AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, String username, Integer receiverid, Integer[] uids);
 
     void deleteWorkNameByIds(Integer[] ids);
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorkName();
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id);
+
+    AnZhuangTiaoShiWorkNameLibraryEntity findWorkNameById(Integer id);
+
+    List<AnZhuangTiaoShiWorksRecordMessageEntity> findRecordMessageById(Integer id);
+
+    void editAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
 }

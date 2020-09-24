@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +25,16 @@ public class AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity {
     private AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity;
 
     private AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity;
+
+    private Integer userid;
+    private Integer auditorState;
+
+    private Date createtime;
+
+    private String createname;
+
+    private Date updatetime;
+
+    private String updatename;
 
 }
