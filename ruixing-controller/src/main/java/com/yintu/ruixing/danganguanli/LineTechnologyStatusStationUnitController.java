@@ -49,8 +49,8 @@ public class LineTechnologyStatusStationUnitController extends SessionController
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        lineTechnologyStatusStationUnitService.findById(id);
-        return ResponseDataUtil.ok("查询线段技术状态管理单位信息成功");
+        LineTechnologyStatusStationUnitEntity lineTechnologyStatusStationUnitEntity = lineTechnologyStatusStationUnitService.findById(id);
+        return ResponseDataUtil.ok("查询线段技术状态管理单位信息成功", lineTechnologyStatusStationUnitEntity);
     }
 
     @GetMapping

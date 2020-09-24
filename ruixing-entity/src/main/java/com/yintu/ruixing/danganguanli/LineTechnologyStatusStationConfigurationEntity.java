@@ -26,4 +26,6 @@ public class LineTechnologyStatusStationConfigurationEntity implements Serializa
 
     private String docName;
 
+    private Integer stationId;
+
 }
