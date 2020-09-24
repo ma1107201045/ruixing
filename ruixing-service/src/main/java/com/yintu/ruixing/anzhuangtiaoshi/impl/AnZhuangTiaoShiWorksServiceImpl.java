@@ -59,8 +59,14 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
 
     @Autowired
     private MessageService messageService;
+
     @Autowired
     private MessageDao messageDao;
+
+    @Override
+    public List<AnZhuangTiaoShiFileEntity> findFileById(Integer id) {
+        return anZhuangTiaoShiFileDao.findFileById(id);
+    }
 
     @Override
     public List<AnZhuangTiaoShiFileEntity> findsomeFileByNmae(Integer page, Integer size, Integer xdid, Integer filetype, String filename, Integer uid) {
@@ -386,7 +392,7 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
         }
         String fileName = anZhuangTiaoShiFileEntity.getFileName();
         Integer xdid = anZhuangTiaoShiFileEntity.getXdid();
-        anZhuangTiaoShiFileEntity.setLeibie(1);
+        anZhuangTiaoShiFileEntity.setLeibie(2);
         anZhuangTiaoShiFileDao.addFile(anZhuangTiaoShiFileEntity);
         Integer fileid = anZhuangTiaoShiFileEntity.getId();
         AnZhuangTiaoShiRecordMessageEntity recordMessageEntity=new AnZhuangTiaoShiRecordMessageEntity();
@@ -411,7 +417,8 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
                 messageEntity.setCreateTime(nowTime);//创建时间
                 messageEntity.setContext("“" + fileName + "”文件需要您审核,请查看！");
                 messageEntity.setType((short) 3);
-                messageEntity.setMessageType((short) 2);
+                //messageEntity.setMessageType((short) 2);
+                messageEntity.setSmallType((short) 4);
                 messageEntity.setProjectId(xdid);
                 messageEntity.setFileId(fileid);
                 messageEntity.setSenderId(senderid);

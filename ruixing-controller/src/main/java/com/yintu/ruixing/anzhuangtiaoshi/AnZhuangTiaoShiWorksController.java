@@ -173,6 +173,14 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
         }
     }
 
+
+    //根据文件id 查询对应的文件数据
+    @GetMapping("/findFileById/{id}")
+    public Map<String,Object>findFileById(@PathVariable Integer id){
+        List<AnZhuangTiaoShiFileEntity> fileEntityList=anZhuangTiaoShiWorksService.findFileById(id);
+        return ResponseDataUtil.ok("查询文件成功",fileEntityList);
+    }
+
     //////////////////旧文件/////////////////////////
     //文件上传
     @PostMapping("/uploads")

@@ -304,7 +304,7 @@
     </select>
     <!--现场作业管理-->
     <!--根据文件名 查询对应的文件  不要审核的-->
-    <select id="findsomeFileByNmae" resultMap="BaseResultMap">
+    <select id="findsomeFileByNmaee" resultMap="BaseResultMap">
         SELECT
         cf.id,
         xdid,

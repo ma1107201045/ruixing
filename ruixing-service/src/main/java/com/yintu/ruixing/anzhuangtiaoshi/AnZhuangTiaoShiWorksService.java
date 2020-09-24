@@ -63,4 +63,5 @@ public interface AnZhuangTiaoShiWorksService {
 
     void editAuditorByWJId(AnZhuangTiaoShiObjectAuditorEntity anZhuangTiaoShiObjectAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
 
+    List<AnZhuangTiaoShiFileEntity> findFileById(Integer id);
 }
