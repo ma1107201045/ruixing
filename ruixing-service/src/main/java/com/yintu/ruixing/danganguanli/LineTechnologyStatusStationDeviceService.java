@@ -13,6 +13,6 @@ public interface LineTechnologyStatusStationDeviceService extends BaseService<Li
 
     long countByStationId(Integer stationId);
 
-    List<LineTechnologyStatusStationDeviceEntity> findAll();
+    List<LineTechnologyStatusStationDeviceEntity> findByExample(Integer stationId);
 
 }

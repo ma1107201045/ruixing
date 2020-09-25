@@ -50,13 +50,13 @@ public class LineTechnologyStatusStationSafetyInformationController extends Sess
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        lineTechnologyStatusStationSafetyInformationService.findById(id);
-        return ResponseDataUtil.ok("查询线段技术状态安全信息套数信息成功");
+        LineTechnologyStatusStationSafetyInformationEntity lineTechnologyStatusStationSafetyInformationEntity = lineTechnologyStatusStationSafetyInformationService.findById(id);
+        return ResponseDataUtil.ok("查询线段技术状态安全信息套数信息成功", lineTechnologyStatusStationSafetyInformationEntity);
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationSafetyInformationEntity> lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationSafetyInformationEntity> lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationService.findByExample(stationId);
         lineTechnologyStatusStationSafetyInformationEntities = lineTechnologyStatusStationSafetyInformationEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationSafetyInformationEntity::getId).reversed())

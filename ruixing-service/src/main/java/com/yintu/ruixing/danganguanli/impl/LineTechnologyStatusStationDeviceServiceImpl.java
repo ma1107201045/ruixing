@@ -46,7 +46,7 @@ public class LineTechnologyStatusStationDeviceServiceImpl implements LineTechnol
     }
 
     @Override
-    public List<LineTechnologyStatusStationDeviceEntity> findAll() {
-        return lineTechnologyStatusStationDeviceDao.selectAll();
+    public List<LineTechnologyStatusStationDeviceEntity> findByExample(Integer stationId) {
+        return lineTechnologyStatusStationDeviceDao.selectByExample(stationId);
     }
 }

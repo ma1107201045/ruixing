@@ -13,5 +13,5 @@ public interface LineTechnologyStatusStationUnitService extends BaseService<Line
 
     long countByStationId(Integer stationId);
 
-    List<LineTechnologyStatusStationUnitEntity> findAll();
+    List<LineTechnologyStatusStationUnitEntity> findByExample(Integer stationId);
 }

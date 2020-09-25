@@ -49,13 +49,13 @@ public class LineTechnologyStatusStationConfigurationController extends SessionC
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        lineTechnologyStatusStationConfigurationService.findById(id);
-        return ResponseDataUtil.ok("查询线段技术状态配置文件信息成功");
+        LineTechnologyStatusStationConfigurationEntity lineTechnologyStatusStationConfigurationEntity = lineTechnologyStatusStationConfigurationService.findById(id);
+        return ResponseDataUtil.ok("查询线段技术状态配置文件信息成功", lineTechnologyStatusStationConfigurationEntity);
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationConfigurationEntity> lineTechnologyStatusStationConfigurationEntities = lineTechnologyStatusStationConfigurationService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationConfigurationEntity> lineTechnologyStatusStationConfigurationEntities = lineTechnologyStatusStationConfigurationService.findByExample(stationId);
         lineTechnologyStatusStationConfigurationEntities = lineTechnologyStatusStationConfigurationEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationConfigurationEntity::getId).reversed())

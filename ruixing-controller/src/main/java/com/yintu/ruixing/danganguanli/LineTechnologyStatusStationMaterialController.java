@@ -30,13 +30,13 @@ public class LineTechnologyStatusStationMaterialController extends SessionContro
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         lineTechnologyStatusStationMaterialService.add(entity);
-        return ResponseDataUtil.ok("添加线段技术状态设备硬件物料信息成功");
+        return ResponseDataUtil.ok("添加线段技术状态软件物料信息成功");
     }
 
     @DeleteMapping("/{id}")
     public Map<String, Object> remove(@PathVariable Integer id) {
         lineTechnologyStatusStationMaterialService.remove(id);
-        return ResponseDataUtil.ok("删除线段技术状态设备硬件物料信息成功");
+        return ResponseDataUtil.ok("删除线段技术状态软件物料信息成功");
     }
 
     @PutMapping("/{id}")
@@ -44,22 +44,22 @@ public class LineTechnologyStatusStationMaterialController extends SessionContro
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         lineTechnologyStatusStationMaterialService.edit(entity);
-        return ResponseDataUtil.ok("修改线段技术状态设备硬件物料信息成功");
+        return ResponseDataUtil.ok("修改线段技术状态软件物料物料信息成功");
     }
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        lineTechnologyStatusStationMaterialService.findById(id);
-        return ResponseDataUtil.ok("查询线段技术状态设备硬件物料信息成功");
+        LineTechnologyStatusStationMaterialEntity lineTechnologyStatusStationMaterialEntity = lineTechnologyStatusStationMaterialService.findById(id);
+        return ResponseDataUtil.ok("查询线段技术状态软件物料物料信息成功", lineTechnologyStatusStationMaterialEntity);
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationMaterialEntity> lineTechnologyStatusStationMaterialEntities = lineTechnologyStatusStationMaterialService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationMaterialEntity> lineTechnologyStatusStationMaterialEntities = lineTechnologyStatusStationMaterialService.findByExample(stationId);
         lineTechnologyStatusStationMaterialEntities = lineTechnologyStatusStationMaterialEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationMaterialEntity::getId).reversed())
                 .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询线段技术状态设备硬件物料信息列表成功", lineTechnologyStatusStationMaterialEntities);
+        return ResponseDataUtil.ok("查询线段技术状态软件物料信息列表成功", lineTechnologyStatusStationMaterialEntities);
     }
 }

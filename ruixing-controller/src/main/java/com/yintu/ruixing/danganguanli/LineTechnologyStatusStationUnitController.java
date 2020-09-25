@@ -49,13 +49,13 @@ public class LineTechnologyStatusStationUnitController extends SessionController
 
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
-        lineTechnologyStatusStationUnitService.findById(id);
-        return ResponseDataUtil.ok("查询线段技术状态管理单位信息成功");
+        LineTechnologyStatusStationUnitEntity lineTechnologyStatusStationUnitEntity = lineTechnologyStatusStationUnitService.findById(id);
+        return ResponseDataUtil.ok("查询线段技术状态管理单位信息成功", lineTechnologyStatusStationUnitEntity);
     }
 
     @GetMapping
-    public Map<String, Object> findAll() {
-        List<LineTechnologyStatusStationUnitEntity> lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitService.findAll();
+    public Map<String, Object> findByExample(@RequestParam Integer stationId) {
+        List<LineTechnologyStatusStationUnitEntity> lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitService.findByExample(stationId);
         lineTechnologyStatusStationUnitEntities = lineTechnologyStatusStationUnitEntities
                 .stream()
                 .sorted(Comparator.comparing(LineTechnologyStatusStationUnitEntity::getId).reversed())

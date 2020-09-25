@@ -18,7 +18,7 @@ public interface LineTechnologyStatusStationMaterialDao {
 
     int updateByPrimaryKey(LineTechnologyStatusStationMaterialEntity record);
 
-    List<LineTechnologyStatusStationMaterialEntity> selectAll();
+    List<LineTechnologyStatusStationMaterialEntity> selectByExample(Integer stationId);
 
 
     long countByStationId(Integer stationId);

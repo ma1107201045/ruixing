@@ -12,5 +12,5 @@ import java.util.List;
 public interface LineTechnologyStatusStationMaterialService extends BaseService<LineTechnologyStatusStationMaterialEntity, Integer> {
     long countByStationId(Integer stationId);
 
-    List<LineTechnologyStatusStationMaterialEntity> findAll();
+    List<LineTechnologyStatusStationMaterialEntity> findByExample(Integer stationId);
 }
