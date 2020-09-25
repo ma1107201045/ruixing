@@ -30,7 +30,7 @@ public interface AnZhuangTiaoShiWorkNameTotalService {
 
     List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(String workname, Integer page, Integer size);
 
-    AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id);
+    AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id, Integer receiverid);
 
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findRecordMessageById(Integer id);
 
@@ -39,4 +39,6 @@ public interface AnZhuangTiaoShiWorkNameTotalService {
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorksRecordMessageById(Integer id);
 
     void editWorksAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
+
+    AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid,Integer wnlid,Integer receiverid);
 }

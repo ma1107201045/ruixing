@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +41,16 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     private AnZhuangTiaoShiWorkNameLibraryDao anZhuangTiaoShiWorkNameLibraryDao;
 
     @Override
+    public AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid,Integer wnlid,Integer receiverid) {
+        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findOneWorkNameById(wntid,wnlid,receiverid);
+    }
+
+    @Override
     public void editWorksAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId) {
         Date nowTime = new Date();
+        Integer wntid=anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWntidById(id);
         if (anZhuangTiaoShiWorksAuditorEntity.getIsPass() == 0) {//审核未通过
-            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id);
+            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(wntid, receiverid);
             //添加一条消息到消息表
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setCreateBy(username);//创建人
@@ -63,18 +71,18 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setContext("“" + workNameTotalEntity.getWorknamesall() + "”作业项版本审核未通过,原因是:" + reason);
-            recordMessageEntity.setTypenum(1);
+            recordMessageEntity.setTypenum(2);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
         if (anZhuangTiaoShiWorksAuditorEntity.getIsPass() == 1) {//审核通过
-            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id);
+            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(wntid, receiverid);
             //新增查看消息
             AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setContext("“" + workNameTotalEntity.getWorknamesall() + "”作业项版本审核通过 ");
-            recordMessageEntity.setTypenum(1);
+            recordMessageEntity.setTypenum(2);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
@@ -117,7 +125,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     public void editAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId) {
         Date nowTime = new Date();
         if (anZhuangTiaoShiWorksAuditorEntity.getIsPass() == 0) {//审核未通过
-            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id);
+            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
             //添加一条消息到消息表
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setCreateBy(username);//创建人
@@ -142,7 +150,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
         if (anZhuangTiaoShiWorksAuditorEntity.getIsPass() == 1) {//审核通过
-            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id);
+            AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
             //新增查看消息
             AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
@@ -172,10 +180,16 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
         if (ispass.size() == 1 && ispass.get(0) != null && ispass.get(0) == 0) {
             AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
+            wenTiEntity.setAuditorState(3);
+            anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+        }
+        if (ispass.size() > 1 && ispass.get(0) == null) {
+            AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
+            wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(1);
             anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
         }
-        if (ispass.size() > 1) {
+        if (ispass.size() > 1 && ispass.get(0) != null) {
             AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(3);
@@ -190,8 +204,12 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     }
 
     @Override
-    public AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id) {
-        return anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id);
+    public AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id, Integer receiverid) {
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
+        //查找此作业项配置版本有多少个作业项
+        Integer worknametotal = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameTatol(id);
+        workNameTotalEntity.setWorknametotal(worknametotal);
+        return workNameTotalEntity;
     }
 
     @Override
@@ -215,18 +233,18 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUpdatename(username);
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity);
-        AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity workNameTotalEntity=anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.selectByPrimaryKey(id);
+        AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.selectByPrimaryKey(id);
         Integer aa = 0;
-        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWnlid()!=workNameTotalEntity.getWnlid()) {
-            String workName=anZhuangTiaoShiWorkNameLibraryDao.findWorkNameById(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWnlid());
-            sb.append(" 作业项改为" + workName+ ",");
+        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWnlid() != workNameTotalEntity.getWnlid()) {
+            String workName = anZhuangTiaoShiWorkNameLibraryDao.findWorkNameById(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWnlid());
+            sb.append(" 作业项改为" + workName + ",");
             aa++;
         }
-        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState()!=workNameTotalEntity.getWorkState()&&anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState()==1) {
+        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState() != workNameTotalEntity.getWorkState() && anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState() == 1) {
             sb.append(" 作业项标识改为 手动");
             aa++;
         }
-        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState()!=workNameTotalEntity.getWorkState()&&anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState()==2) {
+        if (anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState() != workNameTotalEntity.getWorkState() && anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWorkState() == 2) {
             sb.append(" 作业项标识改为 自动");
             aa++;
         }
@@ -254,7 +272,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setCreateBy(username);//创建人
             messageEntity.setCreateTime(nowTime);//创建时间
-            messageEntity.setContext("“" + Worknamesall + "”版本下的" +   "作业项变更为“"+Workname+"”需要您审核,请查看！");
+            messageEntity.setContext("“" + Worknamesall + "”版本下的" + "作业项变更为“" + Workname + "”需要您审核,请查看！");
             messageEntity.setType((short) 3);
             //messageEntity.setMessageType((short) 2);
             messageEntity.setProjectId(wntid);
@@ -282,6 +300,8 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setWnlid(wnlids[i]);
             anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setAuditorState(1);
             Integer wntid = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWntid();
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUserid(receiverid);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setId(null);
             anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.insertSelective(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity);
             String Worknamesall = anZhuangTiaoShiWorkNameTotalDao.findWorkNameTotalById(wntid);
             String Workname = anZhuangTiaoShiWorkNameLibraryDao.findWorkNameById(wnlids[i]);
@@ -306,15 +326,15 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
                 messageEntity.setSenderId(receiverid);
                 messageEntity.setReceiverId(uid);
                 messageEntity.setStatus((short) 1);
-                messageEntity.setSmallType((short) 5);
+                messageEntity.setSmallType((short) 6);
                 messageService.sendMessage(messageEntity);
             }
             AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
-            recordMessageEntity.setTypeid(wnlids[i]);
+            recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(nowTime);
             recordMessageEntity.setContext("在" + Worknamesall + "版本下新增" + Workname + "作业项");
-            recordMessageEntity.setTypenum(1);
+            recordMessageEntity.setTypenum(2);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
 
         }
@@ -329,10 +349,11 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     public void editWorkNameTotalById(Integer id, AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, String username, Integer receiverid) {
         StringBuilder sb = new StringBuilder();
         Date nowTime = new Date();
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksByIdd(id);
         anZhuangTiaoShiWorkNameTotalEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorkNameTotalEntity.setUpdatename(username);
+        anZhuangTiaoShiWorkNameTotalEntity.setAuditorState(1);
         anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorkNameTotalEntity);
-        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.selectByPrimaryKey(id);
         Integer aa = 0;
         if (!workNameTotalEntity.getWorknamesall().equals(anZhuangTiaoShiWorkNameTotalEntity.getWorknamesall())) {
             sb.append(" 作业项配置版本" + anZhuangTiaoShiWorkNameTotalEntity.getWorknamesall() + ",");
@@ -377,6 +398,29 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
         anZhuangTiaoShiWorkNameTotalEntity.setCreatename(username);
         anZhuangTiaoShiWorkNameTotalEntity.setCreatetime(nowTime);
         anZhuangTiaoShiWorkNameTotalEntity.setAuditorState(1);
+        Date starttime = anZhuangTiaoShiWorkNameTotalEntity.getStarttime();
+        System.out.println("66666" + starttime);
+        Date endtime = anZhuangTiaoShiWorkNameTotalEntity.getEndtime();
+        System.out.println("777777" + endtime);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date startTime = null;
+        try {
+            startTime = sdf.parse(sdf.format(starttime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date endTime = null;
+        try {
+            endTime = sdf.parse(sdf.format(endtime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        anZhuangTiaoShiWorkNameTotalEntity.setUserid(receiverid);
+        anZhuangTiaoShiWorkNameTotalEntity.setStarttime(startTime);
+        anZhuangTiaoShiWorkNameTotalEntity.setEndtime(endTime);
+        System.out.println("8888888" + startTime);
+        System.out.println("9999999" + endTime);
+
         anZhuangTiaoShiWorkNameTotalDao.insertSelective(anZhuangTiaoShiWorkNameTotalEntity);
         Integer wid = anZhuangTiaoShiWorkNameTotalEntity.getId();
         for (Integer uid : uids) {

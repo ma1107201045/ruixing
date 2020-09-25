@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao {
     int deleteByPrimaryKey(Integer id);
@@ -28,7 +29,11 @@ public interface AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao {
 
     void deleteWorkNameByIdss(Integer[] ids);
 
-    List<Integer> findAllwnlidByWorksid(@Param("worksid")Integer worksid);
+    List<Integer> findAllwnlidByWorksid(@Param("worksid") Integer worksid);
 
-    Integer findWorkStateByIDS(@Param("worksid") Integer worksid,@Param("wnlid") Integer wnlid);
+    Integer findWorkStateByIDS(@Param("worksid") Integer worksid, @Param("wnlid") Integer wnlid);
+
+    AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(@Param("wntid") Integer wntid, @Param("wnlid") Integer wnlid, @Param("receiverid") Integer receiverid);
+
+    Integer findWntidById(Integer id);
 }

@@ -19,6 +19,16 @@
   </sql>
 
   <!--根据项目id  查询此问题通过的数量-->
+  <select id="findIsPassByObjidd" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    is_pass
+    from mro_anzhuangtiaoshi_works_auditor
+    where object_id = #{id,jdbcType=INTEGER}
+    and objectType=2
+    group by is_pass
+  </select>
+
+  <!--根据项目id  查询此问题通过的数量-->
   <select id="findIsPassByObjid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select
     is_pass
@@ -122,9 +132,6 @@
       <if test="objectId != null">
         object_id = #{objectId,jdbcType=INTEGER},
       </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
       <if test="objecttype != null">
         objectType = #{objecttype,jdbcType=INTEGER},
       </if>
@@ -147,7 +154,7 @@
         updateName = #{updatename,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where auditor_id = #{auditorId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksAuditorEntity">
     update mro_anzhuangtiaoshi_works_auditor

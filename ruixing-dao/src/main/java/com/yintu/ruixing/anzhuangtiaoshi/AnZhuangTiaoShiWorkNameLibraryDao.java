@@ -31,7 +31,7 @@ public interface AnZhuangTiaoShiWorkNameLibraryDao {
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id);
 
-    AnZhuangTiaoShiWorkNameLibraryEntity findOneWorkNameByid(Integer id);
+    AnZhuangTiaoShiWorkNameLibraryEntity findOneWorkNameByid(@Param("id") Integer id,@Param("receiverid") Integer receiverid);
 
     String findWorkNameById(@Param("wnlid") Integer wnlid);
 

@@ -62,7 +62,8 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
     //根据id  查询对应的作业配置版本
     @GetMapping("/findOneWorksById/{id}")
     public Map<String, Object> findOneWorksById(@PathVariable Integer id) {
-        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalService.findOneWorksById(id);
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalService.findOneWorksById(id,receiverid);
         return ResponseDataUtil.ok("查询成功", workNameTotalEntity);
     }
 
@@ -101,6 +102,13 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
         return ResponseDataUtil.ok("问题审核成功");
     }
 
+    //根据id  查询对应的数据
+    @GetMapping("/findOneWorkNameById")
+    public Map<String,Object>findOneWorkNameById( Integer wntid,Integer wnlid){
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity totalEntity=anZhuangTiaoShiWorkNameTotalService.findOneWorkNameById(wntid,wnlid,receiverid);
+        return ResponseDataUtil.ok("查询数据成功",totalEntity);
+    }
     // 在对应的作业项配置版本下  添加作业项
     @PostMapping("/addWorkNameEdition")
     public Map<String, Object> addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, Integer[] uids) {

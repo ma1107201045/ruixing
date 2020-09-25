@@ -419,6 +419,8 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         anZhuangTiaoShiWenTiEntity.setCreatetime(nowTime);
         anZhuangTiaoShiWenTiEntity.setAuditorState(1);
         anZhuangTiaoShiWenTiEntity.setUserid(senderid);
+        Date actualovertime = anZhuangTiaoShiWenTiEntity.getAskovertime();
+        System.out.println("111111111"+actualovertime);
         anZhuangTiaoShiWenTiDao.insertSelective(anZhuangTiaoShiWenTiEntity);
         Integer wtid = anZhuangTiaoShiWenTiEntity.getId();
         AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();

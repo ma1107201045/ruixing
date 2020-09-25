@@ -29,6 +29,14 @@
     createTime, createName, updateTime, updateName,auditorState,userid
   </sql>
 
+  <!--根据id  查询对应的wntid-->
+  <select id="findWntidById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    wntid
+    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
   <!--根据wntid 和wnlid  查询对应的作业状态-->
   <select id="findWorkStateByIDS" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select
@@ -84,7 +92,7 @@
         awl.workname,
         awl.id lid,
         aww.work_state,
-	    awa.object_id
+	    awa.auditor_id
     FROM
         mro_anzhuangtiaoshi_worknametotal awt,
         mro_anzhuangtiaoshi_worknamelibrary awl,
@@ -113,6 +121,35 @@
       )
   </insert>
 
+
+  <!--根据作业项配置版本id 查看对应的作业项-->
+  <select id="findOneWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+        aww.id,
+        aww.userid,
+        aww.auditorState,
+        awt.worknamesall,
+        awl.workname,
+        awl.id lid,
+        aww.work_state,
+	    awa.auditor_id
+    FROM
+        mro_anzhuangtiaoshi_worknametotal awt,
+        mro_anzhuangtiaoshi_worknamelibrary awl,
+        mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+	    mro_anzhuangtiaoshi_works_auditor awa
+    WHERE
+        awa.object_id = aww.id
+        and awt.id = aww.wntid
+        AND awl.id = aww.wnlid
+        AND aww.wntid =#{wntid}
+        AND aww.wnlid =#{wnlid}
+        AND awa.auditor_id=#{receiverid}
+
+  </select>
+
+
+
   <!--根据作业项配置版本id 查看对应的作业项-->
   <select id="findWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
@@ -123,7 +160,7 @@
         awl.workname,
         awl.id lid,
         aww.work_state,
-	    awa.object_id
+	    awa.auditor_id
     FROM
         mro_anzhuangtiaoshi_worknametotal awt,
         mro_anzhuangtiaoshi_worknamelibrary awl,

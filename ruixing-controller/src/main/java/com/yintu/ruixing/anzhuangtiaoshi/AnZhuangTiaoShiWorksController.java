@@ -30,7 +30,7 @@ public class AnZhuangTiaoShiWorksController extends SessionController {
 
     //新增车站
     @PostMapping("/addWorksCheZhan")
-    public Map<String, Object> addWorksCheZhan(AnZhuangTiaoShiWorksCheZhanEntity anZhuangTiaoShiWorksCheZhanEntity, String[] chezhanname) {
+    public Map<String, Object> addWorksCheZhan(AnZhuangTiaoShiWorksCheZhanEntity anZhuangTiaoShiWorksCheZhanEntity, String[] chezhanname) throws Exception{
         anZhuangTiaoShiWorksService.addWorksCheZhan(anZhuangTiaoShiWorksCheZhanEntity, chezhanname);
         return ResponseDataUtil.ok("新增车站成功");
     }

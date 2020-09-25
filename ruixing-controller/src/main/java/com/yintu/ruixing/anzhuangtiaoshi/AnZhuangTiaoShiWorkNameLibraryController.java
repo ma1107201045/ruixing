@@ -27,14 +27,15 @@ public class AnZhuangTiaoShiWorkNameLibraryController extends SessionController 
     //根据id 查询对应的作业项
     @GetMapping("/findWorkNameById/{id}")
     public Map<String, Object> findWorkNameById(@PathVariable Integer id) {
-        AnZhuangTiaoShiWorkNameLibraryEntity workNameLibraryEntity = anZhuangTiaoShiWorkNameLibraryService.findWorkNameById(id);
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        AnZhuangTiaoShiWorkNameLibraryEntity workNameLibraryEntity = anZhuangTiaoShiWorkNameLibraryService.findWorkNameById(id,receiverid);
         return ResponseDataUtil.ok("查询成功", workNameLibraryEntity);
     }
 
     //根据id  查看时间轴
     @GetMapping("/findRecordMessageById/{id}")
     public Map<String, Object> findRecordMessageById(@PathVariable Integer id) {
-        List<AnZhuangTiaoShiWorksRecordMessageEntity> recordMessageEntityList = anZhuangTiaoShiWorkNameLibraryService.findRecordMessageById(id);
+        List<AnZhuangTiaoShiWorksRecordMessageEntity> recordMessageEntityList = anZhuangTiaoShiWorkNameLibraryService.findWorkNameLibraryRecordMessageById(id);
         return ResponseDataUtil.ok("查询时间轴数据成功", recordMessageEntityList);
     }
 

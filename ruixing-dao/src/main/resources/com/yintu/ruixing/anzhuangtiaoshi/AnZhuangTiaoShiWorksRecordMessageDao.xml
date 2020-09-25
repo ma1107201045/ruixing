@@ -13,18 +13,29 @@
     id, typeId, operatorName, operatorTime, context, typeNum
   </sql>
 
+  <select id="findWorkNameLibraryRecordMessageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_works_recordmessage
+    where typeId = #{id,jdbcType=INTEGER}
+    and typeNum=3
+  </select>
+
   <select id="findWorksRecordMessageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_anzhuangtiaoshi_works_recordmessage
-    where id = #{id,jdbcType=INTEGER}
+    where typeId = #{id,jdbcType=INTEGER}
+    and typeNum=2
   </select>
 
+  <!--根据对象id  查询对应的数据-->
   <select id="findRecordMessageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_anzhuangtiaoshi_works_recordmessage
-    where id = #{id,jdbcType=INTEGER}
+    where typeId = #{id,jdbcType=INTEGER}
+    and typeNum=1
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksRecordMessageEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface AnZhuangTiaoShiWorksRecordMessageDao {
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findRecordMessageById(Integer id);
 
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorksRecordMessageById(Integer id);
+
+    List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorkNameLibraryRecordMessageById( Integer id);
 }

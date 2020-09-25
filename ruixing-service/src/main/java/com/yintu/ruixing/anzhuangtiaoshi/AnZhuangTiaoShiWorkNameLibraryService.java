@@ -23,9 +23,11 @@ public interface AnZhuangTiaoShiWorkNameLibraryService {
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id);
 
-    AnZhuangTiaoShiWorkNameLibraryEntity findWorkNameById(Integer id);
+    AnZhuangTiaoShiWorkNameLibraryEntity findWorkNameById(Integer id,Integer receiverid);
 
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findRecordMessageById(Integer id);
 
     void editAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
+
+    List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorkNameLibraryRecordMessageById(Integer id);
 }

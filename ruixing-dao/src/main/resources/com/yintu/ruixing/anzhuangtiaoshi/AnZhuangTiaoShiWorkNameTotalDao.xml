@@ -22,6 +22,14 @@
   </sql>
 
 
+  <!--查询所有的作业项配置版本-->
+  <select id="findOneWorksByIdd"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_worknametotal
+    where id=#{id}
+  </select>
+
 
   <!--根据id  查询对应的作业项配置版本-->
   <select id="findWorkNameTotalById"  resultType="java.lang.String">
@@ -35,7 +43,12 @@
   <!--根据id  查询对应的作业项配置版本-->
   <select id="findOneWorksById"  resultMap="BaseResultMap">
     select
-    aw.<include refid="Base_Column_List" />,
+    aw.id,
+    worknamesall,
+    starttime,
+    endtime,
+    auditorState,
+    userid,
     awa.auditor_id
     from
     mro_anzhuangtiaoshi_worknametotal aw,
@@ -43,7 +56,8 @@
     where
     aw.id = awa.object_id
     AND objectType = 1
-    and id=#{id}
+    and aw.id=#{id}
+    AND awa.auditor_id = #{receiverid}
   </select>
 
   <!--查询所有的作业项配置版本-->
@@ -56,7 +70,12 @@
   <!--查询所有的作业项配置版本 或者 根据名字进行模糊查询-->
   <select id="findWorkNameTotal"  resultMap="BaseResultMap">
     select
-    aw.<include refid="Base_Column_List" />,
+    aw.id,
+    worknamesall,
+    starttime,
+    endtime,
+    auditorState,
+    userid,
     awa.auditor_id
     from
     mro_anzhuangtiaoshi_worknametotal aw,

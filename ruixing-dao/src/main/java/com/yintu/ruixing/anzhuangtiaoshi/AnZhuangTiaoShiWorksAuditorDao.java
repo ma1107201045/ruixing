@@ -20,4 +20,6 @@ public interface AnZhuangTiaoShiWorksAuditorDao {
     int updateByPrimaryKey(AnZhuangTiaoShiWorksAuditorEntity record);
 
     List<Integer> findIsPassByObjid(Integer id);
+
+    List<Integer> findIsPassByObjidd(Integer id);
 }

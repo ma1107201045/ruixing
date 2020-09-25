@@ -29,17 +29,22 @@
   </select>
 
     <!--根据id  查询对应的作业项 -->
-    <select id="findOneWorkNameByid" resultType="java.lang.String">
+    <select id="findOneWorkNameByid" resultMap="BaseResultMap">
         select
-        aw.<include refid="Base_Column_List"/>,
-        awa.auditorId
+        aw.id,
+        workname,
+        auditorState,
+        userid,
+         awa.auditor_id
         FROM
         mro_anzhuangtiaoshi_worknamelibrary aw,
         mro_anzhuangtiaoshi_works_auditor awa
         WHERE
         aw.id = awa.object_id
         AND objectType =2
-        and id=#{id}
+        and aw.id=#{id}
+        AND awa.auditor_id=#{receiverid}
+        GROUP BY aw.id
     </select>
 
 
@@ -76,9 +81,13 @@
     <!--根据作业项名 模糊查询  或者查询全部-->
     <select id="findWorkName" resultMap="BaseResultMap">
         select
-        aw.<include refid="Base_Column_List"/>,
-        awa.auditorId
-        frommro_anzhuangtiaoshi_worknamelibrary aw,
+        aw.id,
+        workname,
+        auditorState,
+        userid,
+        awa.auditor_id
+        from
+        mro_anzhuangtiaoshi_worknamelibrary aw,
         mro_anzhuangtiaoshi_works_auditor awa
         <where>
             aw.id = awa.object_id
@@ -102,7 +111,8 @@
     </delete>
 
     <!--添加作业项名称-->
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_anzhuangtiaoshi_worknamelibrary
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
