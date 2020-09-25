@@ -252,6 +252,7 @@
         <result column="contact_person" jdbcType="VARCHAR" property="contactPerson"/>
         <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
         <result column="cid" jdbcType="INTEGER" property="cid"/>
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
         <association column="province_id" property="provinceEntity">
             <id column="p_id" jdbcType="INTEGER" property="id"/>
             <result column="p_name" jdbcType="VARCHAR" property="name"/>

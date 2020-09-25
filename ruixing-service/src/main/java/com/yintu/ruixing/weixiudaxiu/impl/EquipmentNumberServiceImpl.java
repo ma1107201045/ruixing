@@ -31,15 +31,15 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     @Override
     public void add(EquipmentNumberEntity entity) {
         equipmentNumberDao.insertSelective(entity);
-        EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
-        equipmentNumberRecordEntity.setCreateBy(entity.getCreateBy());
-        equipmentNumberRecordEntity.setCreateTime(entity.getCreateTime());
-        equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
-        equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
-        equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
-        equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
-        equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
-        equipmentNumberRecordService.add(equipmentNumberRecordEntity);
+//        EquipmentNumberRecordEntity equipmentNumberRecordEntity = new EquipmentNumberRecordEntity();
+//        equipmentNumberRecordEntity.setCreateBy(entity.getCreateBy());
+//        equipmentNumberRecordEntity.setCreateTime(entity.getCreateTime());
+//        equipmentNumberRecordEntity.setModifiedBy(entity.getModifiedBy());
+//        equipmentNumberRecordEntity.setModifiedTime(entity.getModifiedTime());
+//        equipmentNumberRecordEntity.setEquipmentNumber(entity.getEquipmentNumber());
+//        equipmentNumberRecordEntity.setConfiguration(entity.getConfiguration());
+//        equipmentNumberRecordEntity.setEquipmentNumberId(entity.getId());
+//        equipmentNumberRecordService.add(equipmentNumberRecordEntity);
     }
 
     @Override
