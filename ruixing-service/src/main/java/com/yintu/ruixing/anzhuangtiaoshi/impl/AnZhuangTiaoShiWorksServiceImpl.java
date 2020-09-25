@@ -393,6 +393,7 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
         String fileName = anZhuangTiaoShiFileEntity.getFileName();
         Integer xdid = anZhuangTiaoShiFileEntity.getXdid();
         anZhuangTiaoShiFileEntity.setLeibie(2);
+
         anZhuangTiaoShiFileDao.addFile(anZhuangTiaoShiFileEntity);
         Integer fileid = anZhuangTiaoShiFileEntity.getId();
         AnZhuangTiaoShiRecordMessageEntity recordMessageEntity=new AnZhuangTiaoShiRecordMessageEntity();

@@ -9,26 +9,26 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnZhuangTiaoShiWorkNameLibraryEntity {
+public class AnZhuangTiaoShiWorksAuditorEntity {
     private Integer id;
 
-    private String workname;
+    private Integer objectId;
 
-    private String yuliu1;
-
-    private String yuliu2;
-
-
-
-    private Integer userid;
-    private Integer auditorState;
     private Integer auditorId;
 
-    private Date createtime;
+    private Integer objecttype;
 
-    private String createname;
+    private Integer isPass;
+
+    private String reason;
+
+    private String doname;
+
+    private Date dotime;
 
     private Date updatetime;
 
     private String updatename;
+
+
 }

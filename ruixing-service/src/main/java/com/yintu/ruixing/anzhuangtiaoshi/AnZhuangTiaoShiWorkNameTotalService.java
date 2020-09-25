@@ -12,21 +12,31 @@ import java.util.List;
  * 需求:
  */
 public interface AnZhuangTiaoShiWorkNameTotalService {
-    void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity);
+    void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, Integer[] uids, String username, Integer receiverid);
 
     List<AnZhuangTiaoShiWorkNameTotalEntity> findWorkNameTotal(Integer page, Integer size, String workname);
 
-    void editWorkNameTotalById(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity);
+    void editWorkNameTotalById(Integer id,AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, String username, Integer receiverid);
 
     void deleteWorkNameTotalByIds(Integer[] ids);
 
-    void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity,Integer[] wnlids);
+    void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, String username, Integer receiverid, Integer[] uids);
 
     List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameById(Integer id, Integer page, Integer size);
 
-    void editWorkNameById(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity);
+    void editWorkNameById(Integer id,AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, String username, Integer receiverid,Integer[] uids);
 
     void deleteWorkNameByIds(Integer[] ids);
 
     List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(String workname, Integer page, Integer size);
+
+    AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id);
+
+    List<AnZhuangTiaoShiWorksRecordMessageEntity> findRecordMessageById(Integer id);
+
+    void editAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
+
+    List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorksRecordMessageById(Integer id);
+
+    void editWorksAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
 }

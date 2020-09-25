@@ -30,4 +30,9 @@ public interface AnZhuangTiaoShiWorkNameLibraryDao {
     String findWorkNameByid(Integer wnlid);
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findAllWorksById(Integer id);
+
+    AnZhuangTiaoShiWorkNameLibraryEntity findOneWorkNameByid(Integer id);
+
+    String findWorkNameById(@Param("wnlid") Integer wnlid);
+
 }

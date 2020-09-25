@@ -16,13 +16,13 @@
         <result column="wenTiIsOver" jdbcType="INTEGER" property="wentiisover"/>
         <result column="wenTiState" jdbcType="INTEGER" property="wentistate"/>
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+        <result column="wentiType" jdbcType="VARCHAR" property="wentiType"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
         <result column="createName" jdbcType="VARCHAR" property="createname"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
-        <result column="wentiType" jdbcType="VARCHAR" property="wentiType"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="userid" jdbcType="INTEGER" property="userid"/>
     </resultMap>
     <sql id="Base_Column_List">
