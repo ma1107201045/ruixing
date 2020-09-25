@@ -69,7 +69,7 @@ public class LineTechnologyStatusProductController extends SessionController imp
     @GetMapping
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
-                                       @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
+                                       @RequestParam(value = "order_by", required = false, defaultValue = "ltssp.id DESC") String orderBy,
                                        @RequestParam(value = "name", required = false) String name,
                                        @RequestParam(value = "cid", required = false) Integer cid) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);

@@ -20,5 +20,5 @@ public interface LineTechnologyStatusProductDao {
 
     int updateByPrimaryKey(LineTechnologyStatusProductEntity record);
 
-    List<LineTechnologyStatusProductEntityWithBLOBs> selectByExample(String name, Integer cid);
+    List<LineTechnologyStatusProductEntityWithBLOBs> selectByExample(Integer[] ids, String name, Integer cid);
 }

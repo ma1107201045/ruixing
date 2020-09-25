@@ -32,12 +32,13 @@ public class LineTechnologyStatusProductServiceImpl implements LineTechnologySta
 
     @Override
     public void edit(LineTechnologyStatusProductEntityWithBLOBs entity) {
-        lineTechnologyStatusProductDao.updateByPrimaryKeyWithBLOBs(entity);
+        lineTechnologyStatusProductDao.updateByPrimaryKeySelective(entity);
     }
 
     @Override
     public LineTechnologyStatusProductEntityWithBLOBs findById(Integer id) {
-        return lineTechnologyStatusProductDao.selectByPrimaryKey(id);
+        List<LineTechnologyStatusProductEntityWithBLOBs> lineTechnologyStatusProductEntityWithBLOBs = lineTechnologyStatusProductDao.selectByExample(new Integer[]{id}, null, null);
+        return lineTechnologyStatusProductEntityWithBLOBs.isEmpty() ? null : lineTechnologyStatusProductEntityWithBLOBs.get(0);
     }
 
     @Override
@@ -49,6 +50,6 @@ public class LineTechnologyStatusProductServiceImpl implements LineTechnologySta
 
     @Override
     public List<LineTechnologyStatusProductEntityWithBLOBs> findByExample(String name, Integer cid) {
-        return lineTechnologyStatusProductDao.selectByExample(name, cid);
+        return lineTechnologyStatusProductDao.selectByExample(null, name, cid);
     }
 }

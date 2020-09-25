@@ -33,4 +33,8 @@ public class LineTechnologyStatusProductEntity implements Serializable {
 
     private Integer cid;
 
+    private LineTechnologyStatusProductModelNumberEntity lineTechnologyStatusProductModelNumberEntity;
+
+    private LineTechnologyStatusProductSpecificationEntity lineTechnologyStatusProductSpecificationEntity;
+
 }
