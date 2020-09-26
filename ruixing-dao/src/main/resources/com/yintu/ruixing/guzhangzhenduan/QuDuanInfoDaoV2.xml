@@ -382,7 +382,7 @@
 
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
-    <select id="findOneQuDuanDatas"  resultMap="quduanResultMap" statementType="STATEMENT">
+    <select id="findOneQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime
         from ${tableName} qi,
              mro_quduan_base qb
@@ -546,8 +546,6 @@
     </select>
 
 
-
-
     <!--按照车站查询一条区段详情-->
     <select id="selectLastByCzId" resultMap="BaseResultMap">
         select
@@ -603,7 +601,9 @@
         <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quDuanYunYingName"/>
     </resultMap>
     <sql id="Statistics__Column_List">
-        MAX(qi.v3) AS max_V_out_zhu,
+        MAX
+            (qi.v3)
+            AS max_V_out_zhu,
         MIN(qi.v3) AS min_V_out_zhu,
         MAX(qi.v4) AS max_mA_out_zhu,
         MIN(qi.v4) AS min_mA_out_zhu,
@@ -792,8 +792,9 @@
             <if test="czId!=null">
                 qi.station_id=#{czId,jdbcType=INTEGER}
             </if>
-            <if test="time !=null">
-                and FROM_UNIXTIME(qi.createtime)=#{time,jdbcType=TIMESTAMP}
+            <if test="startTime !=null and endTime !=null">
+                and FROM_UNIXTIME(qi.createtime) between #{startTime,jdbcType=TIMESTAMP} and
+                #{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>

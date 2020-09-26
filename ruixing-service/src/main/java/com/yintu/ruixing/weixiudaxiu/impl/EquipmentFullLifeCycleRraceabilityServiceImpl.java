@@ -36,7 +36,7 @@ public class EquipmentFullLifeCycleRraceabilityServiceImpl implements EquipmentF
     @Override
     public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
         //excel标题
-        String title = "顾客档案列表";
+        String title = "设备全生命周期追溯列表";
         //excel表名
         String[] headers = {"序号", "车站", "器材", "24位产品序列号", "电务段检修所编号", "位置号", "所属区段", "返修次数"};
         //获取数据
