@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="equipment_number" jdbcType="VARCHAR" property="equipmentNumber"/>
+        <result column="reprocessed_product_count" jdbcType="BIGINT" property="reprocessedProductCount"/>
+    </resultMap>
+    <select id="selectEquipmentLife" resultMap="BaseResultMap">
+        SELECT en.*,
+        espm.equipment_name,
+        c.cz_name
+        FROM (
+        SELECT en.id,
+        en.station_id,
+        en.equipment_spare_parts_management_id,
+        en.equipment_number,
+        count(*) AS reprocessed_product_count
+        FROM mro_equipment_number en
+        INNER JOIN mro_equipment_number_record enr ON en.id = enr.equipment_number_id
+        GROUP BY en.id
+        ) en
+        INNER JOIN mro_equipment_spare_parts_management espm
+        ON en.equipment_spare_parts_management_id = espm.id
+        INNER JOIN mro_chezhan c ON en.station_id = c.cid
+        <where>
+            <if test="ids !=null">
+                and en.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <if test="czName!=null">
+                and cz_name like concat('%',#{czName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="equipmentName!=null">
+                and equipment_name like concat('%',#{equipmentName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

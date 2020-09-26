@@ -64,6 +64,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
     public void change(String loginUserName, String loginTrueName, Integer id, String equipmentNumber, String configuration) {
         EquipmentNumberEntity equipmentNumberEntity = this.findById(id);
         if (equipmentNumberEntity != null) {
+            String oldEquipmentNumber = equipmentNumberEntity.getEquipmentNumber();
             equipmentNumberEntity.setModifiedBy(loginUserName);
             equipmentNumberEntity.setModifiedTime(new Date());
             equipmentNumberEntity.setEquipmentNumber(equipmentNumber);
@@ -119,7 +120,7 @@ public class EquipmentNumberServiceImpl implements EquipmentNumberService {
             equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedBy(equipmentNumberEntity.getModifiedBy());
             equipmentReprocessedProductManagementEntityWithBLOBs.setModifiedTime(equipmentNumberEntity.getModifiedTime());
             equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumberId(id);
-            equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumber(equipmentNumberEntity.getEquipmentNumber());
+            equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentNumber(oldEquipmentNumber);
             equipmentReprocessedProductManagementEntityWithBLOBs.setEquipmentName(equipmentSparePartsManagementEntity.getEquipmentName());
             equipmentReprocessedProductManagementService.add(equipmentReprocessedProductManagementEntityWithBLOBs);//生成返修品记录
         }
