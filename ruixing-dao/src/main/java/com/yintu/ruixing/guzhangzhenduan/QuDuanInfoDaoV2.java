@@ -19,7 +19,7 @@ public interface QuDuanInfoDaoV2 {
 
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
-    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Date time, String tableName);
+    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Date startTime, Date endTime, String tableName);
 
 
     //根据区段id  查询相关的数据

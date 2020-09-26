@@ -51,18 +51,20 @@ public interface QuDuanInfoService {
     /**
      * 每个车站下同一时刻每个区段的详情
      *
-     * @param czId 车站id
-     * @param time 时间戳
+     * @param czId      车站id
+     * @param startTime 开始时间
+     * @param endTime   结束时间
      * @return
      */
-    List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Date time);
+    List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Date startTime, Date endTime);
 
     /**
-     * @param czId 车站id
-     * @param time 时间
+     * @param czId      车站id
+     * @param startTime 开始时间
+     * @param endTime   结束时间
      * @return
      */
-    List<JSONObject> findByCondition(Integer czId, Date time);
+    List<JSONObject> findByCondition(Integer czId, Date startTime, Date endTime);
 
     /**
      * 查询车站下区段对应动态属性参数
