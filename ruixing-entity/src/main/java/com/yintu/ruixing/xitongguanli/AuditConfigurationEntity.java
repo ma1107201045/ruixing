@@ -30,7 +30,7 @@ public class AuditConfigurationEntity implements Serializable {
     private Long departmentId;
 
     private String workContext;
-
+    @NotNull
     private Short status;
 
     private DepartmentEntity departmentEntity;

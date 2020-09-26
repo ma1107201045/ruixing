@@ -20,4 +20,6 @@ public interface AuditConfigurationService extends BaseService<AuditConfiguratio
     List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample);
 
     void addOrEditAuditConfigurationUser(Long id, Long[] userId, String loginUserName);
+
+    List<AuditConfigurationEntity> findByExample(String name, String departmentName);
 }

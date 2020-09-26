@@ -1,11 +1,13 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import com.yintu.ruixing.common.enumobject.EnumFlag;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author mlf
@@ -19,6 +21,8 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     private AuditConfigurationDao auditConfigurationDao;
     @Autowired
     private AuditConfigurationUserService auditConfigurationUserService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Override
     public void add(AuditConfigurationEntity entity) {
@@ -40,8 +44,8 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
         AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
         criteria.andIdEqualTo(id);
-        auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
-        return null;
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        return auditConfigurationEntities.isEmpty() ? null : auditConfigurationEntities.get(0);
     }
 
     @Override
@@ -63,7 +67,12 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample) {
-        return auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
+        for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
+            auditConfigurationEntity.setDepartmentEntity(departmentService.findById(auditConfigurationEntity.getDepartmentId()));
+            auditConfigurationEntity.setUserEntities(auditConfigurationUserService.findUserById(auditConfigurationEntity.getId()));
+        }
+        return auditConfigurationEntities;
     }
 
     @Override
@@ -87,5 +96,22 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             auditConfigurationUserEntity.setUserId(userId);
             auditConfigurationUserService.add(auditConfigurationUserEntity);
         }
+    }
+
+    @Override
+    public List<AuditConfigurationEntity> findByExample(String name, String departmentName) {
+        AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
+        AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
+        if (name != null && !"".equals(name)) {
+            criteria.andNameLike("%" + name + "%");
+        }
+        if (departmentName != null && !"".equals(departmentName)) {
+            DepartmentEntityExample departmentEntityExample = new DepartmentEntityExample();
+            DepartmentEntityExample.Criteria criteria1 = departmentEntityExample.createCriteria();
+            criteria1.andNameLike("%" + name + "%");
+            List<DepartmentEntity> departmentEntities = departmentService.findByExample(departmentEntityExample);
+            criteria.andDepartmentIdIn(departmentEntities.stream().map(DepartmentEntity::getId).collect(Collectors.toList()));
+        }
+        return this.findByExample(auditConfigurationEntityExample);
     }
 }

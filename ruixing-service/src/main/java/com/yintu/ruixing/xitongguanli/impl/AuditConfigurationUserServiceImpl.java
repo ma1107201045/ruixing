@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author mlf
@@ -17,6 +20,8 @@ import java.util.List;
 public class AuditConfigurationUserServiceImpl implements AuditConfigurationUserService {
     @Autowired
     private AuditConfigurationUserDao auditConfigurationUserDao;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void add(AuditConfigurationUserEntity entity) {
@@ -46,5 +51,24 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     @Override
     public List<AuditConfigurationUserEntity> findByExample(AuditConfigurationUserEntityExample auditConfigurationUserEntityExample) {
         return auditConfigurationUserDao.selectByExample(auditConfigurationUserEntityExample);
+    }
+
+    @Override
+    public List<UserEntity> findUserById(Long auditConfigurationId) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+        AuditConfigurationUserEntityExample.Criteria criteria1 = auditConfigurationUserEntityExample.createCriteria();
+        criteria1.andAuditConfigurationIdEqualTo(auditConfigurationId);
+        List<AuditConfigurationUserEntity> auditConfigurationUserEntities = this.findByExample(auditConfigurationUserEntityExample);
+        for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
+            UserEntity userEntity = userService.findById(auditConfigurationUserEntity.getUserId());
+            userEntity.setRoleEntities(null);
+            userEntity.setDepartmentEntities(null);
+            userEntities.add(userEntity);
+        }
+        userEntities = userEntities.stream()
+                .sorted(Comparator.comparing(UserEntity::getId).reversed())
+                .collect(Collectors.toList());
+        return userEntities;
     }
 }

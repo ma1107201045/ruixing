@@ -14,4 +14,6 @@ public interface AuditConfigurationUserService extends BaseService<AuditConfigur
     void remove(AuditConfigurationUserEntityExample auditConfigurationUserEntityExample);
 
     List<AuditConfigurationUserEntity> findByExample(AuditConfigurationUserEntityExample auditConfigurationUserEntityExample);
+
+    List<UserEntity> findUserById(Long auditConfigurationId);
 }
