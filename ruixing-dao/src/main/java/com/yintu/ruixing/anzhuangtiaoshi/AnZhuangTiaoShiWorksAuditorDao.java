@@ -2,6 +2,7 @@ package com.yintu.ruixing.anzhuangtiaoshi;
 
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksAuditorEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface AnZhuangTiaoShiWorksAuditorDao {
     List<Integer> findIsPassByObjid(Integer id);
 
     List<Integer> findIsPassByObjidd(Integer id);
+
+    Integer findidByIds(@Param("id") Integer id,@Param("receiverid") Integer receiverid);
 }

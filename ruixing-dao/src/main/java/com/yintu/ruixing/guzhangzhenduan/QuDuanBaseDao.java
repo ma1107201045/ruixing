@@ -75,4 +75,7 @@ public interface QuDuanBaseDao {
     List<QuDuanBaseEntity> findDianMaHuaByCid(Integer cid);
 
     QuDuanBaseEntity selectByCzIdAndQuduanyunyingName(Integer czId, String quDuanYunYingName);
+
+    String findQuduanName(@Param("stationId") Integer stationId,@Param("sectionId")  Integer sectionId);
+
 }

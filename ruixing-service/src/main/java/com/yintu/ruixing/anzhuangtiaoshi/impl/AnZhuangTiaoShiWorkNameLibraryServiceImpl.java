@@ -79,9 +79,11 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
             recordMessageEntity.setTypenum(3);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
+        Integer auid=anZhuangTiaoShiWorksAuditorDao.findidByIds(id,receiverid);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorksAuditorEntity.setAuditorId(receiverid);
+        anZhuangTiaoShiWorksAuditorEntity.setId(auid);
         anZhuangTiaoShiWorksAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorksAuditorEntity);
         List<Integer> ispass = anZhuangTiaoShiWorksAuditorDao.findIsPassByObjidd(id);
         if (ispass.size() == 1 && ispass.get(0) == null) {

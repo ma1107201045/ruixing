@@ -85,34 +85,42 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             recordMessageEntity.setTypenum(2);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
+        Integer auid=anZhuangTiaoShiWorksAuditorDao.findidByIds(id,receiverid);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorksAuditorEntity.setAuditorId(receiverid);
+        anZhuangTiaoShiWorksAuditorEntity.setId(auid);
         anZhuangTiaoShiWorksAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorksAuditorEntity);
         List<Integer> ispass = anZhuangTiaoShiWorksAuditorDao.findIsPassByObjid(id);
         if (ispass.size() == 1 && ispass.get(0) == null) {
-            AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
+            AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(1);
-            anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
         }
         if (ispass.size() == 1 && ispass.get(0) != null && ispass.get(0) == 1) {
-            AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
+            AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(2);
-            anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
         }
         if (ispass.size() == 1 && ispass.get(0) != null && ispass.get(0) == 0) {
-            AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
+            AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(1);
-            anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
         }
-        if (ispass.size() > 1) {
-            AnZhuangTiaoShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameTotalEntity();
+        if (ispass.size() > 1 && ispass.get(0) == null) {
+            AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity();
+            wenTiEntity.setId(id);
+            wenTiEntity.setAuditorState(1);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+        }
+        if (ispass.size() > 1 && ispass.get(0) != null) {
+            AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity wenTiEntity = new AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity();
             wenTiEntity.setId(id);
             wenTiEntity.setAuditorState(3);
-            anZhuangTiaoShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
+            anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(wenTiEntity);
         }
     }
 
@@ -160,9 +168,11 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             recordMessageEntity.setTypenum(1);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
+        Integer auid=anZhuangTiaoShiWorksAuditorDao.findidByIds(id,receiverid);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorksAuditorEntity.setAuditorId(receiverid);
+        anZhuangTiaoShiWorksAuditorEntity.setId(auid);
         anZhuangTiaoShiWorksAuditorDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorksAuditorEntity);
         List<Integer> ispass = anZhuangTiaoShiWorksAuditorDao.findIsPassByObjid(id);
         if (ispass.size() == 1 && ispass.get(0) == null) {
@@ -205,7 +215,11 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
 
     @Override
     public AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id, Integer receiverid) {
-        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity =null;
+         workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
+        if (workNameTotalEntity==null){
+             workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksByid(id);
+        }
         //查找此作业项配置版本有多少个作业项
         Integer worknametotal = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameTatol(id);
         workNameTotalEntity.setWorknametotal(worknametotal);
@@ -232,6 +246,8 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
         Integer wntid = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getWntid();
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUpdatename(username);
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUpdatetime(nowTime);
+        anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setAuditorState(1);
+        anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setUserid(receiverid);
         anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity);
         AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.selectByPrimaryKey(id);
         Integer aa = 0;
@@ -280,7 +296,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             messageEntity.setSenderId(receiverid);
             messageEntity.setReceiverId(uid);
             messageEntity.setStatus((short) 1);
-            messageEntity.setSmallType((short) 5);
+            messageEntity.setSmallType((short) 6);
             messageService.sendMessage(messageEntity);
         }
 

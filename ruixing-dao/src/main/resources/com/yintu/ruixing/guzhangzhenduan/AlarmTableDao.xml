@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.guzhangzhenduan.AlarmTableDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="send_num" jdbcType="INTEGER" property="sendNum" />
+    <result column="createtime" jdbcType="INTEGER" property="createtime" />
+    <result column="station_id" jdbcType="INTEGER" property="stationId" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="alarmcode" jdbcType="INTEGER" property="alarmcode" />
+    <result column="reserved1" jdbcType="INTEGER" property="reserved1" />
+    <result column="reserved2" jdbcType="INTEGER" property="reserved2" />
+    <result column="alarmlevel" jdbcType="INTEGER" property="alarmlevel" />
+    <result column="status" jdbcType="BIT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2, 
+    alarmlevel, status
+  </sql>
+
+
+    <select id="findAllNotReadAlarmDatas"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where status !=1
+    </select>
+
+
+  <update id="editAlarmState" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    update ${tableName}
+    set
+        status = #{status},
+    where status !=1
+  </update>
+
+  <!--查询未读的数量-->
+  <select id="findAlarmNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+        count( STATUS )
+    FROM
+        ${tableName}
+    WHERE
+        STATUS =0
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from alarm_11_202009
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from alarm_11_202009
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    insert into alarm_11_202009 (id, msg_id, send_num, 
+      createtime, station_id, section_id, 
+      alarmcode, reserved1, reserved2, 
+      alarmlevel, status)
+    values (#{id,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, #{sendNum,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, 
+      #{alarmcode,jdbcType=INTEGER}, #{reserved1,jdbcType=INTEGER}, #{reserved2,jdbcType=INTEGER}, 
+      #{alarmlevel,jdbcType=INTEGER}, #{status,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    insert into alarm_11_202009
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="sendNum != null">
+        send_num,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="stationId != null">
+        station_id,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="alarmcode != null">
+        alarmcode,
+      </if>
+      <if test="reserved1 != null">
+        reserved1,
+      </if>
+      <if test="reserved2 != null">
+        reserved2,
+      </if>
+      <if test="alarmlevel != null">
+        alarmlevel,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="sendNum != null">
+        #{sendNum,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=INTEGER},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="alarmcode != null">
+        #{alarmcode,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        #{reserved1,jdbcType=INTEGER},
+      </if>
+      <if test="reserved2 != null">
+        #{reserved2,jdbcType=INTEGER},
+      </if>
+      <if test="alarmlevel != null">
+        #{alarmlevel,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    update alarm_11_202009
+    <set>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="sendNum != null">
+        send_num = #{sendNum,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=INTEGER},
+      </if>
+      <if test="stationId != null">
+        station_id = #{stationId,jdbcType=INTEGER},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
+      <if test="alarmcode != null">
+        alarmcode = #{alarmcode,jdbcType=INTEGER},
+      </if>
+      <if test="reserved1 != null">
+        reserved1 = #{reserved1,jdbcType=INTEGER},
+      </if>
+      <if test="reserved2 != null">
+        reserved2 = #{reserved2,jdbcType=INTEGER},
+      </if>
+      <if test="alarmlevel != null">
+        alarmlevel = #{alarmlevel,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
+    update alarm_11_202009
+    set msg_id = #{msgId,jdbcType=INTEGER},
+      send_num = #{sendNum,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=INTEGER},
+      station_id = #{stationId,jdbcType=INTEGER},
+      section_id = #{sectionId,jdbcType=INTEGER},
+      alarmcode = #{alarmcode,jdbcType=INTEGER},
+      reserved1 = #{reserved1,jdbcType=INTEGER},
+      reserved2 = #{reserved2,jdbcType=INTEGER},
+      alarmlevel = #{alarmlevel,jdbcType=INTEGER},
+      status = #{status,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

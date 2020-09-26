@@ -99,6 +99,18 @@
         <result column="time" jdbcType="TIMESTAMP" property="time"/>
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
     </resultMap>
+
+
+    <select id="findQuduanName" resultType="java.lang.String">
+        SELECT
+        quDuanYunYing_name
+        FROM
+        mro_quduan_base
+        WHERE
+        cz_id = #{stationId}
+        AND qdid = #{sectionId}
+    </select>
+
     <!--根据车站cid  查询对应的电码化数据-->
     <select id="findDianMaHuaByCid" resultMap="BaseResultMapp">
         SELECT

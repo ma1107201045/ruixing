@@ -75,7 +75,7 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
         return ResponseDataUtil.ok("查询时间轴数据成功", recordMessageEntityList);
     }
 
-    //根据问题id 编辑审核过程
+    //根据 id 编辑审核过程
     @PutMapping("/editAuditorByWId/{id}")
     public Map<String, Object> editAuditorByWId(@PathVariable Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, Integer senderId) {
         String username = this.getLoginUser().getTrueName();

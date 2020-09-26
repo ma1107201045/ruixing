@@ -22,4 +22,9 @@ public interface BaoJingYuJingPropertyService {
 
     List<QuDuanBaseEntity> findAllQuDuan();
 
+    Integer findAlarmNumber(String tableName);
+
+    void editAlarmState(AlarmTableEntity alarmTableEntity,String tableName);
+
+    List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size,String tableName);
 }

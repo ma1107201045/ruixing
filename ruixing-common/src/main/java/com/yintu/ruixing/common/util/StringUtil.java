@@ -35,4 +35,10 @@ public class StringUtil {
         return "data_applydata_" + czId + "_" + DateUtil.year(time) + monthStr;
     }
 
+    public static String getBaoJingYuJingTableName(int czId, Date time) {
+        int month = DateUtil.month(time) + 1;
+        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+        return "alarm_" + czId + "_" + DateUtil.year(time) + monthStr;
+    }
+
 }

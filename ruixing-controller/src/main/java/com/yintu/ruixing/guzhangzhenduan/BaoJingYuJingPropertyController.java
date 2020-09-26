@@ -4,15 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -80,4 +78,40 @@ public class BaoJingYuJingPropertyController {
             return ResponseDataUtil.error("请选择要查询的报警或者预警名称");
         }
     }
+
+    //根据车站czid 统计未读报警预警的数量
+    @GetMapping("/findAlarmNumber")
+    public Map<String,Object>findAlarmNumber(Integer czid){
+        Date dayTime=new Date();
+        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+        Integer AlarmNumber=baoJingYuJingPropertyService.findAlarmNumber(tableName);
+        return ResponseDataUtil.ok("查询成功",AlarmNumber);
+    }
+
+
+    //更改未读状态
+    @PutMapping("/editAlarmState")
+    public Map<String,Object>editAlarmState(AlarmTableEntity alarmTableEntity,Integer czid){
+        Date dayTime=new Date();
+        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+        baoJingYuJingPropertyService.editAlarmState(alarmTableEntity,tableName);
+        return ResponseDataUtil.ok("编辑成功");
+    }
+
+    //查询所有未读的报警预警数据
+    @GetMapping("/findAllNotReadAlarmDatas")
+    public Map<String,Object>findAllNotReadAlarmDatas(Integer page,Integer size,Integer czid){
+        Date dayTime=new Date();
+        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+        PageHelper.startPage(page,size);
+        List<AlarmEntity> alarmEntityList=baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page,size,tableName);
+        PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
+        return ResponseDataUtil.ok("查询数据成功",alarmEntityPageInfo);
+    }
+
+
+
+
+
+
 }

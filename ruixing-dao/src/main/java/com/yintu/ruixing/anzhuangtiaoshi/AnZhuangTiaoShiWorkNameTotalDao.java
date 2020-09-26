@@ -32,4 +32,6 @@ public interface AnZhuangTiaoShiWorkNameTotalDao {
     String findWorkNameTotalById(@Param("wntid") Integer wntid);
 
     AnZhuangTiaoShiWorkNameTotalEntity findOneWorksByIdd(Integer id);
+
+    AnZhuangTiaoShiWorkNameTotalEntity findOneWorksByid(Integer id);
 }

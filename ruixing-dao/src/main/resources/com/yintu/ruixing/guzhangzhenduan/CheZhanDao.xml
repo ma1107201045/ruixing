@@ -145,13 +145,23 @@
  -->
 
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
+    <select id="findCzNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        	tongXinBianMaGuiDaoNumber + tongXinBianMaZhanNeiOneGuiDaoNumber+jiDianOneToOneGuiDaoNumber+jiDianJiaShiDianMaHuaSheBeiNumber
+        FROM
+        mro_chezhan
+        WHERE
+        cid = #{id}
+    </select>
+
+    <!--根据线段专用xdid  查询对应的相邻6车站信息-->
     <select id="findNumBycid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select
         	jiDianJiaShiDianMaHuaSheBeiNumber + jiDianDianMaHuaNumber
         FROM
         mro_chezhan
         WHERE
-        cid = #{id}
+        cz_id = #{stationId}
     </select>
 
 

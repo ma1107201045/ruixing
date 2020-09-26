@@ -22,6 +22,14 @@
   </sql>
 
 
+  <!--根据id 查询作业项配置版本-->
+  <select id="findOneWorksByid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_worknametotal
+    where id=#{id}
+  </select>
+
   <!--查询所有的作业项配置版本-->
   <select id="findOneWorksByIdd"  resultMap="BaseResultMap">
     select

@@ -18,6 +18,17 @@
     updateName
   </sql>
 
+  <select id="findidByIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        id
+        from mro_anzhuangtiaoshi_works_auditor
+        where
+            object_id = #{id}
+        AND auditor_id =#{receiverid}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
   <!--根据项目id  查询此问题通过的数量-->
   <select id="findIsPassByObjidd" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select
@@ -154,7 +165,7 @@
         updateName = #{updatename,jdbcType=VARCHAR},
       </if>
     </set>
-    where auditor_id = #{auditorId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksAuditorEntity">
     update mro_anzhuangtiaoshi_works_auditor
