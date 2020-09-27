@@ -151,7 +151,7 @@
         FROM
         mro_chezhan
         WHERE
-        cid = #{id}
+          cz_id = #{stationId}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
@@ -161,7 +161,7 @@
         FROM
         mro_chezhan
         WHERE
-        cz_id = #{stationId}
+      cid = #{id}
     </select>
 
 

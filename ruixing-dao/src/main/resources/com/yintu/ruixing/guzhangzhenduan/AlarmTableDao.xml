@@ -19,7 +19,15 @@
     alarmlevel, status
   </sql>
 
+  <!--查询所有的报警预警数据-->
+  <select id="findAllAlarmDatas"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ${tableName}
+  </select>
 
+
+  <!--查询未读的报警预警数据-->
     <select id="findAllNotReadAlarmDatas"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />

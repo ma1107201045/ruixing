@@ -16,6 +16,20 @@
         id, create_by, create_time, modified_by, modified_time, start_time, end_time, cz_id,
     qd_id
     </sql>
+
+    <!--根据车站id  和区段id 查询对应的天窗数据-->
+    <select id="findSkyLight" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_skylight_time
+        WHERE
+        cz_id =  #{stationId,jdbcType=INTEGER}
+        AND qd_id =  #{sectionId,jdbcType=INTEGER}
+        ORDER BY
+        start_time DESC
+        LIMIT 1
+    </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

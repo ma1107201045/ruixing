@@ -19,11 +19,13 @@ public interface AlarmTableDao {
     int updateByPrimaryKeySelective(AlarmTableEntity record);
 
     int updateByPrimaryKey(AlarmTableEntity record);
-/////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////
     Integer findAlarmNumber(@Param("tableName") String tableName);
 
-    void editAlarmState(AlarmTableEntity alarmTableEntity,String tableName);
+    void editAlarmState(AlarmTableEntity alarmTableEntity, String tableName);
 
-    List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("tableName")String tableName);
+    List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("tableName") String tableName);
 
+    List<AlarmTableEntity> findAllAlarmDatas(@Param("tableName") String tableName);
 }

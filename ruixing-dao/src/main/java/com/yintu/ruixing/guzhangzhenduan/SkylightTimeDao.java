@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -22,4 +23,6 @@ public interface SkylightTimeDao {
     SkylightTimeEntity selectByCzIdAndQdId(Integer czId, Integer qdId);
 
     List<SkylightTimeEntity> connectSelectByCondition(Integer id, Date startTime, Date endTime, Integer czId);
+
+    SkylightTimeEntity findSkyLight(@Param("stationId") Integer stationId,@Param("sectionId")  Integer sectionId);
 }
