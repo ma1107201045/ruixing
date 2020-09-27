@@ -6,6 +6,8 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class CustomerController extends SessionController {
     private CustomerDutyService customerDutyService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuditConfigurationService auditConfigurationService;
+
 
     @PostMapping
     @ResponseBody
@@ -150,6 +155,23 @@ public class CustomerController extends SessionController {
                 .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
                 .collect(Collectors.toList());
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
+    }
+
+    /**
+     * 查询配置的用户
+     *
+     * @return 用户列表
+     */
+    @GetMapping("/audit/configurations")
+    @ResponseBody
+    public Map<String, Object> findAuditConfigurations() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, null, (short) 1);
+        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .sorted(Comparator.comparing(UserEntity::getId).reversed())
+                .collect(Collectors.toList()))
+        );
+        return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
     }
 
 

@@ -2,11 +2,9 @@ package com.yintu.ruixing.xitongguanli.impl;
 
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.xitongguanli.DepartmentDao;
-import com.yintu.ruixing.xitongguanli.DepartmentEntity;
-import com.yintu.ruixing.xitongguanli.DepartmentEntityExample;
-import com.yintu.ruixing.xitongguanli.DepartmentService;
+import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.Literal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +20,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentDao departmentDao;
-
+    @Autowired
+    private DepartmentUserService departmentUserService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void add(DepartmentEntity departmentEntity) {
@@ -123,6 +124,19 @@ public class DepartmentServiceImpl implements DepartmentService {
                 this.removeByIdAndIsFirst(departmentEntity.getId(), false);
             }
         }
+    }
+
+    @Override
+    public List<UserEntity> findUsersById(Long id) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        DepartmentUserEntityExample departmentUserEntityExample = new DepartmentUserEntityExample();
+        DepartmentUserEntityExample.Criteria criteria = departmentUserEntityExample.createCriteria();
+        criteria.andDepartmentIdEqualTo(id);
+        List<DepartmentUserEntity> departmentUserEntities = departmentUserService.findByExample(departmentUserEntityExample);
+        for (DepartmentUserEntity departmentUserEntity : departmentUserEntities) {
+            userEntities.add(userService.findById(departmentUserEntity.getUserId()));
+        }
+        return userEntities;
     }
 
 

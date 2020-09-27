@@ -24,8 +24,6 @@ public class AuditConfigurationController extends SessionController {
     private AuditConfigurationService auditConfigurationService;
     @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private UserService userService;
 
     @PostMapping
     public Map<String, Object> add(@Validated AuditConfigurationEntity entity, @RequestParam Long[] userIds) {
@@ -83,8 +81,8 @@ public class AuditConfigurationController extends SessionController {
     }
 
     @GetMapping("/users")
-    public Map<String, Object> findUsers() {
-        List<UserEntity> userEntities = userService.findAll();
+    public Map<String, Object> findUsers(@RequestParam Long departmentId) {
+        List<UserEntity> userEntities = departmentService.findUsersById(departmentId);
         userEntities = userEntities.stream()
                 .sorted(Comparator.comparing(UserEntity::getId).reversed())
                 .collect(Collectors.toList());
