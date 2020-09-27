@@ -68,7 +68,7 @@ public class AuditConfigurationController extends SessionController {
                                        @RequestParam(value = "name", required = false) String name,
                                        @RequestParam(value = "department_name", required = false) String departmentName) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(name, departmentName);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(name, departmentName, null);
         PageInfo<AuditConfigurationEntity> pageInfo = new PageInfo<>(auditConfigurationEntities);
         return ResponseDataUtil.ok("查询审批流配置信息列表成功", pageInfo);
     }

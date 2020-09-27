@@ -99,7 +99,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public List<AuditConfigurationEntity> findByExample(String name, String departmentName) {
+    public List<AuditConfigurationEntity> findByExample(String name, String departmentName, Short status) {
         AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
         AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
         if (name != null && !"".equals(name)) {
@@ -108,9 +108,14 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         if (departmentName != null && !"".equals(departmentName)) {
             DepartmentEntityExample departmentEntityExample = new DepartmentEntityExample();
             DepartmentEntityExample.Criteria criteria1 = departmentEntityExample.createCriteria();
-            criteria1.andNameLike("%" + name + "%");
+            criteria1.andNameLike("%" + departmentName + "%");
             List<DepartmentEntity> departmentEntities = departmentService.findByExample(departmentEntityExample);
+            if (departmentEntities.isEmpty())
+                return new ArrayList<>();
             criteria.andDepartmentIdIn(departmentEntities.stream().map(DepartmentEntity::getId).collect(Collectors.toList()));
+        }
+        if (status != null) {
+            criteria.andStatusEqualTo(status);
         }
         return this.findByExample(auditConfigurationEntityExample);
     }
