@@ -103,12 +103,23 @@ public class BaoJingYuJingPropertyController {
     public Map<String,Object>findAllNotReadAlarmDatas(Integer page,Integer size,Integer czid){
         Date dayTime=new Date();
         String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        PageHelper.startPage(page,size);
+        //PageHelper.startPage(page,size);
         List<AlarmEntity> alarmEntityList=baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page,size,tableName);
-        PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
-        return ResponseDataUtil.ok("查询数据成功",alarmEntityPageInfo);
+       // PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
+        return ResponseDataUtil.ok("查询数据成功",alarmEntityList);
     }
 
+    //查询历史记录的预警报警数据
+
+    @GetMapping("/findAllHistoryAlarmDatas")
+    public Map<String,Object>findAllHistoryAlarmDatas(Integer page,Integer size,Integer czid){
+        Date dayTime=new Date();
+        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+        //PageHelper.startPage(page,size);
+        List<AlarmEntity> alarmEntityList=baoJingYuJingPropertyService.findAllHistoryAlarmDatas(page,size,tableName);
+        // PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
+        return ResponseDataUtil.ok("查询数据成功",alarmEntityList);
+    }
 
 
 

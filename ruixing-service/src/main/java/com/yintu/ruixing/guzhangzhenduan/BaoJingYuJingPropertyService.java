@@ -27,4 +27,7 @@ public interface BaoJingYuJingPropertyService {
     void editAlarmState(AlarmTableEntity alarmTableEntity,String tableName);
 
     List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size,String tableName);
+
+    List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName);
+
 }
