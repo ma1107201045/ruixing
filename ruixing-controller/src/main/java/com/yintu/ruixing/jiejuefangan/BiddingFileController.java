@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +37,8 @@ public class BiddingFileController extends SessionController {
     private SolutionLogService solutionLogService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuditConfigurationService auditConfigurationService;
 
 
     @PostMapping
@@ -115,6 +120,22 @@ public class BiddingFileController extends SessionController {
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
+    /**
+     * 查询配置的用户
+     *
+     * @return 用户列表
+     */
+    @GetMapping("/audit/configurations")
+    @ResponseBody
+    public Map<String, Object> findAuditConfigurations() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, null, (short) 1);
+        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .sorted(Comparator.comparing(UserEntity::getId).reversed())
+                .collect(Collectors.toList()))
+        );
+        return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
+    }
 
     /**
      * 审核文件

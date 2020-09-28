@@ -6,6 +6,8 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +36,9 @@ public class PreSaleFileController extends SessionController {
     @Autowired
     private PreSaleFileService preSaleFileService;
     @Autowired
-    private SolutionLogService solutionLogService;
-    @Autowired
     private UserService userService;
-
+    @Autowired
+    private AuditConfigurationService auditConfigurationService;
 
     @PostMapping
     @ResponseBody
@@ -100,6 +102,12 @@ public class PreSaleFileController extends SessionController {
         preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
 
+    /**
+     * 查询所有用户
+     *
+     * @param trueName 真实姓名模糊查询
+     * @return 用户列表
+     */
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
@@ -108,16 +116,24 @@ public class PreSaleFileController extends SessionController {
                 .stream()
                 .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
                 .collect(Collectors.toList());
-
         return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
-
-    @GetMapping("/{id}/log")
+    /**
+     * 查询配置的用户
+     *
+     * @return 用户列表
+     */
+    @GetMapping("/audit/configurations")
     @ResponseBody
-    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
-        return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
+    public Map<String, Object> findAuditConfigurations() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, null, (short) 1);
+        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
+                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .sorted(Comparator.comparing(UserEntity::getId).reversed())
+                .collect(Collectors.toList()))
+        );
+        return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
     }
 
     /**

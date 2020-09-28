@@ -50,5 +50,10 @@ public interface DepartmentService extends BaseService<DepartmentEntity, Long> {
      */
     void removeByIdAndIsFirst(Long id, Boolean isFirst);
 
+    /**
+     * @param id 部门id
+     * @return 指定部门下所有用户
+     */
+    List<UserEntity> findUsersById(Long id);
 
 }
