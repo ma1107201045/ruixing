@@ -4,6 +4,7 @@ import com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -23,9 +24,11 @@ public interface AlarmTableDao {
     /////////////////////////////////////////////////////////
     Integer findAlarmNumber(@Param("tableName") String tableName);
 
-    void editAlarmState(AlarmTableEntity alarmTableEntity, String tableName);
+    void editAlarmState( @Param("status")Integer status, @Param("tableName") String tableName);
 
     List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("tableName") String tableName);
 
     List<AlarmTableEntity> findAllAlarmDatas(@Param("tableName") String tableName);
+
+    List<AlarmTableEntity> findAllAlarmDatasByTimes(@Param("tableName")String tableName,@Param("starTime") Long starTime,@Param("endTime") Long endTime);
 }

@@ -30,4 +30,5 @@ public interface BaoJingYuJingPropertyService {
 
     List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName);
 
+    List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid);
 }

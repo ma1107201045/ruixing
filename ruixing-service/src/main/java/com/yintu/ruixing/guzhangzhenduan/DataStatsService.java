@@ -165,4 +165,7 @@ public interface DataStatsService {
     void qingChuaDMHByCid(CheZhanEntity cheZhanEntity);
 
     Integer findNumBycid(Integer id);
+
+    List<DianWuDuanEntity> findAllDianWuDuan();
+
 }
