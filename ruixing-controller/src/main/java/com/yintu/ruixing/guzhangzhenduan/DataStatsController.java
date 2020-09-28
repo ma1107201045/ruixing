@@ -1030,6 +1030,15 @@ public class DataStatsController {
     }
 
 
+    //查找所有的电务段名和id
+    @GetMapping("/findAllDianWuDuan")
+    public Map<String,Object>findAllDianWuDuan(){
+        List<DianWuDuanEntity> duanEntityList=dataStatsService.findAllDianWuDuan();
+        return ResponseDataUtil.ok("查询电务段成功",duanEntityList);
+    }
+
+
+
     //查询站外所有的区段信息  排除电码化
     @GetMapping("/findAllQuDuan")
     public Map<String, Object> findAllQuDuan(@RequestParam(value = "page", required = false) Integer page,

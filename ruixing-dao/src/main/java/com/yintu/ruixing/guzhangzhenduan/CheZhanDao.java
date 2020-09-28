@@ -111,4 +111,10 @@ public interface CheZhanDao {
     Integer findNumBycid(Integer id);
 
     Integer findCzNumber(@Param("stationId") Integer stationId);
+
+    List<CheZhanEntity> findczidBydwdName(@Param("dwdid") Integer dwdid);
+
+    List<CheZhanEntity> findczidBydwdNamexdName(@Param("dwdid") Integer dwdid, @Param("xdid") Integer xdid);
+
+    Integer findCzid(@Param("czid") Integer czid);
 }

@@ -63,4 +63,7 @@ public interface DataStatsDao {
     void editDMHStaCteByCid(CheZhanEntity cheZhanEntity);
 
     void qingChuaDMHByCid(CheZhanEntity cheZhanEntity);
+
+    List<DianWuDuanEntity> findAllDianWuDuan();
+
 }

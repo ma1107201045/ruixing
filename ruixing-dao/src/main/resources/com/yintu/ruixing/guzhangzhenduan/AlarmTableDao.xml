@@ -19,6 +19,20 @@
     alarmlevel, status
   </sql>
 
+  <!--根据时间段  查询所有的报警预警数据-->
+  <select id="findAllAlarmDatasByTimes"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ${tableName}
+    <where>
+      <if test="starTime != null and endTime != null">
+        createtime BETWEEN ${starTime}
+        AND ${endTime}
+      </if>
+    </where>
+  </select>
+
+
   <!--查询所有的报警预警数据-->
   <select id="findAllAlarmDatas"  resultMap="BaseResultMap">
     select
@@ -32,15 +46,14 @@
         select
         <include refid="Base_Column_List" />
         from ${tableName}
-        where status !=1
+        where status =0
     </select>
 
 
   <update id="editAlarmState" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
     update ${tableName}
     set
-        status = #{status},
-    where status !=1
+        status = #{status}
   </update>
 
   <!--查询未读的数量-->

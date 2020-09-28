@@ -144,6 +144,47 @@
      </update>
  -->
 
+
+    <!--根据czid 查询车站的专用id-->
+    <select id="findCzid" resultType="java.lang.Integer">
+        SELECT
+            cz_id
+        FROM
+            mro_chezhan
+        WHERE
+            cid=#{czid}
+    </select>
+
+
+    <!--根据电务段id 和线段id  查询下面的车站czid-->
+    <select id="findczidBydwdNamexdName" resultMap="chezhan">
+        SELECT
+            cz_id
+        FROM
+            mro_dianwuduan dwd,
+            mro_xianduan xd,
+            mro_chezhan cz
+        WHERE
+            dwd.did = xd.dwd_xd_id
+            AND xd.xid = cz.xd_cz_id
+            AND dwd.did = #{dwdid}
+            AND xd.xid = #{xdid}
+    </select>
+
+    <!--根据电务段id  查询下面的车站czid-->
+    <select id="findczidBydwdName" resultMap="chezhan">
+        SELECT
+            cz_id
+        FROM
+            mro_dianwuduan dwd,
+            mro_xianduan xd,
+            mro_chezhan cz
+        WHERE
+            dwd.did = xd.dwd_xd_id
+            AND xd.xid = cz.xd_cz_id
+            AND dwd.did = #{dwdid}
+    </select>
+
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
     <select id="findCzNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select

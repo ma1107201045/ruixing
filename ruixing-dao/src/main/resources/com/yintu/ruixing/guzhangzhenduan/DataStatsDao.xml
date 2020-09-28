@@ -488,6 +488,16 @@
             tlj_dwd_id = #{tid}
     </select>
 
+    <!--查询所有的电务段-->
+    <select id="findAllDianWuDuan"  resultMap="dianwuduan">
+
+        SELECT
+            did,
+            dwd_name
+        FROM
+            mro_dianwuduan
+    </select>
+
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity" id="xianduan">
         <result property="xid" column="xid"/>
         <result property="xdId" column="xd_id"/>

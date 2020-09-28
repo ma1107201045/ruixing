@@ -339,6 +339,11 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
+    public List<DianWuDuanEntity> findAllDianWuDuan() {
+        return dataStatsDao.findAllDianWuDuan();
+    }
+
+    @Override
     public List<QuDuanBaseEntity> findAllQuDuan(Integer page,Integer size) {
         List<QuDuanBaseEntity> quDuanBaseEntityList=quDuanBaseDao.findAllQuDuan();
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntityList) {
