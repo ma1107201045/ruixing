@@ -40,6 +40,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid) {
+        Integer a=0;
         Date dayTime = new Date();
         List<AlarmEntity> alarmEntityList = new ArrayList<>();
         if (dwdid != null && xdid == null && czid == null) {
@@ -48,7 +49,9 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
                 Integer czId = new Long(cheZhanEntity.getCzId()).intValue();
                 String tableName = StringUtil.getBaoJingYuJingTableName(czId, dayTime);
-                if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+                if (quDuanInfoDaoV2.isTableExist(tableName) == 0) {
+                    a++;
+                } else {
                     Long startime = null;
                     Long endtimee = null;
                     if (starTime != null && endTime != null) {
@@ -129,18 +132,17 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                         alarmEntity.setOpentime(parse);
                         alarmEntityList.add(alarmEntity);
                     }
-                } else {
-                    return new ArrayList<>();
                 }
             }
         }
         if (dwdid != null && xdid != null && czid == null) {
             List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findczidBydwdNamexdName(dwdid, xdid);
-
             for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
                 Integer czId = new Long(cheZhanEntity.getCzId()).intValue();
                 String tableName = StringUtil.getBaoJingYuJingTableName(czId, dayTime);
-                if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+                if (quDuanInfoDaoV2.isTableExist(tableName) == 0) {
+                    a++;
+                } else {
                     Long startime = null;
                     Long endtimee = null;
                     if (starTime != null && endTime != null) {
@@ -221,15 +223,15 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                         alarmEntity.setOpentime(parse);
                         alarmEntityList.add(alarmEntity);
                     }
-                } else {
-                    return new ArrayList<>();
                 }
             }
         }
         if (dwdid != null && xdid != null && czid != null) {
             Integer czId = cheZhanDao.findCzid(czid);
             String tableName = StringUtil.getBaoJingYuJingTableName(czId, dayTime);
-            if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            if (quDuanInfoDaoV2.isTableExist(tableName) == 0) {
+                a++;
+            } else {
                 Long startime = null;
                 Long endtimee = null;
                 if (starTime != null && endTime != null) {
@@ -309,8 +311,6 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     alarmEntity.setOpentime(parse);
                     alarmEntityList.add(alarmEntity);
                 }
-            } else {
-                return new ArrayList<>();
             }
         }
         return alarmEntityList;
