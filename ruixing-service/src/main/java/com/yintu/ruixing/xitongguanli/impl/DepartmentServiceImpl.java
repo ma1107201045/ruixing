@@ -134,7 +134,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         criteria.andDepartmentIdEqualTo(id);
         List<DepartmentUserEntity> departmentUserEntities = departmentUserService.findByExample(departmentUserEntityExample);
         for (DepartmentUserEntity departmentUserEntity : departmentUserEntities) {
-            userEntities.add(userService.findById(departmentUserEntity.getUserId()));
+            UserEntity userEntity = userService.findById(departmentUserEntity.getUserId());
+            if (userEntity != null)
+                userEntities.add(userEntity);
         }
         return userEntities;
     }
