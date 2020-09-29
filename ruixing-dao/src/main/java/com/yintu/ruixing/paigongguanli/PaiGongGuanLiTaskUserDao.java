@@ -10,14 +10,14 @@ import java.util.List;
 public interface PaiGongGuanLiTaskUserDao {
     int insert(PaiGongGuanLiTaskUserEntity record);
 
-    int insertSelective(PaiGongGuanLiTaskUserEntity record);
-
     PaiGongGuanLiTaskUserEntity selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKey(PaiGongGuanLiTaskUserEntity record);
 
 
+
     /////////////////////////////////////////////
+    int insertSelective(PaiGongGuanLiTaskUserEntity record);
 
     int deleteByPrimaryKey(Integer id);
 
@@ -32,6 +32,7 @@ public interface PaiGongGuanLiTaskUserDao {
     List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(@Param("id") Integer id, @Param("taskTotalName") String taskTotalName);
 
     List<PaiGongGuanLiTaskUserEntity> findUser(Integer tid, Integer maxTaskshuxingNum, Integer minTaskshuxingNum);
+
 
 
 }

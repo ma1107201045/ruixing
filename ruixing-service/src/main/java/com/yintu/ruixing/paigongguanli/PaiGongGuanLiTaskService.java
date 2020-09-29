@@ -20,7 +20,7 @@ public interface PaiGongGuanLiTaskService {
 
     List<PaiGongGuanLiTaskUserEntity> findSomeUserPowerScore(Integer page, Integer size, String userName);
 
-    List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(Integer page, Integer size, Integer id, String taskTotalName);
+    List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(  Integer id, String taskTotalName);
 
     void editUserPowerScoreById(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity);
 
@@ -29,4 +29,10 @@ public interface PaiGongGuanLiTaskService {
     List<PaiGongGuanLiBusinessTypeEntity> findChuChaiById(Integer id);
 
     void deleteTaskByIds(Integer[] ids);
+
+    void addTaskScore(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity);
+
+    List<PaiGongGuanLiTaskEntity> findAllTasks();
+
+    void deleteUserTaskByIds(Integer[] ids);
 }

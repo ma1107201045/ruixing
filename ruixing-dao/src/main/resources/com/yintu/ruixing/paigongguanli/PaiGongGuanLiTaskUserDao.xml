@@ -37,6 +37,7 @@
     <select id="findUserPowerScoreById" resultMap="BaseResultMap">
         SELECT
         ptu.id,
+        ptu.tid,
         u.true_name,
         pt.taskTotalName,
         ptu.score
@@ -98,7 +99,7 @@
     <!--根据tid  删除对应的数据-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_paigongguanli_task_user
-    where tid = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <!--新增类型的时候  给每个人员新增类型-->
@@ -108,6 +109,7 @@
   </insert>
 
 
+    <!--新增任务-->
     <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
         insert into mro_paigongguanli_task_user
         <trim prefix="(" suffix=")" suffixOverrides=",">

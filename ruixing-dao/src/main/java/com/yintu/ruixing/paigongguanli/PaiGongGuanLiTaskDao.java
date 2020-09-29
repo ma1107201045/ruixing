@@ -27,4 +27,6 @@ public interface PaiGongGuanLiTaskDao {
     List<Integer> findId();
 
     Integer findTid(String renwu);
+
+    List<PaiGongGuanLiTaskEntity> findAllTasks();
 }

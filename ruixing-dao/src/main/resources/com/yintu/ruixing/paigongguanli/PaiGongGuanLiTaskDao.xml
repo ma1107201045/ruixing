@@ -12,6 +12,14 @@
     id, taskTotalName, taskName, businessType, businessTask
   </sql>
 
+  <!--查询所有的任务-->
+  <select id="findAllTasks" resultMap="BaseResultMap" >
+    select
+    id, taskTotalName
+    from mro_paigongguanli_task
+  </select>
+
+
   <!--根据任务名  查询对应的id-->
   <select id="findTid" resultType="java.lang.Integer" >
     select
