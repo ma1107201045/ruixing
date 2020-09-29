@@ -65,18 +65,23 @@ public class WebSocketVideoServer {
         }
         //发送房间人数
         JSONObject jo = new JSONObject();
-        jo.put("type", "init");
-        jo.put("roomNum", webSocketMap.get(meetingNum).size() - 1);
         JSONArray ja = new JSONArray();
         for (Integer s : webSocketMap.keySet()) {
             if (s.equals(meetingNum)) {
                 Set<Session> sessions = webSocketMap.get(s);
                 for (Session session1 : sessions) {
-                    ja.add(session1.getId());
+                    if (session1.getId().equals(session.getId())) {
+                        jo.put("userId", session1.getId());
+                    } else {
+                        ja.add(session1.getId());
+                    }
                 }
                 break;
             }
         }
+        JSONObject data = new JSONObject();
+        data.put("type", "init");
+        jo.put("data", data);
         jo.put("userIds", ja);
         try {
             this.session.getBasicRemote().sendText(jo.toJSONString());
@@ -99,15 +104,24 @@ public class WebSocketVideoServer {
     }
 
     @OnClose
-    public void onClose() {
+    public void onClose() throws IOException {
         for (Integer key : webSocketMap.keySet()) {
             if (key.equals(this.meetingNum)) {
                 Set<Session> sessions = webSocketMap.get(key);
                 for (Session session : sessions) {
                     if (session.equals(this.session)) {
                         sessions.remove(session);
+                        logger.info("onClose.................id：" + this.session.getId());
                         break;
                     }
+                }
+                for (Session session : sessions) {
+                    JSONObject jo = new JSONObject();
+                    JSONObject data = new JSONObject();
+                    data.put("type", "close");
+                    jo.put("data", data);
+                    jo.put("fromOfUserId", this.session.getId());
+                    session.getBasicRemote().sendText(jo.toJSONString());
                 }
                 if (sessions.isEmpty()) {
                     webSocketMap.remove(key);
@@ -121,26 +135,28 @@ public class WebSocketVideoServer {
      * 实现服务器主动推送
      */
     public void sendMessage(String message) {
-        logger.info("发送者sessionId：" + this.session.getId());
         Set<Integer> keys = webSocketMap.keySet();
         for (Integer key : keys) {
             if (key.equals(this.meetingNum)) {
                 Set<Session> sessions = webSocketMap.get(key);
-                for (Session session : sessions) {
-                    if (this.session != session) {
+                JSONObject jo = JSONObject.parseObject(message);
+                String messageType = jo.getJSONObject("data").getString("type");
+                if ("offer".equals(messageType) || "candidate".equals(messageType) || "answer".equals(messageType)) {
+                    for (Session session : sessions) {
                         try {
-                            JSONObject jo = JSONObject.parseObject(message);
-                            jo.put("userId", session.getId());
-                            session.getBasicRemote().sendText(jo.toJSONString());
-                            logger.info("转发者sessionId：" + session.getId() + jo.toJSONString());
+                            if (session.getId().equals(jo.getString("toOfUserId"))) {
+                                session.getBasicRemote().sendText(jo.toJSONString());
+                                logger.info("消息类型" + messageType);
+                                logger.info("发送者id:" + this.session.getId());
+                                logger.info("接受者id:" + session.getId());
+                                break;
+                            }
                         } catch (IOException e) {
                             logger.error(e.getMessage());
                         }
                     }
                 }
-                break;
             }
-
         }
     }
 
