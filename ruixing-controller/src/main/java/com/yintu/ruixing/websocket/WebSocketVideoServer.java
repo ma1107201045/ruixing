@@ -145,7 +145,9 @@ public class WebSocketVideoServer {
                     for (Session session : sessions) {
                         try {
                             if (session.getId().equals(jo.getString("toOfUserId"))) {
-                                session.getBasicRemote().sendText(jo.toJSONString());
+                                synchronized (session) {
+                                    session.getBasicRemote().sendText(jo.toJSONString());
+                                }
                                 logger.info("消息类型" + messageType);
                                 logger.info("发送者id:" + this.session.getId());
                                 logger.info("接受者id:" + session.getId());
