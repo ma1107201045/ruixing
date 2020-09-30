@@ -492,7 +492,11 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public Integer findAlarmNumber(String tableName) {
-        return alarmTableDao.findAlarmNumber(tableName);
+        if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
+            return alarmTableDao.findAlarmNumber(tableName);
+        }else {
+            return 0;
+        }
     }
 
 

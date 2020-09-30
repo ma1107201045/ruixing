@@ -26,6 +26,23 @@ public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
     private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
 
     @Override
+    public void deleteUserTaskByIds(Integer[] ids) {
+        for (Integer id : ids) {
+            paiGongGuanLiTaskUserDao.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
+    public List<PaiGongGuanLiTaskEntity> findAllTasks() {
+        return paiGongGuanLiTaskDao.findAllTasks();
+    }
+
+    @Override
+    public void addTaskScore(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity) {
+        paiGongGuanLiTaskUserDao.insertSelective(paiGongGuanLiTaskUserEntity);
+    }
+
+    @Override
     public void deleteTaskByIds(Integer[] ids) {
         for (int i = 0; i < ids.length; i++) {
             paiGongGuanLiTaskDao.deleteByPrimaryKey(ids[i]);
@@ -49,8 +66,8 @@ public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
     }
 
     @Override
-    public List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(Integer page, Integer size, Integer id,String taskTotalName) {
-        return paiGongGuanLiTaskUserDao.findUserPowerScoreById(id,taskTotalName);
+    public List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(Integer id, String taskTotalName) {
+        return paiGongGuanLiTaskUserDao.findUserPowerScoreById(id, taskTotalName);
     }
 
     @Override
@@ -60,10 +77,10 @@ public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
 
     @Override
     public void addUser(Integer[] uid) {
-        List<Integer> Tid=paiGongGuanLiTaskDao.findId();
+        List<Integer> Tid = paiGongGuanLiTaskDao.findId();
         for (int i = 0; i < uid.length; i++) {
             for (Integer tid : Tid) {
-                paiGongGuanLiTaskUserDao.addTask(uid[i],tid);
+                paiGongGuanLiTaskUserDao.addTask(uid[i], tid);
             }
         }
     }
@@ -93,9 +110,9 @@ public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
         paiGongGuanLiTaskDao.insertSelective(paiGongGuanLiTaskEntity);
         Integer id = paiGongGuanLiTaskEntity.getId();
         List<Integer> Uid = paiGongGuanLiTaskUserDao.findUid();
-        if (Uid.size()!=0){
+        if (Uid.size() != 0) {
             for (Integer uid : Uid) {
-                paiGongGuanLiTaskUserDao.addTask(uid,id);
+                paiGongGuanLiTaskUserDao.addTask(uid, id);
             }
         }
     }

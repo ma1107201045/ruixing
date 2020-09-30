@@ -28,5 +28,5 @@ public interface PermissionDao {
 
     int updateByPrimaryKey(PermissionEntity record);
 
-    List<String> selectByUserIdAndUrl(Long userId,String url);
+    List<String> selectByUserIdAndUrl(@Param("userId") Long userId,@Param("url")String url);
 }

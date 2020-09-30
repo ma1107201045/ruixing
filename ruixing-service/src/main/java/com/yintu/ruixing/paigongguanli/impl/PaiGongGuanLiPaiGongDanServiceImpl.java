@@ -122,17 +122,38 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
                     lianxu.add(lianxutime);
                 }
 
-                Object[] objects = lianxu.toArray();
-                double[] a = {};
                 for (int i = 0; i < lianxu.size(); i++) {
-                    lianxu.get(i);
+
                 }
-                //对连续时间排序
+
                 int n = lianxu.size();
                 HashMap map = new HashMap();
                 for (int i = 0; i < lianxu.size(); i++) {
                     map.put(lianxu.get(i), i); //将值和下标存入Map
                 }
+
+                //排列
+                List list = new ArrayList();
+                Arrays.sort(lianxu.toArray()); //升序排列
+                for (int i = 0; i < lianxu.toArray().length; i++) {
+                    list.add(lianxu.toArray()[i]);
+                }
+
+                List list1 = new ArrayList();//获取时间从小到大排序的原始下标
+                //查找原始下标
+                for (int i = 0; i < n; i++) {
+                    list1.add(map.get(lianxu.toArray()[i]));
+                }
+                for (int i = 0; i <paigongpeoplenumber ; i++) {
+                    int ii = list1.get(i).hashCode();
+                    String username = userlist.get(ii);//得到人员名
+
+
+
+                }
+
+
+
 
 
             }
@@ -146,52 +167,54 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
 
     public static void main(String[] args) {
-        /*int[] a={1,2,9,6,5};
-        int temp =0;
-        for (int i = 0; i < a.length; i++) {
-            for (int i1 = i+1; i1 < a.length; i1++) {
-                if (a[i]>a[i1]){
-                     temp = a[i];
+//        /*int[] a={1,2,9,6,5};
+//        int temp =0;
+//        for (int i = 0; i < a.length; i++) {
+//            for (int i1 = i+1; i1 < a.length; i1++) {
+//                if (a[i]>a[i1]){
+//                     temp = a[i];
+//
+//                    a[i] = a[i1];
+//
+//                    a[i1] = temp;
+//                }
+//            }
+//        }
+//        System.out.println(temp);*/
 
-                    a[i] = a[i1];
-
-                    a[i1] = temp;
-                }
-            }
-        }
-        System.out.println(temp);*/
-
-        List list12 = new ArrayList();
-        int[] arr = {23, 12, 48, 56, 45};
-        int n1 = arr.length;
-
-        HashMap map1 = new HashMap();
-        for (int i = 0; i < arr.length; i++) {
-            map1.put(arr[i], i); //将值和下标存入Map
-        }
-
-
-        int temp = -1;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[i] < arr[j]) {
-                    temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
-
-                }
-            }
-        }
-        System.out.println(Arrays.toString(arr));
-        //查找原始下标
-
-        for (int i = 0; i < n1; i++) {
-            //System.out.println(map.get(a[i]));
-            list12.add("666" + map1.get(arr[i]));
-        }
-
+//
+//        List list12 = new ArrayList();
+//        int[] arr = {23, 12, 48, 56, 45};
+//        int n1 = arr.length;
+//
+//        HashMap map1 = new HashMap();
+//        for (int i = 0; i < arr.length; i++) {
+//            map1.put(arr[i], i); //将值和下标存入Map
+//        }
+//
+//
+//        int temp = -1;
+//        for (int i = 0; i < arr.length; i++) {
+//            for (int j = i + 1; j < arr.length; j++) {
+//                if (arr[i] < arr[j]) {
+//                    temp = arr[i];
+//                    arr[i] = arr[j];
+//                    arr[j] = temp;
+//
+//                }
+//            }
+//        }
+//        System.out.println(Arrays.toString(arr));
+//        //查找原始下标
+//
+//        for (int i = 0; i < n1; i++) {
+//            //System.out.println(map.get(a[i]));
+//            list12.add("666" + map1.get(arr[i]));
+//        }
 
         ///////////////////////////////////
+
+/*
 
         int n = 9;
         int[] a = {8, 5, 4, 6, 2, 1, 7, 9, 3};
@@ -220,18 +243,43 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
         }
         System.out.println(list1);
 
+*/
 
 
-        //获取IP地址
+        int n = 9;
+        Integer[] a = {8, 5, 4, 6, 1, 1, 7, 9, 3};
+        System.out.println("vc"+a[5]);
+        HashMap map = new HashMap();
+        for (int i = 0; i < a.length; i++) {
+            map.put(a[i], i); //将值和下标存入Map
+        }
 
-        try {
-            InetAddress myip= InetAddress.getLocalHost();
+        //排列
+        List list = new ArrayList();
+        Arrays.sort(a); //升序排列
+        for (int i = 0; i < a.length; i++) {
+            list.add(a[i]);
+        }
 
-            System.out.println("你的IP地址是："+myip.getHostAddress());
 
-            System.out.println("主机名为："+myip.getHostName()+"。");
-        }catch (Exception e){
-            e.printStackTrace();
+        /*Collections.reverse(list); //逆序排列,变为降序
+        for (int i = 0; i < list.size(); i++) {
+            a[i] = (Integer) list.get(i);
+        }
+*/
+        List list1 = new ArrayList();
+        //查找原始下标
+        for (int i = 0; i < n; i++) {
+            list1.add(map.get(a[i]));
+        }
+        System.out.println(list1);
+
+        Integer[] b = {8, 5, 4, 6, 1, 1, 7, 9, 3};
+        for (int i = 0; i <= 3; i++) {
+            int i1 = list1.get(i).hashCode();
+            //System.out.println("i1"+i1);
+            //System.out.println(list1.get(i));
+            System.out.println(b[i1]);
         }
 
 
@@ -239,13 +287,17 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
 
 
+        //获取IP地址
 
+        /*try {
+            InetAddress myip = InetAddress.getLocalHost();
 
+            System.out.println("你的IP地址是：" + myip.getHostAddress());
 
-
-
-
-
+            System.out.println("主机名为：" + myip.getHostName() + "。");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
 
 
     }

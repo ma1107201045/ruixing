@@ -100,11 +100,11 @@ public class PaiGongGuanLiTaskController {
 
     //根据人员id  查询所有的任务能力数据
     @GetMapping("/findUserPowerScoreById/{id}")
-    public Map<String, Object> findUserPowerScoreById(@PathVariable Integer id, Integer page, Integer size, String taskTotalName) {
-        PageHelper.startPage(page, size);
-        List<PaiGongGuanLiTaskUserEntity> taskUserEntityList = paiGongGuanLiTaskService.findUserPowerScoreById(page, size, id, taskTotalName);
-        PageInfo<PaiGongGuanLiTaskUserEntity> taskUserEntityPageInfo = new PageInfo<>(taskUserEntityList);
-        return ResponseDataUtil.ok("查询人员能力配置数据成功", taskUserEntityPageInfo);
+    public Map<String, Object> findUserPowerScoreById(@PathVariable Integer id ,String taskTotalName) {
+        //PageHelper.startPage(page, size);
+        List<PaiGongGuanLiTaskUserEntity> taskUserEntityList = paiGongGuanLiTaskService.findUserPowerScoreById(id, taskTotalName);
+        //PageInfo<PaiGongGuanLiTaskUserEntity> taskUserEntityPageInfo = new PageInfo<>(taskUserEntityList);
+        return ResponseDataUtil.ok("查询人员能力配置数据成功", taskUserEntityList);
     }
 
     //根据id  编辑对应的分数
@@ -114,6 +114,26 @@ public class PaiGongGuanLiTaskController {
         return ResponseDataUtil.ok("编辑分数成功");
     }
 
-    //
+    //新增任务
+    @PostMapping("/addTaskScore")
+    public Map<String,Object>addTaskScore(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity){
+        paiGongGuanLiTaskService.addTaskScore(paiGongGuanLiTaskUserEntity);
+        return ResponseDataUtil.ok("新增成功");
+    }
+
+
+    //查询所有任务
+    @GetMapping("/findAllTasks")
+    public Map<String,Object>findAllTasks(){
+        List<PaiGongGuanLiTaskEntity> taskEntityList=paiGongGuanLiTaskService.findAllTasks();
+        return ResponseDataUtil.ok("查询成功",taskEntityList);
+    }
+
+    //根据任务id  单个或者批量删除
+    @DeleteMapping("/deleteUserTaskByIds/{ids}")
+    public Map<String,Object>deleteUserTaskByIds(@PathVariable Integer[] ids){
+        paiGongGuanLiTaskService.deleteUserTaskByIds(ids);
+        return ResponseDataUtil.ok("删除成功");
+    }
 
 }
