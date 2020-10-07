@@ -1,12 +1,10 @@
 package com.yintu.ruixing.paigongguanli;
 
 import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/PaiGongDanAll")
-public class PaiGongGuanLiPaiGongDanController {
+public class PaiGongGuanLiPaiGongDanController extends SessionController {
     @Autowired
     private PaiGongGuanLiPaiGongDanService paiGongGuanLiPaiGongDanService;
 
@@ -36,7 +34,7 @@ public class PaiGongGuanLiPaiGongDanController {
             String paiGongDanNum = suoxie + year + monthStr + "0001";
             return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
         } else {
-            String substring = paigongdannum.substring(8,12);
+            String substring = paigongdannum.substring(8, 12);
             Integer i = Integer.parseInt(substring) + 1;
             String paiGongDanNum = suoxie + year + monthStr + i.toString();
             return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
@@ -46,25 +44,46 @@ public class PaiGongGuanLiPaiGongDanController {
 
     //新增派工单
     @PostMapping("/addPaiGongDan")
-    public Map<String,Object>addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
-        paiGongGuanLiPaiGongDanService.addPaiGongDan(paiGongGuanLiPaiGongDanEntity);
+    public Map<String, Object> addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanService.addPaiGongDan(paiGongGuanLiPaiGongDanEntity, username, senderid);
         return ResponseDataUtil.ok("新增派工单成功");
     }
 
     //根据派工单编号  查询关联单据
     @GetMapping("/findOnePaiGongDanByNum")
-    public Map<String,Object>findOnePaiGongDanByNum(String PaiGongDanNum){
-        List<PaiGongGuanLiPaiGongDanEntity>paiGongDanEntityList=paiGongGuanLiPaiGongDanService.findOnePaiGongDanByNum(PaiGongDanNum);
-        return ResponseDataUtil.ok("查询管理单据成功",paiGongDanEntityList);
+    public Map<String, Object> findOnePaiGongDanByNum(String PaiGongDanNum) {
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList = paiGongGuanLiPaiGongDanService.findOnePaiGongDanByNum(PaiGongDanNum);
+        return ResponseDataUtil.ok("查询管理单据成功", paiGongDanEntityList);
     }
 
 
+    //根据id  编辑派工单
+    @PutMapping("/editPaiGongDanById/{id}")
+    public Map<String, Object> editPaiGongDanById(@PathVariable Integer id, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanService.editPaiGongDanById(id, paiGongGuanLiPaiGongDanEntity, username);
+        return ResponseDataUtil.ok("编辑成功");
+    }
+
+    //根据id  单个或者批量删除派工单
+    @DeleteMapping("/deletePaiGongDanByIds/{ids}")
+    public Map<String, Object> deletePaiGongDanByIds(@PathVariable Integer[] ids) {
+        paiGongGuanLiPaiGongDanService.deletePaiGongDanByIds(ids);
+        return ResponseDataUtil.ok("删除成功");
+    }
 
 
-
-
-
-
+    //根据派工单id  派工人员是否接受派工
+    @PostMapping("/addRecordMessage")
+    public Map<String, Object> addRecordMessage(Integer receiverid ,Integer id, Integer isNotRefuse, String reason) {
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanService.doSomeThing(receiverid,senderid,id, isNotRefuse, reason,username);
+        return ResponseDataUtil.ok("操作成功");
+    }
 
 
 

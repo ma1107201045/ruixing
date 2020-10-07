@@ -19,14 +19,11 @@
     <!--根据tid  和最大分值和最小分值 查询对应的人员-->
     <select id="findUser" resultMap="BaseResultMap">
         SELECT
-            tu.id,
-            tu.true_name
+        <include refid="Base_Column_List"/>
         FROM
-            mro_paigongguanli_task_user ptu,
-            tb_user tu
+            mro_paigongguanli_task_user ptu
         WHERE
-            tu.id = ptu.uid
-            AND ptu.tid = #{tid}
+            ptu.tid = #{tid}
             AND ptu.score BETWEEN #{minTaskshuxingNum}
             AND #{maxTaskshuxingNum}
         ORDER BY

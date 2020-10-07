@@ -34,11 +34,11 @@
 
 
   <!--根据派工人员名  查询对应的数据-->
-  <select id="findUserByName" resultMap="BaseResultMap">
+  <select id="findUserByUserid" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_paigongguanli_paigongdan
-    where paiGongPeople=#{truename} or gaiPaiPeople=#{truename}
+    where paiGongPeople=#{userid} or gaiPaiPeople=#{userid}
     order by chuChaiEndTime desc
   </select>
 
@@ -73,7 +73,8 @@
   </delete>
 
   <!--新增派工单-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity"
+          useGeneratedKeys="true" keyProperty="id">
     insert into mro_paigongguanli_paigongdan
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

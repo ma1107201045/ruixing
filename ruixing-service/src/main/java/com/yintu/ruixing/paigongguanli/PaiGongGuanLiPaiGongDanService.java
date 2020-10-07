@@ -12,7 +12,13 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     String findPaiGongDanNum(String suoxie);
 
-    void addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity);
+    void addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid);
 
     List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum);
+
+    void editPaiGongDanById(Integer id, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username);
+
+    void deletePaiGongDanByIds(Integer[] ids);
+
+    void doSomeThing(Integer receiverid,Integer senderid, Integer id, Integer isNotRefuse, String reason, String username);
 }
