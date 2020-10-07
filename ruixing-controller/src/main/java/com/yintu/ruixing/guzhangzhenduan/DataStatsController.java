@@ -54,17 +54,19 @@ public class DataStatsController {
         List<String[]> datas = new ArrayList<>();
         try {
             List<String[]> list = POIUtils.readExcel(excelFile);
-            if (list != null && list.size() > 0) {
+            if (list.size() > 0) {
                 for (String[] strings : list) {
-                    if (!strings[0].equals("") || !strings[1].equals("") || !strings[2].equals("") || !strings[3].equals("") || !strings[4].equals("") || !strings[5].equals("")) {
-                        if (strings[5].equals("下行") || strings[5].equals("上行") ||
-                                strings[5].equals("——") || strings[5].equals("") ||
-                                strings[6].equals("接近") || strings[6].equals("离去") ||
-                                strings[6].equals("——") || strings[6].equals("")) {
-                            String[] strings1 = strings;
-                            datas.add(strings1);
-                        } else {
-                            return ResponseDataUtil.error("请选择正确的Excel数据");
+                    if (strings[0] != null && strings[1] != null && strings[2] != null && strings[3] != null && strings[4] != null && strings[5] != null && strings[6] != null) {
+                        if (!strings[0].equals("") || !strings[1].equals("") || !strings[2].equals("") || !strings[3].equals("") || !strings[4].equals("") || !strings[5].equals("")) {
+                            if (strings[5].equals("下行") || strings[5].equals("上行") ||
+                                    strings[5].equals("——") || strings[5].equals("") ||
+                                    strings[6].equals("接近") || strings[6].equals("离去") ||
+                                    strings[6].equals("——") || strings[6].equals("")) {
+                                String[] strings1 = strings;
+                                datas.add(strings1);
+                            } else {
+                                return ResponseDataUtil.error("请选择正确的Excel数据");
+                            }
                         }
                     }
                 }
@@ -83,7 +85,7 @@ public class DataStatsController {
         Integer j = 0;
         List<Integer> number = new ArrayList<>();
         List<String[]> list = quDuanDatas1.toJavaList(String[].class);
-        Integer qq=0;
+        Integer qq = 0;
         for (String[] stringss : list) {
             j++;
             String czid = stringss[0];
@@ -95,8 +97,8 @@ public class DataStatsController {
         }
         if (number.size() == 0) {
             for (String[] strings : list) {
-                System.out.println("qqqqqqq"+qq++);
-                System.out.println("qqqqqqq"+qq +"+"+strings);
+                System.out.println("qqqqqqq" + qq++);
+                System.out.println("qqqqqqq" + qq + "+" + strings);
                 String czid1 = strings[0];
                 String czname = strings[1];
                 String line = strings[2];
@@ -811,10 +813,11 @@ public class DataStatsController {
 
     //根据车站id 判断是否有站内数据
     @GetMapping("/findNumBycid/{id}")
-    public Map<String,Object>findNumBycid(@PathVariable Integer id){
-        Integer number=dataStatsService.findNumBycid(id);
-        return ResponseDataUtil.ok("查询成功",number);
+    public Map<String, Object> findNumBycid(@PathVariable Integer id) {
+        Integer number = dataStatsService.findNumBycid(id);
+        return ResponseDataUtil.ok("查询成功", number);
     }
+
     //查询所有车站信息
     @GetMapping("/findAll")
     public Result findAll() {
@@ -1032,11 +1035,10 @@ public class DataStatsController {
 
     //查找所有的电务段名和id
     @GetMapping("/findAllDianWuDuan")
-    public Map<String,Object>findAllDianWuDuan(){
-        List<DianWuDuanEntity> duanEntityList=dataStatsService.findAllDianWuDuan();
-        return ResponseDataUtil.ok("查询电务段成功",duanEntityList);
+    public Map<String, Object> findAllDianWuDuan() {
+        List<DianWuDuanEntity> duanEntityList = dataStatsService.findAllDianWuDuan();
+        return ResponseDataUtil.ok("查询电务段成功", duanEntityList);
     }
-
 
 
     //查询站外所有的区段信息  排除电码化

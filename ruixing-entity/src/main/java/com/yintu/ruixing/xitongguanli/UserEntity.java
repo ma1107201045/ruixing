@@ -46,14 +46,6 @@ public class UserEntity implements UserDetails {
 
     private Short enableds;
 
-    private Integer provinceId;
-
-    private Integer cityId;
-
-    private Integer districtId;
-
-    private String address;
-
     private List<DepartmentEntity> departmentEntities;
 
     private List<RoleEntity> roleEntities;
