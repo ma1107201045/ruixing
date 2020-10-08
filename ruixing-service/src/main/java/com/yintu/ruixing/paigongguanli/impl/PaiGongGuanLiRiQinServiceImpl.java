@@ -30,6 +30,11 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     private UserDao userDao;
 
     @Override
+    public List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid) {
+        return paiGongGuanLiRiQinDao.findAllRiQinByUid(uid);
+    }
+
+    @Override
     public void editRiQinById(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity) {
         paiGongGuanLiRiQinEntity.setUpdatetime(new Date());
         paiGongGuanLiRiQinDao.updateByPrimaryKeySelective(paiGongGuanLiRiQinEntity);

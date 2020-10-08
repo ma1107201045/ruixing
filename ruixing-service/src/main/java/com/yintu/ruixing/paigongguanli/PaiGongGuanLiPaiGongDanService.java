@@ -16,9 +16,20 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum);
 
-    void editPaiGongDanById(Integer id, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username);
+    void editPaiGongDanById(Integer id, Integer senderid,Integer uid,  PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username);
 
     void deletePaiGongDanByIds(Integer[] ids);
 
-    void doSomeThing(Integer receiverid,Integer senderid, Integer id, Integer isNotRefuse, String reason, String username);
+    void doSomeThing(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username);
+
+    void doSomeThingg(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber);
+
+    List<PaiGongGuanLiBusinessTypeEntity> findAllBuiness();
+
+    List<PaiGongGuanLiBusinessTypeEntity> findBuinessById(Integer id);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
+
 }

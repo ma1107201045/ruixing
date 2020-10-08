@@ -10,7 +10,7 @@
         <result column="taskTotalName" jdbcType="VARCHAR" property="tasktotalname"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uid, tid, score,truename,tasktotalname
+    id, uid, tid, score
   </sql>
 
 

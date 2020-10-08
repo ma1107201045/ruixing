@@ -27,4 +27,9 @@ public interface PaiGongGuanLiPaiGongDanDao {
     List<PaiGongGuanLiPaiGongDanEntity> findUserByName(String truename);
 
     List<PaiGongGuanLiPaiGongDanEntity> findUserByUserid(Integer userid);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(String paiGongNumber);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
+
 }

@@ -32,4 +32,8 @@ public interface PaiGongGuanLiBusinessTypeDao {
     List<PaiGongGuanLiBusinessTypeEntity> findAllBusinessType();
 
     List<PaiGongGuanLiBusinessTypeEntity> findChuChaiById(Integer id);
+
+    List<PaiGongGuanLiBusinessTypeEntity> findAllBuiness();
+
+    List<PaiGongGuanLiBusinessTypeEntity> findBuinessById(Integer id);
 }

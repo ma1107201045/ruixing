@@ -60,5 +60,11 @@ public class PaiGongGuanLiPaiGongDanEntity {
 
     private Integer paigongpeoplenumber; //派工人员数量
 
+    private String truename;
+    private String provinceId;
+    private String cityId;
+    private String districtId;
+
+
 
 }

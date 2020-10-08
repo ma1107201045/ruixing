@@ -31,7 +31,7 @@ public interface PaiGongGuanLiTaskUserDao {
 
     List<PaiGongGuanLiTaskUserEntity> findUserPowerScoreById(@Param("id") Integer id, @Param("taskTotalName") String taskTotalName);
 
-    List<PaiGongGuanLiTaskUserEntity> findUser(Integer tid, Integer maxTaskshuxingNum, Integer minTaskshuxingNum);
+    List<PaiGongGuanLiTaskUserEntity> findUser(@Param("tid") Integer tid,@Param("maxTaskshuxingNum") Integer maxTaskshuxingNum,@Param("minTaskshuxingNum") Integer minTaskshuxingNum);
 
 
 

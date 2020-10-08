@@ -41,17 +41,83 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
+
 
     @Override
-    public void doSomeThing(Integer receiverid,Integer senderid,Integer id,Integer isNotRefuse, String reason, String username) {
+    public List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan() {
+        return paiGongGuanLiPaiGongDanDao.findAllPaiGongDan();
+    }
+
+    @Override
+    public List<PaiGongGuanLiBusinessTypeEntity> findBuinessById(Integer id) {
+        return paiGongGuanLiBusinessTypeDao.findBuinessById(id);
+    }
+
+    @Override
+    public List<PaiGongGuanLiBusinessTypeEntity> findAllBuiness() {
+        return paiGongGuanLiBusinessTypeDao.findAllBuiness();
+    }
+
+    @Override
+    public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber) {
+        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber);
+    }
+
+    @Override
+    public void doSomeThingg(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username) {
         Date today = new Date();//获取今天日期
-        if (isNotRefuse==0){//拒绝派遣
+        if (isNotRefuse == 0) {//不同意完工
             //添加记录
             PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(today);
-            recordMessageEntity.setContext("此派工任务被"+username+"拒绝,原因是："+reason);
+            recordMessageEntity.setContext("此派工任务被" + username + "不同意完工,原因是：" + reason);
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务不同意完工,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(receiverid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+
+        }
+        if (isNotRefuse == 1) {//同意完工
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "同意完工");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //更改派工单状态
+            PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
+            paiGongDanEntity.setId(id);
+            paiGongDanEntity.setPaigongstate(6);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+        }
+    }
+
+    @Override
+    public void doSomeThing(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username) {
+        Date today = new Date();//获取今天日期
+        if (isNotRefuse == 0) {//拒绝派遣
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "拒绝,原因是：" + reason);
             recordMessageEntity.setTypenum(1);
             paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
             //添加消息
@@ -68,17 +134,17 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             messageService.sendMessage(messageEntity);
 
         }
-        if (isNotRefuse==1){//接受派遣
+        if (isNotRefuse == 1) {//接受派遣
             //添加记录
             PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
             recordMessageEntity.setOperatortime(today);
-            recordMessageEntity.setContext("此派工任务被"+username+"接受派遣");
+            recordMessageEntity.setContext("此派工任务被" + username + "接受派遣");
             recordMessageEntity.setTypenum(1);
             paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
             //更改派工单状态
-            PaiGongGuanLiPaiGongDanEntity paiGongDanEntity=new PaiGongGuanLiPaiGongDanEntity();
+            PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
             paiGongDanEntity.setId(id);
             paiGongDanEntity.setPaigongstate(3);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
@@ -93,8 +159,58 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     }
 
     @Override
-    public void editPaiGongDanById(Integer id, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username) {
+    public void editPaiGongDanById(Integer id, Integer senderid,Integer uid,  PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username) {
         Date today = new Date();//获取今天日期
+        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
+        StringBuilder sb = new StringBuilder();
+        Integer aa = 0;
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate() == 5) {//任务被终止
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务被终止,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(uid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //记录数据
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派单任务被"+username+"终止");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate() == 6){//完成申请
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务已完成需要您审批,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(uid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //记录数据
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派单任务已被"+username+"完成");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(2);
+
+        }
         paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
         PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
         recordMessageEntity.setTypeid(id);
