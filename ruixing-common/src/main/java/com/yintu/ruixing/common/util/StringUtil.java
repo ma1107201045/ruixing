@@ -26,7 +26,7 @@ public class StringUtil {
         for (T t : array) {
             sb.append(t.toString()).append(",");
         }
-        return sb.toString().substring(0, sb.length() - 1);
+        return sb.substring(0, sb.length() - 1);
     }
 
     public static String getTableName(int czId, Date time) {

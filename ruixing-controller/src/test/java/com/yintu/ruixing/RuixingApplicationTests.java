@@ -135,5 +135,11 @@ class RuixingApplicationTests {
         System.out.println(customerService.findByExample(null, null, null, null));
     }
 
+    @Test
+    void contextLoads10() {
+        String startTime = "2020-10-08 08:08:00";
+        String endTime = "2020-12-07 08:08:00";
+        System.out.println(DateUtil.offsetMonth(DateUtil.endOfMonth(DateUtil.parseDate(startTime)), 1));
+    }
 
 }

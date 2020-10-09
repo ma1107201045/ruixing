@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmDao">
+    <!--查询表是否存在-->
+    <select id="isTableExist" parameterType="string" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where table_name = #{tableName}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from ${tableName}
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
+        <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
+        <result column="createtime" jdbcType="INTEGER" property="createtime"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="section_id" jdbcType="INTEGER" property="sectionId"/>
+        <result column="alarmcode" jdbcType="INTEGER" property="alarmcode"/>
+        <result column="reserved1" jdbcType="INTEGER" property="reserved1"/>
+        <result column="reserved2" jdbcType="INTEGER" property="reserved2"/>
+        <result column="alarmlevel" jdbcType="INTEGER" property="alarmlevel"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, status
+    </sql>
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        <where>
+            <if test="stationId">
+                and station_id=#{stationId,jdbcType=INTEGER}
+            </if>
+            <if test="startTime!=null and endTime !=null">
+                and FROM_UNIXTIME(createtime) between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

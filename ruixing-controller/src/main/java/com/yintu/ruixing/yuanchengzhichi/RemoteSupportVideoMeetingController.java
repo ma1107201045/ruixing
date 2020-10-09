@@ -1,4 +1,4 @@
-package com.yintu.ruixing.yuanxingzhichi;
+package com.yintu.ruixing.yuanchengzhichi;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -6,10 +6,6 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberEntity;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportVideoMeetingEntityWithBLOBs;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportVideoMeetingService;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
