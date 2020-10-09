@@ -16,13 +16,14 @@ import java.util.Map;
  * @date 2020/10/9 14:15
  */
 @RestController
-@RequestMapping("/remote/support/alarms/ticktes")
+@RequestMapping("/remote/support/alarm/ticktes")
 public class RemoteSupportTicketController extends SessionController {
     @Autowired
     private RemoteSupportTicketService remoteSupportTicketService;
 
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
+        remoteSupportTicketService.remove(ids);
         return ResponseDataUtil.ok("删除报警/预警处置单信息成功");
     }
 }

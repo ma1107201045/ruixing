@@ -152,11 +152,11 @@
         ,
         <include refid="Blob_Column_List"/>
         from mro_remote_support_ticket
-        where alarmId = #{alarmId,jdbcType=BIGINT}
+        where alarm_id = #{alarmId,jdbcType=BIGINT}
         ORDER BY id limit 1
     </select>
 
-    <select id="selectLastByAlarmId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    <select id="selectByCondition" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -173,7 +173,7 @@
                 and status = #{status,jdbcType=SMALLINT}
             </if>
             <if test="alarmId != null">
-                and alarm_id= = #{alarmId,jdbcType=BIGINT}
+                and alarm_id= #{alarmId,jdbcType=BIGINT}
             </if>
         </where>
     </select>

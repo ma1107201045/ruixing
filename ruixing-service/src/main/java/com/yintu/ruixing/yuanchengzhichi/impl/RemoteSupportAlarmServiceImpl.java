@@ -39,7 +39,9 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     public void remove(Integer[] czIds, Integer[] createTimes, Integer[] ids) {
         if (czIds.length == createTimes.length && czIds.length == ids.length) {
             for (int i = 0; i < czIds.length; i++) {
-                alarmDao.deleteByPrimaryKey(StringUtil.getBaoJingYuJingTableName(czIds[i], new Date(createTimes[i])), ids[i]);
+                String tableName = StringUtil.getBaoJingYuJingTableName(czIds[i], new Date(createTimes[i] * 1000L));
+                if (this.isTableExist(tableName))
+                    alarmDao.deleteByPrimaryKey(tableName, ids[i]);
             }
         }
     }

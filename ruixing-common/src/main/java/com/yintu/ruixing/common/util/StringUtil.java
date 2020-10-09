@@ -50,7 +50,7 @@ public class StringUtil {
     }
 
     public static long getAssemblyId(int czId, int unixTimestamp, int id) {
-        return getAssemblyId(czId, new Date(unixTimestamp * 1000), id);
+        return getAssemblyId(czId, new Date(unixTimestamp * 1000L), id);
     }
 
 }

@@ -21,7 +21,7 @@ public class RemoteSupportTicketServiceImpl implements RemoteSupportTicketServic
 
     @Override
     public void add(RemoteSupportTicketEntity entity) {
-        remoteSupportTicketDao.insert(entity);
+        remoteSupportTicketDao.insertSelective(entity);
     }
 
     @Override
