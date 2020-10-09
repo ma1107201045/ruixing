@@ -1,5 +1,7 @@
 package com.yintu.ruixing.paigongguanli;
 
+import com.yintu.ruixing.common.MessageEntity;
+
 import java.util.List;
 
 /**
@@ -32,4 +34,9 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
 
+    List<PaiGongGuanLiPaiGongDanRecordMessageEntity> findRecordMessageByid(Integer id);
+
+    List<MessageEntity> findXiaoXi(Integer senderid);
+
+    PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id);
 }

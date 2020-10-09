@@ -82,7 +82,7 @@
   </select>
 
   <!--根据派工单的编号前缀  查询含有此前缀的编号-->
-  <select id="findPaiGongDanNum"  resultMap="BaseResultMap">
+  <select id="findPaiGongDanNum"  resultType="java.lang.String">
     select
     paiGongNumber
     from mro_paigongguanli_paigongdan

@@ -11,13 +11,14 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     int insert(PaiGongGuanLiPaiGongDanEntity record);
 
-    PaiGongGuanLiPaiGongDanEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(PaiGongGuanLiPaiGongDanEntity record);
 
     int updateByPrimaryKey(PaiGongGuanLiPaiGongDanEntity record);
 
     ////////////////////////////////////////////////////////////
+
+    PaiGongGuanLiPaiGongDanEntity selectByPrimaryKey(Integer id);
+
     int insertSelective(PaiGongGuanLiPaiGongDanEntity record);
 
     String findPaiGongDanNum(String suoxie);

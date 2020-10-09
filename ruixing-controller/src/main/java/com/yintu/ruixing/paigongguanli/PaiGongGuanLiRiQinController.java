@@ -51,7 +51,7 @@ public class PaiGongGuanLiRiQinController {
         return ResponseDataUtil.ok("查询日勤数据成功",riQinEntityPageInfo);
     }
 
-
+///////////////////////////////////////////////////////////////////////////////////////
     //根据uid  查询此人所有的日勤状态
     @GetMapping("/findAllRiQinByUid/{uid}")
     public Map<String,Object>findAllRiQinByUid(@PathVariable Integer uid){

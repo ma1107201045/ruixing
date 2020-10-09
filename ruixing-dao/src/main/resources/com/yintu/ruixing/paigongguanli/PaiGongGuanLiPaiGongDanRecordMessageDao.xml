@@ -12,6 +12,18 @@
   <sql id="Base_Column_List">
     id, typeId, operatorName, operatorTime, context, typeNum
   </sql>
+
+
+  <!--根据派工单id  查询对应的数据-->
+  <select id="findRecordMessageByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan_recordmessage
+    where typeId = #{id,jdbcType=INTEGER}
+  </select>
+
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

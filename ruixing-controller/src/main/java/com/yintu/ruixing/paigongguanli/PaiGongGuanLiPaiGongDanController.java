@@ -3,6 +3,7 @@ package com.yintu.ruixing.paigongguanli;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +32,19 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         int month = DateUtil.month(today) + 1;
         String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
         int year = DateUtil.year(today);
-        String paigongdannum = paiGongGuanLiPaiGongDanService.findPaiGongDanNum(suoxie);
-        if (suoxie==null){
-            return ResponseDataUtil.ok(" ");
-        }
-        if (paigongdannum == null) {
-            String paiGongDanNum = suoxie + year + monthStr + "0001";
-            return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
+        if (suoxie.equals("")) {
+            return null;
         } else {
-            String substring = paigongdannum.substring(8, 12);
-            Integer i = Integer.parseInt(substring) + 1;
-            String paiGongDanNum = suoxie + year + monthStr + i.toString();
-            return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
+            String paigongdannum = paiGongGuanLiPaiGongDanService.findPaiGongDanNum(suoxie);
+            if (paigongdannum == null) {
+                String paiGongDanNum = suoxie + year + monthStr + "0001";
+                return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
+            } else {
+                String substring = paigongdannum.substring(8, 12);
+                Integer i = Integer.parseInt(substring) + 1;
+                String paiGongDanNum = suoxie + year + monthStr + i.toString();
+                return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
+            }
         }
     }
 
@@ -58,11 +60,11 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
 
     //初始化页面  或者根据编号模糊查询
     @GetMapping("/findPaiGongDan")
-    public Map<String,Object>findPaiGongDan(Integer page,Integer size,String paiGongNumber){
-        PageHelper.startPage(page,size);
+    public Map<String, Object> findPaiGongDan(Integer page, Integer size, String paiGongNumber) {
+        PageHelper.startPage(page, size);
         List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList = paiGongGuanLiPaiGongDanService.findPaiGongDan(page, size, paiGongNumber);
-        PageInfo<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityPageInfo=new PageInfo<>(paiGongDanEntityList);
-        return ResponseDataUtil.ok("查询成功",paiGongDanEntityPageInfo);
+        PageInfo<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityPageInfo = new PageInfo<>(paiGongDanEntityList);
+        return ResponseDataUtil.ok("查询成功", paiGongDanEntityPageInfo);
     }
 
     //根据派工单编号  查询关联单据
@@ -78,7 +80,7 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     public Map<String, Object> editPaiGongDanById(@PathVariable Integer id, Integer uid, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
-        paiGongGuanLiPaiGongDanService.editPaiGongDanById(id,senderid, uid,  paiGongGuanLiPaiGongDanEntity, username);
+        paiGongGuanLiPaiGongDanService.editPaiGongDanById(id, senderid, uid, paiGongGuanLiPaiGongDanEntity, username);
         return ResponseDataUtil.ok("编辑成功");
     }
 
@@ -112,24 +114,52 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
 
     //查询所有的业务类别
     @GetMapping("/findAllBuiness")
-    public Map<String,Object>findAllBuiness(){
-        List<PaiGongGuanLiBusinessTypeEntity> businessTypeEntityList=paiGongGuanLiPaiGongDanService.findAllBuiness();
-        return ResponseDataUtil.ok("查询成功",businessTypeEntityList);
+    public Map<String, Object> findAllBuiness() {
+        List<PaiGongGuanLiBusinessTypeEntity> businessTypeEntityList = paiGongGuanLiPaiGongDanService.findAllBuiness();
+        return ResponseDataUtil.ok("查询成功", businessTypeEntityList);
     }
 
     //根据业务类型  查询对应的出差任务
     @GetMapping("/findBuinessById/{id}")
-    public Map<String,Object>findBuinessById(@PathVariable Integer id){
-        List<PaiGongGuanLiBusinessTypeEntity> businessTypeEntityList=paiGongGuanLiPaiGongDanService.findBuinessById(id);
-        return ResponseDataUtil.ok("查询成功",businessTypeEntityList);
+    public Map<String, Object> findBuinessById(@PathVariable Integer id) {
+        List<PaiGongGuanLiBusinessTypeEntity> businessTypeEntityList = paiGongGuanLiPaiGongDanService.findBuinessById(id);
+        return ResponseDataUtil.ok("查询成功", businessTypeEntityList);
     }
 
     //查询所有的派工数据
     @GetMapping("/findAllPaiGongDan")
-    public Map<String,Object>findAllPaiGongDan(){
-        List<PaiGongGuanLiPaiGongDanEntity>paiGongDanEntityList=paiGongGuanLiPaiGongDanService.findAllPaiGongDan();
-        return ResponseDataUtil.ok("查询成功",paiGongDanEntityList);
+    public Map<String, Object> findAllPaiGongDan() {
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList = paiGongGuanLiPaiGongDanService.findAllPaiGongDan();
+        return ResponseDataUtil.ok("查询成功", paiGongDanEntityList);
     }
+
+
+    //查看时间轴
+    @GetMapping("/findRecordMessageByid/{id}")
+    public Map<String, Object> findRecordMessageByid(@PathVariable Integer id) {
+        List<PaiGongGuanLiPaiGongDanRecordMessageEntity> recordMessageEntityList = paiGongGuanLiPaiGongDanService.findRecordMessageByid(id);
+        return ResponseDataUtil.ok("查询成功", recordMessageEntityList);
+    }
+
+    //查询消息提醒
+    @GetMapping("/findXiaoXi")
+    public Map<String, Object> findXiaoXi() {
+        Integer senderid = this.getLoginUser().getId().intValue();
+        List<MessageEntity> contextlist = paiGongGuanLiPaiGongDanService.findXiaoXi(senderid);
+        return ResponseDataUtil.ok("查询消息成功", contextlist);
+    }
+
+    //根据id 查询对应的派工单数据
+    @GetMapping("/findPaiGongDanByid/{id}")
+    public Map<String,Object>findPaiGongDanByid(@PathVariable Integer id){
+        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity=paiGongGuanLiPaiGongDanService.findPaiGongDanByid(id);
+        return ResponseDataUtil.ok("查询成功",paiGongDanEntity);
+    }
+
+
+
+
+
 
 
 

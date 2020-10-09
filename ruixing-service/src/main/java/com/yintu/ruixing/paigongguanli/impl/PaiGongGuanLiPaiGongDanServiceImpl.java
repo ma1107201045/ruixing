@@ -1,5 +1,6 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
+import com.yintu.ruixing.common.MessageDao;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.paigongguanli.*;
@@ -44,6 +45,25 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     @Autowired
     private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
 
+    @Autowired
+    private MessageDao messageDao;
+
+
+    @Override
+    public PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id) {
+        return paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<MessageEntity> findXiaoXi(Integer senderid) {
+        Integer type=5;
+        return messageDao.findXiaoXi(senderid,type);
+    }
+
+    @Override
+    public List<PaiGongGuanLiPaiGongDanRecordMessageEntity> findRecordMessageByid(Integer id) {
+        return paiGongGuanLiPaiGongDanRecordMessageDao.findRecordMessageByid(id);
+    }
 
     @Override
     public List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan() {
