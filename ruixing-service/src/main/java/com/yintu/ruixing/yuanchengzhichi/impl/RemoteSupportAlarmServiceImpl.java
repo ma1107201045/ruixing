@@ -5,9 +5,7 @@ import com.github.pagehelper.Page;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmDao;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmEntity;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmService;
+import com.yintu.ruixing.yuanchengzhichi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +26,8 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     private BaoJingYuJingBaseDao baoJingYuJingBaseDao;
     @Autowired
     private CheZhanDao cheZhanDao;
+    @Autowired
+    private RemoteSupportTicketService remoteSupportTicketService;
 
     @Override
     public boolean isTableExist(String tableName) {
@@ -36,8 +36,12 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
 
     @Override
     @Transactional
-    public void remove(String tableName, Integer id) {
-        alarmDao.deleteByPrimaryKey(tableName, id);
+    public void remove(Integer[] czIds, Integer[] createTimes, Integer[] ids) {
+        if (czIds.length == createTimes.length && czIds.length == ids.length) {
+            for (int i = 0; i < czIds.length; i++) {
+                alarmDao.deleteByPrimaryKey(StringUtil.getBaoJingYuJingTableName(czIds[i], new Date(createTimes[i])), ids[i]);
+            }
+        }
     }
 
     @Override
@@ -142,6 +146,8 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
             BaoJingYuJingBaseEntity baoJingYuJingBaseEntity = new BaoJingYuJingBaseEntity();
             baoJingYuJingBaseEntity.setBjcontext(context);
             remoteSupportAlarmEntity.setBaoJingYuJingBaseEntity(baoJingYuJingBaseEntity);
+            RemoteSupportTicketEntity remoteSupportTicketEntity = remoteSupportTicketService.findLastByAlarmId(StringUtil.getAssemblyId(stationId, remoteSupportAlarmEntity.getCreatetime(), remoteSupportAlarmEntity.getId()));
+            remoteSupportAlarmEntity.setAlarmStatus(remoteSupportTicketEntity == null ? 1 : remoteSupportTicketEntity.getStatus());
         }
         page.addAll(remoteSupportAlarmEntities);
         return page;

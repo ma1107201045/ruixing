@@ -36,4 +36,6 @@ public class RemoteSupportAlarmEntity implements Serializable {
 
     private BaoJingYuJingBaseEntity baoJingYuJingBaseEntity;
 
+    private Short alarmStatus;
+
 }

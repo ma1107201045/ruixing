@@ -12,7 +12,7 @@ public interface RemoteSupportAlarmService {
 
     boolean isTableExist(String tableName);
 
-    void remove(String tableName, Integer id);
+    void remove(Integer[] czIds, Integer[] createTimes, Integer[] ids);
 
     List<RemoteSupportAlarmEntity> findByCondition(String tableName, Integer stationId, Date startTime, Date endTime);
 

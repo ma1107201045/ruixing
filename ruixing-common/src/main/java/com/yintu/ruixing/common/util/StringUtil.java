@@ -41,4 +41,16 @@ public class StringUtil {
         return "alarm_" + czId + "_" + DateUtil.year(time) + monthStr;
     }
 
+    public static long getAssemblyId(int czId, Date time, int id) {
+        int month = DateUtil.month(time) + 1;
+        String yearStr = String.valueOf(DateUtil.year(time));
+        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
+        String idStr = czId + yearStr + monthStr + id;
+        return Long.parseLong(idStr);
+    }
+
+    public static long getAssemblyId(int czId, int unixTimestamp, int id) {
+        return getAssemblyId(czId, new Date(unixTimestamp * 1000), id);
+    }
+
 }
