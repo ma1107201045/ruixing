@@ -24,21 +24,51 @@
     <result column="paiGongPeople" jdbcType="VARCHAR" property="paigongpeople" />
     <result column="gaiPaiPeople" jdbcType="VARCHAR" property="gaipaipeople" />
     <result column="paiGongState" jdbcType="INTEGER" property="paigongstate" />
+    <result column="provinceId" jdbcType="VARCHAR" property="provinceId"/>
+    <result column="cityId" jdbcType="VARCHAR" property="cityId"/>
+    <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
+    <result column="true_name" jdbcType="VARCHAR" property="truename"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, paiGongNumber, yeWuType, tljName, dwdName, xdName, czName, xiangMuType, chuChaiType, 
     workContent, taskShuXing, contacts, contactsPhoneNum, chuChaiCity, xiangXiAdress, 
     chuChaiStartTime, chuChaiEndTime, teShuAsk, guanLianDanJu, paiGongPeople, gaiPaiPeople, 
-    paiGongState
+    paiGongState,provinceId,cityId,districtId
   </sql>
 
 
-  <!--根据派工人员名  查询对应的数据-->
-  <select id="findUserByName" resultMap="BaseResultMap">
+  <!-- 查询所有的报工单数据-->
+  <select id="findAllPaiGongDan" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_paigongguanli_paigongdan
-    where paiGongPeople=#{truename} or gaiPaiPeople=#{truename}
+    order by id desc
+  </select>
+
+  <!--初始化页面  或者根据编号模糊查询-->
+  <select id="findPaiGongDan" resultMap="BaseResultMap">
+    select
+    pp.<include refid="Base_Column_List" />,
+    USER.true_name
+    FROM
+    mro_paigongguanli_paigongdan pp,
+    tb_user USER
+   <where>
+     pp.paiGongPeople = USER.id
+     <if test="paiGongNumber != null">
+       AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
+     </if>
+   </where>
+    ORDER BY pp.id DESC
+  </select>
+
+
+  <!--根据派工人员名  查询对应的数据-->
+  <select id="findUserByUserid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan
+    where paiGongPeople=#{userid} or gaiPaiPeople=#{userid}
     order by chuChaiEndTime desc
   </select>
 
@@ -52,7 +82,7 @@
   </select>
 
   <!--根据派工单的编号前缀  查询含有此前缀的编号-->
-  <select id="findPaiGongDanNum"  resultMap="BaseResultMap">
+  <select id="findPaiGongDanNum"  resultType="java.lang.String">
     select
     paiGongNumber
     from mro_paigongguanli_paigongdan
@@ -61,19 +91,24 @@
   </select>
 
 
+  <!--根据id  查询对应的派工单-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mro_paigongguanli_paigongdan
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+
+  <!--根据id  删除对应的派工单-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_paigongguanli_paigongdan
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <!--新增派工单-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity"
+          useGeneratedKeys="true" keyProperty="id">
     insert into mro_paigongguanli_paigongdan
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -142,6 +177,15 @@
       <if test="paigongstate != null">
         paiGongState,
       </if>
+      <if test="provinceId != null">
+        provinceId,
+      </if>
+      <if test="cityId != null">
+        cityId,
+      </if>
+      <if test="districtId != null">
+        districtId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -209,6 +253,15 @@
       </if>
       <if test="paigongstate != null">
         #{paigongstate,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="districtId != null">
+        #{districtId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -279,6 +332,15 @@
       </if>
       <if test="paigongstate != null">
         paiGongState = #{paigongstate,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        provinceId = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        cityId = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="districtId != null">
+        districtId = #{districtId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

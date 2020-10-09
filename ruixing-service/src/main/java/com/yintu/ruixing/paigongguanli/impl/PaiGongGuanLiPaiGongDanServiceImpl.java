@@ -1,5 +1,8 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
+import com.yintu.ruixing.common.MessageDao;
+import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.paigongguanli.*;
 import com.yintu.ruixing.xitongguanli.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +36,221 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     @Autowired
     private PaiGongGuanLiRiQinDao paiGongGuanLiRiQinDao;
 
+    @Autowired
+    private PaiGongGuanLiPaiGongDanRecordMessageDao paiGongGuanLiPaiGongDanRecordMessageDao;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
+
+    @Autowired
+    private MessageDao messageDao;
+
+
+    @Override
+    public PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id) {
+        return paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<MessageEntity> findXiaoXi(Integer senderid) {
+        Integer type=5;
+        return messageDao.findXiaoXi(senderid,type);
+    }
+
+    @Override
+    public List<PaiGongGuanLiPaiGongDanRecordMessageEntity> findRecordMessageByid(Integer id) {
+        return paiGongGuanLiPaiGongDanRecordMessageDao.findRecordMessageByid(id);
+    }
+
+    @Override
+    public List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan() {
+        return paiGongGuanLiPaiGongDanDao.findAllPaiGongDan();
+    }
+
+    @Override
+    public List<PaiGongGuanLiBusinessTypeEntity> findBuinessById(Integer id) {
+        return paiGongGuanLiBusinessTypeDao.findBuinessById(id);
+    }
+
+    @Override
+    public List<PaiGongGuanLiBusinessTypeEntity> findAllBuiness() {
+        return paiGongGuanLiBusinessTypeDao.findAllBuiness();
+    }
+
+    @Override
+    public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber) {
+        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber);
+    }
+
+    @Override
+    public void doSomeThingg(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username) {
+        Date today = new Date();//获取今天日期
+        if (isNotRefuse == 0) {//不同意完工
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "不同意完工,原因是：" + reason);
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务不同意完工,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(receiverid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+
+        }
+        if (isNotRefuse == 1) {//同意完工
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "同意完工");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //更改派工单状态
+            PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
+            paiGongDanEntity.setId(id);
+            paiGongDanEntity.setPaigongstate(6);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+        }
+    }
+
+    @Override
+    public void doSomeThing(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username) {
+        Date today = new Date();//获取今天日期
+        if (isNotRefuse == 0) {//拒绝派遣
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "拒绝,原因是：" + reason);
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务被拒绝派遣,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(receiverid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+
+        }
+        if (isNotRefuse == 1) {//接受派遣
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派工任务被" + username + "接受派遣");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            //更改派工单状态
+            PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
+            paiGongDanEntity.setId(id);
+            paiGongDanEntity.setPaigongstate(3);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+        }
+    }
+
+    @Override
+    public void deletePaiGongDanByIds(Integer[] ids) {
+        for (Integer id : ids) {
+            paiGongGuanLiPaiGongDanDao.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
+    public void editPaiGongDanById(Integer id, Integer senderid,Integer uid,  PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username) {
+        Date today = new Date();//获取今天日期
+        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
+        StringBuilder sb = new StringBuilder();
+        Integer aa = 0;
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate() == 5) {//任务被终止
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务被终止,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(uid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //记录数据
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派单任务被"+username+"终止");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate() == 6){//完成申请
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务已完成需要您审批,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(id);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(uid);
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //记录数据
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(id);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("此派单任务已被"+username+"完成");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(2);
+
+        }
+        paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+        PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+        recordMessageEntity.setTypeid(id);
+        recordMessageEntity.setOperatorname(username);
+        recordMessageEntity.setOperatortime(today);
+        recordMessageEntity.setContext("编辑派工任务");
+        recordMessageEntity.setTypenum(1);
+        paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+    }
+
     @Override
     public List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum) {
         return paiGongGuanLiPaiGongDanDao.findOnePaiGongDanByNum(paiGongDanNum);
     }
 
+
     @Override
-    public void addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
+    public void addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid) {
         Date today = new Date();//获取今天日期
-        List<String> userlist = new ArrayList<>();//人员名集合
+        List<Integer> userlist = new ArrayList<>();//人员名id集合
         Integer maxTaskshuxingNum = null;
         Integer minTaskshuxingNum = null;
         if (paiGongGuanLiPaiGongDanEntity.getTaskshuxing().equals("重要且紧急") || paiGongGuanLiPaiGongDanEntity.getTaskshuxing().equals("重要不紧急")) {
@@ -53,30 +262,52 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             minTaskshuxingNum = 60;
         }
         if (paiGongGuanLiPaiGongDanEntity.getPaigongmode() == 1) { //手动派工
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(1);
             paiGongGuanLiPaiGongDanDao.insertSelective(paiGongGuanLiPaiGongDanEntity);
+            Integer pgid = paiGongGuanLiPaiGongDanEntity.getId();
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(pgid);
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(today);
+            recordMessageEntity.setContext("新增派工任务");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+
+            //添加消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(today);//创建时间
+            messageEntity.setContext("有派单任务需要您处理,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(pgid);
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(senderid);
+            messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
 
         } else { //自动派工
             Integer paigongpeoplenumber = paiGongGuanLiPaiGongDanEntity.getPaigongpeoplenumber();//自动派工人数
 
-            String xiangmutype = paiGongGuanLiPaiGongDanEntity.getXiangmutype();
-            String yewutype = paiGongGuanLiPaiGongDanEntity.getYewutype();
-            String chuchaitype = paiGongGuanLiPaiGongDanEntity.getChuchaitype();
+            String xiangmutype = paiGongGuanLiPaiGongDanEntity.getXiangmutype();//项目类型
+            String yewutype = paiGongGuanLiPaiGongDanEntity.getYewutype();//业务类别
+            String chuchaitype = paiGongGuanLiPaiGongDanEntity.getChuchaitype();//出差类型
             String renwu = xiangmutype + yewutype + "——" + chuchaitype;
             Integer tid = paiGongGuanLiTaskDao.findTid(renwu);
             //根据任务id  和分值范围  查询对应的人员  并按照分值大小排列
             List<PaiGongGuanLiTaskUserEntity> userEntityList = paiGongGuanLiTaskUserDao.findUser(tid, maxTaskshuxingNum, minTaskshuxingNum);
             for (PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity : userEntityList) {//遍历每个人员
-                String truename = paiGongGuanLiTaskUserEntity.getTruename();//获取人员名
-                Integer uid = userDao.findid(truename);
-                String userdongtai = paiGongGuanLiRiQinDao.findUserDongTai(uid);//查询这个人的出差  请假情况
+                Integer userid = paiGongGuanLiTaskUserEntity.getUid();//获取人员名id
+                //Integer uid = userDao.findid(truename);
+                String userdongtai = paiGongGuanLiRiQinDao.findUserDongTai(userid);//查询这个人的出差  请假情况
                 if (!userdongtai.equals("请假") || !userdongtai.equals("出差")) {
-                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(truename);//根据人员名  查询是否派单 或者是否是改派人员
+                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByUserid(userid);//根据人员名id  查询是否派单 或者是否是改派人员
                     if (userList.size() == 0) { //说明这个人咩有出过差
-                        userlist.add(truename); //把这个人放到list集合里
+                        userlist.add(userid); //把这个人放到list集合里
                     } else {//这个人出过差
                         for (PaiGongGuanLiPaiGongDanEntity gongGuanLiPaiGongDanEntity : userList) {//遍历这个人的出差情况  由时间从前往后排序
                             long Chuchaiendtime = gongGuanLiPaiGongDanEntity.getChuchaiendtime().getTime();//获得本次出差的结束时间
-                            String paigongpeople = gongGuanLiPaiGongDanEntity.getPaigongpeople();//得到此人的名称
+                            Integer paigongpeople = gongGuanLiPaiGongDanEntity.getPaigongpeople();//得到此人的id
                             if (Chuchaiendtime < paiGongGuanLiPaiGongDanEntity.getChuchaistarttime().getTime()) {//说明此人 能派遣
                                 userlist.add(paigongpeople);
                             }
@@ -90,8 +321,8 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             if (userlist.size() != 0) {
                 long lianxutime = 0;
                 for (int i = 0; i < userlist.size(); i++) {
-                    String username = userlist.get(i);//得到人员名
-                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByName(username);//根据人员名  查询此人的派工经历
+                    Integer usernameid = userlist.get(i);//得到人员名
+                    List<PaiGongGuanLiPaiGongDanEntity> userList = paiGongGuanLiPaiGongDanDao.findUserByUserid(usernameid);//根据人员名  查询此人的派工经历
                     if (userList.size() == 1) {
                         long endtime = userList.get(0).getChuchaiendtime().getTime();
                         long starttime = userList.get(0).getChuchaistarttime().getTime();
@@ -144,17 +375,34 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
                 for (int i = 0; i < n; i++) {
                     list1.add(map.get(lianxu.toArray()[i]));
                 }
-                for (int i = 0; i <paigongpeoplenumber ; i++) {
+                for (int i = 0; i < paigongpeoplenumber; i++) {
                     int ii = list1.get(i).hashCode();
-                    String username = userlist.get(ii);//得到人员名
+                    Integer usernameeid = userlist.get(ii);//得到人员名id
+                    paiGongGuanLiPaiGongDanEntity.setPaigongpeople(usernameeid);
+                    paiGongGuanLiPaiGongDanEntity.setPaigongstate(1);
+                    paiGongGuanLiPaiGongDanDao.insertSelective(paiGongGuanLiPaiGongDanEntity);
+                    Integer pgid = paiGongGuanLiPaiGongDanEntity.getId();
+                    PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+                    recordMessageEntity.setTypeid(pgid);
+                    recordMessageEntity.setOperatorname("自动派工");
+                    recordMessageEntity.setOperatortime(today);
+                    recordMessageEntity.setContext("新增派工任务");
+                    recordMessageEntity.setTypenum(1);
+                    paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
 
-
-
+                    //添加消息
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(username);//创建人
+                    messageEntity.setCreateTime(today);//创建时间
+                    messageEntity.setContext("有派单任务需要您处理,请查看！");
+                    messageEntity.setType((short) 5);
+                    messageEntity.setProjectId(pgid);
+                    messageEntity.setMessageType((short) 3);
+                    messageEntity.setSenderId(senderid);
+                    messageEntity.setReceiverId(usernameeid);
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
                 }
-
-
-
-
 
             }
         }
@@ -248,7 +496,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
         int n = 9;
         Integer[] a = {8, 5, 4, 6, 1, 1, 7, 9, 3};
-        System.out.println("vc"+a[5]);
+        System.out.println("vc" + a[5]);
         HashMap map = new HashMap();
         for (int i = 0; i < a.length; i++) {
             map.put(a[i], i); //将值和下标存入Map
@@ -281,10 +529,6 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             //System.out.println(list1.get(i));
             System.out.println(b[i1]);
         }
-
-
-
-
 
 
         //获取IP地址

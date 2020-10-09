@@ -51,6 +51,14 @@ public class PaiGongGuanLiRiQinController {
         return ResponseDataUtil.ok("查询日勤数据成功",riQinEntityPageInfo);
     }
 
+///////////////////////////////////////////////////////////////////////////////////////
+    //根据uid  查询此人所有的日勤状态
+    @GetMapping("/findAllRiQinByUid/{uid}")
+    public Map<String,Object>findAllRiQinByUid(@PathVariable Integer uid){
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinService.findAllRiQinByUid(uid);
+        return ResponseDataUtil.ok("查询日勤状态成功",riQinEntityList);
+    }
+
     //新增日勤
     @PostMapping("/addRiQin")
     public Map<String,Object>addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
@@ -58,10 +66,16 @@ public class PaiGongGuanLiRiQinController {
         return ResponseDataUtil.ok("新增日勤成功");
     }
 
-    //根据日勤id  编辑对应的数据
-    @PutMapping("/editRiQinById/{id}")
-    public Map<String,Object>editRiQinById(@PathVariable Integer id,PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
+    //根据日勤日期  编辑对应的数据
+    @PutMapping("/editRiQinByDate")
+    public Map<String,Object>editRiQinById(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
         paiGongGuanLiRiQinService.editRiQinById(paiGongGuanLiRiQinEntity);
         return ResponseDataUtil.ok("编辑日勤数据成功");
     }
+
+
+
+
+
+
 }

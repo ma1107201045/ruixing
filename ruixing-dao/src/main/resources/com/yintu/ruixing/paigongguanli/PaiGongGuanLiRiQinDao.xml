@@ -14,6 +14,13 @@
     id, uid, userDongTai, startTime, endTime, creatTime, updateTime
   </sql>
 
+  <!--根据uid  查询此人的所有日勤状态-->
+  <select id="findAllRiQinByUid"   resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_riqin
+    where uid=#{uid}
+  </select>
 
   <!--根据uid  查询此人的动态-->
   <select id="findUserDongTai"  resultType="java.lang.String">
@@ -117,7 +124,7 @@
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where startTime = #{starttime,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
     update mro_paigongguanli_riqin

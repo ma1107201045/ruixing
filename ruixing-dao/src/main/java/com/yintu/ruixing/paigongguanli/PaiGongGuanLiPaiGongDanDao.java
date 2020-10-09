@@ -11,13 +11,14 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     int insert(PaiGongGuanLiPaiGongDanEntity record);
 
-    PaiGongGuanLiPaiGongDanEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(PaiGongGuanLiPaiGongDanEntity record);
 
     int updateByPrimaryKey(PaiGongGuanLiPaiGongDanEntity record);
 
     ////////////////////////////////////////////////////////////
+
+    PaiGongGuanLiPaiGongDanEntity selectByPrimaryKey(Integer id);
+
     int insertSelective(PaiGongGuanLiPaiGongDanEntity record);
 
     String findPaiGongDanNum(String suoxie);
@@ -25,4 +26,11 @@ public interface PaiGongGuanLiPaiGongDanDao {
     List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum);
 
     List<PaiGongGuanLiPaiGongDanEntity> findUserByName(String truename);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findUserByUserid(Integer userid);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(String paiGongNumber);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
+
 }

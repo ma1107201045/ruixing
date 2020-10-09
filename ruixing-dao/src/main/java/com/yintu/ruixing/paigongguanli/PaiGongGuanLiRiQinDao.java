@@ -24,4 +24,6 @@ public interface PaiGongGuanLiRiQinDao {
     List<PaiGongGuanLiRiQinEntity> findAllRiQin();
 
     String findUserDongTai(Integer uid);
+
+    List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid);
 }

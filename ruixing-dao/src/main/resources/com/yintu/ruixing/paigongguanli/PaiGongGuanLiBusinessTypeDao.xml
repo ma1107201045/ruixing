@@ -11,6 +11,23 @@
     id, parentid, businessName,suoXie
   </sql>
 
+
+  <!--根据业务类型  查询对应的出差任务-->
+  <select id="findBuinessById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where parentid=#{id}
+  </select>
+
+  <!--查询所有的业务类别-->
+  <select id="findAllBuiness" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where parentid=0
+  </select>
+
   <!--根据业务类别id 查询对应的出差任务-->
   <select id="findChuChaiById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select

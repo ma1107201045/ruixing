@@ -16,4 +16,6 @@ public interface PaiGongGuanLiRiQinService {
     void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
 
     void editRiQinById(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
+
+    List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid);
 }
