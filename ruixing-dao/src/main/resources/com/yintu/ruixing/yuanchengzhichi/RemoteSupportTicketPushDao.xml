@@ -148,17 +148,19 @@
         <collection property="userEntities" ofType="com.yintu.ruixing.xitongguanli.UserEntity">
             <id column="u_id" jdbcType="BIGINT" property="id"/>
             <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
+            <result column="enableds" jdbcType="SMALLINT" property="enableds"/>
+            <result column="locked" jdbcType="SMALLINT" property="locked"/>
         </collection>
 
     </resultMap>
     <sql id="Much_Column_List">
         rstp.id as rstp_id, rstp.create_by, rstp.create_time, rstp.modified_by, rstp.modified_time, rstp.operator, rstp.type, rstp.ticket_id,
         rst.id as rst_id,rst.status,rst.opinion,rst.alarm_id,
-        u.id as u_id,u.true_name
+        u.id as u_id,u.true_name,u.enableds,u.locked
     </sql>
     <sql id="Much_Table_List">
         mro_remote_support_ticket_push rstp
-        inner join mro_remote_support_ticket rst on rstp.id = rst.ticket_id
+        inner join mro_remote_support_ticket rst on rstp.ticket_id = rst.id
 
         inner join mro_remote_support_ticket_push_user rstpu on rstpu.push_id = rstp.id
         inner join tb_user u on rstpu.user_id=u.id
@@ -182,5 +184,15 @@
         from
         <include refid="Much_Table_List"/>
         <include refid="Much_Where_List"/>
+    </select>
+
+    <select id="countByOperator" parameterType="java.lang.String">
+        select count(*)
+        from mro_remote_support_ticket_push
+        <where>
+            <if test="operator!=null">
+                operator = #{operator,jdbcType=VARCHAR}
+            </if>
+        </where>
     </select>
 </mapper>

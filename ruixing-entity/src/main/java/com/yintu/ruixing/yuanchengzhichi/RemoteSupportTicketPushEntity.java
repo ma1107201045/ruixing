@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class RemoteSupportTicketPushEntity implements Serializable {
     private Date modifiedTime;
 
     private String operator;
-
+    @NotNull
     private Short type;
 
     private Integer ticketId;

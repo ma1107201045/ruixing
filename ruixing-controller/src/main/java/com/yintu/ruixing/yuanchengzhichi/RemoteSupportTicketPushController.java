@@ -27,14 +27,16 @@ public class RemoteSupportTicketPushController {
         return ResponseDataUtil.ok("删除报警/预警处置单推送信息成功");
     }
 
-    @PostMapping
+    @GetMapping
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "rstp.id DESC") String orderBy,
                                        @RequestParam(value = "operator", required = false) String operator) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<RemoteSupportTicketPushEntity> remoteSupportTicketPushEntities = remoteSupportTicketPushService.findByCondition(null, operator);
+        List<RemoteSupportTicketPushEntity> remoteSupportTicketPushEntities = remoteSupportTicketPushService.findByCondition(null, "".equals(operator) ? null : operator);
         PageInfo<RemoteSupportTicketPushEntity> pageInfo = new PageInfo<>(remoteSupportTicketPushEntities);
+        long count = remoteSupportTicketPushService.countByOperator("".equals(operator) ? null : operator);
+        pageInfo.setTotal(count);
         return ResponseDataUtil.ok("查询报警/预警处置单推送信息列表成功", pageInfo);
     }
 

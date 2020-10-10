@@ -10,6 +10,7 @@ import java.util.List;
  * @date 2020/10/10 13:46
  */
 public interface RemoteSupportTicketPushService extends BaseService<RemoteSupportTicketPushEntity, Integer> {
+    long countByOperator(String operator);
 
     void add(RemoteSupportTicketPushEntity remoteSupportTicketPushEntity, Integer[] userIds);
 

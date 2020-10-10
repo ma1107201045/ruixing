@@ -18,5 +18,7 @@ public interface RemoteSupportTicketPushDao {
 
     int updateByPrimaryKey(RemoteSupportTicketPushEntity record);
 
+    long countByOperator(String operator);
+
     List<RemoteSupportTicketPushEntity> selectByCondition(Integer[] ids, String operator);
 }
