@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RemoteSupportTicketEntity implements Serializable {
-    private static final long serialVersionUID = 8272235721946921132L;
+public class RemoteSupportTicketPushUserEntity implements Serializable {
+    private static final long serialVersionUID = 7959426686319545709L;
     private Integer id;
 
     private String createBy;
@@ -22,11 +21,10 @@ public class RemoteSupportTicketEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-    @NotNull
-    private Short status;
 
-    private String alarmId;
+    private Integer pushId;
 
-    private String opinion;
+    private Integer userId;
+
 
 }

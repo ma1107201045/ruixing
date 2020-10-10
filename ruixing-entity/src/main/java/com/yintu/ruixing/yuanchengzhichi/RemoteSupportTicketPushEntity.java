@@ -1,5 +1,6 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,12 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RemoteSupportTicketEntity implements Serializable {
-    private static final long serialVersionUID = 8272235721946921132L;
+public class RemoteSupportTicketPushEntity implements Serializable {
+    private static final long serialVersionUID = -1920776281803706164L;
     private Integer id;
 
     private String createBy;
@@ -22,11 +24,16 @@ public class RemoteSupportTicketEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
+
+    private String operator;
     @NotNull
-    private Short status;
+    private Short type;
 
-    private String alarmId;
+    private Integer ticketId;
 
-    private String opinion;
+    private RemoteSupportTicketEntity remoteSupportTicketEntity;
+
+    private List<UserEntity> userEntities;
+
 
 }

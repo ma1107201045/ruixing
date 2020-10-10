@@ -11,5 +11,7 @@ public interface RemoteSupportAlarmDao {
 
     void deleteByPrimaryKey(String tableName, Integer id);
 
+    RemoteSupportAlarmEntity selectByPrimaryKey(String tableName, Integer id);
+
     List<RemoteSupportAlarmEntity> selectByCondition(String tableName, Integer stationId, Date startTime, Date endTime);
 }

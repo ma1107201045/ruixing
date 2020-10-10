@@ -6,6 +6,7 @@ import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.danganguanli.CustomerService;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
@@ -144,6 +145,6 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads11() {
-        System.out.println(new Date(1601105466 * 1000L));
+        System.out.println(StringUtil.getAssemblyId(11,new Date(),12));
     }
 }

@@ -37,6 +37,16 @@ public class RemoteSupportAlarmController extends SessionController {
         return ResponseDataUtil.ok("删除报警/预警信息成功");
     }
 
+    @GetMapping("/{id}")
+    public Map<String, Object> findById(@PathVariable String id) {
+        String[] idArr = id.split("_");
+        RemoteSupportAlarmEntity remoteSupportAlarmEntity = null;
+        if (idArr.length == 3) {
+            remoteSupportAlarmEntity = remoteSupportAlarmService.findById("alarm_" + idArr[0] + "_" + idArr[1], Integer.parseInt(idArr[2]));
+        }
+        return ResponseDataUtil.ok("查询报警/预警信息成功", remoteSupportAlarmEntity);
+    }
+
     @GetMapping
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,

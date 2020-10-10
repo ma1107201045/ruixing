@@ -8,7 +8,7 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
-        <result column="alarm_id" jdbcType="BIGINT" property="alarmId"/>
+        <result column="alarm_id" jdbcType="VARCHAR" property="alarmId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.yuanchengzhichi.RemoteSupportTicketEntity">
@@ -39,7 +39,7 @@
                                                alarm_id, opinion)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT},
-                #{alarmId,jdbcType=BIGINT}, #{opinion,jdbcType=LONGVARCHAR})
+                #{alarmId,jdbcType=VARCHAR}, #{opinion,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.RemoteSupportTicketEntity">
         insert into mro_remote_support_ticket
@@ -89,7 +89,7 @@
                 #{status,jdbcType=SMALLINT},
             </if>
             <if test="alarmId != null">
-                #{alarmId,jdbcType=BIGINT},
+                #{alarmId,jdbcType=VARCHAR},
             </if>
             <if test="opinion != null">
                 #{opinion,jdbcType=LONGVARCHAR},
@@ -116,7 +116,7 @@
                 status = #{status,jdbcType=SMALLINT},
             </if>
             <if test="alarmId != null">
-                alarm_id = #{alarmId,jdbcType=BIGINT},
+                alarm_id = #{alarmId,jdbcType=VARCHAR},
             </if>
             <if test="opinion != null">
                 opinion = #{opinion,jdbcType=LONGVARCHAR},
@@ -132,7 +132,7 @@
             modified_by   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             status        = #{status,jdbcType=SMALLINT},
-            alarm_id      = #{alarmId,jdbcType=BIGINT},
+            alarm_id      = #{alarmId,jdbcType=VARCHAR},
             opinion       = #{opinion,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -143,16 +143,16 @@
             modified_by   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             status        = #{status,jdbcType=SMALLINT},
-            alarm_id      = #{alarmId,jdbcType=BIGINT}
+            alarm_id      = #{alarmId,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <select id="selectLastByAlarmId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    <select id="selectLastByAlarmId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
         from mro_remote_support_ticket
-        where alarm_id = #{alarmId,jdbcType=BIGINT}
+        where alarm_id = #{alarmId,jdbcType=VARCHAR}
         ORDER BY id limit 1
     </select>
 
@@ -173,7 +173,7 @@
                 and status = #{status,jdbcType=SMALLINT}
             </if>
             <if test="alarmId != null">
-                and alarm_id= #{alarmId,jdbcType=BIGINT}
+                and alarm_id= #{alarmId,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

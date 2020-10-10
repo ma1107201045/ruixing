@@ -12,6 +12,11 @@
         from ${tableName}
         where id = #{id,jdbcType=INTEGER}
     </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select *
+        from ${tableName}
+        where id = #{id,jdbcType=INTEGER}
+    </select>
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
