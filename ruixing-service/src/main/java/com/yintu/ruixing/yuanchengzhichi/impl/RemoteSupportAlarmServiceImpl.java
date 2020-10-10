@@ -47,6 +47,29 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     }
 
     @Override
+    public RemoteSupportAlarmEntity findById(String tableName, Integer id) {
+        RemoteSupportAlarmEntity remoteSupportAlarmEntity = null;
+        if (this.isTableExist(tableName)) {
+            remoteSupportAlarmEntity = alarmDao.selectByPrimaryKey(tableName, id);
+            if (remoteSupportAlarmEntity != null) {
+                int number = cheZhanDao.findCzNumber(remoteSupportAlarmEntity.getStationId());
+                String context;
+                if (remoteSupportAlarmEntity.getAlarmlevel() == 1) {
+                    context = baoJingYuJingBaseDao.findAlarmContext(remoteSupportAlarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
+                } else {
+                    context = baoJingYuJingBaseDao.findAlarmContext(remoteSupportAlarmEntity.getAlarmcode(), 3);
+                }
+                BaoJingYuJingBaseEntity baoJingYuJingBaseEntity = new BaoJingYuJingBaseEntity();
+                baoJingYuJingBaseEntity.setBjcontext(context);
+                remoteSupportAlarmEntity.setBaoJingYuJingBaseEntity(baoJingYuJingBaseEntity);
+                RemoteSupportTicketEntity remoteSupportTicketEntity = remoteSupportTicketService.findLastByAlarmId(StringUtil.getAssemblyId(remoteSupportAlarmEntity.getStationId(), remoteSupportAlarmEntity.getCreatetime(), remoteSupportAlarmEntity.getId()));
+                remoteSupportAlarmEntity.setAlarmStatus(remoteSupportTicketEntity == null ? 1 : remoteSupportTicketEntity.getStatus());
+            }
+        }
+        return remoteSupportAlarmEntity;
+    }
+
+    @Override
     public List<RemoteSupportAlarmEntity> findByCondition(String tableName, Integer stationId, Date startTime, Date endTime) {
         return alarmDao.selectByCondition(tableName, stationId, startTime, endTime);
     }

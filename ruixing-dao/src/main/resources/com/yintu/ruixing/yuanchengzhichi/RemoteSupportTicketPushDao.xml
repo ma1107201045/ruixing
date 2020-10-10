@@ -186,7 +186,7 @@
         <include refid="Much_Where_List"/>
     </select>
 
-    <select id="countByOperator" parameterType="java.lang.String">
+    <select id="countByOperator" parameterType="java.lang.String" resultType="java.lang.Long">
         select count(*)
         from mro_remote_support_ticket_push
         <where>
