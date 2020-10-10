@@ -101,7 +101,7 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
                     startTime = DateUtil.offsetMonth(DateUtil.beginOfMonth(startTime), 1);
                     String tableName = StringUtil.getBaoJingYuJingTableName(stationId, startTime);
                     if (this.isTableExist(tableName)) {
-                        List<RemoteSupportAlarmEntity> list = this.findByCondition(startTableName, stationId, startTime, DateUtil.endOfMonth(startTime));
+                        List<RemoteSupportAlarmEntity> list = this.findByCondition(tableName, stationId, startTime, DateUtil.endOfMonth(startTime));
                         if (list.size() > 0) {
                             list = list.stream()
                                     .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())

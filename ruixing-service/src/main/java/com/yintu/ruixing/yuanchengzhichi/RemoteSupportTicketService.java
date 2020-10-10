@@ -13,8 +13,8 @@ public interface RemoteSupportTicketService extends BaseService<RemoteSupportTic
 
     void remove(Integer[] ids);
 
-    RemoteSupportTicketEntity findLastByAlarmId(Long alarmId);
+    RemoteSupportTicketEntity findLastByAlarmId(String alarmId);
 
-    List<RemoteSupportTicketEntity> findByCondition(Integer[] ids, Short status, Long alarmId);
+    List<RemoteSupportTicketEntity> findByCondition(Integer[] ids, Short status, String alarmId);
 
 }

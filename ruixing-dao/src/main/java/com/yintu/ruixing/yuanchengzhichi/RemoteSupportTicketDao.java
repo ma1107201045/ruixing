@@ -20,7 +20,7 @@ public interface RemoteSupportTicketDao {
 
     int updateByPrimaryKey(RemoteSupportTicketEntity record);
 
-    RemoteSupportTicketEntity selectLastByAlarmId(Long alarmId);
+    RemoteSupportTicketEntity selectLastByAlarmId(String alarmId);
 
-    List<RemoteSupportTicketEntity> selectByCondition(Integer[] ids, Short status, Long alarmId);
+    List<RemoteSupportTicketEntity> selectByCondition(Integer[] ids, Short status, String alarmId);
 }

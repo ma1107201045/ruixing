@@ -25,7 +25,7 @@ public class RemoteSupportTicketEntity implements Serializable {
     @NotNull
     private Short status;
 
-    private Long alarmId;
+    private String alarmId;
 
     private String opinion;
 

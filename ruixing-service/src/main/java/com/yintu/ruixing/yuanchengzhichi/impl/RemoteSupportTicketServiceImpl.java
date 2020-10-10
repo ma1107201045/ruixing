@@ -47,12 +47,12 @@ public class RemoteSupportTicketServiceImpl implements RemoteSupportTicketServic
     }
 
     @Override
-    public RemoteSupportTicketEntity findLastByAlarmId(Long alarmId) {
+    public RemoteSupportTicketEntity findLastByAlarmId(String alarmId) {
         return remoteSupportTicketDao.selectLastByAlarmId(alarmId);
     }
 
     @Override
-    public List<RemoteSupportTicketEntity> findByCondition(Integer[] ids, Short status, Long alarmId) {
+    public List<RemoteSupportTicketEntity> findByCondition(Integer[] ids, Short status, String alarmId) {
         return remoteSupportTicketDao.selectByCondition(ids, status, alarmId);
     }
 }
