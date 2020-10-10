@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="userDongTai" jdbcType="VARCHAR" property="userdongtai" />
+    <result column="userDongTai" jdbcType="INTEGER" property="userdongtai" />
     <result column="startTime" jdbcType="TIMESTAMP" property="starttime" />
     <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
     <result column="creatTime" jdbcType="TIMESTAMP" property="creattime" />
@@ -84,7 +84,7 @@
         #{uid,jdbcType=INTEGER},
       </if>
       <if test="userdongtai != null">
-        #{userdongtai,jdbcType=VARCHAR},
+        #{userdongtai,jdbcType=INTEGER},
       </if>
       <if test="starttime != null">
         #{starttime,jdbcType=TIMESTAMP},
@@ -109,7 +109,7 @@
         uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="userdongtai != null">
-        userDongTai = #{userdongtai,jdbcType=VARCHAR},
+        userDongTai = #{userdongtai,jdbcType=INTEGER},
       </if>
       <if test="starttime != null">
         startTime = #{starttime,jdbcType=TIMESTAMP},

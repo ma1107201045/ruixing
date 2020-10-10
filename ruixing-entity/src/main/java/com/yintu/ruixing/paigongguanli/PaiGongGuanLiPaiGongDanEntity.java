@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class PaiGongGuanLiPaiGongDanEntity {
     private Integer id;
 
+    private Integer operatorid;
+
     private String paigongnumber;
 
     private String yewutype;
@@ -64,6 +66,9 @@ public class PaiGongGuanLiPaiGongDanEntity {
     private String provinceId;
     private String cityId;
     private String districtId;
+    private Integer state;
+
+
 
 
 

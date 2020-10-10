@@ -3,6 +3,7 @@
 <mapper namespace="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanDao">
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="operatorid" jdbcType="INTEGER" property="operatorid" />
     <result column="paiGongNumber" jdbcType="VARCHAR" property="paigongnumber" />
     <result column="yeWuType" jdbcType="VARCHAR" property="yewutype" />
     <result column="tljName" jdbcType="VARCHAR" property="tljname" />
@@ -28,12 +29,13 @@
     <result column="cityId" jdbcType="VARCHAR" property="cityId"/>
     <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
     <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+    <result column="state" jdbcType="INTEGER" property="state"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, paiGongNumber, yeWuType, tljName, dwdName, xdName, czName, xiangMuType, chuChaiType, 
+    id,operatorid, paiGongNumber, yeWuType, tljName, dwdName, xdName, czName, xiangMuType, chuChaiType,
     workContent, taskShuXing, contacts, contactsPhoneNum, chuChaiCity, xiangXiAdress, 
     chuChaiStartTime, chuChaiEndTime, teShuAsk, guanLianDanJu, paiGongPeople, gaiPaiPeople, 
-    paiGongState,provinceId,cityId,districtId
+    paiGongState,provinceId,cityId,districtId,state
   </sql>
 
 
@@ -93,10 +95,15 @@
 
   <!--根据id  查询对应的派工单-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_paigongguanli_paigongdan
-    where id = #{id,jdbcType=INTEGER}
+    select
+    pp.<include refid="Base_Column_List" />,
+    USER.true_name
+    FROM
+    mro_paigongguanli_paigongdan pp,
+    tb_user USER
+    where
+    pp.paiGongPeople = USER.id
+    and pp.id = #{id,jdbcType=INTEGER}
   </select>
 
 
@@ -113,6 +120,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="operatorid != null">
+        operatorid,
       </if>
       <if test="paigongnumber != null">
         paiGongNumber,
@@ -186,10 +196,16 @@
       <if test="districtId != null">
         districtId,
       </if>
+      <if test="state != null">
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operatorid != null">
+        #{operatorid,jdbcType=INTEGER},
       </if>
       <if test="paigongnumber != null">
         #{paigongnumber,jdbcType=VARCHAR},
@@ -263,6 +279,9 @@
       <if test="districtId != null">
         #{districtId,jdbcType=VARCHAR},
       </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
 
@@ -270,6 +289,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     update mro_paigongguanli_paigongdan
     <set>
+      <if test="operatorid != null">
+        operatorid = #{operatorid,jdbcType=INTEGER},
+      </if>
       <if test="paigongnumber != null">
         paiGongNumber = #{paigongnumber,jdbcType=VARCHAR},
       </if>
@@ -341,6 +363,9 @@
       </if>
       <if test="districtId != null">
         districtId = #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
