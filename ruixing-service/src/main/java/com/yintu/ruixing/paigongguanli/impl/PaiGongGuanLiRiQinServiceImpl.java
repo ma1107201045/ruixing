@@ -30,6 +30,17 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     private UserDao userDao;
 
     @Override
+    public List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas(Integer page, Integer size) {
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinDao.findAllRiQinDatas();
+        for (PaiGongGuanLiRiQinEntity riQinEntity : riQinEntityList) {
+            Integer uid = riQinEntity.getUid();
+            List<PaiGongGuanLiRiQinEntity>riQinEntities=paiGongGuanLiRiQinDao.findRiQinByUid(uid);
+            riQinEntity.setDailyList(riQinEntities);
+        }
+        return riQinEntityList;
+    }
+
+    @Override
     public List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid) {
         return paiGongGuanLiRiQinDao.findAllRiQinByUid(uid);
     }
@@ -41,9 +52,17 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     }
 
     @Override
-    public void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity) {
+    public void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity,Integer senderid) {
         paiGongGuanLiRiQinEntity.setCreattime(new Date());
-        paiGongGuanLiRiQinDao.insertSelective(paiGongGuanLiRiQinEntity);
+        paiGongGuanLiRiQinEntity.setUid(senderid);
+        Date starttime = paiGongGuanLiRiQinEntity.getStarttime();
+        PaiGongGuanLiRiQinEntity riQinEntity=paiGongGuanLiRiQinDao.findRiQin(senderid,starttime);
+        if (riQinEntity==null){
+            paiGongGuanLiRiQinDao.insertSelective(paiGongGuanLiRiQinEntity);
+        }else {
+            paiGongGuanLiRiQinDao.deleteRiQin(starttime);
+            paiGongGuanLiRiQinDao.insertSelective(paiGongGuanLiRiQinEntity);
+        }
     }
 
     @Override

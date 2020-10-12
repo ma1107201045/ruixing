@@ -30,6 +30,59 @@ public class PaiGongGuanLiCostListServiceImpl implements PaiGongGuanLiCostListSe
     private ChanPinJiaoFuXiangMuDao chanPinJiaoFuXiangMuDao;
 
     @Override
+    public List<PaiGongGuanLiCostListEntity> findDatasByYWtype(Integer page, Integer size, String ywType) {
+        List<PaiGongGuanLiCostListEntity> costListEntityList = paiGongGuanLiCostListDao.findDatasByYWtype(ywType);
+        for (PaiGongGuanLiCostListEntity costListEntity : costListEntityList) {
+            Integer id = costListEntity.getId();
+            BigDecimal costTotal = paiGongGuanLiCostDao.findCostTotal(id);
+            if (costTotal == null) {
+                BigDecimal num = new BigDecimal(0);
+                costListEntity.setCostTotal(num);
+            } else {
+                costListEntity.setCostTotal(costTotal);
+            }
+        }
+        return costListEntityList;
+    }
+
+    @Override
+    public List<PaiGongGuanLiCostListEntity> findDatasByXMname(Integer page, Integer size, String xmName) {
+        List<PaiGongGuanLiCostListEntity> costListEntityList = paiGongGuanLiCostListDao.findDatasByXMname(xmName);
+        for (PaiGongGuanLiCostListEntity costListEntity : costListEntityList) {
+            Integer id = costListEntity.getId();
+            BigDecimal costTotal = paiGongGuanLiCostDao.findCostTotal(id);
+            if (costTotal == null) {
+                BigDecimal num = new BigDecimal(0);
+                costListEntity.setCostTotal(num);
+            } else {
+                costListEntity.setCostTotal(costTotal);
+            }
+        }
+        return costListEntityList;
+    }
+
+    @Override
+    public BigDecimal findAllCost() {
+        return paiGongGuanLiCostDao.findAllCost();
+    }
+
+    @Override
+    public List<PaiGongGuanLiCostListEntity> findDatasByUid(Integer page, Integer size, Integer uid) {
+        List<PaiGongGuanLiCostListEntity> costListEntityList = paiGongGuanLiCostListDao.findDatasByUid(uid);
+        for (PaiGongGuanLiCostListEntity costListEntity : costListEntityList) {
+            Integer id = costListEntity.getId();
+            BigDecimal costTotal = paiGongGuanLiCostDao.findCostTotal(id);
+            if (costTotal == null) {
+                BigDecimal num = new BigDecimal(0);
+                costListEntity.setCostTotal(num);
+            } else {
+                costListEntity.setCostTotal(costTotal);
+            }
+        }
+        return costListEntityList;
+    }
+
+    @Override
     public List<ChanPinJiaoFuXiangMuEntity> findXmNumberAndName() {
         return chanPinJiaoFuXiangMuDao.findXmNumberAndName();
     }
@@ -68,10 +121,10 @@ public class PaiGongGuanLiCostListServiceImpl implements PaiGongGuanLiCostListSe
 
     @Override
     public List<PaiGongGuanLiCostListEntity> findAllCostList(Integer page, Integer size, String xmNumber) {
-        List<PaiGongGuanLiCostListEntity> costListEntityList=paiGongGuanLiCostListDao.findAllCostList(xmNumber);
+        List<PaiGongGuanLiCostListEntity> costListEntityList = paiGongGuanLiCostListDao.findAllCostList(xmNumber);
         for (PaiGongGuanLiCostListEntity costListEntity : costListEntityList) {
             Integer id = costListEntity.getId();
-            BigDecimal costTotal=paiGongGuanLiCostDao.findCostTotal(id);
+            BigDecimal costTotal = paiGongGuanLiCostDao.findCostTotal(id);
             costListEntity.setCostTotal(costTotal);
         }
         return costListEntityList;

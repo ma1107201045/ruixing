@@ -33,5 +33,8 @@ public class PaiGongGuanLiCostListEntity {
 
     private BigDecimal costTotal;
 
+    private String truename;
+    private String yeWuType;
+
 
 }

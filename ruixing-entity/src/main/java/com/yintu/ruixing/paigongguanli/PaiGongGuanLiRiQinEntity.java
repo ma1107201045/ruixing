@@ -1,6 +1,7 @@
 package com.yintu.ruixing.paigongguanli;
 
 import java.util.Date;
+import java.util.List;
 
 
 import lombok.AllArgsConstructor;
@@ -32,6 +33,8 @@ public class PaiGongGuanLiRiQinEntity {
     private String bumen;
 
     private String zhiwei;
+    private String truename;
+    private List dailyList;
 
 
 }

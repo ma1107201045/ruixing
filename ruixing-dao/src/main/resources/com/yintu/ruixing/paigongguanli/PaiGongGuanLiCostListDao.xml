@@ -12,11 +12,62 @@
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="userid" jdbcType="INTEGER" property="userid" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+    <result column="yeWuType" jdbcType="VARCHAR" property="yeWuType"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, xiangmuNumber, xiangmuName, paigongNumber, createName, createTime, updateName, 
     updateTime, userid, time
   </sql>
+
+
+  <!--根据业务类别  查询对应的数据-->
+  <select id="findDatasByYWtype"   resultMap="BaseResultMap">
+    select
+    pc.id,
+    pp.yeWuType
+    FROM
+    mro_paigongguanli_costlist pc,
+    mro_paigongguanli_paigongdan pp
+    <where>
+      <if test="ywType!=null">
+        pp.yeWuType like concat('%', #{ywType},'%')
+      </if>
+    </where>
+    GROUP BY pc.paigongNumber
+  </select>
+
+  <!--根据项目名  查询对应的数据-->
+  <select id="findDatasByXMname"   resultMap="BaseResultMap">
+    select
+    id, xiangmuName
+    from mro_paigongguanli_costlist
+    <where>
+      <if test="xmName!=null">
+        xiangmuName like concat('%', #{xmName},'%')
+      </if>
+    </where>
+    GROUP BY xiangmuName
+  </select>
+
+
+  <!--查询人员费用统计  -->
+  <select id="findDatasByUid"   resultMap="BaseResultMap">
+    select
+    us.true_name,
+    pc.id,
+    userid
+    FROM
+    mro_paigongguanli_costlist pc,
+    tb_user us
+    <where>
+      pc.userid = us.id
+      <if test="uid!=null">
+        and  pc.userid=#{uid}
+      </if>
+    </where>
+    GROUP BY pc.userid
+  </select>
 
   <!--初始化页面  或者根据项目编号模糊查询-->
   <select id="findAllCostList"   resultMap="BaseResultMap">

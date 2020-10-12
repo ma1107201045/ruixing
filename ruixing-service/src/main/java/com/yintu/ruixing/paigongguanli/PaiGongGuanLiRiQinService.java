@@ -13,9 +13,11 @@ public interface PaiGongGuanLiRiQinService {
 
     List<PaiGongGuanLiRiQinEntity> findAllRiQinByUserName(Integer page, Integer size, String username);
 
-    void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
+    void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity,Integer senderid);
 
     void editRiQinById(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity);
 
     List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid);
+
+    List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas(Integer page, Integer size);
 }

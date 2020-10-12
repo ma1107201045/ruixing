@@ -2,6 +2,7 @@ package com.yintu.ruixing.paigongguanli;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/RiQinAll")
-public class PaiGongGuanLiRiQinController {
+public class PaiGongGuanLiRiQinController extends SessionController {
     @Autowired
     private PaiGongGuanLiRiQinService paiGongGuanLiRiQinService;
 
@@ -53,16 +54,19 @@ public class PaiGongGuanLiRiQinController {
 
 ///////////////////////////////////////////////////////////////////////////////////////
     //根据uid  查询此人所有的日勤状态
-    @GetMapping("/findAllRiQinByUid/{uid}")
-    public Map<String,Object>findAllRiQinByUid(@PathVariable Integer uid){
-        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinService.findAllRiQinByUid(uid);
+    @GetMapping("/findAllRiQinByUid")
+    public Map<String,Object>findAllRiQinByUid(){
+        Integer senderid = this.getLoginUser().getId().intValue();
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinService.findAllRiQinByUid(senderid);
         return ResponseDataUtil.ok("查询日勤状态成功",riQinEntityList);
     }
 
     //新增日勤
     @PostMapping("/addRiQin")
     public Map<String,Object>addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity){
-        paiGongGuanLiRiQinService.addRiQin(paiGongGuanLiRiQinEntity);
+        String username = this.getLoginUser().getTrueName();
+        Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiRiQinService.addRiQin(paiGongGuanLiRiQinEntity,senderid);
         return ResponseDataUtil.ok("新增日勤成功");
     }
 
@@ -73,6 +77,15 @@ public class PaiGongGuanLiRiQinController {
         return ResponseDataUtil.ok("编辑日勤数据成功");
     }
 
+
+    //查询所有人的日勤数据
+    @GetMapping("/findAllRiQinDatas")
+    public Map<String,Object>findAllRiQinDatas(Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiRiQinEntity>riQinEntityList=paiGongGuanLiRiQinService.findAllRiQinDatas(page,size);
+        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
+        return ResponseDataUtil.ok("查询成功",riQinEntityPageInfo);
+    }
 
 
 

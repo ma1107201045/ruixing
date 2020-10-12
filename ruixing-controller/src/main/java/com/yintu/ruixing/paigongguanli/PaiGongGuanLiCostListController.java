@@ -37,6 +37,7 @@ public class PaiGongGuanLiCostListController extends SessionController {
     //新增费用
     @PostMapping("/addCostList")
     public Map<String, Object> addCostList(@RequestBody JSONArray costlist) {
+
         Date today = new Date();
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
@@ -53,6 +54,7 @@ public class PaiGongGuanLiCostListController extends SessionController {
             costListEntity.setXiangmunumber(xiangmuNumber);
             costListEntity.setCreatename(username);
             costListEntity.setCreatetime(today);
+            costListEntity.setUserid(senderid);
             paiGongGuanLiCostListService.addCostList(costListEntity);
             Integer cid = costListEntity.getId();
 
@@ -143,6 +145,41 @@ public class PaiGongGuanLiCostListController extends SessionController {
         }
 
         return ResponseDataUtil.ok("新增成功");
+    }
+
+
+    //根据人员id  查询对应的相关数据
+    @GetMapping("/findDatasByUid")
+    public Map<String,Object>findDatasByUid(Integer page,Integer size,Integer uid){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiCostListEntity> costListEntityList=paiGongGuanLiCostListService.findDatasByUid(page,size,uid);
+        PageInfo<PaiGongGuanLiCostListEntity> costListEntityPageInfo=new PageInfo<>(costListEntityList);
+        return ResponseDataUtil.ok("查询成功",costListEntityPageInfo);
+    }
+
+    //统计总的费用和
+    @GetMapping("/findAllCost")
+    public Map<String,Object>findAllCost(){
+        BigDecimal costAll=paiGongGuanLiCostListService.findAllCost();
+        return ResponseDataUtil.ok("查询成功",costAll);
+    }
+
+    //根据项目名  查询对应的数据
+    @GetMapping("/findDatasByXMname")
+    public Map<String,Object>findDatasByXMname(Integer page,Integer size,String xmName){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiCostListEntity> costListEntityList=paiGongGuanLiCostListService.findDatasByXMname(page,size,xmName);
+        PageInfo<PaiGongGuanLiCostListEntity> costListEntityPageInfo=new PageInfo<>(costListEntityList);
+        return ResponseDataUtil.ok("查询成功",costListEntityPageInfo);
+    }
+
+    //根据业务类别  查询对应的数据
+    @GetMapping("/findDatasByYWtype")
+    public Map<String,Object>findDatasByYWtype(Integer page,Integer size,String ywType){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiCostListEntity> costListEntityList=paiGongGuanLiCostListService.findDatasByYWtype(page,size,ywType);
+        PageInfo<PaiGongGuanLiCostListEntity> costListEntityPageInfo=new PageInfo<>(costListEntityList);
+        return ResponseDataUtil.ok("查询成功",costListEntityPageInfo);
     }
 
 

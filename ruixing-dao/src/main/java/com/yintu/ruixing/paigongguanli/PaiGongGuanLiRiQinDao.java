@@ -2,7 +2,9 @@ package com.yintu.ruixing.paigongguanli;
 
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -26,4 +28,12 @@ public interface PaiGongGuanLiRiQinDao {
     String findUserDongTai(Integer uid);
 
     List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid);
+
+    PaiGongGuanLiRiQinEntity findRiQin(@Param("senderid") Integer senderid,@Param("starttime") Date starttime);
+
+    void deleteRiQin(@Param("starttime")Date starttime);
+
+    List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas();
+
+    List<PaiGongGuanLiRiQinEntity> findRiQinByUid(Integer uid);
 }

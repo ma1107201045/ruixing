@@ -11,12 +11,20 @@
     id, cid, name, cost
   </sql>
 
+  <!--  查询所有费用的总和-->
+  <select id="findAllCost"   resultType="java.math.BigDecimal">
+    select
+      sum( cost )
+    from mro_paigongguanli_cost
+  </select>
+
   <!--根据cid  查询对应的数据-->
   <select id="findAllCostByCid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_paigongguanli_cost
     where cid = #{id,jdbcType=INTEGER}
+    order by id desc
   </select>
 
   <!--根据cid  删除对应的数据-->

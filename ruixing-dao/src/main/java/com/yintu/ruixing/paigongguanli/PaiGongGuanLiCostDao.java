@@ -27,4 +27,7 @@ public interface PaiGongGuanLiCostDao {
     void deleteCostBycid(Integer id);
 
     List<PaiGongGuanLiCostEntity> findAllCostByCid(Integer id);
+
+    BigDecimal findAllCost();
+
 }

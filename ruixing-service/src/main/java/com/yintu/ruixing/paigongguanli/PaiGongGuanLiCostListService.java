@@ -2,6 +2,7 @@ package com.yintu.ruixing.paigongguanli;
 
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,4 +30,11 @@ public interface PaiGongGuanLiCostListService {
 
     List<ChanPinJiaoFuXiangMuEntity> findXmNumberAndName();
 
+    List<PaiGongGuanLiCostListEntity> findDatasByUid(Integer page, Integer size, Integer uid);
+
+    BigDecimal findAllCost();
+
+    List<PaiGongGuanLiCostListEntity> findDatasByXMname(Integer page, Integer size, String xmName);
+
+    List<PaiGongGuanLiCostListEntity> findDatasByYWtype(Integer page, Integer size, String ywType);
 }

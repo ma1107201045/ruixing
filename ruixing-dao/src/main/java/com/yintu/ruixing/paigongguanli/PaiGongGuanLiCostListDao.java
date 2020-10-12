@@ -22,4 +22,10 @@ public interface PaiGongGuanLiCostListDao {
     int insertSelective(PaiGongGuanLiCostListEntity record);
 
     List<PaiGongGuanLiCostListEntity> findAllCostList(String xmNumber);
+
+    List<PaiGongGuanLiCostListEntity> findDatasByUid(Integer uid);
+
+    List<PaiGongGuanLiCostListEntity> findDatasByXMname(String xmName);
+
+    List<PaiGongGuanLiCostListEntity> findDatasByYWtype(String ywType);
 }
