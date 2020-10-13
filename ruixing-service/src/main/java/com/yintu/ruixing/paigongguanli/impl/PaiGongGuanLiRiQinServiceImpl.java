@@ -1,5 +1,6 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinDao;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity;
@@ -10,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author Mr.liu
@@ -31,11 +30,43 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
 
     @Override
     public List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas(Integer page, Integer size) {
-        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinDao.findAllRiQinDatas();
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList = paiGongGuanLiRiQinDao.findAllRiQinDatas();
         for (PaiGongGuanLiRiQinEntity riQinEntity : riQinEntityList) {
+            JSONObject js = new JSONObject();
             Integer uid = riQinEntity.getUid();
-            List<PaiGongGuanLiRiQinEntity>riQinEntities=paiGongGuanLiRiQinDao.findRiQinByUid(uid);
-            riQinEntity.setDailyList(riQinEntities);
+            List<PaiGongGuanLiRiQinEntity> riQinEntities = paiGongGuanLiRiQinDao.findRiQinByUid(uid);
+            List<Integer> list = new ArrayList();
+            for (PaiGongGuanLiRiQinEntity qinEntity : riQinEntities) {
+                Date starttime = qinEntity.getStarttime();
+                int date = starttime.getDate();
+                //对存在日期的数据 添加
+                for (int i = 1; i <= 31; i++) {
+                    if (date == i) {
+                        PaiGongGuanLiRiQinEntity riQinEntity1 = new PaiGongGuanLiRiQinEntity();
+                        Integer userdongtai = qinEntity.getUserdongtai();
+                        riQinEntity1.setUserdongtai(userdongtai);
+                        js.put("a" + i, riQinEntity1);
+                    }
+                }
+                list.add(date);
+            }
+
+            //对日期值去重
+            List<Integer> daylist = new ArrayList();
+            for (int i = 1; i <= 31; i++) {
+                daylist.add(i);
+            }
+            List<Integer> datalist = new ArrayList();
+            datalist.addAll(daylist);
+            datalist.removeAll(list);
+
+            //获得不存在数据的 日期值
+            for (Integer date : datalist) {
+                PaiGongGuanLiRiQinEntity riQinEntity1 = new PaiGongGuanLiRiQinEntity();
+                riQinEntity1.setUserdongtai(0);
+                js.put("a" + date, riQinEntity1);
+            }
+            riQinEntity.setStatus(js);
         }
         return riQinEntityList;
     }
@@ -52,14 +83,14 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     }
 
     @Override
-    public void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity,Integer senderid) {
+    public void addRiQin(PaiGongGuanLiRiQinEntity paiGongGuanLiRiQinEntity, Integer senderid) {
         paiGongGuanLiRiQinEntity.setCreattime(new Date());
         paiGongGuanLiRiQinEntity.setUid(senderid);
         Date starttime = paiGongGuanLiRiQinEntity.getStarttime();
-        PaiGongGuanLiRiQinEntity riQinEntity=paiGongGuanLiRiQinDao.findRiQin(senderid,starttime);
-        if (riQinEntity==null){
+        PaiGongGuanLiRiQinEntity riQinEntity = paiGongGuanLiRiQinDao.findRiQin(senderid, starttime);
+        if (riQinEntity == null) {
             paiGongGuanLiRiQinDao.insertSelective(paiGongGuanLiRiQinEntity);
-        }else {
+        } else {
             paiGongGuanLiRiQinDao.deleteRiQin(starttime);
             paiGongGuanLiRiQinDao.insertSelective(paiGongGuanLiRiQinEntity);
         }

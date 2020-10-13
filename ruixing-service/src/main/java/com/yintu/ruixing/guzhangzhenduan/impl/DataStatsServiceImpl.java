@@ -2,12 +2,14 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,6 +40,14 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Autowired
     private CheZhanDao cheZhanDao;
+
+    @Autowired
+    private QuDuanInfoDaoV2 quDuanInfoDaoV2;
+
+    @Autowired
+    private AlarmTableDao alarmTableDao;
+
+
 
     @Override
     public void editDMHStaCteByCid(CheZhanEntity cheZhanEntity) {
@@ -143,8 +153,25 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public String findXDJsonByXid(Integer xid) {
-        return xianDuanDao.findXDJsonByXid(xid);
+    public XianDuanEntity findXDJsonByXid(Integer xid) {
+        Date dayTime = new Date();
+        XianDuanEntity xianDuanEntity=new XianDuanEntity();
+        String xdJson = xianDuanDao.findXDJsonByXid(xid);
+        xianDuanEntity.setXdJson(xdJson);
+        List<CheZhanEntity> cheZhanEntityList=cheZhanDao.findCheZhanDatasByXid(xid);
+        for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
+            int czid = (int ) cheZhanEntity.getCzId();
+            String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+            if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
+                Integer alarmNumber = alarmTableDao.findAlarmNumber(tableName);
+                cheZhanEntity.setAlarmNumber(alarmNumber);
+            }else {
+                cheZhanEntity.setAlarmNumber(0);
+            }
+        }
+        xianDuanEntity.setCheZhanEntities(cheZhanEntityList);
+
+        return xianDuanEntity;
     }
 
     @Override

@@ -984,9 +984,8 @@ public class DataStatsController {
     //根据线段xid 查询此线段下的线段配置json数据
     @GetMapping("/findXDJsonByXid/{xid}")
     public Map<String, Object> findXDJsonByXid(@PathVariable Integer xid) {
-        String xdJson = dataStatsService.findXDJsonByXid(xid);
-        //js.put("xdJson",xdJson);
-        return ResponseDataUtil.ok("查询线段的json数据成功", xdJson);
+        XianDuanEntity xianDuanJson=dataStatsService.findXDJsonByXid(xid);
+        return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
     }
 
     //根据车站cid 查询此车站下的区段配置json数据

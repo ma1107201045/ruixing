@@ -144,6 +144,23 @@
      </update>
  -->
 
+    <resultMap id="chezhann" type="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity">
+    <id column="cid" jdbcType="INTEGER" property="cid"/>
+    <result column="cz_id" property="czId"/>
+    <result column="cz_stutrs" property="czStutrs"/>
+    </resultMap>
+
+    <!--根据xid 查询车站的id和连接状态-->
+    <select id="findCheZhanDatasByXid" resultMap="chezhann">
+        SELECT
+            cid,
+            cz_id,
+            cz_stutrs
+        FROM
+            mro_chezhan
+        WHERE
+            xd_cz_id=#{xid}
+    </select>
 
     <!--根据czid 查询车站的专用id-->
     <select id="findCzid" resultType="java.lang.Integer">

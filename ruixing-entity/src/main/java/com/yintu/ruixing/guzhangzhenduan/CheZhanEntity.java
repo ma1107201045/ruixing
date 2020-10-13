@@ -165,6 +165,7 @@ public class CheZhanEntity {
 
     private String linzhan6isnobendwd;
 
+    private Integer alarmNumber;
 
 
 

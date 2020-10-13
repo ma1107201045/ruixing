@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class PaiGongGuanLiRiQinEntity {
     private String zhiwei;
     private String truename;
     private List dailyList;
+    private JSONObject status;
 
 
 }

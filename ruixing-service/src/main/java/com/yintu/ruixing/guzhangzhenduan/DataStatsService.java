@@ -123,7 +123,7 @@ public interface DataStatsService {
 
     List<CheZhanEntity> findSomeCheZhanByXid(Integer xid);
 
-    String findXDJsonByXid(Integer xid);
+    XianDuanEntity findXDJsonByXid(Integer xid);
 
     String findQDJsonByCid(Integer cid);
 

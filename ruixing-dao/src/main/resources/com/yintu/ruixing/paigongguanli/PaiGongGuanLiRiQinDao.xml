@@ -27,7 +27,7 @@
   <!-- 查询所有人的当月日勤数据-->
   <select id="findAllRiQinDatas"  resultMap="BaseResultMap">
     select
-    pr.id, uid, userDongTai, startTime,us.true_name
+    uid,us.true_name
     from
     mro_paigongguanli_riqin pr,
 	tb_user us
