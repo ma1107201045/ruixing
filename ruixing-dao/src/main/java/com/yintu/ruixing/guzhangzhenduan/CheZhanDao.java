@@ -119,4 +119,6 @@ public interface CheZhanDao {
     Integer findCzid(@Param("czid") Integer czid);
 
     List<CheZhanEntity> findCheZhanDatasByXid(@Param("xid")Integer xid);
+
+    List<CheZhanEntity> findallChezhanByCZidAndXDid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
 }

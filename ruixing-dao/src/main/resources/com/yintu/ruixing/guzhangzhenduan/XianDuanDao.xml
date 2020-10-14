@@ -20,7 +20,7 @@
     </select>
     <!--根据线段中的 电务段专用id  查询对应的线段数据-->
     <select id="findAllXianDuanByDwdid" resultMap="xianduan">
-        select * from mro_xianduan where dwd_id=#{parseLong}
+        select * from mro_xianduan where xd_id=#{parseLong1} and dwd_id=#{parseLong}
     </select>
 
     <!--根据线段名  查询对应的数据-->
@@ -29,7 +29,7 @@
     </select>
     <!--根据线段专用id  查询对应的id-->
     <select id="findid" resultType="java.lang.Long">
-        select xid from mro_xianduan where dwd_id=#{parseLong}
+        select xid from mro_xianduan where dwd_id=#{parseLong} and xd_id=#{parseLong1}
     </select>
 
     <!--查询所有的线段-->

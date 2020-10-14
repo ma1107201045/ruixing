@@ -185,13 +185,13 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong) {
-        return dianWuDuanDao.findDianWuDuanBydid(parseLong);
+    public List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong, long parseLong1) {
+        return dianWuDuanDao.findDianWuDuanBydid(parseLong,parseLong1);
     }
 
     @Override
-    public List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong) {
-        return xianDuanDao.findAllXianDuanByDwdid(parseLong);
+    public List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong, long parseLong1) {
+        return xianDuanDao.findAllXianDuanByDwdid(parseLong,parseLong1);
     }
 
     @Override
@@ -219,13 +219,18 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public List<CheZhanEntity> findallChezhanByName(String czname) {
-        return cheZhanDao.findallChezhanByName(czname);
+    public List<CheZhanEntity> findallChezhanByCZidAndXDid(long parseLong, long parseLong1) {
+        return cheZhanDao.findallChezhanByCZidAndXDid(parseLong,parseLong1);
     }
 
     @Override
     public List<XianDuanEntity> findAllXianDuanByName(String xdname) {
         return xianDuanDao.findAllXianDuanByName(xdname);
+    }
+
+    @Override
+    public List<CheZhanEntity> findallChezhanByName(String czname) {
+        return cheZhanDao.findallChezhanByName(czname);
     }
 
     @Override
@@ -249,8 +254,8 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public Long findXDid(long parseLong) {
-        return xianDuanDao.findid(parseLong);
+    public Long findXDid(long parseLong,long parseLong1) {
+        return xianDuanDao.findid(parseLong,parseLong1);
     }
 
     @Override
@@ -265,8 +270,8 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public Long findDWDid(long parseLong) {
-        return dianWuDuanDao.dwdid(parseLong);
+    public Long findDWDid(long parseLong,long parseLong1) {
+        return dianWuDuanDao.dwdid(parseLong,parseLong1);
     }
 
     @Override

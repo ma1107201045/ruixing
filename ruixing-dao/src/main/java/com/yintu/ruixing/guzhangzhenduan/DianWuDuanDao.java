@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public interface DianWuDuanDao {
 
     List<DianWuDuanEntity> findDianWuDuan();
 
-    Long dwdid(long parseLong);
+    Long dwdid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
 
     List<DianWuDuanEntity> findDianWuDuanByName(String dwdname);
 
-    List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong);
+    List<DianWuDuanEntity> findDianWuDuanBydid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
 }

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="operatorid" jdbcType="INTEGER" property="operatorid" />
-    <result column="paiGongNumber" jdbcType="VARCHAR" property="paigongnumber" />
-    <result column="yeWuType" jdbcType="VARCHAR" property="yewutype" />
-    <result column="tljName" jdbcType="VARCHAR" property="tljname" />
-    <result column="dwdName" jdbcType="VARCHAR" property="dwdname" />
-    <result column="xdName" jdbcType="VARCHAR" property="xdname" />
-    <result column="czName" jdbcType="VARCHAR" property="czname" />
-    <result column="xiangMuType" jdbcType="VARCHAR" property="xiangmutype" />
-    <result column="chuChaiType" jdbcType="VARCHAR" property="chuchaitype" />
-    <result column="workContent" jdbcType="VARCHAR" property="workcontent" />
-    <result column="taskShuXing" jdbcType="VARCHAR" property="taskshuxing" />
-    <result column="contacts" jdbcType="VARCHAR" property="contacts" />
-    <result column="contactsPhoneNum" jdbcType="VARCHAR" property="contactsphonenum" />
-    <result column="chuChaiCity" jdbcType="VARCHAR" property="chuchaicity" />
-    <result column="xiangXiAdress" jdbcType="VARCHAR" property="xiangxiadress" />
-    <result column="chuChaiStartTime" jdbcType="TIMESTAMP" property="chuchaistarttime" />
-    <result column="chuChaiEndTime" jdbcType="TIMESTAMP" property="chuchaiendtime" />
-    <result column="teShuAsk" jdbcType="VARCHAR" property="teshuask" />
-    <result column="guanLianDanJu" jdbcType="VARCHAR" property="guanliandanju" />
-    <result column="paiGongPeople" jdbcType="VARCHAR" property="paigongpeople" />
-    <result column="gaiPaiPeople" jdbcType="VARCHAR" property="gaipaipeople" />
-    <result column="paiGongState" jdbcType="INTEGER" property="paigongstate" />
-    <result column="provinceId" jdbcType="VARCHAR" property="provinceId"/>
-    <result column="cityId" jdbcType="VARCHAR" property="cityId"/>
-    <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
-    <result column="true_name" jdbcType="VARCHAR" property="truename"/>
-    <result column="state" jdbcType="INTEGER" property="state"/>
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="operatorid" jdbcType="INTEGER" property="operatorid"/>
+        <result column="paiGongNumber" jdbcType="VARCHAR" property="paigongnumber"/>
+        <result column="yeWuType" jdbcType="VARCHAR" property="yewutype"/>
+        <result column="tljName" jdbcType="VARCHAR" property="tljname"/>
+        <result column="dwdName" jdbcType="VARCHAR" property="dwdname"/>
+        <result column="xdName" jdbcType="VARCHAR" property="xdname"/>
+        <result column="czName" jdbcType="VARCHAR" property="czname"/>
+        <result column="xiangMuType" jdbcType="VARCHAR" property="xiangmutype"/>
+        <result column="chuChaiType" jdbcType="VARCHAR" property="chuchaitype"/>
+        <result column="workContent" jdbcType="VARCHAR" property="workcontent"/>
+        <result column="taskShuXing" jdbcType="VARCHAR" property="taskshuxing"/>
+        <result column="contacts" jdbcType="VARCHAR" property="contacts"/>
+        <result column="contactsPhoneNum" jdbcType="VARCHAR" property="contactsphonenum"/>
+        <result column="chuChaiCity" jdbcType="VARCHAR" property="chuchaicity"/>
+        <result column="xiangXiAdress" jdbcType="VARCHAR" property="xiangxiadress"/>
+        <result column="chuChaiStartTime" jdbcType="TIMESTAMP" property="chuchaistarttime"/>
+        <result column="chuChaiEndTime" jdbcType="TIMESTAMP" property="chuchaiendtime"/>
+        <result column="teShuAsk" jdbcType="VARCHAR" property="teshuask"/>
+        <result column="guanLianDanJu" jdbcType="VARCHAR" property="guanliandanju"/>
+        <result column="paiGongPeople" jdbcType="VARCHAR" property="paigongpeople"/>
+        <result column="gaiPaiPeople" jdbcType="VARCHAR" property="gaipaipeople"/>
+        <result column="paiGongState" jdbcType="INTEGER" property="paigongstate"/>
+        <result column="provinceId" jdbcType="VARCHAR" property="provinceId"/>
+        <result column="cityId" jdbcType="VARCHAR" property="cityId"/>
+        <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
+        <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id,operatorid, paiGongNumber, yeWuType, tljName, dwdName, xdName, czName, xiangMuType, chuChaiType,
     workContent, taskShuXing, contacts, contactsPhoneNum, chuChaiCity, xiangXiAdress, 
     chuChaiStartTime, chuChaiEndTime, teShuAsk, guanLianDanJu, paiGongPeople, gaiPaiPeople, 
@@ -39,52 +39,54 @@
   </sql>
 
 
-  <!-- 查询所有的报工单数据-->
-  <select id="findAllPaiGongDan" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from mro_paigongguanli_paigongdan
-    order by id desc
-  </select>
-
-  <!--初始化页面  或者根据编号模糊查询-->
-  <select id="findPaiGongDan" resultMap="BaseResultMap">
-    select
-    pp.<include refid="Base_Column_List" />,
-    USER.true_name
-    FROM
-    mro_paigongguanli_paigongdan pp,
-    tb_user USER
-   <where>
-     pp.paiGongPeople = USER.id
-     <if test="paiGongNumber != null">
-       AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
-     </if>
-   </where>
-    ORDER BY pp.id DESC
-  </select>
 
 
-  <!--根据派工人员名  查询对应的数据-->
-  <select id="findUserByUserid" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from mro_paigongguanli_paigongdan
-    where paiGongPeople=#{userid} or gaiPaiPeople=#{userid}
-    order by chuChaiEndTime desc
-  </select>
+    <!-- 查询所有的报工单数据-->
+    <select id="findAllPaiGongDan" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_paigongguanli_paigongdan
+        order by id desc
+    </select>
+
+    <!--初始化页面  或者根据编号模糊查询-->
+    <select id="findPaiGongDan" resultMap="BaseResultMap">
+        select
+        pp.<include refid="Base_Column_List"/>,
+        USER.true_name
+        FROM
+        mro_paigongguanli_paigongdan pp,
+        tb_user USER
+        <where>
+            pp.paiGongPeople = USER.id
+            <if test="paiGongNumber != null">
+                AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
+            </if>
+        </where>
+        ORDER BY pp.id DESC
+    </select>
 
 
-  <!--根据派工单号  查询对应的关联单据-->
-  <select id="findOnePaiGongDanByNum" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from mro_paigongguanli_paigongdan
-    where paiGongNumber like concat('%',#{paiGongDanNum},'%')
-  </select>
+    <!--根据派工人员名  查询对应的数据-->
+    <select id="findUserByUserid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_paigongguanli_paigongdan
+        where paiGongPeople=#{userid} or gaiPaiPeople=#{userid}
+        order by chuChaiEndTime desc
+    </select>
 
-  <!--根据派工单的编号前缀  查询含有此前缀的编号-->
-  <select id="findPaiGongDanNum"  resultType="java.lang.String">
+
+    <!--根据派工单号  查询对应的关联单据-->
+    <select id="findOnePaiGongDanByNum" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_paigongguanli_paigongdan
+        where paiGongNumber like concat('%',#{paiGongDanNum},'%')
+    </select>
+
+    <!--根据派工单的编号前缀  查询含有此前缀的编号-->
+    <select id="findPaiGongDanNum" resultType="java.lang.String">
     select
     paiGongNumber
     from mro_paigongguanli_paigongdan
@@ -93,284 +95,285 @@
   </select>
 
 
-  <!--根据id  查询对应的派工单-->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    pp.<include refid="Base_Column_List" />,
-    USER.true_name
-    FROM
-    mro_paigongguanli_paigongdan pp,
-    tb_user USER
-    where
-    pp.paiGongPeople = USER.id
-    and pp.id = #{id,jdbcType=INTEGER}
-  </select>
+    <!--根据id  查询对应的派工单-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        pp.<include refid="Base_Column_List"/>,
+        USER.true_name
+        FROM
+        mro_paigongguanli_paigongdan pp,
+        tb_user USER
+        where
+        pp.paiGongPeople = USER.id
+        and pp.id = #{id,jdbcType=INTEGER}
+    </select>
 
 
-  <!--根据id  删除对应的派工单-->
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--根据id  删除对应的派工单-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_paigongguanli_paigongdan
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <!--新增派工单-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity"
-          useGeneratedKeys="true" keyProperty="id">
-    insert into mro_paigongguanli_paigongdan
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="operatorid != null">
-        operatorid,
-      </if>
-      <if test="paigongnumber != null">
-        paiGongNumber,
-      </if>
-      <if test="yewutype != null">
-        yeWuType,
-      </if>
-      <if test="tljname != null">
-        tljName,
-      </if>
-      <if test="dwdname != null">
-        dwdName,
-      </if>
-      <if test="xdname != null">
-        xdName,
-      </if>
-      <if test="czname != null">
-        czName,
-      </if>
-      <if test="xiangmutype != null">
-        xiangMuType,
-      </if>
-      <if test="chuchaitype != null">
-        chuChaiType,
-      </if>
-      <if test="workcontent != null">
-        workContent,
-      </if>
-      <if test="taskshuxing != null">
-        taskShuXing,
-      </if>
-      <if test="contacts != null">
-        contacts,
-      </if>
-      <if test="contactsphonenum != null">
-        contactsPhoneNum,
-      </if>
-      <if test="chuchaicity != null">
-        chuChaiCity,
-      </if>
-      <if test="xiangxiadress != null">
-        xiangXiAdress,
-      </if>
-      <if test="chuchaistarttime != null">
-        chuChaiStartTime,
-      </if>
-      <if test="chuchaiendtime != null">
-        chuChaiEndTime,
-      </if>
-      <if test="teshuask != null">
-        teShuAsk,
-      </if>
-      <if test="guanliandanju != null">
-        guanLianDanJu,
-      </if>
-      <if test="paigongpeople != null">
-        paiGongPeople,
-      </if>
-      <if test="gaipaipeople != null">
-        gaiPaiPeople,
-      </if>
-      <if test="paigongstate != null">
-        paiGongState,
-      </if>
-      <if test="provinceId != null">
-        provinceId,
-      </if>
-      <if test="cityId != null">
-        cityId,
-      </if>
-      <if test="districtId != null">
-        districtId,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="operatorid != null">
-        #{operatorid,jdbcType=INTEGER},
-      </if>
-      <if test="paigongnumber != null">
-        #{paigongnumber,jdbcType=VARCHAR},
-      </if>
-      <if test="yewutype != null">
-        #{yewutype,jdbcType=VARCHAR},
-      </if>
-      <if test="tljname != null">
-        #{tljname,jdbcType=VARCHAR},
-      </if>
-      <if test="dwdname != null">
-        #{dwdname,jdbcType=VARCHAR},
-      </if>
-      <if test="xdname != null">
-        #{xdname,jdbcType=VARCHAR},
-      </if>
-      <if test="czname != null">
-        #{czname,jdbcType=VARCHAR},
-      </if>
-      <if test="xiangmutype != null">
-        #{xiangmutype,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaitype != null">
-        #{chuchaitype,jdbcType=VARCHAR},
-      </if>
-      <if test="workcontent != null">
-        #{workcontent,jdbcType=VARCHAR},
-      </if>
-      <if test="taskshuxing != null">
-        #{taskshuxing,jdbcType=VARCHAR},
-      </if>
-      <if test="contacts != null">
-        #{contacts,jdbcType=VARCHAR},
-      </if>
-      <if test="contactsphonenum != null">
-        #{contactsphonenum,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaicity != null">
-        #{chuchaicity,jdbcType=VARCHAR},
-      </if>
-      <if test="xiangxiadress != null">
-        #{xiangxiadress,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaistarttime != null">
-        #{chuchaistarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="chuchaiendtime != null">
-        #{chuchaiendtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="teshuask != null">
-        #{teshuask,jdbcType=VARCHAR},
-      </if>
-      <if test="guanliandanju != null">
-        #{guanliandanju,jdbcType=VARCHAR},
-      </if>
-      <if test="paigongpeople != null">
-        #{paigongpeople,jdbcType=VARCHAR},
-      </if>
-      <if test="gaipaipeople != null">
-        #{gaipaipeople,jdbcType=VARCHAR},
-      </if>
-      <if test="paigongstate != null">
-        #{paigongstate,jdbcType=INTEGER},
-      </if>
-      <if test="provinceId != null">
-        #{provinceId,jdbcType=VARCHAR},
-      </if>
-      <if test="cityId != null">
-        #{cityId,jdbcType=VARCHAR},
-      </if>
-      <if test="districtId != null">
-        #{districtId,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <!--新增派工单-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_paigongguanli_paigongdan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="operatorid != null">
+                operatorid,
+            </if>
+            <if test="paigongnumber != null">
+                paiGongNumber,
+            </if>
+            <if test="yewutype != null">
+                yeWuType,
+            </if>
+            <if test="tljname != null">
+                tljName,
+            </if>
+            <if test="dwdname != null">
+                dwdName,
+            </if>
+            <if test="xdname != null">
+                xdName,
+            </if>
+            <if test="czname != null">
+                czName,
+            </if>
+            <if test="xiangmutype != null">
+                xiangMuType,
+            </if>
+            <if test="chuchaitype != null">
+                chuChaiType,
+            </if>
+            <if test="workcontent != null">
+                workContent,
+            </if>
+            <if test="taskshuxing != null">
+                taskShuXing,
+            </if>
+            <if test="contacts != null">
+                contacts,
+            </if>
+            <if test="contactsphonenum != null">
+                contactsPhoneNum,
+            </if>
+            <if test="chuchaicity != null">
+                chuChaiCity,
+            </if>
+            <if test="xiangxiadress != null">
+                xiangXiAdress,
+            </if>
+            <if test="chuchaistarttime != null">
+                chuChaiStartTime,
+            </if>
+            <if test="chuchaiendtime != null">
+                chuChaiEndTime,
+            </if>
+            <if test="teshuask != null">
+                teShuAsk,
+            </if>
+            <if test="guanliandanju != null">
+                guanLianDanJu,
+            </if>
+            <if test="paigongpeople != null">
+                paiGongPeople,
+            </if>
+            <if test="gaipaipeople != null">
+                gaiPaiPeople,
+            </if>
+            <if test="paigongstate != null">
+                paiGongState,
+            </if>
+            <if test="provinceId != null">
+                provinceId,
+            </if>
+            <if test="cityId != null">
+                cityId,
+            </if>
+            <if test="districtId != null">
+                districtId,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="operatorid != null">
+                #{operatorid,jdbcType=INTEGER},
+            </if>
+            <if test="paigongnumber != null">
+                #{paigongnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="yewutype != null">
+                #{yewutype,jdbcType=VARCHAR},
+            </if>
+            <if test="tljname != null">
+                #{tljname,jdbcType=VARCHAR},
+            </if>
+            <if test="dwdname != null">
+                #{dwdname,jdbcType=VARCHAR},
+            </if>
+            <if test="xdname != null">
+                #{xdname,jdbcType=VARCHAR},
+            </if>
+            <if test="czname != null">
+                #{czname,jdbcType=VARCHAR},
+            </if>
+            <if test="xiangmutype != null">
+                #{xiangmutype,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaitype != null">
+                #{chuchaitype,jdbcType=VARCHAR},
+            </if>
+            <if test="workcontent != null">
+                #{workcontent,jdbcType=VARCHAR},
+            </if>
+            <if test="taskshuxing != null">
+                #{taskshuxing,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactsphonenum != null">
+                #{contactsphonenum,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaicity != null">
+                #{chuchaicity,jdbcType=VARCHAR},
+            </if>
+            <if test="xiangxiadress != null">
+                #{xiangxiadress,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaistarttime != null">
+                #{chuchaistarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="chuchaiendtime != null">
+                #{chuchaiendtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teshuask != null">
+                #{teshuask,jdbcType=VARCHAR},
+            </if>
+            <if test="guanliandanju != null">
+                #{guanliandanju,jdbcType=VARCHAR},
+            </if>
+            <if test="paigongpeople != null">
+                #{paigongpeople,jdbcType=VARCHAR},
+            </if>
+            <if test="gaipaipeople != null">
+                #{gaipaipeople,jdbcType=VARCHAR},
+            </if>
+            <if test="paigongstate != null">
+                #{paigongstate,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="districtId != null">
+                #{districtId,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
-    update mro_paigongguanli_paigongdan
-    <set>
-      <if test="operatorid != null">
-        operatorid = #{operatorid,jdbcType=INTEGER},
-      </if>
-      <if test="paigongnumber != null">
-        paiGongNumber = #{paigongnumber,jdbcType=VARCHAR},
-      </if>
-      <if test="yewutype != null">
-        yeWuType = #{yewutype,jdbcType=VARCHAR},
-      </if>
-      <if test="tljname != null">
-        tljName = #{tljname,jdbcType=VARCHAR},
-      </if>
-      <if test="dwdname != null">
-        dwdName = #{dwdname,jdbcType=VARCHAR},
-      </if>
-      <if test="xdname != null">
-        xdName = #{xdname,jdbcType=VARCHAR},
-      </if>
-      <if test="czname != null">
-        czName = #{czname,jdbcType=VARCHAR},
-      </if>
-      <if test="xiangmutype != null">
-        xiangMuType = #{xiangmutype,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaitype != null">
-        chuChaiType = #{chuchaitype,jdbcType=VARCHAR},
-      </if>
-      <if test="workcontent != null">
-        workContent = #{workcontent,jdbcType=VARCHAR},
-      </if>
-      <if test="taskshuxing != null">
-        taskShuXing = #{taskshuxing,jdbcType=VARCHAR},
-      </if>
-      <if test="contacts != null">
-        contacts = #{contacts,jdbcType=VARCHAR},
-      </if>
-      <if test="contactsphonenum != null">
-        contactsPhoneNum = #{contactsphonenum,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaicity != null">
-        chuChaiCity = #{chuchaicity,jdbcType=VARCHAR},
-      </if>
-      <if test="xiangxiadress != null">
-        xiangXiAdress = #{xiangxiadress,jdbcType=VARCHAR},
-      </if>
-      <if test="chuchaistarttime != null">
-        chuChaiStartTime = #{chuchaistarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="chuchaiendtime != null">
-        chuChaiEndTime = #{chuchaiendtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="teshuask != null">
-        teShuAsk = #{teshuask,jdbcType=VARCHAR},
-      </if>
-      <if test="guanliandanju != null">
-        guanLianDanJu = #{guanliandanju,jdbcType=VARCHAR},
-      </if>
-      <if test="paigongpeople != null">
-        paiGongPeople = #{paigongpeople,jdbcType=VARCHAR},
-      </if>
-      <if test="gaipaipeople != null">
-        gaiPaiPeople = #{gaipaipeople,jdbcType=VARCHAR},
-      </if>
-      <if test="paigongstate != null">
-        paiGongState = #{paigongstate,jdbcType=INTEGER},
-      </if>
-      <if test="provinceId != null">
-        provinceId = #{provinceId,jdbcType=VARCHAR},
-      </if>
-      <if test="cityId != null">
-        cityId = #{cityId,jdbcType=VARCHAR},
-      </if>
-      <if test="districtId != null">
-        districtId = #{districtId,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+        update mro_paigongguanli_paigongdan
+        <set>
+            <if test="operatorid != null">
+                operatorid = #{operatorid,jdbcType=INTEGER},
+            </if>
+            <if test="paigongnumber != null">
+                paiGongNumber = #{paigongnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="yewutype != null">
+                yeWuType = #{yewutype,jdbcType=VARCHAR},
+            </if>
+            <if test="tljname != null">
+                tljName = #{tljname,jdbcType=VARCHAR},
+            </if>
+            <if test="dwdname != null">
+                dwdName = #{dwdname,jdbcType=VARCHAR},
+            </if>
+            <if test="xdname != null">
+                xdName = #{xdname,jdbcType=VARCHAR},
+            </if>
+            <if test="czname != null">
+                czName = #{czname,jdbcType=VARCHAR},
+            </if>
+            <if test="xiangmutype != null">
+                xiangMuType = #{xiangmutype,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaitype != null">
+                chuChaiType = #{chuchaitype,jdbcType=VARCHAR},
+            </if>
+            <if test="workcontent != null">
+                workContent = #{workcontent,jdbcType=VARCHAR},
+            </if>
+            <if test="taskshuxing != null">
+                taskShuXing = #{taskshuxing,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                contacts = #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactsphonenum != null">
+                contactsPhoneNum = #{contactsphonenum,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaicity != null">
+                chuChaiCity = #{chuchaicity,jdbcType=VARCHAR},
+            </if>
+            <if test="xiangxiadress != null">
+                xiangXiAdress = #{xiangxiadress,jdbcType=VARCHAR},
+            </if>
+            <if test="chuchaistarttime != null">
+                chuChaiStartTime = #{chuchaistarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="chuchaiendtime != null">
+                chuChaiEndTime = #{chuchaiendtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teshuask != null">
+                teShuAsk = #{teshuask,jdbcType=VARCHAR},
+            </if>
+            <if test="guanliandanju != null">
+                guanLianDanJu = #{guanliandanju,jdbcType=VARCHAR},
+            </if>
+            <if test="paigongpeople != null">
+                paiGongPeople = #{paigongpeople,jdbcType=VARCHAR},
+            </if>
+            <if test="gaipaipeople != null">
+                gaiPaiPeople = #{gaipaipeople,jdbcType=VARCHAR},
+            </if>
+            <if test="paigongstate != null">
+                paiGongState = #{paigongstate,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                provinceId = #{provinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                cityId = #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="districtId != null">
+                districtId = #{districtId,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     update mro_paigongguanli_paigongdan
     set paiGongNumber = #{paigongnumber,jdbcType=VARCHAR},
       yeWuType = #{yewutype,jdbcType=VARCHAR},
@@ -396,7 +399,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity">
     insert into mro_paigongguanli_paigongdan (id, paiGongNumber, yeWuType,
       tljName, dwdName, xdName,
       czName, xiangMuType, chuChaiType,

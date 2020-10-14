@@ -24,6 +24,28 @@
     filePath, createName, createTime, updateName, updateTime
   </sql>
 
+
+  <!--根据uid 查询对应的经纬度-->
+  <select id="findJingWeiDuByUid"  resultMap="BaseResultMap">
+    select
+    longitude,latitude
+    from mro_paigongguanli_baogong
+    where userid = #{uid,jdbcType=INTEGER}
+     ORDER BY datetime limit 1
+  </select>
+
+
+  <!--根据uid 查询对应的地址-->
+  <select id="findAdressByUid" resultType="java.lang.String">
+    SELECT
+        address
+    FROM
+        mro_paigongguanli_baogong
+    WHERE
+        userid = #{uid}
+    ORDER BY datetime limit 1
+  </select>
+
   <!--查询报工列表-->
   <select id="findAllBaoGongByUid"   resultMap="BaseResultMap">
     select

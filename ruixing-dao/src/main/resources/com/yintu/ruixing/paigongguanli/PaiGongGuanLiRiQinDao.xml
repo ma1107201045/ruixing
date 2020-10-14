@@ -15,6 +15,41 @@
     id, uid, userDongTai, startTime, endTime, creatTime, updateTime
   </sql>
 
+  <!--   查询出差人员的状态-->
+  <select id="findPeopleAddressOnMap"   resultMap="BaseResultMap">
+    SELECT
+        a.id,
+        uid,
+        userDongTai,
+        startTime,
+        us.true_name
+    FROM
+        ( SELECT * FROM mro_paigongguanli_riqin ORDER BY startTime DESC ) a,
+        tb_user us
+    WHERE
+        a.uid = us.id
+        AND a.userDongTai = 2
+    GROUP BY
+        a.uid
+  </select>
+
+  <!--   查询所有人的所有日勤状态-->
+  <select id="findPropleAddress"   resultMap="BaseResultMap">
+    SELECT
+        a.id,
+        uid,
+        userDongTai,
+        startTime,
+        us.true_name
+    FROM
+        ( SELECT * FROM mro_paigongguanli_riqin ORDER BY startTime DESC ) a,
+        tb_user us
+    WHERE
+        a.uid = us.id
+    GROUP BY
+        a.uid
+  </select>
+
 
   <!--根据uid  查询此人的所有日勤状态-->
   <select id="findRiQinByUid"   resultMap="BaseResultMap">

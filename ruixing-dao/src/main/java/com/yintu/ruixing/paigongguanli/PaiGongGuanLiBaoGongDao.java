@@ -24,4 +24,8 @@ public interface PaiGongGuanLiBaoGongDao {
     int insertSelective(PaiGongGuanLiBaoGongEntity record);
 
     List<PaiGongGuanLiBaoGongEntity> findAllBaoGongByUid(@Param("senderid") Integer senderid,@Param("datetime") Date datetime);
+
+    PaiGongGuanLiBaoGongEntity findJingWeiDuByUid(@Param("uid") Integer uid);
+
+    String findAdressByUid(@Param("uid") Integer uid);
 }

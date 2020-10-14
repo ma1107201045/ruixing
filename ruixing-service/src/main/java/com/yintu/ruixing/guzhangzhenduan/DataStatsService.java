@@ -89,13 +89,13 @@ public interface DataStatsService {
 
     List<XianDuanEntity> findAllXianDuan();
 
-    Long findDWDid(long parseLong);
+    Long findDWDid(long parseLong,long parseLong1);
 
     void addXianDuan(XianDuanEntity xianDuanEntity1);
 
     List<CheZhanEntity> findallChezhan();
 
-    Long findXDid(long parseLong);
+    Long findXDid(long parseLong,long parseLong1);
 
     void addCheZhan(CheZhanEntity cheZhan);
 
@@ -115,9 +115,9 @@ public interface DataStatsService {
 
     Integer findxianduanid(long parseLong);
 
-    List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong);
+    List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong, long parseLong1);
 
-    List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong);
+    List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong, long parseLong1);
 
     List<QuDuanBaseEntity> findQuDuanByQuDuanYunYingName(String qudunyunyingname);
 
@@ -168,4 +168,5 @@ public interface DataStatsService {
 
     List<DianWuDuanEntity> findAllDianWuDuan();
 
+    List<CheZhanEntity> findallChezhanByCZidAndXDid(long parseLong, long parseLong1);
 }
