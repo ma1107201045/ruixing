@@ -103,13 +103,13 @@ public class PreSaleFileController extends SessionController {
         response.addHeader("Cache-Control", "no-cache");
         preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
-
-    @GetMapping("/{id}/log")
-    @ResponseBody
-    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
-        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
-        return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
-    }
+//
+//    @GetMapping("/{id}/log")
+//    @ResponseBody
+//    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+//        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
+//        return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
+//    }
 
     /**
      * 查询所有用户
