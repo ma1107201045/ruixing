@@ -37,6 +37,9 @@ public class PaiGongGuanLiRiQinEntity {
     private String truename;
     private List dailyList;
     private JSONObject status;
+    private  String adress;
+    private Float longitude;
+    private Float latitude;
 
 
 }

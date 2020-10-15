@@ -1,8 +1,6 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
-import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongDao;
-import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongEntity;
-import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongService;
+import com.yintu.ruixing.paigongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +21,39 @@ import java.util.List;
 public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongService {
     @Autowired
     private PaiGongGuanLiBaoGongDao paiGongGuanLiBaoGongDao;
+
+    @Autowired
+    private PaiGongGuanLiRiQinDao paiGongGuanLiRiQinDao;
+
+    @Autowired
+    private PaiGongGuanLiPaiGongDanDao paiGongGuanLiPaiGongDanDao;
+
+
+
+    @Override
+    public List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap(Integer page, Integer size) {
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinDao.findPeopleAddressOnMap();
+        for (PaiGongGuanLiRiQinEntity riQinEntity : riQinEntityList) {
+            Integer uid = riQinEntity.getUid();
+            PaiGongGuanLiBaoGongEntity JingWeiDu=paiGongGuanLiBaoGongDao.findJingWeiDuByUid(uid);
+            Float latitude = JingWeiDu.getLatitude();
+            Float longitude = JingWeiDu.getLongitude();
+            riQinEntity.setLatitude(latitude);
+            riQinEntity.setLongitude(longitude);
+        }
+        return riQinEntityList;
+    }
+
+    @Override
+    public List<PaiGongGuanLiRiQinEntity> findPropleAddress(Integer page, Integer size) {
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinDao.findPropleAddress();
+        for (PaiGongGuanLiRiQinEntity riQinEntity : riQinEntityList) {
+            Integer uid = riQinEntity.getUid();
+            String adress=paiGongGuanLiBaoGongDao.findAdressByUid(uid);
+            riQinEntity.setAdress(adress);
+        }
+        return riQinEntityList;
+    }
 
     @Override
     public void deleteBaoGongByIds(Integer[] ids) {

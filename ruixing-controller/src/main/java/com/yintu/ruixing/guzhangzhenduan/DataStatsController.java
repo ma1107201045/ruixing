@@ -419,7 +419,7 @@ public class DataStatsController {
         Integer j = 0;
         List<Integer> number = new ArrayList<>();
         List<String[]> list = quDuanDatas1.toJavaList(String[].class);
-        for (String[] stringss : list) {
+        /*for (String[] stringss : list) {
             j++;
             String xdid = stringss[4];
             String czid = stringss[7];
@@ -428,190 +428,229 @@ public class DataStatsController {
                 number.add(j);
             }
         }
-        if (number.size() == 0) {
-            for (String[] strings : list) {
-                String tljId = strings[0];
-                String tljName = strings[1];
-                List<TieLuJuEntity> tljname = dataStatsService.findAllTieLuJuByName(tljName);//查询铁路局表中是否有此铁路局
-                System.out.println("铁路局个数" + tljname.size());
-                TieLuJuEntity luJuEntity = new TieLuJuEntity();
-                if (tljname.size() == 0) {//没有此铁路局
-                    luJuEntity.setTljId(Long.parseLong(tljId));
-                    luJuEntity.setTljName(tljName);
-                    dataStatsService.addTieLuJU(luJuEntity);
-                }
-                String dwdid = strings[2];
-                String dwdname = strings[3];
-                List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid));//查询电务段表中是否有此电务段
-                System.out.println("电务段个数" + dianWuDuanEntityList.size());
-                if (dianWuDuanEntityList.size() == 0) {//没有此电务段
-                    Long tljid = dataStatsService.findTLJid(Long.parseLong(tljId));//获取上个铁路局的id
-                    DianWuDuanEntity duanEntity = new DianWuDuanEntity();
-                    duanEntity.setTljDwdId(tljid);
-                    duanEntity.setDwdName(dwdname);
-                    duanEntity.setDwdId(Long.parseLong(dwdid));
-                    duanEntity.setTljId(Long.parseLong(strings[0]));
-                    dataStatsService.addDianWuDuan(duanEntity);
-                }
-                String xdid = strings[4];
-                String xdname = strings[5];
-                String xdzgname = strings[6];
-                List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid));
-                System.out.println("线段个数" + xianDuanEntityList.size());
-                if (xianDuanEntityList.size() == 0) {
-                    Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid));
-                    XianDuanEntity xianDuanEntity1 = new XianDuanEntity();
-                    xianDuanEntity1.setDwdXdId(dwdid1);
-                    xianDuanEntity1.setXdName(xdname);
-                    xianDuanEntity1.setXdId(Long.parseLong(xdid));
-                    xianDuanEntity1.setDwdId(Long.parseLong(strings[2]));
-                    xianDuanEntity1.setXdZgName(xdzgname);
-                    dataStatsService.addXianDuan(xianDuanEntity1);
-                }
-                String czid = strings[7];
-                String czname = strings[8];
-                String tuzhongjiancheng = strings[9];
-                String cztype = strings[10];
-                String tongxinbianmaguidaonumber = strings[11];
-                String tongxinbianmazhanneinumber = strings[12];
-                String jidianbianmaonetoonenumber = strings[13];
-                String jidianbianmaNtOnenumber = strings[14];
-                String jidianbianmaNtoOneshebeinumber = strings[15];
-                String tongxinbianmazhanneidianmahuanumber = strings[16];
-                String jidianNtoOneDianMaHuaNumber = strings[17];
-                String jidianJiashiGuidaoNumber = strings[18];
-                String jidianJiashiDianmahuaNumber = strings[19];
-                String jiDianDianMaHuaNumber = strings[20];
-                String yuliushebei1 = strings[21];
-                String yuliushebei2 = strings[22];
-                String yuliushebei3 = strings[23];
-                String qujianBisaiType = strings[24];
-                String isnoDuantou = strings[25];
-                String linzhan1id = strings[26];
-                String linzhan1name = strings[27];
-                String linzhan1LineType = strings[28];
-                String linzhan1OfXianduan = strings[29];
-                String linzhan1benDWD = strings[30];
-                String linzhan2id = strings[31];
-                String linzhan2name = strings[32];
-                String linzhan2LineType = strings[33];
-                String linzhan2OfXianduan = strings[34];
-                String linzhan2benDWD = strings[35];
-                String linzhan3id = strings[36];
-                String linzhan3name = strings[37];
-                String linzhan3LineType = strings[38];
-                String linzhan3OfXianduan = strings[39];
-                String linzhan3benDWD = strings[40];
-                String linzhan4id = strings[41];
-                String linzhan4name = strings[42];
-                String linzhan4LineType = strings[43];
-                String linzhan4OfXianduan = strings[44];
-                String linzhan4benDWD = strings[45];
-                String linzhan5id = strings[46];
-                String linzhan5name = strings[47];
-                String linzhan5LineType = strings[48];
-                String linzhan5OfXianduan = strings[49];
-                String linzhan5benDWD = strings[50];
-                String linzhan6id = strings[51];
-                String linzhan6name = strings[52];
-                String linzhan6LineType = strings[53];
-                String linzhan6OfXianduan = strings[54];
-                String linzhan6benDWD = strings[55];
-                List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByName(czname);
-                System.out.println("车站个数" + cheZhanEntityList.size());
-                if (cheZhanEntityList.size() == 0) {
-                    Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid));
-                    CheZhanEntity cheZhan = new CheZhanEntity();
-                    cheZhan.setXdCzId(xianduanid);
-                    cheZhan.setCzName(czname);
-                    cheZhan.setCzId(Long.parseLong(czid));
-                    cheZhan.setXdId(Long.parseLong(xdid));
-                    cheZhan.setCzNameJianCheng(tuzhongjiancheng);
-                    cheZhan.setCzType(cztype);
-                    cheZhan.setTongxinbianmaguidaonumber(Integer.parseInt(tongxinbianmaguidaonumber));
-                    cheZhan.setTongxinbianmazhanneioneguidaonumber(Integer.parseInt(tongxinbianmazhanneinumber));
-                    cheZhan.setJidianonetooneguidaonumber(Integer.parseInt(jidianbianmaonetoonenumber));
-                    cheZhan.setJidianntooneguidaonumber(Integer.parseInt(jidianbianmaNtOnenumber));
-                    cheZhan.setJidianntooneshebeinumber(Integer.parseInt(jidianbianmaNtoOneshebeinumber));
-                    cheZhan.setTongxinbianmadianmahuashebeinumber(Integer.parseInt(tongxinbianmazhanneidianmahuanumber));
-                    cheZhan.setJidianntoonedianmahuashebeinumber(Integer.parseInt(jidianNtoOneDianMaHuaNumber));
-                    cheZhan.setJidianjiashiguidaonumber(Integer.parseInt(jidianJiashiGuidaoNumber));
-                    cheZhan.setJidianjiashidianmahuashebeinumber(Integer.parseInt(jidianJiashiDianmahuaNumber));
-                    cheZhan.setJiDianDianMaHuaNumber(Integer.parseInt(jiDianDianMaHuaNumber));
-                    cheZhan.setYuliushebei1(yuliushebei1);
-                    cheZhan.setYuliushebei2(yuliushebei2);
-                    cheZhan.setYuliushebei3(yuliushebei3);
-                    cheZhan.setQujianbisaitype(qujianBisaiType);
-                    if (isnoDuantou.equals("是")) {
-                        cheZhan.setCzDuanTou(1);
-                    } else {
-                        cheZhan.setCzDuanTou(0);
-                    }
-                    if (linzhan1id.equals("——")) {
-                        cheZhan.setLinzhan1id(null);
-                    } else {
-                        cheZhan.setLinzhan1id(Integer.parseInt(linzhan1id));
-                    }
-                    cheZhan.setLinzhan1name(linzhan1name);
-                    cheZhan.setLinzhan1linetype(linzhan1LineType);
-                    cheZhan.setLinzhan1ofxianduan(linzhan1OfXianduan);
-                    cheZhan.setLinzhan1isnobendwd(linzhan1benDWD);
-
-                    if (linzhan2id.equals("——")) {
-                        cheZhan.setLinzhan2id(null);
-                    } else {
-                        cheZhan.setLinzhan2id(Integer.parseInt(linzhan2id));
-                    }
-                    cheZhan.setLinzhan2name(linzhan2name);
-                    cheZhan.setLinzhan2linetype(linzhan2LineType);
-                    cheZhan.setLinzhan2ofxianduan(linzhan2OfXianduan);
-                    cheZhan.setLinzhan2isnobendwd(linzhan2benDWD);
-
-                    if (linzhan3id.equals("——")) {
-                        cheZhan.setLinzhan3id(null);
-                    } else {
-                        cheZhan.setLinzhan3id(Integer.parseInt(linzhan3id));
-                    }
-                    cheZhan.setLinzhan3name(linzhan3name);
-                    cheZhan.setLinzhan3linetype(linzhan3LineType);
-                    cheZhan.setLinzhan3ofxianduan(linzhan3OfXianduan);
-                    cheZhan.setLinzhan3isnobendwd(linzhan3benDWD);
-
-                    if (linzhan4id.equals("——")) {
-                        cheZhan.setLinzhan4id(null);
-                    } else {
-                        cheZhan.setLinzhan4id(Integer.parseInt(linzhan4id));
-                    }
-                    cheZhan.setLinzhan4name(linzhan4name);
-                    cheZhan.setLinzhan4linetype(linzhan4LineType);
-                    cheZhan.setLinzhan4ofxianduan(linzhan4OfXianduan);
-                    cheZhan.setLinzhan4isnobendwd(linzhan4benDWD);
-
-                    if (linzhan5id.equals("——")) {
-                        cheZhan.setLinzhan5id(null);
-                    } else {
-                        cheZhan.setLinzhan5id(Integer.parseInt(linzhan5id));
-                    }
-                    cheZhan.setLinzhan5name(linzhan5name);
-                    cheZhan.setLinzhan5linetype(linzhan5LineType);
-                    cheZhan.setLinzhan5ofxianduan(linzhan5OfXianduan);
-                    cheZhan.setLinzhan5isnobendwd(linzhan5benDWD);
-
-                    if (linzhan6id.equals("——")) {
-                        cheZhan.setLinzhan6id(null);
-                    } else {
-                        cheZhan.setLinzhan6id(Integer.parseInt(linzhan6id));
-                    }
-                    cheZhan.setLinzhan6name(linzhan6name);
-                    cheZhan.setLinzhan6linetype(linzhan6LineType);
-                    cheZhan.setLinzhan6ofxianduan(linzhan6OfXianduan);
-                    cheZhan.setLinzhan6isnobendwd(linzhan6benDWD);
-                    dataStatsService.addCheZhan(cheZhan);
-                }
+        if (number.size() == 0) {*/
+        for (String[] strings : list) {
+            String tljId = strings[0];
+            String tljName = strings[1];
+            List<TieLuJuEntity> tljname = dataStatsService.findAllTieLuJuByName(tljName);//查询铁路局表中是否有此铁路局
+            System.out.println("铁路局个数" + tljname.size());
+            TieLuJuEntity luJuEntity = new TieLuJuEntity();
+            if (tljname.size() == 0) {//没有此铁路局
+                luJuEntity.setTljId(Long.parseLong(tljId));
+                luJuEntity.setTljName(tljName);
+                dataStatsService.addTieLuJU(luJuEntity);
             }
-        } else {
-            return ResponseDataUtil.error("请检查第" + number + "行的数据，车站有重复");
+            String dwdid = strings[2];
+            String dwdname = strings[3];
+            List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid),Long.parseLong(tljId));//查询电务段表中是否有此电务段
+            System.out.println("电务段个数" + dianWuDuanEntityList.size());
+            if (dianWuDuanEntityList.size() == 0) {//没有此电务段
+                Long tljid = dataStatsService.findTLJid(Long.parseLong(tljId));//获取上个铁路局的id
+                DianWuDuanEntity duanEntity = new DianWuDuanEntity();
+                duanEntity.setTljDwdId(tljid);
+                duanEntity.setDwdName(dwdname);
+                duanEntity.setDwdId(Long.parseLong(dwdid));
+                duanEntity.setTljId(Long.parseLong(strings[0]));
+                dataStatsService.addDianWuDuan(duanEntity);
+            }
+            String xdid = strings[4];
+            String xdname = strings[5];
+            String xdzgname = strings[6];
+            List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid),Long.parseLong(xdid));
+            System.out.println("线段个数" + xianDuanEntityList.size());
+            if (xianDuanEntityList.size() == 0) {
+                Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid),Long.parseLong(tljId));
+                XianDuanEntity xianDuanEntity1 = new XianDuanEntity();
+                xianDuanEntity1.setDwdXdId(dwdid1);
+                xianDuanEntity1.setXdName(xdname);
+                xianDuanEntity1.setXdId(Long.parseLong(xdid));
+                xianDuanEntity1.setDwdId(Long.parseLong(strings[2]));
+                xianDuanEntity1.setXdZgName(xdzgname);
+                dataStatsService.addXianDuan(xianDuanEntity1);
+            }
+            String czid = strings[7];
+            String czname = strings[8];
+            String tuzhongjiancheng = strings[9];
+            String cztype = strings[10];
+            String tongxinbianmaguidaonumber = strings[11];
+            String tongxinbianmazhanneinumber = strings[12];
+            String jidianbianmaonetoonenumber = strings[13];
+            String jidianbianmaNtOnenumber = strings[14];
+            String jidianbianmaNtoOneshebeinumber = strings[15];
+            String tongxinbianmazhanneidianmahuanumber = strings[16];
+            String jidianNtoOneDianMaHuaNumber = strings[17];
+            String jidianJiashiGuidaoNumber = strings[18];
+            String jidianJiashiDianmahuaNumber = strings[19];
+            String jiDianDianMaHuaNumber = strings[20];
+            String yuliushebei1 = strings[21];
+            String yuliushebei2 = strings[22];
+            String yuliushebei3 = strings[23];
+            String qujianBisaiType = strings[24];
+            String isnoDuantou = strings[25];
+            String linzhan1id = strings[26];
+            String linzhan1name = strings[27];
+            String linzhan1LineType = strings[28];
+            String linzhan1OfXianduan = strings[29];
+            String linzhan1benDWD = strings[30];
+            String linzhan2id = strings[31];
+            String linzhan2name = strings[32];
+            String linzhan2LineType = strings[33];
+            String linzhan2OfXianduan = strings[34];
+            String linzhan2benDWD = strings[35];
+            String linzhan3id = strings[36];
+            String linzhan3name = strings[37];
+            String linzhan3LineType = strings[38];
+            String linzhan3OfXianduan = strings[39];
+            String linzhan3benDWD = strings[40];
+            String linzhan4id = strings[41];
+            String linzhan4name = strings[42];
+            String linzhan4LineType = strings[43];
+            String linzhan4OfXianduan = strings[44];
+            String linzhan4benDWD = strings[45];
+            String linzhan5id = strings[46];
+            String linzhan5name = strings[47];
+            String linzhan5LineType = strings[48];
+            String linzhan5OfXianduan = strings[49];
+            String linzhan5benDWD = strings[50];
+            String linzhan6id = strings[51];
+            String linzhan6name = strings[52];
+            String linzhan6LineType = strings[53];
+            String linzhan6OfXianduan = strings[54];
+            String linzhan6benDWD = strings[55];
+            List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByCZidAndXDid(Long.parseLong(xdid),Long.parseLong(czid));
+            System.out.println("车站个数" + cheZhanEntityList.size());
+            if (cheZhanEntityList.size() == 0) {
+                Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid),Long.parseLong(xdid));
+                CheZhanEntity cheZhan = new CheZhanEntity();
+                cheZhan.setXdCzId(xianduanid);
+                cheZhan.setCzName(czname);
+                cheZhan.setCzId(Long.parseLong(czid));
+                cheZhan.setXdId(Long.parseLong(xdid));
+                cheZhan.setCzNameJianCheng(tuzhongjiancheng);
+                cheZhan.setCzType(cztype);
+                if (tongxinbianmaguidaonumber.equals("")) {
+                    cheZhan.setTongxinbianmaguidaonumber(0);
+                } else {
+                    cheZhan.setTongxinbianmaguidaonumber(Integer.parseInt(tongxinbianmaguidaonumber));
+                }if (tongxinbianmazhanneinumber.equals("")){
+                    cheZhan.setTongxinbianmazhanneioneguidaonumber(0);
+                }else {
+                    cheZhan.setTongxinbianmazhanneioneguidaonumber(Integer.parseInt(tongxinbianmazhanneinumber));
+                }
+                if (jidianbianmaonetoonenumber.equals("")){
+                    cheZhan.setJidianonetooneguidaonumber(0);
+                }else {
+                    cheZhan.setJidianonetooneguidaonumber(Integer.parseInt(jidianbianmaonetoonenumber));
+                }
+                if (jidianbianmaNtOnenumber.equals("")){
+                    cheZhan.setJidianntooneguidaonumber(0);
+                }else {
+                    cheZhan.setJidianntooneguidaonumber(Integer.parseInt(jidianbianmaNtOnenumber));
+                }
+                if (jidianbianmaNtoOneshebeinumber.equals("")){
+                    cheZhan.setJidianntooneshebeinumber(0);
+                }else {
+                    cheZhan.setJidianntooneshebeinumber(Integer.parseInt(jidianbianmaNtoOneshebeinumber));
+                }
+                if (tongxinbianmazhanneidianmahuanumber.equals("")){
+                    cheZhan.setTongxinbianmadianmahuashebeinumber(0);
+                }else {
+                    cheZhan.setTongxinbianmadianmahuashebeinumber(Integer.parseInt(tongxinbianmazhanneidianmahuanumber));
+                }
+                if (jidianNtoOneDianMaHuaNumber.equals("")){
+                    cheZhan.setJidianntoonedianmahuashebeinumber(0);
+                }else {
+                    cheZhan.setJidianntoonedianmahuashebeinumber(Integer.parseInt(jidianNtoOneDianMaHuaNumber));
+                }
+                if (jidianJiashiGuidaoNumber.equals("")){
+                    cheZhan.setJidianjiashiguidaonumber(0);
+                }else {
+                    cheZhan.setJidianjiashiguidaonumber(Integer.parseInt(jidianJiashiGuidaoNumber));
+                }
+                if (jidianJiashiDianmahuaNumber.equals("")){
+                    cheZhan.setJidianjiashidianmahuashebeinumber(0);
+                }else {
+                    cheZhan.setJidianjiashidianmahuashebeinumber(Integer.parseInt(jidianJiashiDianmahuaNumber));
+                }
+                if (jiDianDianMaHuaNumber.equals("")){
+                    cheZhan.setJiDianDianMaHuaNumber(0);
+                }else {
+                    cheZhan.setJiDianDianMaHuaNumber(Integer.parseInt(jiDianDianMaHuaNumber));
+                }
+                cheZhan.setYuliushebei1(yuliushebei1);
+                cheZhan.setYuliushebei2(yuliushebei2);
+                cheZhan.setYuliushebei3(yuliushebei3);
+                cheZhan.setQujianbisaitype(qujianBisaiType);
+                if (isnoDuantou.equals("是")) {
+                    cheZhan.setCzDuanTou(1);
+                } else {
+                    cheZhan.setCzDuanTou(0);
+                }
+                if (linzhan1id.equals("——")) {
+                    cheZhan.setLinzhan1id(null);
+                } else {
+                    cheZhan.setLinzhan1id(Integer.parseInt(linzhan1id));
+                }
+                cheZhan.setLinzhan1name(linzhan1name);
+                cheZhan.setLinzhan1linetype(linzhan1LineType);
+                cheZhan.setLinzhan1ofxianduan(linzhan1OfXianduan);
+                cheZhan.setLinzhan1isnobendwd(linzhan1benDWD);
+
+                if (linzhan2id.equals("——")) {
+                    cheZhan.setLinzhan2id(null);
+                } else {
+                    cheZhan.setLinzhan2id(Integer.parseInt(linzhan2id));
+                }
+                cheZhan.setLinzhan2name(linzhan2name);
+                cheZhan.setLinzhan2linetype(linzhan2LineType);
+                cheZhan.setLinzhan2ofxianduan(linzhan2OfXianduan);
+                cheZhan.setLinzhan2isnobendwd(linzhan2benDWD);
+
+                if (linzhan3id.equals("——")) {
+                    cheZhan.setLinzhan3id(null);
+                } else {
+                    cheZhan.setLinzhan3id(Integer.parseInt(linzhan3id));
+                }
+                cheZhan.setLinzhan3name(linzhan3name);
+                cheZhan.setLinzhan3linetype(linzhan3LineType);
+                cheZhan.setLinzhan3ofxianduan(linzhan3OfXianduan);
+                cheZhan.setLinzhan3isnobendwd(linzhan3benDWD);
+
+                if (linzhan4id.equals("——")) {
+                    cheZhan.setLinzhan4id(null);
+                } else {
+                    cheZhan.setLinzhan4id(Integer.parseInt(linzhan4id));
+                }
+                cheZhan.setLinzhan4name(linzhan4name);
+                cheZhan.setLinzhan4linetype(linzhan4LineType);
+                cheZhan.setLinzhan4ofxianduan(linzhan4OfXianduan);
+                cheZhan.setLinzhan4isnobendwd(linzhan4benDWD);
+
+                if (linzhan5id.equals("——")) {
+                    cheZhan.setLinzhan5id(null);
+                } else {
+                    cheZhan.setLinzhan5id(Integer.parseInt(linzhan5id));
+                }
+                cheZhan.setLinzhan5name(linzhan5name);
+                cheZhan.setLinzhan5linetype(linzhan5LineType);
+                cheZhan.setLinzhan5ofxianduan(linzhan5OfXianduan);
+                cheZhan.setLinzhan5isnobendwd(linzhan5benDWD);
+
+                if (linzhan6id.equals("——")) {
+                    cheZhan.setLinzhan6id(null);
+                } else {
+                    cheZhan.setLinzhan6id(Integer.parseInt(linzhan6id));
+                }
+                cheZhan.setLinzhan6name(linzhan6name);
+                cheZhan.setLinzhan6linetype(linzhan6LineType);
+                cheZhan.setLinzhan6ofxianduan(linzhan6OfXianduan);
+                cheZhan.setLinzhan6isnobendwd(linzhan6benDWD);
+                dataStatsService.addCheZhan(cheZhan);
+            }
         }
+       /* } else {
+            return ResponseDataUtil.error("请检查第" + number + "行的数据，车站有重复");
+        }*/
         return ResponseDataUtil.ok("数据上传成功");
     }
 
@@ -636,7 +675,7 @@ public class DataStatsController {
                         }
                         String dwdid = strings[2];
                         String dwdname = strings[3];
-                        List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid));//查询电务段表中是否有此电务段
+                        List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid),Long.parseLong(tljId));//查询电务段表中是否有此电务段
                         System.out.println("电务段个数" + dianWuDuanEntityList.size());
                         if (dianWuDuanEntityList.size() == 0) {//没有此电务段
                             Long tljid = dataStatsService.findTLJid(Long.parseLong(tljId));//获取上个铁路局的id
@@ -650,10 +689,10 @@ public class DataStatsController {
                         String xdid = strings[4];
                         String xdname = strings[5];
                         String xdzgname = strings[6];
-                        List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid));
+                        List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid),Long.parseLong(xdid));
                         System.out.println("线段个数" + xianDuanEntityList.size());
                         if (xianDuanEntityList.size() == 0) {
-                            Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid));
+                            Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid),Long.parseLong(tljId));
                             XianDuanEntity xianDuanEntity1 = new XianDuanEntity();
                             xianDuanEntity1.setDwdXdId(dwdid1);
                             xianDuanEntity1.setXdName(xdname);
@@ -713,7 +752,7 @@ public class DataStatsController {
                         List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByName(czname);
                         System.out.println("车站个数" + cheZhanEntityList.size());
                         if (cheZhanEntityList.size() == 0) {
-                            Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid));
+                            Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid),Long.parseLong(xdid));
                             CheZhanEntity cheZhan = new CheZhanEntity();
                             cheZhan.setXdCzId(xianduanid);
                             cheZhan.setCzName(czname);
@@ -984,7 +1023,7 @@ public class DataStatsController {
     //根据线段xid 查询此线段下的线段配置json数据
     @GetMapping("/findXDJsonByXid/{xid}")
     public Map<String, Object> findXDJsonByXid(@PathVariable Integer xid) {
-        XianDuanEntity xianDuanJson=dataStatsService.findXDJsonByXid(xid);
+        XianDuanEntity xianDuanJson = dataStatsService.findXDJsonByXid(xid);
         return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
     }
 

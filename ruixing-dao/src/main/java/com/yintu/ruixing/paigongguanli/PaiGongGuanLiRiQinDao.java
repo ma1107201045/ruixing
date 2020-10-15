@@ -36,4 +36,9 @@ public interface PaiGongGuanLiRiQinDao {
     List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas();
 
     List<PaiGongGuanLiRiQinEntity> findRiQinByUid(Integer uid);
+
+    List<PaiGongGuanLiRiQinEntity> findPropleAddress();
+
+    List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap();
+
 }

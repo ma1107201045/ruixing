@@ -17,4 +17,8 @@ public interface PaiGongGuanLiBaoGongService {
     void editBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity);
 
     void deleteBaoGongByIds(Integer[] ids);
+
+    List<PaiGongGuanLiRiQinEntity> findPropleAddress(Integer page, Integer size);
+
+    List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap(Integer page, Integer size);
 }

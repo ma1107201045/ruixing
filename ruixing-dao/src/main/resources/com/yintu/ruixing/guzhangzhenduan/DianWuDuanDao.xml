@@ -15,12 +15,16 @@
     </select>
     <!--根据电务段名  查询对应的数据-->
     <select id="findDianWuDuanBydid" resultMap="dianwuduan" >
-        select * from mro_dianwuduan where dwd_id=#{parseLong}
+        select
+        *
+        from mro_dianwuduan
+        where dwd_id=#{parseLong}
+        and tlj_id =#{parseLong1}
     </select>
 
     <!--根据电务段专用id  查询id-->
     <select id="dwdid" resultType="java.lang.Long">
-        select did from mro_dianwuduan where dwd_id =  #{parseLong}
+        select did from mro_dianwuduan where dwd_id =  #{parseLong} and tlj_id=  #{parseLong1}
     </select>
     <!--查询所有的电务段-->
     <select id="findDianWuDuan" resultMap="dianwuduan" >

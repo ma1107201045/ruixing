@@ -473,6 +473,15 @@
     </select>
 
     <!--根据车站名字 查询对应的数据-->
+    <select id="findallChezhanByCZidAndXDid" resultMap="chezhan">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_chezhan where xd_id=#{parseLong} and cz_id=#{parseLong1}
+    </select>
+
+    <!--根据车站名字 查询对应的数据-->
     <select id="findallChezhanByName" resultMap="chezhan">
         select
         <include refid="Base_Column_List"/>

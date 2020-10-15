@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,11 +24,11 @@ public interface XianDuanDao {
 
     List<XianDuanEntity> findAllXianDuan();
 
-    Long findid(long parseLong);
+    Long findid(@Param("parseLong") long parseLong, @Param("parseLong1") long parseLong1);
 
     List<XianDuanEntity> findAllXianDuanByName(String xdname);
 
-	List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong);
+	List<XianDuanEntity> findAllXianDuanByDwdid(@Param("parseLong") long parseLong, @Param("parseLong1") long parseLong1);
 
     String findXDJsonByXid(Integer xid);
 

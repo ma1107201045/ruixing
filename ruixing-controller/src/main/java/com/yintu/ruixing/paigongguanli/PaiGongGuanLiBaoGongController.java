@@ -20,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/baoGongAll")
 public class PaiGongGuanLiBaoGongController extends SessionController {
+
     @Autowired
     private PaiGongGuanLiBaoGongService paiGongGuanLiBaoGongService;
 
@@ -60,4 +61,24 @@ public class PaiGongGuanLiBaoGongController extends SessionController {
         return ResponseDataUtil.ok("删除成功");
     }
 
+    //////////////////////首页展示/////////////////////////
+
+    //人员分布情况
+    @GetMapping("/findPropleAddress")
+    public Map<String,Object>findPropleAddress(Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiBaoGongService.findPropleAddress(page,size);
+        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
+        return ResponseDataUtil.ok("查询成功",riQinEntityPageInfo);
+    }
+
+
+    //人员地图分布
+    @GetMapping("/findPeopleAddressOnMap")
+    public Map<String,Object>findPeopleAddressOnMap(Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiBaoGongService.findPeopleAddressOnMap(page,size);
+        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
+        return ResponseDataUtil.ok("查询成功",riQinEntityPageInfo);
+    }
 }

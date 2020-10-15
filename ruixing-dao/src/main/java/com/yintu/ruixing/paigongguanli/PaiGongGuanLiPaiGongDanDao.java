@@ -2,6 +2,7 @@ package com.yintu.ruixing.paigongguanli;
 
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +34,5 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
 
+    String findAdressByUid(@Param("uid") Integer uid);
 }
