@@ -463,6 +463,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                 String cycleDescription = null;
                 switch (cycleType) {
                     case "每日"://1
+                        maintenancePlanEntity.setCycleType((short) 1);
                         cycleDescription = "在每天的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" +
                                 DateUtil.format(maintenancePlanEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d * * ? *",
@@ -471,6 +472,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true));
                         break;
                     case "每周"://2
+                        maintenancePlanEntity.setCycleType((short) 2);
                         String weekStrArray = row[10];
                         String[] weekStr = weekStrArray.split("、");
                         StringBuilder cycleValueOfWeek = new StringBuilder();
@@ -497,6 +499,9 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 case "星期日":
                                     cycleValueOfWeek.append("7,");
                                     break;
+                                default:
+                                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期值有误");
+
                             }
                         }
                         maintenancePlanEntity.setCycleValue(cycleValueOfWeek.toString());
@@ -507,6 +512,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 DateUtil.hour(maintenancePlanEntity.getExecutionTime(), true), maintenancePlanEntity.getCycleValue());
                         break;
                     case "每月"://3
+                        maintenancePlanEntity.setCycleType((short) 3);
                         cycleDescription = "在每月的" + DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()) + "日的" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(maintenancePlanEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d * ? *",
                                 DateUtil.second(maintenancePlanEntity.getExecutionTime()),
@@ -515,6 +521,7 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 DateUtil.dayOfMonth(maintenancePlanEntity.getExecutionTime()));
                         break;
                     case "每年"://4
+                        maintenancePlanEntity.setCycleType((short) 4);
                         String monthStrArray = row[10];
                         String[] monthArray = monthStrArray.split("、");
                         StringBuilder cycleValueOfYear = new StringBuilder();
@@ -556,6 +563,8 @@ public class MaintenancePlanServiceImpl implements MaintenancePlanService {
                                 case "十二月":
                                     cycleValueOfYear.append("12,");
                                     break;
+                                default:
+                                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期值有误");
                             }
                         }
                         maintenancePlanEntity.setCycleValue(cycleValueOfYear.toString());
