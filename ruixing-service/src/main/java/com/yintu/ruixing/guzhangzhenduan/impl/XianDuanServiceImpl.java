@@ -1,12 +1,12 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.XianDuanDao;
-import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
-import com.yintu.ruixing.guzhangzhenduan.XianDuanService;
+import com.yintu.ruixing.common.util.StringUtil;
+import com.yintu.ruixing.guzhangzhenduan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +19,15 @@ import java.util.List;
 public class XianDuanServiceImpl implements XianDuanService {
     @Autowired
     private XianDuanDao xianDuanDao;
+
+    @Autowired
+    private CheZhanDao cheZhanDao;
+
+    @Autowired
+    private QuDuanInfoDaoV2 quDuanInfoDaoV2;
+
+    @Autowired
+    private AlarmTableDao alarmTableDao;
 
     @Override
     public void addXianDuan(XianDuanEntity xianDuanEntity,Long[] dwdids,Long[] dids) {
@@ -55,7 +64,25 @@ public class XianDuanServiceImpl implements XianDuanService {
     }
 
     @Override
-    public List<String> findAllJsonByDid(Integer did) {
-        return xianDuanDao.findAllJsonByDid(did);
+    public List<XianDuanEntity> findAllJsonByDid(Integer did) {
+        Date dayTime=new Date();
+        List<XianDuanEntity> xianDuanEntityList=xianDuanDao.findAllJsonByDid(did);
+        for (XianDuanEntity xianDuanEntity : xianDuanEntityList) {
+            long xid = xianDuanEntity.getXid();
+            int Xid=(int)xid;
+            List<CheZhanEntity> cheZhanEntityList=cheZhanDao.findCheZhanDatasByXid(Xid);
+            for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
+                int czid = (int ) cheZhanEntity.getCzId();
+                String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+                if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
+                    Integer alarmNumber = alarmTableDao.findAlarmNumber(tableName);
+                    cheZhanEntity.setAlarmNumber(alarmNumber);
+                }else {
+                    cheZhanEntity.setAlarmNumber(0);
+                }
+            }
+            xianDuanEntity.setCheZhanEntities(cheZhanEntityList);
+        }
+        return xianDuanEntityList;
     }
 }

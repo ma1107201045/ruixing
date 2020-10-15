@@ -3,11 +3,17 @@ package com.yintu.ruixing.guzhangzhenduan;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.common.util.FileUploadUtil;
+import com.yintu.ruixing.common.util.POIUtils;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +57,7 @@ public class BaoJingYuJingBaseController extends SessionController {
 
     //根据id  单个或者批量删除数据
     @DeleteMapping("/deleteBJYJdDataByids/{ids}")
-    public Map<String,Object>deleteBJYJdDataByids(@PathVariable Integer[] ids){
+    public Map<String, Object> deleteBJYJdDataByids(@PathVariable Integer[] ids) {
         baoJingYuJingBaseService.deleteBJYJdDataByids(ids);
         return ResponseDataUtil.ok("删除成功");
     }
@@ -73,4 +79,46 @@ public class BaoJingYuJingBaseController extends SessionController {
         PageInfo<BaoJingYuJingBaseEntity> baseEntityPageInfo = new PageInfo<>(baoJingYuJingBaseEntities);
         return ResponseDataUtil.ok("查询成功", baseEntityPageInfo);
     }
+
+    //模板下载
+    @GetMapping("/downloads")
+    public void downloadFile(HttpServletResponse response) throws IOException {
+        //String filePath ="C:\\data\\ruixing\\templates";
+        String fileName = "车站信息配置模板.xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        FileUploadUtil.getTemplateFile(response.getOutputStream(), fileName);
+    }
+
+    //预警报警的Excel数据预览
+    @PostMapping("/YuJingBaoJingYuLan")
+    @ResponseBody
+    public Map<String, Object> QuDuanYuLan(@RequestParam("file") MultipartFile excelFile) {
+        List<String[]> datas = new ArrayList<>();
+        try {
+            List<String[]> list = POIUtils.readExcel(excelFile);
+            if (list.size() > 0) {
+                for (String[] strings : list) {
+                    if (strings[0] != null && strings[1] != null && strings[2] != null && strings[3] != null) {
+                        if (!strings[0].equals("") || !strings[1].equals("") || !strings[2].equals("") || !strings[3].equals("") ) {
+                            String[] strings1 = strings;
+                            datas.add(strings1);
+                        } else {
+                            return ResponseDataUtil.error("请选择正确的Excel数据");
+                        }
+
+                    }
+                }
+            }
+        } catch (IOException e) {
+            return ResponseDataUtil.error("文件上传失败");
+        }
+        return ResponseDataUtil.ok("文件上传成功", datas);
+    }
+
+    //
+
+
 }

@@ -82,8 +82,8 @@
             xid=#{xid}
     </select>
 
-    <select id="findAllJsonByDid" resultType="java.lang.String">
-        select xd_json from mro_xianduan where dwd_xd_id=#{did}
+    <select id="findAllJsonByDid" resultMap="xianduan">
+        select xid,xd_json from mro_xianduan where dwd_xd_id=#{did}
     </select>
 
 </mapper>
