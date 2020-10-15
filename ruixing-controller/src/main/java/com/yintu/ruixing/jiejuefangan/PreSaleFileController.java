@@ -39,6 +39,8 @@ public class PreSaleFileController extends SessionController {
     private UserService userService;
     @Autowired
     private AuditConfigurationService auditConfigurationService;
+    @Autowired
+    private SolutionLogService solutionLogService;
 
     @PostMapping
     @ResponseBody
@@ -102,6 +104,13 @@ public class PreSaleFileController extends SessionController {
         preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
     }
 
+    @GetMapping("/{id}/log")
+    @ResponseBody
+    public Map<String, Object> findLogByExample(@PathVariable Integer id) {
+        List<SolutionLogEntity> solutionLogEntities = solutionLogService.findByExample(new SolutionLogEntity(null, null, null, (short) 1, (short) 2, id, null));
+        return ResponseDataUtil.ok("查询售前技术支持文件日志信息列表成功", solutionLogEntities);
+    }
+
     /**
      * 查询所有用户
      *
@@ -150,5 +159,6 @@ public class PreSaleFileController extends SessionController {
         preSaleFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核售前技术支持文件信息成功");
     }
+
 
 }

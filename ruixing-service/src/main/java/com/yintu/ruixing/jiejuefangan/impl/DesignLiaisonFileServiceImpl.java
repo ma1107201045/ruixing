@@ -131,7 +131,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 for (Integer auditorId : auditorIds) {
                     if (auditorId != null) {
                         DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
-                        designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getDesignLiaisonId());
+                        designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
                         designLiaisonFileAuditorEntity.setAuditorId(auditorId);
                         designLiaisonFileAuditorEntity.setIsPass((short) 1);
                         designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);

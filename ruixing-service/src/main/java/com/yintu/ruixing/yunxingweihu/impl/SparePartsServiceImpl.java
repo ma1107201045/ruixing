@@ -457,6 +457,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 String cycleDescription = null;
                 switch (cycleType) {
                     case "每日"://1
+                        sparePartsEntity.setCycleType((short) 1);
                         cycleDescription = "在每天的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" +
                                 DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d * * ? *",
@@ -465,6 +466,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 DateUtil.hour(sparePartsEntity.getExecutionTime(), true));
                         break;
                     case "每周"://2
+                        sparePartsEntity.setCycleType((short) 2);
                         String weekStrArray = row[10];
                         String[] weekStr = weekStrArray.split("、");
                         StringBuilder cycleValueOfWeek = new StringBuilder();
@@ -491,6 +493,8 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 case "星期日":
                                     cycleValueOfWeek.append("7,");
                                     break;
+                                default:
+                                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期值有误");
                             }
                         }
                         sparePartsEntity.setCycleValue(cycleValueOfWeek.toString());
@@ -501,6 +505,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 DateUtil.hour(sparePartsEntity.getExecutionTime(), true), sparePartsEntity.getCycleValue());
                         break;
                     case "每月"://3
+                        sparePartsEntity.setCycleType((short) 3);
                         cycleDescription = "在每月的" + DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()) + "日的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d * ? *",
                                 DateUtil.second(sparePartsEntity.getExecutionTime()),
@@ -509,6 +514,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()));
                         break;
                     case "每年"://4
+                        sparePartsEntity.setCycleType((short) 4);
                         String monthStrArray = row[10];
                         String[] monthArray = monthStrArray.split("、");
                         StringBuilder cycleValueOfYear = new StringBuilder();
@@ -550,6 +556,8 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 case "十二月":
                                     cycleValueOfYear.append("12,");
                                     break;
+                                default:
+                                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "周期值有误");
                             }
                         }
                         sparePartsEntity.setCycleValue(cycleValueOfYear.toString());
