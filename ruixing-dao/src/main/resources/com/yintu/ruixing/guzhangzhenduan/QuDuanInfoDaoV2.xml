@@ -601,9 +601,7 @@
         <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quDuanYunYingName"/>
     </resultMap>
     <sql id="Statistics__Column_List">
-        MAX
-            (qi.v3)
-            AS max_V_out_zhu,
+        MAX(qi.v3) AS max_V_out_zhu,
         MIN(qi.v3) AS min_V_out_zhu,
         MAX(qi.v4) AS max_mA_out_zhu,
         MIN(qi.v4) AS min_mA_out_zhu,
