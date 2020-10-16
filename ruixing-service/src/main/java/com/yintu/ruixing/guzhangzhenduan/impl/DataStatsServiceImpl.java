@@ -153,6 +153,11 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
+    public String findOneXDJsonByXid(Integer xid) {
+        return xianDuanDao.findXDJsonByXid(xid);
+    }
+
+    @Override
     public XianDuanEntity findXDJsonByXid(Integer xid) {
         Date dayTime = new Date();
         XianDuanEntity xianDuanEntity=new XianDuanEntity();

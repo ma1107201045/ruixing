@@ -15,6 +15,7 @@
         <result property="xdJson" column="xd_json"/>
     </resultMap>
 
+    <!--根据线段id 查询对应的json数据-->
     <select id="findXDJsonByXid" resultType="java.lang.String">
         select xd_json from mro_xianduan where xid=#{xid}
     </select>

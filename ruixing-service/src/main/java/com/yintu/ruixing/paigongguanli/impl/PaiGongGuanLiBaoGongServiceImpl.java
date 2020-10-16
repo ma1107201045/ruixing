@@ -31,7 +31,7 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
 
 
     @Override
-    public List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap(Integer page, Integer size) {
+    public List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap( ) {
         List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiRiQinDao.findPeopleAddressOnMap();
         for (PaiGongGuanLiRiQinEntity riQinEntity : riQinEntityList) {
             Integer uid = riQinEntity.getUid();

@@ -18,19 +18,29 @@
   <!--   查询出差人员的状态-->
   <select id="findPeopleAddressOnMap"   resultMap="BaseResultMap">
     SELECT
+        b.id,
+        uid,
+        userDongTai,
+        startTime,
+        true_name
+    FROM
+        (
+    SELECT
         a.id,
         uid,
         userDongTai,
         startTime,
-        us.true_name
+        us.true_name true_name
     FROM
         ( SELECT * FROM mro_paigongguanli_riqin ORDER BY startTime DESC ) a,
         tb_user us
     WHERE
         a.uid = us.id
-        AND a.userDongTai = 2
     GROUP BY
         a.uid
+        ) b
+    WHERE
+        b.userDongTai = 2
   </select>
 
   <!--   查询所有人的所有日勤状态-->

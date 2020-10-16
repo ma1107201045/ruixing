@@ -20,5 +20,5 @@ public interface PaiGongGuanLiBaoGongService {
 
     List<PaiGongGuanLiRiQinEntity> findPropleAddress(Integer page, Integer size);
 
-    List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap(Integer page, Integer size);
+    List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap( );
 }

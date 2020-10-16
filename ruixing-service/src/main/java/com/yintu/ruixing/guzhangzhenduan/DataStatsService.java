@@ -125,6 +125,8 @@ public interface DataStatsService {
 
     XianDuanEntity findXDJsonByXid(Integer xid);
 
+    String findOneXDJsonByXid(Integer xid);
+
     String findQDJsonByCid(Integer cid);
 
     String findDMHJsonByCid(Integer cid);
@@ -169,4 +171,6 @@ public interface DataStatsService {
     List<DianWuDuanEntity> findAllDianWuDuan();
 
     List<CheZhanEntity> findallChezhanByCZidAndXDid(long parseLong, long parseLong1);
+
+
 }

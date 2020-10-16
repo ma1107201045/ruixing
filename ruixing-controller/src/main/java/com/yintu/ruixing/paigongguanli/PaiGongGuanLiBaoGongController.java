@@ -75,10 +75,8 @@ public class PaiGongGuanLiBaoGongController extends SessionController {
 
     //人员地图分布
     @GetMapping("/findPeopleAddressOnMap")
-    public Map<String,Object>findPeopleAddressOnMap(Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiBaoGongService.findPeopleAddressOnMap(page,size);
-        PageInfo<PaiGongGuanLiRiQinEntity> riQinEntityPageInfo=new PageInfo<>(riQinEntityList);
-        return ResponseDataUtil.ok("查询成功",riQinEntityPageInfo);
+    public Map<String,Object>findPeopleAddressOnMap(){
+        List<PaiGongGuanLiRiQinEntity> riQinEntityList=paiGongGuanLiBaoGongService.findPeopleAddressOnMap();
+        return ResponseDataUtil.ok("查询成功",riQinEntityList);
     }
 }
