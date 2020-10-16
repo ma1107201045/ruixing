@@ -43,7 +43,7 @@ public class SparePartsServiceImpl implements SparePartsService {
             if (!entity.getExecutionTime().after(DateUtil.date()))
                 throw new BaseRuntimeException("执行时间不能小于等于当前时间");
             String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
-                    "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
+                    "的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "时执行一次";
             cronExpression = String.format("%d %d %d %d %d ? %d",
                     DateUtil.second(entity.getExecutionTime()),
                     DateUtil.minute(entity.getExecutionTime()),
@@ -57,7 +57,7 @@ public class SparePartsServiceImpl implements SparePartsService {
             String cycleDescription = null;
             switch (entity.getCycleType()) {
                 case 1://每日
-                    cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                    cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d * * ? *",
                             DateUtil.second(entity.getExecutionTime()),
                             DateUtil.minute(entity.getExecutionTime()),
@@ -92,14 +92,14 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                    cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d ? * %s *",
                             DateUtil.second(entity.getExecutionTime()),
                             DateUtil.minute(entity.getExecutionTime()),
                             DateUtil.hour(entity.getExecutionTime(), true), cycleWeekValue);
                     break;
                 case 3://每月
-                    cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                    cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d %d * ? *",
                             DateUtil.second(entity.getExecutionTime()),
                             DateUtil.minute(entity.getExecutionTime()),
@@ -150,7 +150,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                 break;
                         }
                     }
-                    cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
+                    cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
                             "yyyy-MM-dd");
                     cronExpression = String.format("%d %d %d %d %s ? *",
                             DateUtil.second(entity.getExecutionTime()),
@@ -193,7 +193,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 if (!entity.getExecutionTime().after(DateUtil.date()))
                     throw new BaseRuntimeException("执行时间不能小于等于当前时间");
                 String cycleDescription = "在" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd") +
-                        "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
+                        "的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "时执行一次";
                 entity.setCycleDescription(cycleDescription);
                 cronExpression = String.format("%d %d %d %d %d ? %d",
                         DateUtil.second(entity.getExecutionTime()),
@@ -207,7 +207,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 String cycleDescription = null;
                 switch (entity.getCycleType()) {
                     case 1://每日
-                        cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                        cycleDescription = "在每天的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
 
                         cronExpression = String.format("%d %d %d * * ? *",
                                 DateUtil.second(entity.getExecutionTime()),
@@ -243,14 +243,14 @@ public class SparePartsServiceImpl implements SparePartsService {
                                     break;
                             }
                         }
-                        cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                        cycleDescription = "在每周的" + weekStr.substring(0, weekStr.length() - 1) + "的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d ? * %s *",
                                 DateUtil.second(entity.getExecutionTime()),
                                 DateUtil.minute(entity.getExecutionTime()),
                                 DateUtil.hour(entity.getExecutionTime(), true), cycleWeekValue);
                         break;
                     case 3://每月
-                        cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
+                        cycleDescription = "在每月的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d * ? *",
                                 DateUtil.second(entity.getExecutionTime()),
                                 DateUtil.minute(entity.getExecutionTime()),
@@ -301,7 +301,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                                     break;
                             }
                         }
-                        cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
+                        cycleDescription = "在每年的" + monthStr.substring(0, monthStr.length() - 1) + "的" + DateUtil.dayOfMonth(entity.getExecutionTime()) + "日的" + DateUtil.format(entity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(entity.getExecutionTime(),
                                 "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d %s ? *",
                                 DateUtil.second(entity.getExecutionTime()),
@@ -441,7 +441,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 if (!sparePartsEntity.getExecutionTime().after(DateUtil.date()))
                     throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "执行时间不能小于等于当前时间");
                 String cycleDescription = "在" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd") +
-                        "的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "时执行一次";
+                        "的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "HH:mm:ss") + "时执行一次";
                 sparePartsEntity.setCycleDescription(cycleDescription);
                 cronExpression = String.format("%d %d %d %d %d ? %d",
                         DateUtil.second(sparePartsEntity.getExecutionTime()),
@@ -458,7 +458,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                 switch (cycleType) {
                     case "每日"://1
                         sparePartsEntity.setCycleType((short) 1);
-                        cycleDescription = "在每天的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" +
+                        cycleDescription = "在每天的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" +
                                 DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d * * ? *",
                                 DateUtil.second(sparePartsEntity.getExecutionTime()),
@@ -498,7 +498,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                             }
                         }
                         sparePartsEntity.setCycleValue(cycleValueOfWeek.toString());
-                        cycleDescription = "在每周的" + weekStrArray + "的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
+                        cycleDescription = "在每周的" + weekStrArray + "的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d ? * %s *",
                                 DateUtil.second(sparePartsEntity.getExecutionTime()),
                                 DateUtil.minute(sparePartsEntity.getExecutionTime()),
@@ -506,7 +506,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                         break;
                     case "每月"://3
                         sparePartsEntity.setCycleType((short) 3);
-                        cycleDescription = "在每月的" + DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()) + "日的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
+                        cycleDescription = "在每月的" + DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()) + "日的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(), "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d * ? *",
                                 DateUtil.second(sparePartsEntity.getExecutionTime()),
                                 DateUtil.minute(sparePartsEntity.getExecutionTime()),
@@ -561,7 +561,7 @@ public class SparePartsServiceImpl implements SparePartsService {
                             }
                         }
                         sparePartsEntity.setCycleValue(cycleValueOfYear.toString());
-                        cycleDescription = "在每年的" + monthStrArray + "的" + DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()) + "日的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "hh:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(),
+                        cycleDescription = "在每年的" + monthStrArray + "的" + DateUtil.dayOfMonth(sparePartsEntity.getExecutionTime()) + "日的" + DateUtil.format(sparePartsEntity.getExecutionTime(), "HH:mm:ss") + "执行，执行日期：" + DateUtil.format(sparePartsEntity.getExecutionTime(),
                                 "yyyy-MM-dd");
                         cronExpression = String.format("%d %d %d %d %s ? *",
                                 DateUtil.second(sparePartsEntity.getExecutionTime()),
