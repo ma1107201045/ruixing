@@ -1,5 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -80,17 +83,30 @@ public class BaoJingYuJingBaseController extends SessionController {
         return ResponseDataUtil.ok("查询成功", baseEntityPageInfo);
     }
 
-    //模板下载
-    @GetMapping("/downloads")
-    public void downloadFile(HttpServletResponse response) throws IOException {
+    //报警模板下载
+    @GetMapping("/BaoJingdownloads")
+    public void BaoJingdownloads(HttpServletResponse response) throws IOException {
         //String filePath ="C:\\data\\ruixing\\templates";
-        String fileName = "车站信息配置模板.xlsx";
+        String fileName = "报警列表模板.xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
         FileUploadUtil.getTemplateFile(response.getOutputStream(), fileName);
     }
+
+    //预警模板下载
+    @GetMapping("/YuJingdownloads")
+    public void YuJingdownloads(HttpServletResponse response) throws IOException {
+        //String filePath ="C:\\data\\ruixing\\templates";
+        String fileName = "预警列表模板.xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        FileUploadUtil.getTemplateFile(response.getOutputStream(), fileName);
+    }
+
 
     //预警报警的Excel数据预览
     @PostMapping("/YuJingBaoJingYuLan")
@@ -101,15 +117,8 @@ public class BaoJingYuJingBaseController extends SessionController {
             List<String[]> list = POIUtils.readExcel(excelFile);
             if (list.size() > 0) {
                 for (String[] strings : list) {
-                    if (strings[0] != null && strings[1] != null && strings[2] != null && strings[3] != null) {
-                        if (!strings[0].equals("") || !strings[1].equals("") || !strings[2].equals("") || !strings[3].equals("") ) {
-                            String[] strings1 = strings;
-                            datas.add(strings1);
-                        } else {
-                            return ResponseDataUtil.error("请选择正确的Excel数据");
-                        }
-
-                    }
+                    String[] strings1 = strings;
+                    datas.add(strings1);
                 }
             }
         } catch (IOException e) {
@@ -118,7 +127,70 @@ public class BaoJingYuJingBaseController extends SessionController {
         return ResponseDataUtil.ok("文件上传成功", datas);
     }
 
-    //
 
+    //上传报警的数据到数据库
+    @PostMapping("/uploadBaoJingData")
+    public Map<String, Object> uploadBaoJingData(@RequestBody JSONObject BaoJingDatas) {
+        Integer senderid = this.getLoginUser().getId().intValue();
+        String username = this.getLoginUser().getTrueName();
+        JSONArray BaoJingDatass = BaoJingDatas.getJSONArray("BaoJingDatas");
+        List<String[]> list = BaoJingDatass.toJavaList(String[].class);
+        for (String[] strings : list) {
+            String BaoJingNumber = strings[0];
+            String JiDianBaoJingContext = strings[1];
+            String TongXinBaoJingContext = strings[2];
+            String useRange = strings[3];
+            BaoJingYuJingBaseEntity baoJingYuJingBaseEntity = new BaoJingYuJingBaseEntity();
+            if (!JiDianBaoJingContext.equals("") && TongXinBaoJingContext.equals("")) {
+                baoJingYuJingBaseEntity.setBjnumber(Integer.parseInt(BaoJingNumber));
+                baoJingYuJingBaseEntity.setBjcontext(JiDianBaoJingContext);
+                baoJingYuJingBaseEntity.setBjyjtype(1);
+                baoJingYuJingBaseEntity.setUserange(useRange);
+                baoJingYuJingBaseService.addBaoJing(baoJingYuJingBaseEntity, username);
+            }
+            if (JiDianBaoJingContext.equals("") && !TongXinBaoJingContext.equals("")) {
+                baoJingYuJingBaseEntity.setBjnumber(Integer.parseInt(BaoJingNumber));
+                baoJingYuJingBaseEntity.setBjcontext(TongXinBaoJingContext);
+                baoJingYuJingBaseEntity.setBjyjtype(2);
+                baoJingYuJingBaseEntity.setUserange(useRange);
+                baoJingYuJingBaseService.addBaoJing(baoJingYuJingBaseEntity, username);
+            }
+            if (!JiDianBaoJingContext.equals("") && !TongXinBaoJingContext.equals("")) {
+                baoJingYuJingBaseEntity.setBjnumber(Integer.parseInt(BaoJingNumber));
+                baoJingYuJingBaseEntity.setBjcontext(JiDianBaoJingContext);
+                baoJingYuJingBaseEntity.setBjyjtype(1);
+                baoJingYuJingBaseEntity.setUserange(useRange);
+                baoJingYuJingBaseService.addBaoJing(baoJingYuJingBaseEntity, username);
+                baoJingYuJingBaseEntity.setBjnumber(Integer.parseInt(BaoJingNumber));
+                baoJingYuJingBaseEntity.setBjcontext(TongXinBaoJingContext);
+                baoJingYuJingBaseEntity.setBjyjtype(2);
+                baoJingYuJingBaseEntity.setUserange(useRange);
+                baoJingYuJingBaseService.addBaoJing(baoJingYuJingBaseEntity, username);
+            }
+
+        }
+        return ResponseDataUtil.ok("数据上传成功");
+    }
+
+    //上传预警的数据到数据库
+    @PostMapping("/uploadYuJingData")
+    public Map<String, Object> uploadYuJingData(@RequestBody JSONObject YuJingDatas) {
+        Integer senderid = this.getLoginUser().getId().intValue();
+        String username = this.getLoginUser().getTrueName();
+        JSONArray YuJingDatass = YuJingDatas.getJSONArray("YuJingDatas");
+        List<String[]> list = YuJingDatass.toJavaList(String[].class);
+        for (String[] strings : list) {
+            String BaoJingNumber = strings[0];
+            String YuJingContext = strings[1];
+            if (!YuJingContext.equals("")) {
+                BaoJingYuJingBaseEntity baoJingYuJingBaseEntity = new BaoJingYuJingBaseEntity();
+                baoJingYuJingBaseEntity.setBjnumber(Integer.parseInt(BaoJingNumber));
+                baoJingYuJingBaseEntity.setBjcontext(YuJingContext);
+                baoJingYuJingBaseEntity.setBjyjtype(3);
+                baoJingYuJingBaseService.addBaoJing(baoJingYuJingBaseEntity, username);
+            }
+        }
+        return ResponseDataUtil.ok("数据上传成功");
+    }
 
 }

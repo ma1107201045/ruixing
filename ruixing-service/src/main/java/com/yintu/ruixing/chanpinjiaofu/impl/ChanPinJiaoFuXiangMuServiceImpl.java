@@ -1,5 +1,6 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
+import com.google.errorprone.annotations.Var;
 import com.yintu.ruixing.chanpinjiaofu.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -507,6 +509,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
         chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
         Integer aa = 0;
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         if (xiangMuEntity.getXiangmuState() != chanPinJiaoFuXiangMuEntity.getXiangmuState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1) {
                 sb.append(" 项目状态改为“正在执行”,");
@@ -628,12 +631,16 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         }
         if (xiangMuEntity.getFahuoTixingTime() == null) {
             if (chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() != null) {
-                sb.append("新增发货时间" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() + ",");
+                Date fahuoTixingTime = chanPinJiaoFuXiangMuEntity.getFahuoTixingTime();
+                String format = sdf.format(fahuoTixingTime);
+                sb.append("新增发货时间" + format + ",");
                 aa++;
             }
         }
         if (xiangMuEntity.getFahuoTixingTime() != null && xiangMuEntity.getFahuoTixingTime().getTime() != chanPinJiaoFuXiangMuEntity.getFahuoTixingTime().getTime()) {
-            sb.append("发货时间改为" + chanPinJiaoFuXiangMuEntity.getFahuoTixingTime() + ",");
+            Date fahuoTixingTime = chanPinJiaoFuXiangMuEntity.getFahuoTixingTime();
+            String format = sdf.format(fahuoTixingTime);
+            sb.append("发货时间改为" + format + ",");
             aa++;
         }
         if (aa == 0) {
