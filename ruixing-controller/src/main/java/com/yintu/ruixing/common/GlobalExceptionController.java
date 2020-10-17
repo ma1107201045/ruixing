@@ -46,7 +46,7 @@ public class GlobalExceptionController {
     @ExceptionHandler(SQLException.class)
     public Map<String, Object> sqlException(SQLException e) {
         if (e instanceof SQLIntegrityConstraintViolationException) {
-            return ResponseDataUtil.error("该数据有关联数据，操作失败");
+            return ResponseDataUtil.error("车站id有重复,请检查车站id,操作失败");
         }
         logger.error("" + e.getMessage());
         return ResponseDataUtil.error("数据库异常，操作失败");

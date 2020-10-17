@@ -47,6 +47,8 @@ public interface DataStatsService {
 
     List<DataStatsEntity> findAllCheZhan(Integer page, Integer size);
 
+    void editStateByDid(DianWuDuanEntity dianWuDuanEntity);
+
     void editStateByXid(XianDuanEntity xianDuanEntity);
 
     void editStateByCid(CheZhanEntity cheZhanEntity);
@@ -74,6 +76,8 @@ public interface DataStatsService {
     void deletQuDuanById(Integer id);
 
     void deletQuDuanByIds(Integer[] ids);
+
+    void qingChuaByDid(DianWuDuanEntity dianWuDuanEntity);
 
     void qingChuaByXid(XianDuanEntity xianDuanEntity);
 
@@ -173,4 +177,10 @@ public interface DataStatsService {
     List<CheZhanEntity> findallChezhanByCZidAndXDid(long parseLong, long parseLong1);
 
 
+    void addDatas(List<String[]> list);
+
+
+    List<String> findXDJsonByDid(Integer did);
+
+    String findDWDJsonByDid(Integer did);
 }

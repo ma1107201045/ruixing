@@ -9,10 +9,18 @@
         <result property="dwdName" column="dwd_name"/>
         <result property="tljDwdId" column="tlj_dwd_id"/>
         <result property="dwdMiaoShu" column="dwd_miaoshu"/>
+        <result column="dwd_state" jdbcType="INTEGER" property="dwdState"/>
+        <result column="dwd_json" jdbcType="LONGVARCHAR" property="dwdJson"/>
     </resultMap>
     <select id="findDianWuDuanByName" resultMap="dianwuduan" >
         select * from mro_dianwuduan where dwd_name=#{dwdname}
     </select>
+
+    <!--根据电务段did  查询对应的json数据-->
+    <select id="findDWDJsonByDid" resultType="java.lang.String" >
+        select dwd_json from mro_dianwuduan where did=#{did}
+    </select>
+
     <!--根据电务段名  查询对应的数据-->
     <select id="findDianWuDuanBydid" resultMap="dianwuduan" >
         select

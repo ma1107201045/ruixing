@@ -25,6 +25,8 @@ public interface DataStatsDao {
 
     List<DataStatsEntity> findCheZhanById(Long cid);
 
+    void editStateByDid(DianWuDuanEntity dianWuDuanEntity);
+
     void editStateByXid(XianDuanEntity xianDuanEntity);
 
     void editStateByCid(CheZhanEntity cheZhanEntity);
@@ -55,6 +57,8 @@ public interface DataStatsDao {
     List<CheZhanEntity> findCheZhanByXid(Integer xid);
 
     List<QuDuanBaseEntity> findAllQuDuan();
+
+    void qingChuaByDid(DianWuDuanEntity dianWuDuanEntity);
 
     void qingChuaByXid(XianDuanEntity xianDuanEntity);
 

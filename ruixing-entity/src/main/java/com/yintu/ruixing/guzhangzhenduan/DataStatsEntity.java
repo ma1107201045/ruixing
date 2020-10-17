@@ -55,6 +55,8 @@ public class DataStatsEntity {
 
     private Integer czState;//'车站设置状态  0：未设置  1：已设置',
 
+    private Integer dwdState;//'电务段设置状态  0：未设置  1：已设置',
+
 
     private String czNameJianCheng;
 

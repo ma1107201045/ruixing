@@ -27,6 +27,7 @@
         <result property="xdCzId" column="xd_cz_id"/>
         <result property="czMiaoShu" column="cz_miaoshu"/>
         <result property="czDuanTou" column="cz_duantou"/>
+        <result property="dwdState" column="dwd_state" />
         <result property="xdState" column="xd_state"/>
         <result property="czState" column="cz_state"/>
         <result property="czdmhState" column="cz_dmh_state"/>
@@ -228,6 +229,7 @@
                 dwd.dwd_id,
                 dwd.dwd_name,
                 dwd.dwd_miaoshu,
+                dwd.dwd_state,
                 xd.xid,
                 xd.xd_id,
                 xd.xd_name,
@@ -280,6 +282,7 @@
         dwd.dwd_id,
         dwd.dwd_name,
         dwd.dwd_miaoshu,
+        dwd.dwd_state,
         xd.xid,
         xd.xd_id,
         xd.xd_name,
@@ -310,6 +313,7 @@
             dwd.dwd_id,
             dwd.dwd_name,
             dwd.dwd_miaoshu,
+            dwd.dwd_state,
             xd.xid,
             xd.xd_id,
             xd.xd_name,
@@ -340,6 +344,7 @@
             dwd.dwd_id,
             dwd.dwd_name,
             dwd.dwd_miaoshu,
+            dwd.dwd_state,
             xd.xid,
             xd.xd_id,
             xd.xd_name,
@@ -370,6 +375,7 @@
             dwd.dwd_id,
             dwd.dwd_name,
             dwd.dwd_miaoshu,
+            dwd.dwd_state,
             xd.xid,
             xd.xd_id,
             xd.xd_name,
@@ -390,6 +396,21 @@
     </select>
 
 
+    <!--根据电务段id  更改电务段的状态-->
+    <update id="editStateByDid" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" >
+        update mro_dianwuduan
+        <set>
+            <if test="dwdState !=null">
+                dwd_state = #{dwdState},
+            </if>
+            <if test="dwdJson !=null">
+                dwd_json = #{dwdJson}
+            </if>
+        </set>
+        where did = #{did}
+    </update>
+
+
     <!--根据线段id  更改线段的状态-->
     <update id="editStateByXid" parameterType="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity" >
         update mro_xianduan
@@ -397,7 +418,7 @@
             <if test="xdState !=null">
                 xd_state = #{xdState},
             </if>
-            <if test="xdState !=null">
+            <if test="xdJson !=null">
                 xd_json = #{xdJson}
             </if>
         </set>
@@ -430,6 +451,15 @@
             </if>
         </set>
         where cid = #{cid}
+    </update>
+
+    <!--清除电务段的json  和更改状态-->
+    <update id="qingChuaByDid" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" >
+        update mro_dianwuduan
+            set
+                dwd_state = #{dwdState},
+                dwd_json = #{dwdJson}
+        where did = #{did}
     </update>
 
     <!--清除线段的json  和更改状态-->

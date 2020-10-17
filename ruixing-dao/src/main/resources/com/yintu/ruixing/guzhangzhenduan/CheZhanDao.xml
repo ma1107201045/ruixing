@@ -145,9 +145,10 @@
  -->
 
     <resultMap id="chezhann" type="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity">
-    <id column="cid" jdbcType="INTEGER" property="cid"/>
-    <result column="cz_id" property="czId"/>
-    <result column="cz_stutrs" property="czStutrs"/>
+        <id column="cid" jdbcType="INTEGER" property="cid"/>
+        <result column="cz_id" property="czId"/>
+        <result column="cz_stutrs" property="czStutrs"/>
+        <result column="cz_state" jdbcType="INTEGER" property="czState"/>
     </resultMap>
 
     <!--根据xid 查询车站的id和连接状态-->
@@ -155,7 +156,8 @@
         SELECT
             cid,
             cz_id,
-            cz_stutrs
+            cz_stutrs,
+            cz_state
         FROM
             mro_chezhan
         WHERE
@@ -1116,6 +1118,8 @@
         select cz_json from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
     </select>
     <select id="selectByczId" parameterType="java.lang.Integer" resultMap="chezhan">
-        select  <include refid="Base_Column_List"/> from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
     </select>
 </mapper>
