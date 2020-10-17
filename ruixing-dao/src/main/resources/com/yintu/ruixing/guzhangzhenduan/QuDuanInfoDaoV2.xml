@@ -335,7 +335,8 @@
                da.v39_sc2    FBJ_collection_bei
         FROM ${tableName} da
         WHERE da.v1 IN (SELECT qdid FROM mro_quduan_base WHERE cz_id = #{czid} AND line = '电码化')
-          AND da.createtime = #{time}
+          and FROM_UNIXTIME(da.createtime) between #{startTime,jdbcType=TIMESTAMP} and
+            #{endTime,jdbcType=TIMESTAMP}
 
     </select>
 
@@ -601,7 +602,9 @@
         <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quDuanYunYingName"/>
     </resultMap>
     <sql id="Statistics__Column_List">
-        MAX(qi.v3) AS max_V_out_zhu,
+        MAX
+            (qi.v3)
+            AS max_V_out_zhu,
         MIN(qi.v3) AS min_V_out_zhu,
         MAX(qi.v4) AS max_mA_out_zhu,
         MIN(qi.v4) AS min_mA_out_zhu,

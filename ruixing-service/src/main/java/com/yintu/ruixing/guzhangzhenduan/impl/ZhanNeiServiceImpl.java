@@ -1,17 +1,15 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoDao;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoDaoV2;
-import com.yintu.ruixing.guzhangzhenduan.ZhanNeiDao;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
-import com.yintu.ruixing.guzhangzhenduan.ZhanNeiService;
+import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.StringUtil;
+import com.yintu.ruixing.guzhangzhenduan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,10 +28,14 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
 
     @Autowired
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
+    @Autowired
+    private QuDuanInfoService quDuanInfoService;
 
     @Override
-    public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid,String tableName) {
-        return quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid,tableName);
+    public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) > 0)
+            return quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, tableName);
+        return new ArrayList<>();
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
 
     @Override
     public void editWangLuoLianJieById(CheZhanEntity cheZhanEntity) {
-            zhanNeiDao.editWangLuoLianJieById(cheZhanEntity);
+        zhanNeiDao.editWangLuoLianJieById(cheZhanEntity);
     }
 
     @Override
@@ -62,7 +64,24 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     }
 
     @Override
-    public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, long time,String tableName) {
-        return quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid,time,tableName);
+    public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, Date startTime, Date endTime) {
+        if (startTime.after(endTime))
+            throw new BaseRuntimeException("开始时间不能大于结束时间");
+        if (DateUtil.month(startTime) == DateUtil.month(endTime)) {
+            String tableName = StringUtil.getTableName(czid, startTime);
+            return quDuanInfoService.isTableExist(tableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, startTime, endTime, tableName) : new ArrayList<>();
+        } else {
+            String firstTableName = StringUtil.getTableName(czid, startTime);
+            List<QuDuanInfoEntityV2> firstQuDuanInfoEntityV2s =
+                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
+
+            String lastTableName = StringUtil.getTableName(czid, endTime);
+            List<QuDuanInfoEntityV2> lastQuDuanInfoEntityV2s =
+                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
+            firstQuDuanInfoEntityV2s.addAll(lastQuDuanInfoEntityV2s);
+            return firstQuDuanInfoEntityV2s;
+        }
+
     }
+
 }

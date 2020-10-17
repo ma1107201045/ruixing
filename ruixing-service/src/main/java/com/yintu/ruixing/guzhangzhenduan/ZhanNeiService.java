@@ -5,6 +5,7 @@ import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @date:2020-06-06 19
  * 站内相关
  */
-public interface ZhanNeiService  {
+public interface ZhanNeiService {
     List<QuDuanBaseEntity> findAllDianMaHua(Long id);
 
     List<CheZhanEntity> findAllWangLuoLianJie();
@@ -23,7 +24,7 @@ public interface ZhanNeiService  {
 
     List<CheZhanEntity> findTieLuJuById(Integer page, Integer size);
 
-    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, long time,String tableName);
+    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, Date startTime, Date endTime);
 
-    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid,String tableName);
+    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid, String tableName);
 }
