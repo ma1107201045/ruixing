@@ -118,7 +118,17 @@ public interface CheZhanDao {
 
     Integer findCzid(@Param("czid") Integer czid);
 
-    List<CheZhanEntity> findCheZhanDatasByXid(@Param("xid")Integer xid);
+    List<CheZhanEntity> findCheZhanDatasByXid(@Param("xid") Integer xid);
 
-    List<CheZhanEntity> findallChezhanByCZidAndXDid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
+    List<CheZhanEntity> findallChezhanByCZidAndXDid(@Param("parseLong") long parseLong, @Param("parseLong1") long parseLong1);
+
+    /**
+     * 通过车站id查询车站连接状态
+     *
+     * @param id           车站id或者车站专用id
+     * @param isPrimaryKey true：车站id false 车站专用id
+     * @return 连接状态 1.已连接 0.未连接
+     */
+    Integer selectCzStutrs(Long id, Boolean isPrimaryKey);
+
 }

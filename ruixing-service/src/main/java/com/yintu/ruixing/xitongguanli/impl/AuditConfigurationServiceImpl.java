@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.enumobject.EnumFlag;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,17 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public List<AuditConfigurationEntity> findByExample(String name, String departmentName, Short status) {
+    public List<AuditConfigurationEntity> findByExample(Short status) {
+        AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
+        AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
+        if (status != null)
+            criteria.andStatusEqualTo(status);
+        return this.findByExample(auditConfigurationEntityExample);
+    }
+
+
+    @Override
+    public List<AuditConfigurationEntity> findByExample(Integer pageNumber, Integer pageSize, String orderBy, String name, String departmentName) {
         AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
         AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
         if (name != null && !"".equals(name)) {
@@ -114,9 +125,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                 return new ArrayList<>();
             criteria.andDepartmentIdIn(departmentEntities.stream().map(DepartmentEntity::getId).collect(Collectors.toList()));
         }
-        if (status != null) {
-            criteria.andStatusEqualTo(status);
-        }
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
         return this.findByExample(auditConfigurationEntityExample);
     }
 }

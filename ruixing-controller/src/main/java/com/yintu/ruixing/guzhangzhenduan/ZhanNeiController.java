@@ -42,42 +42,44 @@ public class ZhanNeiController {
 
     //根据电码化的区段id查询出数据展示在列表
     @GetMapping("/findDianMaHuaDatabById/{id}")
-    public Map<String,Object>findDianMaHuaDatabById(@PathVariable Integer id){
-        List<QuDuanInfoEntity> quDuanInfoEntities=zhanNeiService.findDianMaHuaDatabById(id);
-        return ResponseDataUtil.ok("查询单单个数据成功",quDuanInfoEntities);
+    public Map<String, Object> findDianMaHuaDatabById(@PathVariable Integer id) {
+        List<QuDuanInfoEntity> quDuanInfoEntities = zhanNeiService.findDianMaHuaDatabById(id);
+        return ResponseDataUtil.ok("查询单单个数据成功", quDuanInfoEntities);
     }
 
     //网络连接
     @GetMapping("/findAllWangLuoLianJie")
     public Map<String, Object> findAllWangLuoLianJie(Integer page, Integer size) {
         PageHelper.startPage(page, size);
-        List<CheZhanEntity> all = zhanNeiService.findTieLuJuById( page, size);
+        List<CheZhanEntity> all = zhanNeiService.findTieLuJuById(page, size);
         PageInfo<CheZhanEntity> pageInfo = new PageInfo<>(all);
         return ResponseDataUtil.ok("查询车站信息成功", pageInfo);
     }
+
     //根据id更改车站的各个状态
     @PutMapping("/editWangLuoLianJieById/{cid}")
     public Map<String, Object> editWangLuoLianJieById(@PathVariable Long cid, CheZhanEntity cheZhanEntity) {
-        System.out.println("1111"+cheZhanEntity);
+        System.out.println("1111" + cheZhanEntity);
         zhanNeiService.editWangLuoLianJieById(cheZhanEntity);
-        System.out.println("22222"+cheZhanEntity);
+        System.out.println("22222" + cheZhanEntity);
         return ResponseDataUtil.ok("修改信息成功");
     }
 
 
     //根据车站专用id  和时间查询对应的区段数据
     @GetMapping("/findDianMaHuaDatasByCZid/{czid}")
-    public Map<String,Object>findDianMaHuaDatasByCZid(@PathVariable Integer czid, Date datetime){
-        Date today =new Date();
-        String tableName = StringUtil.getTableName(czid, today);
-        if (datetime!=null){
-            long time = datetime.getTime()/1000;
-            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List=zhanNeiService.findDianMaHuaDatasByCZid(czid,time,tableName);
-            return ResponseDataUtil.ok("查询电码化数据成功",quDuanInfoEntityV2List);
-        }else {
-            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List=zhanNeiService.findDianMaHuaDatasByCZids(czid,tableName);
-            return ResponseDataUtil.ok("查询电码化数据成功",quDuanInfoEntityV2List);
+    public Map<String, Object> findDianMaHuaDatasByCZid(@PathVariable Integer czid,
+                                                        @RequestParam(value = "startTime", required = false) Date startTime,
+                                                        @RequestParam(value = "endTime", required = false) Date endTime) {
+        if (startTime != null && endTime != null) {
+            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = zhanNeiService.findDianMaHuaDatasByCZid(czid, startTime, endTime);
+            return ResponseDataUtil.ok("查询电码化数据成功", quDuanInfoEntityV2List);
+        } else {
+            String tableName = StringUtil.getTableName(czid, new Date());
+            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = zhanNeiService.findDianMaHuaDatasByCZids(czid, tableName);
+            return ResponseDataUtil.ok("查询电码化数据成功", quDuanInfoEntityV2List);
         }
+
     }
 }
 

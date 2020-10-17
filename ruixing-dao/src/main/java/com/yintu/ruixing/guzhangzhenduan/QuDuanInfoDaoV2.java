@@ -43,7 +43,7 @@ public interface QuDuanInfoDaoV2 {
                                        @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
                                        @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
-    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(@Param("czid") Integer czid, @Param("time") long time, @Param("tableName") String tableName);
+    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(@Param("czid") Integer czid, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("tableName") String tableName);
 
     List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(@Param("czid") Integer czid, @Param("tableName") String tableName);
 

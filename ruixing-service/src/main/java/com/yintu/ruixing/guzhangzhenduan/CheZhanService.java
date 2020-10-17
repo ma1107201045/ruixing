@@ -78,4 +78,14 @@ public interface CheZhanService {
     List<CheZhanEntity> findXiangLinFiveCheZhanByXdid(Integer xdid);
 
     List<CheZhanEntity> findXiangLinSixCheZhanByXdid(Integer xdid);
+
+
+    /**
+     * 通过车站id查询车站连接状态
+     *
+     * @param id           车站id或者车站专用id
+     * @param isPrimaryKey true：车站id false 车站专用id
+     * @return 连接状态 true:已连接   false ：未连接
+     */
+    Boolean findCzStutrs(Long id, Boolean isPrimaryKey);
 }

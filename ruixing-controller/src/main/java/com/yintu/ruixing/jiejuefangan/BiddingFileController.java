@@ -128,7 +128,7 @@ public class BiddingFileController extends SessionController {
     @GetMapping("/audit/configurations")
     @ResponseBody
     public Map<String, Object> findAuditConfigurations() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, null, (short) 1);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 1);
         auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
                 .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
                 .sorted(Comparator.comparing(UserEntity::getId).reversed())
@@ -151,7 +151,6 @@ public class BiddingFileController extends SessionController {
         biddingFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核招投标技术支持文件信息成功");
     }
-
 
 
 }

@@ -165,7 +165,7 @@ public class CustomerController extends SessionController {
     @GetMapping("/audit/configurations")
     @ResponseBody
     public Map<String, Object> findAuditConfigurations() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, null, (short) 1);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 1);
         auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
                 .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
                 .sorted(Comparator.comparing(UserEntity::getId).reversed())

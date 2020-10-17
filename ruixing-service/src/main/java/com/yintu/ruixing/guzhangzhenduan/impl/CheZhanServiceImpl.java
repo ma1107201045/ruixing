@@ -53,6 +53,7 @@ public class CheZhanServiceImpl implements CheZhanService {
         return cheZhanDao.findXiangLinSixCheZhanByXdid(xdid);
     }
 
+
     @Override
     public List<CheZhanEntity> findXiangLinOneCheZhanByXdid(Integer xdid) {
         return cheZhanDao.findXiangLinOneCheZhanByXdid(xdid);
@@ -105,6 +106,12 @@ public class CheZhanServiceImpl implements CheZhanService {
     @Override
     public CheZhanEntity findByczId(Integer czId) {
         return cheZhanDao.selectByczId(czId);
+    }
+
+    @Override
+    public Boolean findCzStutrs(Long id, Boolean isPrimaryKey) {
+        Integer czStutrs = cheZhanDao.selectCzStutrs(id, isPrimaryKey);
+        return !(czStutrs == null || czStutrs == 0);
     }
 
 }
