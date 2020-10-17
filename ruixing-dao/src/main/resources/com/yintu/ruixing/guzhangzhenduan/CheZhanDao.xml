@@ -153,142 +153,107 @@
 
     <!--根据xid 查询车站的id和连接状态-->
     <select id="findCheZhanDatasByXid" resultMap="chezhann">
-        SELECT
-            cid,
-            cz_id,
-            cz_stutrs,
-            cz_state
-        FROM
-            mro_chezhan
-        WHERE
-            xd_cz_id=#{xid}
+        SELECT cid,
+               cz_id,
+               cz_stutrs,
+               cz_state
+        FROM mro_chezhan
+        WHERE xd_cz_id = #{xid}
     </select>
 
     <!--根据czid 查询车站的专用id-->
     <select id="findCzid" resultType="java.lang.Integer">
-        SELECT
-            cz_id
-        FROM
-            mro_chezhan
-        WHERE
-            cid=#{czid}
+        SELECT cz_id
+        FROM mro_chezhan
+        WHERE cid = #{czid}
     </select>
 
 
     <!--根据电务段id 和线段id  查询下面的车站czid-->
     <select id="findczidBydwdNamexdName" resultMap="chezhan">
-        SELECT
-            cz_id
-        FROM
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz
-        WHERE
-            dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND dwd.did = #{dwdid}
-            AND xd.xid = #{xdid}
+        SELECT cz_id
+        FROM mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz
+        WHERE dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND dwd.did = #{dwdid}
+          AND xd.xid = #{xdid}
     </select>
 
     <!--根据电务段id  查询下面的车站czid-->
     <select id="findczidBydwdName" resultMap="chezhan">
-        SELECT
-            cz_id
-        FROM
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz
-        WHERE
-            dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND dwd.did = #{dwdid}
+        SELECT cz_id
+        FROM mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz
+        WHERE dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND dwd.did = #{dwdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
     <select id="findCzNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select
-        	tongXinBianMaGuiDaoNumber + tongXinBianMaZhanNeiOneGuiDaoNumber+jiDianOneToOneGuiDaoNumber+jiDianJiaShiDianMaHuaSheBeiNumber
-        FROM
-        mro_chezhan
-        WHERE
-          cz_id = #{stationId}
+        select tongXinBianMaGuiDaoNumber + tongXinBianMaZhanNeiOneGuiDaoNumber + jiDianOneToOneGuiDaoNumber +
+               jiDianJiaShiDianMaHuaSheBeiNumber
+        FROM mro_chezhan
+        WHERE cz_id = #{stationId}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
     <select id="findNumBycid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select
-        	jiDianJiaShiDianMaHuaSheBeiNumber + jiDianDianMaHuaNumber
-        FROM
-        mro_chezhan
-        WHERE
-      cid = #{id}
+        select jiDianJiaShiDianMaHuaSheBeiNumber + jiDianDianMaHuaNumber
+        FROM mro_chezhan
+        WHERE cid = #{id}
     </select>
 
 
     <!--根据线段专用xdid  查询对应的相邻6车站信息-->
     <select id="findXiangLinSixCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan6ID,
-        linzhan6Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan6ID,
+               linzhan6Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻5车站信息-->
     <select id="findXiangLinFiveCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan5ID,
-        linzhan5Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan5ID,
+               linzhan5Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻4车站信息-->
     <select id="findXiangLinFourCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan4ID,
-        linzhan4Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan4ID,
+               linzhan4Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻3车站信息-->
     <select id="findXiangLinThreeCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan3ID,
-        linzhan3Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan3ID,
+               linzhan3Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻2车站信息-->
     <select id="findXiangLinTwoCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan2ID,
-        linzhan2Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan2ID,
+               linzhan2Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
     <!--根据线段专用xdid  查询对应的相邻1车站信息-->
     <select id="findXiangLinOneCheZhanByXdid" parameterType="java.lang.Integer" resultMap="chezhan">
-        select
-        linzhan1ID,
-        linzhan1Name
-        FROM
-        mro_chezhan
-        WHERE
-        xd_id = #{xdid}
+        select linzhan1ID,
+               linzhan1Name
+        FROM mro_chezhan
+        WHERE xd_id = #{xdid}
     </select>
 
 
@@ -1115,11 +1080,23 @@
         where cz_name like concat('%', #{czName,jdbcType=VARCHAR}, '%')
     </select>
     <select id="selectJsonByCzId" parameterType="java.lang.Integer" resultType="java.lang.String">
-        select cz_json from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
+        select cz_json
+        from mro_chezhan
+        where cz_id = #{czId,jdbcType=INTEGER}
     </select>
     <select id="selectByczId" parameterType="java.lang.Integer" resultMap="chezhan">
         select
         <include refid="Base_Column_List"/>
         from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
+    </select>
+    <select id="selectCzStutrs" resultType="java.lang.Integer">
+        select cz_stutrs from mro_chezhan where
+        <if test="isPrimaryKey">
+            cid=#{id,jdbcType=BIGINT}
+        </if>
+        <if test="!isPrimaryKey">
+            cz_id=#{id,jdbcType=BIGINT}
+        </if>
+        limit 1
     </select>
 </mapper>
