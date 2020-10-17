@@ -295,6 +295,7 @@
         SELECT da.createtime time,
                da.type,
                da.v1         qid,
+               da.v2         data_zhengChang,
                da.v3         V_out_zhu,
                da.v9         V_out_bei,
                da.v4         mA_out_zhu,
@@ -319,6 +320,7 @@
         SELECT da.createtime time,
                da.type,
                da.v1         qid,
+               da.v2         data_zhengChang,
                da.v3         V_out_zhu,
                da.v9         V_out_bei,
                da.v4         mA_out_zhu,
@@ -439,6 +441,7 @@
 
     <resultMap id="quduanBaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2">
         <id column="qiId" jdbcType="INTEGER" property="id"/>
+        <result column="data_zhengChang" jdbcType="INTEGER" property="dataZhengchang"/>
         <result column="time" jdbcType="INTEGER" property="time"/>
         <result column="xid" jdbcType="INTEGER" property="xid"/>
         <result column="qid" jdbcType="INTEGER" property="qid"/>

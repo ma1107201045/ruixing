@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +34,52 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     private QuDuanInfoService quDuanInfoService;
 
     @Override
-    public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) > 0)
-            return quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, tableName);
+    public List<JSONObject> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) > 0) {
+            List<JSONObject> js=new ArrayList<>();
+            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, tableName);
+            for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2List) {
+                JSONObject o = (JSONObject) JSONObject.toJSON(quDuanInfoEntityV2);
+                String fbjCollectionBei = o.getString("fbjCollectionBei");
+                if ("1".equals(fbjCollectionBei)) {
+                    o.put("fbjCollectionBei", "吸起");
+                }
+                if ("1".equals(fbjCollectionBei)) {
+                    o.put("fbjCollectionBei", "落下");
+                }else {
+                    o.put("fbjCollectionBei", "无效");
+                }
+                BigDecimal fbjCollectionZhu = o.getBigDecimal("fbjCollectionZhu");
+                if ("1".equals(fbjCollectionZhu)){
+                    o.put("fbjCollectionZhu","吸起");
+                }
+                if ("2".equals(fbjCollectionZhu)){
+                    o.put("fbjCollectionZhu","落下");
+                }else {
+                    o.put("fbjCollectionZhu","无效");
+                }
+                Integer fbjDriveBei = o.getInteger("fbjDriveBei");
+                if (fbjDriveBei==1){
+                    o.put("fbjDriveBei","正常");
+                }
+                if (fbjDriveBei==2){
+                    o.put("fbjDriveBei","无");
+                }else {
+                    o.put("fbjDriveBei","无效");
+                }
+                Integer fbjDriveZhu = o.getInteger("fbjDriveZhu");
+                if (fbjDriveZhu==1){
+                    o.put("fbjDriveZhu","正常");
+                }
+                if (fbjDriveZhu==2){
+                    o.put("fbjDriveZhu","无");
+                }else {
+                    o.put("fbjDriveZhu","无效");
+                }
+                js.add(o);
+            }
+            return js;
+        }
         return new ArrayList<>();
     }
 

@@ -1,5 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntity;
@@ -26,5 +27,5 @@ public interface ZhanNeiService {
 
     List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, Date startTime, Date endTime);
 
-    List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZids(Integer czid, String tableName);
+    List<JSONObject> findDianMaHuaDatasByCZids(Integer czid, String tableName);
 }
