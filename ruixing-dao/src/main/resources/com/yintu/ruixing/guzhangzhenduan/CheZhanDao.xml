@@ -1121,5 +1121,10 @@
         select
         <include refid="Base_Column_List"/>
         from mro_chezhan where cz_id = #{czId,jdbcType=INTEGER}
+
     </select>
+
+
+
+
 </mapper>
