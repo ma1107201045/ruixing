@@ -2,8 +2,8 @@ package com.yintu.ruixing.jiejuefangan;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.SessionController;
+import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
