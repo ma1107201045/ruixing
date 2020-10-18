@@ -92,7 +92,7 @@
     </springProfile>
     <springProfile name="test">
         <logger name="com.yintu.ruixing" level="error" />
-        <root level="info">
+        <root level="error">
             <appender-ref ref="console"/>
         </root>
     </springProfile>
