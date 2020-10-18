@@ -9,8 +9,9 @@
         <result property="tljMiaoShu" column="tlj_miaoshu"/>
     </resultMap>
     <select id="selectTieLuJuList" resultMap="tieluju">
-    SELECT * FROM `mro_tieluju`
-</select>
+        SELECT *
+        FROM `mro_tieluju`
+    </select>
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" id="dianwuduan">
         <result property="did" column="did"/>
         <result property="tid" column="tid"/>
@@ -19,26 +20,25 @@
         <result property="dwdName" column="dwd_name"/>
         <result property="tljDwdId" column="tlj_dwd_id"/>
         <result property="dwdMiaoShu" column="dwd_miaoshu"/>
-        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity" column="mro_tieluju">
+        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
+                     column="mro_tieluju">
             <result property="tid" column="tid"></result>
         </association>
     </resultMap>
 
-    <select id="selectDwdListByDwdId"  resultMap="dianwuduan">
-    SELECT
-        *
-    FROM
-        mro_dianwuduan
-    WHERE
-        did = #{dwdid}
-</select>
+    <select id="selectDwdListByDwdId" resultMap="dianwuduan">
+        SELECT *
+        FROM mro_dianwuduan
+        WHERE did = #{dwdid}
+    </select>
 
     <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
-    SELECT mro_dianwuduan.*, mro_tieluju.tid FROM `mro_dianwuduan`,`mro_tieluju`
-    WHERE
-        tlj_dwd_id=mro_tieluju.tid
-        and tlj_dwd_id= #{tljId}
-</select>
+        SELECT mro_dianwuduan.*, mro_tieluju.tid
+        FROM `mro_dianwuduan`,
+             `mro_tieluju`
+        WHERE tlj_dwd_id = mro_tieluju.tid
+          and tlj_dwd_id = #{tljId}
+    </select>
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity" id="xianduan">
         <result property="xid" column="xid"/>
         <result property="tid" column="tid"/>
@@ -50,22 +50,24 @@
         <result property="dwdXdId" column="dwd_xd_id"/>
         <result property="xdMiaoShu" column="xd_miaoshu"/>
         <result property="xdType" column="xd_type"/>
-        <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" column="mro_dianwuduan">
+        <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity"
+                     column="mro_dianwuduan">
             <result property="did" column="did"></result>
         </association>
-        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity" column="mro_tieluju">
+        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
+                     column="mro_tieluju">
             <result property="tid" column="tid"></result>
         </association>
     </resultMap>
     <select id="selectXdListByDwdId" parameterType="long" resultMap="xianduan">
-    SELECT mro_xianduan.*,mro_dianwuduan.did,mro_tieluju.tid FROM `mro_xianduan`,`mro_dianwuduan`,`mro_tieluju`
-     WHERE
-      tlj_dwd_id=mro_tieluju.tid
-      and
-     dwd_xd_id=mro_dianwuduan.did
-     and
-     dwd_xd_id= #{dwdId}
-</select>
+        SELECT mro_xianduan.*, mro_dianwuduan.did, mro_tieluju.tid
+        FROM `mro_xianduan`,
+             `mro_dianwuduan`,
+             `mro_tieluju`
+        WHERE tlj_dwd_id = mro_tieluju.tid
+          and dwd_xd_id = mro_dianwuduan.did
+          and dwd_xd_id = #{dwdId}
+    </select>
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity" id="chezhan">
         <result property="cid" column="cid"/>
         <result property="tid" column="tid"/>
@@ -82,39 +84,48 @@
         <result property="czLastTime" column="cz_lasttime"/>
         <result property="xdCzId" column="xd_cz_id"/>
         <result property="czMiaoShu" column="cz_miaoshu"/>
+        <result property="czState" column="cz_state"/>
         <result property="czDuanTou" column="cz_duantou"/>
-        <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" column="mro_dianwuduan">
+        <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity"
+                     column="mro_dianwuduan">
             <result property="did" column="did"></result>
         </association>
-        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity" column="mro_tieluju">
+        <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
+                     column="mro_tieluju">
             <result property="tid" column="tid"></result>
         </association>
-        <association property="xianDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity" column="mro_xianduan">
+        <association property="xianDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity"
+                     column="mro_xianduan">
             <result property="xid" column="xid"></result>
         </association>
     </resultMap>
     <select id="selectCzListByXdId" parameterType="long" resultMap="chezhan">
-    SELECT mro_chezhan.*,mro_dianwuduan.did,mro_tieluju.tid,mro_xianduan.xid FROM `mro_chezhan`,`mro_dianwuduan`,`mro_tieluju`,`mro_xianduan`
-     WHERE
-     tlj_dwd_id=mro_tieluju.tid
-      and
-     dwd_xd_id=mro_dianwuduan.did
-     and
-     xd_cz_id =mro_xianduan.xid
-     and
-     xd_cz_id= #{xdId}
-</select>
+        SELECT mro_chezhan.*, mro_dianwuduan.did, mro_tieluju.tid, mro_xianduan.xid
+        FROM `mro_chezhan`,
+             `mro_dianwuduan`,
+             `mro_tieluju`,
+             `mro_xianduan`
+        WHERE tlj_dwd_id = mro_tieluju.tid
+          and dwd_xd_id = mro_dianwuduan.did
+          and xd_cz_id = mro_xianduan.xid
+          and xd_cz_id = #{xdId}
+    </select>
 
 
     <select id="TieLuJuList" resultMap="tieluju">
-    SELECT tlj_id, tlj_name, tid FROM `mro_tieluju`
-</select>
+        SELECT tlj_id, tlj_name, tid
+        FROM `mro_tieluju`
+    </select>
 
     <select id="DwdListBytId" parameterType="long" resultMap="dianwuduan">
-    SELECT dwd_name,tlj_id,dwd_id,did FROM `mro_dianwuduan` WHERE tlj_dwd_id= #{tljId}
-</select>
+        SELECT dwd_name, tlj_id, dwd_id, did
+        FROM `mro_dianwuduan`
+        WHERE tlj_dwd_id = #{tljId}
+    </select>
 
     <select id="XdListByDwdId" parameterType="long" resultMap="xianduan">
-    SELECT xd_name,dwd_id,xd_id,xid FROM `mro_xianduan` WHERE dwd_xd_id= #{dwdId}
-</select>
+        SELECT xd_name, dwd_id, xd_id, xid
+        FROM `mro_xianduan`
+        WHERE dwd_xd_id = #{dwdId}
+    </select>
 </mapper>

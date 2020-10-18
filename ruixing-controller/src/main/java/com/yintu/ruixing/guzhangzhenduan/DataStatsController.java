@@ -446,7 +446,7 @@ public class DataStatsController {
                         }
                         String dwdid = strings[2];
                         String dwdname = strings[3];
-                        List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid),Long.parseLong(tljId));//查询电务段表中是否有此电务段
+                        List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid), Long.parseLong(tljId));//查询电务段表中是否有此电务段
                         System.out.println("电务段个数" + dianWuDuanEntityList.size());
                         if (dianWuDuanEntityList.size() == 0) {//没有此电务段
                             Long tljid = dataStatsService.findTLJid(Long.parseLong(tljId));//获取上个铁路局的id
@@ -460,10 +460,10 @@ public class DataStatsController {
                         String xdid = strings[4];
                         String xdname = strings[5];
                         String xdzgname = strings[6];
-                        List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid),Long.parseLong(xdid));
+                        List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid), Long.parseLong(xdid));
                         System.out.println("线段个数" + xianDuanEntityList.size());
                         if (xianDuanEntityList.size() == 0) {
-                            Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid),Long.parseLong(tljId));
+                            Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid), Long.parseLong(tljId));
                             XianDuanEntity xianDuanEntity1 = new XianDuanEntity();
                             xianDuanEntity1.setDwdXdId(dwdid1);
                             xianDuanEntity1.setXdName(xdname);
@@ -523,7 +523,7 @@ public class DataStatsController {
                         List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByName(czname);
                         System.out.println("车站个数" + cheZhanEntityList.size());
                         if (cheZhanEntityList.size() == 0) {
-                            Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid),Long.parseLong(xdid));
+                            Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid), Long.parseLong(xdid));
                             CheZhanEntity cheZhan = new CheZhanEntity();
                             cheZhan.setXdCzId(xianduanid);
                             cheZhan.setCzName(czname);
@@ -819,12 +819,24 @@ public class DataStatsController {
         return ResponseDataUtil.ok("查询电务段的json数据成功", dianWuDuanJson);
     }
 
-    //根据线段xid 查询此线段下的线段配置json数据
+
+    //根据电务段did 查询此电务段下的电务段配置json数据和车站信息
+    @GetMapping("/findDWDJsonAndStationInfoByDid/{did}")
+    public Map<String, Object> findDWDJsonAndChezhanInfoByDid(@PathVariable Integer did) {
+        DianWuDuanEntity dianWuDuanEntity = dataStatsService.findDWDJsonAndChezhanInfoByDid(did);
+        return ResponseDataUtil.ok("查询电务段json数据和车站信息成功", dianWuDuanEntity);
+    }
+
+
+    //根据线段xid 查询此线段下的线段配置json数据和车站信息
     @GetMapping("/findXDJsonByXid/{xid}")
     public Map<String, Object> findXDJsonByXid(@PathVariable Integer xid) {
         XianDuanEntity xianDuanJson = dataStatsService.findXDJsonByXid(xid);
         return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
     }
+
+
+
 
     //根据线段xid 查询此线段下的线段json数据
     @GetMapping("/findOneXDJsonByXid/{xid}")

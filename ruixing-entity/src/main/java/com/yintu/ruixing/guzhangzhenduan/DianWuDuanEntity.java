@@ -33,6 +33,8 @@ public class DianWuDuanEntity {
 
     List<XianDuanEntity> xianDuanEntities;
 
+    List<CheZhanEntity> cheZhanEntities;
+
     private TieLuJuEntity tieLuJuEntity;
     private Integer dwdState; //车站配置状态  0：未配置    1：已配置
     private String dwdJson; //车站储存json
