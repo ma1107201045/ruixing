@@ -86,6 +86,7 @@ public class BiddingController extends SessionController implements BaseControll
         PageInfo<BiddingEntity> pageInfo = new PageInfo<>(biddingEntities);
         return ResponseDataUtil.ok("查询投招标技术支持信息列表成功", pageInfo);
     }
+
     @GetMapping("/{id}/log")
     @ResponseBody
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {

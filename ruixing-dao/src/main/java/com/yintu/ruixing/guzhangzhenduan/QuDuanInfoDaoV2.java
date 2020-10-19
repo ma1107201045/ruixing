@@ -13,13 +13,15 @@ public interface QuDuanInfoDaoV2 {
 
     QuDuanInfoEntityV2 selectLastByCzId(Integer czId, String tableName);
 
-    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
 
     int isTableExist(String tableName);
 
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
     List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Date startTime, Date endTime, String tableName);
+
+    //日报表
+    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
 
 
     //根据区段id  查询相关的数据
