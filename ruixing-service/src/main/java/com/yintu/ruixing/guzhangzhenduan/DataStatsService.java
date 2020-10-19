@@ -93,13 +93,13 @@ public interface DataStatsService {
 
     List<XianDuanEntity> findAllXianDuan();
 
-    Long findDWDid(long parseLong,long parseLong1);
+    Long findDWDid(long parseLong, long parseLong1);
 
     void addXianDuan(XianDuanEntity xianDuanEntity1);
 
     List<CheZhanEntity> findallChezhan();
 
-    Long findXDid(long parseLong,long parseLong1);
+    Long findXDid(long parseLong, long parseLong1);
 
     void addCheZhan(CheZhanEntity cheZhan);
 
@@ -127,7 +127,10 @@ public interface DataStatsService {
 
     List<CheZhanEntity> findSomeCheZhanByXid(Integer xid);
 
+    DianWuDuanEntity findDWDJsonAndChezhanInfoByDid(Integer did);
+
     XianDuanEntity findXDJsonByXid(Integer xid);
+
 
     String findOneXDJsonByXid(Integer xid);
 

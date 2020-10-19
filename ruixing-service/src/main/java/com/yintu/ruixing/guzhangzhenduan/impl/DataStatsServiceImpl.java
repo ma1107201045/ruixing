@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class DataStatsServiceImpl implements DataStatsService {
             }
             String dwdid = strings[2];
             String dwdname = strings[3];
-            List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid),Long.parseLong(tljId));//查询电务段表中是否有此电务段
+            List<DianWuDuanEntity> dianWuDuanEntityList = dataStatsService.findDianWuDuanBydid(Long.parseLong(dwdid), Long.parseLong(tljId));//查询电务段表中是否有此电务段
             System.out.println("电务段个数" + dianWuDuanEntityList.size());
             if (dianWuDuanEntityList.size() == 0) {//没有此电务段
                 Long tljid = dataStatsService.findTLJid(Long.parseLong(tljId));//获取上个铁路局的id
@@ -81,10 +82,10 @@ public class DataStatsServiceImpl implements DataStatsService {
             String xdid = strings[4];
             String xdname = strings[5];
             String xdzgname = strings[6];
-            List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid),Long.parseLong(xdid));
+            List<XianDuanEntity> xianDuanEntityList = dataStatsService.findAllXianDuanByDwdid(Long.parseLong(dwdid), Long.parseLong(xdid));
             System.out.println("线段个数" + xianDuanEntityList.size());
             if (xianDuanEntityList.size() == 0) {
-                Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid),Long.parseLong(tljId));
+                Long dwdid1 = dataStatsService.findDWDid(Long.parseLong(dwdid), Long.parseLong(tljId));
                 XianDuanEntity xianDuanEntity1 = new XianDuanEntity();
                 xianDuanEntity1.setDwdXdId(dwdid1);
                 xianDuanEntity1.setXdName(xdname);
@@ -142,10 +143,10 @@ public class DataStatsServiceImpl implements DataStatsService {
             String linzhan6LineType = strings[53];
             String linzhan6OfXianduan = strings[54];
             String linzhan6benDWD = strings[55];
-            List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByCZidAndXDid(Long.parseLong(xdid),Long.parseLong(czid));
+            List<CheZhanEntity> cheZhanEntityList = dataStatsService.findallChezhanByCZidAndXDid(Long.parseLong(xdid), Long.parseLong(czid));
             System.out.println("车站个数" + cheZhanEntityList.size());
             if (cheZhanEntityList.size() == 0) {
-                Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid),Long.parseLong(xdid));
+                Long xianduanid = dataStatsService.findXDid(Long.parseLong(dwdid), Long.parseLong(xdid));
                 CheZhanEntity cheZhan = new CheZhanEntity();
                 cheZhan.setXdCzId(xianduanid);
                 cheZhan.setCzName(czname);
@@ -157,49 +158,50 @@ public class DataStatsServiceImpl implements DataStatsService {
                     cheZhan.setTongxinbianmaguidaonumber(0);
                 } else {
                     cheZhan.setTongxinbianmaguidaonumber(Integer.parseInt(tongxinbianmaguidaonumber));
-                }if (tongxinbianmazhanneinumber.equals("")){
+                }
+                if (tongxinbianmazhanneinumber.equals("")) {
                     cheZhan.setTongxinbianmazhanneioneguidaonumber(0);
-                }else {
+                } else {
                     cheZhan.setTongxinbianmazhanneioneguidaonumber(Integer.parseInt(tongxinbianmazhanneinumber));
                 }
-                if (jidianbianmaonetoonenumber.equals("")){
+                if (jidianbianmaonetoonenumber.equals("")) {
                     cheZhan.setJidianonetooneguidaonumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianonetooneguidaonumber(Integer.parseInt(jidianbianmaonetoonenumber));
                 }
-                if (jidianbianmaNtOnenumber.equals("")){
+                if (jidianbianmaNtOnenumber.equals("")) {
                     cheZhan.setJidianntooneguidaonumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianntooneguidaonumber(Integer.parseInt(jidianbianmaNtOnenumber));
                 }
-                if (jidianbianmaNtoOneshebeinumber.equals("")){
+                if (jidianbianmaNtoOneshebeinumber.equals("")) {
                     cheZhan.setJidianntooneshebeinumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianntooneshebeinumber(Integer.parseInt(jidianbianmaNtoOneshebeinumber));
                 }
-                if (tongxinbianmazhanneidianmahuanumber.equals("")){
+                if (tongxinbianmazhanneidianmahuanumber.equals("")) {
                     cheZhan.setTongxinbianmadianmahuashebeinumber(0);
-                }else {
+                } else {
                     cheZhan.setTongxinbianmadianmahuashebeinumber(Integer.parseInt(tongxinbianmazhanneidianmahuanumber));
                 }
-                if (jidianNtoOneDianMaHuaNumber.equals("")){
+                if (jidianNtoOneDianMaHuaNumber.equals("")) {
                     cheZhan.setJidianntoonedianmahuashebeinumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianntoonedianmahuashebeinumber(Integer.parseInt(jidianNtoOneDianMaHuaNumber));
                 }
-                if (jidianJiashiGuidaoNumber.equals("")){
+                if (jidianJiashiGuidaoNumber.equals("")) {
                     cheZhan.setJidianjiashiguidaonumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianjiashiguidaonumber(Integer.parseInt(jidianJiashiGuidaoNumber));
                 }
-                if (jidianJiashiDianmahuaNumber.equals("")){
+                if (jidianJiashiDianmahuaNumber.equals("")) {
                     cheZhan.setJidianjiashidianmahuashebeinumber(0);
-                }else {
+                } else {
                     cheZhan.setJidianjiashidianmahuashebeinumber(Integer.parseInt(jidianJiashiDianmahuaNumber));
                 }
-                if (jiDianDianMaHuaNumber.equals("")){
+                if (jiDianDianMaHuaNumber.equals("")) {
                     cheZhan.setJiDianDianMaHuaNumber(0);
-                }else {
+                } else {
                     cheZhan.setJiDianDianMaHuaNumber(Integer.parseInt(jiDianDianMaHuaNumber));
                 }
                 cheZhan.setYuliushebei1(yuliushebei1);
@@ -328,19 +330,19 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public List<CheZhanEntity> findCheZhanByIds(Integer parseInt, Integer parseInt1) {
-        return cheZhanDao.findCheZhanByIds(parseInt,parseInt1);
+        return cheZhanDao.findCheZhanByIds(parseInt, parseInt1);
     }
 
     @Override
     public List<QuDuanBaseEntity> findQuDuanByIds(Integer parseInt, Integer parseInt1) {
-        return quDuanBaseDao.findQuDuanByIds(parseInt,parseInt1);
+        return quDuanBaseDao.findQuDuanByIds(parseInt, parseInt1);
     }
 
     @Override
     public List<CheZhanEntity> findStartCheZhan(Integer firstCZid) {
-        List<CheZhanEntity> fridtchezhan=cheZhanDao.findStartCheZhan(firstCZid);
+        List<CheZhanEntity> fridtchezhan = cheZhanDao.findStartCheZhan(firstCZid);
         for (CheZhanEntity cheZhanEntity : fridtchezhan) {
-            if (cheZhanEntity.getCzDuanTou()==1){
+            if (cheZhanEntity.getCzDuanTou() == 1) {
                 return null;
             }
         }
@@ -349,9 +351,9 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public List<CheZhanEntity> findEndCheZhan(Integer endCZid) {
-        List<CheZhanEntity> entityList=cheZhanDao.findEndCheZhan(endCZid);
+        List<CheZhanEntity> entityList = cheZhanDao.findEndCheZhan(endCZid);
         for (CheZhanEntity cheZhanEntity : entityList) {
-            if (cheZhanEntity.getCzDuanTou()==1){
+            if (cheZhanEntity.getCzDuanTou() == 1) {
                 return null;
             }
         }
@@ -394,19 +396,46 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
+    public DianWuDuanEntity findDWDJsonAndChezhanInfoByDid(Integer did) {
+        Date dayTime = new Date();
+        DianWuDuanEntity dianWuDuanEntity = new DianWuDuanEntity();
+        String dwdJson = dianWuDuanDao.findDWDJsonByDid(did);
+        dianWuDuanEntity.setDwdJson(dwdJson);
+        List<XianDuanEntity> xianDuanEntities = this.findXianDuanByDid(did);
+
+        List<CheZhanEntity> cheZhanEntities = new ArrayList<>();
+        for (XianDuanEntity xianDuanEntity : xianDuanEntities) {
+            List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findCheZhanDatasByXid(xianDuanEntity.getXid().intValue());
+            for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
+                int czid = (int) cheZhanEntity.getCzId();
+                String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+                if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+                    Integer alarmNumber = alarmTableDao.findAlarmNumber(tableName);
+                    cheZhanEntity.setAlarmNumber(alarmNumber);
+                } else {
+                    cheZhanEntity.setAlarmNumber(0);
+                }
+            }
+            cheZhanEntities.addAll(cheZhanEntityList);
+        }
+        dianWuDuanEntity.setCheZhanEntities(cheZhanEntities);
+        return dianWuDuanEntity;
+    }
+
+    @Override
     public XianDuanEntity findXDJsonByXid(Integer xid) {
         Date dayTime = new Date();
-        XianDuanEntity xianDuanEntity=new XianDuanEntity();
+        XianDuanEntity xianDuanEntity = new XianDuanEntity();
         String xdJson = xianDuanDao.findXDJsonByXid(xid);
         xianDuanEntity.setXdJson(xdJson);
-        List<CheZhanEntity> cheZhanEntityList=cheZhanDao.findCheZhanDatasByXid(xid);
+        List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findCheZhanDatasByXid(xid);
         for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
-            int czid = (int ) cheZhanEntity.getCzId();
+            int czid = (int) cheZhanEntity.getCzId();
             String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-            if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
+            if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
                 Integer alarmNumber = alarmTableDao.findAlarmNumber(tableName);
                 cheZhanEntity.setAlarmNumber(alarmNumber);
-            }else {
+            } else {
                 cheZhanEntity.setAlarmNumber(0);
             }
         }
@@ -420,6 +449,7 @@ public class DataStatsServiceImpl implements DataStatsService {
         return cheZhanDao.findSomeCheZhanByXid(xid);
     }
 
+
     @Override
     public List<QuDuanBaseEntity> findQuDuanByQuDuanYunYingName(String qudunyunyingname) {
         return quDuanBaseDao.findQuDuanByQuDuanYunYingName(qudunyunyingname);
@@ -427,12 +457,12 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public List<DianWuDuanEntity> findDianWuDuanBydid(long parseLong, long parseLong1) {
-        return dianWuDuanDao.findDianWuDuanBydid(parseLong,parseLong1);
+        return dianWuDuanDao.findDianWuDuanBydid(parseLong, parseLong1);
     }
 
     @Override
     public List<XianDuanEntity> findAllXianDuanByDwdid(long parseLong, long parseLong1) {
-        return xianDuanDao.findAllXianDuanByDwdid(parseLong,parseLong1);
+        return xianDuanDao.findAllXianDuanByDwdid(parseLong, parseLong1);
     }
 
     @Override
@@ -442,8 +472,8 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public Integer findLastParentid() {
-        Integer parentId= quDuanBaseDao.lastParentid() ;
-        if (parentId==null){
+        Integer parentId = quDuanBaseDao.lastParentid();
+        if (parentId == null) {
             return 0;
         }
         return parentId;
@@ -461,7 +491,7 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public List<CheZhanEntity> findallChezhanByCZidAndXDid(long parseLong, long parseLong1) {
-        return cheZhanDao.findallChezhanByCZidAndXDid(parseLong,parseLong1);
+        return cheZhanDao.findallChezhanByCZidAndXDid(parseLong, parseLong1);
     }
 
     @Override
@@ -495,8 +525,8 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public Long findXDid(long parseLong,long parseLong1) {
-        return xianDuanDao.findid(parseLong,parseLong1);
+    public Long findXDid(long parseLong, long parseLong1) {
+        return xianDuanDao.findid(parseLong, parseLong1);
     }
 
     @Override
@@ -511,8 +541,8 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public Long findDWDid(long parseLong,long parseLong1) {
-        return dianWuDuanDao.dwdid(parseLong,parseLong1);
+    public Long findDWDid(long parseLong, long parseLong1) {
+        return dianWuDuanDao.dwdid(parseLong, parseLong1);
     }
 
     @Override
@@ -538,7 +568,7 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public void addTieLuJU(TieLuJuEntity stringList) {
-            tieLuJuDao.addTieLuJU(stringList);
+        tieLuJuDao.addTieLuJU(stringList);
     }
 
     //查询所有数据
@@ -550,25 +580,25 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public List<DataStatsEntity> findTieLuJuById(Long tid, Integer page, Integer size) {
-       List<DataStatsEntity> tieLuJuEntities= dataStatsDao.findTieLuJuById(tid);
+        List<DataStatsEntity> tieLuJuEntities = dataStatsDao.findTieLuJuById(tid);
         return tieLuJuEntities;
     }
 
     @Override
     public List<DataStatsEntity> findDianWuDuanCheZhanById(Long did, Integer page, Integer size) {
-        List<DataStatsEntity> dianwuduan= dataStatsDao.findDianWuDuanCheZhanById(did);
+        List<DataStatsEntity> dianwuduan = dataStatsDao.findDianWuDuanCheZhanById(did);
         return dianwuduan;
     }
 
     @Override
     public List<DataStatsEntity> findXianDuanCheZhanById(Long xid, Integer page, Integer size) {
-        List<DataStatsEntity> xianduan= dataStatsDao.findXianDuanCheZhanById(xid);
+        List<DataStatsEntity> xianduan = dataStatsDao.findXianDuanCheZhanById(xid);
         return xianduan;
     }
 
     @Override
     public List<DataStatsEntity> findCheZhanById(Long cid, Integer page, Integer size) {
-        List<DataStatsEntity> chezhan= dataStatsDao.findCheZhanById(cid);
+        List<DataStatsEntity> chezhan = dataStatsDao.findCheZhanById(cid);
         return chezhan;
     }
 
@@ -584,18 +614,12 @@ public class DataStatsServiceImpl implements DataStatsService {
         xianDuanEntity.setXdState(1);
         dataStatsDao.editStateByXid(xianDuanEntity);
     }
+
     @Override
     public void editStateByCid(CheZhanEntity cheZhanEntity) {
         cheZhanEntity.setCzState(1);
         dataStatsDao.editStateByCid(cheZhanEntity);
     }
-
-
-
-
-
-
-
 
 
     @Override
@@ -624,10 +648,10 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
     @Override
-    public List<QuDuanBaseEntity> findAllQuDuan(Integer page,Integer size) {
-        List<QuDuanBaseEntity> quDuanBaseEntityList=quDuanBaseDao.findAllQuDuan();
+    public List<QuDuanBaseEntity> findAllQuDuan(Integer page, Integer size) {
+        List<QuDuanBaseEntity> quDuanBaseEntityList = quDuanBaseDao.findAllQuDuan();
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntityList) {
-            if (quDuanBaseEntity.getLine().equals("站内")){
+            if (quDuanBaseEntity.getLine().equals("站内")) {
                 quDuanBaseEntity.getXianDuanEntity().setXdName(null);
 
             }
@@ -652,17 +676,17 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public void addQuDuan(QuDuanBaseEntity quDuanBaseEntity) {
-        Integer i=quDuanBaseDao.lastParentid();//查询表中最后一列数据的id
-        if (i==null){
-            i=0;
+        Integer i = quDuanBaseDao.lastParentid();//查询表中最后一列数据的id
+        if (i == null) {
+            i = 0;
         }
         quDuanBaseEntity.setParentId(i);//得到新增数据的parentid
-        if (quDuanBaseEntity.getLine().equals("站内")){
+        if (quDuanBaseEntity.getLine().equals("站内")) {
             quDuanBaseEntity.setType(0);
             quDuanBaseEntity.setLeftRight(null);
 
         }
-       quDuanBaseDao.insertSelective(quDuanBaseEntity);
+        quDuanBaseDao.insertSelective(quDuanBaseEntity);
     }
  /*   @Override
     public void addQuDuan(QuDuanBaseEntity quDuanBaseEntity) {
@@ -678,19 +702,19 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public void deletQuDuanById(Integer id) {
-        Integer parentid=quDuanBaseDao.findParentid(id);//根据区段id  查询出对应的parentid
-        Integer id1=quDuanBaseDao.findId(id);//根据传来的id  作为parentid  查找出对应的id
-        quDuanBaseDao.updateParentid(id1,parentid);
+        Integer parentid = quDuanBaseDao.findParentid(id);//根据区段id  查询出对应的parentid
+        Integer id1 = quDuanBaseDao.findId(id);//根据传来的id  作为parentid  查找出对应的id
+        quDuanBaseDao.updateParentid(id1, parentid);
         quDuanBaseDao.deleteByPrimaryKey(id);
     }
 
     @Override
     public void deletQuDuanByIds(Integer[] ids) {
-        Integer fristid=ids[0];//获取数组的第一个数据id
-        Integer lastid=ids[ids.length-1];//获得数组的最后一个数据id
-        Integer parentid=quDuanBaseDao.findParentid(fristid);//查找出对应的parentid
-        Integer id1=quDuanBaseDao.findId(lastid);//作为parentid  查找对应的id
-        quDuanBaseDao.updateParentid(id1,parentid);
+        Integer fristid = ids[0];//获取数组的第一个数据id
+        Integer lastid = ids[ids.length - 1];//获得数组的最后一个数据id
+        Integer parentid = quDuanBaseDao.findParentid(fristid);//查找出对应的parentid
+        Integer id1 = quDuanBaseDao.findId(lastid);//作为parentid  查找对应的id
+        quDuanBaseDao.updateParentid(id1, parentid);
         quDuanBaseDao.deletQuDuanByIds(ids);
     }
 
@@ -757,22 +781,18 @@ public class DataStatsServiceImpl implements DataStatsService {
     */
 
 
-
     @Override
-    public int  delCheZhanListById(int[] ids) {
-      //  String[] id = ids.split(",");
+    public int delCheZhanListById(int[] ids) {
+        //  String[] id = ids.split(",");
         return dataStatsDao.delCheZhanListById(ids);
     }
-
-
-
 
 
     //分页查询
     @Override
     public PageInfo<DataStatsEntity> findPage(Integer page, Integer size) {
         //分页
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         //集合查询
         List<DataStatsEntity> all = dataStatsDao.findAll();
 
