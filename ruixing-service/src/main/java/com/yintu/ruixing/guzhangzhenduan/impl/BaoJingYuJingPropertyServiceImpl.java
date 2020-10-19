@@ -1,5 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
+import com.github.pagehelper.Page;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
@@ -40,7 +41,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid) {
-        Integer a=0;
+        Integer a = 0;
         Date dayTime = new Date();
         List<AlarmEntity> alarmEntityList = new ArrayList<>();
         if (dwdid != null && xdid == null && czid == null) {
@@ -318,169 +319,165 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            List<AlarmEntity> alarmEntityList = new ArrayList<>();
-            List<AlarmTableEntity> alarmTableEntityList = alarmTableDao.findAllAlarmDatas(tableName);
-            for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-                AlarmEntity alarmEntity = new AlarmEntity();
+        Page<AlarmEntity> alarmEntityList = new Page<>();
+        Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllAlarmDatas(tableName);
+        alarmEntityList.setTotal(alarmTableEntityList.getTotal());
+        for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
+            AlarmEntity alarmEntity = new AlarmEntity();
 
-                Integer stationId = alarmTableEntity.getStationId();//车站id
-                Integer sectionId = alarmTableEntity.getSectionId();//区段id
-                Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
-                Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
-                Integer createtime = alarmTableEntity.getCreatetime();//开始时间
-                Integer czNumber = cheZhanDao.findCzNumber(stationId);
+            Integer stationId = alarmTableEntity.getStationId();//车站id
+            Integer sectionId = alarmTableEntity.getSectionId();//区段id
+            Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
+            Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
+            Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+            Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
-                String quduanNmae = null;
-                String alarmContext = null;
-                Integer isnotsky = null;
-                Integer bjyjType = null;
-                if (czNumber > 0) {//通信编码电路
-                    //查询区段名
-                    quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
-                    if (alarmlevel == 1) {//报警信息
-                        bjyjType = 2;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
-                    } else if (alarmlevel == 2) {//预警信息
-                        bjyjType = 3;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
-                    }
-                    SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
-                    if (skylightTimeEntity == null) {//没有查询到天窗
+            String quduanNmae = null;
+            String alarmContext = null;
+            Integer isnotsky = null;
+            Integer bjyjType = null;
+            if (czNumber > 0) {//通信编码电路
+                //查询区段名
+                quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
+                if (alarmlevel == 1) {//报警信息
+                    bjyjType = 2;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
+                } else if (alarmlevel == 2) {//预警信息
+                    bjyjType = 3;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
+                }
+                SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
+                if (skylightTimeEntity == null) {//没有查询到天窗
+                    isnotsky = 0;
+                } else if (skylightTimeEntity != null) {//查询到天窗
+                    Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
+                    if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
                         isnotsky = 0;
-                    } else if (skylightTimeEntity != null) {//查询到天窗
-                        Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
-                        if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
-                            isnotsky = 0;
-                        } else {//天窗开启
-                            isnotsky = 1;
-                        }
-                    }
-
-                } else if (czNumber == 0) {//继电编码电路
-                    //查询区段名
-                    quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
-                    if (alarmlevel == 1) {//报警信息
-                        bjyjType = 1;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
-                    } else if (alarmlevel == 2) {//预警信息
-                        bjyjType = 3;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
-                    }
-                    SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
-                    if (skylightTimeEntity == null) {//没有查询到天窗
-                        isnotsky = 0;
-                    } else if (skylightTimeEntity != null) {//查询到天窗
-                        Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
-                        if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
-                            isnotsky = 0;
-                        } else {//天窗开启
-                            isnotsky = 1;
-                        }
+                    } else {//天窗开启
+                        isnotsky = 1;
                     }
                 }
-                Date parse = null;
-                Date date = new Date(createtime * 1000L);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                try {
-                    parse = sdf.parse(sdf.format(date));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+
+            } else if (czNumber == 0) {//继电编码电路
+                //查询区段名
+                quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
+                if (alarmlevel == 1) {//报警信息
+                    bjyjType = 1;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
+                } else if (alarmlevel == 2) {//预警信息
+                    bjyjType = 3;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
                 }
-                alarmEntity.setBjyjType(bjyjType);
-                alarmEntity.setBjyjcontext(alarmContext);
-                alarmEntity.setQuduan(quduanNmae);
-                alarmEntity.setIsnotsky(isnotsky);
-                alarmEntity.setOpentime(parse);
-                alarmEntityList.add(alarmEntity);
+                SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
+                if (skylightTimeEntity == null) {//没有查询到天窗
+                    isnotsky = 0;
+                } else if (skylightTimeEntity != null) {//查询到天窗
+                    Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
+                    if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
+                        isnotsky = 0;
+                    } else {//天窗开启
+                        isnotsky = 1;
+                    }
+                }
             }
-            return alarmEntityList;
-        } else {
-            return new ArrayList<>();
+            Date parse = null;
+            Date date = new Date(createtime * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            try {
+                parse = sdf.parse(sdf.format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            alarmEntity.setBjyjType(bjyjType);
+            alarmEntity.setBjyjcontext(alarmContext);
+            alarmEntity.setQuduan(quduanNmae);
+            alarmEntity.setIsnotsky(isnotsky);
+            alarmEntity.setOpentime(parse);
+            alarmEntityList.add(alarmEntity);
         }
+        return alarmEntityList;
     }
 
     @Override
     public List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size, String tableName) {
-        List<AlarmEntity> alarmEntityList = new ArrayList<>();
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            List<AlarmTableEntity> alarmTableEntityList = alarmTableDao.findAllNotReadAlarmDatas(tableName);
-            for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-                AlarmEntity alarmEntity = new AlarmEntity();
+        Page<AlarmEntity> alarmEntityList = new Page<>();
+        Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllNotReadAlarmDatas(tableName);
+        alarmEntityList.setTotal(alarmTableEntityList.getTotal());
+        for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
+            AlarmEntity alarmEntity = new AlarmEntity();
 
-                Integer stationId = alarmTableEntity.getStationId();//车站id
-                Integer sectionId = alarmTableEntity.getSectionId();//区段id
-                Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
-                Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
-                Integer createtime = alarmTableEntity.getCreatetime();//开始时间
-                Integer czNumber = cheZhanDao.findCzNumber(stationId);
+            Integer stationId = alarmTableEntity.getStationId();//车站id
+            Integer sectionId = alarmTableEntity.getSectionId();//区段id
+            Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
+            Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
+            Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+            Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
-                String quduanNmae = null;
-                String alarmContext = null;
-                Integer isnotsky = null;
-                Integer bjyjType = null;
-                if (czNumber > 0) {//通信编码电路
-                    //查询区段名
-                    quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
-                    if (alarmlevel == 1) {//报警信息
-                        bjyjType = 2;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
-                    } else if (alarmlevel == 2) {//预警信息
-                        bjyjType = 3;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
-                    }
-                    SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
-                    if (skylightTimeEntity == null) {//没有查询到天窗
+            String quduanNmae = null;
+            String alarmContext = null;
+            Integer isnotsky = null;
+            Integer bjyjType = null;
+            if (czNumber > 0) {//通信编码电路
+                //查询区段名
+                quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
+                if (alarmlevel == 1) {//报警信息
+                    bjyjType = 2;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
+                } else if (alarmlevel == 2) {//预警信息
+                    bjyjType = 3;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
+                }
+                SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
+                if (skylightTimeEntity == null) {//没有查询到天窗
+                    isnotsky = 0;
+                } else if (skylightTimeEntity != null) {//查询到天窗
+                    Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
+                    if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
                         isnotsky = 0;
-                    } else if (skylightTimeEntity != null) {//查询到天窗
-                        Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
-                        if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
-                            isnotsky = 0;
-                        } else {//天窗开启
-                            isnotsky = 1;
-                        }
-                    }
-
-                } else if (czNumber == 0) {//继电编码电路
-                    //查询区段名
-                    quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
-                    if (alarmlevel == 1) {//报警信息
-                        bjyjType = 1;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
-                    } else if (alarmlevel == 2) {//预警信息
-                        bjyjType = 3;
-                        alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
-                    }
-                    SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
-                    if (skylightTimeEntity == null) {//没有查询到天窗
-                        isnotsky = 0;
-                    } else if (skylightTimeEntity != null) {//查询到天窗
-                        Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
-                        if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
-                            isnotsky = 0;
-                        } else {//天窗开启
-                            isnotsky = 1;
-                        }
+                    } else {//天窗开启
+                        isnotsky = 1;
                     }
                 }
-                Date parse = null;
-                Date date = new Date(createtime * 1000L);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                try {
-                    parse = sdf.parse(sdf.format(date));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+
+            } else if (czNumber == 0) {//继电编码电路
+                //查询区段名
+                quduanNmae = quDuanBaseDao.findQuduanName(stationId, sectionId);
+                if (alarmlevel == 1) {//报警信息
+                    bjyjType = 1;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//报警内容
+                } else if (alarmlevel == 2) {//预警信息
+                    bjyjType = 3;
+                    alarmContext = baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);//预警内容
                 }
-                alarmEntity.setBjyjType(bjyjType);
-                alarmEntity.setBjyjcontext(alarmContext);
-                alarmEntity.setQuduan(quduanNmae);
-                alarmEntity.setIsnotsky(isnotsky);
-                alarmEntityList.add(alarmEntity);
-                alarmEntity.setOpentime(parse);
+                SkylightTimeEntity skylightTimeEntity = skylightTimeDao.findSkyLight(stationId, sectionId);
+                if (skylightTimeEntity == null) {//没有查询到天窗
+                    isnotsky = 0;
+                } else if (skylightTimeEntity != null) {//查询到天窗
+                    Integer endtime = new Long(skylightTimeEntity.getEndTime().getTime()).intValue();
+                    if (endtime < createtime) {//天窗结束时间小于报警开始时间  天窗已经关闭
+                        isnotsky = 0;
+                    } else {//天窗开启
+                        isnotsky = 1;
+                    }
+                }
             }
-            return alarmEntityList;
+            Date parse = null;
+            Date date = new Date(createtime * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            try {
+                parse = sdf.parse(sdf.format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            alarmEntity.setBjyjType(bjyjType);
+            alarmEntity.setBjyjcontext(alarmContext);
+            alarmEntity.setQuduan(quduanNmae);
+            alarmEntity.setIsnotsky(isnotsky);
+            alarmEntityList.add(alarmEntity);
+            alarmEntity.setOpentime(parse);
         }
-        return new ArrayList<>();
+        return alarmEntityList;
+
     }
 
     @Override
@@ -492,9 +489,9 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public Integer findAlarmNumber(String tableName) {
-        if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
             return alarmTableDao.findAlarmNumber(tableName);
-        }else {
+        } else {
             return 0;
         }
     }

@@ -12,6 +12,7 @@ import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,12 @@ import java.util.Map;
 public class BaoJingYuJingPropertyController {
     @Autowired
     private BaoJingYuJingPropertyService baoJingYuJingPropertyService;
+
+    @Autowired
+    private QuDuanInfoDaoV2 quDuanInfoDaoV2;
+
+    @Autowired
+    private CheZhanDao cheZhanDao;
 
     //查询报警预警树形结构
     @RequestMapping
@@ -104,10 +111,13 @@ public class BaoJingYuJingPropertyController {
     public Map<String, Object> findAllNotReadAlarmDatas(Integer page, Integer size, Integer czid) {
         Date dayTime = new Date();
         String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        //PageHelper.startPage(page,size);
-        List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page, size, tableName);
-        // PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
-        return ResponseDataUtil.ok("查询数据成功", alarmEntityList);
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            PageHelper.startPage(page, size);
+            List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page, size, tableName);
+            PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
+            return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
+        }
+        return ResponseDataUtil.ok("查询数据成功", new ArrayList<>());
     }
 
     //查询历史记录的预警报警数据
@@ -115,15 +125,33 @@ public class BaoJingYuJingPropertyController {
     public Map<String, Object> findAllHistoryAlarmDatas(Integer page, Integer size, Integer czid) {
         Date dayTime = new Date();
         String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        //PageHelper.startPage(page,size);
-        List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllHistoryAlarmDatas(page, size, tableName);
-        // PageInfo<AlarmEntity> alarmEntityPageInfo=new PageInfo<>(alarmEntityList);
-        return ResponseDataUtil.ok("查询数据成功", alarmEntityList);
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            PageHelper.startPage(page, size);
+            List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllHistoryAlarmDatas(page, size, tableName);
+            PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
+            return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
+        }
+        return ResponseDataUtil.ok("查询数据成功", new ArrayList<>());
     }
 
     //根据选择的条件 查询对应的历史报警预警数据
     @GetMapping("/findSomeAlarmDatasByChoose")
-    public Map<String, Object> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid) {
+    public Map<String, Object> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size) {
+        Date dayTime = new Date();
+        Integer a = 0;
+        if (dwdid != null && xdid == null && czid == null) {
+            //查询此电务段下面所有的车站
+            List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findczidBydwdName(dwdid);
+            for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
+                Integer czId = new Long(cheZhanEntity.getCzId()).intValue();
+                String tableName = StringUtil.getBaoJingYuJingTableName(czId, dayTime);
+                if (quDuanInfoDaoV2.isTableExist(tableName) == 0) {
+                    a++;
+                } else {
+                    PageHelper.startPage(page, size);
+                }
+            }
+        }
         List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findSomeAlarmDatasByChoose(starTime, endTime, dwdid, xdid, czid);
         return ResponseDataUtil.ok("查询数据成功", alarmEntityList);
     }

@@ -26,6 +26,8 @@ public class QuXianController {
     @Autowired
     private QuXianService quXianService;
 
+    @Autowired
+    private CheZhanService cheZhanService;
 
     //日报表   --> 待定
     //根据所选日期  获得对应的24个时间点  然后根据时间点和传来的的字段名字 来获取对应的数据
@@ -216,7 +218,7 @@ public class QuXianController {
     @GetMapping("/findDMHQuDuanShiShiData")
     public Map<String, Object> findDMHQuDuanShiShiData(@RequestParam("shuxingId") Integer[] shuxingId,
                                                        @RequestParam("quduanName") String[] quduanName,
-                                                       Integer czid,Integer times) throws Exception {
+                                                       Integer czid, Integer times) throws Exception {
         Date today = new Date();
         String tableName = StringUtil.getTableName(czid, today);
         if (shuxingId.length == 0 || quduanName.length == 0) {
@@ -231,174 +233,179 @@ public class QuXianController {
             JSONObject js = new JSONObject();
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
-            if (times == 1) {
-                List<Long> timelist = new ArrayList<>();
-                long statrtime = today.getTime() / 1000;
-                long endtime = statrtime + 1800;
-                System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                for (int i = 0; i < 1800; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
-                Integer k = 0;
-                for (int i = 0; i < sqlname.size(); i++) {
-                    k++;
-                    System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                    String shuxingname = sqlname.get(i);
-                    System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                    String quduanname = quduanName[i];
-                    Integer qdid = quXianService.findQDid(quduanname);
-                    List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                    System.out.println("1234" + date);
-                    if (date.size() == timelist.size()) {
-                        for (int i1 = 0; i1 < date.size(); i1++) {
-                            if (k == 1) {
-                                listt1.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 2) {
-                                listt2.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 3) {
-                                listt3.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 4) {
-                                listt4.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 5) {
-                                listt5.add(i1, date.get(i1).getName());
-                            }
-                        }
-                    } else {
-                        Integer l = 0;
-                        for (int i1 = 0; i1 < timelist.size(); i1++) {
-                            Integer p = 0;
-                            for (int i2 = 0; i2 < date.size(); i2++) {
-                                if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                    l = 0;
-                                    p++;
-                                } else {
-                                    l = 1;
-                                    break;
-                                }
-                            }
-                            if (k == 1) {
-                                if (l == 0) {
-                                    listt1.add(i1, null);
-                                } else {
-                                    listt1.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 2) {
-                                if (l == 0) {
-                                    listt2.add(i1, null);
-                                } else {
-                                    listt2.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 3) {
-                                if (l == 0) {
-                                    listt3.add(i1, null);
-                                } else {
-                                    listt3.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 4) {
-                                if (l == 0) {
-                                    listt4.add(i1, null);
-                                } else {
-                                    listt4.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 5) {
-                                if (l == 0) {
-                                    listt5.add(i1, null);
-                                } else {
-                                    listt5.add(i1, date.get(p).getName());
-                                }
-                            }
-                        }
+            long cZid = czid.longValue();
+            if (cheZhanService.findCzStutrs(cZid, false)) {
+                return new JSONObject();
+            } else {
+                if (times == 1) {
+                    List<Long> timelist = new ArrayList<>();
+                    long statrtime = today.getTime() / 1000;
+                    long endtime = statrtime + 1800;
+                    System.out.println("statrtimerrrrrrrrrrr" + statrtime);
+                    for (int i = 0; i < 1800; i++) {
+                        long onetime = statrtime + i;
+                        long value = onetime * 1000L;
+                        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
+                        String time2 = format1.format(new Date(value));
+                        list.add(time2);
+                        timelist.add(onetime);
                     }
-                    js.put("shijian", list);
-                    System.out.println("~~~~~~~~~~~~~~~=" + list);
-                    if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (k == 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (k == 3) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (k == 4) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (k == 5) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
-                }
-            } else if (times != 1) {
-                Integer k = 0;
-                for (int i = 0; i < sqlname.size(); i++) {
-                    k++;
-                    System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                    String shuxingname = sqlname.get(i);
-                    System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                    String quduanname = quduanName[i];
-                    Integer qdid = quXianService.findQDid(quduanname);
-                    List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
-                    for (quduanEntity quduanEntity : date) {
-                        long createtime = quduanEntity.getCreatetime();
-                        long value = createtime * 1000L;
-                        SimpleDateFormat format12 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String time = format12.format(new Date(value));
-                        list.add(time);
+                    Integer k = 0;
+                    for (int i = 0; i < sqlname.size(); i++) {
+                        k++;
+                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                        String shuxingname = sqlname.get(i);
+                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                        String quduanname = quduanName[i];
+                        Integer qdid = quXianService.findQDid(quduanname);
+                        List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                         System.out.println("1234" + date);
+                        if (date.size() == timelist.size()) {
+                            for (int i1 = 0; i1 < date.size(); i1++) {
+                                if (k == 1) {
+                                    listt1.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 2) {
+                                    listt2.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 3) {
+                                    listt3.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 4) {
+                                    listt4.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 5) {
+                                    listt5.add(i1, date.get(i1).getName());
+                                }
+                            }
+                        } else {
+                            Integer l = 0;
+                            for (int i1 = 0; i1 < timelist.size(); i1++) {
+                                Integer p = 0;
+                                for (int i2 = 0; i2 < date.size(); i2++) {
+                                    if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
+                                        l = 0;
+                                        p++;
+                                    } else {
+                                        l = 1;
+                                        break;
+                                    }
+                                }
+                                if (k == 1) {
+                                    if (l == 0) {
+                                        listt1.add(i1, null);
+                                    } else {
+                                        listt1.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 2) {
+                                    if (l == 0) {
+                                        listt2.add(i1, null);
+                                    } else {
+                                        listt2.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 3) {
+                                    if (l == 0) {
+                                        listt3.add(i1, null);
+                                    } else {
+                                        listt3.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 4) {
+                                    if (l == 0) {
+                                        listt4.add(i1, null);
+                                    } else {
+                                        listt4.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 5) {
+                                    if (l == 0) {
+                                        listt5.add(i1, null);
+                                    } else {
+                                        listt5.add(i1, date.get(p).getName());
+                                    }
+                                }
+                            }
+                        }
+                        js.put("shijian", list);
+                        System.out.println("~~~~~~~~~~~~~~~=" + list);
                         if (k == 1) {
-                            listt1.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt1);
+                            js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                         }
                         if (k == 2) {
-                            listt2.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt2);
+                            js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                         }
                         if (k == 3) {
-                            listt3.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt3);
+                            js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                         }
                         if (k == 4) {
-                            listt4.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt4);
+                            js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                         }
                         if (k == 5) {
-                            listt5.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt5);
+                            js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                         }
                     }
-                    js.put("shijian", list);
-                    System.out.println("~~~~~~~~~~~~~~~=" + list);
-                    if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (k == 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (k == 3) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (k == 4) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (k == 5) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                } else if (times != 1) {
+                    Integer k = 0;
+                    for (int i = 0; i < sqlname.size(); i++) {
+                        k++;
+                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                        String shuxingname = sqlname.get(i);
+                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                        String quduanname = quduanName[i];
+                        Integer qdid = quXianService.findQDid(quduanname);
+                        List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
+                        for (quduanEntity quduanEntity : date) {
+                            long createtime = quduanEntity.getCreatetime();
+                            long value = createtime * 1000L;
+                            SimpleDateFormat format12 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String time = format12.format(new Date(value));
+                            list.add(time);
+                            System.out.println("1234" + date);
+                            if (k == 1) {
+                                listt1.add(quduanEntity.getName());
+                            }
+                            if (k == 2) {
+                                listt2.add(quduanEntity.getName());
+                            }
+                            if (k == 3) {
+                                listt3.add(quduanEntity.getName());
+                            }
+                            if (k == 4) {
+                                listt4.add(quduanEntity.getName());
+                            }
+                            if (k == 5) {
+                                listt5.add(quduanEntity.getName());
+                            }
+                        }
+                        js.put("shijian", list);
+                        System.out.println("~~~~~~~~~~~~~~~=" + list);
+                        if (k == 1) {
+                            js.put("shuju" + k.toString(), listt1);
+                            js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                        }
+                        if (k == 2) {
+                            js.put("shuju" + k.toString(), listt2);
+                            js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                        }
+                        if (k == 3) {
+                            js.put("shuju" + k.toString(), listt3);
+                            js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                        }
+                        if (k == 4) {
+                            js.put("shuju" + k.toString(), listt4);
+                            js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
+                        }
+                        if (k == 5) {
+                            js.put("shuju" + k.toString(), listt5);
+                            js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                        }
                     }
                 }
             }
@@ -569,179 +576,184 @@ public class QuXianController {
             JSONObject js = new JSONObject();
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
-            if (times == 1) {
-                List<Long> timelist = new ArrayList<>();
-                long statrtime = today.getTime() / 1000;
-                long endtime = statrtime + 1800;
-                System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                for (int i = 0; i < 1800; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
-                Integer k = 0;
-                for (int i = 0; i < sqlname.size(); i++) {
-                    k++;
-                    System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                    String shuxingname = sqlname.get(i);
-                    System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                    String quduanname = quduanName[i];
-                    Integer qdid = quXianService.findQDid(quduanname);
-                    List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                    System.out.println("1234" + date);
-                    if (date.size() == timelist.size()) {
-                        for (int i1 = 0; i1 < date.size(); i1++) {
-                            if (k == 1) {
-                                listt1.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 2) {
-                                listt2.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 3) {
-                                listt3.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 4) {
-                                listt4.add(i1, date.get(i1).getName());
-                            }
-                            if (k == 5) {
-                                listt5.add(i1, date.get(i1).getName());
-                            }
-                        }
-                    } else {
-                        Integer l = 0;
-                        for (int i1 = 0; i1 < timelist.size(); i1++) {
-                            Integer p = 0;
-                            for (int i2 = 0; i2 < date.size(); i2++) {
-                                if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                    l = 0;
-                                    p++;
-                                } else {
-                                    l = 1;
-                                    break;
-                                }
-                            }
-                            if (k == 1) {
-                                if (l == 0) {
-                                    listt1.add(i1, null);
-                                } else {
-                                    listt1.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 2) {
-                                if (l == 0) {
-                                    listt2.add(i1, null);
-                                } else {
-                                    listt2.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 3) {
-                                if (l == 0) {
-                                    listt3.add(i1, null);
-                                } else {
-                                    listt3.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 4) {
-                                if (l == 0) {
-                                    listt4.add(i1, null);
-                                } else {
-                                    listt4.add(i1, date.get(p).getName());
-                                }
-                            }
-                            if (k == 5) {
-                                if (l == 0) {
-                                    listt5.add(i1, null);
-                                } else {
-                                    listt5.add(i1, date.get(p).getName());
-                                }
-                            }
-                        }
+            long cZid = czid.longValue();
+            if (cheZhanService.findCzStutrs(cZid, false)==false) {
+                return new JSONObject();
+            } else {
+                if (times == 1) {
+                    List<Long> timelist = new ArrayList<>();
+                    long statrtime = today.getTime() / 1000;
+                    long endtime = statrtime + 1800;
+                    System.out.println("statrtimerrrrrrrrrrr" + statrtime);
+                    for (int i = 0; i < 1800; i++) {
+                        long onetime = statrtime + i;
+                        long value = onetime * 1000L;
+                        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
+                        String time2 = format1.format(new Date(value));
+                        list.add(time2);
+                        timelist.add(onetime);
                     }
-                    js.put("shijian", list);
-                    System.out.println("~~~~~~~~~~~~~~~=" + list);
-                    if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (k == 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (k == 3) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (k == 4) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (k == 5) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
-                }
-            } else if (times != 1) {
-                Integer k = 0;
-                for (int i = 0; i < sqlname.size(); i++) {
-                    k++;
-                    System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                    String shuxingname = sqlname.get(i);
-                    System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                    String quduanname = quduanName[i];
-                    Integer qdid = quXianService.findQDid(quduanname);
-                    List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
-                    for (quduanEntity quduanEntity : date) {
-                        long createtime = quduanEntity.getCreatetime();
-                        long value = createtime * 1000L;
-                        SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                        String time = format12.format(new Date(value));
-                        list.add(time);
+                    Integer k = 0;
+                    for (int i = 0; i < sqlname.size(); i++) {
+                        k++;
+                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                        String shuxingname = sqlname.get(i);
+                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                        String quduanname = quduanName[i];
+                        Integer qdid = quXianService.findQDid(quduanname);
+                        List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                         System.out.println("1234" + date);
+                        if (date.size() == timelist.size()) {
+                            for (int i1 = 0; i1 < date.size(); i1++) {
+                                if (k == 1) {
+                                    listt1.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 2) {
+                                    listt2.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 3) {
+                                    listt3.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 4) {
+                                    listt4.add(i1, date.get(i1).getName());
+                                }
+                                if (k == 5) {
+                                    listt5.add(i1, date.get(i1).getName());
+                                }
+                            }
+                        } else {
+                            Integer l = 0;
+                            for (int i1 = 0; i1 < timelist.size(); i1++) {
+                                Integer p = 0;
+                                for (int i2 = 0; i2 < date.size(); i2++) {
+                                    if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
+                                        l = 0;
+                                        p++;
+                                    } else {
+                                        l = 1;
+                                        break;
+                                    }
+                                }
+                                if (k == 1) {
+                                    if (l == 0) {
+                                        listt1.add(i1, null);
+                                    } else {
+                                        listt1.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 2) {
+                                    if (l == 0) {
+                                        listt2.add(i1, null);
+                                    } else {
+                                        listt2.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 3) {
+                                    if (l == 0) {
+                                        listt3.add(i1, null);
+                                    } else {
+                                        listt3.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 4) {
+                                    if (l == 0) {
+                                        listt4.add(i1, null);
+                                    } else {
+                                        listt4.add(i1, date.get(p).getName());
+                                    }
+                                }
+                                if (k == 5) {
+                                    if (l == 0) {
+                                        listt5.add(i1, null);
+                                    } else {
+                                        listt5.add(i1, date.get(p).getName());
+                                    }
+                                }
+                            }
+                        }
+                        js.put("shijian", list);
+                        System.out.println("~~~~~~~~~~~~~~~=" + list);
                         if (k == 1) {
-                            listt1.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt1);
+                            js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                         }
                         if (k == 2) {
-                            listt2.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt2);
+                            js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                         }
                         if (k == 3) {
-                            listt3.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt3);
+                            js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                         }
                         if (k == 4) {
-                            listt4.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt4);
+                            js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                         }
                         if (k == 5) {
-                            listt5.add(quduanEntity.getName());
+                            js.put("shuju" + k.toString(), listt5);
+                            js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                         }
                     }
-                    js.put("shijian", list);
-                    System.out.println("~~~~~~~~~~~~~~~=" + list);
-                    if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (k == 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (k == 3) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (k == 4) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (k == 5) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                } else if (times != 1) {
+                    Integer k = 0;
+                    for (int i = 0; i < sqlname.size(); i++) {
+                        k++;
+                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                        String shuxingname = sqlname.get(i);
+                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                        String quduanname = quduanName[i];
+                        Integer qdid = quXianService.findQDid(quduanname);
+                        List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
+                        for (quduanEntity quduanEntity : date) {
+                            long createtime = quduanEntity.getCreatetime();
+                            long value = createtime * 1000L;
+                            SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                            String time = format12.format(new Date(value));
+                            list.add(time);
+                            System.out.println("1234" + date);
+                            if (k == 1) {
+                                listt1.add(quduanEntity.getName());
+                            }
+                            if (k == 2) {
+                                listt2.add(quduanEntity.getName());
+                            }
+                            if (k == 3) {
+                                listt3.add(quduanEntity.getName());
+                            }
+                            if (k == 4) {
+                                listt4.add(quduanEntity.getName());
+                            }
+                            if (k == 5) {
+                                listt5.add(quduanEntity.getName());
+                            }
+                        }
+                        js.put("shijian", list);
+                        System.out.println("~~~~~~~~~~~~~~~=" + list);
+                        if (k == 1) {
+                            js.put("shuju" + k.toString(), listt1);
+                            js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                        }
+                        if (k == 2) {
+                            js.put("shuju" + k.toString(), listt2);
+                            js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                        }
+                        if (k == 3) {
+                            js.put("shuju" + k.toString(), listt3);
+                            js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                        }
+                        if (k == 4) {
+                            js.put("shuju" + k.toString(), listt4);
+                            js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
+                        }
+                        if (k == 5) {
+                            js.put("shuju" + k.toString(), listt5);
+                            js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                        }
                     }
                 }
+                System.out.println("jsssssssssssssss" + js);
+                return ResponseDataUtil.ok("查询数据成功", js);
             }
-            System.out.println("jsssssssssssssss" + js);
-            return ResponseDataUtil.ok("查询数据成功", js);
         }
     }
 
