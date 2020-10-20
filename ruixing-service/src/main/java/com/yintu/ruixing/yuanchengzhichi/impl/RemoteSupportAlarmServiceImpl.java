@@ -142,6 +142,7 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
                 remoteSupportAlarmEntities = alarmDao.selectByCondition(sb.toString(), startTime, endTime);
             }
         }
+        // return remoteSupportAlarmEntities;
         return remoteSupportAlarmEntities.size() > 0 ? this.findMessage(remoteSupportAlarmEntities, stationId) : remoteSupportAlarmEntities;
     }
 
