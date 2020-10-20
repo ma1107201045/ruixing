@@ -44,7 +44,11 @@
     <select id="selectByCondition" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM (${allData}) AS alarm
+        FROM
+        <trim prefix="(" suffix=")" suffixOverrides=" UNION ALL ">
+            ${joinSQL}
+        </trim>
+        AS alarm
         <where>
             <if test="startTime!=null and endTime!=null">
                 and FROM_UNIXTIME(createtime) between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}

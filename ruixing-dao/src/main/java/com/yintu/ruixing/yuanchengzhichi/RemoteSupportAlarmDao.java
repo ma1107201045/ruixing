@@ -15,5 +15,5 @@ public interface RemoteSupportAlarmDao {
 
     RemoteSupportAlarmEntity selectByPrimaryKey(String tableName, Integer id);
 
-    List<RemoteSupportAlarmEntity> selectByCondition(String allData, Date startTime, Date endTime);
+    List<RemoteSupportAlarmEntity> selectByCondition(String joinSQL, Date startTime, Date endTime);
 }

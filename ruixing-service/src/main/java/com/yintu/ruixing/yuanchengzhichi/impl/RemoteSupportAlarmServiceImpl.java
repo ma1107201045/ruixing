@@ -5,7 +5,10 @@ import cn.hutool.system.SystemUtil;
 import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
-import com.yintu.ruixing.guzhangzhenduan.*;
+import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseDao;
+import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanDao;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.yuanchengzhichi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +31,6 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     private BaoJingYuJingBaseDao baoJingYuJingBaseDao;
     @Autowired
     private CheZhanDao cheZhanDao;
-    @Autowired
-    private DataStatsService dataStatsService;
     @Autowired
     private RemoteSupportTicketService remoteSupportTicketService;
 
@@ -98,24 +99,18 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
             }
             isTime = true;
         }
-
         if (stationId != null) {
             List<String> tables = this.findLikeTable(databaseName, "alarm\\_" + stationId + "\\_%");
             StringBuilder sb = new StringBuilder();
-            for (int i = tables.size() - 1; i > -1; i--) {
-                String table = tables.get(i);
-                if (!isTime) {
-                    if (i == 0)
-                        sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table);
-                    else
-                        sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
-                } else {//对比时间减少拼接sql
-                    for (String time : times) {
-                        if (table.equals("alarm_" + stationId + "_" + time)) {
-                            if (i == 0)
-                                sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table);
-                            else
-                                sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
+            if (!isTime) {
+                for (String table : tables) {
+                    sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
+                }
+            } else {//对比时间减少拼接sql
+                for (String time : times) {
+                    for (String table : tables) {
+                        if (("alarm_" + stationId + "_" + time).equals(table)) {
+                            sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
                             break;
                         }
                     }
@@ -128,20 +123,15 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
         } else {
             List<String> tables = this.findLikeTable(databaseName, "alarm\\_%" + "\\_%");
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < tables.size(); i++) {
-                String table = tables.get(i);
-                if (!isTime) {
-                    if (i == tables.size() - 1)
-                        sb.append("SELECT * FROM ").append(table);
-                    else
-                        sb.append("SELECT * FROM ").append(table).append(" union all ");
-                } else {//对比时间减少拼接sql
-                    for (String time : times) {
-                        if (table.equals("alarm_" + table.split("_")[1] + "_" + time)) {
-                            if (i == tables.size() - 1)
-                                sb.append("SELECT * FROM ").append(table);
-                            else
-                                sb.append("SELECT * FROM ").append(table).append(" union all ");
+            if (!isTime) {
+                for (String table : tables) {
+                    sb.append("SELECT * FROM ").append(table).append(" UNION ALL ");
+                }
+            } else {//对比时间减少拼接sql
+                for (String time : times) {
+                    for (String table : tables) {
+                        if (("alarm_" + table.split("_")[1] + "_" + time).equals(table)) {
+                            sb.append("SELECT * FROM ").append(table).append(" UNION ALL ");
                             break;
                         }
                     }
