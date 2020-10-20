@@ -131,4 +131,13 @@ public interface CheZhanDao {
      */
     Integer selectCzStutrs(Long id, Boolean isPrimaryKey);
 
+    /**
+     * 通过车站id查询车站名称
+     *
+     * @param id           车站id或者车站专用id
+     * @param isPrimaryKey true：车站id false 车站专用id
+     * @return 车站名称
+     */
+    String selectNameById(Long id, Boolean isPrimaryKey);
+
 }

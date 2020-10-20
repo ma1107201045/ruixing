@@ -1099,4 +1099,15 @@
         </if>
         limit 1
     </select>
+
+    <select id="selectNameById" resultType="java.lang.String">
+        select cz_name from mro_chezhan where
+        <if test="isPrimaryKey">
+            cid=#{id,jdbcType=BIGINT}
+        </if>
+        <if test="!isPrimaryKey">
+            cz_id=#{id,jdbcType=BIGINT}
+        </if>
+        limit 1
+    </select>
 </mapper>

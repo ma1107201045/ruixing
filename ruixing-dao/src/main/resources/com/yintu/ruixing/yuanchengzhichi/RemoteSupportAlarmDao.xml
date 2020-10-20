@@ -7,6 +7,14 @@
         from information_schema.TABLES
         where table_name = #{tableName}
     </select>
+
+    <select id="selectLikeTable" resultType="java.lang.String">
+        SELECT table_name
+        FROM information_schema.TABLES
+        WHERE table_schema = #{databaseName,jdbcType=VARCHAR}
+          AND table_name LIKE #{tableName,jdbcType=VARCHAR};
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from ${tableName}
@@ -34,14 +42,11 @@
         id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, status
     </sql>
     <select id="selectByCondition" resultMap="BaseResultMap">
-        select
+        SELECT
         <include refid="Base_Column_List"/>
-        from ${tableName}
+        FROM (${allData}) AS alarm
         <where>
-            <if test="stationId">
-                and station_id=#{stationId,jdbcType=INTEGER}
-            </if>
-            <if test="startTime!=null and endTime !=null">
+            <if test="startTime!=null and endTime!=null">
                 and FROM_UNIXTIME(createtime) between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>

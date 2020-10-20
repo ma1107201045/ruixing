@@ -9,9 +9,11 @@ import java.util.List;
 public interface RemoteSupportAlarmDao {
     int isTableExist(String tableName);
 
+    List<String> selectLikeTable(String databaseName, String tableName);
+
     void deleteByPrimaryKey(String tableName, Integer id);
 
     RemoteSupportAlarmEntity selectByPrimaryKey(String tableName, Integer id);
 
-    List<RemoteSupportAlarmEntity> selectByCondition(String tableName, Integer stationId, Date startTime, Date endTime);
+    List<RemoteSupportAlarmEntity> selectByCondition(String allData, Date startTime, Date endTime);
 }

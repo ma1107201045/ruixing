@@ -1,7 +1,8 @@
 package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import cn.hutool.core.date.DateUtil;
-import com.github.pagehelper.Page;
+import cn.hutool.system.SystemUtil;
+import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
@@ -10,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author mlf
@@ -27,11 +29,18 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     @Autowired
     private CheZhanDao cheZhanDao;
     @Autowired
+    private DataStatsService dataStatsService;
+    @Autowired
     private RemoteSupportTicketService remoteSupportTicketService;
 
     @Override
     public boolean isTableExist(String tableName) {
         return alarmDao.isTableExist(tableName) > 0;
+    }
+
+    @Override
+    public List<String> findLikeTable(String databaseName, String tableName) {
+        return alarmDao.selectLikeTable(databaseName, tableName);
     }
 
     @Override
@@ -69,99 +78,103 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
         return remoteSupportAlarmEntity;
     }
 
-    @Override
-    public List<RemoteSupportAlarmEntity> findByCondition(String tableName, Integer stationId, Date startTime, Date endTime) {
-        return alarmDao.selectByCondition(tableName, stationId, startTime, endTime);
-    }
 
     @Override
     public List<RemoteSupportAlarmEntity> findByCondition(Integer pageNumber, Integer pageSize, Integer stationId, Date startTime, Date endTime) {
-        if (startTime.after(endTime))
-            throw new BaseRuntimeException("开始时间不能大于结束日期");
         List<RemoteSupportAlarmEntity> remoteSupportAlarmEntities = new ArrayList<>();
-        if (DateUtil.month(startTime) == DateUtil.month(endTime)) {//月份相等
-            String tableName = StringUtil.getBaoJingYuJingTableName(stationId, startTime);
-            if (this.isTableExist(tableName)) {
-                remoteSupportAlarmEntities = this.findByCondition(tableName, stationId, startTime, endTime);
-                if (remoteSupportAlarmEntities.size() > 0)
-                    remoteSupportAlarmEntities = remoteSupportAlarmEntities.stream()
-                            .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                            .collect(Collectors.toList());
+        List<String> times = new ArrayList<>();
+        String databaseName = SystemUtil.getOsInfo().isLinux() ? "ruixing" : "db_dev_ruixing";
+        boolean isTime = false;
+        //添加所选时间
+        if (startTime != null && endTime != null) {
+            if (startTime.after(endTime))
+                throw new BaseRuntimeException("开始时间不能大于结束日期");
+            long diffMonth = DateUtil.betweenMonth(startTime, endTime, true);
+            Date diffTime = startTime;
+            for (long i = 0; i < diffMonth + 1L; i++) {
+                int month = DateUtil.month(diffTime) + 1;
+                times.add(DateUtil.year(diffTime) + "" + (month > 9 ? month : "0" + month));
+                diffTime = DateUtil.offsetMonth(diffTime, 1);
             }
-        } else {
-            List<RemoteSupportAlarmEntity> list1 = new ArrayList<>();
-            List<RemoteSupportAlarmEntity> list2 = new ArrayList<>();
-            List<RemoteSupportAlarmEntity> list3 = new ArrayList<>();
-            long betweenMonth = DateUtil.betweenMonth(startTime, endTime, true);
-            String startTableName = StringUtil.getBaoJingYuJingTableName(stationId, startTime);
-            if (betweenMonth == 1L) {
-                if (this.isTableExist(startTableName)) {
-                    list1 = this.findByCondition(startTableName, stationId, startTime, DateUtil.endOfMonth(startTime));
-                    if (list1.size() > 0)
-                        list1 = list1.stream()
-                                .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                                .collect(Collectors.toList());
-                }
-                String endTableName = StringUtil.getBaoJingYuJingTableName(stationId, endTime);
-                if (this.isTableExist(endTableName)) {
-                    list2 = this.findByCondition(endTableName, stationId, DateUtil.beginOfMonth(endTime), endTime);
-                    if (list2.size() > 0)
-                        list2 = list2.stream()
-                                .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                                .collect(Collectors.toList());
-                }
-            } else {
-                if (this.isTableExist(startTableName))
-                    list1 = this.findByCondition(startTableName, stationId, startTime, DateUtil.endOfMonth(startTime));
-                if (list1.size() > 0)
-                    list1 = list1.stream()
-                            .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                            .collect(Collectors.toList());
+            isTime = true;
+        }
 
-
-                List<List<RemoteSupportAlarmEntity>> listAll = new ArrayList<>();
-                for (long i = 0L; i < betweenMonth - 1L; i++) {
-                    startTime = DateUtil.offsetMonth(DateUtil.beginOfMonth(startTime), 1);
-                    String tableName = StringUtil.getBaoJingYuJingTableName(stationId, startTime);
-                    if (this.isTableExist(tableName)) {
-                        List<RemoteSupportAlarmEntity> list = this.findByCondition(tableName, stationId, startTime, DateUtil.endOfMonth(startTime));
-                        if (list.size() > 0) {
-                            list = list.stream()
-                                    .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                                    .collect(Collectors.toList());
-                            listAll.add(list);
+        if (stationId != null) {
+            List<String> tables = this.findLikeTable(databaseName, "alarm\\_" + stationId + "\\_%");
+            StringBuilder sb = new StringBuilder();
+            for (int i = tables.size() - 1; i > -1; i--) {
+                String table = tables.get(i);
+                if (!isTime) {
+                    if (i == 0)
+                        sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table);
+                    else
+                        sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
+                } else {//对比时间减少拼接sql
+                    for (String time : times) {
+                        if (table.equals("alarm_" + stationId + "_" + time)) {
+                            if (i == 0)
+                                sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table);
+                            else
+                                sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
+                            break;
                         }
                     }
                 }
-                for (int i = listAll.size() - 1; i > -1; i--) {
-                    list2.addAll(listAll.get(i));
-                }
-
-                String endTableName = StringUtil.getBaoJingYuJingTableName(stationId, endTime);
-                if (this.isTableExist(endTableName))
-                    list3 = this.findByCondition(endTableName, stationId, DateUtil.beginOfMonth(endTime), endTime);
-                if (list1.size() > 0)
-                    list3 = list3.stream()
-                            .sorted(Comparator.comparingLong(RemoteSupportAlarmEntity::getId).reversed())
-                            .collect(Collectors.toList());
             }
-            if (list3.size() > 0)
-                remoteSupportAlarmEntities.addAll(list3);
-            if (list2.size() > 0)
-                remoteSupportAlarmEntities.addAll(list2);
-            if (list1.size() > 0)
-                remoteSupportAlarmEntities.addAll(list1);
+            if (!"".equals(sb.toString())) {
+                PageHelper.startPage(pageNumber, pageSize);
+                remoteSupportAlarmEntities = alarmDao.selectByCondition(sb.toString(), startTime, endTime);
+            }
+        } else {
+            List<String> tables = this.findLikeTable(databaseName, "alarm\\_%" + "\\_%");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < tables.size(); i++) {
+                String table = tables.get(i);
+                if (!isTime) {
+                    if (i == tables.size() - 1)
+                        sb.append("SELECT * FROM ").append(table);
+                    else
+                        sb.append("SELECT * FROM ").append(table).append(" union all ");
+                } else {//对比时间减少拼接sql
+                    for (String time : times) {
+                        if (table.equals("alarm_" + table.split("_")[1] + "_" + time)) {
+                            if (i == tables.size() - 1)
+                                sb.append("SELECT * FROM ").append(table);
+                            else
+                                sb.append("SELECT * FROM ").append(table).append(" union all ");
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!"".equals(sb.toString())) {
+                PageHelper.startPage(pageNumber, pageSize, "createtime DESC");
+                remoteSupportAlarmEntities = alarmDao.selectByCondition(sb.toString(), startTime, endTime);
+            }
         }
+        return remoteSupportAlarmEntities.size() > 0 ? this.findMessage(remoteSupportAlarmEntities, stationId) : remoteSupportAlarmEntities;
+    }
 
-        Page<RemoteSupportAlarmEntity> page = new Page<>(pageNumber, pageSize);
-        page.setTotal(remoteSupportAlarmEntities.size());
-
-        remoteSupportAlarmEntities = remoteSupportAlarmEntities.stream()
-                .skip((pageNumber - 1L) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
-        int number = cheZhanDao.findCzNumber(stationId);
+    @Override
+    public List<RemoteSupportAlarmEntity> findMessage(List<RemoteSupportAlarmEntity> remoteSupportAlarmEntities, Integer stationId) {
+        int number = 0;
+        String czName = null;
+        if (stationId != null) {
+            number = cheZhanDao.findCzNumber(stationId);
+            czName = cheZhanDao.selectNameById((long) stationId, false);
+        }
+        //查询报警信息跟处置单
         for (RemoteSupportAlarmEntity remoteSupportAlarmEntity : remoteSupportAlarmEntities) {
+            if (stationId == null) {
+                stationId = remoteSupportAlarmEntity.getStationId();
+                number = cheZhanDao.findCzNumber(stationId);
+                czName = cheZhanDao.selectNameById((long) stationId, false);
+            }
+
+            CheZhanEntity cheZhanEntity = new CheZhanEntity();
+            cheZhanEntity.setCzName(czName);
+            remoteSupportAlarmEntity.setCheZhanEntity(cheZhanEntity);
+
             String context;
             if (remoteSupportAlarmEntity.getAlarmlevel() == 1) {
                 context = baoJingYuJingBaseDao.findAlarmContext(remoteSupportAlarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
@@ -171,10 +184,10 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
             BaoJingYuJingBaseEntity baoJingYuJingBaseEntity = new BaoJingYuJingBaseEntity();
             baoJingYuJingBaseEntity.setBjcontext(context);
             remoteSupportAlarmEntity.setBaoJingYuJingBaseEntity(baoJingYuJingBaseEntity);
+
             RemoteSupportTicketEntity remoteSupportTicketEntity = remoteSupportTicketService.findLastByAlarmId(StringUtil.getAssemblyId(stationId, remoteSupportAlarmEntity.getCreatetime(), remoteSupportAlarmEntity.getId()));
             remoteSupportAlarmEntity.setAlarmStatus(remoteSupportTicketEntity == null ? 1 : remoteSupportTicketEntity.getStatus());
         }
-        page.addAll(remoteSupportAlarmEntities);
-        return page;
+        return remoteSupportAlarmEntities;
     }
 }

@@ -1,6 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
 import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,8 @@ public class RemoteSupportAlarmEntity implements Serializable {
     private Integer alarmlevel;
 
     private Boolean status;
+
+    private CheZhanEntity cheZhanEntity;
 
     private BaoJingYuJingBaseEntity baoJingYuJingBaseEntity;
 

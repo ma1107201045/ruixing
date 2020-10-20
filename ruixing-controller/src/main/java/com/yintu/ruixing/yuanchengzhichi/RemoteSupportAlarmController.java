@@ -50,9 +50,9 @@ public class RemoteSupportAlarmController extends SessionController {
     @GetMapping
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
-                                       @RequestParam("cz_id") Integer czId,
-                                       @RequestParam("start_time") Date startTime,
-                                       @RequestParam("end_time") Date endTime) {
+                                       @RequestParam(value = "cz_id", required = false) Integer czId,
+                                       @RequestParam(value = "start_time", required = false) Date startTime,
+                                       @RequestParam(value = "end_time", required = false) Date endTime) {
         List<RemoteSupportAlarmEntity> remoteSupportAlarmEntities = remoteSupportAlarmService.findByCondition(pageNumber, pageSize, czId, startTime, endTime);
         PageInfo<RemoteSupportAlarmEntity> pageInfo = new PageInfo<>(remoteSupportAlarmEntities);
         return ResponseDataUtil.ok("查询报警/预警信息列表成功", pageInfo);
