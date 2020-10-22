@@ -31,4 +31,6 @@ public interface AlarmTableDao {
     List<AlarmTableEntity> findAllAlarmDatas(@Param("tableName") String tableName);
 
     List<AlarmTableEntity> findAllAlarmDatasByTimes(@Param("tableName")String tableName,@Param("starTime") Long starTime,@Param("endTime") Long endTime);
+
+    List<AlarmTableEntity> findAllAlarmDatasBySomethings(@Param("toString") String toString,@Param("starTime") Date starTime,@Param("endTime") Date endTime);
 }

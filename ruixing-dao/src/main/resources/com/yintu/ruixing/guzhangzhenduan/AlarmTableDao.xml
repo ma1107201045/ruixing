@@ -20,6 +20,23 @@
   </sql>
 
   <!--根据时间段  查询所有的报警预警数据-->
+  <select id="findAllAlarmDatasBySomethings"  resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    <trim prefix="(" suffix=")" suffixOverrides=" UNION ALL ">
+      ${toString}
+    </trim>
+    AS alarm
+    <where>
+      <if test="starTime!=null and endTime!=null">
+        and FROM_UNIXTIME(createtime) between #{starTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+
+  <!--根据时间段  查询所有的报警预警数据-->
   <select id="findAllAlarmDatasByTimes"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

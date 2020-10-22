@@ -235,7 +235,10 @@ public class QuXianController {
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
             long cZid = czid.longValue();
             if (cheZhanService.findCzStutrs(cZid, false)) {
-                return new JSONObject();
+                List aa=new ArrayList<>();
+                JSONObject ss=new JSONObject();
+                ss.put("data",aa);
+                return ss;
             } else {
                 if (times == 1) {
                     List<Long> timelist = new ArrayList<>();
@@ -578,7 +581,10 @@ public class QuXianController {
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
             long cZid = czid.longValue();
             if (cheZhanService.findCzStutrs(cZid, false)==false) {
-                return new JSONObject();
+                List aa=new ArrayList<>();
+                JSONObject ss=new JSONObject();
+                ss.put("data",aa);
+                return ss;
             } else {
                 if (times == 1) {
                     List<Long> timelist = new ArrayList<>();

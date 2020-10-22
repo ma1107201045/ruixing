@@ -186,4 +186,6 @@ public interface DataStatsService {
     List<String> findXDJsonByDid(Integer did);
 
     String findDWDJsonByDid(Integer did);
+
+    void addQuDuanDatas(List<String[]> list);
 }

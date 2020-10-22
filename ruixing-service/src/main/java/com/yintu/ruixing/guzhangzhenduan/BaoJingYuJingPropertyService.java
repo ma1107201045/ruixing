@@ -24,11 +24,11 @@ public interface BaoJingYuJingPropertyService {
 
     Integer findAlarmNumber(String tableName);
 
-    void editAlarmState(AlarmTableEntity alarmTableEntity,String tableName);
+    void editAlarmState(AlarmTableEntity alarmTableEntity, String tableName);
 
-    List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size,String tableName);
+    List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size, String tableName);
 
     List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName);
 
-    List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid);
+    List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size);
 }

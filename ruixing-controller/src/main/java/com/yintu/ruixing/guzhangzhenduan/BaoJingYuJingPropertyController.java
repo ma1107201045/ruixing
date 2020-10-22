@@ -134,27 +134,15 @@ public class BaoJingYuJingPropertyController {
         return ResponseDataUtil.ok("查询数据成功", new ArrayList<>());
     }
 
+
     //根据选择的条件 查询对应的历史报警预警数据
     @GetMapping("/findSomeAlarmDatasByChoose")
     public Map<String, Object> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size) {
-        Date dayTime = new Date();
-        Integer a = 0;
-        if (dwdid != null && xdid == null && czid == null) {
-            //查询此电务段下面所有的车站
-            List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findczidBydwdName(dwdid);
-            for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
-                Integer czId = new Long(cheZhanEntity.getCzId()).intValue();
-                String tableName = StringUtil.getBaoJingYuJingTableName(czId, dayTime);
-                if (quDuanInfoDaoV2.isTableExist(tableName) == 0) {
-                    a++;
-                } else {
-                    PageHelper.startPage(page, size);
-                }
-            }
-        }
-        List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findSomeAlarmDatasByChoose(starTime, endTime, dwdid, xdid, czid);
-        return ResponseDataUtil.ok("查询数据成功", alarmEntityList);
+        List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findSomeAlarmDatasByChoose(starTime, endTime, dwdid, xdid, czid, page, size);
+        PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
+        return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
     }
+
 
 
 }

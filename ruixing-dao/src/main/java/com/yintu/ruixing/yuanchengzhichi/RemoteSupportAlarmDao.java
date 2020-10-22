@@ -1,6 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface RemoteSupportAlarmDao {
     int isTableExist(String tableName);
 
-    List<String> selectLikeTable(String databaseName, String tableName);
+    List<String> selectLikeTable(@Param("databaseName") String databaseName,@Param("tableName") String tableName);
 
     void deleteByPrimaryKey(String tableName, Integer id);
 

@@ -84,6 +84,24 @@ public class QuDuanBaseEntity implements Serializable {
 
     private Date time;
 
+
+    private String zongZuoBiao;
+    private String hengXiangPianYi;
+    private String turnoutSectionType;
+    private String bend1ConnectionSectionID;
+    private String bent1ConnectionObject;
+    private String bent1OffsetOfBranchCenter;
+    private String bent1Orientation;
+    private String bend2ConnectionSectionID;
+    private String bent2ConnectionObject;
+    private String bent2OffsetOfBranchCenter;
+    private String bent2Orientation;
+
+
+
+
+
+
     private String yuliu;
 
     private LineEntity lineEntity;

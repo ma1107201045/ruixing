@@ -87,139 +87,15 @@ public class DataStatsController {
         Integer j = 0;
         List<Integer> number = new ArrayList<>();
         List<String[]> list = quDuanDatas1.toJavaList(String[].class);
-        Integer qq = 0;
-        for (String[] stringss : list) {
-            j++;
-            String czid = stringss[0];
-            String qdid = stringss[7];
-            List<QuDuanBaseEntity> quDuanBaseEntityList = dataStatsService.findQuDuanByIds(Integer.parseInt(czid), Integer.parseInt(qdid));//根据车站czid 和区段qdid 查询对应的区段数据
-            if (quDuanBaseEntityList.size() != 0) {
-                number.add(j);
-            }
-        }
-        if (number.size() == 0) {
-            for (String[] strings : list) {
-                System.out.println("qqqqqqq" + qq++);
-                System.out.println("qqqqqqq" + qq + "+" + strings);
-                String czid1 = strings[0];
-                String czname = strings[1];
-                String line = strings[2];
-                String leftright = strings[3];
-                String ofxianduan = strings[4];
-                String xingbie = strings[5];
-                String type = strings[6];
-                System.out.println("11111111111");
-                String qdid1 = strings[7];
-                String zongheid = strings[8];
-                String quduanshejiname = strings[9];
-                String qudunyunyingname = strings[10];
-                String quduanlength = strings[11];
-                String carrier = strings[12];
-                String diduantype = strings[13];
-                String xianluqingkuang = strings[14];
-                System.out.println("2222222222222");
-                String bianjie = strings[15];
-                String fenjiedianwhere = strings[16];
-                String zhanqufenjie = strings[17];
-                String jinzhanxinhaojiname = strings[18];
-                String xinhaojiorbiaozhiming = strings[19];
-                String xinhaojizhanpaiwhere = strings[20];
-                String xinhaojiewhere = strings[21];
-                String zuocejueyuantype = strings[22];
-                String youcejueyuantype = strings[23];
-                System.out.println("33333333333333333");
-                String zhengxianhoufangquduanid = strings[24];
-                String zhengxianqianfangquduanid = strings[25];
-                String daochaguanlianquduan1id = strings[26];
-                String daochaguanlianquduan2id = strings[27];
-                String dianmahuaguidao = strings[28];
-                String guineidizhi = strings[29];
-                System.out.println("44444444444444444");
-                Long cid = dataStatsService.findchezhanid(Long.parseLong(czid1));//根据车站专用czid  查询对应的id
-                System.out.println("55555555555555555");
-                Integer lastParentid = dataStatsService.findLastParentid();
-                QuDuanBaseEntity quDuanBaseEntity = new QuDuanBaseEntity();
-                quDuanBaseEntity.setCzid(Integer.parseInt(czid1));
-                quDuanBaseEntity.setParentId(lastParentid);
-                System.out.println("666666666666666666");
-                Integer xdid = dataStatsService.findxianduanid(Long.parseLong(czid1));
-                quDuanBaseEntity.setXid(xdid);
-                quDuanBaseEntity.setCid(Integer.parseInt(cid.toString()));
-                quDuanBaseEntity.setQdid(Integer.parseInt(qdid1));
-                quDuanBaseEntity.setLine(line);
-                System.out.println("77777777777777777");
-                quDuanBaseEntity.setOfXianDuan(ofxianduan);
-                quDuanBaseEntity.setLeftRight(leftright);
-                if (xingbie.equals("上行")) {
-                    quDuanBaseEntity.setXingBie(1);
-                }
-                if (xingbie.equals("下行")) {
-                    quDuanBaseEntity.setXingBie(2);
-                }
-                if (xingbie.equals("——") || xingbie.equals("")) {
-                    quDuanBaseEntity.setXingBie(0);
-                }
-                if (type.equals("接近")) {
-                    quDuanBaseEntity.setType(1);
-                }
-                if (type.equals("离去")) {
-                    quDuanBaseEntity.setType(2);
-                }
-                if (type.equals("——") || type.equals("")) {
-                    quDuanBaseEntity.setType(0);
-                }
-                quDuanBaseEntity.setZongheId(zongheid);
-                quDuanBaseEntity.setQuduanshejiName(quduanshejiname);
-                quDuanBaseEntity.setQuduanyunyingName(qudunyunyingname);
-                if (quduanlength.equals("") || quduanlength.equals("——")) {
-                    quDuanBaseEntity.setQuduanLength(null);
-                } else {
-                    quDuanBaseEntity.setQuduanLength(Integer.parseInt(quduanlength));
-                }
-                System.out.println("888888888888888888");
-                quDuanBaseEntity.setCarrier(carrier);
-                quDuanBaseEntity.setDiduanType(diduantype);
-                quDuanBaseEntity.setXianluqingkuang(xianluqingkuang);
-                if (bianjie.equals("") || bianjie.equals("否")) {
-                    quDuanBaseEntity.setBianjie(0);
-                } else {
-                    quDuanBaseEntity.setBianjie(1);
-                }
-                quDuanBaseEntity.setFenjiedianWhere(fenjiedianwhere);
-                System.out.println("99999999999999999");
-                if (zhanqufenjie.equals("") || zhanqufenjie.equals("否")) {
-                    quDuanBaseEntity.setZhanqufenjie(0);
-                } else {
-                    quDuanBaseEntity.setZhanqufenjie(1);
-                }
-                quDuanBaseEntity.setJinzhanxinhaojiName(jinzhanxinhaojiname);
-                quDuanBaseEntity.setXinhaojiorbiaozhiming(xinhaojiorbiaozhiming);
-                quDuanBaseEntity.setXinhaobiaozhipaiWhere(xinhaojizhanpaiwhere);
-                quDuanBaseEntity.setXinhaojiWhere(xinhaojiewhere);
-                quDuanBaseEntity.setZuocejueyuanType(zuocejueyuantype);
-                quDuanBaseEntity.setYoucejueyuanType(youcejueyuantype);
-                System.out.println("111111112222222222222");
-                quDuanBaseEntity.setZhengxianhoufangquduanId(zhengxianhoufangquduanid);
-                quDuanBaseEntity.setZhengxianqianfangquduanId(zhengxianqianfangquduanid);
-                System.out.println("123");
-                quDuanBaseEntity.setDaochaguanlianquduan1Id(daochaguanlianquduan1id);
-                quDuanBaseEntity.setDaochaguanlianquduan2Id(daochaguanlianquduan2id);
-                System.out.println("456");
-                quDuanBaseEntity.setDianmahuaguihao(dianmahuaguidao);
-                if (guineidizhi.equals("")) {
-                    quDuanBaseEntity.setGuineidizhi(null);
-                } else {
-                    quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
-                }
-                dataStatsService.addQuDuan(quDuanBaseEntity);
-            }
-        } else {
+        dataStatsService.addQuDuanDatas(list);
+
+        /*} else {
             return ResponseDataUtil.error("请检查第" + number + "行的数据，有重复");
-        }
+        }*/
         return ResponseDataUtil.ok("数据上传成功");
     }
 
-    //导入区段的Excel模板数据
+    //导入区段的Excel模板数据//未用
     @PostMapping("/QuDuabUpLoad")
     @ResponseBody
     public Map<String, Object> QuDuabUpLoad(@RequestParam("file") MultipartFile excelFile) {
@@ -262,6 +138,18 @@ public class DataStatsController {
                         String dianmahuaguidao = strings[28];
                         String guineidizhi = strings[29];
                         //System.out.println("44444444444444444");
+                        String zongZuoBiao = strings[30];
+                        String hengXiangPianYi = strings[31];
+                        String typeOfTurnoutSection = strings[32];
+                        String bend1ConnectionSectionID = strings[33];
+                        String bent1ConnectionObject = strings[34];
+                        String bent1OffsetOfBranchCenter = strings[35];
+                        String bent1Orientation = strings[36];
+                        String bend2ConnectionSectionID = strings[37];
+                        String bent2ConnectionObject = strings[38];
+                        String bent2OffsetOfBranchCenter = strings[39];
+                        String bent2Orientation = strings[40];
+                        //System.out.println("444444++++++444444");
                         Long cid = dataStatsService.findchezhanid(Long.parseLong(czid));//根据车站专用czid  查询对应的id
                         List<QuDuanBaseEntity> quDuanBaseEntityList = dataStatsService.findQuDuanByQuDuanYunYingName(qudunyunyingname);//根据车站cid  查询对应的区段数据
                         if (quDuanBaseEntityList.size() == 0) {
@@ -340,7 +228,61 @@ public class DataStatsController {
                             } else {
                                 quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
                             }
-
+                            if ("".equals(zongZuoBiao)){
+                                quDuanBaseEntity.setZongZuoBiao(null);
+                            }else {
+                                quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
+                            }
+                            if ("".equals(hengXiangPianYi)){
+                                quDuanBaseEntity.setHengXiangPianYi(null);
+                            }else {
+                                quDuanBaseEntity.setHengXiangPianYi(hengXiangPianYi);
+                            }
+                            if ("".equals(typeOfTurnoutSection)){
+                                quDuanBaseEntity.setTurnoutSectionType(null);
+                            }else {
+                                quDuanBaseEntity.setTurnoutSectionType(typeOfTurnoutSection);
+                            }
+                            if ("".equals(bend1ConnectionSectionID)){
+                                quDuanBaseEntity.setBend1ConnectionSectionID(null);
+                            }else {
+                                quDuanBaseEntity.setBend1ConnectionSectionID(bend1ConnectionSectionID);
+                            }
+                            if ("".equals(bent1ConnectionObject)){
+                                quDuanBaseEntity.setBent1ConnectionObject(null);
+                            }else {
+                                quDuanBaseEntity.setBent1ConnectionObject(bent1ConnectionObject);
+                            }
+                            if ("".equals(bent1OffsetOfBranchCenter)){
+                                quDuanBaseEntity.setBent1OffsetOfBranchCenter(null);
+                            }else {
+                                quDuanBaseEntity.setBent1OffsetOfBranchCenter(bent1OffsetOfBranchCenter);
+                            }
+                            if ("".equals(bent1Orientation)) {
+                                quDuanBaseEntity.setBent1Orientation(null);
+                            }else {
+                                quDuanBaseEntity.setBent1Orientation(bent1Orientation);
+                            }
+                            if ("".equals(bend2ConnectionSectionID)){
+                                quDuanBaseEntity.setBend2ConnectionSectionID(null);
+                            }else {
+                                quDuanBaseEntity.setBend2ConnectionSectionID(bend2ConnectionSectionID);
+                            }
+                            if ("".equals(bent2ConnectionObject)){
+                                quDuanBaseEntity.setBent2ConnectionObject(null);
+                            }else {
+                                quDuanBaseEntity.setBent2ConnectionObject(bent2ConnectionObject);
+                            }
+                            if ("".equals(bent2OffsetOfBranchCenter)){
+                                quDuanBaseEntity.setBent2OffsetOfBranchCenter(null);
+                            }else {
+                                quDuanBaseEntity.setBent2OffsetOfBranchCenter(bent2OffsetOfBranchCenter);
+                            }
+                            if ("".equals(bent2Orientation)) {
+                                quDuanBaseEntity.setBent2Orientation(null);
+                            }else {
+                                quDuanBaseEntity.setBent2Orientation(bent2Orientation);
+                            }
                             dataStatsService.addQuDuan(quDuanBaseEntity);
                         }
                     }

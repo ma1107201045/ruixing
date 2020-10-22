@@ -39,6 +39,17 @@
         <result column="guiNeiDiZhi" jdbcType="INTEGER" property="guineidizhi"/>
         <result column="time" jdbcType="TIMESTAMP" property="time"/>
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+        <result column="zongZuoBiao" jdbcType="VARCHAR" property="zongZuoBiao"/>
+        <result column="hengXiangPianYi" jdbcType="VARCHAR" property="hengXiangPianYi"/>
+        <result column="turnoutSectionType" jdbcType="VARCHAR" property="turnoutSectionType"/>
+        <result column="bend1ConnectionSection_ID" jdbcType="VARCHAR" property="bend1ConnectionSectionID"/>
+        <result column="bent1ConnectionObject" jdbcType="VARCHAR" property="bent1ConnectionObject"/>
+        <result column="bent1OffsetOfBranchCenter" jdbcType="VARCHAR" property="bent1OffsetOfBranchCenter"/>
+        <result column="bent1Orientation" jdbcType="VARCHAR" property="bent1Orientation"/>
+        <result column="bend2ConnectionSection_ID" jdbcType="VARCHAR" property="bend2ConnectionSectionID"/>
+        <result column="bent2ConnectionObject" jdbcType="VARCHAR" property="bent2ConnectionObject"/>
+        <result column="bent2OffsetOfBranchCenter" jdbcType="VARCHAR" property="bent2OffsetOfBranchCenter"/>
+        <result column="bent2Orientation" jdbcType="VARCHAR" property="bent2Orientation"/>
         <association property="xianDuanEntity" javaType="XianDuanEntity">
             <result column="xid" property="xid"></result>
             <result column="xd_name" property="xdName"></result>
@@ -56,7 +67,9 @@
     zhanQuFenJie, jinZhanXinHaoJi_name, xinHaoJiOrBiaoZhiMing, xinHaoBiaoZhiPai_where,
     xinHaoJi_where, zuoCeJueYuan_type, youCeJueYuan_type, zhengXianHouFangQuDuan_ID,
     zhengXianQianFangQuDuan_ID, daoChaGuanLianQuDuan1_ID, daoChaGuanLianQuDuan2_ID, dianMaHuaGuiHao,
-    guiNeiDiZhi, yuliu
+    guiNeiDiZhi, yuliu,zongZuoBiao,hengXiangPianYi,turnoutSectionType,bend1ConnectionSection_ID,
+    bent1ConnectionObject,bent1OffsetOfBranchCenter,bent1Orientation,bend2ConnectionSection_ID,
+    bent2ConnectionObject,bent2OffsetOfBranchCenter,bent2Orientation
     </sql>
 
 
@@ -605,6 +618,39 @@
             <if test="yuliu != null">
                 yuliu,
             </if>
+            <if test="zongZuoBiao != null">
+                zongZuoBiao,
+            </if>
+            <if test="hengXiangPianYi != null">
+                hengXiangPianYi,
+            </if>
+            <if test="turnoutSectionType != null">
+                turnoutSectionType,
+            </if>
+            <if test="bend1ConnectionSectionID != null">
+                bend1ConnectionSection_ID,
+            </if>
+            <if test="bent1ConnectionObject != null">
+                bent1ConnectionObject,
+            </if>
+            <if test="bent1OffsetOfBranchCenter != null">
+                bent1OffsetOfBranchCenter,
+            </if>
+            <if test="bent1Orientation != null">
+                bent1Orientation,
+            </if>
+            <if test="bend2ConnectionSectionID != null">
+                bend2ConnectionSection_ID,
+            </if>
+            <if test="bent2ConnectionObject != null">
+                bent2ConnectionObject,
+            </if>
+            <if test="bent2OffsetOfBranchCenter != null">
+                bent2OffsetOfBranchCenter,
+            </if>
+            <if test="bent2Orientation != null">
+                bent2Orientation,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -714,6 +760,39 @@
             </if>
             <if test="yuliu != null">
                 #{yuliu,jdbcType=VARCHAR},
+            </if>
+            <if test="zongZuoBiao != null">
+                #{zongZuoBiao,jdbcType=VARCHAR},
+            </if>
+            <if test="hengXiangPianYi != null">
+                #{hengXiangPianYi,jdbcType=VARCHAR},
+            </if>
+            <if test="turnoutSectionType != null">
+                #{turnoutSectionType,jdbcType=VARCHAR},
+            </if>
+            <if test="bend1ConnectionSectionID != null">
+                #{bend1ConnectionSectionID,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1ConnectionObject != null">
+                #{bent1ConnectionObject,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1OffsetOfBranchCenter != null">
+                #{bent1OffsetOfBranchCenter,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1Orientation != null">
+                #{bent1Orientation,jdbcType=VARCHAR},
+            </if>
+            <if test="bend2ConnectionSectionID != null">
+                #{bend2ConnectionSectionID,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2ConnectionObject != null">
+                #{bent2ConnectionObject,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2OffsetOfBranchCenter != null">
+                #{bent2OffsetOfBranchCenter,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2Orientation != null">
+                #{bent2Orientation,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -825,6 +904,39 @@
             </if>
             <if test="yuliu != null">
                 yuliu = #{yuliu,jdbcType=VARCHAR},
+            </if>
+            <if test="zongZuoBiao != null">
+                zongZuoBiao = #{zongZuoBiao,jdbcType=VARCHAR},
+            </if>
+            <if test="hengXiangPianYi != null">
+                hengXiangPianYi = #{hengXiangPianYi,jdbcType=VARCHAR},
+            </if>
+            <if test="turnoutSectionType != null">
+                turnoutSectionType = #{turnoutSectionType,jdbcType=VARCHAR},
+            </if>
+            <if test="bend1ConnectionSectionID != null">
+                bend1ConnectionSection_ID = #{bend1ConnectionSectionID,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1ConnectionObject != null">
+                bent1ConnectionObject = #{bent1ConnectionObject,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1OffsetOfBranchCenter != null">
+                bent1OffsetOfBranchCenter = #{bent1OffsetOfBranchCenter,jdbcType=VARCHAR},
+            </if>
+            <if test="bent1Orientation != null">
+                bent1Orientation = #{bent1Orientation,jdbcType=VARCHAR},
+            </if>
+            <if test="bend2ConnectionSectionID != null">
+                bend2ConnectionSection_ID = #{bend2ConnectionSectionID,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2ConnectionObject != null">
+                bent2ConnectionObject = #{bent2ConnectionObject,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2OffsetOfBranchCenter != null">
+                bent2OffsetOfBranchCenter = #{bent2OffsetOfBranchCenter,jdbcType=VARCHAR},
+            </if>
+            <if test="bent2Orientation != null">
+                bent2Orientation = #{bent2Orientation,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
