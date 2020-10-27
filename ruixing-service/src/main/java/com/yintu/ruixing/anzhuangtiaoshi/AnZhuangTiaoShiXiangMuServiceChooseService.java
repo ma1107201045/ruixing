@@ -1,5 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 /**
@@ -16,4 +18,7 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseService {
     void addXiangMu(AnZhuangTiaoShiXiangMuEntity xiangMuEntity);
 
     void addXiangMuServiceChooseEntity(AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity);
+
+
+    JSONObject findAllByXDidddd(Integer xdid);
 }

@@ -32,11 +32,15 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
 
     List<Integer> findAllSeridByXDid(Integer id);
 
-    List<Integer> findAllChoidBySerid(@Param("serid")Integer serid);
+    List<Integer> findAllChoidBySerid(@Param("serid") Integer serid);
 
-    Integer findTitleTotal(@Param("serid")Integer serid,@Param("id") Integer id);
+    Integer findTitleTotal(@Param("serid") Integer serid, @Param("id") Integer id);
 
-    Integer findChooseTotal(@Param("choid") Integer choid,@Param("id") Integer id);
+    Integer findChooseTotal(@Param("choid") Integer choid, @Param("id") Integer id);
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findCheZhanByXDid(Integer id);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllChoose();
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findServiceChoose(@Param("serid") Integer serid, @Param("xdid") Integer xdid, @Param("czid") Integer czid);
 }

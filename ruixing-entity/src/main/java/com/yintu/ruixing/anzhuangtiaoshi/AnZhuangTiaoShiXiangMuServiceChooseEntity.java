@@ -1,5 +1,6 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,7 +57,9 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
     private Integer PlanOneTime;
 
     private List chooselist;
+    private List chooselistt;
 
+    private JSONObject list;
     private AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity;

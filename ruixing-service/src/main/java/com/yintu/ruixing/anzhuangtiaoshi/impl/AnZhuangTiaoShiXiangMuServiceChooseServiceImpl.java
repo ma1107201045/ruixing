@@ -50,6 +50,76 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     }
 
     @Override
+    public JSONObject findAllByXDidddd(Integer xdid) {
+        JSONObject js = new JSONObject();
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> serviceStatusEntityList = new ArrayList<>();
+        int q = 0;
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> chooseEntityList = anZhuangTiaoShiXiangMuServiceChooseDao.findAllChoose();
+        for (AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity : chooseEntityList) {
+            q++;
+            AnZhuangTiaoShiXiangMuServiceStatusEntity serviceStatusEntity = new AnZhuangTiaoShiXiangMuServiceStatusEntity();
+            String servicename = xiangMuServiceChooseEntity.getServicename();
+            serviceStatusEntity.setId(q);
+            serviceStatusEntity.setServicename(servicename);
+            serviceStatusEntityList.add(serviceStatusEntity);
+        }
+        js.put("title", serviceStatusEntityList);
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuServiceChooseEntity = new ArrayList<>();
+        List<Integer> CZid = anZhuangTiaoShiXiangMuServiceChooseDao.findCZidByXDid(xdid);
+        Integer a = 0;
+        for (int i = 0; i < CZid.size(); i++) {
+            a++;
+            AnZhuangTiaoShiXiangMuServiceChooseEntity serviceChooseEntity = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> serviceChooseEntities = new ArrayList<>();
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> serviceChooseEntitiess = new ArrayList<>();
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuServiceChooseEntityList = anZhuangTiaoShiXiangMuServiceChooseDao.findAllByCZid(CZid.get(i));
+            JSONObject jss = new JSONObject();
+            for (AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntityy : xiangMuServiceChooseEntityList) {
+                AnZhuangTiaoShiXiangMuServiceChooseEntity serviceChooseEntitys = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                if (xiangMuServiceChooseEntityy.getChoid() != null) {
+                    Integer serid = xiangMuServiceChooseEntityy.getSerid();
+                    String servicename = xiangMuServiceChooseEntityy.getServicename();
+                    Integer typetime = xiangMuServiceChooseEntityy.getTypetime();
+                    Integer xdid1 = xiangMuServiceChooseEntityy.getXdid();
+                    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> chooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
+                    serviceChooseEntitys.setChooselist(chooseEntity);
+                    serviceChooseEntitys.setServicename(servicename);
+                    serviceChooseEntitys.setTypetime(typetime);
+                    serviceChooseEntitys.setXdid(xdid1);
+                    serviceChooseEntities.add(serviceChooseEntitys);
+                    jss.put(a.toString(), serviceChooseEntities);
+                    serviceChooseEntity.setList(jss);
+                    xiangMuServiceChooseEntity.add(a - 1, serviceChooseEntity);
+                    System.out.println("0000"+xiangMuServiceChooseEntity);
+                }
+                if (xiangMuServiceChooseEntityy.getChoid() == null) {
+                    Integer serid = xiangMuServiceChooseEntityy.getSerid();
+                    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> shiXiangMuServiceChooseEntity = anZhuangTiaoShiXiangMuServiceChooseDao.findServiceChoose(serid, xdid, CZid.get(i));
+                    for (AnZhuangTiaoShiXiangMuServiceChooseEntity anZhuangTiaoShiXiangMuServiceChooseEntity : shiXiangMuServiceChooseEntity) {
+                        if (anZhuangTiaoShiXiangMuServiceChooseEntity.getPlanStartTime() != null) {
+                            Date planStartTime = anZhuangTiaoShiXiangMuServiceChooseEntity.getPlanStartTime();
+                            Date planEndTime = anZhuangTiaoShiXiangMuServiceChooseEntity.getPlanEndTime();
+                            int PlanToalTime = (int) ((planEndTime.getTime() - planStartTime.getTime()) / (1000 * 3600 * 24)) + 1;
+                            int PlanOneTime = (int) ((new Date().getTime() - planStartTime.getTime()) / (1000 * 3600 * 24)) + 1;
+                            anZhuangTiaoShiXiangMuServiceChooseEntity.setPlanToalTime(PlanToalTime);
+                            anZhuangTiaoShiXiangMuServiceChooseEntity.setPlanOneTime(PlanOneTime);
+                        }
+                        serviceChooseEntitiess.add(anZhuangTiaoShiXiangMuServiceChooseEntity);
+                        jss.put(a.toString(), serviceChooseEntitiess);
+                        serviceChooseEntity.setList(jss);
+                    }
+                    xiangMuServiceChooseEntity.add(a - 1, serviceChooseEntity);
+                    System.out.println("11111"+xiangMuServiceChooseEntity);
+
+                }
+            }
+        }
+        js.put("tableData", xiangMuServiceChooseEntity);
+        return js;
+    }
+
+
+    @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findAllByXDid(Integer xdid) {
         AnZhuangTiaoShiXiangMuEntity xiangMuEntityList = anZhuangTiaoShiXiangMuDao.findXiangMuById(xdid);
         Integer id = xiangMuEntityList.getId();
@@ -69,12 +139,12 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
             List<AnZhuangTiaoShiXiangMuServiceChooseEntity> titleList = new ArrayList<>();
 
 
-            AnZhuangTiaoShiXiangMuEntity xiangMuEntity=new AnZhuangTiaoShiXiangMuEntity();
+            AnZhuangTiaoShiXiangMuEntity xiangMuEntity = new AnZhuangTiaoShiXiangMuEntity();
 
             List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuServiceChooseEntityList = anZhuangTiaoShiXiangMuServiceChooseDao.findAllByCZid(CZid.get(i));
 
             for (AnZhuangTiaoShiXiangMuServiceChooseEntity XiangMuServiceChooseEntity : xiangMuServiceChooseEntityList) {
-                if (XiangMuServiceChooseEntity.getChoid()==null){
+                if (XiangMuServiceChooseEntity.getChoid() == null) {
                     titleList.add(XiangMuServiceChooseEntity);
                     xiangMuEntity.setId(id);
                     xiangMuEntity.setWorksid(worksid);
@@ -86,16 +156,16 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuEntity.setXdFenlei(xdFenlei);
                     xiangMuEntity.setGuanlianxiangmu(guanlianxiangmu);
                     xiangMuEntity.setTitlelist(titleList);
-                    if (XiangMuServiceChooseEntity.getPlanStartTime()!=null){
+                    if (XiangMuServiceChooseEntity.getPlanStartTime() != null) {
                         Date planStartTime = XiangMuServiceChooseEntity.getPlanStartTime();
                         Date planEndTime = XiangMuServiceChooseEntity.getPlanEndTime();
-                        int PlanToalTime =(int)((planEndTime.getTime()-planStartTime.getTime())/(1000*3600*24))+1;
-                        int PlanOneTime = (int) ((new Date().getTime() - planStartTime.getTime()) / (1000*3600*24))+1;
+                        int PlanToalTime = (int) ((planEndTime.getTime() - planStartTime.getTime()) / (1000 * 3600 * 24)) + 1;
+                        int PlanOneTime = (int) ((new Date().getTime() - planStartTime.getTime()) / (1000 * 3600 * 24)) + 1;
                         XiangMuServiceChooseEntity.setPlanToalTime(PlanToalTime);
                         XiangMuServiceChooseEntity.setPlanOneTime(PlanOneTime);
                     }
                 }
-                if (XiangMuServiceChooseEntity.getChoid()!=null){
+                if (XiangMuServiceChooseEntity.getChoid() != null) {
                     titleList.add(XiangMuServiceChooseEntity);
                     xiangMuEntity.setId(id);
                     xiangMuEntity.setWorksid(worksid);
@@ -118,8 +188,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     }
                 }
             }
-            aztsXiangMuServiceChooseEntityList.add(i,xiangMuEntity);
-            System.out.println("1111111111111111"+aztsXiangMuServiceChooseEntityList);
+            aztsXiangMuServiceChooseEntityList.add(i, xiangMuEntity);
+            System.out.println("1111111111111111" + aztsXiangMuServiceChooseEntityList);
         }
         return aztsXiangMuServiceChooseEntityList;
     }
@@ -154,7 +224,6 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuEntity.setXdFenlei(xdFenlei);
                     xiangMuEntity.setGuanlianxiangmu(guanlianxiangmu);
                     xiangMuEntity.setChooselist(chooseList);*/
-
 
 
 }

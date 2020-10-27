@@ -36,6 +36,16 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
         return ResponseDataUtil.ok("查询车站数据成功", xiangMuServiceChooseEntityList);
     }
 
+
+
+    //根据线段id  查询对应的车站数据
+    @GetMapping("/findAllByXDidddd/{xdid}")
+    public Map<String, Object> findAllByXDidddd(@PathVariable Integer xdid ) {
+
+        JSONObject jsonObject = anZhuangTiaoShiXiangMuServiceChooseService.findAllByXDidddd(xdid);
+        return ResponseDataUtil.ok("查询车站数据成功", jsonObject);
+    }
+
     //新增车站数据
     @PostMapping("/addXiangMuServiceChoose")
     public Map<String, Object> addXiangMuServiceChoose(@RequestBody JSONArray cheZhanDatas) throws Exception {
@@ -97,7 +107,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                     Date planEndtime = sdf.parse(sdf.format(dateee));
                     Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
 
-                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
                     xiangMuServiceChooseEntity.setXdid(xmid);
                     xiangMuServiceChooseEntity.setSerid(titleid);
                     xiangMuServiceChooseEntity.setCzid(czid);
@@ -113,7 +123,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                 if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 1) {//有状态标识  没有计划和实际开始结束时间
                     Integer timetype = (Integer) statusdatu.get("timetype");
                     Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
-                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
                     xiangMuServiceChooseEntity.setXdid(xmid);
                     xiangMuServiceChooseEntity.setSerid(titleid);
                     xiangMuServiceChooseEntity.setCzid(czid);
@@ -131,7 +141,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                     Integer isNotFinish = (Integer) statusdatu.get("isNotFinish");
                     Date datee = new Date(planOpenTime);
                     Date planOpentime = sdf.parse(sdf.format(datee));
-                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
                     xiangMuServiceChooseEntity.setXdid(xmid);
                     xiangMuServiceChooseEntity.setSerid(titleid);
                     xiangMuServiceChooseEntity.setCzid(czid);
@@ -149,7 +159,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                         Map<String, Object> chroosee = (Map) chroose;
                         Integer chrooseid = (Integer) chroosee.get("id");
                         Integer isnot = (Integer) chroosee.get("isnot");
-                        AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity=new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                        AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
                         xiangMuServiceChooseEntity.setXdid(xmid);
                         xiangMuServiceChooseEntity.setSerid(titleid);
                         xiangMuServiceChooseEntity.setCzid(czid);
