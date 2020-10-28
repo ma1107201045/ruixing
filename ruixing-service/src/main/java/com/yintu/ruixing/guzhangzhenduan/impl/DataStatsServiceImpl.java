@@ -86,9 +86,9 @@ public class DataStatsServiceImpl implements DataStatsService {
             //System.out.println("33333333333333333");
             String zhengxianhoufangquduanid = strings[24];
             String zhengxianqianfangquduanid = strings[25];
-            String daochaguanlianquduan1id = strings[26];
-            String daochaguanlianquduan2id = strings[27];
-            String zongZuoBiao = strings[28];
+            String zongZuoBiao = strings[26];
+            String daochaguanlianquduan1id = strings[27];
+            String daochaguanlianquduan2id = strings[28];
             String dianmahuaguidao = strings[29];
             String guineidizhi = strings[30];
             //System.out.println("44444444444444444");
