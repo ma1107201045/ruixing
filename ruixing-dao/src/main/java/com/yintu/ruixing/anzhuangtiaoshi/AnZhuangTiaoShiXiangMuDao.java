@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface AnZhuangTiaoShiXiangMuDao {
     int deleteByPrimaryKey(Integer id);
@@ -19,12 +20,7 @@ public interface AnZhuangTiaoShiXiangMuDao {
     int updateByPrimaryKey(AnZhuangTiaoShiXiangMuEntity record);
 
 
-
-
     ////////////////////////////////////////////////
-
-
-
 
 
     List<AnZhuangTiaoShiXiangMuEntity> findSanJiShu();
@@ -43,14 +39,18 @@ public interface AnZhuangTiaoShiXiangMuDao {
 
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuanNameAndYear();
 
-    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedata(@Param("xdname") String xdname,@Param("year") String year,
-                                                              @Param("xdtype")String xdtype,@Param("xdleixing") Integer xdleixing);
+    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedata(@Param("xdname") String xdname, @Param("year") String year,
+                                                              @Param("xdtype") String xdtype, @Param("xdleixing") Integer xdleixing);
 
     List<AnZhuangTiaoShiXiangMuEntity> findXiangMuData(Integer[] ids);
 
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuan();
 
-    List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(@Param("today") String today,@Param("lastMothDay") String lastMothDay);
+    List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(@Param("today") String today, @Param("lastMothDay") String lastMothDay);
 
     AnZhuangTiaoShiXiangMuEntity findXiangMuById(Integer xdid);
+
+    List<AnZhuangTiaoShiXiangMuEntity> findByXdIdAndCzId(Integer xdId, Integer czId);
+
+
 }
