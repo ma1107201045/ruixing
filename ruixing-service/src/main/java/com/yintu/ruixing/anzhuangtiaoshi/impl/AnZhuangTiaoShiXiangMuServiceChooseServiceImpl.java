@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author Mr.liu
@@ -56,6 +57,28 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     @Override
     public AnZhuangTiaoShiXiangMuServiceStatusEntity findServiceStatusById(Integer id) {
         return anZhuangTiaoShiXiangMuServiceStatusDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public JSONArray findStatusByCzId(Integer czId) {
+        JSONArray ja = new JSONArray();
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : anZhuangTiaoShiXiangMuServiceStatusEntities) {
+            Integer id = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> serviceChooseEntities = anZhuangTiaoShiXiangMuServiceChooseDao.findAllChoidBySeridAndCzId(id, czId);
+            if (!serviceChooseEntities.isEmpty()) {
+                Integer timeType = anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype();
+                JSONObject jo;
+                if (timeType != null) {
+                    jo = (JSONObject) JSONObject.toJSON(serviceChooseEntities.get(0));
+                } else {
+                    jo = new JSONObject();
+                    jo.put("list", serviceChooseEntities);
+                }
+                ja.add(jo);
+            }
+        }
+        return ja;
     }
 
     @Override
@@ -188,12 +211,19 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     }
 
     @Override
-    public void removeByCzId(Integer czId) {
-        anZhuangTiaoShiXiangMuServiceChooseDao.deleteByCzId(czId);
+    public void removeByCzId(Integer[] czIds) {
+        for (Integer czId : czIds) {
+            anZhuangTiaoShiXiangMuServiceChooseDao.deleteByCzId(czId);
+        }
     }
 
     @Override
-    public JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId) {
+    public void editByCzId(Integer czId) {
+
+    }
+
+    @Override
+    public JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId, String czName) {
         JSONObject titleAndData = new JSONObject();
 
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
@@ -201,8 +231,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
         List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdId(xdId);
         AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity = anZhuangTiaoShiXiangMuEntities.get(0);
 
-        Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "id DESC");
-        List<Integer> czIds = anZhuangTiaoShiXiangMuServiceChooseDao.findCZidByXDid(xdId);
+        Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "axsc.id DESC");
+        List<Integer> czIds = anZhuangTiaoShiXiangMuServiceChooseDao.findCZidByXDid(xdId, czName);
         JSONArray ja = new JSONArray();
         for (Integer czId : czIds) {
             JSONObject jo = new JSONObject(true);

@@ -19,12 +19,15 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseService {
 
     AnZhuangTiaoShiXiangMuServiceStatusEntity findServiceStatusById(Integer id);
 
+    JSONArray findStatusByCzId(Integer czId);
+
     void addXiangMuServiceChoose(JSONArray ja, String username, Integer senderid);
 
-    void removeByCzId(Integer czId);
+    void removeByCzId(Integer[] czIds);
 
+    void editByCzId(Integer czId);
 
-    JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId);
+    JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId, String czName);
 
 
 }

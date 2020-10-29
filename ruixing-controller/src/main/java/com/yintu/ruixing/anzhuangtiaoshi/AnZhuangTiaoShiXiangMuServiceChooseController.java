@@ -6,6 +6,7 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -34,16 +35,34 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
     //删除车站数据
     @DeleteMapping("/removeXiangMuServiceChoose/{czId}")
-    public Map<String, Object> removeXiangMuServiceChoose(@PathVariable Integer czId) {
+    public Map<String, Object> removeXiangMuServiceChoose(@PathVariable Integer[] czId) {
         anZhuangTiaoShiXiangMuServiceChooseService.removeByCzId(czId);
         return ResponseDataUtil.ok("删除成功");
     }
 
+    @PutMapping("/editXiangMuServiceChoose/{czId}")
+    public Map<String, Object> editXiangMuServiceChoose(@PathVariable Integer czId, @RequestBody JSONArray cheZhanDatas) {
+
+        return null;
+    }
+
+
     //根据线段id  查询对应的车站数据
     @GetMapping("/findAllByXDidddd/{xdid}")
-    public Map<String, Object> findAllByXDidddd(@RequestParam("page_number") Integer pageNumber, @RequestParam("page_size") Integer pageSize, @PathVariable Integer xdid) {
-        JSONObject jsonObject = anZhuangTiaoShiXiangMuServiceChooseService.findAllByXdId(pageNumber, pageSize, xdid);
+    public Map<String, Object> findAllByXDidddd(@RequestParam("page_number") Integer pageNumber,
+                                                @RequestParam("page_size") Integer pageSize,
+                                                @PathVariable Integer xdid,
+                                                @RequestParam(value = "cz_name", required = false) String czName) {
+        JSONObject jsonObject = anZhuangTiaoShiXiangMuServiceChooseService.findAllByXdId(pageNumber, pageSize, xdid, czName);
         return ResponseDataUtil.ok("查询车站数据成功", jsonObject);
     }
+
+    //根据线段id  查询对应的车站数据
+    @GetMapping("/status/{czId}")
+    public Map<String, Object> status(@PathVariable Integer czId) {
+        JSONArray ja = anZhuangTiaoShiXiangMuServiceChooseService.findStatusByCzId(czId);
+        return ResponseDataUtil.ok("查询车站数据成功", ja);
+    }
+
 
 }

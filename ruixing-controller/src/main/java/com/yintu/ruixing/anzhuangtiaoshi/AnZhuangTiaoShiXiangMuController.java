@@ -148,26 +148,6 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         return ResponseDataUtil.ok("查询成功",xiangMuEntityPageInfo);
     }
 
-    public static void main(String[] args)throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        String end = c.getTime().toString();
-        System.out.println(end);
-        String format1 = format.format(end);
-        System.out.println("000"+format1);
-        Date dqrq= format.parse(format1);//当前日期
 
-        System.out.println("11111"+dqrq);
-
-        c.add(Calendar.MONTH, -1);
-        Date start = c.getTime();
-        String startDay = format.format(start);//前一月
-
-        System.out.println("11222"+startDay);
-
-        System.out.println(new Date());
-
-    }
 
 }
