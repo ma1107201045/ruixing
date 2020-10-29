@@ -507,4 +507,25 @@
         where serid = #{serid,jdbcType=INTEGER}
           and czid = #{czId,jdbcType=INTEGER}
     </select>
+
+
+    <select id="countChenzhanByXdId" resultType="java.lang.Long">
+        select count(distinct czid)
+        from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        where xdid = #{xdId,jdbcType=INTEGER}
+    </select>
+    <select id="countOneSelectByXdId" resultType="java.lang.Long">
+        select count(*)
+        from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        where xdid = #{xdId,jdbcType=INTEGER}
+          and serid = #{serid,jdbcType=INTEGER}
+          and isNotFinish = 1
+    </select>
+    <select id="countMuchSelectByXdId" resultType="java.lang.Long">
+        select count(*)
+        from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        where xdid = #{xdId,jdbcType=INTEGER}
+          and choid = #{choid,jdbcType=INTEGER}
+          and isNot = 1
+    </select>
 </mapper>

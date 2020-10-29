@@ -1,5 +1,10 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
@@ -129,35 +134,45 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     }
 
     @Override
-    public List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedata(Integer page, Integer size, String xdname, String year, String xdtype, Integer xdleixing) {
-        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanBySomedata(xdname, year, xdtype, xdleixing);
-        for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
-            Integer id = xiangMuEntity.getId();
-            Integer chezhantotal = anZhuangTiaoShiCheZhanDao.findCheZhanTotal(id);
-            xiangMuEntity.setCheZhanTotal(chezhantotal);
-            Integer jiGuitotal = anZhuangTiaoShiCheZhanDao.findJiGuiTotal(id);
-            xiangMuEntity.setJiGuiTotal(jiGuitotal);
-            Integer indoorKaBantotal = anZhuangTiaoShiCheZhanDao.findIndoorKaBantotal(id);
-            xiangMuEntity.setIndoorKaBanTotal(indoorKaBantotal);
-            Integer outdoorSheBeitotal = anZhuangTiaoShiCheZhanDao.findOutdoorSheBeiTotal(id);
-            xiangMuEntity.setOutdoorSheBeiTotal(outdoorSheBeitotal);
-            Integer peiXiantotal = anZhuangTiaoShiCheZhanDao.findPeiXianTotal(id);
-            xiangMuEntity.setPeiXianTotal(peiXiantotal);
-            Integer shangDiantotal = anZhuangTiaoShiCheZhanDao.findShangDianTotal(id);
-            xiangMuEntity.setShangDianTotal(shangDiantotal);
-            Integer jingTaiYanShoutotal = anZhuangTiaoShiCheZhanDao.findJingTaiYanShouTotal(id);
-            xiangMuEntity.setJingTaiYanShouTotal(jingTaiYanShoutotal);
-            Integer dongTaiYanShoutotal = anZhuangTiaoShiCheZhanDao.findDongTaiYanShouTotal(id);
-            xiangMuEntity.setDongTaiYanShouTotal(dongTaiYanShoutotal);
-            Integer liantiaolianshitotal = anZhuangTiaoShiCheZhanDao.findLianTiaoLianShiTotal(id);
-            xiangMuEntity.setLianTiaoLianShiTotal(liantiaolianshitotal);
-            Integer shiyunxingtotal = anZhuangTiaoShiCheZhanDao.findShiYunXingTotal(id);
-            xiangMuEntity.setShiYunXingTotal(shiyunxingtotal);
-            Integer kaitongtotal = anZhuangTiaoShiCheZhanDao.findKaiTongTotal(id);
-            xiangMuEntity.setKaiTongTotal(kaitongtotal);
-        }
-        return xiangMuEntities;
+    public JSONObject findXianDuanBySomedata(Integer num, Integer size, String xdname, String year, String xdtype, Integer xdleixing) {
+        JSONObject titleAndData = new JSONObject();
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        titleAndData.put("title", anZhuangTiaoShiXiangMuServiceStatusEntities);
 
+        Page<Object> page = PageHelper.startPage(num, size);
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanBySomedata(xdname, year, xdtype, xdleixing);
+        JSONArray ja = new JSONArray();
+        for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
+            JSONObject jo = (JSONObject) JSONObject.toJSON(xiangMuEntity);
+            Long czCount = anZhuangTiaoShiXiangMuServiceChooseDao.countChenzhanByXdId(xiangMuEntity.getXdId());
+            jo.put("czCount", czCount);
+            for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : anZhuangTiaoShiXiangMuServiceStatusEntities) {
+                Integer timeType = anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype();
+                Integer serid = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+                if (timeType == null) {
+                    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> anZhuangTiaoShiXiangMuServiceStatusChooseEntities = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
+                    JSONArray jsonArray = new JSONArray();
+                    for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity : anZhuangTiaoShiXiangMuServiceStatusChooseEntities) {
+                        Integer choid = anZhuangTiaoShiXiangMuServiceStatusChooseEntity.getId();
+                        Long eachMuchSelectCount = anZhuangTiaoShiXiangMuServiceChooseDao.countMuchSelectByXdId(xiangMuEntity.getXdId(), choid);
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("name", anZhuangTiaoShiXiangMuServiceStatusChooseEntity.getName());
+                        jsonObject.put("count", eachMuchSelectCount);
+                        jsonArray.add(jsonObject);
+                    }
+                    jo.put(serid.toString(), jsonArray);
+                } else {
+                    Long eachOneSelectCount = anZhuangTiaoShiXiangMuServiceChooseDao.countOneSelectByXdId(xiangMuEntity.getXdId(), serid);
+                    jo.put(serid.toString(), eachOneSelectCount);
+                }
+            }
+            ja.add(jo);
+        }
+        page.clear();
+        page.addAll(ja);
+        PageInfo<Object> pageInfo = new PageInfo<>(page);
+        titleAndData.put("tableData", pageInfo);
+        return titleAndData;
     }
 
 

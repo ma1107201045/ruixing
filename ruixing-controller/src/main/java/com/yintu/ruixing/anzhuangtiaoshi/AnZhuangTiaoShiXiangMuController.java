@@ -1,5 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
@@ -39,7 +41,7 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
 
     //新增三级树中的项目
     @PostMapping("/addSanJiShuXiangMu")
-    public Map<String,Object>addSanJiShuXiangMu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity)throws Exception{
+    public Map<String, Object> addSanJiShuXiangMu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity) throws Exception {
         anZhuangTiaoShiXiangMuService.addSanJiShuXiangMu(anZhuangTiaoShiXiangMuEntity);
         return ResponseDataUtil.ok("新增项目成功");
     }
@@ -50,14 +52,15 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         anZhuangTiaoShiXiangMuService.editSanJiShu(anZhuangTiaoShiXiangMuEntity);
         return ResponseDataUtil.ok("修改项目成功");
     }
+
     //根据id   删除三级树的项目
     @DeleteMapping("/deletSanJiShuById/{id}")
-    public Map<String,Object>deletSanJiShuById(@PathVariable Integer id){
-        Integer chezhantotal=anZhuangTiaoShiXiangMuService.findCheZhanTotal(id);
-        if (chezhantotal==0){
+    public Map<String, Object> deletSanJiShuById(@PathVariable Integer id) {
+        Integer chezhantotal = anZhuangTiaoShiXiangMuService.findCheZhanTotal(id);
+        if (chezhantotal == 0) {
             anZhuangTiaoShiXiangMuService.deletSanJiShuById(id);
             return ResponseDataUtil.ok("删除项目成功");
-        }else {
+        } else {
             return ResponseDataUtil.error("此线段下有车站,不能删除");
         }
     }
@@ -73,51 +76,51 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
 
     //查询所有的项目类型
     @GetMapping("/findAllXiangMuType")
-    public Map<String,Object>findAllXiangMuType(){
-        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> xiangMuTypeEntities=anZhuangTiaoShiXiangMuService.findAllXiangMuType();
-        return ResponseDataUtil.ok("查询项目类型成功",xiangMuTypeEntities);
+    public Map<String, Object> findAllXiangMuType() {
+        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> xiangMuTypeEntities = anZhuangTiaoShiXiangMuService.findAllXiangMuType();
+        return ResponseDataUtil.ok("查询项目类型成功", xiangMuTypeEntities);
     }
 
     //查询关联项目及其编号
     @GetMapping("/findXiangMuAndBianHao")
-    public Map<String,Object>findXiangMuAndBianHao(){
-        List<ChanPinJiaoFuXiangMuFileEntity> chanPinJiaoFuXiangMuFileEntities=anZhuangTiaoShiXiangMuService.findXiangMuAndBianHao();
-        return ResponseDataUtil.ok("查询关联项目及其编号成功",chanPinJiaoFuXiangMuFileEntities);
+    public Map<String, Object> findXiangMuAndBianHao() {
+        List<ChanPinJiaoFuXiangMuFileEntity> chanPinJiaoFuXiangMuFileEntities = anZhuangTiaoShiXiangMuService.findXiangMuAndBianHao();
+        return ResponseDataUtil.ok("查询关联项目及其编号成功", chanPinJiaoFuXiangMuFileEntities);
     }
 
 
     //根据三级树的类型  查询类型下的数据
     @GetMapping("/findXianDuanDataByLeiXing")
-    public Map<String,Object>findXianDuanDataByLeiXing(Integer leiXingId ,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiXiangMuEntity>xiangMuEntities=anZhuangTiaoShiXiangMuService.findXianDuanDataByLeiXing(leiXingId,page,size);
-        PageInfo<AnZhuangTiaoShiXiangMuEntity>xiangMuEntityPageInfo=new PageInfo<>(xiangMuEntities);
-        return ResponseDataUtil.ok("查询数据成功",xiangMuEntityPageInfo);
+    public Map<String, Object> findXianDuanDataByLeiXing(Integer leiXingId, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuService.findXianDuanDataByLeiXing(leiXingId, page, size);
+        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntities);
+        return ResponseDataUtil.ok("查询数据成功", xiangMuEntityPageInfo);
     }
 
     //查询所有的项目 和 年份
     @GetMapping("/findXianDuanNameAndYear")
-    public Map<String,Object>findXianDuanNameAndYear(){
-        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities=anZhuangTiaoShiXiangMuService.findXianDuanNameAndYear();
-        return ResponseDataUtil.ok("查询线段名和年份成功",xiangMuEntities);
+    public Map<String, Object> findXianDuanNameAndYear() {
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuService.findXianDuanNameAndYear();
+        return ResponseDataUtil.ok("查询线段名和年份成功", xiangMuEntities);
     }
 
     //根据项目名 或年份 或项目类型 或项目状态查询数据
     @GetMapping("/findXianDuanBySomedata")
-    public Map<String,Object>findXianDuanBySomedata(Integer page,Integer size,
-                                                    String xdname,String year,
-                                                    String xdtype,Integer xdleixing){
-        if (year.equals("NaN")) {
-            year = null;
-        }if (xdtype.equals("")){
-            xdtype=null;
-        }if (xdname.equals("")){
-            xdname=null;
+    public Map<String, Object> findXianDuanBySomedata(@RequestParam Integer page, @RequestParam Integer size,
+                                                      String xdname, String year,
+                                                      String xdtype, Integer xdleixing) {
+        if ("".equals(xdname)) {
+            xdname = null;
         }
-        PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities=anZhuangTiaoShiXiangMuService.findXianDuanBySomedata(page,size,xdname,year,xdtype,xdleixing);
-        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo=new PageInfo<>(xiangMuEntities);
-        return ResponseDataUtil.ok("查询数据成功",xiangMuEntityPageInfo);
+        if ("NaN".equals(year) || "".equals(year)) {
+            year = null;
+        }
+        if ("".equals(xdtype)) {
+            xdtype = null;
+        }
+        JSONObject jo = anZhuangTiaoShiXiangMuService.findXianDuanBySomedata(page, size, xdname, year, xdtype, xdleixing);
+        return ResponseDataUtil.ok("查询数据成功", jo);
     }
 
     //根据id 进行单个或者批量下载到Excel
@@ -133,21 +136,20 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
 
     //查询近一个月开通的项目
     @GetMapping("/findLastMonthXiangMu")
-    public Map<String,Object>findLastMonthXiangMu(Integer page,Integer size)throws Exception{
+    public Map<String, Object> findLastMonthXiangMu(Integer page, Integer size) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         Date end = c.getTime();
-        String today= format.format(end);//当前日期
+        String today = format.format(end);//当前日期
         c.add(Calendar.MONTH, -1);
         Date start = c.getTime();
         String lastMothDay = format.format(start);//前一月
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findLastMonthXiangMu(today, lastMothDay);
-        PageInfo<AnZhuangTiaoShiXiangMuEntity>xiangMuEntityPageInfo=new PageInfo<>(xiangMuEntityList);
-        return ResponseDataUtil.ok("查询成功",xiangMuEntityPageInfo);
+        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
+        return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
     }
-
 
 
 }
