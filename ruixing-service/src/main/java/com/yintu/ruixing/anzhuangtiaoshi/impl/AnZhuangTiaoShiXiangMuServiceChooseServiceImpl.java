@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
 
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceChooseService anZhuangTiaoShiXiangMuServiceChooseService;
+    @Autowired
+    private CheZhanService cheZhanService;
 
     @Override
     public void addXiangMuServiceChooseEntity(AnZhuangTiaoShiXiangMuServiceChooseEntity xiangMuServiceChooseEntity) {
@@ -79,26 +82,27 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
             String guanlianxiangmu = (String) label.get("guanlianxiangmu");
             String xdType = (String) label.get("xdType");
             Date xianduantime = new Date(xianduanTime);
-            List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdIdAndCzId(xdid, czid);
-            if (!anZhuangTiaoShiXiangMuEntities.isEmpty())
-                throw new BaseRuntimeException("此车站已有数据，无需重复添加");
-            //新增项目
-            AnZhuangTiaoShiXiangMuEntity xiangMuEntity = new AnZhuangTiaoShiXiangMuEntity();
-            xiangMuEntity.setTljName(tljname);
-            xiangMuEntity.setDwdName(dwdname);
-            xiangMuEntity.setXdId(xdid);
-            xiangMuEntity.setXdName(xdname);
-            xiangMuEntity.setXianduantime(xianduantime);
-            xiangMuEntity.setXdFenlei(Integer.parseInt(xdFenlei));
-            xiangMuEntity.setWorksid(worksid);
-            xiangMuEntity.setCzId(czid);
-            xiangMuEntity.setCzName(czname);
-            xiangMuEntity.setXdType(xdType);
-            xiangMuEntity.setGuanlianxiangmu(guanlianxiangmu);
-            xiangMuEntity.setCreatename(username);
-            xiangMuEntity.setCreatetime(today);
-            anZhuangTiaoShiXiangMuServiceChooseService.addXiangMu(xiangMuEntity);
+            List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdId(xdid);
+            if (anZhuangTiaoShiXiangMuEntities.isEmpty()) {//如果线段不存在添加数据，否侧无需重复添加线段数据
+                //新增项目
+                AnZhuangTiaoShiXiangMuEntity xiangMuEntity = new AnZhuangTiaoShiXiangMuEntity();
+                xiangMuEntity.setTljName(tljname);
+                xiangMuEntity.setDwdName(dwdname);
+                xiangMuEntity.setXdId(xdid);
+                xiangMuEntity.setXdName(xdname);
+                xiangMuEntity.setXianduantime(xianduantime);
+                xiangMuEntity.setXdFenlei(Integer.parseInt(xdFenlei));
+                xiangMuEntity.setWorksid(worksid);
+                xiangMuEntity.setXdType(xdType);
+                xiangMuEntity.setGuanlianxiangmu(guanlianxiangmu);
+                xiangMuEntity.setCreatename(username);
+                xiangMuEntity.setCreatetime(today);
+                anZhuangTiaoShiXiangMuServiceChooseService.addXiangMu(xiangMuEntity);
+            }
 
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> anZhuangTiaoShiXiangMuServiceChooseEntities = anZhuangTiaoShiXiangMuServiceChooseDao.findAllByCZid(czid);
+            if (!anZhuangTiaoShiXiangMuServiceChooseEntities.isEmpty())
+                throw new BaseRuntimeException("此线段下车站已有数据，请选择其他车站");
             for (Object statusdatum : statusdata) {
                 Map<String, Object> statusdatu = (Map<String, Object>) statusdatum;
                 Integer titleid = (Integer) statusdatu.get("id");//服务状态标识id
@@ -184,22 +188,28 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     }
 
     @Override
+    public void removeByCzId(Integer czId) {
+        anZhuangTiaoShiXiangMuServiceChooseDao.deleteByCzId(czId);
+    }
+
+    @Override
     public JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId) {
         JSONObject titleAndData = new JSONObject();
 
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
         titleAndData.put("title", anZhuangTiaoShiXiangMuServiceStatusEntities);
-        Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "id DESC");
-        List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdIdAndCzId(xdId, null);
-        JSONArray ja = new JSONArray();
-        for (AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity : anZhuangTiaoShiXiangMuEntities) {
-            JSONObject jo = new JSONObject(true);
-            Integer czId = anZhuangTiaoShiXiangMuEntity.getCzId();
-            jo.put("xdId", anZhuangTiaoShiXiangMuEntity.getXdId());
-            jo.put("czId",czId);
-            jo.put("czName", anZhuangTiaoShiXiangMuEntity.getCzName());
-            jo.put("xdType", anZhuangTiaoShiXiangMuEntity.getXdType());
+        List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdId(xdId);
+        AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity = anZhuangTiaoShiXiangMuEntities.get(0);
 
+        Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "id DESC");
+        List<Integer> czIds = anZhuangTiaoShiXiangMuServiceChooseDao.findCZidByXDid(xdId);
+        JSONArray ja = new JSONArray();
+        for (Integer czId : czIds) {
+            JSONObject jo = new JSONObject(true);
+            jo.put("xdId", xdId);
+            jo.put("czId", czId);
+            jo.put("czName", cheZhanService.findByCheZhanId(czId.longValue()).getCzName());
+            jo.put("xdType", anZhuangTiaoShiXiangMuEntity.getXdType());
             for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : anZhuangTiaoShiXiangMuServiceStatusEntities) {
                 Integer serid = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
                 Integer timetype = anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype();

@@ -21,7 +21,7 @@
         <result column="createName" jdbcType="VARCHAR" property="createname"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
-        <result column="serviceName" jdbcType="VARCHAR" property="servicename" />
+        <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <!--<association property="anZhuangTiaoShiXiangMuEntity" javaType="AnZhuangTiaoShiXiangMuEntity">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="worksid" jdbcType="INTEGER" property="worksid"/>
@@ -50,238 +50,195 @@
         </association>-->
     </resultMap>
     <sql id="Base_Column_List">
-    id, xdid, serid, choid, czid, chezhanName, typeTime, isNot,isNotFinish, plan_start_time, plan_end_time,
+        id, xdid, serid, choid, czid, chezhanName, typeTime, isNot,isNotFinish, plan_start_time, plan_end_time,
     actual_start_time, actual_end_time, plan_open_time, actual_open_time, createTime, 
     createName, updateTime, updateName
-  </sql>
+    </sql>
 
     <select id="findAllByXDid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-      SELECT
-	bb.*,
-	aa.*
-FROM
-	(
-SELECT
-	axss.id iid ,
-	ax.id dsss,
-	ax.xianduantime,
-	ax.tlj_name,
-	ax.dwd_name,
-	ax.xd_name,
-	ax.xd_type,
-	ax.xd_fenlei,
-	ax.guanlianxiangmu,
-	ax.worksid ,
+        SELECT bb.*,
+               aa.*
+        FROM (
+                 SELECT axss.id    iid,
+                        ax.id      dsss,
+                        ax.xianduantime,
+                        ax.tlj_name,
+                        ax.dwd_name,
+                        ax.xd_name,
+                        ax.xd_type,
+                        ax.xd_fenlei,
+                        ax.guanlianxiangmu,
+                        ax.worksid,
 
-	axsc.id dddd,
-	axsc.xdid xdid,
-	axsc.serid,
-	axsc.choid  cid,
-	axsc.chezhanName,
-	axsc.typeTime,
-	axsc.isNot,
-	axsc.plan_start_time,
-	axsc.plan_end_time,
-	axsc.actual_start_time,
-	axsc.actual_end_time,
-	axsc.plan_open_time,
-	axsc.actual_open_time,
+                        axsc.id    dddd,
+                        axsc.xdid  xdid,
+                        axsc.serid,
+                        axsc.choid cid,
+                        axsc.chezhanName,
+                        axsc.typeTime,
+                        axsc.isNot,
+                        axsc.plan_start_time,
+                        axsc.plan_end_time,
+                        axsc.actual_start_time,
+                        axsc.actual_end_time,
+                        axsc.plan_open_time,
+                        axsc.actual_open_time,
 
-	axss.id idd,
-	axss.serviceName,
-	axss.choose,
-	axss.timeType,
-	axss.isNotOver
+                        axss.id    idd,
+                        axss.serviceName,
+                        axss.choose,
+                        axss.timeType,
+                        axss.isNotOver
 
-FROM
-	mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
-	mro_anzhuangtiaoshi_xiangmu ax,
-	mro_anzhuangtiaoshi_xiangmuServiceStatus axss
-WHERE
-	axsc.xdid = ax.id
-	AND axsc.serid = axss.id
-	) bb
-	LEFT JOIN (
-SELECT
-	axssc.NAME name,
-	axssc.id id,
-	axssc.sid sid,
-	axssc.isNotDaoHuo
-FROM
-	mro_anzhuangtiaoshi_xiangmuServiceStatus axss,
-	mro_anzhuangtiaoshi_xiangmuServiceStatus_choose axssc
-WHERE
-	axss.id = axssc.sid
-	) aa ON bb.cid = aa.id where bb.xdid=#{xdid,jdbcType=INTEGER}
+                 FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
+                      mro_anzhuangtiaoshi_xiangmu ax,
+                      mro_anzhuangtiaoshi_xiangmuServiceStatus axss
+                 WHERE axsc.xdid = ax.id
+                   AND axsc.serid = axss.id
+             ) bb
+                 LEFT JOIN (
+            SELECT axssc.NAME name,
+                   axssc.id   id,
+                   axssc.sid  sid,
+                   axssc.isNotDaoHuo
+            FROM mro_anzhuangtiaoshi_xiangmuServiceStatus axss,
+                 mro_anzhuangtiaoshi_xiangmuServiceStatus_choose axssc
+            WHERE axss.id = axssc.sid
+        ) aa ON bb.cid = aa.id
+        where bb.xdid = #{xdid,jdbcType=INTEGER}
 
-  </select>
+    </select>
 
 
     <!--  查询所有的类别数据-->
-    <select id="findAllChoose"   resultMap="BaseResultMap">
-        SELECT
-            axsc.id,
-            xdid,
-            serid,
-            choid,
-            czid,
-            chezhanName,
-            typeTime,
-            ax.serviceName
-        FROM
-            mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
-            mro_anzhuangtiaoshi_xiangmuServiceStatus ax
-        WHERE
-            axsc.serid = ax.id
-        GROUP BY
-            serid
-        ORDER BY
-            timeType
+    <select id="findAllChoose" resultMap="BaseResultMap">
+        SELECT axsc.id,
+               xdid,
+               serid,
+               choid,
+               czid,
+               chezhanName,
+               typeTime,
+               ax.serviceName
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
+             mro_anzhuangtiaoshi_xiangmuServiceStatus ax
+        WHERE axsc.serid = ax.id
+        GROUP BY serid
+        ORDER BY timeType
     </select>
-
 
 
     <!--根据线段id 查询对应的车站数据-->
     <select id="findCheZhanByXDid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        czid, chezhanName
+        select czid,
+               chezhanName
         from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-        where  xdid= #{id,jdbcType=INTEGER}
+        where xdid = #{id,jdbcType=INTEGER}
         GROUP BY czid
     </select>
 
 
-
-
     <!--根据serId和线段id  查询完成此状态标识的个数-->
     <select id="findChooseTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT
-            COUNT( isNot )
-        FROM
-            mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-        WHERE
-            choid = #{choid}
-            AND isNot = 1
-            AND xdid =#{id}
+        SELECT COUNT(isNot)
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE choid = #{choid}
+          AND isNot = 1
+          AND xdid = #{id}
     </select>
 
     <!--根据serId和线段id  查询完成此状态标识的个数-->
     <select id="findTitleTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT
-            COUNT( isNotFinish )
-        FROM
-            mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-        WHERE
-            serid = #{serid}
-            AND isNotFinish = 1
-            AND xdid =#{id}
+        SELECT COUNT(isNotFinish)
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE serid = #{serid}
+          AND isNotFinish = 1
+          AND xdid = #{id}
     </select>
 
     <!--根据线段id  查询对应的车站id-->
     <select id="findCZidByXDid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT
-            czid
-        FROM
-            mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-        WHERE
-            xdid =  #{xdid,jdbcType=INTEGER}
-        GROUP BY
-            czid
+        SELECT czid
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE xdid = #{xdid,jdbcType=INTEGER}
+        GROUP BY czid
     </select>
 
 
     <!--根据Serid  查询对Choid的个数-->
     <select id="findAllChoidBySerid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT
-        choid
-    FROM
-        mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-    WHERE
-        serid =  #{serid}
-    GROUP BY
-        choid
-  </select>
+        SELECT choid
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE serid = #{serid}
+        GROUP BY choid
+    </select>
 
     <!--根据线段id  查询对serId的个数-->
     <select id="findAllSeridByXDid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT
-	    serid
-    FROM
-        mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-    WHERE
-        xdid = #{id}
-    GROUP BY
-        serid
-  </select>
+        SELECT serid
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE xdid = #{id}
+        GROUP BY serid
+    </select>
 
     <!--根据线段id  查询对应车站的个数-->
     <select id="findCheZhanTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT
-        COUNT( chezhan.czid )
-    FROM
-        ( SELECT czid FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose WHERE xdid =#{id} GROUP BY czid ) chezhan
-  </select>
+        SELECT COUNT(chezhan.czid)
+        FROM (SELECT czid FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose WHERE xdid = #{id} GROUP BY czid) chezhan
+    </select>
 
     <!--根据车站id  查找对应的数据-->
-    <select id="findServiceChoose"   resultMap="BaseResultMap">
-        SELECT
-            axsc.id,
-            xdid,
-            serid,
-            choid,
-            czid,
-            chezhanName,
-            typeTime,
-            isNot,
-            isNotFinish,
-            plan_start_time,
-            plan_end_time,
-            actual_start_time,
-            actual_end_time,
-            plan_open_time,
-            actual_open_time,
-            ax.serviceName
-        FROM
-            mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
-            mro_anzhuangtiaoshi_xiangmuServiceStatus ax
-        WHERE
-            axsc.serid = ax.id
-            AND axsc.xdid =  #{xdid}
-            AND axsc.serid = #{serid}
-            AND axsc.czid =  #{czid}
-        ORDER BY
-            timeType
+    <select id="findServiceChoose" resultMap="BaseResultMap">
+        SELECT axsc.id,
+               xdid,
+               serid,
+               choid,
+               czid,
+               chezhanName,
+               typeTime,
+               isNot,
+               isNotFinish,
+               plan_start_time,
+               plan_end_time,
+               actual_start_time,
+               actual_end_time,
+               plan_open_time,
+               actual_open_time,
+               ax.serviceName
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
+             mro_anzhuangtiaoshi_xiangmuServiceStatus ax
+        WHERE axsc.serid = ax.id
+          AND axsc.xdid = #{xdid}
+          AND axsc.serid = #{serid}
+          AND axsc.czid = #{czid}
+        ORDER BY timeType
     </select>
 
     <!--根据车站id  查找对应的数据-->
     <select id="findAllByCZid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        axsc.id,
-        xdid,
-        serid,
-        choid,
-        czid,
-        chezhanName,
-        typeTime,
-        isNot,
-        isNotFinish,
-        plan_start_time,
-        plan_end_time,
-        actual_start_time,
-        actual_end_time,
-        plan_open_time,
-        actual_open_time,
-        ax.serviceName
-        FROM
-        mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
-        mro_anzhuangtiaoshi_xiangmuServiceStatus ax
-        WHERE
-        axsc.serid = ax.id
-        and axsc.czid = #{czid,jdbcType=INTEGER}
+        select axsc.id,
+               xdid,
+               serid,
+               choid,
+               czid,
+               chezhanName,
+               typeTime,
+               isNot,
+               isNotFinish,
+               plan_start_time,
+               plan_end_time,
+               actual_start_time,
+               actual_end_time,
+               plan_open_time,
+               actual_open_time,
+               ax.serviceName
+        FROM mro_anzhuangtiaoshi_Xiangmu_Service_Choose axsc,
+             mro_anzhuangtiaoshi_xiangmuServiceStatus ax
+        WHERE axsc.serid = ax.id
+          and axsc.czid = #{czid,jdbcType=INTEGER}
         GROUP BY serid
         ORDER BY timeType
     </select>
-
 
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -291,23 +248,25 @@ WHERE
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete
+        from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceChooseEntity">
-    insert into mro_anzhuangtiaoshi_Xiangmu_Service_Choose (id, xmid, serid, 
-      cid, chezhanName, typeTime, 
-      isNot, plan_start_time, plan_end_time, 
-      actual_start_time, actual_end_time, plan_open_time, 
-      actual_open_time, createTime, createName, 
-      updateTime, updateName)
-    values (#{id,jdbcType=INTEGER}, #{xmid,jdbcType=INTEGER}, #{serid,jdbcType=INTEGER}, 
-      #{cid,jdbcType=INTEGER}, #{chezhanname,jdbcType=VARCHAR}, #{typetime,jdbcType=INTEGER}, 
-      #{isnot,jdbcType=INTEGER}, #{planStartTime,jdbcType=TIMESTAMP}, #{planEndTime,jdbcType=TIMESTAMP}, 
-      #{actualStartTime,jdbcType=TIMESTAMP}, #{actualEndTime,jdbcType=TIMESTAMP}, #{planOpenTime,jdbcType=TIMESTAMP}, 
-      #{actualOpenTime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR})
-  </insert>
+        insert into mro_anzhuangtiaoshi_Xiangmu_Service_Choose (id, xmid, serid,
+                                                                cid, chezhanName, typeTime,
+                                                                isNot, plan_start_time, plan_end_time,
+                                                                actual_start_time, actual_end_time, plan_open_time,
+                                                                actual_open_time, createTime, createName,
+                                                                updateTime, updateName)
+        values (#{id,jdbcType=INTEGER}, #{xmid,jdbcType=INTEGER}, #{serid,jdbcType=INTEGER},
+                #{cid,jdbcType=INTEGER}, #{chezhanname,jdbcType=VARCHAR}, #{typetime,jdbcType=INTEGER},
+                #{isnot,jdbcType=INTEGER}, #{planStartTime,jdbcType=TIMESTAMP}, #{planEndTime,jdbcType=TIMESTAMP},
+                #{actualStartTime,jdbcType=TIMESTAMP}, #{actualEndTime,jdbcType=TIMESTAMP},
+                #{planOpenTime,jdbcType=TIMESTAMP},
+                #{actualOpenTime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR},
+                #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective"
             parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceChooseEntity">
         insert into mro_anzhuangtiaoshi_Xiangmu_Service_Choose
@@ -493,23 +452,28 @@ WHERE
     </update>
     <update id="updateByPrimaryKey"
             parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceChooseEntity">
-    update mro_anzhuangtiaoshi_Xiangmu_Service_Choose
-    set xmid = #{xmid,jdbcType=INTEGER},
-      serid = #{serid,jdbcType=INTEGER},
-      cid = #{cid,jdbcType=INTEGER},
-      chezhanName = #{chezhanname,jdbcType=VARCHAR},
-      typeTime = #{typetime,jdbcType=INTEGER},
-      isNot = #{isnot,jdbcType=INTEGER},
-      plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
-      plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
-      actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
-      actual_end_time = #{actualEndTime,jdbcType=TIMESTAMP},
-      plan_open_time = #{planOpenTime,jdbcType=TIMESTAMP},
-      actual_open_time = #{actualOpenTime,jdbcType=TIMESTAMP},
-      createTime = #{createtime,jdbcType=TIMESTAMP},
-      createName = #{createname,jdbcType=VARCHAR},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      updateName = #{updatename,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        set xmid              = #{xmid,jdbcType=INTEGER},
+            serid             = #{serid,jdbcType=INTEGER},
+            cid               = #{cid,jdbcType=INTEGER},
+            chezhanName       = #{chezhanname,jdbcType=VARCHAR},
+            typeTime          = #{typetime,jdbcType=INTEGER},
+            isNot             = #{isnot,jdbcType=INTEGER},
+            plan_start_time   = #{planStartTime,jdbcType=TIMESTAMP},
+            plan_end_time     = #{planEndTime,jdbcType=TIMESTAMP},
+            actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+            actual_end_time   = #{actualEndTime,jdbcType=TIMESTAMP},
+            plan_open_time    = #{planOpenTime,jdbcType=TIMESTAMP},
+            actual_open_time  = #{actualOpenTime,jdbcType=TIMESTAMP},
+            createTime        = #{createtime,jdbcType=TIMESTAMP},
+            createName        = #{createname,jdbcType=VARCHAR},
+            updateTime        = #{updatetime,jdbcType=TIMESTAMP},
+            updateName        = #{updatename,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByCzId" parameterType="java.lang.Integer">
+        delete
+        from mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        where czid = #{czId,jdbcType=INTEGER}
+    </delete>
 </mapper>

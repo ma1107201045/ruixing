@@ -50,7 +50,7 @@ public interface AnZhuangTiaoShiXiangMuDao {
 
     AnZhuangTiaoShiXiangMuEntity findXiangMuById(Integer xdid);
 
-    List<AnZhuangTiaoShiXiangMuEntity> findByXdIdAndCzId(Integer xdId, Integer czId);
+    List<AnZhuangTiaoShiXiangMuEntity> findByXdId(Integer xdId);
 
 
 }

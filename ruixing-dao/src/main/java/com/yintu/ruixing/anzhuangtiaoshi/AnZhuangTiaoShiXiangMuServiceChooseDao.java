@@ -43,4 +43,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllChoose();
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findServiceChoose(@Param("serid") Integer serid, @Param("xdid") Integer xdid, @Param("czid") Integer czid);
+
+    void deleteByCzId(Integer czId);
 }

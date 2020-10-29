@@ -21,6 +21,8 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseService {
 
     void addXiangMuServiceChoose(JSONArray ja, String username, Integer senderid);
 
+    void removeByCzId(Integer czId);
+
 
     JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId);
 

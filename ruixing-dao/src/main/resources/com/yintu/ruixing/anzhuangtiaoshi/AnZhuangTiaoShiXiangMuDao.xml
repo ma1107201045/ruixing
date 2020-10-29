@@ -10,8 +10,6 @@
         <result column="chezhanName" jdbcType="VARCHAR" property="chezhanname"/>
         <result column="xd_id" jdbcType="INTEGER" property="xdId"/>
         <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
-        <result column="cz_id" jdbcType="INTEGER" property="czId"/>
-        <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
         <result column="xd_type" jdbcType="VARCHAR" property="xdType"/>
         <result column="xd_fenlei" jdbcType="INTEGER" property="xdFenlei"/>
         <result column="guanlianxiangmu" jdbcType="VARCHAR" property="guanlianxiangmu"/>
@@ -21,7 +19,7 @@
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, xianduantime, tlj_name, dwd_name,xd_id, xd_name,cz_id,cz_name, xd_type, xd_fenlei,
+        id, xianduantime, tlj_name, dwd_name,xd_id, xd_name, xd_type, xd_fenlei,
      guanlianxiangmu,worksid, createTime, createName, updateTime, updateName
     </sql>
 
@@ -173,12 +171,6 @@
             <if test="xdName != null">
                 xd_name,
             </if>
-            <if test="czId != null">
-                cz_id,
-            </if>
-            <if test="czName != null">
-                cz_name,
-            </if>
             <if test="xdType != null">
                 xd_type,
             </if>
@@ -222,12 +214,6 @@
             </if>
             <if test="xdName != null">
                 #{xdName,jdbcType=VARCHAR},
-            </if>
-            <if test="czId != null">
-                #{czId,jdbcType=INTEGER},
-            </if>
-            <if test="czName != null">
-                #{czName,jdbcType=VARCHAR},
             </if>
             <if test="xdType != null">
                 #{xdType,jdbcType=VARCHAR},
@@ -275,12 +261,6 @@
             <if test="xdName != null">
                 xd_name = #{xdName,jdbcType=VARCHAR},
             </if>
-            <if test="czId != null">
-                cz_id= #{czId,jdbcType=INTEGER},
-            </if>
-            <if test="czName != null">
-                cz_name=#{czName,jdbcType=VARCHAR},
-            </if>
             <if test="xdType != null">
                 xd_type = #{xdType,jdbcType=VARCHAR},
             </if>
@@ -316,8 +296,6 @@
             dwd_name        = #{dwdName,jdbcType=VARCHAR},
             xd_id           = #{xdId,jdbcType=INTEGER},
             xd_name         = #{xdName,jdbcType=VARCHAR},
-            cz_id           = #{czId,jdbcType=INTEGER},
-            cz_name         = #{czName,jdbcType=VARCHAR},
             xd_type         = #{xdType,jdbcType=VARCHAR},
             xd_fenlei       = #{xdFenlei,jdbcType=INTEGER},
             guanlianxiangmu = #{guanlianxiangmu,jdbcType=VARCHAR}
@@ -325,15 +303,15 @@
     </update>
     <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity">
         insert into mro_anzhuangtiaoshi_xiangmu (id, xianduantime, tlj_name,
-                                                 dwd_name, xd_id, xd_name, cz_id, cz_name, xd_type,
+                                                 dwd_name, xd_id, xd_name, xd_type,
                                                  xd_fenlei, guanlianxiangmu)
         values (#{id,jdbcType=INTEGER}, #{xianduantime,jdbcType=TIMESTAMP}, #{tljName,jdbcType=VARCHAR},
                 #{dwdName,jdbcType=VARCHAR}, #{xd_id,jdbcType=INTEGER}, #{xdName,jdbcType=VARCHAR},
-                #{czId,jdbcType=INTEGER}, #{czName,jdbcType=VARCHAR}, #{xdType,jdbcType=VARCHAR},
+                #{xdType,jdbcType=VARCHAR},
                 #{xdFenlei,jdbcType=INTEGER}, #{guanlianxiangmu,jdbcType=VARCHAR})
     </insert>
 
-    <select id="findByXdIdAndCzId" resultMap="BaseResultMap">
+    <select id="findByXdId" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -341,9 +319,6 @@
         <where>
             <if test="xdId!=null">
                 and xd_id = #{xdId,jdbcType=INTEGER}
-            </if>
-            <if test="czId!=null">
-                and cz_id = #{czId,jdbcType=INTEGER}
             </if>
         </where>
     </select>

@@ -26,10 +26,6 @@ public class AnZhuangTiaoShiXiangMuEntity {
 
     private String xdName;//线段名
 
-    private Integer czId; //车站Id
-
-    private String czName;//车站名
-
     private String xdType;//项目类型
 
     private Integer xdFenlei;//线段状态 1：正在进行 ，2：已完成，3：长期停滞

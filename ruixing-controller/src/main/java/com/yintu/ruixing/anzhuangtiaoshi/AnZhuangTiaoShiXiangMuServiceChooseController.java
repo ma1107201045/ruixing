@@ -27,11 +27,17 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
     //新增车站数据
     @PostMapping("/addXiangMuServiceChoose")
-    public Map<String, Object> addXiangMuServiceChoose(@RequestBody JSONArray cheZhanDatas){
+    public Map<String, Object> addXiangMuServiceChoose(@RequestBody JSONArray cheZhanDatas) {
         anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChoose(cheZhanDatas, this.getLoginTrueName(), this.getLoginUserId().intValue());
         return ResponseDataUtil.ok("新增成功");
     }
 
+    //删除车站数据
+    @DeleteMapping("/removeXiangMuServiceChoose/{czId}")
+    public Map<String, Object> removeXiangMuServiceChoose(Integer czId) {
+        anZhuangTiaoShiXiangMuServiceChooseService.removeByCzId(czId);
+        return ResponseDataUtil.ok("删除成功");
+    }
 
     //根据线段id  查询对应的车站数据
     @GetMapping("/findAllByXDidddd/{xdid}")
