@@ -1,6 +1,5 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusChooseEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

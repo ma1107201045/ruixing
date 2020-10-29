@@ -34,7 +34,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
 
     //删除车站数据
     @DeleteMapping("/removeXiangMuServiceChoose/{czId}")
-    public Map<String, Object> removeXiangMuServiceChoose(Integer czId) {
+    public Map<String, Object> removeXiangMuServiceChoose(@PathVariable Integer czId) {
         anZhuangTiaoShiXiangMuServiceChooseService.removeByCzId(czId);
         return ResponseDataUtil.ok("删除成功");
     }
