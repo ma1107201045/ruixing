@@ -69,11 +69,23 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
             if (!serviceChooseEntities.isEmpty()) {
                 Integer timeType = anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype();
                 JSONObject jo;
-                if (timeType != null) {
+                if (timeType != null) {//单选
                     jo = (JSONObject) JSONObject.toJSON(serviceChooseEntities.get(0));
+                    jo.put("isNotFinish", jo.getInteger("isNotFinish") == 1);
+                    jo.put("serviceName", anZhuangTiaoShiXiangMuServiceStatusEntity.getServicename());
+
                 } else {
-                    jo = new JSONObject();
-                    jo.put("list", serviceChooseEntities);
+                    jo = new JSONObject();//多选
+                    jo.put("serviceName", anZhuangTiaoShiXiangMuServiceStatusEntity.getServicename());
+                    JSONArray jsonArray = new JSONArray();
+                    for (AnZhuangTiaoShiXiangMuServiceChooseEntity serviceChooseEntity : serviceChooseEntities) {
+                        AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity = anZhuangTiaoShiXiangMuServiceStatusChooseDao.selectByPrimaryKey(serviceChooseEntity.getChoid());
+                        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(serviceChooseEntity);
+                        jsonObject.put("isnot", jsonObject.getInteger("isnot") == 1);
+                        jsonObject.put("serviceName", anZhuangTiaoShiXiangMuServiceStatusChooseEntity.getName());
+                        jsonArray.add(jsonObject);
+                    }
+                    jo.put("list", jsonArray);
                 }
                 ja.add(jo);
             }
@@ -120,6 +132,9 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                 xiangMuEntity.setGuanlianxiangmu(guanlianxiangmu);
                 xiangMuEntity.setCreatename(username);
                 xiangMuEntity.setCreatetime(today);
+                xiangMuEntity.setUpdatename(username);
+                xiangMuEntity.setUpdatetime(today);
+
                 anZhuangTiaoShiXiangMuServiceChooseService.addXiangMu(xiangMuEntity);
             }
 
@@ -152,6 +167,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setPlanEndTime(planEndTime);
                     xiangMuServiceChooseEntity.setCreatename(username);
                     xiangMuServiceChooseEntity.setCreatetime(today);
+                    xiangMuServiceChooseEntity.setUpdatename(username);
+                    xiangMuServiceChooseEntity.setUpdatetime(today);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
                 if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 1) {//有状态标识  没有计划和实际开始结束时间
@@ -165,6 +182,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setIsNotFinish(isNotFinish);
                     xiangMuServiceChooseEntity.setCreatename(username);
                     xiangMuServiceChooseEntity.setCreatetime(today);
+                    xiangMuServiceChooseEntity.setUpdatename(username);
+                    xiangMuServiceChooseEntity.setUpdatetime(today);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
 
                 }
@@ -185,6 +204,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setPlanOpenTime(planOpenTime);
                     xiangMuServiceChooseEntity.setCreatename(username);
                     xiangMuServiceChooseEntity.setCreatetime(today);
+                    xiangMuServiceChooseEntity.setUpdatename(username);
+                    xiangMuServiceChooseEntity.setUpdatetime(today);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
                 if (!serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == null) {
@@ -203,6 +224,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                         xiangMuServiceChooseEntity.setChoid(chrooseid);
                         xiangMuServiceChooseEntity.setCreatename(username);
                         xiangMuServiceChooseEntity.setCreatetime(today);
+                        xiangMuServiceChooseEntity.setUpdatename(username);
+                        xiangMuServiceChooseEntity.setUpdatetime(today);
                         anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                     }
                 }
@@ -218,9 +241,64 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
     }
 
     @Override
-    public void editByCzId(Integer czId) {
+    public void editByCzId(Map<String, Object> cheZhanData, String username, Integer senderid) {
+        JSONObject jo = (JSONObject) JSONObject.toJSON(cheZhanData);
+        Integer xdId = jo.getInteger("xdId");
+        Integer czId = jo.getInteger("czId");
+        this.removeByCzId(new Integer[]{czId});//删除所有的
+        JSONArray ja = jo.getJSONArray("statusdata");
+        for (Object obj : ja) {
+            JSONObject jsonObject = (JSONObject) obj;
+            Integer typetime = jsonObject.getInteger("typetime");
+            if (typetime == null) {
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                for (Object obj1 : jsonArray) {
+                    JSONObject a = (JSONObject) obj1;
+                    AnZhuangTiaoShiXiangMuServiceChooseEntity muchSelect = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                    muchSelect.setCreatename(username);
+                    muchSelect.setCreatetime(new Date());
+                    muchSelect.setUpdatename(username);
+                    muchSelect.setUpdatetime(new Date());
+                    muchSelect.setXdid(xdId);
+                    muchSelect.setCzid(czId);
+                    muchSelect.setSerid(a.getInteger("serid"));
+                    muchSelect.setChoid(a.getInteger("choid"));
+                    muchSelect.setChezhanname(a.getString("chezhanname"));
+                    muchSelect.setIsnot(a.getBoolean("isnot") ? 1 : 0);
+                    this.addXiangMuServiceChooseEntity(muchSelect);
+                }
+            } else {
+                AnZhuangTiaoShiXiangMuServiceChooseEntity oneSelect = new AnZhuangTiaoShiXiangMuServiceChooseEntity();
+                oneSelect.setCreatename(username);
+                oneSelect.setCreatetime(new Date());
+                oneSelect.setUpdatename(username);
+                oneSelect.setUpdatetime(new Date());
+                oneSelect.setXdid(xdId);
+                oneSelect.setCzid(czId);
+                oneSelect.setSerid(jsonObject.getInteger("serid"));
+                oneSelect.setChezhanname(jsonObject.getString("chezhanname"));
+                oneSelect.setTypetime(jsonObject.getInteger("typetime"));
+                oneSelect.setIsNotFinish(jsonObject.getBoolean("isNotFinish") ? 1 : 0);
+                oneSelect.setPlanStartTime(jsonObject.getDate("planStartTime"));
+                oneSelect.setPlanEndTime(jsonObject.getDate("planEndTime"));
+                Date actualStartTime = jsonObject.getDate("actualStartTime");
+                Date actualEndTime = jsonObject.getDate("actualEndTime");
+                if (actualStartTime != null && actualEndTime != null)
+                    oneSelect.setIsNotFinish(1);
+                oneSelect.setActualStartTime(actualStartTime);
+                oneSelect.setActualEndTime(actualEndTime);
+                oneSelect.setPlanOpenTime(jsonObject.getDate("planOpenTime"));
+                Date actualOpenTime = jsonObject.getDate("actualOpenTime");
+                if (actualOpenTime != null) {
+                    oneSelect.setIsNotFinish(1);
+                }
+                oneSelect.setActualOpenTime(actualOpenTime);
+                this.addXiangMuServiceChooseEntity(oneSelect);
+            }
 
+        }
     }
+
 
     @Override
     public JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId, String czName) {

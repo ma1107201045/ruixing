@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Mr.liu
@@ -25,7 +26,7 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseService {
 
     void removeByCzId(Integer[] czIds);
 
-    void editByCzId(Integer czId);
+    void editByCzId(Map<String, Object> cheZhanData, String username, Integer senderid);
 
     JSONObject findAllByXdId(Integer pageNumber, Integer pageSize, Integer xdId, String czName);
 

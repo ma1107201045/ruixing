@@ -40,12 +40,18 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
         return ResponseDataUtil.ok("删除成功");
     }
 
-    @PutMapping("/editXiangMuServiceChoose/{czId}")
-    public Map<String, Object> editXiangMuServiceChoose(@PathVariable Integer czId, @RequestBody JSONArray cheZhanDatas) {
-
-        return null;
+    @PutMapping("/editXiangMuServiceChoose")
+    public Map<String, Object> editXiangMuServiceChoose(@RequestBody Map<String, Object> cheZhanData) {
+        anZhuangTiaoShiXiangMuServiceChooseService.editByCzId(cheZhanData, this.getLoginTrueName(), this.getLoginUserId().intValue());
+        return ResponseDataUtil.ok("修改成功");
     }
 
+    //根据车站id  查询对应的车站数据
+    @GetMapping("/status/{czId}")
+    public Map<String, Object> status(@PathVariable Integer czId) {
+        JSONArray ja = anZhuangTiaoShiXiangMuServiceChooseService.findStatusByCzId(czId);
+        return ResponseDataUtil.ok("查询车站数据成功", ja);
+    }
 
     //根据线段id  查询对应的车站数据
     @GetMapping("/findAllByXDidddd/{xdid}")
@@ -55,13 +61,6 @@ public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionContro
                                                 @RequestParam(value = "cz_name", required = false) String czName) {
         JSONObject jsonObject = anZhuangTiaoShiXiangMuServiceChooseService.findAllByXdId(pageNumber, pageSize, xdid, czName);
         return ResponseDataUtil.ok("查询车站数据成功", jsonObject);
-    }
-
-    //根据线段id  查询对应的车站数据
-    @GetMapping("/status/{czId}")
-    public Map<String, Object> status(@PathVariable Integer czId) {
-        JSONArray ja = anZhuangTiaoShiXiangMuServiceChooseService.findStatusByCzId(czId);
-        return ResponseDataUtil.ok("查询车站数据成功", ja);
     }
 
 
