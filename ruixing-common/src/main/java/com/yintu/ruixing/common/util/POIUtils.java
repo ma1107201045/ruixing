@@ -60,7 +60,7 @@ public class POIUtils {
 
                     //int lastCellNum = row.getPhysicalNumberOfCells();
                     int lastCellNum = row.getLastCellNum();
-                    String[] cells = new String[row.getPhysicalNumberOfCells()];
+                    String[] cells = new String[lastCellNum];
                     //循环当前行
                     for (int cellNum = firstCellNum; cellNum < lastCellNum; cellNum++) {
                         Cell cell = row.getCell(cellNum);
