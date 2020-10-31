@@ -85,7 +85,19 @@
             </if>
         </where>
     </select>
-
+    <!-- 根据项目名 或年份 或项目类型 或项目状态查询数据-->
+    <select id="findXianDuanBySomedatas" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM
+        mro_anzhuangtiaoshi_xiangmu
+        <where>
+            and id in
+            <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
 
     <!-- 查询所有的线段名和年份-->
     <select id="findXianDuanNameAndYear" resultMap="BaseResultMap">

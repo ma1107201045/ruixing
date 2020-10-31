@@ -42,6 +42,8 @@ public interface AnZhuangTiaoShiXiangMuDao {
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedata(@Param("xdname") String xdname, @Param("year") String year,
                                                               @Param("xdtype") String xdtype, @Param("xdleixing") Integer xdleixing);
 
+    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedatas(Integer[] ids);
+
     List<AnZhuangTiaoShiXiangMuEntity> findXiangMuData(Integer[] ids);
 
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuan();

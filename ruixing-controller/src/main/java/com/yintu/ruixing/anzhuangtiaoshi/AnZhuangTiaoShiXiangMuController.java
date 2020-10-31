@@ -1,6 +1,6 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
-import com.alibaba.fastjson.JSONArray;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -149,6 +150,21 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findLastMonthXiangMu(today, lastMothDay);
         PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
         return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
+    }
+
+    /**
+     * 导出项目统计表
+     *
+     * @throws IOException
+     */
+    @GetMapping("/export/{ids}")
+    public void exportStatisticalFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "安装调试项目统计列表-导出" + DateUtil.now() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        anZhuangTiaoShiXiangMuService.exportStatisticalFile(response.getOutputStream(), ids);
     }
 
 

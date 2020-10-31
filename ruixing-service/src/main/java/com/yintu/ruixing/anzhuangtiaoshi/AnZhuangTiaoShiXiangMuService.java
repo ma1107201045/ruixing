@@ -8,6 +8,7 @@ import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -37,6 +38,8 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     JSONObject findXianDuanBySomedata(Integer num, Integer size, String xdname, String year, String xdtype, Integer xdleixing);
 
+    JSONArray findXianDuanBySomedatas(Integer[] ids);
+
     Integer findCheZhanTotal(Integer id);
 
     void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException;
@@ -44,4 +47,6 @@ public interface AnZhuangTiaoShiXiangMuService {
     List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay);
 
     List<MessageEntity> findXiaoXi(Integer senderid);
+
+    void exportStatisticalFile(OutputStream outputStream, Integer[] ids) throws IOException;
 }

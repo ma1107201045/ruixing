@@ -1,5 +1,6 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
@@ -13,6 +14,7 @@ import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuService;
+import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,6 +70,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         Integer type = 3;
         return messageDao.findXiaoXi(senderid, type);
     }
+
 
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay) {
@@ -139,7 +143,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
         titleAndData.put("title", anZhuangTiaoShiXiangMuServiceStatusEntities);
 
-        Page<Object> page = PageHelper.startPage(num, size);
+        Page<Object> page = PageHelper.startPage(num, size,"id DESC");
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanBySomedata(xdname, year, xdtype, xdleixing);
         JSONArray ja = new JSONArray();
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
@@ -173,6 +177,11 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         PageInfo<Object> pageInfo = new PageInfo<>(page);
         titleAndData.put("tableData", pageInfo);
         return titleAndData;
+    }
+
+    @Override
+    public JSONArray findXianDuanBySomedatas(Integer[] ids) {
+        return null;
     }
 
 
@@ -375,5 +384,93 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     @Override
     public List<ChanPinJiaoFuXiangMuFileEntity> findXiangMuAndBianHao() {
         return chanPinJiaoFuXiangMuDao.findXiangMuAndBianHao();
+    }
+
+    @Override
+    public void exportStatisticalFile(OutputStream outputStream, Integer[] ids) throws IOException {
+        //excel标题
+        String title = "安装调试项目统计列表";
+        List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+        //excel表头名
+        String[] headers = new String[5 + anZhuangTiaoShiXiangMuServiceStatusEntities.size()];
+        headers[0] = "序号";
+        headers[1] = "线段名称";
+        headers[2] = "项目年份";
+        headers[3] = "项目类型";
+        headers[4] = "车站数量";
+        for (int i = 0; i < anZhuangTiaoShiXiangMuServiceStatusEntities.size(); i++) {
+            headers[i + 5] = anZhuangTiaoShiXiangMuServiceStatusEntities.get(i).getServicename();
+        }
+        //获取数据
+        JSONArray ja = this.statistical(ids);
+        //排序
+        ja = ja.stream().sorted(Comparator.comparingLong(object -> {
+            JSONObject jo = (JSONObject) object;
+            return jo.getLong("id");
+        }).reversed()).collect(Collectors.toCollection(JSONArray::new));
+        //excel元素
+        String[][] content = new String[ja.size()][headers.length];
+        for (int i = 0; i < ja.size(); i++) {
+            JSONObject jo = ja.getJSONObject(i);
+            content[i][0] = jo.getString("id");
+            content[i][1] = jo.getString("xdName");
+            content[i][2] = Long.valueOf(DateUtil.year(jo.getDate("xianduantime"))).toString();
+            content[i][3] = jo.getString("xdType");
+            content[i][4] = jo.getString("czCount");
+            for (int j = 0; j < anZhuangTiaoShiXiangMuServiceStatusEntities.size(); j++) {
+                AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity = anZhuangTiaoShiXiangMuServiceStatusEntities.get(j);
+                if (anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype() == null) {
+                    JSONArray jsonArray = jo.getJSONArray(anZhuangTiaoShiXiangMuServiceStatusEntity.getId().toString());
+                    StringBuilder sb = new StringBuilder();
+                    for (Object o : jsonArray) {
+                        JSONObject jsonObject = (JSONObject) o;
+                        sb.append(jsonObject.getString("name")).append("-------").append(jsonObject.getString("count")).append("\n");
+                    }
+                    content[i][j + 5] = sb.toString();
+                } else {
+                    content[i][j + 5] = jo.getString(anZhuangTiaoShiXiangMuServiceStatusEntity.getId().toString());
+                }
+            }
+        }
+
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
+
+
+    public JSONArray statistical(Integer[] ids) {
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanBySomedatas(ids);
+        JSONArray ja = new JSONArray();
+        for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
+            JSONObject jo = (JSONObject) JSONObject.toJSON(xiangMuEntity);
+            Long czCount = anZhuangTiaoShiXiangMuServiceChooseDao.countChenzhanByXdId(xiangMuEntity.getXdId());
+            jo.put("czCount", czCount);
+            List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
+            for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : anZhuangTiaoShiXiangMuServiceStatusEntities) {
+                Integer timeType = anZhuangTiaoShiXiangMuServiceStatusEntity.getTimetype();
+                Integer serid = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();
+                if (timeType == null) {
+                    List<AnZhuangTiaoShiXiangMuServiceStatusChooseEntity> anZhuangTiaoShiXiangMuServiceStatusChooseEntities = anZhuangTiaoShiXiangMuServiceStatusChooseDao.findOneChooseBySidid(serid);
+                    JSONArray jsonArray = new JSONArray();
+                    for (AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity : anZhuangTiaoShiXiangMuServiceStatusChooseEntities) {
+                        Integer choid = anZhuangTiaoShiXiangMuServiceStatusChooseEntity.getId();
+                        Long eachMuchSelectCount = anZhuangTiaoShiXiangMuServiceChooseDao.countMuchSelectByXdId(xiangMuEntity.getXdId(), choid);
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("name", anZhuangTiaoShiXiangMuServiceStatusChooseEntity.getName());
+                        jsonObject.put("count", eachMuchSelectCount);
+                        jsonArray.add(jsonObject);
+                    }
+                    jo.put(serid.toString(), jsonArray);
+                } else {
+                    Long eachOneSelectCount = anZhuangTiaoShiXiangMuServiceChooseDao.countOneSelectByXdId(xiangMuEntity.getXdId(), serid);
+                    jo.put(serid.toString(), eachOneSelectCount);
+                }
+            }
+            ja.add(jo);
+        }
+        return ja;
     }
 }
