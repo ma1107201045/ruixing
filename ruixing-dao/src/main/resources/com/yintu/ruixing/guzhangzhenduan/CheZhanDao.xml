@@ -652,6 +652,9 @@
             <if test="czJson != null">
                 cz_json,
             </if>
+            <if test="czdmhState != null">
+                cz_dmh_state,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cid != null">
@@ -845,6 +848,9 @@
             </if>
             <if test="czJson != null">
                 #{czJson,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="czdmhState != null">
+                #{czdmhState},
             </if>
         </trim>
     </insert>
@@ -1041,6 +1047,9 @@
             </if>
             <if test="czJson != null">
                 cz_json = #{czJson,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="czdmhState != null">
+                cz_dmh_state = #{czdmhState,jdbcType=INTEGER},
             </if>
         </set>
         where cid = #{cid,jdbcType=INTEGER}

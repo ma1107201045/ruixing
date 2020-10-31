@@ -333,6 +333,7 @@
         <include refid="Base_Column_List"/>
         from mro_quduan_base
         where cid = #{cid}
+        AND line != '电码化'
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

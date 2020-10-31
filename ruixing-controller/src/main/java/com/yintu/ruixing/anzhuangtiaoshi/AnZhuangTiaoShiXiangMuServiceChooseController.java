@@ -9,6 +9,7 @@ import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,6 @@ import java.util.Map;
 public class AnZhuangTiaoShiXiangMuServiceChooseController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceChooseService anZhuangTiaoShiXiangMuServiceChooseService;
-
 
     //根据线段id  查询对应的车站数据
     @GetMapping("/findAllByXDid/{xdid}")
