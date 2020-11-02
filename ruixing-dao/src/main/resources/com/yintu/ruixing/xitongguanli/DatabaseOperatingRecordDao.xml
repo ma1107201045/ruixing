@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="backup_file_name" jdbcType="VARCHAR" property="backupFileName"/>
+        <result column="backup_file_path" jdbcType="VARCHAR" property="backupFilePath"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, backup_file_name, backup_file_path
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_database_operating_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tb_database_operating_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity">
+        insert into tb_database_operating_record (id, create_by, create_time,
+                                                  modified_by, modified_time, backup_file_name,
+                                                  backup_file_path)
+        values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{backupFileName,jdbcType=VARCHAR},
+                #{backupFilePath,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity">
+        insert into tb_database_operating_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="backupFileName != null">
+                backup_file_name,
+            </if>
+            <if test="backupFilePath != null">
+                backup_file_path,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="backupFileName != null">
+                #{backupFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="backupFilePath != null">
+                #{backupFilePath,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity">
+        update tb_database_operating_record
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="backupFileName != null">
+                backup_file_name = #{backupFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="backupFilePath != null">
+                backup_file_path = #{backupFilePath,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity">
+        update tb_database_operating_record
+        set create_by        = #{createBy,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            modified_by      = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
+            backup_file_name = #{backupFileName,jdbcType=VARCHAR},
+            backup_file_path = #{backupFilePath,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectLikeTableNames" resultType="java.lang.String">
+        SELECT table_name
+        FROM information_schema.TABLES
+        WHERE table_schema = #{databaseName,jdbcType=VARCHAR}
+        AND
+        <trim>
+            <foreach collection="tableNames" open="(" close=")" index="index" item="tableName" separator="OR">
+                table_name LIKE #{tableName,jdbcType=VARCHAR}
+            </foreach>
+        </trim>
+    </select>
+</mapper>

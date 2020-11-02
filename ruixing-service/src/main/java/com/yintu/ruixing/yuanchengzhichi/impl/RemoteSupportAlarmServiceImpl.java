@@ -1,6 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
@@ -11,6 +12,7 @@ import com.yintu.ruixing.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.yuanchengzhichi.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,9 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     private CheZhanDao cheZhanDao;
     @Autowired
     private RemoteSupportTicketService remoteSupportTicketService;
+
+    @Value("${spring.datasource.druid.url}")
+    private String jdbcURL;
 
     @Override
     public boolean isTableExist(String tableName) {
@@ -84,7 +89,7 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     public List<RemoteSupportAlarmEntity> findByCondition(Integer pageNumber, Integer pageSize, Integer stationId, Date startTime, Date endTime) {
         List<RemoteSupportAlarmEntity> remoteSupportAlarmEntities = new ArrayList<>();
         List<String> times = new ArrayList<>();
-        String databaseName = SystemUtil.getOsInfo().isLinux() ? "ruixing" : "db_dev_ruixing";
+        String databaseName = StrUtil.subBetweenAll(jdbcURL, "/", "?")[0];
         boolean isTime = false;
         //添加所选时间
         if (startTime != null && endTime != null) {
