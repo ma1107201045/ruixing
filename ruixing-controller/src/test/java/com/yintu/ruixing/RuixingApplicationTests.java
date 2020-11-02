@@ -2,6 +2,9 @@ package com.yintu.ruixing;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import com.alibaba.fastjson.JSONArray;
@@ -15,17 +18,16 @@ import com.yintu.ruixing.guzhangzhenduan.SkylightTimeService;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorService;
 import com.yintu.ruixing.jiejuefangan.SolutionService;
-import com.yintu.ruixing.xitongguanli.RoleEntity;
-import com.yintu.ruixing.xitongguanli.UserDao;
-import com.yintu.ruixing.xitongguanli.UserEntity;
-import com.yintu.ruixing.xitongguanli.UserService;
+import com.yintu.ruixing.xitongguanli.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.management.relation.Role;
+import javax.sql.DataSource;
 import java.awt.*;
 import java.io.File;
 import java.net.InetAddress;
@@ -58,6 +60,11 @@ class RuixingApplicationTests {
     @Autowired
     private SolutionService solutionService;
 
+    @Autowired
+    private DatabaseOperatingRecordService databaseOperatingRecordService;
+
+    @Value("${spring.datasource.druid.url}")
+    private String jdbcUrl;
 
     @Test
     void contextLoads() {
@@ -145,6 +152,8 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads11() {
-        System.out.println(StringUtil.getAssemblyId(11,new Date(),12));
+//        System.out.println(StrUtil.);
+//        System.out.println(StringUtil.getAssemblyId(11,new Date(),12));
+        databaseOperatingRecordService.findLikeTableNames("db_dev_ruixing", "alarm%", "data%");
     }
 }

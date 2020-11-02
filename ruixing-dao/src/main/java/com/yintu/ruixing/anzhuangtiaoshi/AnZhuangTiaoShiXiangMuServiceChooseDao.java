@@ -24,7 +24,7 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByXDid(Integer xdid);
 
-    List<Integer> findCZidByXDid(Integer xdid);
+    List<Integer> findCZidByXDid(Integer xdid, String czName);
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllByCZid(Integer czid);
 
@@ -43,4 +43,14 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllChoose();
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findServiceChoose(@Param("serid") Integer serid, @Param("xdid") Integer xdid, @Param("czid") Integer czid);
+
+    void deleteByCzId(Integer czId);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findAllChoidBySeridAndCzId(Integer serid, Integer czId);
+
+    Long countChenzhanByXdId(Integer xdId);
+
+    Long countOneSelectByXdId(Integer xdId, Integer serid);
+
+    Long countMuchSelectByXdId(Integer xdId, Integer choid);
 }

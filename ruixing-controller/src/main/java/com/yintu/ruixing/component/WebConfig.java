@@ -31,6 +31,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(VIRTUAL_PATH).addResourceLocations("file:" + (OSInfoUtil.isWindows() ? WINDOW_PATH : LINUX_PATH));
+        registry.addResourceHandler("/backups/**").addResourceLocations("file:" + (OSInfoUtil.isWindows() ? "C:\\data\\ruixing\\backups\\" : "/data/ruixing/backups/"));
+
     }
 }
 

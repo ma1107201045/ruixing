@@ -1,11 +1,14 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -17,7 +20,7 @@ import java.util.List;
 public interface AnZhuangTiaoShiXiangMuService {
     List<TreeNodeUtil> findSanJiShu();
 
-    void addSanJiShuXiangMu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity)throws Exception ;
+    void addSanJiShuXiangMu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity) throws Exception;
 
     void editSanJiShu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity);
 
@@ -29,17 +32,21 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     AnZhuangTiaoShiFileEntity findById(Integer id);
 
-    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanDataByLeiXing(Integer leiXingId,Integer page,Integer size);
+    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanDataByLeiXing(Integer leiXingId, Integer page, Integer size);
 
     List<AnZhuangTiaoShiXiangMuEntity> findXianDuanNameAndYear();
 
-    List<AnZhuangTiaoShiXiangMuEntity> findXianDuanBySomedata(Integer page, Integer size, String xdname, String year, String xdtype, Integer xdleixing);
+    JSONObject findXianDuanBySomedata(Integer num, Integer size, String xdname, String year, String xdtype, Integer xdleixing);
+
+    JSONArray findXianDuanBySomedatas(Integer[] ids);
 
     Integer findCheZhanTotal(Integer id);
 
-    void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
+    void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException;
 
     List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay);
 
     List<MessageEntity> findXiaoXi(Integer senderid);
+
+    void exportStatisticalFile(OutputStream outputStream, Integer[] ids) throws IOException;
 }
