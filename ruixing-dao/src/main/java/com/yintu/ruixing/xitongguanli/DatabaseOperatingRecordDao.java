@@ -18,5 +18,7 @@ public interface DatabaseOperatingRecordDao {
 
     int updateByPrimaryKey(DatabaseOperatingRecordEntity record);
 
+    List<DatabaseOperatingRecordEntity> selectAll();
+
     List<String> selectLikeTableNames(String databaseName, String... tableNames);
 }

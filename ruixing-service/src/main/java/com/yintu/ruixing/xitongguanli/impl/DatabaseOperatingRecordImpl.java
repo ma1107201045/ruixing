@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RuntimeUtil;
@@ -9,6 +10,7 @@ import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordDao;
 import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity;
 import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import java.util.List;
  * @version 1.0
  * @date 2020/10/31 16:17
  */
+@Slf4j
 @Service
 @Transactional
 public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordService {
@@ -64,6 +66,11 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
     }
 
     @Override
+    public List<DatabaseOperatingRecordEntity> findAll() {
+        return databaseOperatingRecordDao.selectAll();
+    }
+
+    @Override
     public List<String> findLikeTableNames(String databaseName, String... tableName) {
         return databaseOperatingRecordDao.selectLikeTableNames(databaseName, tableName);
     }
@@ -78,34 +85,60 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
         List<String> tableNames = this.findLikeTableNames(databaseName, "alarm%", "data%", "tb_database_operating_record");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tableNames.size(); i++) {
-            if (i == tableNames.size() - 1) {
-                sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableNames.get(i));
-            } else {
-                sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableNames.get(i)).append(" ");
-            }
+            sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableNames.get(i)).append(" ");
         }
-        String backupPath = SystemUtil.getOsInfo().isWindows() ? backupPathOfWindowPrefix : backupPathOfUnixPrefix;
+        String basePath = SystemUtil.getOsInfo().isWindows() ? backupPathOfWindowPrefix : backupPathOfUnixPrefix;
         String uuidStr = UUID.fastUUID().toString();
-        File file = new File(backupPath + uuidStr);
+        File file = new File(basePath + uuidStr);
         if (!file.exists())
             if (!file.mkdirs())
                 throw new BaseRuntimeException("创建文件有误");
-        String backupName = uuidStr + File.separator + databaseName + ".sql";
-        String backupPathName = backupPath + backupName;
-        String requestPath = prefix + backupName;
-        String cmdFormat = "CMD /C mysqldump --single-transaction --column-statistics=0 -h %s -u %s -p%s --databases %s %s>%s";
-        String cmd = String.format(cmdFormat, host, jdbcUsername, jdbcPassword, databaseName, sb.toString(), backupPathName);
-        System.out.println(cmd);
+        String backupName = uuidStr + File.separator + databaseName + "[" + DateUtil.format(new Date(), "yyyy-MM-dd") + "]" + ".sql";
+        String backupPath = basePath + backupName;//物理路径
+        String requestPath = prefix + backupName;//请求路径
+
+        String cmdFormat = SystemUtil.getOsInfo().isWindows() ?
+                "cmd /c mysqldump --column-statistics=0 --single-transaction -h %s -u %s -p%s --databases %s %s > %s"
+                : "/bin/sh -c mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
+        String cmd = String.format(cmdFormat, host, jdbcUsername, jdbcPassword, databaseName, sb.toString(), backupPath);
+        log.debug(cmd);
         String result = RuntimeUtil.getResult(RuntimeUtil.exec(cmd), Charset.defaultCharset());
-        System.out.println(result);
+        log.debug(result);
+        if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
+            throw new BaseRuntimeException("备份失败");
         DatabaseOperatingRecordEntity databaseOperatingRecordEntity = new DatabaseOperatingRecordEntity();
         databaseOperatingRecordEntity.setCreateBy(loginUserName);
         databaseOperatingRecordEntity.setCreateTime(new Date());
-        databaseOperatingRecordEntity.setModifiedBy(loginUserName);
-        databaseOperatingRecordEntity.setModifiedTime(new Date());
         databaseOperatingRecordEntity.setBackupFilePath(requestPath);
         databaseOperatingRecordEntity.setBackupFileName(backupName);
         this.add(databaseOperatingRecordEntity);
 
+    }
+
+    @Override
+    public void restore(Long id, String loginUserName) {
+        DatabaseOperatingRecordEntity databaseOperatingRecordEntity = this.findById(id);
+        if (databaseOperatingRecordEntity != null) {
+            String strArr = StrUtil.subBetween(jdbcURL, "/", "?");
+            String[] arr = strArr.split("/");
+            String host = arr[1];
+            String databaseName = arr[2];
+            String basePath = SystemUtil.getOsInfo().isWindows() ? backupPathOfWindowPrefix : backupPathOfUnixPrefix;
+            String backupPath = basePath + databaseOperatingRecordEntity.getBackupFileName();//物理路径
+            if (FileUtil.exist(backupPath)) {
+                String cmdFormat = SystemUtil.getOsInfo().isWindows() ?
+                        "cmd /c mysql -h %s -u %s -p%s %s < %s"
+                        : "/bin/sh -c mysql -h %s -u %s -p%s %s < %s";
+                String cmd = String.format(cmdFormat, host, jdbcUsername, jdbcPassword, databaseName, backupPath);
+                log.debug(cmd);
+                String result = RuntimeUtil.getResult(RuntimeUtil.exec(cmd), Charset.defaultCharset());
+                log.debug(result);
+                if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
+                    throw new BaseRuntimeException("备份失败");
+            }
+            databaseOperatingRecordEntity.setModifiedBy(loginUserName);
+            databaseOperatingRecordEntity.setModifiedTime(new Date());
+            this.edit(databaseOperatingRecordEntity);
+        }
     }
 }

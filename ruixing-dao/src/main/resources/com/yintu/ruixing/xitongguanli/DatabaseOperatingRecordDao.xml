@@ -116,7 +116,11 @@
             backup_file_path = #{backupFilePath,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
-
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_database_operating_record
+    </select>
     <select id="selectLikeTableNames" resultType="java.lang.String">
         SELECT table_name
         FROM information_schema.TABLES
