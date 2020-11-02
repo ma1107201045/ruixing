@@ -1,6 +1,7 @@
 package com.yintu.ruixing.xitongguanli;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,8 @@ public class DatabaseOperatingRecordController extends SessionController {
                                        @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<DatabaseOperatingRecordEntity> databaseOperatingRecordEntities = databaseOperatingRecordService.findAll();
-        return ResponseDataUtil.ok("查询数据库操作信息列表成功", databaseOperatingRecordEntities);
+        PageInfo<DatabaseOperatingRecordEntity> pageInfo = new PageInfo<>(databaseOperatingRecordEntities);
+        return ResponseDataUtil.ok("查询数据库操作信息列表成功", pageInfo);
     }
 
 }
