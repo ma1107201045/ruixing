@@ -99,14 +99,12 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
 
         String cmdFormat = SystemUtil.getOsInfo().isWindows() ?
                 "cmd /c mysqldump --column-statistics=0 --single-transaction -h %s -u %s -p%s --databases %s %s > %s"
-                : "mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
+                : "/bin/sh -c mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
         String cmd = String.format(cmdFormat, host, jdbcUsername, jdbcPassword, databaseName, sb.toString(), backupPath);
         log.error(cmd);
         String result = RuntimeUtil.getResult(RuntimeUtil.exec(cmd), Charset.defaultCharset());
         log.error(result);
-        if (!SystemUtil.getOsInfo().isWindows()) {
-            FileUtil.writeString(result, FileUtil.newFile(backupPath), Charset.defaultCharset());
-        }
+
         if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
             throw new BaseRuntimeException("备份失败");
         DatabaseOperatingRecordEntity databaseOperatingRecordEntity = new DatabaseOperatingRecordEntity();
@@ -131,11 +129,9 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
             if (FileUtil.exist(backupPath)) {
                 String cmdFormat = SystemUtil.getOsInfo().isWindows() ?
                         "cmd /c mysql -h %s -u %s -p%s %s < %s"
-                        : "mysql -h %s -u %s -p%s %s < %s";
+                        : "/bin/sh -c mysql -h %s -u %s -p%s %s < %s";
                 String cmd = String.format(cmdFormat, host, jdbcUsername, jdbcPassword, databaseName, backupPath);
-                log.error(cmd);
                 String result = RuntimeUtil.getResult(RuntimeUtil.exec(cmd), Charset.defaultCharset());
-                log.error(result);
                 if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
                     throw new BaseRuntimeException("备份失败");
             }
