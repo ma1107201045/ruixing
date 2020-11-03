@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.AntPathMatcher;
 
 import javax.management.relation.Role;
 import javax.sql.DataSource;
@@ -160,5 +161,11 @@ class RuixingApplicationTests {
     @Test
     void contextLoads12() {
         System.out.println(solutionService.findProjectSum());
+    }
+
+    @Test
+    void contextLoads13() {
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+        System.out.println(antPathMatcher.match("/abc/**", "/abc"));
     }
 }

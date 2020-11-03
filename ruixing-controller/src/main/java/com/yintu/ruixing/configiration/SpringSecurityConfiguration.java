@@ -215,8 +215,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode", "/druid/**", "/websocket/**", "/test/**", "/files/**", "/backups/**",
-                "/common/**",
-                "/index/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html",
                 "/v2/api-docs",
