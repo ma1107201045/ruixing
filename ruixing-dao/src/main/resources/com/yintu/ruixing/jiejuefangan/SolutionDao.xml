@@ -70,4 +70,12 @@
         <include refid="Base_Condition_List"/>
         ) b
     </select>
+
+    <!--首页统计售后项目总数-->
+    <select id="selectProjectSum" resultType="long">
+        SELECT ps.countNum + b.countNum + dl.countNum as sum
+        FROM ((SELECT COUNT(*) AS countNum FROM mro_pre_sale) ps,
+              (SELECT COUNT(*) AS countNum FROM mro_bidding) b,
+              (SELECT COUNT(*) AS countNum FROM mro_design_liaison) dl)
+    </select>
 </mapper>

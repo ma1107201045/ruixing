@@ -143,7 +143,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         List<AnZhuangTiaoShiXiangMuServiceStatusEntity> anZhuangTiaoShiXiangMuServiceStatusEntities = anZhuangTiaoShiXiangMuServiceStatusDao.findAllServiceStatus();
         titleAndData.put("title", anZhuangTiaoShiXiangMuServiceStatusEntities);
 
-        Page<Object> page = PageHelper.startPage(num, size,"id DESC");
+        Page<Object> page = PageHelper.startPage(num, size, "id DESC");
         List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntities = anZhuangTiaoShiXiangMuDao.findXianDuanBySomedata(xdname, year, xdtype, xdleixing);
         JSONArray ja = new JSONArray();
         for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntities) {
@@ -473,4 +473,10 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         }
         return ja;
     }
+
+    @Override
+    public long findProjectSum() {
+        return anZhuangTiaoShiXiangMuDao.selectProjectSum();
+    }
+
 }

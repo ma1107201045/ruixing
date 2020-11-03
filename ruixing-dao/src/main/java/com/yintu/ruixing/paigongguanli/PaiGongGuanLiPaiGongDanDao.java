@@ -35,4 +35,6 @@ public interface PaiGongGuanLiPaiGongDanDao {
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
 
     String findAdressByUid(@Param("uid") Integer uid);
+
+    long selectWorkOrderSum();
 }

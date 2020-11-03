@@ -16,7 +16,7 @@ import java.util.Map;
 public interface ChanPinJiaoFuXiangMuService {
     List<TreeNodeUtil> findSanJiShu();
 
-    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username,Integer senderid);
+    void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer senderid);
 
     void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids, Integer senderid);
 
@@ -81,4 +81,7 @@ public interface ChanPinJiaoFuXiangMuService {
     void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
 
     List<ChanPinJiaoFuFileAuditorEntity> findXMByXmid(Integer xmid);
+
+
+    long findProjectSum();
 }

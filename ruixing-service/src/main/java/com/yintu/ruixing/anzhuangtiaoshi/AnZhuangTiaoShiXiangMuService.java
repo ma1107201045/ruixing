@@ -49,4 +49,6 @@ public interface AnZhuangTiaoShiXiangMuService {
     List<MessageEntity> findXiaoXi(Integer senderid);
 
     void exportStatisticalFile(OutputStream outputStream, Integer[] ids) throws IOException;
+
+    long findProjectSum();
 }

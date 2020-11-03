@@ -114,4 +114,14 @@ public class CheZhanServiceImpl implements CheZhanService {
         return !(czStutrs == null || czStutrs == 0);
     }
 
+    @Override
+    public long findStationConfigurationSum() {
+        return cheZhanDao.selectStationConfigurationSum();
+    }
+
+    @Override
+    public long findStationSum() {
+        return cheZhanDao.selectStationSum();
+    }
+
 }

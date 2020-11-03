@@ -55,4 +55,9 @@
             </if>
         </where>
     </select>
+
+    <select id="selectAlarmSum" parameterType="java.lang.String" resultType="long">
+        select count(*)
+        from ${tableName}
+    </select>
 </mapper>

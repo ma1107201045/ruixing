@@ -98,8 +98,10 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
         String requestPath = prefix + backupName;//请求路径
         String mysqlFormatCommand = "mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
         String mysqlCommand = String.format(mysqlFormatCommand, host, jdbcUsername, jdbcPassword, databaseName, sb.toString(), backupPath);
-        String result = RuntimeUtil.getResult(SystemUtil.getOsInfo().isWindows() ? RuntimeUtil.exec("cmd", "/c", mysqlCommand) : RuntimeUtil.exec("sh", "-c", mysqlCommand), Charset.defaultCharset());
-        log.error(result);
+        String result = this.execCommand(mysqlCommand);
+
+        System.out.println(mysqlCommand);
+        System.out.println(result);
         if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
             throw new BaseRuntimeException("备份失败");
         DatabaseOperatingRecordEntity databaseOperatingRecordEntity = new DatabaseOperatingRecordEntity();
@@ -124,8 +126,9 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
             if (FileUtil.exist(backupPath)) {
                 String mysqlFormatCommand = "mysql -h %s -u %s -p%s %s < %s";
                 String mysqlCommand = String.format(mysqlFormatCommand, host, jdbcUsername, jdbcPassword, databaseName, backupPath);
-                String result = RuntimeUtil.getResult(SystemUtil.getOsInfo().isWindows() ? RuntimeUtil.exec("cmd", "/c", mysqlCommand) : RuntimeUtil.exec("sh", "-c", mysqlCommand), Charset.defaultCharset());
-                log.error(result);
+                String result = this.execCommand(mysqlCommand);
+                System.out.println(mysqlCommand);
+                System.out.println(result);
                 if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
                     throw new BaseRuntimeException("备份失败");
             }
@@ -133,5 +136,9 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
             databaseOperatingRecordEntity.setModifiedTime(new Date());
             this.edit(databaseOperatingRecordEntity);
         }
+    }
+
+    public String execCommand(String cmd) {
+        return RuntimeUtil.getResult(SystemUtil.getOsInfo().isWindows() ? RuntimeUtil.exec("cmd", "/c", cmd) : RuntimeUtil.exec("sh", "-c", cmd), Charset.defaultCharset());
     }
 }

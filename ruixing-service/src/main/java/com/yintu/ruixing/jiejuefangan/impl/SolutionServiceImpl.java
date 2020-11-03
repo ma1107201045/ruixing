@@ -57,4 +57,9 @@ public class SolutionServiceImpl implements SolutionService {
     public List<Map<String, Object>> biddingProject(Date startDate, Date endDate, Short projectStatus) {
         return solutionDao.selectByDateSectionAndProjectStatus(startDate, endDate, projectStatus);
     }
+
+    @Override
+    public long findProjectSum() {
+        return solutionDao.selectProjectSum();
+    }
 }

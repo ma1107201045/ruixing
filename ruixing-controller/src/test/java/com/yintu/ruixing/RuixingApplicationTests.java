@@ -156,4 +156,9 @@ class RuixingApplicationTests {
 //        System.out.println(StringUtil.getAssemblyId(11,new Date(),12));
         databaseOperatingRecordService.findLikeTableNames("db_dev_ruixing", "alarm%", "data%");
     }
+
+    @Test
+    void contextLoads12() {
+        System.out.println(solutionService.findProjectSum());
+    }
 }

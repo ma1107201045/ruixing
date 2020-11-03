@@ -35,4 +35,11 @@ public interface SolutionService {
      * @return 中标项目信息集
      */
     List<Map<String, Object>> biddingProject(Date startDate, Date endDate, Short projectStatus);
+
+    /**
+     * 查询解决方案总模块的全部项目数
+     *
+     * @return 解决方案项目总和
+     */
+    long findProjectSum();
 }

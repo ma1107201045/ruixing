@@ -54,6 +54,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
         return paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
     }
 
+
     @Override
     public List<MessageEntity> findXiaoXi(Integer senderid) {
         Integer type = 5;
@@ -561,5 +562,11 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
 
     }
+
+    @Override
+    public long findWorkOrderSum() {
+        return paiGongGuanLiPaiGongDanDao.selectWorkOrderSum();
+    }
+
 
 }

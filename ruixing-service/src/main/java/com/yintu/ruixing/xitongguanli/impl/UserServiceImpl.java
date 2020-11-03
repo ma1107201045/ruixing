@@ -339,4 +339,9 @@ public class UserServiceImpl implements UserService {
         userDao.updateByPrimaryKeySelective(userEntity);
     }
 
+    public long findUserSum() {
+        return userDao.countByExample(new UserEntityExample());
+    }
+
+
 }
