@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class SessionController {
 
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 获取登录用户信息
