@@ -62,14 +62,10 @@ public class RoleController extends SessionController {
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
                                        @RequestParam(value = "search_text", required = false) String name) {
-        JSONObject jo = new JSONObject();
-        List<String> requestMethods = permissionService.findRequestMethodsByUserIdAndUrl(this.getLoginUserId(), "/users");
-        jo.put("requestMethods", requestMethods);
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<RoleEntity> roleEntities = roleService.findAllOrByName(name);
         PageInfo<RoleEntity> pageInfo = new PageInfo<>(roleEntities);
-        jo.put("pageInfo", pageInfo);
-        return ResponseDataUtil.ok("查询角色列表信息成功", jo);
+        return ResponseDataUtil.ok("查询角色列表信息成功", pageInfo);
     }
 
     @GetMapping("/permissions")

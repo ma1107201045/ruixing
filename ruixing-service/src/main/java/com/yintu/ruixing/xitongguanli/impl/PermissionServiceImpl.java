@@ -149,12 +149,6 @@ public class PermissionServiceImpl implements PermissionService {
         }
         return permissionEntities;
     }
-
-    @Override
-    public List<String> findRequestMethodsByUserIdAndUrl(Long userId, String url) {
-        return permissionDao.selectByUserIdAndUrl(userId, url);
-    }
-
     @Override
     public List<TreeNodeUtil> findPermissionTree(Long parentId) {
         PermissionEntityExample permissionEntityExample = new PermissionEntityExample();

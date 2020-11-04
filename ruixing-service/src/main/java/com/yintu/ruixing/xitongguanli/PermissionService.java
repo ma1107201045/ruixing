@@ -45,14 +45,6 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
      */
     List<PermissionEntity> findPermissionAndRole();
 
-    /**
-     * 按照用户和模块寻查询权限
-     *
-     * @param userId
-     * @param url
-     * @return
-     */
-    List<String> findRequestMethodsByUserIdAndUrl(Long userId, String url);
 
     /**
      * 获取权限tree

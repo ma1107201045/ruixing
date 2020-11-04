@@ -5,6 +5,7 @@ import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeService;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.guzhangzhenduan.ListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/line/technology/status")
 public class LineTechnologyStatusController extends SessionController {
     @Autowired
+    private ListService listService;
+    @Autowired
     private LineTechnologyStatusService lineTechnologyStatusService;
     @Autowired
     private AnZhuangTiaoShiCheZhanXiangMuTypeService anZhuangTiaoShiCheZhanXiangMuTypeService;
@@ -34,6 +37,11 @@ public class LineTechnologyStatusController extends SessionController {
         lineTechnologyStatusEntityWithBLOBs.setModifiedTime(new Date());
         lineTechnologyStatusService.edit(lineTechnologyStatusEntityWithBLOBs, xiangmutypeIds);
         return ResponseDataUtil.ok("修改线段技术状态信息成功");
+    }
+
+    @GetMapping
+    public Map<String, Object> findAll() {
+        return ResponseDataUtil.ok("查询铁电线车信息成功", listService.getMenuList());
     }
 
     @GetMapping("/railways/bureau")

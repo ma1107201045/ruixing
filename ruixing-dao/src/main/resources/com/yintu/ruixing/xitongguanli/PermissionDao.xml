@@ -336,18 +336,4 @@
             description   = #{description,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <resultMap id="selectByUserIdAndUrl" type="String">
-        <result column="method" jdbcType="VARCHAR" property="method"/>
-    </resultMap>
-    <select id="selectByUserIdAndUrl" resultMap="selectByUserIdAndUrl">
-        SELECT p.method
-        FROM tb_user u
-                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
-                 INNER JOIN tb_role r ON r.id = ur.role_id
-                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
-                 INNER JOIN tb_permission p ON p.id = pr.permission_id
-        WHERE u.id = #{userId}
-          and p.url = #{url}
-        GROUP BY p.method
-    </select>
 </mapper>

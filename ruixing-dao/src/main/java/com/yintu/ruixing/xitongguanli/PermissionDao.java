@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface PermissionDao {
     long countByExample(PermissionEntityExample example);
@@ -28,5 +29,4 @@ public interface PermissionDao {
 
     int updateByPrimaryKey(PermissionEntity record);
 
-    List<String> selectByUserIdAndUrl(@Param("userId") Long userId,@Param("url")String url);
 }
