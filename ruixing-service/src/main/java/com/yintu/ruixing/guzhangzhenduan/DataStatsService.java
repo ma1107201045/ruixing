@@ -188,4 +188,6 @@ public interface DataStatsService {
     String findDWDJsonByDid(Integer did);
 
     void addQuDuanDatas(List<String[]> list);
+
+    CheZhanEntity findQDJsonAndQuDuanDatasByCid(Integer cid);
 }

@@ -151,6 +151,14 @@
         <result column="cz_state" jdbcType="INTEGER" property="czState"/>
     </resultMap>
 
+
+    <!--根据cid 查询jidianjiashidianmahuashebeinumber 的个数-->
+    <select id="findjidianjiashidianmahuashebeinumberByCid" resultType="java.lang.Integer">
+        SELECT jiDianJiaShiDianMaHuaSheBeiNumber
+        FROM mro_chezhan
+        WHERE cid = #{cid}
+    </select>
+
     <!--根据xid 查询车站的id和连接状态-->
     <select id="findCheZhanDatasByXid" resultMap="chezhann">
         SELECT cid,

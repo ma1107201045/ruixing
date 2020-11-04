@@ -78,4 +78,5 @@ public interface QuDuanBaseDao {
 
     String findQuduanName(@Param("stationId") Integer stationId,@Param("sectionId")  Integer sectionId);
 
+    List<QuDuanBaseEntity> findQuDuanDatasByCid(Integer cid);
 }
