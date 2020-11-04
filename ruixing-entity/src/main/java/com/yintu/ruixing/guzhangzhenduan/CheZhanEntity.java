@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 车站
@@ -168,7 +169,9 @@ public class CheZhanEntity {
     private Integer alarmNumber;
 
 
+    private List<QuDuanBaseEntity> quduanlist;
 
+    private String quduanjson;
 
 
 

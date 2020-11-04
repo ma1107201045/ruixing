@@ -144,4 +144,5 @@ public interface CheZhanDao {
 
     long selectStationSum();
 
+    Integer findjidianjiashidianmahuashebeinumberByCid(Integer cid);
 }

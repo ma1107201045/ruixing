@@ -12,7 +12,6 @@ import java.util.UUID;
  * @date:2020/6/23 19:28
  */
 public class FileUploadUtil {
-
     public static final String WINDOW_BASE_FILE_PATH = "c:\\data\\ruixing";
     public static final String LINUX_BASE_FILE_PATH = "/data/ruixing";
     public static final String FILE_FOLDER_NAME = "files";

@@ -790,7 +790,7 @@ public class DataStatsController {
     //根据车站cid 查询此车站下的区段配置json数据
     @GetMapping("/findQDJsonByCid/{cid}")
     public Map<String, Object> findQDJsonByCid(@PathVariable Integer cid) {
-        String qdJson = dataStatsService.findQDJsonByCid(cid);
+        CheZhanEntity qdJson=dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
         return ResponseDataUtil.ok("查询区段的json数据成功", qdJson);
     }
 

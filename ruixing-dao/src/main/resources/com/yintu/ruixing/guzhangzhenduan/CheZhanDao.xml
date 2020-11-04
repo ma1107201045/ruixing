@@ -151,6 +151,14 @@
         <result column="cz_state" jdbcType="INTEGER" property="czState"/>
     </resultMap>
 
+
+    <!--根据cid 查询jidianjiashidianmahuashebeinumber 的个数-->
+    <select id="findjidianjiashidianmahuashebeinumberByCid" resultType="java.lang.Integer">
+        SELECT jiDianJiaShiDianMaHuaSheBeiNumber
+        FROM mro_chezhan
+        WHERE cid = #{cid}
+    </select>
+
     <!--根据xid 查询车站的id和连接状态-->
     <select id="findCheZhanDatasByXid" resultMap="chezhann">
         SELECT cid,
@@ -652,6 +660,9 @@
             <if test="czJson != null">
                 cz_json,
             </if>
+            <if test="czdmhState != null">
+                cz_dmh_state,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cid != null">
@@ -845,6 +856,9 @@
             </if>
             <if test="czJson != null">
                 #{czJson,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="czdmhState != null">
+                #{czdmhState},
             </if>
         </trim>
     </insert>
@@ -1041,6 +1055,9 @@
             </if>
             <if test="czJson != null">
                 cz_json = #{czJson,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="czdmhState != null">
+                cz_dmh_state = #{czdmhState,jdbcType=INTEGER},
             </if>
         </set>
         where cid = #{cid,jdbcType=INTEGER}

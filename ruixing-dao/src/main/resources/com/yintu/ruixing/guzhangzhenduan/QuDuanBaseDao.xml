@@ -408,6 +408,65 @@
         GROUP BY id DESC
     </select>
 
+
+    <resultMap id="BaseResultMappp" type="com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+    <result column="cid" jdbcType="INTEGER" property="cid"/>
+    <result column="xid" jdbcType="INTEGER" property="xid"/>
+    <result column="cz_id" jdbcType="INTEGER" property="czid"/>
+    <result column="sid" jdbcType="INTEGER" property="sid"/>
+    <result column="qdid" jdbcType="INTEGER" property="qdid"/>
+    <result column="typeid" jdbcType="INTEGER" property="typeid"/>
+    <result column="line" jdbcType="VARCHAR" property="line"/>
+    <result column="left_right" jdbcType="VARCHAR" property="leftRight"/>
+    <result column="xingbie" jdbcType="INTEGER" property="xingBie"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="zongHe_id" jdbcType="VARCHAR" property="zongheId"/>
+    <result column="quDuanSheJi_name" jdbcType="VARCHAR" property="quduanshejiName"/>
+    <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quduanyunyingName"/>
+    <result column="quDuan_length" jdbcType="INTEGER" property="quduanLength"/>
+    <result column="carrier" jdbcType="VARCHAR" property="carrier"/>
+    <result column="ofXianDuan" jdbcType="VARCHAR" property="ofXianDuan"/>
+    <result column="diDuan_type" jdbcType="VARCHAR" property="diduanType"/>
+    <result column="xianLuQingKuang" jdbcType="VARCHAR" property="xianluqingkuang"/>
+    <result column="bianJie" jdbcType="INTEGER" property="bianjie"/>
+    <result column="fenJieDian_where" jdbcType="VARCHAR" property="fenjiedianWhere"/>
+    <result column="zhanQuFenJie" jdbcType="INTEGER" property="zhanqufenjie"/>
+    <result column="jinZhanXinHaoJi_name" jdbcType="VARCHAR" property="jinzhanxinhaojiName"/>
+    <result column="xinHaoJiOrBiaoZhiMing" jdbcType="VARCHAR" property="xinhaojiorbiaozhiming"/>
+    <result column="xinHaoBiaoZhiPai_where" jdbcType="VARCHAR" property="xinhaobiaozhipaiWhere"/>
+    <result column="xinHaoJi_where" jdbcType="VARCHAR" property="xinhaojiWhere"/>
+    <result column="zuoCeJueYuan_type" jdbcType="VARCHAR" property="zuocejueyuanType"/>
+    <result column="youCeJueYuan_type" jdbcType="VARCHAR" property="youcejueyuanType"/>
+    <result column="zhengXianHouFangQuDuan_ID" jdbcType="VARCHAR" property="zhengxianhoufangquduanId"/>
+    <result column="zhengXianQianFangQuDuan_ID" jdbcType="VARCHAR" property="zhengxianqianfangquduanId"/>
+    <result column="daoChaGuanLianQuDuan1_ID" jdbcType="VARCHAR" property="daochaguanlianquduan1Id"/>
+    <result column="daoChaGuanLianQuDuan2_ID" jdbcType="VARCHAR" property="daochaguanlianquduan2Id"/>
+    <result column="dianMaHuaGuiHao" jdbcType="VARCHAR" property="dianmahuaguihao"/>
+    <result column="guiNeiDiZhi" jdbcType="INTEGER" property="guineidizhi"/>
+    <result column="time" jdbcType="TIMESTAMP" property="time"/>
+    <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+    <result column="zongZuoBiao" jdbcType="VARCHAR" property="zongZuoBiao"/>
+    <result column="hengXiangPianYi" jdbcType="VARCHAR" property="hengXiangPianYi"/>
+    <result column="turnoutSectionType" jdbcType="VARCHAR" property="turnoutSectionType"/>
+    <result column="bend1ConnectionSection_ID" jdbcType="VARCHAR" property="bend1ConnectionSectionID"/>
+    <result column="bent1ConnectionObject" jdbcType="VARCHAR" property="bent1ConnectionObject"/>
+    <result column="bent1OffsetOfBranchCenter" jdbcType="VARCHAR" property="bent1OffsetOfBranchCenter"/>
+    <result column="bent1Orientation" jdbcType="VARCHAR" property="bent1Orientation"/>
+    <result column="bend2ConnectionSection_ID" jdbcType="VARCHAR" property="bend2ConnectionSectionID"/>
+    <result column="bent2ConnectionObject" jdbcType="VARCHAR" property="bent2ConnectionObject"/>
+    <result column="bent2OffsetOfBranchCenter" jdbcType="VARCHAR" property="bent2OffsetOfBranchCenter"/>
+    <result column="bent2Orientation" jdbcType="VARCHAR" property="bent2Orientation"/>
+    </resultMap>
+    <!--根据车站cid  查询区段信息-->
+    <select id="findQuDuanDatasByCid" resultMap="BaseResultMappp">
+        SELECT  *
+        FROM mro_quduan_base
+        WHERE cid = #{cid}
+        AND line != '电码化'
+    </select>
+
     <!--根据车站cid  查询站外所有区段信息-->
     <select id="findAllQuDuanByCid" resultMap="BaseResultMap">
         SELECT cz.cz_name,

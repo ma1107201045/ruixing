@@ -696,6 +696,8 @@ public class DataStatsServiceImpl implements DataStatsService {
         return cheZhanDao.findDMHJsonByCid(cid);
     }
 
+
+
     @Override
     public String findQDJsonByCid(Integer cid) {
         return cheZhanDao.findQDJsonByCid(cid);
@@ -765,6 +767,15 @@ public class DataStatsServiceImpl implements DataStatsService {
         return xianDuanEntity;
     }
 
+    @Override
+    public CheZhanEntity findQDJsonAndQuDuanDatasByCid(Integer cid) {
+        CheZhanEntity cz=new CheZhanEntity();
+        List<QuDuanBaseEntity> quDuanBaseEntityList=quDuanBaseDao.findQuDuanDatasByCid(cid);
+        String qujson=cheZhanDao.findQDJsonByCid(cid);
+        cz.setQuduanlist(quDuanBaseEntityList);
+        cz.setQuduanjson(qujson);
+        return cz;
+    }
     @Override
     public List<CheZhanEntity> findSomeCheZhanByXid(Integer xid) {
         return cheZhanDao.findSomeCheZhanByXid(xid);
