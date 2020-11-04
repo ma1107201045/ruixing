@@ -366,6 +366,13 @@
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
+    <select id="selectPermission" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_permission p
+        where p.parent_id = #{parentId,jdbcType=BIGINT}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+    </select>
+
     <select id="selectPermissionById" resultMap="BasePermissionResultMap">
         SELECT p.*
         FROM tb_user u
@@ -373,16 +380,34 @@
                  INNER JOIN tb_role r ON r.id = ur.role_id
                  INNER JOIN tb_permission_role pr ON r.id = pr.role_id
                  INNER JOIN tb_permission p ON p.id = pr.permission_id
-        where u.id = #{id}
-          and p.parent_id = #{parentId}
-          and p.is_menu = #{isMenu}
+        where u.id = #{id,jdbcType=BIGINT}
+          and p.parent_id = #{parentId,jdbcType=BIGINT}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
         GROUP BY p.id
     </select>
 
-    <select id="selectPermission" resultMap="BasePermissionResultMap">
+    <select id="selectAuthority" resultMap="BasePermissionResultMap">
         SELECT p.*
-        FROM tb_permission p
-        where p.parent_id = #{parentId}
-          and p.is_menu = #{isMenu}
+        FROM tb_user u
+                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
+                 INNER JOIN tb_role r ON r.id = ur.role_id
+                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
+                 INNER JOIN tb_permission p ON p.id = pr.permission_id
+        where p.description = #{description,jdbcType=VARCHAR}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+        GROUP BY p.id
+    </select>
+
+    <select id="selectAuthorityById" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_user u
+                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
+                 INNER JOIN tb_role r ON r.id = ur.role_id
+                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
+                 INNER JOIN tb_permission p ON p.id = pr.permission_id
+        where u.id = #{idjdbcType=BIGINT}
+          and p.description = #{description,jdbcType=VARCHAR}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+        GROUP BY p.id
     </select>
 </mapper>

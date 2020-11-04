@@ -10,6 +10,7 @@ import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.FileUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.xitongguanli.PermissionEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +45,28 @@ public class CommonController extends SessionController {
     /**
      * 获取当前用户菜单栏
      *
-     * @return 当前用户权限
+     * @return 当前用户显示菜单项
      */
     @GetMapping("/menu")
     public Map<String, Object> findUserMenuBar() {
         List<TreeNodeUtil> treeNodeUtils = this.getLoginAuthType().equals((EnumAuthType.ADMIN.getValue())) ?
                 userService.findPermission(-1L, (short) 1) :
                 userService.findPermissionById(this.getLoginUserId(), -1L, (short) 1);
+        return ResponseDataUtil.ok("获取菜单栏列表成功", treeNodeUtils);
+    }
 
-        return ResponseDataUtil.ok("获取菜单栏成功", treeNodeUtils);
+    /**
+     * 返回各自模块对应的权限
+     *
+     * @param description 模块标识
+     * @return
+     */
+    @GetMapping("/authority")
+    public Map<String, Object> findAuthority(@RequestParam String description) {
+        List<PermissionEntity> permissionEntities = this.getLoginAuthType().equals((EnumAuthType.ADMIN.getValue())) ?
+                userService.findAuthority(description, (short) 1) :
+                userService.findAuthorityById(this.getLoginUserId(), description, (short) 1);
+        return ResponseDataUtil.ok("获取模块权限成功", permissionEntities);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.yintu.ruixing.common.DistrictService;
 import com.yintu.ruixing.common.enumobject.EnumAuthType;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -284,6 +283,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public List<TreeNodeUtil> findPermission(Long parentId, Short isMenu) {
+        List<PermissionEntity> permissionEntities = userDao.selectPermission(parentId, isMenu);
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (PermissionEntity permissionEntity : permissionEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setId(permissionEntity.getId());
+            treeNodeUtil.setLabel(permissionEntity.getName());
+            treeNodeUtil.setIcon(permissionEntity.getIconCls());
+            treeNodeUtil.setChildren(this.findPermission(permissionEntity.getId(), isMenu));
+            Map<String, Object> map = new HashMap<>();
+            map.put("parentId", permissionEntity.getParentId());
+            map.put("url", permissionEntity.getUrl());
+            map.put("method", permissionEntity.getMethod());
+            map.put("isMenu", permissionEntity.getIsMenu());
+            map.put("path", permissionEntity.getPath());
+            map.put("description", permissionEntity.getDescription());
+            map.put("roleEntities", permissionEntity.getRoleEntities());
+            treeNodeUtil.setA_attr(map);
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        return treeNodeUtils;
+    }
+
+    @Override
     public List<TreeNodeUtil> findPermissionById(Long id, Long parentId, Short isMenu) {
         List<PermissionEntity> permissionEntities = userDao.selectPermissionById(id, parentId, isMenu);
         List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
@@ -308,27 +331,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TreeNodeUtil> findPermission(Long parentId, Short isMenu) {
-        List<PermissionEntity> permissionEntities = userDao.selectPermission(parentId, isMenu);
-        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
-        for (PermissionEntity permissionEntity : permissionEntities) {
-            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
-            treeNodeUtil.setId(permissionEntity.getId());
-            treeNodeUtil.setLabel(permissionEntity.getName());
-            treeNodeUtil.setIcon(permissionEntity.getIconCls());
-            treeNodeUtil.setChildren(this.findPermission(permissionEntity.getId(), isMenu));
-            Map<String, Object> map = new HashMap<>();
-            map.put("parentId", permissionEntity.getParentId());
-            map.put("url", permissionEntity.getUrl());
-            map.put("method", permissionEntity.getMethod());
-            map.put("isMenu", permissionEntity.getIsMenu());
-            map.put("path", permissionEntity.getPath());
-            map.put("description", permissionEntity.getDescription());
-            map.put("roleEntities", permissionEntity.getRoleEntities());
-            treeNodeUtil.setA_attr(map);
-            treeNodeUtils.add(treeNodeUtil);
-        }
-        return treeNodeUtils;
+    public List<PermissionEntity> findAuthority(String description, Short isMenu) {
+        return userDao.selectAuthority(description, isMenu);
+    }
+
+    @Override
+    public List<PermissionEntity> findAuthorityById(Long id, String description, Short isMenu) {
+        return userDao.selectAuthorityById(id, description, isMenu);
     }
 
     @Override

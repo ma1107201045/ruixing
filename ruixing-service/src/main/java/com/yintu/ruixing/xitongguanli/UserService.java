@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.Permission;
 import java.util.List;
 
 public interface UserService extends UserDetailsService, BaseService<UserEntity, Long> {
@@ -94,22 +95,44 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      */
     void addDepartmentsByIdAndDepartmentIds(Long id, Long[] departmentsIds, String loginUsername);
 
+    /**
+     * 查询全部权限
+     *
+     * @param parentId 父级id
+     * @param isMenu   是否是菜单项
+     * @return 权限树信息集
+     */
+    List<TreeNodeUtil> findPermission(Long parentId, Short isMenu);
 
     /**
      * 通过用户id查询权限(用户菜单栏)
      *
      * @param id       用户id
      * @param parentId 父级id
+     * @param isMenu   是否是菜单项
      * @return 权限树信息集
      */
     List<TreeNodeUtil> findPermissionById(Long id, Long parentId, Short isMenu);
 
     /**
-     * 查询全部权限
+     * 查询每个模块的权限列表
      *
-     * @return 权限树信息集
+     * @param description 模块标识
+     * @param isMenu      是否是菜单项
+     * @return 权限实体类
      */
-    List<TreeNodeUtil> findPermission(Long parentId, Short isMenu);
+    List<PermissionEntity> findAuthority(String description, Short isMenu);
+
+    /**
+     * 通过用户id查询每个模块的权限列表
+     *
+     * @param id          用户id
+     * @param description 模块标识
+     * @param isMenu      是否是菜单项
+     * @return 权限实体类
+     */
+    List<PermissionEntity> findAuthorityById(Long id, String description, Short isMenu);
+
 
     /**
      * 修改用户真实姓名

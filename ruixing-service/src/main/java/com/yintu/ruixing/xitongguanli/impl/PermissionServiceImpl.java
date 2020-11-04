@@ -58,6 +58,10 @@ public class PermissionServiceImpl implements PermissionService {
             if (isMenu.equals((short) 0))
                 throw new BaseRuntimeException("菜单项选择有误");
         }
+        String des = permissionEntity.getDescription();
+        if (des == null || des.isEmpty())
+            throw new BaseRuntimeException("模块标识不能为空");
+        permissionEntity.setDescription(des.toUpperCase());
         permissionDao.insertSelective(permissionEntity);
     }
 
@@ -91,6 +95,10 @@ public class PermissionServiceImpl implements PermissionService {
             if (isMenu.equals((short) 0))
                 throw new BaseRuntimeException("菜单项选择有误");
         }
+        String des = permissionEntity.getDescription();
+        if (des == null || des.isEmpty())
+            throw new BaseRuntimeException("模块标识不能为空");
+        permissionEntity.setDescription(des.toUpperCase());
         permissionDao.updateByPrimaryKeySelective(permissionEntity);
     }
 
@@ -149,6 +157,7 @@ public class PermissionServiceImpl implements PermissionService {
         }
         return permissionEntities;
     }
+
     @Override
     public List<TreeNodeUtil> findPermissionTree(Long parentId) {
         PermissionEntityExample permissionEntityExample = new PermissionEntityExample();

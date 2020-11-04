@@ -27,8 +27,6 @@ public class UserController extends SessionController {
     private RoleService roleService;
     @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private PermissionService permissionService;
 
 
     @PostMapping

@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface UserDao {
     long countByExample(UserEntityExample example);
@@ -28,11 +29,17 @@ public interface UserDao {
 
     int updateByPrimaryKey(UserEntity record);
 
+    List<PermissionEntity> selectPermission(Long parentId, Short isMenu);
+
     List<PermissionEntity> selectPermissionById(Long id, Long parentId, Short isMenu);
 
-    List<PermissionEntity> selectPermission(@Param("parentId") Long parentId,@Param("isMenu") Short isMenu);
+    List<PermissionEntity> selectAuthority(String description, Short isMenu);
+
+    List<PermissionEntity> selectAuthorityById(Long id, String description, Short isMenu);
 
     List<Long> findId(@Param("username") String username);
 
-    Integer findid(@Param("truename")String truename);
+    Integer findid(@Param("truename") String truename);
+
+
 }
