@@ -105,7 +105,7 @@ public class CommonController extends SessionController {
     /**
      * 未读消息改为已读消息
      *
-     * @param id 消息id
+     * @param ids 消息id集
      * @return 返回信息
      */
     @PutMapping("/message/{ids}")

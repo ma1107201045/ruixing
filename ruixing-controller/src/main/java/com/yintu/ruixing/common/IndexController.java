@@ -46,12 +46,7 @@ public class IndexController {
 
     @Autowired
     private CheZhanService cheZhanService;
-
-    /**
-     * 统计项目总和
-     *
-     * @return
-     */
+    
     @GetMapping("/project/statistics")
     public Map<String, Object> getProjectSum() {
         List<Object[]> list = new ArrayList<>();
