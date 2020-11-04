@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 @Mapper
 public interface ChanPinJiaoFuXiangMuDao {
     int deleteByPrimaryKey(Integer id);
@@ -19,11 +20,6 @@ public interface ChanPinJiaoFuXiangMuDao {
 
 
     // ////////////////////////////////////
-
-
-
-
-
 
 
     ChanPinJiaoFuXiangMuEntity selectByPrimaryKey(Integer id);
@@ -50,11 +46,11 @@ public interface ChanPinJiaoFuXiangMuDao {
 
     void deletXiangMuFileByIds(Integer[] ids);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuData(@Param("xiangMuBianHao") String xiangMuBianHao,@Param("xiangMuName") String xiangMuName);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuData(@Param("xiangMuBianHao") String xiangMuBianHao, @Param("xiangMuName") String xiangMuName);
 
     List<ChanPinJiaoFuXiangMuEntity> findOneXiangMU(Integer id);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(@Param("stateid") Integer stateid );
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(@Param("stateid") Integer stateid);
 
     List<String> findZhengZaiZhiXing();
 
@@ -104,4 +100,6 @@ public interface ChanPinJiaoFuXiangMuDao {
     List<ChanPinJiaoFuFileAuditorEntity> findXMByXmid(@Param("xmid") Integer xmid);
 
     List<ChanPinJiaoFuXiangMuEntity> findXmNumberAndName();
+
+    long selectProjectSum();
 }

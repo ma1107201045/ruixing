@@ -40,7 +40,7 @@
         <result column="auditor_id" jdbcType="INTEGER" property="auditorid"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state, 
+    id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state,
     yangong_state, xianchangfuwu, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,
     createTime,updateTime,operatorName,remarks
   </sql>
@@ -680,4 +680,7 @@
       #{qianshouState,jdbcType=INTEGER}, #{yangongState,jdbcType=INTEGER}, #{xianchangfuwu,jdbcType=INTEGER},
       #{fahuoTixingTime,jdbcType=TIMESTAMP})
   </insert>
+    <select id="selectProjectSum" resultType="long">
+        select count(*) from mro_chanpinjiaofu_xiangmu
+    </select>
 </mapper>

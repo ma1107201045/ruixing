@@ -12,9 +12,13 @@ import java.util.List;
  */
 public interface DatabaseOperatingRecordService extends BaseService<DatabaseOperatingRecordEntity, Long> {
 
+    List<DatabaseOperatingRecordEntity> findAll();
+
     List<String> findLikeTableNames(String databaseName, String... tableName);
 
     void backup(HttpServletRequest request, String loginUserName);
+
+    void restore(Long id, String loginUserName);
 
 
 }

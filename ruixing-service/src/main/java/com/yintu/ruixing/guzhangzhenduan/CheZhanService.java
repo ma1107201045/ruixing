@@ -88,4 +88,8 @@ public interface CheZhanService {
      * @return 连接状态 true:已连接   false ：未连接
      */
     Boolean findCzStutrs(Long id, Boolean isPrimaryKey);
+
+    long findStationConfigurationSum();
+
+    long findStationSum();
 }

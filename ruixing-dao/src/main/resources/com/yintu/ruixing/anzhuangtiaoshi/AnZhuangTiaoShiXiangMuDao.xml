@@ -335,4 +335,9 @@
         </where>
     </select>
 
+    <select id="selectProjectSum" resultType="long">
+        SELECT count(*)
+        FROM mro_anzhuangtiaoshi_xiangmu
+    </select>
+
 </mapper>

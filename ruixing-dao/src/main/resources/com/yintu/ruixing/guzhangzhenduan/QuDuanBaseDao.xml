@@ -115,13 +115,10 @@
 
 
     <select id="findQuduanName" resultType="java.lang.String">
-        SELECT
-        quDuanYunYing_name
-        FROM
-        mro_quduan_base
-        WHERE
-        cz_id = #{stationId}
-        AND qdid = #{sectionId}
+        SELECT quDuanYunYing_name
+        FROM mro_quduan_base
+        WHERE cz_id = #{stationId}
+          AND qdid = #{sectionId}
     </select>
 
     <!--根据车站cid  查询对应的电码化数据-->
@@ -137,169 +134,145 @@
 
     <!--根据车站cid  查询此车站下面所有的电码化区段数据-->
     <select id="findDianMaHuaBycid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            dwd.dwd_name,
-            xd.xd_name,
-            cz.cz_name
-        FROM
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND line = '电码化'
-            AND cz.cid = #{cid}
+        SELECT qb.*,
+               dwd.dwd_name,
+               xd.xd_name,
+               cz.cz_name
+        FROM mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND line = '电码化'
+          AND cz.cid = #{cid}
     </select>
 
     <!--根据线段xid  查询此线段下面所有的电码化区段数据-->
     <select id="findDianMaHuaByXid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND line = '电码化'
-            AND xd.xid = #{xid}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND line = '电码化'
+          AND xd.xid = #{xid}
     </select>
 
 
     <!--根据电务段did  查询此电务段下面所有的电码化区段数据-->
     <select id="findDianMaHuaByDid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND line = '电码化'
-            AND did = #{did}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND line = '电码化'
+          AND did = #{did}
     </select>
 
     <!--根据铁路局tid  查询此铁路局下面所有的电码化区段数据-->
     <select id="findDianMaHuaByTid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_tieluju tlj,
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            tlj.tid = dwd.tlj_dwd_id
-            AND dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND line = '电码化'
-            AND tid = #{tid}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_tieluju tlj,
+             mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE tlj.tid = dwd.tlj_dwd_id
+          AND dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND line = '电码化'
+          AND tid = #{tid}
     </select>
 
     <!--根据车站cid  查询此车站下面所有的区段数据-->
     <select id="findQuDuanBycid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            dwd.dwd_name,
-            xd.xd_name,
-            cz.cz_name
-        FROM
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND line != '电码化'
-            AND cz.cid = #{cid}
+        SELECT qb.*,
+               dwd.dwd_name,
+               xd.xd_name,
+               cz.cz_name
+        FROM mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND line != '电码化'
+          AND cz.cid = #{cid}
     </select>
 
 
     <!--根据线段xid  查询此线段下面所有的区段数据-->
     <select id="findQuDuanByXid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND line != '电码化'
-            AND xd.xid = #{xid}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND line != '电码化'
+          AND xd.xid = #{xid}
     </select>
 
 
     <!--根据电务段did  查询此电务段下面所有的区段数据-->
     <select id="findQuDuanByDid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND line != '电码化'
-            AND did = #{did}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND line != '电码化'
+          AND did = #{did}
     </select>
 
     <!--根据铁路局tid  查询此铁路局下面所有的区段数据-->
     <select id="findQuDuanByTid" resultMap="BaseResultMap">
-        SELECT
-            qb.*,
-            xd.xd_name,
-            dwd.dwd_name,
-            cz.cz_name
-        FROM
-            mro_tieluju tlj,
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz,
-            mro_quduan_base qb
-        WHERE
-            tlj.tid = dwd.tlj_dwd_id
-            AND dwd.did = xd.dwd_xd_id
-            AND xd.xid = cz.xd_cz_id
-            AND cz.cid = qb.cid
-            AND line != '电码化'
-            AND tid = #{tid}
+        SELECT qb.*,
+               xd.xd_name,
+               dwd.dwd_name,
+               cz.cz_name
+        FROM mro_tieluju tlj,
+             mro_dianwuduan dwd,
+             mro_xianduan xd,
+             mro_chezhan cz,
+             mro_quduan_base qb
+        WHERE tlj.tid = dwd.tlj_dwd_id
+          AND dwd.did = xd.dwd_xd_id
+          AND xd.xid = cz.xd_cz_id
+          AND cz.cid = qb.cid
+          AND line != '电码化'
+          AND tid = #{tid}
     </select>
 
     <!--根据区段里面的车站专用id 和区段专用id  查询对应的区段数据-->
@@ -332,8 +305,8 @@
         select
         <include refid="Base_Column_List"/>
         from mro_quduan_base
-        where cid = #{cid}
-        AND line != '电码化'
+
+        where cid = #{cid} AND line != '电码化'
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -404,90 +377,77 @@
 
     <!--查询站外所有区段信息-->
     <select id="findAllQuDuan" resultMap="BaseResultMap">
-        SELECT
-            cz.cz_name,
-            xd.xd_name,
-            dwd.dwd_name,
-            qb.*
-        FROM
-            mro_quduan_base qb,
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz
-        WHERE
-            qb.cid = cz.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND qb.xid = xd.xid
-            AND line != '电码化'
+        SELECT cz.cz_name,
+               xd.xd_name,
+               dwd.dwd_name,
+               qb.*
+        FROM mro_quduan_base qb,
+             mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz
+        WHERE qb.cid = cz.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND qb.xid = xd.xid
+          AND line != '电码化'
         GROUP BY id DESC
     </select>
     <!--查询电码化区段信息-->
     <select id="findAllDianMaHua" resultMap="BaseResultMap">
-        SELECT
-            cz.cz_name,
-            xd.xd_name,
-            dwd.dwd_name,
-            qb.*
-        FROM
-            mro_quduan_base qb,
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz
-        WHERE
-            qb.cid = cz.cid
-            AND dwd.did = xd.dwd_xd_id
-            AND qb.xid = xd.xid
-            AND line = '电码化'
+        SELECT cz.cz_name,
+               xd.xd_name,
+               dwd.dwd_name,
+               qb.*
+        FROM mro_quduan_base qb,
+             mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz
+        WHERE qb.cid = cz.cid
+          AND dwd.did = xd.dwd_xd_id
+          AND qb.xid = xd.xid
+          AND line = '电码化'
         GROUP BY id DESC
     </select>
 
     <!--根据车站cid  查询站外所有区段信息-->
     <select id="findAllQuDuanByCid" resultMap="BaseResultMap">
-        SELECT
-            cz.cz_name,
-            dwd.dwd_name,
-            xd.xd_name,
-            qb.*
-        FROM
-            mro_quduan_base qb,
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz
-        WHERE
-            qb.cid = cz.cid
-            AND qb.xid = xd.xid
-            AND dwd.did = xd.dwd_xd_id
-            AND line != '电码化'
-            AND qb.cid = #{cid}
+        SELECT cz.cz_name,
+               dwd.dwd_name,
+               xd.xd_name,
+               qb.*
+        FROM mro_quduan_base qb,
+             mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz
+        WHERE qb.cid = cz.cid
+          AND qb.xid = xd.xid
+          AND dwd.did = xd.dwd_xd_id
+          AND line != '电码化'
+          AND qb.cid = #{cid}
     </select>
 
     <!--根据车站cid  查询所有电码化区段信息-->
     <select id="findAllDianMaHuaByCid" resultMap="BaseResultMap">
-        SELECT
-            cz.cz_name,
-            xd.xd_name,
-            dwd.dwd_name,
-            qb.*
-        FROM
-            mro_quduan_base qb,
-            mro_xianduan xd,
-            mro_dianwuduan dwd,
-            mro_chezhan cz
-        WHERE
-            qb.cid = cz.cid
-            AND qb.xid = xd.xid
-            AND dwd.did = xd.dwd_xd_id
-            AND line = '电码化'
-            AND qb.cid = #{cid}
+        SELECT cz.cz_name,
+               xd.xd_name,
+               dwd.dwd_name,
+               qb.*
+        FROM mro_quduan_base qb,
+             mro_xianduan xd,
+             mro_dianwuduan dwd,
+             mro_chezhan cz
+        WHERE qb.cid = cz.cid
+          AND qb.xid = xd.xid
+          AND dwd.did = xd.dwd_xd_id
+          AND line = '电码化'
+          AND qb.cid = #{cid}
     </select>
 
     <!--获取区段表最后一列数据的id-->
     <select id="lastParentid" resultType="java.lang.Integer">
-        SELECT
-            id
-        FROM
-            mro_quduan_base
-        ORDER BY id DESC LIMIT 1
+        SELECT id
+        FROM mro_quduan_base
+        ORDER BY id DESC
+        LIMIT 1
     </select>
     <!--根据区段id  查询对应的parentid-->
     <select id="findParentid" resultType="java.lang.Integer" parameterType="java.lang.Integer">

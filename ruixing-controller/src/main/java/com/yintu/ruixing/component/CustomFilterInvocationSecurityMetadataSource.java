@@ -52,6 +52,8 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
             //如果不想在数据库中的权限分配给角色则可以在此处写逻辑
             if (antPathMatcher.match("/common/**", filterInvocation.getRequestUrl())) {
                 return SecurityConfig.createList("ROLE_ALL_PERMISSION");
+            } else if (antPathMatcher.match("/indexs/**", filterInvocation.getRequestUrl())) {
+                return SecurityConfig.createList("ROLE_ALL_PERMISSION");
             } else {
                 return SecurityConfig.createList("ROLE_NOT_PERMISSION");
             }

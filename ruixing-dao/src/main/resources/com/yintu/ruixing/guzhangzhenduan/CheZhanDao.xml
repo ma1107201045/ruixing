@@ -1119,4 +1119,13 @@
         </if>
         limit 1
     </select>
+    <select id="selectStationConfigurationSum" resultType="long">
+        select count(*)
+        from mro_chezhan
+        where cz_state = 1
+    </select>
+    <select id="selectStationSum" resultType="long">
+        select count(*)
+        from mro_chezhan
+    </select>
 </mapper>

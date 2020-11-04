@@ -54,5 +54,6 @@ public interface AnZhuangTiaoShiXiangMuDao {
 
     List<AnZhuangTiaoShiXiangMuEntity> findByXdId(Integer xdId);
 
+    long selectProjectSum();
 
 }

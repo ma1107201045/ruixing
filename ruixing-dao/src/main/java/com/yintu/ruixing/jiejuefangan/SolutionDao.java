@@ -16,4 +16,6 @@ public interface SolutionDao {
     List<Integer> countTaskStatusByGroupBy(Integer selectType, Date date, Short taskStatus);
 
     List<Map<String, Object>> selectByDateSectionAndProjectStatus(Date startDate, Date endDate, Short projectStatus);
+
+    long selectProjectSum();
 }

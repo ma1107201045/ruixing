@@ -21,4 +21,6 @@ public interface RemoteSupportAlarmService {
     List<RemoteSupportAlarmEntity> findByCondition(Integer pageNumber, Integer pageSize, Integer stationId, Date startTime, Date endTime);
 
     List<RemoteSupportAlarmEntity> findMessage(List<RemoteSupportAlarmEntity> remoteSupportAlarmEntities, Integer stationId);
+
+    long findAlarmSum();
 }

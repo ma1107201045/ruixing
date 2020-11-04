@@ -119,5 +119,12 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      */
     void editTruenameById(Long id, String truename);
 
+    /**
+     * 查询员工总数
+     *
+     * @return 数量
+     */
+    long findUserSum();
+
 
 }

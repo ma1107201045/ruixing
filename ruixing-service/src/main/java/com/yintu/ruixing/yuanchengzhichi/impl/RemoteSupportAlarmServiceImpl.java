@@ -186,4 +186,15 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
         }
         return remoteSupportAlarmEntities;
     }
+
+    @Override
+    public long findAlarmSum() {
+        String databaseName = StrUtil.subBetweenAll(jdbcURL, "/", "?")[0];
+        List<String> tableNames = this.findLikeTable(databaseName, "alarm%");
+        long sum = 0;
+        for (String tableName : tableNames) {
+            sum = sum + alarmDao.selectAlarmSum(tableName);
+        }
+        return sum;
+    }
 }

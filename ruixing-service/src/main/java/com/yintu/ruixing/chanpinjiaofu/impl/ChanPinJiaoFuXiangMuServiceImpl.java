@@ -61,8 +61,8 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
 
     @Override
     public List<MessageEntity> findXiaoXi(Integer senderid) {
-        Integer type=2;
-        return messageDao.findXiaoXi(senderid,type);
+        Integer type = 2;
+        return messageDao.findXiaoXi(senderid, type);
     }
 
     @Override
@@ -366,6 +366,11 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     }
 
     @Override
+    public long findProjectSum() {
+        return chanPinJiaoFuXiangMuDao.selectProjectSum();
+    }
+
+    @Override
     public void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId) {
         Date nowTime = new Date();
         if (chanPinJiaoFuFileAuditorEntity.getIsPass() == 0) {//审核未通过
@@ -509,7 +514,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         ChanPinJiaoFuXiangMuEntity xiangMuEntity = chanPinJiaoFuXiangMuDao.selectByPrimaryKey(id);
         chanPinJiaoFuXiangMuDao.editXiangMuById(chanPinJiaoFuXiangMuEntity);
         Integer aa = 0;
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (xiangMuEntity.getXiangmuState() != chanPinJiaoFuXiangMuEntity.getXiangmuState()) {
             if (chanPinJiaoFuXiangMuEntity.getXiangmuState() == 1) {
                 sb.append(" 项目状态改为“正在执行”,");

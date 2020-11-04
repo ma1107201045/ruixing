@@ -18,7 +18,7 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     List<PaiGongGuanLiPaiGongDanEntity> findOnePaiGongDanByNum(String paiGongDanNum);
 
-    void editPaiGongDanById(Integer id, Integer senderid,Integer uid,  PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username);
+    void editPaiGongDanById(Integer id, Integer senderid, Integer uid, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username);
 
     void deletePaiGongDanByIds(Integer[] ids);
 
@@ -39,4 +39,6 @@ public interface PaiGongGuanLiPaiGongDanService {
     List<MessageEntity> findXiaoXi(Integer senderid);
 
     PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id);
+
+    long findWorkOrderSum();
 }

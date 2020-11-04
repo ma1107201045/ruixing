@@ -140,4 +140,8 @@ public interface CheZhanDao {
      */
     String selectNameById(Long id, Boolean isPrimaryKey);
 
+    long selectStationConfigurationSum();
+
+    long selectStationSum();
+
 }
