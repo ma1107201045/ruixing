@@ -62,10 +62,10 @@ public class CommonController extends SessionController {
      * @return
      */
     @GetMapping("/authority")
-    public Map<String, Object> findAuthority(@RequestParam String description) {
+    public Map<String, Object> findAuthority(@RequestParam("moduleTag") String description) {
         List<PermissionEntity> permissionEntities = this.getLoginAuthType().equals((EnumAuthType.ADMIN.getValue())) ?
-                userService.findAuthority(description, (short) 1) :
-                userService.findAuthorityById(this.getLoginUserId(), description, (short) 1);
+                userService.findAuthority(description, (short) 0) :
+                userService.findAuthorityById(this.getLoginUserId(), description, (short) 0);
         return ResponseDataUtil.ok("获取模块权限成功", permissionEntities);
     }
 

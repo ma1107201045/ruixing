@@ -388,11 +388,7 @@
 
     <select id="selectAuthority" resultMap="BasePermissionResultMap">
         SELECT p.*
-        FROM tb_user u
-                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
-                 INNER JOIN tb_role r ON r.id = ur.role_id
-                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
-                 INNER JOIN tb_permission p ON p.id = pr.permission_id
+        FROM tb_permission p
         where p.description = #{description,jdbcType=VARCHAR}
           and p.is_menu = #{isMenu,jdbcType=SMALLINT}
         GROUP BY p.id
