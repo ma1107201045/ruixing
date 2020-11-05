@@ -41,7 +41,7 @@ public class LineTechnologyStatusController extends SessionController {
 
     @GetMapping
     public Map<String, Object> findAll() {
-        return ResponseDataUtil.ok("查询铁电线车信息成功", listService.getMenuList());
+        return ResponseDataUtil.ok("查询铁电线车信息树成功", listService.getMenuList());
     }
 
     @GetMapping("/railways/bureau")

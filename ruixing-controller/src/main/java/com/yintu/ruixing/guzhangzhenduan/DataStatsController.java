@@ -36,6 +36,14 @@ public class DataStatsController {
     @Autowired
     private DataStatsService dataStatsService;
 
+    @Autowired
+    private ListService ls;
+
+    @GetMapping
+    public Map<String, Object> findTree() {
+        return ResponseDataUtil.ok("查询铁电线车信息树成功", ls.getMenuList());
+    }
+
     //模板下载
     @GetMapping("/quduandownloads")
     public void quduandownloads(HttpServletResponse response) throws IOException {
@@ -228,59 +236,59 @@ public class DataStatsController {
                             } else {
                                 quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
                             }
-                            if ("".equals(zongZuoBiao)){
+                            if ("".equals(zongZuoBiao)) {
                                 quDuanBaseEntity.setZongZuoBiao(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
                             }
-                            if ("".equals(hengXiangPianYi)){
+                            if ("".equals(hengXiangPianYi)) {
                                 quDuanBaseEntity.setHengXiangPianYi(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setHengXiangPianYi(hengXiangPianYi);
                             }
-                            if ("".equals(typeOfTurnoutSection)){
+                            if ("".equals(typeOfTurnoutSection)) {
                                 quDuanBaseEntity.setTurnoutSectionType(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setTurnoutSectionType(typeOfTurnoutSection);
                             }
-                            if ("".equals(bend1ConnectionSectionID)){
+                            if ("".equals(bend1ConnectionSectionID)) {
                                 quDuanBaseEntity.setBend1ConnectionSectionID(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBend1ConnectionSectionID(bend1ConnectionSectionID);
                             }
-                            if ("".equals(bent1ConnectionObject)){
+                            if ("".equals(bent1ConnectionObject)) {
                                 quDuanBaseEntity.setBent1ConnectionObject(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent1ConnectionObject(bent1ConnectionObject);
                             }
-                            if ("".equals(bent1OffsetOfBranchCenter)){
+                            if ("".equals(bent1OffsetOfBranchCenter)) {
                                 quDuanBaseEntity.setBent1OffsetOfBranchCenter(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent1OffsetOfBranchCenter(bent1OffsetOfBranchCenter);
                             }
                             if ("".equals(bent1Orientation)) {
                                 quDuanBaseEntity.setBent1Orientation(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent1Orientation(bent1Orientation);
                             }
-                            if ("".equals(bend2ConnectionSectionID)){
+                            if ("".equals(bend2ConnectionSectionID)) {
                                 quDuanBaseEntity.setBend2ConnectionSectionID(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBend2ConnectionSectionID(bend2ConnectionSectionID);
                             }
-                            if ("".equals(bent2ConnectionObject)){
+                            if ("".equals(bent2ConnectionObject)) {
                                 quDuanBaseEntity.setBent2ConnectionObject(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent2ConnectionObject(bent2ConnectionObject);
                             }
-                            if ("".equals(bent2OffsetOfBranchCenter)){
+                            if ("".equals(bent2OffsetOfBranchCenter)) {
                                 quDuanBaseEntity.setBent2OffsetOfBranchCenter(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent2OffsetOfBranchCenter(bent2OffsetOfBranchCenter);
                             }
                             if ("".equals(bent2Orientation)) {
                                 quDuanBaseEntity.setBent2Orientation(null);
-                            }else {
+                            } else {
                                 quDuanBaseEntity.setBent2Orientation(bent2Orientation);
                             }
                             dataStatsService.addQuDuan(quDuanBaseEntity);
@@ -778,8 +786,6 @@ public class DataStatsController {
     }
 
 
-
-
     //根据线段xid 查询此线段下的线段json数据
     @GetMapping("/findOneXDJsonByXid/{xid}")
     public Map<String, Object> findOneXDJsonByXid(@PathVariable Integer xid) {
@@ -790,7 +796,7 @@ public class DataStatsController {
     //根据车站cid 查询此车站下的区段配置json数据
     @GetMapping("/findQDJsonByCid/{cid}")
     public Map<String, Object> findQDJsonByCid(@PathVariable Integer cid) {
-        CheZhanEntity qdJson=dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
+        CheZhanEntity qdJson = dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
         return ResponseDataUtil.ok("查询区段的json数据成功", qdJson);
     }
 
