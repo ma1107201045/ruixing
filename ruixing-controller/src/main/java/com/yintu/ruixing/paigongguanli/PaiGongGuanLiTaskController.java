@@ -66,7 +66,7 @@ public class PaiGongGuanLiTaskController {
 
     //根据id 批量或者单个删除任务
     @DeleteMapping("/deleteTaskByIds/{ids}")
-    public Map<String,Object>deleteTaskByIds(@PathVariable Integer[] ids){
+    public Map<String, Object> deleteTaskByIds(@PathVariable Integer[] ids) {
         paiGongGuanLiTaskService.deleteTaskByIds(ids);
         return ResponseDataUtil.ok("删除任务成功");
     }
@@ -100,7 +100,7 @@ public class PaiGongGuanLiTaskController {
 
     //根据人员id  查询所有的任务能力数据
     @GetMapping("/findUserPowerScoreById/{id}")
-    public Map<String, Object> findUserPowerScoreById(@PathVariable Integer id ,String taskTotalName) {
+    public Map<String, Object> findUserPowerScoreById(@PathVariable Integer id, String taskTotalName) {
         //PageHelper.startPage(page, size);
         List<PaiGongGuanLiTaskUserEntity> taskUserEntityList = paiGongGuanLiTaskService.findUserPowerScoreById(id, taskTotalName);
         //PageInfo<PaiGongGuanLiTaskUserEntity> taskUserEntityPageInfo = new PageInfo<>(taskUserEntityList);
@@ -116,7 +116,7 @@ public class PaiGongGuanLiTaskController {
 
     //新增任务
     @PostMapping("/addTaskScore")
-    public Map<String,Object>addTaskScore(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity){
+    public Map<String, Object> addTaskScore(PaiGongGuanLiTaskUserEntity paiGongGuanLiTaskUserEntity) {
         paiGongGuanLiTaskService.addTaskScore(paiGongGuanLiTaskUserEntity);
         return ResponseDataUtil.ok("新增成功");
     }
@@ -124,16 +124,27 @@ public class PaiGongGuanLiTaskController {
 
     //查询所有任务
     @GetMapping("/findAllTasks")
-    public Map<String,Object>findAllTasks(){
-        List<PaiGongGuanLiTaskEntity> taskEntityList=paiGongGuanLiTaskService.findAllTasks();
-        return ResponseDataUtil.ok("查询成功",taskEntityList);
+    public Map<String, Object> findAllTasks() {
+        List<PaiGongGuanLiTaskEntity> taskEntityList = paiGongGuanLiTaskService.findAllTasks();
+        return ResponseDataUtil.ok("查询成功", taskEntityList);
     }
 
     //根据任务id  单个或者批量删除
     @DeleteMapping("/deleteUserTaskByIds/{ids}")
-    public Map<String,Object>deleteUserTaskByIds(@PathVariable Integer[] ids){
+    public Map<String, Object> deleteUserTaskByIds(@PathVariable Integer[] ids) {
         paiGongGuanLiTaskService.deleteUserTaskByIds(ids);
         return ResponseDataUtil.ok("删除成功");
+    }
+
+    @GetMapping("/users")
+    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
+                                       @RequestParam("page_size") Integer pageSize,
+                                       @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
+                                       @RequestParam(value = "search_text", required = false) String username) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<UserEntity> userEntities = userService.findAllOrByUsername(username);
+        PageInfo<UserEntity> pageInfo = new PageInfo<>(userEntities);
+        return ResponseDataUtil.ok("查询用户列表成功", pageInfo);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.yintu.ruixing.xitongguanli;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
