@@ -401,7 +401,7 @@
                  INNER JOIN tb_role r ON r.id = ur.role_id
                  INNER JOIN tb_permission_role pr ON r.id = pr.role_id
                  INNER JOIN tb_permission p ON p.id = pr.permission_id
-        where u.id = #{idjdbcType=BIGINT}
+        where u.id = #{id,jdbcType=BIGINT}
           and p.description = #{description,jdbcType=VARCHAR}
           and p.is_menu = #{isMenu,jdbcType=SMALLINT}
         GROUP BY p.id

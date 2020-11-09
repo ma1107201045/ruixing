@@ -63,6 +63,7 @@ public class CommonController extends SessionController {
      */
     @GetMapping("/authority")
     public Map<String, Object> findAuthority(@RequestParam("moduleTag") String description) {
+        System.out.println(this.getLoginAuthType());
         List<PermissionEntity> permissionEntities = this.getLoginAuthType().equals((EnumAuthType.ADMIN.getValue())) ?
                 userService.findAuthority(description, (short) 0) :
                 userService.findAuthorityById(this.getLoginUserId(), description, (short) 0);

@@ -1,5 +1,5 @@
 
-package com.yintu.ruixing.guzhangzhenduan;
+package com.yintu.ruixing.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.FileUploadUtil;
@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -126,6 +128,40 @@ public class TestController {
         return ResponseDataUtil.ok("上传售前技术支持文件信息成功", jo);
     }
 
+    @PostMapping("/test7")
+    @ResponseBody
+    public Map<String, Object> test7(HttpServletRequest request) throws IOException {
+        InputStream is = request.getInputStream();
+        byte[] b = new byte[1024];
+        int len;
+        while ((len = is.read(b, 0, b.length)) != -1) {
+            System.out.println(Arrays.toString(b));
+        }
+        return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
+    }
 
+    @PostMapping("/test8")
+    @ResponseBody
+    public Map<String, Object> test8(HttpServletRequest request) throws IOException {
+        InputStream is = request.getInputStream();
+        byte[] b = new byte[1024];
+        int len;
+        while (( len = is.read(b)) != -1) {
+            System.out.println(Arrays.toString(b));
+        }
+        return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
+    }
+
+    @PostMapping("/test9")
+    @ResponseBody
+    public Map<String, Object> test9(HttpServletRequest request) throws IOException {
+        InputStream is = request.getInputStream();
+        byte[] b = new byte[1024];
+        int len;
+        while ((len = is.read(b, 0, b.length)) != -1) {
+            System.out.println(Arrays.toString(b));
+        }
+        return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
+    }
 }
 
