@@ -83,13 +83,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRoleAndPermissions(RoleEntity roleEntity, Long[] permissionIds) {
         this.add(roleEntity);
-        this.addPermissionsByIdAndPermissionIds(roleEntity.getId(), permissionIds);
+        this.addPermissionsByIdAndPermissionIds(roleEntity.getId(), permissionIds, roleEntity.getModifiedBy());
     }
 
     @Override
     public void editRoleAndPermissions(RoleEntity roleEntity, Long[] permissionIds) {
         this.edit(roleEntity);
-        this.addPermissionsByIdAndPermissionIds(roleEntity.getId(), permissionIds);
+        this.addPermissionsByIdAndPermissionIds(roleEntity.getId(), permissionIds, roleEntity.getModifiedBy());
     }
 
 
@@ -201,7 +201,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public void addPermissionsByIdAndPermissionIds(Long id, Long[] permissionIds) {
+    public void addPermissionsByIdAndPermissionIds(Long id, Long[] permissionIds, String loginUserName) {
         //去重
         Set<Long> set = new HashSet<>(Arrays.asList(permissionIds));
         RoleEntity roleEntity = this.findById(id);
@@ -228,6 +228,10 @@ public class RoleServiceImpl implements RoleService {
                     PermissionEntity permissionEntity = permissionService.findById(permissionId);
                     if (permissionEntity != null) {
                         PermissionRoleEntity permissionRoleEntity = new PermissionRoleEntity();
+                        permissionRoleEntity.setCreateBy(loginUserName);
+                        permissionRoleEntity.setCreateTime(new Date());
+                        permissionRoleEntity.setModifiedBy(loginUserName);
+                        permissionRoleEntity.setModifiedTime(new Date());
                         permissionRoleEntity.setRoleId(id);
                         permissionRoleEntity.setPermissionId(permissionId);
                         permissionRoleService.add(permissionRoleEntity);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,11 @@ public class UserController extends SessionController {
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
-        userService.addUserAndRoles(userEntity, roleIds, departmentIds, this.getLoginUserName());
+        userEntity.setCreateBy(this.getLoginUserName());
+        userEntity.setCreateTime(new Date());
+        userEntity.setModifiedBy(this.getLoginUserName());
+        userEntity.setModifiedTime(new Date());
+        userService.addUserAndRoles(userEntity, roleIds, departmentIds );
         return ResponseDataUtil.ok("添加用户成功");
     }
 
@@ -50,7 +55,9 @@ public class UserController extends SessionController {
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
-        userService.editUserAndRoles(userEntity, roleIds, departmentIds, this.getLoginUserName());
+        userEntity.setModifiedBy(this.getLoginUserName());
+        userEntity.setModifiedTime(new Date());
+        userService.editUserAndRoles(userEntity, roleIds, departmentIds);
         return ResponseDataUtil.ok("修改用户成功");
     }
 

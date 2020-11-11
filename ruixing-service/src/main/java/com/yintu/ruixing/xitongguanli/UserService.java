@@ -36,7 +36,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      * @param userEntity 用户信息
      * @param roleIds    角色id集
      */
-    void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, String loginUserName);
+    void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds);
 
     /**
      * 修改用户并且重新分配角色
@@ -45,7 +45,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      * @param roleIds    角色id集
      */
 
-    void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, String loginUserName);
+    void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds);
 
     /**
      * 通过真实姓名查询用户
@@ -87,7 +87,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      * @param Id      用户id
      * @param roleIds 角色id集
      */
-    void addRolesByIdAndRoleIds(Long Id, Long[] roleIds);
+    void addRolesByIdAndRoleIds(Long Id, Long[] roleIds,String loginUserName);
 
     /**
      * @param id             用户id

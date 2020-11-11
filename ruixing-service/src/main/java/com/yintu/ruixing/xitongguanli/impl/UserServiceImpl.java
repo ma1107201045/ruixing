@@ -106,23 +106,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, String loginUserName) {
-        userEntity.setCreateBy(loginUserName);
-        userEntity.setCreateTime(new Date());
-        userEntity.setModifiedBy(loginUserName);
-        userEntity.setModifiedTime(new Date());
+    public void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds) {
         this.add(userEntity);
-        this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds);
-        this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, loginUserName);
+        this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds, userEntity.getModifiedBy());
+        this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, userEntity.getModifiedBy());
     }
 
     @Override
-    public void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, String loginUserName) {
-        userEntity.setModifiedBy(loginUserName);
-        userEntity.setModifiedTime(new Date());
+    public void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds) {
         this.edit(userEntity);
-        this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds);
-        this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, loginUserName);
+        this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds, userEntity.getModifiedBy());
+        this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, userEntity.getModifiedBy());
 
     }
 
@@ -202,7 +196,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addRolesByIdAndRoleIds(Long id, Long[] roleIds) {
+    public void addRolesByIdAndRoleIds(Long id, Long[] roleIds, String loginUserName) {
         //去重
         Set<Long> set = new HashSet<>(Arrays.asList(roleIds));
 
@@ -230,6 +224,10 @@ public class UserServiceImpl implements UserService {
                     RoleEntity roleEntity = roleService.findById(roleId);
                     if (roleEntity != null) {
                         UserRoleEntity userRoleEntity = new UserRoleEntity();
+                        userRoleEntity.setCreateBy(loginUserName);
+                        userRoleEntity.setCreateTime(new Date());
+                        userRoleEntity.setModifiedBy(loginUserName);
+                        userRoleEntity.setModifiedTime(new Date());
                         userRoleEntity.setUserId(id);
                         userRoleEntity.setRoleId(roleId);
                         userRoleService.add(userRoleEntity);
