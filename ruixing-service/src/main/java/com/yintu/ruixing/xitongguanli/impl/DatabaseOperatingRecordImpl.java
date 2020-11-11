@@ -84,8 +84,8 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
         String databaseName = arr[2];
         List<String> tableNames = this.findLikeTableNames(databaseName, "alarm%", "data%", "tb_database_operating_record");
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < tableNames.size(); i++) {
-            sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableNames.get(i)).append(" ");
+        for (String tableName : tableNames) {
+            sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableName).append(" ");
         }
         String basePath = SystemUtil.getOsInfo().isWindows() ? backupPathOfWindowPrefix : backupPathOfUnixPrefix;
         String uuidStr = UUID.fastUUID().toString();
