@@ -49,7 +49,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyEntity">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyEntity">
         update mro_quduan_info_types_property
         <set>
             <if test="types != null">
@@ -105,15 +106,15 @@
     <select id="countByType" parameterType="java.lang.Integer" resultType="java.lang.String">
         SELECT
         types
-          FROM(select count(*) as typesSum,types
-                  from mro_quduan_info_types_property
-                     where types in
-                <foreach collection="list" item="type" index="index" open="(" close=")" separator=",">
-                    '${type}'
-                </foreach>
+        FROM(select count(*) as typesSum,types
+        from mro_quduan_info_types_property
+        where types in
+        <foreach collection="list" item="type" index="index" open="(" close=")" separator=",">
+            '${type}'
+        </foreach>
         group by types) a
         ORDER BY
-        typesSum
+        typesSum DESC
         LIMIT 1
     </select>
 </mapper>
