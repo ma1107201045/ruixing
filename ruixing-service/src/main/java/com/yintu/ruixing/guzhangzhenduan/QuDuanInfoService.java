@@ -56,7 +56,7 @@ public interface QuDuanInfoService {
      * @param endTime   结束时间
      * @return
      */
-    List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Date startTime, Date endTime);
+    List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Integer[] qids, Date startTime, Date endTime);
 
     /**
      * @param czId      车站id

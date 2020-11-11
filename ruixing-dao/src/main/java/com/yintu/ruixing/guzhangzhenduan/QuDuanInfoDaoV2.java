@@ -18,7 +18,7 @@ public interface QuDuanInfoDaoV2 {
 
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
-    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Date startTime, Date endTime, String tableName);
+    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Date startTime, Date endTime, String tableName);
 
     //日报表
     List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -64,20 +65,20 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     }
 
     @Override
-    public List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Date startTime, Date endTime) {
+    public List<QuDuanInfoEntityV2> findByCzIdAndTime1(Integer czId, Integer[] qids, Date startTime, Date endTime) {
         if (startTime.after(endTime))
             throw new BaseRuntimeException("开始时间不能大于结束时间");
         if (DateUtil.month(startTime) == DateUtil.month(endTime)) {
             String tableName = StringUtil.getTableName(czId, startTime);
-            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, startTime, endTime, tableName) : new ArrayList<>();
+            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, startTime, endTime, tableName) : new ArrayList<>();
         } else {
             String firstTableName = StringUtil.getTableName(czId, startTime);
             List<QuDuanInfoEntityV2> firstQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
 
             String lastTableName = StringUtil.getTableName(czId, endTime);
             List<QuDuanInfoEntityV2> lastQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
             firstQuDuanInfoEntityV2s.addAll(lastQuDuanInfoEntityV2s);
             return firstQuDuanInfoEntityV2s;
         }
@@ -103,7 +104,11 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 }
             }
         } else {
-            List<QuDuanInfoEntityV2> quDuanInfoEntityV2s = this.findByCzIdAndTime1(czId, startTime, endTime);
+            Integer[] qids = quDuanBaseService.findByCzId(czId)
+                    .stream()
+                    .map(QuDuanBaseEntity::getQdid)
+                    .toArray(Integer[]::new);
+            List<QuDuanInfoEntityV2> quDuanInfoEntityV2s = this.findByCzIdAndTime1(czId, qids, startTime, endTime);
             for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2s) {
                 JSONObject jo = this.convert(quDuanInfoTypesPropertyEntities, quDuanInfoEntityV2);
                 jsonObjects.add(jo);

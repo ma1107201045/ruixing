@@ -714,6 +714,12 @@
             <if test="czId!=null">
                 qi.station_id=#{czId,jdbcType=INTEGER}
             </if>
+            <if test="qids!=null and qids.length>0">
+                and qi.v1 in
+                <foreach collection="qids" open="(" close=")" index="index" item="qid" separator=",">
+                    #{qid,jdbcType=INTEGER}
+                </foreach>
+            </if>
             <if test="startTime !=null and endTime !=null">
                 and FROM_UNIXTIME(qi.createtime) between #{startTime,jdbcType=TIMESTAMP} and
                 #{endTime,jdbcType=TIMESTAMP}
