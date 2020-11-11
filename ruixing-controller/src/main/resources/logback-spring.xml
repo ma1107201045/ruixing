@@ -98,8 +98,8 @@
         </root>
     </springProfile>
     <springProfile name="prod">
-        <logger name="com.yintu.ruixing" level="TRACE" />
-        <root level="TRACE">
+        <logger name="com.yintu.ruixing" level="WARN" />
+        <root level="ERROR">
             <appender-ref ref="allFile"/>
             <appender-ref ref="errorFile"/>
         </root>
