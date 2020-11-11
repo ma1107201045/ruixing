@@ -89,35 +89,45 @@ public class BaoJingYuJingPropertyController {
 
     //根据车站czid 统计未读报警预警的数量
     @GetMapping("/findAlarmNumber")
-    public Map<String, Object> findAlarmNumber(Integer czid) {
+    public Map<String, Object> findAlarmNumber(Integer dwdid, Integer xdid, Integer czid) {
         Date dayTime = new Date();
-        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        Integer AlarmNumber = baoJingYuJingPropertyService.findAlarmNumber(tableName);
+        Integer AlarmNumber=null;
+        if (dwdid == null && xdid == null && czid == null){
+             AlarmNumber = baoJingYuJingPropertyService.findAllAlarmNumber();
+        }
+        if (dwdid != null && xdid == null && czid == null){
+            AlarmNumber = baoJingYuJingPropertyService.findAllAlarmNumberByDWDid(dwdid);
+        }
+        if (dwdid != null && xdid != null && czid == null){
+            AlarmNumber = baoJingYuJingPropertyService.findAllAlarmNumberByXDid(dwdid,xdid);
+        }
+        if (czid !=null){
+            String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
+             AlarmNumber = baoJingYuJingPropertyService.findAlarmNumber(tableName);
+        }
         return ResponseDataUtil.ok("查询成功", AlarmNumber);
     }
 
 
     //更改未读状态
     @PutMapping("/editAlarmState")
-    public Map<String, Object> editAlarmState(AlarmTableEntity alarmTableEntity, Integer czid) {
-        Date dayTime = new Date();
-        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        baoJingYuJingPropertyService.editAlarmState(alarmTableEntity, tableName);
+    public Map<String, Object> editAlarmState(AlarmTableEntity alarmTableEntity) {
+        baoJingYuJingPropertyService.editAlarmState(alarmTableEntity);
         return ResponseDataUtil.ok("编辑成功");
     }
 
     //查询所有未读的报警预警数据
     @GetMapping("/findAllNotReadAlarmDatas")
-    public Map<String, Object> findAllNotReadAlarmDatas(Integer page, Integer size, Integer czid) {
-        Date dayTime = new Date();
-        String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            PageHelper.startPage(page, size);
-            List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page, size, tableName);
+    public Map<String, Object> findAllNotReadAlarmDatas(Integer page, Integer size,Integer czid) {
+        if (czid==null) {
+            List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllNotReadAlarmDatas(page, size);
+            PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
+            return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
+        }else {
+            List<AlarmEntity> alarmEntityList = baoJingYuJingPropertyService.findAllNotReadAlarmDatasByCZid(page, size,czid);
             PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
             return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
         }
-        return ResponseDataUtil.ok("查询数据成功", new ArrayList<>());
     }
 
     //查询历史记录的预警报警数据
@@ -142,7 +152,6 @@ public class BaoJingYuJingPropertyController {
         PageInfo<AlarmEntity> alarmEntityPageInfo = new PageInfo<>(alarmEntityList);
         return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
     }
-
 
 
 }

@@ -26,11 +26,16 @@ public interface AlarmTableDao {
 
     void editAlarmState( @Param("status")Integer status, @Param("tableName") String tableName);
 
-    List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("tableName") String tableName);
+    List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("toString") String toString);
 
     List<AlarmTableEntity> findAllAlarmDatas(@Param("tableName") String tableName);
 
     List<AlarmTableEntity> findAllAlarmDatasByTimes(@Param("tableName")String tableName,@Param("starTime") Long starTime,@Param("endTime") Long endTime);
 
     List<AlarmTableEntity> findAllAlarmDatasBySomethings(@Param("toString") String toString,@Param("starTime") Date starTime,@Param("endTime") Date endTime);
+
+    Integer findAllAlarmNumber(String toString);
+
+    List<AlarmTableEntity> findAllNotReadAlarmDatasByCZid(String tableName);
+
 }

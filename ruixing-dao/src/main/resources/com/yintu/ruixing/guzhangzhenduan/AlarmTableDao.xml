@@ -57,15 +57,40 @@
     from ${tableName}
   </select>
 
+  <!--查询未读的数量-->
+  <select id="findAllAlarmNumber"   parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+        count( STATUS )
+    FROM
+    <trim prefix="(" suffix=")" suffixOverrides=" UNION ALL ">
+      ${toString}
+    </trim>
+    AS alarm
+    WHERE
+        STATUS =0
+  </select>
+
 
   <!--查询未读的报警预警数据-->
     <select id="findAllNotReadAlarmDatas"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from ${tableName}
+        FROM
+        <trim prefix="(" suffix=")" suffixOverrides=" UNION ALL ">
+          ${toString}
+        </trim>
+        AS alarm
         where status =0
     </select>
 
+  <!--查询未读的报警预警数据-->
+  <select id="findAllNotReadAlarmDatasByCZid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    FROM
+      ${tableName}
+    where status =0
+  </select>
 
   <update id="editAlarmState" parameterType="com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity">
     update ${tableName}
