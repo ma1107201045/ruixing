@@ -113,22 +113,26 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     httpServletResponse.setContentType("application/json;charset=utf-8");
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = httpServletResponse.getWriter();
+
                     Map<String, Object> errorData = ResponseDataUtil.error(authenticationException.getMessage());
                     if (authenticationException instanceof VerificationCodeException) {
                         errorData = ResponseDataUtil.error("验证码不正确");
-                    } else if (authenticationException instanceof AuthenticationServiceException) {
-                        errorData = ResponseDataUtil.error("登录方式有误，请重新登录");
-                    } else if (authenticationException instanceof DisabledException) {
-                        errorData = ResponseDataUtil.error("账户被禁用，请联系管理员");
-                    } else if (authenticationException instanceof LockedException) {
-                        errorData = ResponseDataUtil.error("账户被锁定，请联系管理员");
-                    } else if (authenticationException instanceof CredentialsExpiredException) {
-                        errorData = ResponseDataUtil.error("密码过期，请联系管理员");
-                    } else if (authenticationException instanceof AccountExpiredException) {
-                        errorData = ResponseDataUtil.error("账户过期，请联系管理员");
-                    } else if (authenticationException instanceof BadCredentialsException) {
+                    }
+//                  else if (authenticationException instanceof AuthenticationServiceException) {
+//                        errorData = ResponseDataUtil.error("登录方式有误，请重新登录");
+//                    }
+                    else if (authenticationException instanceof BadCredentialsException) {
                         errorData = ResponseDataUtil.error("用户名或者密码输入错误，请重新输入");
                     }
+//                    else if (authenticationException instanceof DisabledException) {
+//                        errorData = ResponseDataUtil.error("账户被禁用，请联系管理员");
+//                    } else if (authenticationException instanceof LockedException) {
+//                        errorData = ResponseDataUtil.error("账户被锁定，请联系管理员");
+//                    } else if (authenticationException instanceof CredentialsExpiredException) {
+//                        errorData = ResponseDataUtil.error("密码过期，请联系管理员");
+//                    } else if (authenticationException instanceof AccountExpiredException) {
+//                        errorData = ResponseDataUtil.error("账户过期，请联系管理员");
+//                    }
                     JSONObject jo = (JSONObject) JSONObject.toJSON(errorData);
                     out.write(jo.toJSONString());
                     out.flush();
