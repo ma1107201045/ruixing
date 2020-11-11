@@ -113,7 +113,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     httpServletResponse.setContentType("application/json;charset=utf-8");
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                     PrintWriter out = httpServletResponse.getWriter();
-                    Map<String, Object> errorData = ResponseDataUtil.ok(authenticationException.getMessage());
+                    Map<String, Object> errorData = ResponseDataUtil.error(authenticationException.getMessage());
                     if (authenticationException instanceof VerificationCodeException) {
                         errorData = ResponseDataUtil.error("验证码不正确");
                     } else if (authenticationException instanceof AuthenticationServiceException) {
