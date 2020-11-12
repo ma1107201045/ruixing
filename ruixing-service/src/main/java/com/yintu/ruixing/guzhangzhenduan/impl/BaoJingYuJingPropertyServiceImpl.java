@@ -746,7 +746,6 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
         } else {
             Integer alarmNum = 0;
             return alarmNum;
-
         }
     }
 
