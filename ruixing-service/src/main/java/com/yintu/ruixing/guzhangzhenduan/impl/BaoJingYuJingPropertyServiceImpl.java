@@ -578,12 +578,8 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
 
     @Override
     public List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size) {
-
         String databaseName = "ruixing";
-        Date dayTime = new Date();
-        int month = DateUtil.month(dayTime) + 1;
-        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
-        String tableName = "alarm" + "_%" + DateUtil.year(dayTime) + monthStr;
+        String tableName = "alarm" + "_%" ;
         List<String> cztables = new ArrayList<>();
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
         for (String table : tables) {
@@ -679,11 +675,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
         alarmTableEntity.setStatus(1);
         Integer status = 1;
         String databaseName = "ruixing";
-        Date dayTime = new Date();
-        int month = DateUtil.month(dayTime) + 1;
-        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
-        String tableName = "alarm" + "_%" + DateUtil.year(dayTime) + monthStr;
-        List<String> cztables = new ArrayList<>();
+        String tableName = "alarm" + "_%" ;
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
         for (String table : tables) {
             alarmTableDao.editAlarmState(status, table);
@@ -753,10 +745,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
     @Override
     public Integer findAllAlarmNumber() {
         String databaseName = "ruixing";
-        Date dayTime = new Date();
-        int month = DateUtil.month(dayTime) + 1;
-        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
-        String tableName = "alarm" + "_%" + DateUtil.year(dayTime) + monthStr;
+        String tableName = "alarm" + "_%";
         List<String> cztables = new ArrayList<>();
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
         for (String table : tables) {
