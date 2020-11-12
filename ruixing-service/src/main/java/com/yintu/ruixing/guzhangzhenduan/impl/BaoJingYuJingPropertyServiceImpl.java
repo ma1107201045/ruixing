@@ -675,7 +675,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
     }
 
     @Override
-    public void editAlarmState(AlarmTableEntity alarmTableEntity ) {
+    public void editAlarmState(AlarmTableEntity alarmTableEntity) {
         alarmTableEntity.setStatus(1);
         Integer status = 1;
         String databaseName = "ruixing";
@@ -691,9 +691,8 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
     }
 
 
-
     @Override
-    public Integer findAllAlarmNumberByXDid(Integer dwdid,Integer xdid) {
+    public Integer findAllAlarmNumberByXDid(Integer dwdid, Integer xdid) {
         String databaseName = "ruixing";
         List<String> cztables = new ArrayList<>();
         List<Integer> czidlist = new ArrayList<>();
@@ -710,10 +709,15 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             }
         }
         StringBuilder sb = new StringBuilder();
-        for (String table : cztables) {
-            sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+        if (cztables.size() != 0) {
+            for (String table : cztables) {
+                sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+            }
+            return alarmTableDao.findAllAlarmNumber(sb.toString());
+        } else {
+            Integer alarmNum = 0;
+            return alarmNum;
         }
-        return alarmTableDao.findAllAlarmNumber(sb.toString());
     }
 
     @Override
@@ -734,11 +738,17 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             }
         }
         StringBuilder sb = new StringBuilder();
-        for (String table : cztables) {
-            sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+        if (cztables.size() != 0) {
+            for (String table : cztables) {
+                sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+            }
+            return alarmTableDao.findAllAlarmNumber(sb.toString());
+        } else {
+            Integer alarmNum = 0;
+            return alarmNum;
         }
-        return alarmTableDao.findAllAlarmNumber(sb.toString());
     }
+
 
     @Override
     public Integer findAllAlarmNumber() {
@@ -753,10 +763,15 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             cztables.add(table);
         }
         StringBuilder sb = new StringBuilder();
-        for (String table : cztables) {
-            sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+        if (cztables.size() != 0) {
+            for (String table : cztables) {
+                sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
+            }
+            return alarmTableDao.findAllAlarmNumber(sb.toString());
+        } else {
+            Integer alarmNum = 0;
+            return alarmNum;
         }
-        return alarmTableDao.findAllAlarmNumber(sb.toString());
     }
 
     @Override
