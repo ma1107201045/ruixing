@@ -68,7 +68,7 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
     //**************************数据接收或者关闭******************************
 
-    public void insertData(Integer czId, Integer userId) {
+    public QuDuanDownloadEntity insertData(Integer czId, Integer userId) {
         QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
         quDuanDownloadEntity.setCreateTime(new Date());
         quDuanDownloadEntity.setCid(czId);
@@ -80,6 +80,7 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
         quDuanDownloadEntity.setUpdateTime(new Date());
         this.add(quDuanDownloadEntity);
+        return quDuanDownloadEntity;
     }
 
     @Override
@@ -117,7 +118,7 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
     public QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId) {
         QuDuanDownloadEntity quDuanDownloadEntity = quDuanDownloadDao.selectByCidAndDataType(czId, userId, (short) 2);
         if (quDuanDownloadEntity == null)
-            insertData(czId, userId);
+            quDuanDownloadEntity = insertData(czId, userId);
         return quDuanDownloadEntity;
     }
 

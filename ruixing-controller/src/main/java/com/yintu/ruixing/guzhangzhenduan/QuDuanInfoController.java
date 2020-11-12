@@ -1,5 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
+import cn.hutool.core.util.ZipUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -12,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * @author:mlf
@@ -73,6 +73,7 @@ public class QuDuanInfoController extends SessionController {
                                                @RequestParam(value = "startTime", required = false) Date startTime,
                                                @RequestParam(value = "endTime", required = false) Date endTime) {
         List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, startTime, endTime);
+//        byte[] result = ZipUtil.gzip(JSONArray.toJSON(jsonObjects).toString(), "utf-8");
         return ResponseDataUtil.ok("查询区段详情成功", jsonObjects);
     }
 
