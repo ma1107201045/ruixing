@@ -41,14 +41,14 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     private AnZhuangTiaoShiWorkNameLibraryDao anZhuangTiaoShiWorkNameLibraryDao;
 
     @Override
-    public AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid,Integer wnlid,Integer receiverid) {
-        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findOneWorkNameById(wntid,wnlid,receiverid);
+    public AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid, Integer wnlid, Integer receiverid) {
+        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findOneWorkNameById(wntid, wnlid, receiverid);
     }
 
     @Override
     public void editWorksAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId) {
         Date nowTime = new Date();
-        Integer wntid=anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWntidById(id);
+        Integer wntid = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWntidById(id);
         if (anZhuangTiaoShiWorksAuditorEntity.getIsPass() == 0) {//审核未通过
             AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(wntid, receiverid);
             //添加一条消息到消息表
@@ -85,7 +85,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             recordMessageEntity.setTypenum(2);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
-        Integer auid=anZhuangTiaoShiWorksAuditorDao.findidByIds(id,receiverid);
+        Integer auid = anZhuangTiaoShiWorksAuditorDao.findidByIds(id, receiverid);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorksAuditorEntity.setAuditorId(receiverid);
@@ -168,7 +168,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             recordMessageEntity.setTypenum(1);
             anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
         }
-        Integer auid=anZhuangTiaoShiWorksAuditorDao.findidByIds(id,receiverid);
+        Integer auid = anZhuangTiaoShiWorksAuditorDao.findidByIds(id, receiverid);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatename(username);
         anZhuangTiaoShiWorksAuditorEntity.setUpdatetime(nowTime);
         anZhuangTiaoShiWorksAuditorEntity.setAuditorId(receiverid);
@@ -215,10 +215,10 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
 
     @Override
     public AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id, Integer receiverid) {
-        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity =null;
-         workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
-        if (workNameTotalEntity==null){
-             workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksByid(id);
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = null;
+        workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksById(id, receiverid);
+        if (workNameTotalEntity == null) {
+            workNameTotalEntity = anZhuangTiaoShiWorkNameTotalDao.findOneWorksByid(id);
         }
         //查找此作业项配置版本有多少个作业项
         Integer worknametotal = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameTatol(id);
@@ -227,8 +227,8 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     }
 
     @Override
-    public List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(String workname, Integer page, Integer size) {
-        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameByWorkname(workname);
+    public List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(Integer awtId, String workname, Integer page, Integer size) {
+        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameByWorkname(awtId, workname);
     }
 
     @Override

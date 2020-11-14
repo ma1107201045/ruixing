@@ -63,7 +63,7 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
     @GetMapping("/findOneWorksById/{id}")
     public Map<String, Object> findOneWorksById(@PathVariable Integer id) {
         Integer receiverid = this.getLoginUser().getId().intValue();
-        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalService.findOneWorksById(id,receiverid);
+        AnZhuangTiaoShiWorkNameTotalEntity workNameTotalEntity = anZhuangTiaoShiWorkNameTotalService.findOneWorksById(id, receiverid);
         return ResponseDataUtil.ok("查询成功", workNameTotalEntity);
     }
 
@@ -104,11 +104,12 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
 
     //根据id  查询对应的数据
     @GetMapping("/findOneWorkNameById")
-    public Map<String,Object>findOneWorkNameById( Integer wntid,Integer wnlid){
+    public Map<String, Object> findOneWorkNameById(Integer wntid, Integer wnlid) {
         Integer receiverid = this.getLoginUser().getId().intValue();
-        AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity totalEntity=anZhuangTiaoShiWorkNameTotalService.findOneWorkNameById(wntid,wnlid,receiverid);
-        return ResponseDataUtil.ok("查询数据成功",totalEntity);
+        AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity totalEntity = anZhuangTiaoShiWorkNameTotalService.findOneWorkNameById(wntid, wnlid, receiverid);
+        return ResponseDataUtil.ok("查询数据成功", totalEntity);
     }
+
     // 在对应的作业项配置版本下  添加作业项
     @PostMapping("/addWorkNameEdition")
     public Map<String, Object> addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, Integer[] uids) {
@@ -145,9 +146,9 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
 
     //根据作业项的名称  进行模糊查询
     @GetMapping("/findWorkNameByWorkname")
-    public Map<String, Object> findWorkNameByWorkname(String workname, Integer page, Integer size) {
+    public Map<String, Object> findWorkNameByWorkname(Integer awtId, String workname, Integer page, Integer size) {
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> workNameTotalEntities = anZhuangTiaoShiWorkNameTotalService.findWorkNameByWorkname(workname, page, size);
+        List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> workNameTotalEntities = anZhuangTiaoShiWorkNameTotalService.findWorkNameByWorkname(awtId, workname, page, size);
         PageInfo<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> workNameTotalEntityPageInfo = new PageInfo<>(workNameTotalEntities);
         return ResponseDataUtil.ok("查询对应的作业项成功", workNameTotalEntityPageInfo);
     }

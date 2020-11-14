@@ -28,7 +28,7 @@ public interface AnZhuangTiaoShiWorkNameTotalService {
 
     void deleteWorkNameByIds(Integer[] ids);
 
-    List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(String workname, Integer page, Integer size);
+    List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(Integer awtId,String workname, Integer page, Integer size);
 
     AnZhuangTiaoShiWorkNameTotalEntity findOneWorksById(Integer id, Integer receiverid);
 
