@@ -785,11 +785,14 @@
         MAX( qi.v19 ) AS max_mA_shouduan_Cable,
         MIN( qi.v19 ) AS min_mA_shouduan_Cable,
 
+
+
+
         MAX( qi.v20 ) AS max_V_in_all,
         MIN( qi.v20 ) AS min_V_in_all,
-
         MAX( qi.v21 ) AS max_mV_in_zhu,
         MIN( qi.v21 ) AS min_mV_in_zhu,
+
         MAX( qi.v22 ) AS max_mV_in_diao_zhu,
         MIN( qi.v22 ) AS min_mV_in_diao_zhu,
         qb.quDuanYunYing_name

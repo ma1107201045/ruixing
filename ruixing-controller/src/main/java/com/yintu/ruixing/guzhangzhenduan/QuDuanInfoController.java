@@ -42,19 +42,13 @@ public class QuDuanInfoController extends SessionController {
     /**
      * 日报表
      *
-     * @param pageNumber 页码
-     * @param pageSize   页数
-     * @param time       日期
+     * @param time 日期
      */
     @GetMapping("/dailypaper")
-    public Map<String, Object> findStatisticsByDate(@RequestParam("page_number") Integer pageNumber,
-                                                    @RequestParam("page_size") Integer pageSize,
-                                                    @RequestParam("cz_id") Integer cZid,
+    public Map<String, Object> findStatisticsByDate(@RequestParam("cz_id") Integer cZid,
                                                     @RequestParam("time") Date time) {
-        PageHelper.startPage(pageNumber, pageSize);
         List<Map<String, Object>> maps = quDuanInfoService.findStatisticsByCzIdAndTime(cZid, time);
-        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(maps);
-        return ResponseDataUtil.ok("查询日报表成功", pageInfo);
+        return ResponseDataUtil.ok("查询日报表成功", maps);
     }
 
 
