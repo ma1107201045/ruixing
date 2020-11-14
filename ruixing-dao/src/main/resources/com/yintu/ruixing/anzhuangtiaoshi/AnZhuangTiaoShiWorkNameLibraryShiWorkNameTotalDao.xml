@@ -78,7 +78,7 @@
         WHERE wntid = #{id}
     </select>
     <!--根据作业项的名称  进行模糊查询-->
-    <select id="findWorkNameByWorkname" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="findWorkNameByWorkname"  resultMap="BaseResultMap">
         SELECT aww.id,
                aww.userid,
                aww.auditorState,
@@ -95,7 +95,7 @@
           and awt.id = aww.wntid
           AND awl.id = aww.wnlid
 
-          AND awt.id = #{awt_id}
+          AND awt.id = #{awtId}
           AND awl.workname LIKE concat('%', #{workname}, '%')
         GROUP BY aww.id DESC
     </select>
