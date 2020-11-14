@@ -286,10 +286,10 @@
     </select>
 
     <!--根据区段的运用名  查找对应的区段专用id-->
-    <select id="findQDid" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="findQDid"  resultType="java.lang.Integer">
         select qdid
         from mro_quduan_base
-        where quDuanYunYing_name = #{quduanname}
+        where quDuanYunYing_name = #{quduanname} and cz_id = #{czid}
     </select>
 
     <!--根据区段运营名称  查询对应的区段数据-->
