@@ -51,4 +51,7 @@ public interface AnZhuangTiaoShiXiangMuService {
     void exportStatisticalFile(OutputStream outputStream, Integer[] ids) throws IOException;
 
     long findProjectSum();
+
+    List<AnZhuangTiaoShiXiangMuEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size);
+
 }

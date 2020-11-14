@@ -71,6 +71,14 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         return messageDao.findXiaoXi(senderid, type);
     }
 
+    @Override
+    public List<AnZhuangTiaoShiXiangMuEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size) {
+        Integer serid=anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
+        PageHelper.startPage(page, size);
+
+        return null;
+    }
+
 
     @Override
     public List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay) {
@@ -473,6 +481,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
         }
         return ja;
     }
+
 
     @Override
     public long findProjectSum() {

@@ -77,8 +77,8 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
-    public Integer findQDid(String quduanname) {
-        return quDuanBaseDao.findQDid(quduanname);
+    public Integer findQDid(String quduanname, Integer czid) {
+        return quDuanBaseDao.findQDid(quduanname,czid);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class QuXianServiceImpl implements QuXianService {
     @Override
     public List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-        return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
+            return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
         } else {
             return new ArrayList<>();
         }

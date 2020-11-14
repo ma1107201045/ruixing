@@ -152,6 +152,24 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
     }
 
+    //查询未来一个月计划开通的项目和车站
+    @GetMapping("/findNextMonthXiangMu")
+    public Map<String, Object> findNextMonthXiangMu(Integer page, Integer size) throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        Date end = c.getTime();
+        String today = format.format(end);//当前日期
+        c.add(Calendar.MONTH, 1);
+        Date start = c.getTime();
+        String NextMothDay = format.format(start);//前一月
+
+
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findNextMonthXiangMu(today, NextMothDay,page,size);
+        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
+        return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
+    }
+
     /**
      * 导出项目统计表
      *

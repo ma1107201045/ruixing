@@ -115,7 +115,7 @@ public class QuXianController {
                 String shuxingname = sqlname.get(i);
                 System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                 String quduanname = quduanName[i];
-                Integer qdid = quXianService.findQDid(quduanname);
+                Integer qdid = quXianService.findQDid(quduanname,czid);
                 List<quduanEntity> date = quXianService.findOneQuDuanDatas(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                 System.out.println("1234" + date);
                 if (date.size() == timelist.size()) {
@@ -260,7 +260,7 @@ public class QuXianController {
                         String shuxingname = sqlname.get(i);
                         System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                         String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname);
+                        Integer qdid = quXianService.findQDid(quduanname,czid);
                         List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                         System.out.println("1234" + date);
                         if (date.size() == timelist.size()) {
@@ -362,7 +362,7 @@ public class QuXianController {
                         String shuxingname = sqlname.get(i);
                         System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                         String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname);
+                        Integer qdid = quXianService.findQDid(quduanname,czid);
                         List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
                         for (quduanEntity quduanEntity : date) {
                             long createtime = quduanEntity.getCreatetime();
@@ -461,7 +461,7 @@ public class QuXianController {
                 String shuxingname = sqlname.get(i);
                 System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                 String quduanname = quduanName[i];
-                Integer qdid = quXianService.findQDid(quduanname);
+                Integer qdid = quXianService.findQDid(quduanname,czid);
                 List<quduanEntity> date = quXianService.findDMHQuDuanData(starttime, endtime, shuxingname, quduanname, qdid, tableName);
                 System.out.println("1234" + date);
                 if (date.size() == timelist.size()) {
@@ -606,7 +606,7 @@ public class QuXianController {
                         String shuxingname = sqlname.get(i);
                         System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                         String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname);
+                        Integer qdid = quXianService.findQDid(quduanname,czid);
                         List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                         System.out.println("1234" + date);
                         if (date.size() == timelist.size()) {
@@ -708,7 +708,7 @@ public class QuXianController {
                         String shuxingname = sqlname.get(i);
                         System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                         String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname);
+                        Integer qdid = quXianService.findQDid(quduanname,czid);
                         List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
                         for (quduanEntity quduanEntity : date) {
                             long createtime = quduanEntity.getCreatetime();
@@ -805,7 +805,7 @@ public class QuXianController {
                 String shuxingname = sqlname.get(i);
                 System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                 String quduanname = quduanName[i];
-                Integer qdid = quXianService.findQDid(quduanname);
+                Integer qdid = quXianService.findQDid(quduanname,czid);
                 List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
                 System.out.println("1234" + date);
                 if (date.size() == timelist.size()) {
@@ -949,7 +949,7 @@ public class QuXianController {
                 String shuxingname = sqlname.get(i);
                 System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
                 String quduanname = quduanName[i];
-                Integer qdid = quXianService.findQDid(quduanname);
+                Integer qdid = quXianService.findQDid(quduanname,czid);
                 List<quduanEntity> date = quXianService.findQuDuanDatas(starttime, endtime, shuxingname, quduanname, qdid, tableName);
                 System.out.println("1234" + date);
                 if (date.size() == timelist.size()) {
