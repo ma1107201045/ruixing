@@ -1,309 +1,299 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="wntid" jdbcType="INTEGER" property="wntid" />
-    <result column="wnlid" jdbcType="INTEGER" property="wnlid" />
-    <result column="work_state" jdbcType="INTEGER" property="workState" />
-    <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1" />
-    <result column="yuliu2" jdbcType="VARCHAR" property="yuliu2" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
-    <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
-    <result column="createName" jdbcType="VARCHAR" property="createname"/>
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
-    <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
-    <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
-    <result column="userid" jdbcType="INTEGER" property="userid"/>
-    <association property="anZhuangTiaoShiWorkNameTotalEntity" javaType="AnZhuangTiaoShiWorkNameTotalEntity">
-      <id column="id" jdbcType="INTEGER" property="id" />
-      <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall" />
-    </association>
-    <association property="anZhuangTiaoShiWorkNameLibraryEntity" javaType="AnZhuangTiaoShiWorkNameLibraryEntity">
-      <id column="lid" jdbcType="INTEGER" property="id" />
-      <result column="workname" jdbcType="VARCHAR" property="workname" />
-    </association>
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, wntid, wnlid, work_state, yuliu1, yuliu2,
+    <resultMap id="BaseResultMap"
+               type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="wntid" jdbcType="INTEGER" property="wntid"/>
+        <result column="wnlid" jdbcType="INTEGER" property="wnlid"/>
+        <result column="work_state" jdbcType="INTEGER" property="workState"/>
+        <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1"/>
+        <result column="yuliu2" jdbcType="VARCHAR" property="yuliu2"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="createName" jdbcType="VARCHAR" property="createname"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
+        <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <association property="anZhuangTiaoShiWorkNameTotalEntity" javaType="AnZhuangTiaoShiWorkNameTotalEntity">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall"/>
+        </association>
+        <association property="anZhuangTiaoShiWorkNameLibraryEntity" javaType="AnZhuangTiaoShiWorkNameLibraryEntity">
+            <id column="lid" jdbcType="INTEGER" property="id"/>
+            <result column="workname" jdbcType="VARCHAR" property="workname"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, wntid, wnlid, work_state, yuliu1, yuliu2,
     createTime, createName, updateTime, updateName,auditorState,userid
-  </sql>
+    </sql>
 
-  <!--根据id  查询对应的wntid-->
-  <select id="findWntidById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select
-    wntid
-    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <!--根据id  查询对应的wntid-->
+    <select id="findWntidById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select wntid
+        from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
-  <!--根据wntid 和wnlid  查询对应的作业状态-->
-  <select id="findWorkStateByIDS" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select
-    work_state
-    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where wntid = #{worksid,jdbcType=INTEGER}
-    and wnlid = #{wnlid,jdbcType=INTEGER}
-  </select>
+    <!--根据wntid 和wnlid  查询对应的作业状态-->
+    <select id="findWorkStateByIDS" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select work_state
+        from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where wntid = #{worksid,jdbcType=INTEGER}
+          and wnlid = #{wnlid,jdbcType=INTEGER}
+    </select>
 
 
-  <!--根据wnlid  查询对应的作业项id集合-->
-  <select id="findAllwnlidByWorksid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select
-    wnlid
-    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where wntid = #{worksid,jdbcType=INTEGER}
-  </select>
+    <!--根据wnlid  查询对应的作业项id集合-->
+    <select id="findAllwnlidByWorksid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select wnlid
+        from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where wntid = #{worksid,jdbcType=INTEGER}
+    </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
-  <!--根据wnlid  单个或者批量删除-->
-  <delete id="deleteWorkNameByIdss" parameterType="java.lang.Integer">
-    delete from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where wnlid
-    in
-    <foreach collection="array" item="ids" open="(" separator="," close=")">
-      #{ids}
-    </foreach>
-  </delete>
+    <!--根据wnlid  单个或者批量删除-->
+    <delete id="deleteWorkNameByIdss" parameterType="java.lang.Integer">
+        delete from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where wnlid
+        in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
 
 
-  <!--根据作业项配置版本id  查找此作业项配置版本有多少个作业项-->
-  <select id="findWorkNameTatol" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT
-        COUNT( wnlid )
-    FROM
-        mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    WHERE
-        wntid =#{id}
-  </select>
-  <!--根据作业项的名称  进行模糊查询-->
-  <select id="findWorkNameByWorkname" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT
-        aww.id,
-        aww.userid,
-        aww.auditorState,
-        awt.worknamesall,
-        awl.workname,
-        awl.id lid,
-        aww.work_state,
-	    awa.auditor_id
-    FROM
-        mro_anzhuangtiaoshi_worknametotal awt,
-        mro_anzhuangtiaoshi_worknamelibrary awl,
-        mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
-	    mro_anzhuangtiaoshi_works_auditor awa
-    WHERE
-        awa.object_id = aww.id
-        and awt.id = aww.wntid
-        AND awl.id = aww.wnlid
-        AND awl.workname LIKE concat('%',#{workname},'%')
+    <!--根据作业项配置版本id  查找此作业项配置版本有多少个作业项-->
+    <select id="findWorkNameTatol" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(wnlid)
+        FROM mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        WHERE wntid = #{id}
+    </select>
+    <!--根据作业项的名称  进行模糊查询-->
+    <select id="findWorkNameByWorkname" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT aww.id,
+               aww.userid,
+               aww.auditorState,
+               awt.worknamesall,
+               awl.workname,
+               awl.id lid,
+               aww.work_state,
+               awa.auditor_id
+        FROM mro_anzhuangtiaoshi_worknametotal awt,
+             mro_anzhuangtiaoshi_worknamelibrary awl,
+             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+             mro_anzhuangtiaoshi_works_auditor awa
+        WHERE awa.object_id = aww.id
+          and awt.id = aww.wntid
+          AND awl.id = aww.wnlid
+
+          AND awt.id = #{awt_id}
+          AND awl.workname LIKE concat('%', #{workname}, '%')
         GROUP BY aww.id DESC
-  </select>
+    </select>
 
-  <!--根据id  删除版本里面的作业项数据-->
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+    <!--根据id  删除版本里面的作业项数据-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 
-  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
-    insert into mro_anzhuangtiaoshi_worknamelibrary_worknametotal (id, wntid, wnlid, 
-      work_state, yuliu1, yuliu2
-      )
-    values (#{id,jdbcType=INTEGER}, #{wntid,jdbcType=INTEGER}, #{wnlid,jdbcType=INTEGER}, 
-      #{workState,jdbcType=INTEGER}, #{yuliu1,jdbcType=VARCHAR}, #{yuliu2,jdbcType=VARCHAR}
-      )
-  </insert>
-
-
-  <!--根据作业项配置版本id 查看对应的作业项-->
-  <select id="findOneWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT
-        aww.id,
-        aww.userid,
-        aww.auditorState,
-        awt.worknamesall,
-        awl.workname,
-        awl.id lid,
-        aww.work_state,
-	    awa.auditor_id
-    FROM
-        mro_anzhuangtiaoshi_worknametotal awt,
-        mro_anzhuangtiaoshi_worknamelibrary awl,
-        mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
-	    mro_anzhuangtiaoshi_works_auditor awa
-    WHERE
-        awa.object_id = aww.id
-        and awt.id = aww.wntid
-        AND awl.id = aww.wnlid
-        AND aww.wntid =#{wntid}
-        AND aww.wnlid =#{wnlid}
-        AND awa.auditor_id=#{receiverid}
-
-  </select>
+    <insert id="insert"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
+        insert into mro_anzhuangtiaoshi_worknamelibrary_worknametotal (id, wntid, wnlid,
+                                                                       work_state, yuliu1, yuliu2)
+        values (#{id,jdbcType=INTEGER}, #{wntid,jdbcType=INTEGER}, #{wnlid,jdbcType=INTEGER},
+                #{workState,jdbcType=INTEGER}, #{yuliu1,jdbcType=VARCHAR}, #{yuliu2,jdbcType=VARCHAR})
+    </insert>
 
 
+    <!--根据作业项配置版本id 查看对应的作业项-->
+    <select id="findOneWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT aww.id,
+               aww.userid,
+               aww.auditorState,
+               awt.worknamesall,
+               awl.workname,
+               awl.id lid,
+               aww.work_state,
+               awa.auditor_id
+        FROM mro_anzhuangtiaoshi_worknametotal awt,
+             mro_anzhuangtiaoshi_worknamelibrary awl,
+             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+             mro_anzhuangtiaoshi_works_auditor awa
+        WHERE awa.object_id = aww.id
+          and awt.id = aww.wntid
+          AND awl.id = aww.wnlid
+          AND aww.wntid = #{wntid}
+          AND aww.wnlid = #{wnlid}
+          AND awa.auditor_id = #{receiverid}
 
-  <!--根据作业项配置版本id 查看对应的作业项-->
-  <select id="findWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT
-        aww.id,
-        aww.userid,
-        aww.auditorState,
-        awt.worknamesall,
-        awl.workname,
-        awl.id lid,
-        aww.work_state,
-	    awa.auditor_id
-    FROM
-        mro_anzhuangtiaoshi_worknametotal awt,
-        mro_anzhuangtiaoshi_worknamelibrary awl,
-        mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
-	    mro_anzhuangtiaoshi_works_auditor awa
-    WHERE
-        awa.object_id = aww.id
-        and awt.id = aww.wntid
-        AND awl.id = aww.wnlid
-        AND awt.id =#{id}
+    </select>
+
+
+    <!--根据作业项配置版本id 查看对应的作业项-->
+    <select id="findWorkNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT aww.id,
+               aww.userid,
+               aww.auditorState,
+               awt.worknamesall,
+               awl.workname,
+               awl.id lid,
+               aww.work_state,
+               awa.auditor_id
+        FROM mro_anzhuangtiaoshi_worknametotal awt,
+             mro_anzhuangtiaoshi_worknamelibrary awl,
+             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+             mro_anzhuangtiaoshi_works_auditor awa
+        WHERE awa.object_id = aww.id
+          and awt.id = aww.wntid
+          AND awl.id = aww.wnlid
+          AND awt.id = #{id}
         GROUP BY aww.id DESC
-  </select>
+    </select>
 
-  <!--在对应的作业项配置版本下  添加作业项-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity"
-          useGeneratedKeys="true" keyProperty="id">
-    insert into mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="wntid != null">
-        wntid,
-      </if>
-      <if test="wnlid != null">
-        wnlid,
-      </if>
-      <if test="workState != null">
-        work_state,
-      </if>
-      <if test="yuliu1 != null">
-        yuliu1,
-      </if>
-      <if test="yuliu2 != null">
-        yuliu2,
-      </if>
-      <if test="createtime != null">
-        createTime,
-      </if>
-      <if test="createname != null">
-        createName,
-      </if>
-      <if test="updatetime != null">
-        updateTime,
-      </if>
-      <if test="updatename != null">
-        updateName,
-      </if>
-      <if test="auditorState != null">
-        auditorState,
-      </if>
-      <if test="userid != null">
-        userid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="wntid != null">
-        #{wntid,jdbcType=INTEGER},
-      </if>
-      <if test="wnlid != null">
-        #{wnlid,jdbcType=INTEGER},
-      </if>
-      <if test="workState != null">
-        #{workState,jdbcType=INTEGER},
-      </if>
-      <if test="yuliu1 != null">
-        #{yuliu1,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu2 != null">
-        #{yuliu2,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createname != null">
-        #{createname,jdbcType=VARCHAR},
-      </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatename != null">
-        #{updatename,jdbcType=VARCHAR},
-      </if>
-      <if test="auditorState != null">
-        #{auditorState,jdbcType=INTEGER},
-      </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <!--在对应的作业项配置版本下  添加作业项-->
+    <insert id="insertSelective"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="wntid != null">
+                wntid,
+            </if>
+            <if test="wnlid != null">
+                wnlid,
+            </if>
+            <if test="workState != null">
+                work_state,
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1,
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="createname != null">
+                createName,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="updatename != null">
+                updateName,
+            </if>
+            <if test="auditorState != null">
+                auditorState,
+            </if>
+            <if test="userid != null">
+                userid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="wntid != null">
+                #{wntid,jdbcType=INTEGER},
+            </if>
+            <if test="wnlid != null">
+                #{wnlid,jdbcType=INTEGER},
+            </if>
+            <if test="workState != null">
+                #{workState,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu1 != null">
+                #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                #{yuliu2,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorState != null">
+                #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 
-  <!--根据id  编辑对应的作业项-->
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
-    update mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    <set>
-      <if test="wntid != null">
-        wntid = #{wntid,jdbcType=INTEGER},
-      </if>
-      <if test="wnlid != null">
-        wnlid = #{wnlid,jdbcType=INTEGER},
-      </if>
-      <if test="workState != null">
-        work_state = #{workState,jdbcType=INTEGER},
-      </if>
-      <if test="yuliu1 != null">
-        yuliu1 = #{yuliu1,jdbcType=VARCHAR},
-      </if>
-      <if test="yuliu2 != null">
-        yuliu2 = #{yuliu2,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null">
-        createTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createname != null">
-        createName = #{createname,jdbcType=VARCHAR},
-      </if>
-      <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatename != null">
-        updateName = #{updatename,jdbcType=VARCHAR},
-      </if>
-      <if test="auditorState != null">
-        auditorState = #{auditorState,jdbcType=INTEGER},
-      </if>
-      <if test="userid != null">
-        userid = #{userid,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <!--根据id  编辑对应的作业项-->
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
+        update mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        <set>
+            <if test="wntid != null">
+                wntid = #{wntid,jdbcType=INTEGER},
+            </if>
+            <if test="wnlid != null">
+                wnlid = #{wnlid,jdbcType=INTEGER},
+            </if>
+            <if test="workState != null">
+                work_state = #{workState,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1 = #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2 = #{yuliu2,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                createName = #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                updateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorState != null">
+                auditorState = #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="userid != null">
+                userid = #{userid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
-    update mro_anzhuangtiaoshi_worknamelibrary_worknametotal
-    set wntid = #{wntid,jdbcType=INTEGER},
-      wnlid = #{wnlid,jdbcType=INTEGER},
-      work_state = #{workState,jdbcType=INTEGER},
-      yuliu1 = #{yuliu1,jdbcType=VARCHAR},
-      yuliu2 = #{yuliu2,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
+        update mro_anzhuangtiaoshi_worknamelibrary_worknametotal
+        set wntid      = #{wntid,jdbcType=INTEGER},
+            wnlid      = #{wnlid,jdbcType=INTEGER},
+            work_state = #{workState,jdbcType=INTEGER},
+            yuliu1     = #{yuliu1,jdbcType=VARCHAR},
+            yuliu2     = #{yuliu2,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

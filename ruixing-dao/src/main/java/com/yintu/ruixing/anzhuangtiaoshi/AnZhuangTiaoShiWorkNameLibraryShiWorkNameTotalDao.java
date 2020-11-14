@@ -23,7 +23,7 @@ public interface AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao {
 
     List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameById(Integer id);
 
-    List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(@Param("workname") String workname);
+    List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameByWorkname(@Param("awtId") Integer awtId, @Param("workname") String workname);
 
     Integer findWorkNameTatol(Integer id);
 
