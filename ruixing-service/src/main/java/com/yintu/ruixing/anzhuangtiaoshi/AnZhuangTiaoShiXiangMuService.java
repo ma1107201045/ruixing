@@ -52,6 +52,6 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     long findProjectSum();
 
-    List<AnZhuangTiaoShiXiangMuEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size);
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size);
 
 }

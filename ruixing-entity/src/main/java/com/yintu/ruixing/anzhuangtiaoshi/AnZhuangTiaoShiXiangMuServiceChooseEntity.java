@@ -63,5 +63,5 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
     private AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusChooseEntity anZhuangTiaoShiXiangMuServiceStatusChooseEntity;
     private AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity;
-
+    private String xdname;
 }

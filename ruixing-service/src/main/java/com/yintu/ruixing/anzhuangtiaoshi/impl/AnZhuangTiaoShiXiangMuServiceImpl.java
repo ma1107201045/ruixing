@@ -72,11 +72,11 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     }
 
     @Override
-    public List<AnZhuangTiaoShiXiangMuEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size) {
+    public List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size) {
         Integer serid=anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
         PageHelper.startPage(page, size);
-
-        return null;
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList=anZhuangTiaoShiXiangMuServiceChooseDao.findNextMonthXiangMu(serid,today,nextMothDay);
+        return xiangMuEntityList;
     }
 
 
