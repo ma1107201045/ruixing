@@ -2,6 +2,7 @@ package com.yintu.ruixing.guzhangzhenduan;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.omg.CORBA.INTERNAL;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,10 +19,10 @@ public interface QuDuanInfoDaoV2 {
 
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
-    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Date startTime, Date endTime, String tableName);
+    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Integer startTime, Integer endTime, String tableName);
 
     //日报表
-    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Date time, String tableName);
+    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer s, Integer e,String tableName);
 
 
     //根据区段id  查询相关的数据

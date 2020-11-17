@@ -55,7 +55,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     @Override
     public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
         String tableName = StringUtil.getTableName(czId, time);
-        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, time, tableName) : new ArrayList<>();
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName) : new ArrayList<>();
     }
 
     @Override
@@ -70,15 +70,16 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             throw new BaseRuntimeException("开始时间不能大于结束时间");
         if (DateUtil.month(startTime) == DateUtil.month(endTime)) {
             String tableName = StringUtil.getTableName(czId, startTime);
-            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, startTime, endTime, tableName) : new ArrayList<>();
+            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (startTime.getTime() / 1000), (int) (endTime.getTime() / 1000), tableName) : new ArrayList<>();
         } else {
             String firstTableName = StringUtil.getTableName(czId, startTime);
             List<QuDuanInfoEntityV2> firstQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (startTime.getTime() / 1000), (int) (DateUtil.endOfDay(startTime).getTime() / 1000), firstTableName) :
+                            new ArrayList<>();
 
             String lastTableName = StringUtil.getTableName(czId, endTime);
             List<QuDuanInfoEntityV2> lastQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (DateUtil.beginOfDay(endTime).getTime() / 1000), (int) (endTime.getTime() / 1000), lastTableName) : new ArrayList<>();
             firstQuDuanInfoEntityV2s.addAll(lastQuDuanInfoEntityV2s);
             return firstQuDuanInfoEntityV2s;
         }
@@ -160,7 +161,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
 
     public JSONObject convert(List<QuDuanInfoTypesPropertyEntity> quDuanInfoTypesPropertyEntities, QuDuanInfoEntityV2 quDuanInfoEntityV2) {
-        JSONObject jo = new JSONObject(true);
+        JSONObject jo = new JSONObject();
         jo.put("id", quDuanInfoEntityV2.getId());
         jo.put("cid", quDuanInfoEntityV2.getCid());
         jo.put("qid", quDuanInfoEntityV2.getQid());

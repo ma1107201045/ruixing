@@ -721,8 +721,8 @@
                 </foreach>
             </if>
             <if test="startTime !=null and endTime !=null">
-                and FROM_UNIXTIME(qi.createtime) between #{startTime,jdbcType=TIMESTAMP} and
-                #{endTime,jdbcType=TIMESTAMP}
+                and qi.createtime between #{startTime,jdbcType=INTEGER} and
+                #{endTime,jdbcType=INTEGER}
             </if>
         </where>
     </select>
@@ -786,8 +786,6 @@
         MIN( qi.v19 ) AS min_mA_shouduan_Cable,
 
 
-
-
         MAX( qi.v20 ) AS max_V_in_all,
         MIN( qi.v20 ) AS min_V_in_all,
         MAX( qi.v21 ) AS max_mV_in_zhu,
@@ -796,14 +794,13 @@
         MAX( qi.v22 ) AS max_mV_in_diao_zhu,
         MIN( qi.v22 ) AS min_mV_in_diao_zhu,
         qb.quDuanYunYing_name
-        FROM ${tableName} qi inner join mro_quduan_base qb on
-        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
+        FROM ${tableName} qi inner join mro_quduan_base qb on qi.v1 = qb.qdid
         <where>
             <if test="czId != null">
-                qi.station_id=#{czId,jdbcType=INTEGER}
+                qb.cz_id=#{czId,jdbcType=INTEGER}
             </if>
-            <if test="time !=null ">
-                and DATE(FROM_UNIXTIME(qi.createtime))=DATE(#{time,jdbcType=TIMESTAMP})
+            <if test="s !=null and e!=null ">
+                and qi.createtime between #{s,jdbcType=INTEGER} and #{e,jdbcType=INTEGER}
             </if>
         </where>
         GROUP BY
