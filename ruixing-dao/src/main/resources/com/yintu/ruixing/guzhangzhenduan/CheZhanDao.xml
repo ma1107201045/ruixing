@@ -148,6 +148,7 @@
         <id column="cid" jdbcType="INTEGER" property="cid"/>
         <result column="cz_id" property="czId"/>
         <result column="cz_stutrs" property="czStutrs"/>
+        <result column="cz_miaoshu" jdbcType="VARCHAR" property="czMiaoShu"/>
         <result column="cz_state" jdbcType="INTEGER" property="czState"/>
     </resultMap>
 
@@ -164,7 +165,8 @@
         SELECT cid,
                cz_id,
                cz_stutrs,
-               cz_state
+               cz_state,
+               cz_miaoshu
         FROM mro_chezhan
         WHERE xd_cz_id = #{xid}
     </select>

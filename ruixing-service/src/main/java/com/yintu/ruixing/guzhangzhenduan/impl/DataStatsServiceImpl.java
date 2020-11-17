@@ -752,6 +752,7 @@ public class DataStatsServiceImpl implements DataStatsService {
         String xdJson = xianDuanDao.findXDJsonByXid(xid);
         xianDuanEntity.setXdJson(xdJson);
         List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findCheZhanDatasByXid(xid);
+        System.out.println("1111111111111111111111"+cheZhanEntityList);
         for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
             int czid = (int) cheZhanEntity.getCzId();
             String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
