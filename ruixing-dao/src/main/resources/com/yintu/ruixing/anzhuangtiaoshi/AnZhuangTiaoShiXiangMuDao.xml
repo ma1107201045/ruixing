@@ -36,8 +36,7 @@
     <select id="findLastMonthXiangMu" resultMap="BaseResultMap">
         SELECT xd_name
         FROM mro_anzhuangtiaoshi_xiangmu
-        WHERE xianduantime BETWEEN #{lastMothDay}
-                  AND #{today}
+        WHERE xianduantime BETWEEN #{today} AND #{lastMothDay}
     </select>
 
 

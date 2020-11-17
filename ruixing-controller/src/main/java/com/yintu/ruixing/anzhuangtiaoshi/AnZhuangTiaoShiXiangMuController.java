@@ -163,10 +163,8 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         c.add(Calendar.MONTH, 1);
         Date start = c.getTime();
         String NextMothDay = format.format(start);//前一月
-
-
-        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findNextMonthXiangMu(today, NextMothDay,page,size);
-        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findNextMonthXiangMu(today, NextMothDay,page,size);
+        PageInfo<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
         return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
     }
 

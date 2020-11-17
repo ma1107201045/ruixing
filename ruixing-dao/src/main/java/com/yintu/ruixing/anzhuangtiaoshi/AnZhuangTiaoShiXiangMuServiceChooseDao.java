@@ -53,4 +53,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     Long countOneSelectByXdId(Integer xdId, Integer serid);
 
     Long countMuchSelectByXdId(Integer xdId, Integer choid);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(@Param("serid")Integer serid,@Param("today") String today,@Param("nextMothDay") String nextMothDay);
 }

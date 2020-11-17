@@ -22,6 +22,7 @@
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
+        <result column="xd_name" jdbcType="VARCHAR" property="xdname"/>
         <!--<association property="anZhuangTiaoShiXiangMuEntity" javaType="AnZhuangTiaoShiXiangMuEntity">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="worksid" jdbcType="INTEGER" property="worksid"/>
@@ -51,9 +52,23 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, xdid, serid, choid, czid, chezhanName, typeTime, isNot,isNotFinish, plan_start_time, plan_end_time,
-    actual_start_time, actual_end_time, plan_open_time, actual_open_time, createTime, 
+    actual_start_time, actual_end_time, plan_open_time, actual_open_time, createTime, xd_name,
     createName, updateTime, updateName
     </sql>
+
+    <!--查询未来一个月 将要完成的项目和车站-->
+    <select id="findNextMonthXiangMu"  resultMap="BaseResultMap">
+        SELECT
+            xd_name,
+            chezhanName
+        FROM
+            mro_anzhuangtiaoshi_Xiangmu_Service_Choose xsc,
+            mro_xianduan xd
+        WHERE
+            xsc.xdid = xd.xid
+            AND serid = #{serid,jdbcType=INTEGER}
+            AND plan_open_time BETWEEN #{today} AND #{nextMothDay}
+    </select>
 
     <select id="findAllByXDid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT bb.*,
