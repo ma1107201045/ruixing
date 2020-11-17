@@ -58,13 +58,8 @@
         from mro_guzhang_study
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <!--根据id删除数据-->
-    <delete id="deletGuZhang" parameterType="java.lang.Long">
-    delete from mro_guzhang_study
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
     <!--根据id批量删除数据-->
-    <delete id="deletGuZhangList" parameterType="java.util.List">
+    <delete id="deletGuZhangList" >
         delete from mro_guzhang_study
         where id
         in

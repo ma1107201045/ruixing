@@ -50,13 +50,10 @@ public class GuZhangStudyServiceImpl implements GuZhangStudyService {
         guZhangStudyDao.editGuZhang(guZhangStudyEntity);
     }
 
-    @Override
-    public void deletGuZhang(Long id) {
-        guZhangStudyDao.deletGuZhang(id);
-    }
+
 
     @Override
-    public void deletGuZhangList(int[] ids) {
+    public void deletGuZhangList(Long[] ids) {
         guZhangStudyDao.deletGuZhangList(ids);
     }
 

@@ -32,7 +32,7 @@ public interface GuZhangStudyDao {
 
     void deletGuZhang(Long id);
 
-    void deletGuZhangList(int[] ids);
+    void deletGuZhangList(Long[] ids);
 
     List<GuZhangStudyEntity> GuZhangListExcelDownloads(Long[] ids);
 

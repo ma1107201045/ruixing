@@ -19,9 +19,7 @@ public interface GuZhangStudyService {
 
     void editGuZhang(GuZhangStudyEntity guZhangStudyEntity);
 
-    void deletGuZhang(Long id);
-
-    void deletGuZhangList(int[] ids);
+    void deletGuZhangList(Long[] ids);
 
     List<GuZhangStudyEntity> GuZhangListExcelDownloads(Long[] ids);
 
@@ -34,9 +32,6 @@ public interface GuZhangStudyService {
     List<QuDuanBaseEntity> getQuDuanByCid(Long cid);
 
 
-
-
-
     List<QuDuanInfoEntity> findGuZhangKuData(Integer id, Integer page, Integer size, String tableName);
 
     List<QuDuanBaseEntity> findFristId(Integer id);
@@ -44,5 +39,5 @@ public interface GuZhangStudyService {
     List<QuDuanBaseEntity> findLastId(Integer id);
 
 
-    void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
+    void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException;
 }

@@ -62,16 +62,9 @@ public class GuZhangStudyController {
         return ResponseDataUtil.ok("修改数据成功");
     }
 
-    //根据id删除对应的数据
-    @DeleteMapping("/deletGuZhang/{id}")
-    public Map<String, Object> deletGuZhang(@PathVariable Long id) {
-        guZhangStudyService.deletGuZhang(id);
-        return ResponseDataUtil.ok("删除数据成功");
-    }
-
     //根据id数组 批量删除数据
     @DeleteMapping("/deletGuZhangList/{ids}")
-    public Map<String, Object> deletGuZhangList(@PathVariable int[] ids) {
+    public Map<String, Object> deletGuZhangList(@PathVariable Long[] ids) {
         guZhangStudyService.deletGuZhangList(ids);
         return ResponseDataUtil.ok("批量删除数据成功");
     }
@@ -107,10 +100,11 @@ public class GuZhangStudyController {
         response.addHeader("Cache-Control", "no-cache");
         guZhangStudyService.exportFile(response.getOutputStream(), ids);
     }
+
     //根据区段id查看故障库 并分页
     @GetMapping("/findGuZhangKuData/{id}")
-    public Map<String, Object> findGuZhangKuDataById(@PathVariable Integer id, Integer page, Integer size,Integer czid) {
-        Date today =new Date();
+    public Map<String, Object> findGuZhangKuDataById(@PathVariable Integer id, Integer page, Integer size, Integer czid) {
+        Date today = new Date();
         String tableName = StringUtil.getTableName(czid, today);
         JSONObject js = new JSONObject();
         //Map<String, List<QuDuanInfoEntity>> map = new HashMap<>();
@@ -118,20 +112,19 @@ public class GuZhangStudyController {
         List<QuDuanBaseEntity> quDuanBaseEntities1 = guZhangStudyService.findFristId(id);
         if (quDuanBaseEntities1.size() > 0) {
             Integer fristId = quDuanBaseEntities1.get(0).getId();
-            List<QuDuanInfoEntity> quDuanInfoEntityList1 = guZhangStudyService.findGuZhangKuData(fristId, page, size,tableName);
+            List<QuDuanInfoEntity> quDuanInfoEntityList1 = guZhangStudyService.findGuZhangKuData(fristId, page, size, tableName);
             js.put("Frist", quDuanInfoEntityList1);
             //quDuanInfoEntities.addAll(quDuanInfoEntityList1);
         }
         List<QuDuanBaseEntity> quDuanBaseEntities2 = guZhangStudyService.findLastId(id);
         if (quDuanBaseEntities2.size() > 0) {
             Integer lastId = quDuanBaseEntities2.get(0).getId();
-            List<QuDuanInfoEntity> quDuanInfoEntityList2 = guZhangStudyService.findGuZhangKuData(lastId, page, size,tableName);
+            List<QuDuanInfoEntity> quDuanInfoEntityList2 = guZhangStudyService.findGuZhangKuData(lastId, page, size, tableName);
             js.put("Last", quDuanInfoEntityList2);
             //quDuanInfoEntities.addAll(quDuanInfoEntityList2);
         }
-        List<QuDuanInfoEntity> quDuanInfoEntityList = guZhangStudyService.findGuZhangKuData(id, page, size,tableName);
+        List<QuDuanInfoEntity> quDuanInfoEntityList = guZhangStudyService.findGuZhangKuData(id, page, size, tableName);
         js.put("Mysel", quDuanInfoEntityList);
-
 
 
         //quDuanInfoEntities.addAll(quDuanInfoEntityList);
@@ -154,7 +147,7 @@ public class GuZhangStudyController {
         /*PageHelper.startPage(page, size);
         PageInfo<QuDuanInfoEntity> pageInfo = new PageInfo<QuDuanInfoEntity>(quDuanInfoEntities);
         js.put("pageInfo", pageInfo);*/
-        return ResponseDataUtil.ok("查询数据成功",js);
+        return ResponseDataUtil.ok("查询数据成功", js);
 
     }
 /*
