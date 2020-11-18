@@ -1,5 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -23,7 +24,10 @@ import java.util.Map;
 public class QuDuanDownloadController extends SessionController {
     @Autowired
     private QuDuanDownloadService quDuanDownloadService;
-
+    @Autowired
+    private QuDuanInfoService quDuanInfoService;
+    @Autowired
+    private DataStatsService dataStatsService;
     @Autowired
     private WebSocketServer webSocketServer;
 
@@ -65,6 +69,38 @@ public class QuDuanDownloadController extends SessionController {
         List<QuDuanDownloadEntity> quDuanDownloadEntities = quDuanDownloadService.findByDateTime(cdId, startDateTime, endDateTime);
         PageInfo<QuDuanDownloadEntity> pageInfo = new PageInfo<>(quDuanDownloadEntities);
         return ResponseDataUtil.ok("查询下载记录列表成功", pageInfo);
+    }
+
+
+    //根据车站cid 查询此车站下的区段配置json数据
+    @GetMapping("/findQDJsonByCid/{cid}")
+    public Map<String, Object> findQDJsonByCid(@PathVariable Integer cid) {
+        CheZhanEntity qdJson = dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
+        return ResponseDataUtil.ok("查询区段的json数据成功", qdJson);
+    }
+
+    /**
+     * @param czId      车站id
+     * @param startTime 开始时刻
+     * @param endTime   结束时刻
+     * @return
+     */
+    @GetMapping("/data")
+    public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId,
+                                               @RequestParam(value = "startTime", required = false) Date startTime,
+                                               @RequestParam(value = "endTime", required = false) Date endTime) {
+        List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, startTime, endTime);
+        return ResponseDataUtil.ok("查询区段详情成功", jsonObjects);
+    }
+
+    /**
+     * @param czId 车站id
+     * @return
+     */
+    @GetMapping("/properties")
+    public Map<String, Object> findNullProperties(@RequestParam("czId") Integer czId) {
+        JSONObject jsonObjects = quDuanInfoService.findNullProperties(czId);
+        return ResponseDataUtil.ok("查询区段属性成功", jsonObjects);
     }
 
 

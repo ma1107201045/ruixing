@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * TODO
  *
- * @description: 首页列表展示
+ * @description: 故障诊断地图页面
  * @author: Qiao
  * @time: 2020/5/21 17:17
  */
@@ -27,6 +27,8 @@ import java.util.Map;
 public class ListController {
     @Autowired
     private ListService ls;
+    @Autowired
+    private DataStatsService dataStatsService;
 
     @GetMapping("/getLieBiao")
     public Object getLieBiao() {
@@ -43,6 +45,7 @@ public class ListController {
         return ResponseDataUtil.ok("查询数据成功", ls.getSanJi());
     }
 
+
     //获取第一级和第二级的数据
     @GetMapping("/findOneTwoDatas")
     public Map<String, Object> findOneTwoDatas() {
@@ -56,4 +59,27 @@ public class ListController {
         List<DianWuDuanEntity> dianWuDuanEntityList = ls.findXDAndCZByDWDId(dwdid);
         return ResponseDataUtil.ok("查询电务段下面的数据成功", dianWuDuanEntityList);
     }
+
+
+    //根据电务段did 查询此电务段下的电务段配置json数据和车站信息
+    @GetMapping("/findDWDJsonAndStationInfoByDid/{did}")
+    public Map<String, Object> findDWDJsonAndChezhanInfoByDid(@PathVariable Integer did) {
+        DianWuDuanEntity dianWuDuanEntity = dataStatsService.findDWDJsonAndChezhanInfoByDid(did);
+        return ResponseDataUtil.ok("查询电务段json数据和车站信息成功", dianWuDuanEntity);
+    }
+
+    //根据线段xid 查询此线段下的线段配置json数据和车站信息
+    @GetMapping("/findXDJsonByXid/{xid}")
+    public Map<String, Object> findXDJsonByXid(@PathVariable Integer xid) {
+        XianDuanEntity xianDuanJson = dataStatsService.findXDJsonByXid(xid);
+        return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
+    }
+
+    //根据车站cid 查询此车站下的区段配置json数据
+    @GetMapping("/findQDJsonByCid/{cid}")
+    public Map<String, Object> findQDJsonByCid(@PathVariable Integer cid) {
+        CheZhanEntity qdJson = dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
+        return ResponseDataUtil.ok("查询区段的json数据成功", qdJson);
+    }
+
 }

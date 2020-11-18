@@ -770,22 +770,6 @@ public class DataStatsController {
     }
 
 
-    //根据电务段did 查询此电务段下的电务段配置json数据和车站信息
-    @GetMapping("/findDWDJsonAndStationInfoByDid/{did}")
-    public Map<String, Object> findDWDJsonAndChezhanInfoByDid(@PathVariable Integer did) {
-        DianWuDuanEntity dianWuDuanEntity = dataStatsService.findDWDJsonAndChezhanInfoByDid(did);
-        return ResponseDataUtil.ok("查询电务段json数据和车站信息成功", dianWuDuanEntity);
-    }
-
-
-    //根据线段xid 查询此线段下的线段配置json数据和车站信息
-    @GetMapping("/findXDJsonByXid/{xid}")
-    public Map<String, Object> findXDJsonByXid(@PathVariable Integer xid) {
-        XianDuanEntity xianDuanJson = dataStatsService.findXDJsonByXid(xid);
-        return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
-    }
-
-
     //根据线段xid 查询此线段下的线段json数据
     @GetMapping("/findOneXDJsonByXid/{xid}")
     public Map<String, Object> findOneXDJsonByXid(@PathVariable Integer xid) {
@@ -793,12 +777,7 @@ public class DataStatsController {
         return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
     }
 
-    //根据车站cid 查询此车站下的区段配置json数据
-    @GetMapping("/findQDJsonByCid/{cid}")
-    public Map<String, Object> findQDJsonByCid(@PathVariable Integer cid) {
-        CheZhanEntity qdJson = dataStatsService.findQDJsonAndQuDuanDatasByCid(cid);
-        return ResponseDataUtil.ok("查询区段的json数据成功", qdJson);
-    }
+
 
     //根据车站cid 查询此车站内电码化的区段配置json数据
     @GetMapping("/findDMHJsonByCid/{cid}")
