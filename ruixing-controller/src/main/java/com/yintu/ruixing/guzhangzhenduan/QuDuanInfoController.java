@@ -16,7 +16,7 @@ import java.util.Map;
  * @date:2020/8/3 20:25
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/quduan/infos")
 public class QuDuanInfoController extends SessionController {
     @Autowired
     private QuDuanDownloadService quDuanDownloadService;

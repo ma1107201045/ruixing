@@ -1,10 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
-import cn.hutool.core.util.ZipUtil;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -14,43 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author:mlf
  * @date:2020/6/3 12:00
  */
 @RestController
-@RequestMapping("/quduan/infos")
+@RequestMapping("/reports")
 public class ReportController extends SessionController {
     @Autowired
     private QuDuanInfoService quDuanInfoService;
-
-    /**
-     * @param czId      车站id
-     * @param startTime 开始时刻
-     * @param endTime   结束时刻
-     * @return
-     */
-    @GetMapping("/data")
-    public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId,
-                                               @RequestParam(value = "startTime", required = false) Date startTime,
-                                               @RequestParam(value = "endTime", required = false) Date endTime) {
-        List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, startTime, endTime);
-//        byte[] result = ZipUtil.gzip(JSONArray.toJSON(jsonObjects).toString(), "utf-8");
-        return ResponseDataUtil.ok("查询区段详情成功", jsonObjects);
-    }
-
-    /**
-     * @param czId 车站id
-     * @return
-     */
-    @GetMapping("/properties")
-    public Map<String, Object> findNullProperties(@RequestParam("czId") Integer czId) {
-        JSONObject jsonObjects = quDuanInfoService.findNullProperties(czId);
-        return ResponseDataUtil.ok("查询区段属性成功", jsonObjects);
-    }
 
 
     /**
