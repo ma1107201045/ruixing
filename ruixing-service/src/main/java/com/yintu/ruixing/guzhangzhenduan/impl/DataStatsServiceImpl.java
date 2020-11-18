@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.StringUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -697,7 +698,6 @@ public class DataStatsServiceImpl implements DataStatsService {
     }
 
 
-
     @Override
     public String findQDJsonByCid(Integer cid) {
         return cheZhanDao.findQDJsonByCid(cid);
@@ -769,13 +769,15 @@ public class DataStatsServiceImpl implements DataStatsService {
 
     @Override
     public CheZhanEntity findQDJsonAndQuDuanDatasByCid(Integer cid) {
-        CheZhanEntity cz=new CheZhanEntity();
-        List<QuDuanBaseEntity> quDuanBaseEntityList=quDuanBaseDao.findQuDuanDatasByCid(cid);
-        String qujson=cheZhanDao.findQDJsonByCid(cid);
+        CheZhanEntity cz = new CheZhanEntity();
+        List<QuDuanBaseEntity> quDuanBaseEntityList = quDuanBaseDao.findQuDuanDatasByCid(cid);
+        String qujson = cheZhanDao.findQDJsonByCid(cid);
         cz.setQuduanlist(quDuanBaseEntityList);
         cz.setQuduanjson(qujson);
         return cz;
     }
+
+
     @Override
     public List<CheZhanEntity> findSomeCheZhanByXid(Integer xid) {
         return cheZhanDao.findSomeCheZhanByXid(xid);
@@ -1129,6 +1131,65 @@ public class DataStatsServiceImpl implements DataStatsService {
         List<DataStatsEntity> all = dataStatsDao.findAll();
 
         return new PageInfo<DataStatsEntity>(all);
+    }
+
+    @Override
+    public List<TreeNodeUtil> findFourLinkage() {
+        List<TieLuJuEntity> tieLuJuEntities = this.findAllTieLuJu();
+        List<TreeNodeUtil> firstTreeNodeUtils = null;
+        for (TieLuJuEntity tieLuJuEntity : tieLuJuEntities) {
+            if (firstTreeNodeUtils == null)
+                firstTreeNodeUtils = new ArrayList<>();
+            List<DianWuDuanEntity> dianWuDuanEntities = this.findDianWuDuanByTid((int) tieLuJuEntity.getTid());
+            List<TreeNodeUtil> secondTreeNodeUtils = null;
+
+            TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
+            firstTreeNodeUtil.setId(tieLuJuEntity.getTid());
+            firstTreeNodeUtil.setLabel(tieLuJuEntity.getTljName());
+            firstTreeNodeUtils.add(firstTreeNodeUtil);
+
+            for (DianWuDuanEntity dianWuDuanEntity : dianWuDuanEntities) {
+                if (secondTreeNodeUtils == null) {
+                    secondTreeNodeUtils = new ArrayList<>();
+                    firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
+                }
+                List<XianDuanEntity> xianDuanEntities = this.findXianDuanByDid((int) dianWuDuanEntity.getDid());
+                List<TreeNodeUtil> thirdTreeNodeUtils = null;
+
+                TreeNodeUtil secondtreeNodeUtil = new TreeNodeUtil();
+                secondtreeNodeUtil.setId(dianWuDuanEntity.getDid());
+                secondtreeNodeUtil.setLabel(dianWuDuanEntity.getDwdName());
+                secondTreeNodeUtils.add(secondtreeNodeUtil);
+
+                for (XianDuanEntity xianDuanEntity : xianDuanEntities) {
+                    if (thirdTreeNodeUtils == null) {
+                        thirdTreeNodeUtils = new ArrayList<>();
+                        secondtreeNodeUtil.setChildren(thirdTreeNodeUtils);
+                    }
+                    List<CheZhanEntity> cheZhanEntities = this.findCheZhanByXid(xianDuanEntity.getXid().intValue());
+                    List<TreeNodeUtil> fourTreeNodeUtils = null;
+
+                    TreeNodeUtil thirdTreeNodeUtil = new TreeNodeUtil();
+                    thirdTreeNodeUtil.setId(xianDuanEntity.getXid());
+                    thirdTreeNodeUtil.setLabel(xianDuanEntity.getXdName());
+                    thirdTreeNodeUtils.add(thirdTreeNodeUtil);
+
+                    for (CheZhanEntity cheZhanEntity : cheZhanEntities) {
+                        if (fourTreeNodeUtils == null) {
+                            fourTreeNodeUtils = new ArrayList<>();
+                            thirdTreeNodeUtil.setChildren(fourTreeNodeUtils);
+                        }
+
+                        TreeNodeUtil fourTreeNodeUtil = new TreeNodeUtil();
+                        fourTreeNodeUtil.setId(cheZhanEntity.getCid());
+                        fourTreeNodeUtil.setLabel(cheZhanEntity.getCzName());
+                        fourTreeNodeUtils.add(fourTreeNodeUtil);
+                    }
+                }
+            }
+
+        }
+        return firstTreeNodeUtils;
     }
 
 

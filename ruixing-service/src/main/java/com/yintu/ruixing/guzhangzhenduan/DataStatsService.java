@@ -2,6 +2,7 @@ package com.yintu.ruixing.guzhangzhenduan;
 
 
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 
 
@@ -190,4 +191,8 @@ public interface DataStatsService {
     void addQuDuanDatas(List<String[]> list);
 
     CheZhanEntity findQDJsonAndQuDuanDatasByCid(Integer cid);
+
+
+
+    List<TreeNodeUtil> findFourLinkage();
 }

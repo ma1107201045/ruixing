@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService {
     private DepartmentUserService departmentUserService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private UserDataService userDataService;
 
 
     @Override
@@ -106,18 +108,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds) {
+    public void add(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids) {
         this.add(userEntity);
         this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds, userEntity.getModifiedBy());
         this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, userEntity.getModifiedBy());
+        this.addDataByIdAndDataIds(userEntity.getId(), tids, dids, xids, cids, userEntity.getModifiedBy());
     }
 
     @Override
-    public void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds) {
+    public void edit(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids) {
         this.edit(userEntity);
         this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds, userEntity.getModifiedBy());
         this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, userEntity.getModifiedBy());
-
+        this.addDataByIdAndDataIds(userEntity.getId(), tids, dids, xids, cids, userEntity.getModifiedBy());
     }
 
     @Override
@@ -274,6 +277,36 @@ public class UserServiceImpl implements UserService {
                         departmentUserEntity.setUserId(id);
                         departmentUserService.add(departmentUserEntity);
                     }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addDataByIdAndDataIds(Long id, Long[] tids, Long[] dids, Long[] xids, Long[] cids, String loginUserName) {
+        UserEntity userEntity = this.findById(id);
+        if (userEntity != null) {//判断当前用户是否存在
+            List<UserDataEntity> userDataEntities = userDataService.findByUserId(id);
+            if (userDataEntities.size() > 0) {
+                userDataService.removeByUserId(id);
+            }
+            if (tids != null && dids != null && xids != null && cids != null) {
+                for (int i = 0; i < tids.length; i++) {
+                    Long tid = tids[i];
+                    Long did = i + 1 > dids.length ? null : dids[i];
+                    Long xid = i + 1 > xids.length ? null : xids[i];
+                    Long cid = i + 1 > cids.length ? null : cids[i];
+                    UserDataEntity userDataEntity = new UserDataEntity();
+                    userDataEntity.setCreateBy(loginUserName);
+                    userDataEntity.setCreateTime(new Date());
+                    userDataEntity.setModifiedBy(loginUserName);
+                    userDataEntity.setModifiedTime(new Date());
+                    userDataEntity.setUserId(id);
+                    userDataEntity.setTId(tid);
+                    userDataEntity.setDId(did);
+                    userDataEntity.setXId(xid);
+                    userDataEntity.setCId(cid);
+                    userDataService.add(userDataEntity);
                 }
             }
         }

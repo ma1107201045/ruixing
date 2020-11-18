@@ -3,6 +3,7 @@ package com.yintu.ruixing.xitongguanli;
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,21 +32,30 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
 
 
     /**
-     * 添加用户并且分配角色
+     * 添加用户以及其他信息
      *
-     * @param userEntity 用户信息
-     * @param roleIds    角色id集
+     * @param userEntity    用户基本信息
+     * @param roleIds       角色id集合
+     * @param departmentIds 部门id集合
+     * @param tids          铁路局id集合
+     * @param dids          电务段id集合
+     * @param xids          线段id集合
+     * @param cids          车站id集合
      */
-    void addUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds);
+    void add(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids);
 
     /**
-     * 修改用户并且重新分配角色
+     * 修改用户以及其他信息
      *
-     * @param userEntity 用户信息
-     * @param roleIds    角色id集
+     * @param userEntity    用户基本信息
+     * @param roleIds       角色id集合
+     * @param departmentIds 部门id集合
+     * @param tids          铁路局id集合
+     * @param dids          电务段id集合
+     * @param xids          线段id集合
+     * @param cids          车站id集合
      */
-
-    void editUserAndRoles(UserEntity userEntity, Long[] roleIds, Long[] departmentIds);
+    void edit(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids);
 
     /**
      * 通过真实姓名查询用户
@@ -87,13 +97,23 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      * @param Id      用户id
      * @param roleIds 角色id集
      */
-    void addRolesByIdAndRoleIds(Long Id, Long[] roleIds,String loginUserName);
+    void addRolesByIdAndRoleIds(Long Id, Long[] roleIds, String loginUserName);
 
     /**
      * @param id             用户id
      * @param departmentsIds 部门id集
      */
     void addDepartmentsByIdAndDepartmentIds(Long id, Long[] departmentsIds, String loginUsername);
+
+    /**
+     * @param id            用户ID
+     * @param tids          铁路局id集合
+     * @param dids          电务段id集合
+     * @param xids          线段id集合
+     * @param cids          车站id集合
+     * @param loginUserName 登录用户名
+     */
+    void addDataByIdAndDataIds(Long id, Long[] tids, Long[] dids, Long[] xids, Long[] cids, String loginUserName);
 
     /**
      * 查询全部权限

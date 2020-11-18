@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.Date;
 import java.util.List;
@@ -27,10 +29,12 @@ public class UserController extends SessionController {
     private RoleService roleService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private DataStatsService dataStatsService;
 
 
     @PostMapping
-    public Map<String, Object> add(UserEntity userEntity, @RequestParam Long[] roleIds, @RequestParam Long[] departmentIds) {
+    public Map<String, Object> add(UserEntity userEntity, @RequestParam Long[] roleIds, @RequestParam Long[] departmentIds, @RequestParam Long[] tids, @RequestParam Long[] dids, @RequestParam Long[] xids, @RequestParam Long[] cids) {
         Assert.notNull(userEntity.getUsername(), "用户名不能为空");
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
@@ -39,7 +43,7 @@ public class UserController extends SessionController {
         userEntity.setCreateTime(new Date());
         userEntity.setModifiedBy(this.getLoginUserName());
         userEntity.setModifiedTime(new Date());
-        userService.addUserAndRoles(userEntity, roleIds, departmentIds );
+        userService.add(userEntity, roleIds, departmentIds, tids, dids, xids, cids);
         return ResponseDataUtil.ok("添加用户成功");
     }
 
@@ -50,14 +54,14 @@ public class UserController extends SessionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Long id, UserEntity userEntity, @RequestParam Long[] roleIds, @RequestParam Long[] departmentIds) {
+    public Map<String, Object> edit(@PathVariable Long id, UserEntity userEntity, @RequestParam Long[] roleIds, @RequestParam Long[] departmentIds, @RequestParam Long[] tids, @RequestParam Long[] dids, @RequestParam Long[] xids, @RequestParam Long[] cids) {
         Assert.notNull(userEntity.getUsername(), "用户名不能为空");
         Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
         userEntity.setModifiedBy(this.getLoginUserName());
         userEntity.setModifiedTime(new Date());
-        userService.editUserAndRoles(userEntity, roleIds, departmentIds);
+        userService.edit(userEntity, roleIds, departmentIds, null, null, null, null);
         return ResponseDataUtil.ok("修改用户成功");
     }
 
@@ -89,6 +93,12 @@ public class UserController extends SessionController {
     public Map<String, Object> findDepartments() {
         List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
         return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
+    }
+
+    @GetMapping("/datas")
+    public Map<String, Object> findFourLinkage() {
+        List<TreeNodeUtil> treeNodeUtils = dataStatsService.findFourLinkage();
+        return ResponseDataUtil.ok("查询铁电线车四级联动信息成功", treeNodeUtils);
     }
 
 
