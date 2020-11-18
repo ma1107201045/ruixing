@@ -193,6 +193,13 @@ public interface DataStatsService {
     CheZhanEntity findQDJsonAndQuDuanDatasByCid(Integer cid);
 
 
-
     List<TreeNodeUtil> findFourLinkage();
+
+    TieLuJuEntity findByTid(Long tid);
+
+    DianWuDuanEntity findByDid(Long did);
+
+    XianDuanEntity findByXid(Long xid);
+
+    CheZhanEntity findByCid(Long cid);
 }

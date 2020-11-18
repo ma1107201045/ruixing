@@ -2,6 +2,10 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,6 +54,13 @@ public class UserEntity implements UserDetails {
 
     private List<RoleEntity> roleEntities;
 
+    private List<TieLuJuEntity> tieLuJuEntities;
+
+    private List<DianWuDuanEntity> dianWuDuanEntities;
+
+    private List<XianDuanEntity> xianDuanEntities;
+
+    private List<CheZhanEntity> cheZhanEntities;
 
 
     @Override

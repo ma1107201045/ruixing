@@ -1192,5 +1192,25 @@ public class DataStatsServiceImpl implements DataStatsService {
         return firstTreeNodeUtils;
     }
 
+    @Override
+    public TieLuJuEntity findByTid(Long id) {
+        return dataStatsDao.selectByTid(id);
+    }
+
+    @Override
+    public DianWuDuanEntity findByDid(Long id) {
+        return dataStatsDao.selectByDid(id);
+    }
+
+    @Override
+    public XianDuanEntity findByXid(Long id) {
+        return dataStatsDao.selectByXid(id);
+    }
+
+    @Override
+    public CheZhanEntity findByCid(Long id) {
+        return dataStatsDao.selectByCid(id);
+    }
+
 
 }

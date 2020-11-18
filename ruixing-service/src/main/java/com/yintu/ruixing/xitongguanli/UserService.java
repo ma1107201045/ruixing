@@ -2,6 +2,10 @@ package com.yintu.ruixing.xitongguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -90,6 +94,38 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      */
 
     List<DepartmentEntity> findDepartmentsById(Long id);
+
+    /**
+     * 通过用户id查询铁路局
+     *
+     * @param id 用户id
+     * @return 铁路局信息
+     */
+    List<TieLuJuEntity> findTieLuJusById(Long id);
+
+    /**
+     * 通过用户id查询电务段
+     *
+     * @param id 用户id
+     * @return 电务段信息
+     */
+    List<DianWuDuanEntity> findDianWuDuansById(Long id);
+
+    /**
+     * 通过用户id查询线段
+     *
+     * @param id 用户id
+     * @return 线段信息
+     */
+    List<XianDuanEntity> findXianDuansById(Long id);
+
+    /**
+     * 通过用户id查询车站
+     *
+     * @param id 用户id
+     * @return 车站信息
+     */
+    List<CheZhanEntity> findCheZhansById(Long id);
 
     /**
      * 指定用户分配角色

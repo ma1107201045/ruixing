@@ -3,6 +3,7 @@ package com.yintu.ruixing.xitongguanli.impl;
 import com.yintu.ruixing.common.enumobject.EnumAuthType;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private DepartmentService departmentService;
     @Autowired
     private UserDataService userDataService;
+    @Autowired
+    private DataStatsService dataStatsService;
 
 
     @Override
@@ -84,6 +87,10 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
+            userEntity.setTieLuJuEntities(this.findTieLuJusById(userEntity.getId()));
+            userEntity.setDianWuDuanEntities(this.findDianWuDuansById(userEntity.getId()));
+            userEntity.setXianDuanEntities(this.findXianDuansById(userEntity.getId()));
+            userEntity.setCheZhanEntities(this.findCheZhansById(userEntity.getId()));
         }
         return userEntity;
     }
@@ -146,6 +153,10 @@ public class UserServiceImpl implements UserService {
         for (UserEntity userEntity : userEntities) {
             userEntity.setDepartmentEntities(this.findDepartmentsById(userEntity.getId()));
             userEntity.setRoleEntities(this.findRolesById(userEntity.getId()));
+            userEntity.setTieLuJuEntities(this.findTieLuJusById(userEntity.getId()));
+            userEntity.setDianWuDuanEntities(this.findDianWuDuansById(userEntity.getId()));
+            userEntity.setXianDuanEntities(this.findXianDuansById(userEntity.getId()));
+            userEntity.setCheZhanEntities(this.findCheZhansById(userEntity.getId()));
         }
         return userEntities;
     }
@@ -196,6 +207,46 @@ public class UserServiceImpl implements UserService {
         List<DepartmentUserEntity> departmentUserEntities = departmentUserService.findByExample(departmentUserEntityExample);
         List<Long> departmentIds = departmentUserEntities.stream().map(DepartmentUserEntity::getDepartmentId).collect(Collectors.toList());
         return departmentService.findByIds(departmentIds);
+    }
+
+    @Override
+    public List<TieLuJuEntity> findTieLuJusById(Long id) {
+        List<UserDataEntity> userDataEntities = userDataService.findByUserId(id);
+        List<TieLuJuEntity> tieLuJuEntities = new ArrayList<>();
+        for (UserDataEntity userDataEntity : userDataEntities) {
+            tieLuJuEntities.add(dataStatsService.findByTid(userDataEntity.getTId()));
+        }
+        return tieLuJuEntities;
+    }
+
+    @Override
+    public List<DianWuDuanEntity> findDianWuDuansById(Long id) {
+        List<UserDataEntity> userDataEntities = userDataService.findByUserId(id);
+        List<DianWuDuanEntity> dianWuDuanEntities = new ArrayList<>();
+        for (UserDataEntity userDataEntity : userDataEntities) {
+            dianWuDuanEntities.add(dataStatsService.findByDid(userDataEntity.getDId()));
+        }
+        return dianWuDuanEntities;
+    }
+
+    @Override
+    public List<XianDuanEntity> findXianDuansById(Long id) {
+        List<UserDataEntity> userDataEntities = userDataService.findByUserId(id);
+        List<XianDuanEntity> xianDuanEntities = new ArrayList<>();
+        for (UserDataEntity userDataEntity : userDataEntities) {
+            xianDuanEntities.add(dataStatsService.findByXid(userDataEntity.getXId()));
+        }
+        return xianDuanEntities;
+    }
+
+    @Override
+    public List<CheZhanEntity> findCheZhansById(Long id) {
+        List<UserDataEntity> userDataEntities = userDataService.findByUserId(id);
+        List<CheZhanEntity> cheZhanEntities = new ArrayList<>();
+        for (UserDataEntity userDataEntity : userDataEntities) {
+            cheZhanEntities.add(dataStatsService.findByCid(userDataEntity.getCId()));
+        }
+        return cheZhanEntities;
     }
 
     @Override

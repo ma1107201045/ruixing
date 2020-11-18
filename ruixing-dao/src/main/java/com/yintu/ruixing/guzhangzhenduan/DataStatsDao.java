@@ -70,4 +70,13 @@ public interface DataStatsDao {
 
     List<DianWuDuanEntity> findAllDianWuDuan();
 
+
+    TieLuJuEntity selectByTid(Long tid);
+
+    DianWuDuanEntity selectByDid(Long did);
+
+    XianDuanEntity selectByXid(Long xid);
+
+    CheZhanEntity selectByCid(Long cid);
+
 }
