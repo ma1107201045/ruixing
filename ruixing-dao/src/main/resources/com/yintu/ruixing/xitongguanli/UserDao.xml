@@ -15,6 +15,7 @@
         <result column="auth_type" jdbcType="SMALLINT" property="authType"/>
         <result column="locked" jdbcType="SMALLINT" property="locked"/>
         <result column="enableds" jdbcType="SMALLINT" property="enableds"/>
+        <result column="is_customer" jdbcType="SMALLINT" property="isCustomer"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -78,7 +79,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, username, password, true_name,
-    phone, email, auth_type, locked, enableds
+    phone, email, auth_type, locked, enableds, is_customer
     </sql>
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
             resultMap="BaseResultMap">
@@ -118,12 +119,12 @@
                              modified_by, modified_time, username,
                              password, true_name, phone,
                              email, auth_type, locked,
-                             enableds)
+                             enableds, is_customer)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
                 #{password,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
                 #{email,jdbcType=VARCHAR}, #{authType,jdbcType=SMALLINT}, #{locked,jdbcType=SMALLINT},
-                #{enableds,jdbcType=SMALLINT})
+                #{enableds,jdbcType=SMALLINT}, #{isCustomer,jdbcType=SMALLINT})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
             keyProperty="id">
@@ -168,6 +169,9 @@
             <if test="enableds != null">
                 enableds,
             </if>
+            <if test="isCustomer != null">
+                is_customer,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -208,6 +212,9 @@
             </if>
             <if test="enableds != null">
                 #{enableds,jdbcType=SMALLINT},
+            </if>
+            <if test="isCustomer != null">
+                #{isCustomer,jdbcType=SMALLINT},
             </if>
         </trim>
     </insert>
@@ -260,6 +267,9 @@
             <if test="record.enableds != null">
                 enableds = #{record.enableds,jdbcType=SMALLINT},
             </if>
+            <if test="record.isCustomer != null">
+                is_customer = #{record.isCustomer,jdbcType=SMALLINT},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -279,7 +289,8 @@
         email = #{record.email,jdbcType=VARCHAR},
         auth_type = #{record.authType,jdbcType=SMALLINT},
         locked = #{record.locked,jdbcType=SMALLINT},
-        enableds = #{record.enableds,jdbcType=SMALLINT}
+        enableds = #{record.enableds,jdbcType=SMALLINT},
+        is_customer = #{record.isCustomer,jdbcType=SMALLINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -323,6 +334,9 @@
             <if test="enableds != null">
                 enableds = #{enableds,jdbcType=SMALLINT},
             </if>
+            <if test="isCustomer != null">
+                is_customer = #{isCustomer,jdbcType=SMALLINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -339,9 +353,11 @@
             email         = #{email,jdbcType=VARCHAR},
             auth_type     = #{authType,jdbcType=SMALLINT},
             locked        = #{locked,jdbcType=SMALLINT},
-            enableds      = #{enableds,jdbcType=SMALLINT}
+            enableds      = #{enableds,jdbcType=SMALLINT},
+            is_customer   = #{isCustomer,jdbcType=SMALLINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
+
     <select id="findid" resultType="java.lang.Integer">
         select id
         from tb_user

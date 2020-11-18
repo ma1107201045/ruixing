@@ -179,16 +179,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("用户名不存在");
         }
         UserEntity userEntity = userEntities.get(0);
-        if (!userEntity.isEnabled()) {
-            throw new DisabledException("账户已关闭");
-        }
-        if (!userEntity.isAccountNonLocked()) {
-            throw new LockedException("账户被锁定");
-        }
         List<RoleEntity> roleEntities = roleService.findByUserId(userEntity.getId());
-        if (roleEntities.isEmpty() && userEntity.getAuthType().equals(EnumAuthType.USER.getValue())) {
-            throw new UsernameNotFoundException("用户没有分配角色");
-        }
         userEntity.setRoleEntities(roleEntities);
         return userEntity;
     }

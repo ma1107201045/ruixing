@@ -61,7 +61,7 @@ public class UserController extends SessionController {
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
         userEntity.setModifiedBy(this.getLoginUserName());
         userEntity.setModifiedTime(new Date());
-        userService.edit(userEntity, roleIds, departmentIds, null, null, null, null);
+        userService.edit(userEntity, roleIds, departmentIds, tids, dids, xids, cids);
         return ResponseDataUtil.ok("修改用户成功");
     }
 

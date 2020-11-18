@@ -50,6 +50,8 @@ public class UserEntity implements UserDetails {
 
     private Short enableds;
 
+    private Short isCustomer;
+
     private List<DepartmentEntity> departmentEntities;
 
     private List<RoleEntity> roleEntities;
