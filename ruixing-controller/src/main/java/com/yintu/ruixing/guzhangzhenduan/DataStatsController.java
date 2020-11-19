@@ -611,19 +611,18 @@ public class DataStatsController {
         return ResponseDataUtil.ok("查询所有车站信息成功", pageInfo);
     }
 
+
+    /*
+     * 数据配置树点击接口
+     */
     //根据铁路局id  查询此铁路局下的所有车站
     @GetMapping("/findTieLuJuById/{tid}")
     public Map<String, Object> findTieLuJuById(@PathVariable Long tid,
-                                               @RequestParam(value = "page", required = false) Integer
-                                                       page, @RequestParam(value = "size", required = false) Integer size) {
-        //JSONObject jo = new JSONObject();
-        //List<DataStatsEntity> tieLuJuEntity = dataStatsService.findTieLuJuById(tid, page, size);
-        //jo.put("tieLuJuEntity", tieLuJuEntity);
+                                               @RequestParam(value = "page", required = false) Integer page,
+                                               @RequestParam(value = "size", required = false) Integer size) {
         PageHelper.startPage(page, size);
         List<DataStatsEntity> all = dataStatsService.findTieLuJuById(tid, page, size);
         PageInfo<DataStatsEntity> pageInfo = new PageInfo<>(all);
-        //jo.put("pageInfo", pageInfo);
-        //System.out.println("分页为" + pageInfo);
         return ResponseDataUtil.ok("查询铁路局成功", pageInfo);
     }
 
@@ -661,6 +660,9 @@ public class DataStatsController {
         PageInfo<DataStatsEntity> pageInfo = new PageInfo<>(all);
         return ResponseDataUtil.ok("查询铁路局成功", pageInfo);
     }
+
+
+
 
     //根据电务段id更改状态
     @PutMapping("/editStateByDid/{did}")
@@ -776,7 +778,6 @@ public class DataStatsController {
         String xianDuanJson = dataStatsService.findOneXDJsonByXid(xid);
         return ResponseDataUtil.ok("查询线段的json数据成功", xianDuanJson);
     }
-
 
 
     //根据车站cid 查询此车站内电码化的区段配置json数据

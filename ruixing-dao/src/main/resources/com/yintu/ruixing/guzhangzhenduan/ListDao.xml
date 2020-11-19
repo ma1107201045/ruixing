@@ -12,6 +12,7 @@
         SELECT *
         FROM `mro_tieluju`
     </select>
+
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" id="dianwuduan">
         <result property="did" column="did"/>
         <result property="tid" column="tid"/>
@@ -20,25 +21,47 @@
         <result property="dwdName" column="dwd_name"/>
         <result property="tljDwdId" column="tlj_dwd_id"/>
         <result property="dwdMiaoShu" column="dwd_miaoshu"/>
+        <result property="dwdState" column="dwd_state"/>
         <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
                      column="mro_tieluju">
-            <result property="tid" column="tid"></result>
+            <result property="tid" column="tid"/>
         </association>
     </resultMap>
 
+    <!--    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">-->
+    <!--        SELECT mro_dianwuduan.did,-->
+    <!--               mro_dianwuduan.dwd_id,-->
+    <!--               mro_dianwuduan.tlj_id,-->
+    <!--               mro_dianwuduan.tlj_dwd_id,-->
+    <!--               mro_dianwuduan.dwd_name,-->
+    <!--               mro_dianwuduan.dwd_miaoshu,-->
+    <!--               mro_dianwuduan.dwd_state,-->
+    <!--               mro_tieluju.tid-->
+    <!--        FROM `mro_dianwuduan`,-->
+    <!--             `mro_tieluju`-->
+    <!--        WHERE mro_dianwuduan.tlj_dwd_id = mro_tieluju.tid-->
+    <!--          and mro_dianwuduan.tlj_dwd_id = #{tljId}-->
+    <!--    </select>-->
+
+    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
+        SELECT mro_dianwuduan.did,
+               mro_dianwuduan.dwd_id,
+               mro_dianwuduan.tlj_id,
+               mro_dianwuduan.tlj_dwd_id,
+               mro_dianwuduan.dwd_name,
+               mro_dianwuduan.dwd_miaoshu,
+               mro_dianwuduan.dwd_state
+        FROM `mro_dianwuduan`
+        WHERE mro_dianwuduan.tlj_dwd_id = #{tljId}
+    </select>
+
+
     <select id="selectDwdListByDwdId" resultMap="dianwuduan">
-        SELECT *
+        SELECT did, dwd_id, tlj_id, tlj_dwd_id, dwd_name, dwd_miaoshu, dwd_state
         FROM mro_dianwuduan
         WHERE did = #{dwdid}
     </select>
 
-    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
-        SELECT mro_dianwuduan.*, mro_tieluju.tid
-        FROM `mro_dianwuduan`,
-             `mro_tieluju`
-        WHERE tlj_dwd_id = mro_tieluju.tid
-          and tlj_dwd_id = #{tljId}
-    </select>
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity" id="xianduan">
         <result property="xid" column="xid"/>
         <result property="tid" column="tid"/>
@@ -50,24 +73,51 @@
         <result property="dwdXdId" column="dwd_xd_id"/>
         <result property="xdMiaoShu" column="xd_miaoshu"/>
         <result property="xdType" column="xd_type"/>
+        <result property="xdState" column="xd_state"/>
         <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity"
                      column="mro_dianwuduan">
-            <result property="did" column="did"></result>
+            <result property="did" column="did"/>
         </association>
         <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
                      column="mro_tieluju">
-            <result property="tid" column="tid"></result>
+            <result property="tid" column="tid"/>
         </association>
     </resultMap>
+    <!--    <select id="selectXdListByDwdId" parameterType="long" resultMap="xianduan">-->
+    <!--        SELECT mro_xianduan.xid,-->
+    <!--               mro_xianduan.xd_id,-->
+    <!--               mro_xianduan.dwd_id,-->
+    <!--               mro_xianduan.dwd_xd_id,-->
+    <!--               mro_xianduan.xd_name,-->
+    <!--               mro_xianduan.xd_zg_name,-->
+    <!--               mro_xianduan.xd_miaoshu,-->
+    <!--               mro_xianduan.xd_type,-->
+    <!--               mro_xianduan.xd_state,-->
+    <!--               mro_dianwuduan.did,-->
+    <!--               mro_tieluju.tid-->
+    <!--        FROM `mro_xianduan`,-->
+    <!--             `mro_dianwuduan`,-->
+    <!--             `mro_tieluju`-->
+    <!--        WHERE mro_dianwuduan.tlj_dwd_id = mro_tieluju.tid-->
+    <!--          and mro_xianduan.dwd_xd_id = mro_dianwuduan.did-->
+    <!--          and mro_xianduan.dwd_xd_id = #{dwdId}-->
+    <!--    </select>-->
+
+
     <select id="selectXdListByDwdId" parameterType="long" resultMap="xianduan">
-        SELECT mro_xianduan.*, mro_dianwuduan.did, mro_tieluju.tid
-        FROM `mro_xianduan`,
-             `mro_dianwuduan`,
-             `mro_tieluju`
-        WHERE tlj_dwd_id = mro_tieluju.tid
-          and dwd_xd_id = mro_dianwuduan.did
-          and dwd_xd_id = #{dwdId}
+        SELECT mro_xianduan.xid,
+               mro_xianduan.xd_id,
+               mro_xianduan.dwd_id,
+               mro_xianduan.dwd_xd_id,
+               mro_xianduan.xd_name,
+               mro_xianduan.xd_zg_name,
+               mro_xianduan.xd_miaoshu,
+               mro_xianduan.xd_type,
+               mro_xianduan.xd_state
+        FROM `mro_xianduan`
+        WHERE mro_xianduan.dwd_xd_id = #{dwdId}
     </select>
+
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity" id="chezhan">
         <result property="cid" column="cid"/>
         <result property="tid" column="tid"/>
@@ -88,27 +138,167 @@
         <result property="czDuanTou" column="cz_duantou"/>
         <association property="dianWuDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity"
                      column="mro_dianwuduan">
-            <result property="did" column="did"></result>
+            <result property="did" column="did"/>
         </association>
         <association property="tieLuJuEntity" javaType="com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity"
                      column="mro_tieluju">
-            <result property="tid" column="tid"></result>
+            <result property="tid" column="tid"/>
         </association>
         <association property="xianDuanEntity" javaType="com.yintu.ruixing.guzhangzhenduan.XianDuanEntity"
                      column="mro_xianduan">
-            <result property="xid" column="xid"></result>
+            <result property="xid" column="xid"/>
         </association>
     </resultMap>
+    <!--    <select id="selectCzListByXdId" parameterType="long" resultMap="chezhan">-->
+    <!--        SELECT mro_chezhan.cid,-->
+    <!--               mro_chezhan.cz_id,-->
+    <!--               mro_chezhan.xd_id,-->
+    <!--               mro_chezhan.xd_cz_id,-->
+    <!--               mro_chezhan.cz_name,-->
+    <!--               mro_chezhan.cz_name_jiancheng,-->
+    <!--               mro_chezhan.cz_ip,-->
+    <!--               mro_chezhan.cz_type,-->
+    <!--               mro_chezhan.cz_lianjie_type,-->
+    <!--               mro_chezhan.cz_stutrs,-->
+    <!--               mro_chezhan.cz_open_stutrs,-->
+    <!--               mro_chezhan.cz_caozuo,-->
+    <!--               mro_chezhan.cz_lasttime,-->
+    <!--               mro_chezhan.cz_duantou,-->
+    <!--               mro_chezhan.cz_miaoshu,-->
+    <!--               mro_chezhan.cz_state,-->
+    <!--#                mro_chezhan.cz_json,-->
+    <!--               mro_chezhan.cz_dmh_state,-->
+    <!--#                mro_chezhan.cz_dmh_json,-->
+    <!--               mro_chezhan.cz_r_shebei,-->
+    <!--               mro_chezhan.cz_zhongjizhan,-->
+    <!--               mro_chezhan.tongXinBianMaGuiDaoNumber,-->
+    <!--               mro_chezhan.tongXinBianMaZhanNeiOneGuiDaoNumber,-->
+    <!--               mro_chezhan.jiDianOneToOneGuiDaoNumber,-->
+    <!--               mro_chezhan.jiDianNToOneGuiDaoNumber,-->
+    <!--               mro_chezhan.jiDianNToOneSheBeiNumber,-->
+    <!--               mro_chezhan.tongXinBianMaDianMaHuaSheBeiNumber,-->
+    <!--               mro_chezhan.jiDianNToOneDianMaHuaSheBeiNumber,-->
+    <!--               mro_chezhan.jiDianJiaShiGuiDaoNumber,-->
+    <!--               mro_chezhan.jiDianJiaShiDianMaHuaSheBeiNumber,-->
+    <!--               mro_chezhan.jiDianDianMaHuaNumber,-->
+    <!--               mro_chezhan.publicMessage,-->
+    <!--               mro_chezhan.yuliushebei1,-->
+    <!--               mro_chezhan.yuliushebei2,-->
+    <!--               mro_chezhan.yuliushebei3,-->
+    <!--               mro_chezhan.quJianBiSaiType,-->
+    <!--               mro_chezhan.linzhan1ID,-->
+    <!--               mro_chezhan.linzhan1Name,-->
+    <!--               mro_chezhan.linzhan1LineType,-->
+    <!--               mro_chezhan.linzhan1OfXianDuan,-->
+    <!--               mro_chezhan.linzhan1IsNoBenDWD,-->
+    <!--               mro_chezhan.linzhan2ID,-->
+    <!--               mro_chezhan.linzhan2Name,-->
+    <!--               mro_chezhan.linzhan2LineType,-->
+    <!--               mro_chezhan.linzhan2OfXianDuan,-->
+    <!--               mro_chezhan.linzhan2IsNoBenDWD,-->
+    <!--               mro_chezhan.linzhan3ID,-->
+    <!--               mro_chezhan.linzhan3Name,-->
+    <!--               mro_chezhan.linzhan3LineType,-->
+    <!--               mro_chezhan.linzhan3OfXianDuan,-->
+    <!--               mro_chezhan.linzhan3IsNoBenDWD,-->
+    <!--               mro_chezhan.linzhan4ID,-->
+    <!--               mro_chezhan.linzhan4Name,-->
+    <!--               mro_chezhan.linzhan4LineType,-->
+    <!--               mro_chezhan.linzhan4OfXianDuan,-->
+    <!--               mro_chezhan.linzhan4IsNoBenDWD,-->
+    <!--               mro_chezhan.linzhan5ID,-->
+    <!--               mro_chezhan.linzhan5Name,-->
+    <!--               mro_chezhan.linzhan5LineType,-->
+    <!--               mro_chezhan.linzhan5OfXianDuan,-->
+    <!--               mro_chezhan.linzhan5IsNoBenDWD,-->
+    <!--               mro_chezhan.linzhan6ID,-->
+    <!--               mro_chezhan.linzhan6Name,-->
+    <!--               mro_chezhan.linzhan6LineType,-->
+    <!--               mro_chezhan.linzhan6OfXianDuan,-->
+    <!--               mro_chezhan.linzhan6IsNoBenDWD,-->
+    <!--               mro_dianwuduan.did,-->
+    <!--               mro_tieluju.tid,-->
+    <!--               mro_xianduan.xid-->
+    <!--        FROM `mro_chezhan`,-->
+    <!--             `mro_dianwuduan`,-->
+    <!--             `mro_tieluju`,-->
+    <!--             `mro_xianduan`-->
+    <!--        WHERE mro_dianwuduan.tlj_dwd_id = mro_tieluju.tid-->
+    <!--          and mro_xianduan.dwd_xd_id = mro_dianwuduan.did-->
+    <!--          and mro_chezhan.xd_cz_id = mro_xianduan.xid-->
+    <!--          and xd_cz_id = #{xdId}-->
+    <!--    </select>-->
+
+
     <select id="selectCzListByXdId" parameterType="long" resultMap="chezhan">
-        SELECT mro_chezhan.*, mro_dianwuduan.did, mro_tieluju.tid, mro_xianduan.xid
-        FROM `mro_chezhan`,
-             `mro_dianwuduan`,
-             `mro_tieluju`,
-             `mro_xianduan`
-        WHERE tlj_dwd_id = mro_tieluju.tid
-          and dwd_xd_id = mro_dianwuduan.did
-          and xd_cz_id = mro_xianduan.xid
-          and xd_cz_id = #{xdId}
+        SELECT mro_chezhan.cid,
+               mro_chezhan.cz_id,
+               mro_chezhan.xd_id,
+               mro_chezhan.xd_cz_id,
+               mro_chezhan.cz_name,
+               mro_chezhan.cz_name_jiancheng,
+               mro_chezhan.cz_ip,
+               mro_chezhan.cz_type,
+               mro_chezhan.cz_lianjie_type,
+               mro_chezhan.cz_stutrs,
+               mro_chezhan.cz_open_stutrs,
+               mro_chezhan.cz_caozuo,
+               mro_chezhan.cz_lasttime,
+               mro_chezhan.cz_duantou,
+               mro_chezhan.cz_miaoshu,
+               mro_chezhan.cz_state,
+#                mro_chezhan.cz_json,
+               mro_chezhan.cz_dmh_state,
+#                mro_chezhan.cz_dmh_json,
+               mro_chezhan.cz_r_shebei,
+               mro_chezhan.cz_zhongjizhan,
+               mro_chezhan.tongXinBianMaGuiDaoNumber,
+               mro_chezhan.tongXinBianMaZhanNeiOneGuiDaoNumber,
+               mro_chezhan.jiDianOneToOneGuiDaoNumber,
+               mro_chezhan.jiDianNToOneGuiDaoNumber,
+               mro_chezhan.jiDianNToOneSheBeiNumber,
+               mro_chezhan.tongXinBianMaDianMaHuaSheBeiNumber,
+               mro_chezhan.jiDianNToOneDianMaHuaSheBeiNumber,
+               mro_chezhan.jiDianJiaShiGuiDaoNumber,
+               mro_chezhan.jiDianJiaShiDianMaHuaSheBeiNumber,
+               mro_chezhan.jiDianDianMaHuaNumber,
+               mro_chezhan.publicMessage,
+               mro_chezhan.yuliushebei1,
+               mro_chezhan.yuliushebei2,
+               mro_chezhan.yuliushebei3,
+               mro_chezhan.quJianBiSaiType,
+               mro_chezhan.linzhan1ID,
+               mro_chezhan.linzhan1Name,
+               mro_chezhan.linzhan1LineType,
+               mro_chezhan.linzhan1OfXianDuan,
+               mro_chezhan.linzhan1IsNoBenDWD,
+               mro_chezhan.linzhan2ID,
+               mro_chezhan.linzhan2Name,
+               mro_chezhan.linzhan2LineType,
+               mro_chezhan.linzhan2OfXianDuan,
+               mro_chezhan.linzhan2IsNoBenDWD,
+               mro_chezhan.linzhan3ID,
+               mro_chezhan.linzhan3Name,
+               mro_chezhan.linzhan3LineType,
+               mro_chezhan.linzhan3OfXianDuan,
+               mro_chezhan.linzhan3IsNoBenDWD,
+               mro_chezhan.linzhan4ID,
+               mro_chezhan.linzhan4Name,
+               mro_chezhan.linzhan4LineType,
+               mro_chezhan.linzhan4OfXianDuan,
+               mro_chezhan.linzhan4IsNoBenDWD,
+               mro_chezhan.linzhan5ID,
+               mro_chezhan.linzhan5Name,
+               mro_chezhan.linzhan5LineType,
+               mro_chezhan.linzhan5OfXianDuan,
+               mro_chezhan.linzhan5IsNoBenDWD,
+               mro_chezhan.linzhan6ID,
+               mro_chezhan.linzhan6Name,
+               mro_chezhan.linzhan6LineType,
+               mro_chezhan.linzhan6OfXianDuan,
+               mro_chezhan.linzhan6IsNoBenDWD
+        FROM `mro_chezhan`
+        WHERE xd_cz_id = #{xdId}
     </select>
 
 

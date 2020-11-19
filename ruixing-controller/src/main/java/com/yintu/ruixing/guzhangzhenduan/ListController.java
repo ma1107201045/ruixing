@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/lieBiao")
-public class ListController {
+public class ListController extends SessionController {
     @Autowired
     private ListService ls;
     @Autowired
@@ -49,14 +50,14 @@ public class ListController {
     //获取第一级和第二级的数据
     @GetMapping("/findOneTwoDatas")
     public Map<String, Object> findOneTwoDatas() {
-        List<TieLuJuEntity> datasList = ls.findOneTwoDatas();
+        List<TieLuJuEntity> datasList = ls.findOneTwoDatas(this.getLoginUser());
         return ResponseDataUtil.ok("查询铁路局和电务段数据成功", datasList);
     }
 
     //根据电务段的id 查询对应的线段和车站
     @GetMapping("/findXDAndCZByDWDId/{dwdid}")
     public Map<String, Object> findXDAndCZByDWDId(@PathVariable Integer dwdid) {
-        List<DianWuDuanEntity> dianWuDuanEntityList = ls.findXDAndCZByDWDId(dwdid);
+        List<DianWuDuanEntity> dianWuDuanEntityList = ls.findXDAndCZByDWDId(dwdid, this.getLoginUser());
         return ResponseDataUtil.ok("查询电务段下面的数据成功", dianWuDuanEntityList);
     }
 

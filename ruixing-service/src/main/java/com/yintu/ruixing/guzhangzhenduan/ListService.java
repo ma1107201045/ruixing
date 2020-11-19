@@ -1,6 +1,8 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 
+import com.yintu.ruixing.xitongguanli.UserEntity;
+
 import java.util.List;
 
 /**
@@ -10,14 +12,31 @@ import java.util.List;
  */
 public interface ListService {
 
-    Object getMenuList();
-
 
     Object getErJi();
 
     Object getSanJi();
 
-    List<TieLuJuEntity> findOneTwoDatas();
+    /**
+     * 故障诊断
+     *
+     * @param userEntity
+     * @return
+     */
+    List<TieLuJuEntity> findOneTwoDatas(UserEntity userEntity);
 
-    List<DianWuDuanEntity> findXDAndCZByDWDId(Integer dwdid);
+    /**
+     * 故障诊断
+     *
+     * @param userEntity
+     * @return
+     */
+    List<DianWuDuanEntity> findXDAndCZByDWDId(Integer dwdid, UserEntity userEntity);
+
+    /**
+     * 数据配置左边树
+     *
+     * @return
+     */
+    Object getMenuList();
 }
