@@ -67,6 +67,11 @@ class RuixingApplicationTests {
     @Value("${spring.datasource.druid.url}")
     private String jdbcUrl;
 
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private RoleService roleService;
+
     @Test
     void contextLoads() {
         List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>();
@@ -168,4 +173,21 @@ class RuixingApplicationTests {
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         System.out.println(antPathMatcher.match("/abc/**", "/abc"));
     }
+
+    @Test
+    void contextLoads14() {
+        long s1 = System.currentTimeMillis();
+        permissionService.findPermissionAndRole();
+        System.out.println((System.currentTimeMillis() - s1) / 1000.0);
+
+
+        long s2 = System.currentTimeMillis();
+        List<PermissionEntity> permissionEntities = permissionService.findByExample(new PermissionEntityExample());
+        for (PermissionEntity permissionEntity : permissionEntities) {
+            List<RoleEntity> roleEntities = roleService.findByPermissionId(permissionEntity.getId());
+            permissionEntity.setRoleEntities(roleEntities);
+        }
+        System.out.println((System.currentTimeMillis() - s2) / 1000.0);
+    }
+
 }

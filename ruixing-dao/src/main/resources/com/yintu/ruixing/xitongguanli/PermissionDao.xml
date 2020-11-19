@@ -360,6 +360,7 @@
         from tb_permission p
                  inner join tb_permission_role pr on p.id = pr.permission_id
                  inner join tb_role r on pr.role_id = r.id
+        where p.is_menu = 0
     </select>
 
 </mapper>
