@@ -12,6 +12,7 @@ import java.util.List;
 public interface PermissionService extends BaseService<PermissionEntity, Long> {
 
 
+
     /**
      * 按照指定条件删除权限
      *

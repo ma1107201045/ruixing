@@ -29,4 +29,6 @@ public interface PermissionDao {
 
     int updateByPrimaryKey(PermissionEntity record);
 
+    List<PermissionEntity> selectPermissionAndRole();
+
 }

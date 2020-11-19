@@ -3,8 +3,11 @@ package com.yintu.ruixing.xitongguanli.impl;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -26,6 +29,7 @@ public class PermissionServiceImpl implements PermissionService {
     private RoleService roleService;
     @Autowired
     private PermissionRoleService permissionRoleService;
+
 
     @Override
     public void add(PermissionEntity permissionEntity) {
@@ -147,15 +151,18 @@ public class PermissionServiceImpl implements PermissionService {
         return this.findByIds(permissionIds, parentId);
     }
 
+
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<PermissionEntity> findPermissionAndRole() {
-        PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
-        List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
-        for (PermissionEntity permissionEntity : permissionEntities) {
-            List<RoleEntity> roleEntities = roleService.findByPermissionId(permissionEntity.getId());
-            permissionEntity.setRoleEntities(roleEntities);
-        }
-        return permissionEntities;
+//        PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
+//        List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
+//        for (PermissionEntity permissionEntity : permissionEntities) {
+//            List<RoleEntity> roleEntities = roleService.findByPermissionId(permissionEntity.getId());
+//            permissionEntity.setRoleEntities(roleEntities);
+//        }
+//        return permissionEntities;
+        return permissionDao.selectPermissionAndRole();
     }
 
     @Override
