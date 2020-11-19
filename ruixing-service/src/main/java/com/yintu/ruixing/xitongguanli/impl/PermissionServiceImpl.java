@@ -26,8 +26,6 @@ public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private PermissionDao permissionDao;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private PermissionRoleService permissionRoleService;
 
 
