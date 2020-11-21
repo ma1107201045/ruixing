@@ -84,8 +84,10 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         String currentDate = dateFormat.format(new Date());
         Date date1 = dateFormat.parse(currentDate);
         List<Integer> uids = new ArrayList<>();
-        String username = this.getLoginUser().getTrueName();
-        Integer senderid = this.getLoginUser().getId().intValue();
+//        String username = this.getLoginUser().getTrueName();
+//        Integer senderid = this.getLoginUser().getId().intValue();
+        String username = "";
+        Integer senderid = null;
         Date nowTime = new Date();
         String truename = null;
         List<UserEntity> userEntitiess = userService.findByTruename(truename);
