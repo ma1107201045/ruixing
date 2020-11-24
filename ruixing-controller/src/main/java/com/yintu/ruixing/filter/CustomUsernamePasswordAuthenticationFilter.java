@@ -1,5 +1,6 @@
-package com.yintu.ruixing.component;
+package com.yintu.ruixing.filter;
 
+import com.yintu.ruixing.exception.VerificationCodeException;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

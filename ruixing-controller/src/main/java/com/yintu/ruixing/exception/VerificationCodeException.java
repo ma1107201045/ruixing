@@ -1,4 +1,4 @@
-package com.yintu.ruixing.component;
+package com.yintu.ruixing.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

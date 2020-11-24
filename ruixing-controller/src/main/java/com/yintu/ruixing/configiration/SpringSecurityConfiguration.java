@@ -3,6 +3,8 @@ package com.yintu.ruixing.configiration;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.component.*;
+import com.yintu.ruixing.exception.VerificationCodeException;
+import com.yintu.ruixing.filter.CustomUsernamePasswordAuthenticationFilter;
 import com.yintu.ruixing.xitongguanli.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -98,7 +100,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
         customUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler((HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) -> {
-                    System.out.println(httpServletRequest.getSession().getMaxInactiveInterval());
                     sessionRegistryImpl().registerNewSession(httpServletRequest.getSession().getId(), authentication.getPrincipal());
                     httpServletResponse.setContentType("application/json;charset=utf-8");
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -135,9 +136,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     out.close();
                 }
         );
-        customUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         customUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/login");
         customUsernamePasswordAuthenticationFilter.setRememberMeServices(tokenBasedRememberMeServices());
+        customUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         customUsernamePasswordAuthenticationFilter.setSessionAuthenticationStrategy(concurrentSessionControlAuthenticationStrategy());
         return customUsernamePasswordAuthenticationFilter;
     }
@@ -159,15 +160,20 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         });
     }
 
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userServiceImpl);
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode", "/druid/**", "/websocket/**", "/test/**", "/files/**", "/backups/**",
+                "/swagger-resources/**",
+                "/swagger-ui.html",
+                "/v2/api-docs",
+                "/webjars/**",
+                "/remote/support/video/meetings/add/join/person/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.rememberMe()
+        http.userDetailsService(userServiceImpl)
+                .rememberMe()
                 .rememberMeServices(tokenBasedRememberMeServices()).and().authorizeRequests()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
@@ -210,16 +216,6 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     out.flush();
                     out.close();
                 }).and().addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).addFilterAt(concurrentSessionFilter(), ConcurrentSessionFilter.class);
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode", "/druid/**", "/websocket/**", "/test/**", "/files/**", "/backups/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/v2/api-docs",
-                "/webjars/**",
-                "/remote/support/video/meetings/add/join/person/**");
     }
 
 
