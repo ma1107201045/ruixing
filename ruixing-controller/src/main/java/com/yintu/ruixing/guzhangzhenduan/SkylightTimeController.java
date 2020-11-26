@@ -74,7 +74,7 @@ public class SkylightTimeController extends SessionController {
     @GetMapping("/quduans")
     @ResponseBody
     public Map<String, Object> findQuduanByczId(@RequestParam Integer czId) {
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzId(czId);
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null);
         return ResponseDataUtil.ok("查询区段列表信息成功", quDuanBaseEntities);
     }
 

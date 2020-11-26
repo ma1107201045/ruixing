@@ -155,9 +155,9 @@
 
    v47 as mA_Cable_JBP, v48 as A_longIn_JBP, v49 as A_longOut_JBP, v50 as A_shortIn_JBP, v51 as A_shortOut_JBP,  v53 as T_JBP,
 
-    v70 as rackAddress , v71, v72, v73, v74, v75, v76,v77, v78,
-    qb.id as qbId,
-    qb.quDuanYunYing_name
+    v70 as rackAddress , v71, v72, v73, v74, v75, v76,v77, v78
+#     qb.id as qbId,
+#     qb.quDuanYunYing_name
     </sql>
 
 
@@ -219,27 +219,6 @@
           AND qb.id = #{id,jdbcType=INTEGER}
         GROUP BY v1
     </select>
-    <!--
-
-        &lt;!&ndash;根据日期  查询对应的数据&ndash;&gt;&lt;!&ndash;错误&ndash;&gt;
-        <select id="findQuDuanDataByTime" resultMap="BaseResultMap">
-            SELECT qi.*
-            FROM mro_quduan_info qi,
-                 mro_quduan_base qd
-            WHERE qi.qid = qd.id
-              AND DATE(qi.time) = DATE(#{time,jdbcType=TIMESTAMP})
-
-        </select>
-        &lt;!&ndash;根据查询日期的24个时间  查询对应的数据   &ndash;&gt; &lt;!&ndash;错误&ndash;&gt;
-        <select id="findQuDuanDataByTime2" resultType="java.lang.Integer" statementType="STATEMENT">
-            SELECT ${name}
-            FROM mro_quduan_info qi,
-                 mro_quduan_base qd
-            WHERE qi.qid = qd.id
-              AND DATE_FORMAT(qi.time, "%Y/%m/%d %H:%i:%S") = DATE_FORMAT("${format}", "%Y/%m/%d %H:%i:%S")
-
-        </select>
-    -->
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanData" resultType="java.lang.Integer" statementType="STATEMENT">
@@ -293,52 +272,58 @@
 
     <select id="findDianMaHuaDatasByCZids" resultMap="quduanBaseResultMap">
         SELECT da.createtime time,
-               da.type,
-               da.v1         qid,
-               da.v2         data_zhengChang,
-               da.v3         V_out_zhu,
-               da.v9         V_out_bei,
-               da.v4         mA_out_zhu,
-               da.v10        mA_out_bei,
-               da.v5         Hz_up_zhu,
-               da.v11        Hz_up_bei,
-               da.v6         Hz_down_zhu,
-               da.v12        Hz_down_bei,
-               da.v7         Hz_low_zhu,
-               da.v13        Hz_low_bei,
-               da.v8         FBJ_drive_zhu,
-               da.v14        FBJ_drive_bei,
-               da.v39_sc3    FBJ_collection_zhu,
-               da.v39_sc2    FBJ_collection_bei
+        da.type,
+        da.v1 qid,
+        da.v2 data_zhengChang,
+        da.v3 V_out_zhu,
+        da.v9 V_out_bei,
+        da.v4 mA_out_zhu,
+        da.v10 mA_out_bei,
+        da.v5 Hz_up_zhu,
+        da.v11 Hz_up_bei,
+        da.v6 Hz_down_zhu,
+        da.v12 Hz_down_bei,
+        da.v7 Hz_low_zhu,
+        da.v13 Hz_low_bei,
+        da.v8 FBJ_drive_zhu,
+        da.v14 FBJ_drive_bei,
+        da.v39_sc3 FBJ_collection_zhu,
+        da.v39_sc2 FBJ_collection_bei
         FROM ${tableName} da
-        WHERE da.v1 IN (SELECT qdid FROM mro_quduan_base WHERE cz_id = #{czid} AND line = '电码化')
-          AND da.createtime = (SELECT max(createtime) createtime FROM ${tableName} WHERE station_id = #{czid})
+        WHERE da.v1 IN
+        <foreach collection="qids" open="(" close=")" index="index" item="qid" separator=",">
+            #{qid,jdbcType=INTEGER}
+        </foreach>
+        AND da.createtime = (SELECT max(createtime) createtime FROM ${tableName} WHERE station_id = #{czid})
     </select>
 
 
     <select id="findDianMaHuaDatasByCZid" resultMap="quduanBaseResultMap">
         SELECT da.createtime time,
-               da.type,
-               da.v1         qid,
-               da.v2         data_zhengChang,
-               da.v3         V_out_zhu,
-               da.v9         V_out_bei,
-               da.v4         mA_out_zhu,
-               da.v10        mA_out_bei,
-               da.v5         Hz_up_zhu,
-               da.v11        Hz_up_bei,
-               da.v6         Hz_down_zhu,
-               da.v12        Hz_down_bei,
-               da.v7         Hz_low_zhu,
-               da.v13        Hz_low_bei,
-               da.v8         FBJ_drive_zhu,
-               da.v14        FBJ_drive_bei,
-               da.v39_sc3    FBJ_collection_zhu,
-               da.v39_sc2    FBJ_collection_bei
+        da.type,
+        da.v1 qid,
+        da.v2 data_zhengChang,
+        da.v3 V_out_zhu,
+        da.v9 V_out_bei,
+        da.v4 mA_out_zhu,
+        da.v10 mA_out_bei,
+        da.v5 Hz_up_zhu,
+        da.v11 Hz_up_bei,
+        da.v6 Hz_down_zhu,
+        da.v12 Hz_down_bei,
+        da.v7 Hz_low_zhu,
+        da.v13 Hz_low_bei,
+        da.v8 FBJ_drive_zhu,
+        da.v14 FBJ_drive_bei,
+        da.v39_sc3 FBJ_collection_zhu,
+        da.v39_sc2 FBJ_collection_bei
         FROM ${tableName} da
-        WHERE da.v1 IN (SELECT qdid FROM mro_quduan_base WHERE cz_id = #{czid} AND line = '电码化')
-          and FROM_UNIXTIME(da.createtime) between #{startTime,jdbcType=TIMESTAMP} and
-            #{endTime,jdbcType=TIMESTAMP}
+        WHERE da.v1 IN
+        <foreach collection="qids" open="(" close=")" index="index" item="qid" separator=",">
+            #{qid,jdbcType=INTEGER}
+        </foreach>
+        and FROM_UNIXTIME(da.createtime) between #{startTime,jdbcType=TIMESTAMP} and
+        #{endTime,jdbcType=TIMESTAMP}
 
     </select>
 
@@ -554,11 +539,10 @@
     <select id="selectLastByCzId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ${tableName} qi right outer join mro_quduan_base qb on
-        qi.v1 = qb.qdid and qi.station_id = qb.cz_id
+        from ${tableName} qi
         <where>
             <if test="czId!=null">
-                qb.cz_id=#{czId,jdbcType=INTEGER}
+                qi.station_id=#{czId,jdbcType=INTEGER}
             </if>
         </where>
         order by qi.createtime DESC limit 1
@@ -793,17 +777,17 @@
 
         MAX( qi.v22 ) AS max_mV_in_diao_zhu,
         MIN( qi.v22 ) AS min_mV_in_diao_zhu,
-        qb.quDuanYunYing_name
-        FROM ${tableName} qi inner join mro_quduan_base qb on qi.v1 = qb.qdid
+        qi.v1
+        FROM ${tableName} qi
         <where>
             <if test="czId != null">
-                qb.cz_id=#{czId,jdbcType=INTEGER}
+                qi.station_id = #{czId,jdbcType=INTEGER}
             </if>
             <if test="s !=null and e!=null ">
                 and qi.createtime between #{s,jdbcType=INTEGER} and #{e,jdbcType=INTEGER}
             </if>
         </where>
         GROUP BY
-        qb.id
+        qi.station_id,qi.v1
     </select>
 </mapper>

@@ -1,7 +1,6 @@
 package com.yintu.ruixing.master.guzhangzhenduan;
 
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public interface QuDuanBaseDao {
 
     QuDuanBaseEntity selectByPrimaryKey(Integer id);
 
-    List<QuDuanBaseEntity> selectByCzId(Integer czId);
 
 
     //int updateByPrimaryKeySelective(QuDuanBaseEntity record);
@@ -54,7 +52,7 @@ public interface QuDuanBaseDao {
 
     List<QuDuanBaseEntity> findQuDuanByQuDuanYunYingName(String qudunyunyingname);
 
-    Integer findQDid(@Param("quduanname") String quduanname,@Param("czid") Integer czid);
+    Integer findQDid(@Param("quduanname") String quduanname, @Param("czid") Integer czid);
 
     List<QuDuanBaseEntity> findQuDuanByIds(@Param("parseInt") Integer parseInt, @Param("parseInt1") Integer parseInt1);
 
@@ -81,4 +79,6 @@ public interface QuDuanBaseDao {
     String findQuduanName(@Param("stationId") Integer stationId, @Param("sectionId") Integer sectionId);
 
     List<QuDuanBaseEntity> findQuDuanDatasByCid(Integer cid);
+
+    List<QuDuanBaseEntity> selectByCzIdAndQdId(Integer czId, Integer qdId,Boolean isDianMaHua);
 }

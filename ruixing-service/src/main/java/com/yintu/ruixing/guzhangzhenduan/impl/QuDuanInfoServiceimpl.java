@@ -39,23 +39,23 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     @Autowired
     private QuDuanInfoPropertyService quDuanInfoPropertyService;
 
-    @Override
-    public QuDuanInfoEntityV2 findLastBycZId(Integer czId) {
-        String tableName = StringUtil.getTableName(czId, new Date());
-        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectLastByCzId(czId, tableName) : null;
-    }
 
     @Override
     public boolean isTableExist(String tableName) {
         return quDuanInfoDaoV2.isTableExist(tableName) > 0;
     }
 
-
     @Override
-    public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
-        String tableName = StringUtil.getTableName(czId, time);
-        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName) : new ArrayList<>();
+    public QuDuanInfoEntityV2 findLastBycZId(Integer czId) {
+        String tableName = StringUtil.getTableName(czId, new Date());
+        if (this.isTableExist(tableName)) {
+            QuDuanInfoEntityV2 quDuanInfoEntityV2 = quDuanInfoDaoV2.selectLastByCzId(czId, tableName);
+            quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseService.findByCzIdAndQdId(czId, quDuanInfoEntityV2.getQid(), null).get(0));
+            return quDuanInfoEntityV2;
+        }
+        return new QuDuanInfoEntityV2();
     }
+
 
     @Override
     public QuDuanInfoEntityV2 findFirstByCzId1(Integer czId, Integer qid) {
@@ -92,7 +92,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         if (startTime == null || endTime == null) {
             Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
             if (czStutrs) {
-                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzId(czId);
+                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, false);
                 for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
                     QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
                     if (quDuanInfoEntityV2 == null) {
@@ -104,7 +104,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 }
             }
         } else {
-            Integer[] qids = quDuanBaseService.findByCzId(czId)
+            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czId, null, false)
                     .stream()
                     .map(QuDuanBaseEntity::getQdid)
                     .toArray(Integer[]::new);
@@ -538,7 +538,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         jo.put("title", quDuanInfoPropertyEntities);
 
         //表头对应数据数组
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzId(czId);
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null);
         JSONArray dataJa = new JSONArray();
         Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
         if (czStutrs) {
@@ -768,5 +768,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         return jo;
     }
 
+
+    @Override
+    public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
+        String tableName = StringUtil.getTableName(czId, time);
+        if (this.isTableExist(tableName)) {
+            List<Map<String, Object>> maps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
+            for (Map<String, Object> map : maps) {
+                map.put("quDuanYunYingName", quDuanBaseService.findByCzIdAndQdId(czId, (Integer) map.get("v1"), null).get(0).getQuduanyunyingName());
+            }
+            return maps;
+        }
+        return new ArrayList<>();
+    }
 
 }

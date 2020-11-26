@@ -286,10 +286,11 @@
     </select>
 
     <!--根据区段的运用名  查找对应的区段专用id-->
-    <select id="findQDid"  resultType="java.lang.Integer">
+    <select id="findQDid" resultType="java.lang.Integer">
         select qdid
         from mro_quduan_base
-        where quDuanYunYing_name = #{quduanname} and cz_id = #{czid}
+        where quDuanYunYing_name = #{quduanname}
+          and cz_id = #{czid}
     </select>
 
     <!--根据区段运营名称  查询对应的区段数据-->
@@ -314,12 +315,6 @@
         <include refid="Base_Column_List"/>
         from mro_quduan_base
         where id = #{id,jdbcType=INTEGER}
-    </select>
-    <select id="selectByCzId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_quduan_base
-        where cz_id = #{czId,jdbcType=INTEGER} AND line != '电码化'
     </select>
     <!--根据区段id删除对应的区段-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -1007,4 +1002,29 @@
             </if>
         </where>
     </select>
+
+
+    <select id="selectByCzIdAndQdId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_quduan_base
+        <where>
+            <if test="czId!=null">
+                cz_id= #{czId,jdbcType=INTEGER}
+            </if>
+            <if test="qdId!=null">
+                and qdid=#{qdId,jdbcType=INTEGER}
+            </if>
+            <if test="isDianMaHua!=null">
+                <if test="isDianMaHua">
+                    and line='电码化'
+                </if>
+                <if test="!isDianMaHua">
+                    and line!='电码化'
+                </if>
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

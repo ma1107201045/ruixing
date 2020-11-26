@@ -31,12 +31,18 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
     @Autowired
     private QuDuanInfoService quDuanInfoService;
+    @Autowired
+    private QuDuanBaseService quDuanBaseService;
 
     @Override
     public List<JSONObject> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) > 0) {
             List<JSONObject> js = new ArrayList<>();
-            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, tableName);
+            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, true)
+                    .stream()
+                    .map(QuDuanBaseEntity::getQdid)
+                    .toArray(Integer[]::new);
+            List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, qids, tableName);
             for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2List) {
                 JSONObject o = (JSONObject) JSONObject.toJSON(quDuanInfoEntityV2);
                 String fbjCollectionBei = o.getString("fbjCollectionBei");
@@ -98,7 +104,6 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     }
 
 
-
     @Override
     public List<CheZhanEntity> findTieLuJuById(Integer page, Integer size) {
         return zhanNeiDao.findAllWangLuoLianJie();
@@ -108,17 +113,21 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, Date startTime, Date endTime) {
         if (startTime.after(endTime))
             throw new BaseRuntimeException("开始时间不能大于结束时间");
+        Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, true)
+                .stream()
+                .map(QuDuanBaseEntity::getQdid)
+                .toArray(Integer[]::new);
         if (DateUtil.month(startTime) == DateUtil.month(endTime)) {
             String tableName = StringUtil.getTableName(czid, startTime);
-            return quDuanInfoService.isTableExist(tableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, startTime, endTime, tableName) : new ArrayList<>();
+            return quDuanInfoService.isTableExist(tableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, qids, startTime, endTime, tableName) : new ArrayList<>();
         } else {
             String firstTableName = StringUtil.getTableName(czid, startTime);
             List<QuDuanInfoEntityV2> firstQuDuanInfoEntityV2s =
-                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
+                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, qids, startTime, DateUtil.endOfDay(startTime), firstTableName) : new ArrayList<>();
 
             String lastTableName = StringUtil.getTableName(czid, endTime);
             List<QuDuanInfoEntityV2> lastQuDuanInfoEntityV2s =
-                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
+                    quDuanInfoService.isTableExist(firstTableName) ? quDuanInfoDaoV2.findDianMaHuaDatasByCZid(czid, qids, DateUtil.beginOfDay(endTime), endTime, lastTableName) : new ArrayList<>();
             firstQuDuanInfoEntityV2s.addAll(lastQuDuanInfoEntityV2s);
             return firstQuDuanInfoEntityV2s;
         }

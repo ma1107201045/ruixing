@@ -31,7 +31,6 @@ public class ZhanNeiController {
     public Map<String, Object> findAllDianMaHua(@PathVariable Long id) {
         List<QuDuanBaseEntity> list = new ArrayList<>();
         List<QuDuanBaseEntity> quDuanBaseEntities = zhanNeiService.findAllDianMaHua(id);
-        //System.out.println("111111" + quDuanBaseEntities);
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
             if (quDuanBaseEntity.getDianmahuaguihao() != null && quDuanBaseEntity.getDianmahuaguihao() != "") {
                 list.add(quDuanBaseEntity);
@@ -53,9 +52,7 @@ public class ZhanNeiController {
     //根据id更改车站的各个状态
     @PutMapping("/editWangLuoLianJieById/{cid}")
     public Map<String, Object> editWangLuoLianJieById(@PathVariable Long cid, CheZhanEntity cheZhanEntity) {
-        System.out.println("1111" + cheZhanEntity);
         zhanNeiService.editWangLuoLianJieById(cheZhanEntity);
-        System.out.println("22222" + cheZhanEntity);
         return ResponseDataUtil.ok("修改信息成功");
     }
 
@@ -67,7 +64,7 @@ public class ZhanNeiController {
                                                         @RequestParam(value = "endTime", required = false) Date endTime) {
         if (startTime != null && endTime != null) {
             List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = zhanNeiService.findDianMaHuaDatasByCZid(czid, startTime, endTime);
-            List<JSONObject> js=new ArrayList<>();
+            List<JSONObject> js = new ArrayList<>();
             for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2List) {
                 JSONObject o = (JSONObject) JSONObject.toJSON(quDuanInfoEntityV2);
                 String fbjCollectionBei = o.getString("fbjCollectionBei");
@@ -76,35 +73,35 @@ public class ZhanNeiController {
                 }
                 if ("1".equals(fbjCollectionBei)) {
                     o.put("fbjCollectionBei", "落下");
-                }else {
+                } else {
                     o.put("fbjCollectionBei", "无效");
                 }
                 BigDecimal fbjCollectionZhu = o.getBigDecimal("fbjCollectionZhu");
-                if ("1".equals(fbjCollectionZhu)){
-                    o.put("fbjCollectionZhu","吸起");
+                if ("1".equals(fbjCollectionZhu)) {
+                    o.put("fbjCollectionZhu", "吸起");
                 }
-                if ("2".equals(fbjCollectionZhu)){
-                    o.put("fbjCollectionZhu","落下");
-                }else {
-                    o.put("fbjCollectionZhu","无效");
+                if ("2".equals(fbjCollectionZhu)) {
+                    o.put("fbjCollectionZhu", "落下");
+                } else {
+                    o.put("fbjCollectionZhu", "无效");
                 }
                 Integer fbjDriveBei = o.getInteger("fbjDriveBei");
-                if (fbjDriveBei==1){
-                    o.put("fbjDriveBei","正常");
+                if (fbjDriveBei == 1) {
+                    o.put("fbjDriveBei", "正常");
                 }
-                if (fbjDriveBei==2){
-                    o.put("fbjDriveBei","无");
-                }else {
-                    o.put("fbjDriveBei","无效");
+                if (fbjDriveBei == 2) {
+                    o.put("fbjDriveBei", "无");
+                } else {
+                    o.put("fbjDriveBei", "无效");
                 }
                 Integer fbjDriveZhu = o.getInteger("fbjDriveZhu");
-                if (fbjDriveZhu==1){
-                    o.put("fbjDriveZhu","正常");
+                if (fbjDriveZhu == 1) {
+                    o.put("fbjDriveZhu", "正常");
                 }
-                if (fbjDriveZhu==2){
-                    o.put("fbjDriveZhu","无");
-                }else {
-                    o.put("fbjDriveZhu","无效");
+                if (fbjDriveZhu == 2) {
+                    o.put("fbjDriveZhu", "无");
+                } else {
+                    o.put("fbjDriveZhu", "无效");
                 }
                 js.add(o);
             }
@@ -117,62 +114,3 @@ public class ZhanNeiController {
 
     }
 }
-
-
-/*
-
- for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2List) {
-         List<BigDecimal> datas1=new ArrayList<>();
-        List<BigDecimal> datas2=new ArrayList<>();
-        List<BigDecimal> datas3=new ArrayList<>();
-        List<BigDecimal> datas4=new ArrayList<>();
-        List<BigDecimal> datas5=new ArrayList<>();
-        List<Integer> datas6=new ArrayList<>();
-        List<String> datas7=new ArrayList<>();
-        List<Integer> datas8=new ArrayList<>();
-        Map map=new HashMap();
-        k++;
-        Integer qid1 = quDuanInfoEntityV2.getQid();
-        System.out.println(qid1);
-        BigDecimal vOutZhu = quDuanInfoEntityV2.getVOutZhu();
-        BigDecimal vOutBei = quDuanInfoEntityV2.getVOutBei();
-        datas1.add(vOutZhu);
-        datas1.add(vOutBei);
-        map.put("vOutZhu"+qid1,datas1);
-        BigDecimal maOutZhu = quDuanInfoEntityV2.getMaOutZhu();
-        BigDecimal maOutBei = quDuanInfoEntityV2.getMaOutBei();
-        datas2.add(maOutZhu);
-        datas2.add(maOutBei);
-        map.put("maOutZhu"+qid1,datas2);
-        BigDecimal hzDownZhu = quDuanInfoEntityV2.getHzDownZhu();
-        BigDecimal hzDownBei = quDuanInfoEntityV2.getHzDownBei();
-        datas3.add(hzDownZhu);
-        datas3.add(hzDownBei);
-        map.put("hzDownZhu"+qid1,datas3);
-        BigDecimal hzUpZhu = quDuanInfoEntityV2.getHzUpZhu();
-        BigDecimal hzUpBei = quDuanInfoEntityV2.getHzUpBei();
-        datas4.add(hzUpZhu);
-        datas4.add(hzUpBei);
-        map.put("hzUpZhu"+qid1,datas4);
-        BigDecimal hzInLowZhu = quDuanInfoEntityV2.getHzInLowZhu();
-        BigDecimal hzLowBei = quDuanInfoEntityV2.getHzLowBei();
-        datas5.add(hzInLowZhu);
-        datas5.add(hzLowBei);
-        map.put("hzInLowZhu"+qid1,datas5);
-        Integer fbjDriveZhu = quDuanInfoEntityV2.getFbjDriveZhu();
-        Integer fbjDriveBei = quDuanInfoEntityV2.getFbjDriveBei();
-        datas6.add(fbjDriveZhu);
-        datas6.add(fbjDriveBei);
-        map.put("fbjDriveZhu"+qid1,datas6);
-        String fbjCollectionZhu = quDuanInfoEntityV2.getFbjCollectionZhu();
-        String fbjCollectionBei = quDuanInfoEntityV2.getFbjCollectionBei();
-        datas7.add(fbjCollectionZhu);
-        datas7.add(fbjCollectionBei);
-        Integer qid = quDuanInfoEntityV2.getQid();
-        Integer time1 = quDuanInfoEntityV2.getTime();
-        datas8.add(qid);
-        map.put("qdid"+qid1,datas8);
-        map.put("time"+qid1,time1);
-        map.put("fbjCollectionZhu"+qid1,datas7);
-        mapp.put("dianmahua"+qid1,map);
-        }*/

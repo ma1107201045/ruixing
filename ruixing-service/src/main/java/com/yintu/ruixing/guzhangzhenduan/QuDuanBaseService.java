@@ -12,11 +12,9 @@ import java.util.List;
 public interface QuDuanBaseService extends BaseService<QuDuanBaseEntity, Integer> {
 
 
-    /**
-     * @param czId 车站id
-     * @return 区段基础信息集合
-     */
-    List<QuDuanBaseEntity> findByCzId(Integer czId);
-
     QuDuanBaseEntity findByCzIdAndQuduanyunyingName(Integer czId, String quDuanYunYingName);
+
+    List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdId, Boolean isDianMaHua);
+
+
 }

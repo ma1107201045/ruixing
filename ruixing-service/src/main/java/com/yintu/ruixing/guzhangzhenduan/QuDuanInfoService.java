@@ -14,13 +14,6 @@ import java.util.Map;
  */
 public interface QuDuanInfoService {
 
-    /**
-     * 按照车站查询区段详情
-     *
-     * @param czId 车站id
-     * @return 区段详情
-     */
-    QuDuanInfoEntityV2 findLastBycZId(Integer czId);
 
     /**
      * 查询表是否存在
@@ -30,13 +23,14 @@ public interface QuDuanInfoService {
      */
     boolean isTableExist(String tableName);
 
+
     /**
-     * 日报表
+     * 按照车站查询区段详情
      *
-     * @param time 日期
-     * @return 统计
+     * @param czId 车站id
+     * @return 区段详情
      */
-    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time);
+    QuDuanInfoEntityV2 findLastBycZId(Integer czId);
 
 
     /**
@@ -84,11 +78,21 @@ public interface QuDuanInfoService {
     List<TreeNodeUtil> findPropertiesTree(Integer czId);
 
     /**
+     * 实时报表
+     *
      * @param properties 属性集合
      * @param czId       车站id
      * @return
      */
     JSONObject realTimeReport(Integer czId, Integer[] properties);
+
+    /**
+     * 日报表
+     *
+     * @param time 日期
+     * @return 统计
+     */
+    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time);
 
 
 }

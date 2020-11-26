@@ -1,9 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
 
 import java.util.Date;
 import java.util.List;

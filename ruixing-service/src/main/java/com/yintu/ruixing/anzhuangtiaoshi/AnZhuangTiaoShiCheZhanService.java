@@ -1,7 +1,5 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanEntity;
-
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.util.List;
