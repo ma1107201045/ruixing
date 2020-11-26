@@ -1025,6 +1025,15 @@
             </if>
         </where>
     </select>
-
+    <select id="selectByQdIdAndQuDuanYunYingName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_quduan_base
+        <where>
+            <if test="quDuanYunYingName!=null">
+                and quDuanYunYing_name=#{quDuanYunYingName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -41,11 +41,14 @@ public class ReportController extends SessionController {
     /**
      * 实时报表
      *
+     * @param czId        车站id
+     * @param properties  属性id集
+     * @param isDianMaHua 是否电码化
      * @return
      */
     @GetMapping("/realreport/v2")
-    public Map<String, Object> realTimeReport(@RequestParam("cz_id") Integer czId, @RequestParam("properties") Integer[] properties) {
-        JSONObject jo = quDuanInfoService.realTimeReport(czId, properties);
+    public Map<String, Object> realTimeReport(@RequestParam("cz_id") Integer czId, @RequestParam("properties") Integer[] properties, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+        JSONObject jo = quDuanInfoService.realTimeReport(czId, properties, isDianMaHua);
         return ResponseDataUtil.ok("查询实时报表成功", jo);
     }
 
@@ -53,12 +56,16 @@ public class ReportController extends SessionController {
     /**
      * 日报表
      *
-     * @param time 日期
+     * @param cZid        车站id
+     * @param time        时间
+     * @param isDianMaHua 是否是电码化
+     * @return 报表数据
      */
     @GetMapping("/dailypaper")
     public Map<String, Object> findStatisticsByDate(@RequestParam("cz_id") Integer cZid,
-                                                    @RequestParam("time") Date time) {
-        List<Map<String, Object>> maps = quDuanInfoService.findStatisticsByCzIdAndTime(cZid, time);
+                                                    @RequestParam("time") Date time,
+                                                    @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+        List<Map<String, Object>> maps = quDuanInfoService.findStatisticsByCzIdAndTime(cZid, time, isDianMaHua);
         return ResponseDataUtil.ok("查询日报表成功", maps);
     }
 

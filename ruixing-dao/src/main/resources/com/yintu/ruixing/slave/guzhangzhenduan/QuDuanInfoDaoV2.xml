@@ -327,6 +327,7 @@
 
     </select>
 
+
     <!--电码化辅助曲线-->
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findDMHQuDuanData" resultMap="quduanResultMap" statementType="STATEMENT">
@@ -343,32 +344,6 @@
             "${endtime}"
     </select>
 
-    <!--电码化实时曲线   -->
-    <select id="findDMHQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
-        order by qi.createtime DESC
-        limit 1
-    </select>
-
-
-    <!--实时曲线   -->
-    <select id="findQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
-        order by qi.createtime DESC
-        limit 1
-    </select>
-
-
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findOneQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime
@@ -384,43 +359,61 @@
             "${endtime}"
     </select>
 
-    <!--select ${shuxingname}
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
-          and qi.createtime = "${time}"-->
+
+    <!--实时曲线   -->
+    <select id="findQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
+        select ${shuxingname}, qi.createtime from ${tableName} qi
+        where qi.v1 in
+        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
+            ${qid}
+        </foreach>
+        and qi.v1 = "${qdid}"
+        order by qi.createtime DESC
+        limit 1
+    </select>
 
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanDayData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
-          and qi.createtime
-            BETWEEN
-            "${statrtime}"
-            AND
-            "${endtime}"
+        select ${shuxingname}, qi.createtime from ${tableName} qi
+        where qi.v1 in
+        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
+            ${qid}
+        </foreach>
+        and qi.v1 = "${qdid}"
+        and qi.createtime
+        BETWEEN
+        "${statrtime}"
+        AND
+        "${endtime}"
     </select>
+
+    <!--电码化实时曲线   -->
+    <select id="findDMHQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
+        select ${shuxingname}, qi.createtime from ${tableName} qi
+        where qi.v1 in
+        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
+            ${qid}
+        </foreach>
+        and qi.v1 = "${qdid}"
+        order by qi.createtime DESC
+        limit 1
+    </select>
+
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
-          and qi.createtime
-            BETWEEN
-            "${starttime}"
-            AND
-            "${endtime}"
+        select ${shuxingname}, qi.createtime from ${tableName} qi
+        where qi.v1 in
+        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
+            ${qid}
+        </foreach>
+        and qi.v1 = "${qdid}"
+        and qi.createtime
+        BETWEEN
+        "${starttime}"
+        AND
+        "${endtime}"
     </select>
 
 
@@ -782,6 +775,9 @@
         <where>
             <if test="czId != null">
                 qi.station_id = #{czId,jdbcType=INTEGER}
+            </if>
+            <if test="qid != null">
+                qi.v1 = #{qid,jdbcType=INTEGER}
             </if>
             <if test="s !=null and e!=null ">
                 and qi.createtime between #{s,jdbcType=INTEGER} and #{e,jdbcType=INTEGER}

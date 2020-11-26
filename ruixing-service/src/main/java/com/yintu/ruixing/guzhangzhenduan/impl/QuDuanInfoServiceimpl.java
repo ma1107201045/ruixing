@@ -524,7 +524,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
      * @return
      */
     @Override
-    public JSONObject realTimeReport(Integer czId, Integer[] properties) {
+    public JSONObject realTimeReport(Integer czId, Integer[] properties, Boolean isDianMaHua) {
         JSONObject jo = new JSONObject(true);
         if (properties == null || properties.length == 0) {
             jo.put("title", new JSONArray());
@@ -538,7 +538,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         jo.put("title", quDuanInfoPropertyEntities);
 
         //表头对应数据数组
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null);
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
         JSONArray dataJa = new JSONArray();
         Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
         if (czStutrs) {
@@ -770,12 +770,15 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
 
     @Override
-    public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time) {
+    public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua) {
         String tableName = StringUtil.getTableName(czId, time);
         if (this.isTableExist(tableName)) {
-            List<Map<String, Object>> maps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
-            for (Map<String, Object> map : maps) {
-                map.put("quDuanYunYingName", quDuanBaseService.findByCzIdAndQdId(czId, (Integer) map.get("v1"), null).get(0).getQuduanyunyingName());
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
+            List<Map<String, Object>> maps = new ArrayList<>();
+            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                Map<String, Object> map = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, quDuanBaseEntity.getQdid(), (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
+                map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+                maps.add(map);
             }
             return maps;
         }

@@ -28,6 +28,9 @@ public class QuXianServiceImpl implements QuXianService {
     @Autowired
     private QuDuanBaseDao quDuanBaseDao;
 
+    @Autowired
+    private QuDuanBaseService quDuanBaseService;
+
     /* @Override
      public List<SheBeiEntity> findSheBeiByCid(Integer id) {
          return quXianDao.findSheBeiByCid(id);
@@ -86,32 +89,6 @@ public class QuXianServiceImpl implements QuXianService {
         return list;
     }
 
-    @Override
-    public List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
-    public List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            return quDuanInfoDaoV2.findDMHQuDuanData(starttime, endtime, shuxingname, quduanname, qdid, tableName);
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
-    public List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            return quDuanInfoDaoV2.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
-        } else {
-            return new ArrayList<>();
-        }
-    }
 
     @Override
     public List<String> findDMHQuDuanById(Integer id) {
@@ -119,9 +96,9 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
-    public List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
+    public List<quduanEntity> findQuDuanDatas(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            return quDuanInfoDaoV2.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
+            return quDuanInfoDaoV2.findQuDuanDatas(starttime, endtime, shuxingname, quduanname, qdid, tableName);
         } else {
             return new ArrayList<>();
         }
@@ -136,12 +113,49 @@ public class QuXianServiceImpl implements QuXianService {
         }
     }
 
+
+
+
     @Override
-    public List<quduanEntity> findQuDuanDatas(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
+    public List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            return quDuanInfoDaoV2.findQuDuanDatas(starttime, endtime, shuxingname, quduanname, qdid, tableName);
+            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findQuDuanShiShiData(shuxingname, qdIds, qdid, tableName);
         } else {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, qdIds, qdid, tableName);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+
+    @Override
+    public List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findDMHQuDuanShiShiData(shuxingname, qdIds, qdid, tableName);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findDMHQuDuanData(starttime, endtime, shuxingname, qdIds, qdid, tableName);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+
 }

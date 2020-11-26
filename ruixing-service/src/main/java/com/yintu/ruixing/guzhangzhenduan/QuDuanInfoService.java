@@ -84,7 +84,7 @@ public interface QuDuanInfoService {
      * @param czId       车站id
      * @return
      */
-    JSONObject realTimeReport(Integer czId, Integer[] properties);
+    JSONObject realTimeReport(Integer czId, Integer[] properties, Boolean isDianMaHua);
 
     /**
      * 日报表
@@ -92,7 +92,7 @@ public interface QuDuanInfoService {
      * @param time 日期
      * @return 统计
      */
-    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time);
+    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua);
 
 
 }

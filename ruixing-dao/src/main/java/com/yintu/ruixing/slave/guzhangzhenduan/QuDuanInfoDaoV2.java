@@ -21,7 +21,7 @@ public interface QuDuanInfoDaoV2 {
     List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Integer startTime, Integer endTime, String tableName);
 
     //日报表
-    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer s, Integer e, String tableName);
+    Map<String, Object> selectStatisticsByCzIdAndTime(Integer czId, Integer qid, Integer s, Integer e, String tableName);
 
 
     //根据传过来的数据查询数据 展示在曲线上
@@ -46,18 +46,22 @@ public interface QuDuanInfoDaoV2 {
                                           @Param("quduanname") String quduanname,
                                           @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
-    List<quduanEntity> findQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
+
+    List<quduanEntity> findQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
                                             @Param("qdid") Integer qdid, @Param("tableName") String tableName);
-
-    List<quduanEntity> findDMHQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
-                                               @Param("qdid") Integer qdid, @Param("tableName") String tableName);
-
-    List<quduanEntity> findDMHQuDuanData(@Param("starttime") long starttime, @Param("endtime") long endtime,
-                                         @Param("shuxingname") String shuxingname, @Param("quduanname") String quduanname,
-                                         @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
     List<quduanEntity> findQuDuanDayData(@Param("statrtime") long statrtime, @Param("endtime") long endtime,
                                          @Param("shuxingname") String shuxingname,
-                                         @Param("quduanname") String quduanname,
+                                         @Param("qdIds") Integer[] qdIds,
                                          @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+
+
+    List<quduanEntity> findDMHQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
+                                               @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+
+
+    List<quduanEntity> findDMHQuDuanData(@Param("starttime") long starttime, @Param("endtime") long endtime,
+                                         @Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
+                                         @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+
 }

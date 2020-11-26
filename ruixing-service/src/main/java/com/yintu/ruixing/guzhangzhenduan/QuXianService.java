@@ -21,7 +21,6 @@ public interface QuXianService {
     //List<QuDuanInfoEntity> findQuDuanDataByTime(Date time);
 
     List<QuDuanBaseEntity> findQuDuanDataByTime1(Date time);
-    
 
 
     Integer findQuDuanData(Long starttimee, String shuxingname, String quduanname, Integer qdid);
@@ -40,13 +39,18 @@ public interface QuXianService {
 
     List<quduanEntity> findOneQuDuanDatas(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
+    List<String> findDMHQuDuanById(Integer id);
+
+
     List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName);
 
-    List<String> findDMHQuDuanById(Integer id);
+    List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
+
+
 
     List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName);
 
     List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
-    List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
+
 }

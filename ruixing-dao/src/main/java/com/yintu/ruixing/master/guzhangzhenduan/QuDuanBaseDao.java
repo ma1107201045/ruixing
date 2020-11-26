@@ -16,7 +16,6 @@ public interface QuDuanBaseDao {
     QuDuanBaseEntity selectByPrimaryKey(Integer id);
 
 
-
     //int updateByPrimaryKeySelective(QuDuanBaseEntity record);
 
     int updateByPrimaryKey(QuDuanBaseEntity record);
@@ -80,5 +79,7 @@ public interface QuDuanBaseDao {
 
     List<QuDuanBaseEntity> findQuDuanDatasByCid(Integer cid);
 
-    List<QuDuanBaseEntity> selectByCzIdAndQdId(Integer czId, Integer qdId,Boolean isDianMaHua);
+    List<QuDuanBaseEntity> selectByCzIdAndQdId(Integer czId, Integer qdId, Boolean isDianMaHua);
+
+    List<QuDuanBaseEntity> selectByQdIdAndQuDuanYunYingName(String quDuanYunYingName);
 }
