@@ -62,13 +62,16 @@ public class QuDuanInfoController extends SessionController {
     }
 
     /**
-     *
      * @param czId 车站id
      * @return
      */
     @GetMapping("/data")
-    public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId) {
-        List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, null, null);
+    public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId,
+                                               @RequestParam(value = "startTime", required = false) Date startTime,
+                                               @RequestParam(value = "endTime", required = false) Date endTime) {
+
+
+        List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, startTime, endTime);
         return ResponseDataUtil.ok("查询区段详情成功", jsonObjects);
     }
 
