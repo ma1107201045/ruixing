@@ -2,7 +2,8 @@ package com.yintu.ruixing.configiration;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.component.*;
+import com.yintu.ruixing.component.CustomAccessDecisionManager;
+import com.yintu.ruixing.component.CustomFilterInvocationSecurityMetadataSource;
 import com.yintu.ruixing.exception.VerificationCodeException;
 import com.yintu.ruixing.filter.CustomUsernamePasswordAuthenticationFilter;
 import com.yintu.ruixing.xitongguanli.impl.UserServiceImpl;
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
