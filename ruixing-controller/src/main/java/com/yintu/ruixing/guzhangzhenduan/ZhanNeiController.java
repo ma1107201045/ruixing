@@ -5,16 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.StringUtil;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
-import com.yintu.ruixing.guzhangzhenduan.ZhanNeiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author:lcy
@@ -42,12 +40,6 @@ public class ZhanNeiController {
         return ResponseDataUtil.ok("查询电码化数据成功", list);
     }
 
-    //根据电码化的区段id查询出数据展示在列表
-    @GetMapping("/findDianMaHuaDatabById/{id}")
-    public Map<String, Object> findDianMaHuaDatabById(@PathVariable Integer id) {
-        List<QuDuanInfoEntity> quDuanInfoEntities = zhanNeiService.findDianMaHuaDatabById(id);
-        return ResponseDataUtil.ok("查询单单个数据成功", quDuanInfoEntities);
-    }
 
     //网络连接
     @GetMapping("/findAllWangLuoLianJie")

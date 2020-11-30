@@ -1,6 +1,6 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
-import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBusinessTypeDao;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

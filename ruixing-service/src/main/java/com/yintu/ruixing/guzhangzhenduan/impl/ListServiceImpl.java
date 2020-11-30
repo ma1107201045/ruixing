@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.ListDao;
+import com.yintu.ruixing.master.guzhangzhenduan.ListDao;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;

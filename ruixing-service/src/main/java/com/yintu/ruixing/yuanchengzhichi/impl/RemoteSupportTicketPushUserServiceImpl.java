@@ -1,6 +1,6 @@
 package com.yintu.ruixing.yuanchengzhichi.impl;
 
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportTicketPushUserDao;
+import com.yintu.ruixing.master.yuanchengzhichi.RemoteSupportTicketPushUserDao;
 import com.yintu.ruixing.yuanchengzhichi.RemoteSupportTicketPushUserEntity;
 import com.yintu.ruixing.yuanchengzhichi.RemoteSupportTicketPushUserService;
 import org.springframework.beans.factory.annotation.Autowired;

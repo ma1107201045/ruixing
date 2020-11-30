@@ -1,6 +1,6 @@
 package com.yintu.ruixing.common.impl;
 
-import com.yintu.ruixing.common.DistrictDao;
+import com.yintu.ruixing.master.common.DistrictDao;
 import com.yintu.ruixing.common.DistrictEntity;
 import com.yintu.ruixing.common.DistrictService;
 import org.springframework.beans.factory.annotation.Autowired;

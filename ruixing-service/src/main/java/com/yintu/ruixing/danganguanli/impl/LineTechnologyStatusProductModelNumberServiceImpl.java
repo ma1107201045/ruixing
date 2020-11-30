@@ -1,6 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusProductModelNumberDao;
+import com.yintu.ruixing.master.danganguanli.LineTechnologyStatusProductModelNumberDao;
 import com.yintu.ruixing.danganguanli.LineTechnologyStatusProductModelNumberEntity;
 import com.yintu.ruixing.danganguanli.LineTechnologyStatusProductModelNumberService;
 import org.springframework.beans.factory.annotation.Autowired;

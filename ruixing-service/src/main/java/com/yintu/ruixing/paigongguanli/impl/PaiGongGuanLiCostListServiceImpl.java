@@ -1,7 +1,9 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiCostDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiCostListDao;
 import com.yintu.ruixing.paigongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

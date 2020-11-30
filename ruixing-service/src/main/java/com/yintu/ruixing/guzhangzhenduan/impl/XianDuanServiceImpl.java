@@ -2,6 +2,10 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
+import com.yintu.ruixing.master.guzhangzhenduan.AlarmTableDao;
+import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
+import com.yintu.ruixing.master.guzhangzhenduan.XianDuanDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

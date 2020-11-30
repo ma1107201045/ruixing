@@ -1,5 +1,8 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBusinessTypeDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiTaskDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiTaskUserDao;
 import com.yintu.ruixing.paigongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

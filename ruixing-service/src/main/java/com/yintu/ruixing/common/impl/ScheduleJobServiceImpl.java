@@ -1,6 +1,7 @@
 package com.yintu.ruixing.common.impl;
 
 import com.yintu.ruixing.common.*;
+import com.yintu.ruixing.master.common.ScheduleJobDao;
 import com.yintu.ruixing.quartz.service.QuartzService;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;

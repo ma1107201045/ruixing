@@ -1,6 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisDao;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentIndexAnalysisDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentIndexAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;

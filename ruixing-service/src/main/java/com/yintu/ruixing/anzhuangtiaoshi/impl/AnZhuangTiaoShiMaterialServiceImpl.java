@@ -1,7 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiMaterialDao;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiMaterialOutInDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiMaterialDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiMaterialOutInDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiMaterialEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiMaterialOutInEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiMaterialService;

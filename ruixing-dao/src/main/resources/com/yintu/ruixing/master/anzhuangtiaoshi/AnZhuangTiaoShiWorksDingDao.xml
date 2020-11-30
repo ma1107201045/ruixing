@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cid" jdbcType="INTEGER" property="cid"/>
+        <result column="wntid" jdbcType="INTEGER" property="wntid"/>
+        <result column="wnlid" jdbcType="INTEGER" property="wnlid"/>
+        <result column="worker_name" jdbcType="VARCHAR" property="workerName"/>
+        <result column="work_state" jdbcType="INTEGER" property="workState"/>
+        <result column="work_time" jdbcType="TIMESTAMP" property="workTime"/>
+        <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1"/>
+        <result column="yuliu2" jdbcType="VARCHAR" property="yuliu2"/>
+        <association property="anZhuangTiaoShiWorksCheZhanEntity" javaType="AnZhuangTiaoShiWorksCheZhanEntity">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+        </association>
+        <association property="anZhuangTiaoShiWorkNameLibraryEntity" javaType="AnZhuangTiaoShiWorkNameLibraryEntity">
+            <result column="workname" jdbcType="VARCHAR" property="workname"/>
+        </association>
+        <association property="anZhuangTiaoShiWorkNameTotalEntity" javaType="AnZhuangTiaoShiWorkNameTotalEntity">
+            <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall" />
+        </association>
+        <association property="anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity"
+                     javaType="AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity">
+            <result column="wntid" jdbcType="INTEGER" property="wntid"/>
+            <result column="wnlid" jdbcType="INTEGER" property="wnlid"/>
+            <result column="work_state" jdbcType="INTEGER" property="workState"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, cid, wntid, wnlid, worker_name, work_state, work_time, yuliu1, yuliu2
+  </sql>
+
+    <!--根据ids   查询对应的数据-->
+    <select id="findOneWork" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_works_doing
+        where cid = #{cid,jdbcType=INTEGER}
+        and wntid = #{wntid,jdbcType=INTEGER}
+        and wnlid = #{wnlId,jdbcType=INTEGER}
+    </select>
+
+    <!--g根据ids   查询对应的数据-->
+    <select id="findDataByIDS" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        worker_name, work_state, work_time
+        from mro_anzhuangtiaoshi_works_doing
+        where cid = #{czid,jdbcType=INTEGER}
+        and wntid = #{worksid,jdbcType=INTEGER}
+        and wnlid = #{wnlid,jdbcType=INTEGER}
+    </select>
+
+    <!--根据线段xid  查询对应的作业项数据-->
+    <select id="findWorksDatasByCid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+          works.id,
+          works.workname,
+          works.wntid,
+          works.wnlid,
+          awd.worker_name,
+          awd.work_state,
+          works.worknamesall,
+          works.work_state,
+          awd.work_time
+      FROM
+          (
+      SELECT
+          awl.workname workname,
+          ac.id id,
+          awl.id awlid,
+          aww.wntid wntid,
+          aww.wnlid wnlid,
+          aww.work_state work_state,
+           awt.worknamesall worknamesall,
+          ac.cz_xiangmu_version ver
+      FROM
+          mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+          mro_anzhuangtiaoshi_works_chezhan ac,
+          mro_anzhuangtiaoshi_worknamelibrary awl,
+          mro_anzhuangtiaoshi_worknametotal awt
+      WHERE
+          ac.cz_xiangmu_version = aww.wntid
+          AND awl.id = aww.wnlid
+          AND ac.cz_xiangmu_version = awt.id
+          AND ac.id = #{cid,jdbcType=INTEGER}
+          ) works
+          LEFT JOIN mro_anzhuangtiaoshi_works_doing awd ON works.id = awd.cid
+          AND works.awlid = awd.wnlid
+          AND works.ver = awd.wntid
+  </select>
+
+
+    <!--根据线段xid  查询对应的数据-->
+    <select id="findCheZhanDatasByXid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+          ac.id,
+          ac.cz_name,
+          works.wntid,
+          works.wnlid,
+          works.workname,
+          works.worker_name,
+          works.work_time,
+          works.work_state,
+          works.state,
+          works.worknamesall
+      FROM
+          mro_anzhuangtiaoshi_works_chezhan ac
+          LEFT JOIN (
+      SELECT
+          awd.cid cid,
+          aww.wntid wntid,
+          aww.wnlid wnlid,
+          awd.worker_name worker_name,
+          awd.work_time work_time,
+          aww.work_state work_state,
+          awd.work_state state,
+          awl.workname workname,
+          awt.worknamesall worknamesall,
+          awt.id awtid
+      FROM
+          mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
+          mro_anzhuangtiaoshi_works_doing awd,
+          mro_anzhuangtiaoshi_worknamelibrary awl,
+          mro_anzhuangtiaoshi_worknametotal awt
+      WHERE
+          aww.wntid = awd.wntid
+          AND aww.wnlid = awd.wnlid
+          AND awl.id = aww.wnlid
+          ) works ON ac.id = works.cid
+          AND works.awtid = ac.cz_xiangmu_version
+      WHERE
+          ac.xid = #{xid,jdbcType=INTEGER}
+      GROUP BY
+          cz_name
+      ORDER BY id
+  </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_works_doing
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id  删除数据-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_works_doing
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <!--添加作业项作业记录-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingEntity">
+        insert into mro_anzhuangtiaoshi_works_doing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cid != null">
+                cid,
+            </if>
+            <if test="wntid != null">
+                wntid,
+            </if>
+            <if test="wnlid != null">
+                wnlid,
+            </if>
+            <if test="workerName != null">
+                worker_name,
+            </if>
+            <if test="workState != null">
+                work_state,
+            </if>
+            <if test="workTime != null">
+                work_time,
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1,
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="cid != null">
+                #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="wntid != null">
+                #{wntid,jdbcType=INTEGER},
+            </if>
+            <if test="wnlid != null">
+                #{wnlid,jdbcType=INTEGER},
+            </if>
+            <if test="workerName != null">
+                #{workerName,jdbcType=VARCHAR},
+            </if>
+            <if test="workState != null">
+                #{workState,jdbcType=INTEGER},
+            </if>
+            <if test="workTime != null">
+                #{workTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="yuliu1 != null">
+                #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                #{yuliu2,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingEntity">
+        update mro_anzhuangtiaoshi_works_doing
+        <set>
+            <if test="cid != null">
+                cid = #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="wntid != null">
+                wntid = #{wntid,jdbcType=INTEGER},
+            </if>
+            <if test="wnlid != null">
+                wnlid = #{wnlid,jdbcType=INTEGER},
+            </if>
+            <if test="workerName != null">
+                worker_name = #{workerName,jdbcType=VARCHAR},
+            </if>
+            <if test="workState != null">
+                work_state = #{workState,jdbcType=INTEGER},
+            </if>
+            <if test="workTime != null">
+                work_time = #{workTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1 = #{yuliu1,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliu2 != null">
+                yuliu2 = #{yuliu2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingEntity">
+    update mro_anzhuangtiaoshi_works_doing
+    set cid = #{cid,jdbcType=INTEGER},
+      wntid = #{wntid,jdbcType=INTEGER},
+      wnlid = #{wnlid,jdbcType=INTEGER},
+      worker_name = #{workerName,jdbcType=VARCHAR},
+      work_state = #{workState,jdbcType=INTEGER},
+      work_time = #{workTime,jdbcType=TIMESTAMP},
+      yuliu1 = #{yuliu1,jdbcType=VARCHAR},
+      yuliu2 = #{yuliu2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksDingEntity">
+    insert into mro_anzhuangtiaoshi_works_doing (id, cid, wntid,
+      wnlid, worker_name, work_state,
+      work_time, yuliu1, yuliu2
+      )
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{wntid,jdbcType=INTEGER},
+      #{wnlid,jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR}, #{workState,jdbcType=INTEGER},
+      #{workTime,jdbcType=TIMESTAMP}, #{yuliu1,jdbcType=VARCHAR}, #{yuliu2,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

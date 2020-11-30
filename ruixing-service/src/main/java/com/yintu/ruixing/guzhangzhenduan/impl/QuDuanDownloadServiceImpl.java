@@ -1,10 +1,8 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadDao;
+import com.yintu.ruixing.master.guzhangzhenduan.QuDuanDownloadDao;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadEntity;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadService;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

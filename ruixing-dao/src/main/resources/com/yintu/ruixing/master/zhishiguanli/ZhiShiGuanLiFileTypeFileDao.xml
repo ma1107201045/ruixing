@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeFileDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="createName" jdbcType="VARCHAR" property="createName" />
+    <result column="updateName" jdbcType="VARCHAR" property="updateName" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="fabu_type" jdbcType="INTEGER" property="fabuType" />
+    <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parentid, tid, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName
+  </sql>
+
+  <!--根据id 查询对应的文件数据-->
+  <select id="findFileByParentid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    where parentid = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id 查询对应的文件数据-->
+  <select id="findFiles" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    where tid = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据文件id  查询其历史版本文件-->
+  <select id="findFileById"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    <where>
+       parentid=#{id}
+      <if test="fileName!=null">
+        and
+        file_name like concat('%',#{fileName},'%')
+      </if>
+    </where>
+    group by id desc
+  </select>
+
+  <!--文件初始化   或者根据文件名查询文件-->
+  <select id="findSomeFile"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    <where>
+      <if test="fileName!=null">
+        file_name like concat('%',#{fileName},'%')
+      </if>
+      <if test="id!=null">
+       and tid =#{id}
+      </if>
+    </where>
+    group by id desc
+  </select>
+
+  <!--根据id 查询对应的文件数据-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据文件id  删除对应的文件-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_zhishiguanli_filetype_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--新增文件-->
+  <insert id="addOneFile" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    insert into mro_zhishiguanli_filetype_file ( parentid,
+    file_name, file_path, updateTime,updateName)
+    values ( #{id1,jdbcType=INTEGER},
+    #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR})
+  </insert>
+
+
+  <!--新增文件-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    insert into mro_zhishiguanli_filetype_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="fabuType != null">
+        fabu_type,
+      </if>
+      <if test="yuliu != null">
+        yuliu,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="createName != null">
+        createName,
+      </if>
+      <if test="updateName != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fabuType != null">
+        #{fabuType,jdbcType=INTEGER},
+      </if>
+      <if test="yuliu != null">
+        #{yuliu,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id  编辑对应的文件-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    update mro_zhishiguanli_filetype_file
+    <set>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fabuType != null">
+        fabu_type = #{fabuType,jdbcType=INTEGER},
+      </if>
+      <if test="yuliu != null">
+        yuliu = #{yuliu,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        createName = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        updateName = #{updateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    update mro_zhishiguanli_filetype_file
+    set parentid = #{parentid,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=INTEGER},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      fabu_type = #{fabuType,jdbcType=INTEGER},
+      yuliu = #{yuliu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+    insert into mro_zhishiguanli_filetype_file (id, parentid, tid,
+      file_name, file_path, createtime,
+      fabu_type, yuliu)
+    values (#{id,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER},
+      #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+      #{fabuType,jdbcType=INTEGER}, #{yuliu,jdbcType=VARCHAR})
+  </insert>
+</mapper>

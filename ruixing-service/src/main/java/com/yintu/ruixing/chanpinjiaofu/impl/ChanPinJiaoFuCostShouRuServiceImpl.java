@@ -1,7 +1,7 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
 import com.yintu.ruixing.common.util.ExportExcelUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostShouRuDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuCostShouRuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostShouRuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostShouRuService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

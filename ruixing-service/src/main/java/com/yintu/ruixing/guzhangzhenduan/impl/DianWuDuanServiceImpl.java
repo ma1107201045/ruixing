@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.DianWuDuanDao;
+import com.yintu.ruixing.master.guzhangzhenduan.DianWuDuanDao;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.guzhangzhenduan.ZhanNeiDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="line_id" jdbcType="INTEGER" property="lineId"/>
+        <result column="zongHe_id" jdbcType="VARCHAR" property="zongheId"/>
+        <result column="quDuanSheJi_name" jdbcType="VARCHAR" property="quduanshejiName"/>
+        <result column="quDuanYunYing_name" jdbcType="VARCHAR" property="quduanyunyingName"/>
+        <result column="quDuan_length" jdbcType="INTEGER" property="quduanLength"/>
+        <result column="carrier" jdbcType="VARCHAR" property="carrier"/>
+        <result column="diDuan_type" jdbcType="VARCHAR" property="diduanType"/>
+        <result column="xianLuQingKuang" jdbcType="VARCHAR" property="xianluqingkuang"/>
+        <result column="bianJie" jdbcType="INTEGER" property="bianjie"/>
+        <result column="fenJieDian_where" jdbcType="VARCHAR" property="fenjiedianWhere"/>
+        <result column="zhanQuFenJie" jdbcType="INTEGER" property="zhanqufenjie"/>
+        <result column="jinZhanXinHaoJi_name" jdbcType="VARCHAR" property="jinzhanxinhaojiName"/>
+        <result column="xinHaoJiOrBiaoZhiMing" jdbcType="VARCHAR" property="xinhaojiorbiaozhiming"/>
+        <result column="xinHaoBiaoZhiPai_where" jdbcType="VARCHAR" property="xinhaobiaozhipaiWhere"/>
+        <result column="xinHaoJi_where" jdbcType="VARCHAR" property="xinhaojiWhere"/>
+        <result column="zuoCeJueYuan_type" jdbcType="VARCHAR" property="zuocejueyuanType"/>
+        <result column="youCeJueYuan_type" jdbcType="VARCHAR" property="youcejueyuanType"/>
+        <result column="zhengXianHouFangQuDuan_ID" jdbcType="VARCHAR" property="zhengxianhoufangquduanId"/>
+        <result column="zhengXianQianFangQuDuan_ID" jdbcType="VARCHAR" property="zhengxianqianfangquduanId"/>
+        <result column="daoChaGuanLianQuDuan1_ID" jdbcType="VARCHAR" property="daochaguanlianquduan1Id"/>
+        <result column="daoChaGuanLianQuDuan2_ID" jdbcType="VARCHAR" property="daochaguanlianquduan2Id"/>
+        <result column="dianMaHuaGuiHao" jdbcType="VARCHAR" property="dianmahuaguihao"/>
+        <result column="guiNeiDiZhi" jdbcType="INTEGER" property="guineidizhi"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+        <association jdbcType="INTEGER" property="lineEntity" column="line_id">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <result property="lineNumber" column="line_number"/>
+            <result property="leftRight" column="left_right"/>
+            <result property="xid" column="xid"/>
+            <result property="xianDuanName" column="xianduan_name"/>
+            <result property="cid" column="cid"/>
+            <result property="cheZhanName" column="chezhan_name"/>
+            <result property="xianBie" column="xingbie"/>
+            <result property="type" column="type"/>
+        </association>
+    </resultMap>
+    <select id="findAllDianMaHua" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+            qd.id,
+            qd.carrier,
+            qd.quDuanYunYing_name,
+            qd.dianMaHuaGuiHao,
+            qd.guiNeiDiZhi
+        FROM
+            mro_quduan_base qd
+        WHERE
+            qd.line = '电码化'
+            AND qd.cid = #{id}
+    </select>
+
+    <resultMap type="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity" id="chezhan">
+        <result property="cid" column="cid"/>
+        <result property="czName" column="cz_name"/>
+        <result property="xdName" column="xd_name"/>
+        <result property="dwdName" column="dwd_name"/>
+        <result property="tljName" column="tlj_name"/>
+        <result property="czId" column="cz_id"/>
+        <result property="xdId" column="xd_id"/>
+        <result property="czNameJianCheng" column="cz_name_jiancheng"/>
+        <result property="czIp" column="cz_ip"/>
+        <result property="czType" column="cz_type"/>
+        <result column="cz_lianjie_type" jdbcType="INTEGER" property="czLianJieType"/>
+        <result property="czStutrs" column="cz_stutrs"/>
+        <result property="czOpenStutrs" column="cz_open_stutrs"/>
+        <result property="czCaoZuo" column="cz_caozuo"/>
+        <result property="czLastTime" column="cz_lasttime"/>
+        <result property="xdCzId" column="xd_cz_id"/>
+        <result property="czMiaoShu" column="cz_miaoshu"/>
+        <result property="czDuanTou" column="cz_duantou"/>
+    </resultMap>
+    <!--查询车站网络连接相关数据-->
+    <select id="findAllWangLuoLianJie" resultMap="chezhan" >
+        SELECT
+            tlj.tlj_name,
+            dwd.dwd_name,
+            xd.xd_name,
+            cz.cz_name,
+            cz.cz_id,
+            cz.cz_ip,
+            cz.cz_lianjie_type,
+            cz.cz_stutrs,
+            cz.cz_open_stutrs,
+            cz.cz_lasttime,
+            cz.cz_caozuo,
+            cz.cid
+        FROM
+            mro_tieluju tlj,
+            mro_dianwuduan dwd,
+            mro_xianduan xd,
+            mro_chezhan cz
+        WHERE
+            dwd.tlj_dwd_id = tlj.tid
+            AND xd.dwd_xd_id = dwd.did
+            AND cz.xd_cz_id = xd.xid
+    </select>
+
+    <!--修改网络连接状态-->
+    <update id="editWangLuoLianJieById" parameterType="com.yintu.ruixing.guzhangzhenduan.CheZhanEntity">
+        update mro_chezhan
+        <set>
+            <if test="czLianJieType !=null">
+                cz_lianjie_type = #{czLianJieType},
+            </if>
+            <if test="czStutrs !=null">
+                cz_stutrs = #{czStutrs},
+            </if>
+            <if test="czOpenStutrs !=null">
+                cz_open_stutrs = #{czOpenStutrs},
+            </if>
+            <if test="czLastTime !=null">
+                cz_lasttime = #{czLastTime},
+            </if>
+            <if test="czCaoZuo !=null">
+                cz_caozuo = #{czCaoZuo}
+            </if>
+        </set>
+        where cid=#{cid}
+    </update>
+
+</mapper>

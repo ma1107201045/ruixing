@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.jiejuefangan.SolutionDao">
+    <sql id="Where_Condition_List">
+        <where>
+            <choose>
+                <when test="selectType==1">
+                    DATE_FORMAT(project_date,'%Y') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y')
+                </when>
+                <when test="selectType==2">
+                    DATE_FORMAT(project_date,'%Y-%m') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m')
+                </when>
+                <when test="selectType==3">
+                    DATE_FORMAT(project_date,'%Y-%m-%d') = DATE_FORMAT(#{date,jdbcType=DATE},'%Y-%m-%d')
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="taskStatus==1">
+                    and task_status= #{taskStatus,jdbcType=SMALLINT}
+                </when>
+                <when test="taskStatus==2">
+                    and task_status= #{taskStatus,jdbcType=SMALLINT}
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </where>
+    </sql>
+    <select id="countTaskStatusByGroupBy" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM mro_pre_sale
+        <include refid="Where_Condition_List"/>
+        UNION ALL
+        SELECT count(*)
+        FROM mro_bidding
+        <include refid="Where_Condition_List"/>
+        UNION ALL
+        SELECT count(*)
+        FROM mro_design_liaison
+        <include refid="Where_Condition_List"/>
+    </select>
+
+
+    <resultMap id="BaseResultMap" type="java.util.Map">
+        <result column="project_date" jdbcType="DATE" property="projectDate"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="project_status" jdbcType="SMALLINT" property="projectStatus"/>
+    </resultMap>
+    <sql id="Base_Condition_List">
+        <where>
+            <if test="startDate!=null and endDate!=null">
+                project_date between #{startDate,jdbcType=DATE} and #{endDate,jdbcType=DATE}
+            </if>
+            <if test="projectStatus!=null">
+                and project_status=#{projectStatus,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByDateSectionAndProjectStatus" resultMap="BaseResultMap">
+        select * from (select project_date, project_name,project_status + 10 as project_status
+        from mro_pre_sale
+        <include refid="Base_Condition_List"/>
+        ) ps
+        UNION ALL
+        select * from (select project_date,project_name,project_status + 20 as project_status
+        from mro_bidding
+        <include refid="Base_Condition_List"/>
+        ) b
+    </select>
+
+    <!--首页统计售后项目总数-->
+    <select id="selectProjectSum" resultType="long">
+        SELECT ps.countNum + b.countNum + dl.countNum as sum
+        FROM ((SELECT COUNT(*) AS countNum FROM mro_pre_sale) ps,
+              (SELECT COUNT(*) AS countNum FROM mro_bidding) b,
+              (SELECT COUNT(*) AS countNum FROM mro_design_liaison) dl)
+    </select>
+</mapper>

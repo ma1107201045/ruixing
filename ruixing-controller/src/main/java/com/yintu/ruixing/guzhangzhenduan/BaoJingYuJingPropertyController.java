@@ -6,9 +6,8 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingPropertyService;
+import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

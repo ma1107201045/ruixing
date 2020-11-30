@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBaoGongGuanLiDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongGuanLiEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="xiangMuName" jdbcType="VARCHAR" property="xiangmuname" />
+    <result column="dayTime" jdbcType="TIMESTAMP" property="daytime" />
+    <result column="renYuanDongTai" jdbcType="VARCHAR" property="renyuandongtai" />
+    <result column="workContent" jdbcType="VARCHAR" property="workcontent" />
+    <result column="workAdress" jdbcType="VARCHAR" property="workadress" />
+    <result column="jingDu" jdbcType="DECIMAL" property="jingdu" />
+    <result column="weiDu" jdbcType="DECIMAL" property="weidu" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="creatTime" jdbcType="TIMESTAMP" property="creattime" />
+    <result column="updatTime" jdbcType="TIMESTAMP" property="updattime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, xiangMuName, dayTime, renYuanDongTai, workContent, workAdress, jingDu, weiDu, 
+    file_name, file_path, creatTime, updatTime
+  </sql>
+
+
+  <!--根据日期   或者项目名查询对应的报工-->
+  <select id="findBaoGongByTwoSome"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogongguanli
+    <where>
+      <if test="daytime!=null">
+        dayTime=#{daytime}
+      </if>
+      <if test="xiangMuName!=null">
+        and
+        xiangMuName=#{xiangMuName}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <!--根据日期 或者 姓名  或者项目名查询对应的报工-->
+  <select id="findBaoGongByThreeSome"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogongguanli
+    <where>
+      uid=#{uId}
+      <if test="daytime!=null">
+        and
+        dayTime=#{daytime}
+      </if>
+      <if test="xiangMuName!=null">
+        and
+        xiangMuName=#{xiangMuName}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <!--查询所有的报工-->
+  <select id="findAllBaoGong"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogongguanli
+    order by id desc
+  </select>
+
+  <!--根据id 查询对应的报工-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogongguanli
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <!--根据id 删除对应的报工-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_baogongguanli
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--新增报工-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongGuanLiEntity">
+    insert into mro_paigongguanli_baogongguanli
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="xiangmuname != null">
+        xiangMuName,
+      </if>
+      <if test="daytime != null">
+        dayTime,
+      </if>
+      <if test="renyuandongtai != null">
+        renYuanDongTai,
+      </if>
+      <if test="workcontent != null">
+        workContent,
+      </if>
+      <if test="workadress != null">
+        workAdress,
+      </if>
+      <if test="jingdu != null">
+        jingDu,
+      </if>
+      <if test="weidu != null">
+        weiDu,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="creattime != null">
+        creatTime,
+      </if>
+      <if test="updattime != null">
+        updatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="xiangmuname != null">
+        #{xiangmuname,jdbcType=VARCHAR},
+      </if>
+      <if test="daytime != null">
+        #{daytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renyuandongtai != null">
+        #{renyuandongtai,jdbcType=VARCHAR},
+      </if>
+      <if test="workcontent != null">
+        #{workcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="workadress != null">
+        #{workadress,jdbcType=VARCHAR},
+      </if>
+      <if test="jingdu != null">
+        #{jingdu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null">
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updattime != null">
+        #{updattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id  编辑对应的报工-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongGuanLiEntity">
+    update mro_paigongguanli_baogongguanli
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="xiangmuname != null">
+        xiangMuName = #{xiangmuname,jdbcType=VARCHAR},
+      </if>
+      <if test="daytime != null">
+        dayTime = #{daytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renyuandongtai != null">
+        renYuanDongTai = #{renyuandongtai,jdbcType=VARCHAR},
+      </if>
+      <if test="workcontent != null">
+        workContent = #{workcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="workadress != null">
+        workAdress = #{workadress,jdbcType=VARCHAR},
+      </if>
+      <if test="jingdu != null">
+        jingDu = #{jingdu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        weiDu = #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null">
+        creatTime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updattime != null">
+        updatTime = #{updattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongGuanLiEntity">
+    update mro_paigongguanli_baogongguanli
+    set uid = #{uid,jdbcType=INTEGER},
+      xiangMuName = #{xiangmuname,jdbcType=VARCHAR},
+      dayTime = #{daytime,jdbcType=TIMESTAMP},
+      renYuanDongTai = #{renyuandongtai,jdbcType=VARCHAR},
+      workContent = #{workcontent,jdbcType=VARCHAR},
+      workAdress = #{workadress,jdbcType=VARCHAR},
+      jingDu = #{jingdu,jdbcType=DECIMAL},
+      weiDu = #{weidu,jdbcType=DECIMAL},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      creatTime = #{creattime,jdbcType=TIMESTAMP},
+      updatTime = #{updattime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongGuanLiEntity">
+    insert into mro_paigongguanli_baogongguanli (id, uid, xiangMuName,
+      dayTime, renYuanDongTai, workContent,
+      workAdress, jingDu, weiDu,
+      file_name, file_path, creatTime,
+      updatTime)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{xiangmuname,jdbcType=VARCHAR},
+      #{daytime,jdbcType=TIMESTAMP}, #{renyuandongtai,jdbcType=VARCHAR}, #{workcontent,jdbcType=VARCHAR},
+      #{workadress,jdbcType=VARCHAR}, #{jingdu,jdbcType=DECIMAL}, #{weidu,jdbcType=DECIMAL},
+      #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{creattime,jdbcType=TIMESTAMP},
+      #{updattime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

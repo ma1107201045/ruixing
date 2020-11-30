@@ -2,11 +2,13 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.QuXianService;
+import com.yintu.ruixing.master.guzhangzhenduan.QuDuanBaseDao;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
+import com.yintu.ruixing.master.guzhangzhenduan.QuXianDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,8 +23,6 @@ import java.util.List;
 public class QuXianServiceImpl implements QuXianService {
     @Autowired
     private QuXianDao quXianDao;
-    @Autowired
-    private QuDuanInfoDao quDuanInfoDao;
     @Autowired
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
     @Autowired
@@ -46,11 +46,6 @@ public class QuXianServiceImpl implements QuXianService {
     @Override
     public List<QuDuanBaseEntity> findQuDuanDataByTime1(Date time) {
         return quXianDao.findQuDuanDataByTime1(time);
-    }
-
-    @Override
-    public Integer findQuDuanDataByTime2(String format, String name) {
-        return quDuanInfoDao.findQuDuanDataByTime2(format, name);
     }
 
 
@@ -78,7 +73,7 @@ public class QuXianServiceImpl implements QuXianService {
 
     @Override
     public Integer findQDid(String quduanname, Integer czid) {
-        return quDuanBaseDao.findQDid(quduanname,czid);
+        return quDuanBaseDao.findQDid(quduanname, czid);
     }
 
     @Override

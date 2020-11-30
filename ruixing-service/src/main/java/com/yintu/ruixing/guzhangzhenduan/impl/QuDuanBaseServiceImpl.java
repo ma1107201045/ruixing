@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseDao;
+import com.yintu.ruixing.master.guzhangzhenduan.QuDuanBaseDao;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseService;
 import org.springframework.beans.factory.annotation.Autowired;

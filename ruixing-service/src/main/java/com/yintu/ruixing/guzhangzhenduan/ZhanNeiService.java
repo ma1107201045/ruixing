@@ -3,7 +3,6 @@ package com.yintu.ruixing.guzhangzhenduan;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
 
 import java.util.Date;
@@ -20,8 +19,6 @@ public interface ZhanNeiService {
     List<CheZhanEntity> findAllWangLuoLianJie();
 
     void editWangLuoLianJieById(CheZhanEntity cheZhanEntity);
-
-    List<QuDuanInfoEntity> findDianMaHuaDatabById(Integer id);
 
     List<CheZhanEntity> findTieLuJuById(Integer page, Integer size);
 

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.YuJingDao;
+import com.yintu.ruixing.master.guzhangzhenduan.YuJingDao;
 import com.yintu.ruixing.guzhangzhenduan.YuJingEntity;
 import com.yintu.ruixing.guzhangzhenduan.YuJingService;
 import org.springframework.beans.factory.annotation.Autowired;

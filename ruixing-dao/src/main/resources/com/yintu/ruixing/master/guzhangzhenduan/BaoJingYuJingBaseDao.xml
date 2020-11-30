@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.guzhangzhenduan.BaoJingYuJingBaseDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bjNumber" jdbcType="INTEGER" property="bjnumber" />
+    <result column="bjcontext" jdbcType="VARCHAR" property="bjcontext" />
+    <result column="bjyjtype" jdbcType="INTEGER" property="bjyjtype" />
+    <result column="useRange" jdbcType="VARCHAR" property="userange" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bjNumber, bjcontext, bjyjtype, useRange, createTime, createName, updateTime, 
+    updateName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_baojing_yujingbase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_baojing_yujingbase
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="findAllBaoJing" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    id, bjNumber, bjcontext, bjyjtype, useRange
+    from mro_baojing_yujingbase
+    where bjyjtype != 3
+  </select>
+
+  <!--根据报警编号和类型  查询名字-->
+  <select id="findAlarmContext"   resultType="java.lang.String">
+    select
+     bjcontext
+    from mro_baojing_yujingbase
+    where bjyjtype =#{bjyjType}
+    and bjNumber=#{alarmcode}
+  </select>
+
+  <!--查询表格数据-->
+  <select id="findBJDataBySomething"  resultMap="BaseResultMap">
+    select
+    id, bjNumber, bjcontext, bjyjtype, useRange
+    from mro_baojing_yujingbase
+    where
+    bjcontext like concat('%', #{context},'%')
+    and
+    bjyjtype !=3
+    order by id desc
+  </select>
+
+  <!--查询表格数据-->
+  <select id="findBJYJData"  resultMap="BaseResultMap">
+    select
+    id, bjNumber, bjcontext, bjyjtype, useRange
+    from mro_baojing_yujingbase
+    <where>
+      <if test="context!=null">
+        bjcontext like concat('%', #{context},'%')
+      </if>
+      <if test="bjyjType!=null">
+        and
+        bjyjtype=#{bjyjType}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <!--新增数据-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity">
+    insert into mro_baojing_yujingbase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bjnumber != null">
+        bjNumber,
+      </if>
+      <if test="bjcontext != null">
+        bjcontext,
+      </if>
+      <if test="bjyjtype != null">
+        bjyjtype,
+      </if>
+      <if test="userange != null">
+        useRange,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bjnumber != null">
+        #{bjnumber,jdbcType=INTEGER},
+      </if>
+      <if test="bjcontext != null">
+        #{bjcontext,jdbcType=VARCHAR},
+      </if>
+      <if test="bjyjtype != null">
+        #{bjyjtype,jdbcType=INTEGER},
+      </if>
+      <if test="userange != null">
+        #{userange,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity">
+    update mro_baojing_yujingbase
+    <set>
+      <if test="bjnumber != null">
+        bjNumber = #{bjnumber,jdbcType=INTEGER},
+      </if>
+      <if test="bjcontext != null">
+        bjcontext = #{bjcontext,jdbcType=VARCHAR},
+      </if>
+      <if test="bjyjtype != null">
+        bjyjtype = #{bjyjtype,jdbcType=INTEGER},
+      </if>
+      <if test="userange != null">
+        useRange = #{userange,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity">
+    update mro_baojing_yujingbase
+    set bjNumber = #{bjnumber,jdbcType=INTEGER},
+      bjcontext = #{bjcontext,jdbcType=VARCHAR},
+      bjyjtype = #{bjyjtype,jdbcType=INTEGER},
+      useRange = #{userange,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity">
+    insert into mro_baojing_yujingbase (id, bjNumber, bjcontext,
+      bjyjtype, useRange, createTime,
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{bjnumber,jdbcType=INTEGER}, #{bjcontext,jdbcType=VARCHAR},
+      #{bjyjtype,jdbcType=INTEGER}, #{userange,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

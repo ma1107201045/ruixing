@@ -1,6 +1,6 @@
 package com.yintu.ruixing.common.impl;
 
-import com.yintu.ruixing.common.MessageDao;
+import com.yintu.ruixing.master.common.MessageDao;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;

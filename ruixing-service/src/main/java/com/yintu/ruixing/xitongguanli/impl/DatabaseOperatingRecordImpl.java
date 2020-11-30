@@ -7,7 +7,7 @@ import cn.hutool.core.util.RuntimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordDao;
+import com.yintu.ruixing.master.xitongguanli.DatabaseOperatingRecordDao;
 import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordEntity;
 import com.yintu.ruixing.xitongguanli.DatabaseOperatingRecordService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +34,11 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
     @Autowired
     private DatabaseOperatingRecordDao databaseOperatingRecordDao;
 
-    @Value("${spring.datasource.druid.url}")
+    @Value("${spring.datasource.druid.master.url}")
     private String jdbcURL;
-    @Value("${spring.datasource.druid.username}")
+    @Value("${spring.datasource.druid.master.username}")
     private String jdbcUsername;
-    @Value("${spring.datasource.druid.password}")
+    @Value("${spring.datasource.druid.master.password}")
     private String jdbcPassword;
 
     private static final String backupPathOfWindowPrefix = "C:\\data\\ruixing\\backups\\";

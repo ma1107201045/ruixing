@@ -2,7 +2,7 @@ package com.yintu.ruixing.jiejuefangan.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.jiejuefangan.SolutionDao;
+import com.yintu.ruixing.master.jiejuefangan.SolutionDao;
 import com.yintu.ruixing.jiejuefangan.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author:mlf

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordDao;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentNumberRecordDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentNumberRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

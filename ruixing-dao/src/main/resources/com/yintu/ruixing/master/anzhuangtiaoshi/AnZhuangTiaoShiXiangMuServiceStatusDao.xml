@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="serviceName" jdbcType="VARCHAR" property="servicename" />
+    <result column="choose" jdbcType="VARCHAR" property="choose" />
+    <result column="timeType" jdbcType="INTEGER" property="timetype" />
+    <result column="isNotOver" jdbcType="INTEGER" property="isNotOver" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <!--<association property="anZhuangTiaoShiXiangMuServiceStatusChooseEntity" javaType="AnZhuangTiaoShiXiangMuServiceStatusChooseEntity">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="sid" jdbcType="INTEGER" property="sid" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="isNotDaoHuo" jdbcType="INTEGER" property="isNotDaoHuo" />
+    </association>-->
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, serviceName, choose, timeType,isNotOver, createTime, createName, updateTime, updateName
+  </sql>
+
+
+  <!--查询是否开通 对应的id-->
+  <select id="findSerid"  resultType="java.lang.Integer">
+      SELECT
+          id
+      FROM
+          mro_anzhuangtiaoshi_xiangmuServiceStatus
+      where
+          serviceName="是否开通"
+  </select>
+
+  <!--查询所有的服务状态标识   用于展示在首页或者新增页面-->
+  <select id="findAllServiceStatus"  resultMap="BaseResultMap">
+      SELECT
+          id,
+          serviceName,
+          timeType,
+          choose,
+          isNotOver
+      FROM
+          mro_anzhuangtiaoshi_xiangmuServiceStatus
+  </select>
+
+  <!--初始化页面  或者根据服务状态标识名查询-->
+  <select id="findAllOrSomething"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus
+    <where>
+      <if test="serviceName !=null">
+        serviceName like concat('%',#{serviceName},'%')
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_xiangmuServiceStatus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id  删除对应的服务状态标识-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_xiangmuServiceStatus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!--新增状态服务标识-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity"
+          useGeneratedKeys="true" keyProperty="id">
+    insert into mro_anzhuangtiaoshi_xiangmuServiceStatus
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="servicename != null">
+        serviceName,
+      </if>
+      <if test="choose != null">
+        choose,
+      </if>
+      <if test="timetype != null">
+        timeType,
+      </if>
+      <if test="isNotOver != null">
+        isNotOver,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="servicename != null">
+        #{servicename,jdbcType=VARCHAR},
+      </if>
+      <if test="choose != null">
+        #{choose,jdbcType=VARCHAR},
+      </if>
+      <if test="timetype != null">
+        #{timetype,jdbcType=INTEGER},
+      </if>
+      <if test="isNotOver != null">
+        #{isNotOver,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id  编辑服务状态标识-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity">
+    update mro_anzhuangtiaoshi_xiangmuServiceStatus
+    <set>
+      <if test="servicename != null">
+        serviceName = #{servicename,jdbcType=VARCHAR},
+      </if>
+      <if test="choose != null">
+        choose = #{choose,jdbcType=VARCHAR},
+      </if>
+      <if test="timetype != null">
+        timeType = #{timetype,jdbcType=INTEGER},
+      </if>
+      <if test="isNotOver != null">
+        isNotOver = #{isNotOver,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity">
+    update mro_anzhuangtiaoshi_xiangmuServiceStatus
+    set serviceName = #{servicename,jdbcType=VARCHAR},
+      choose = #{choose,jdbcType=VARCHAR},
+      timeType = #{timetype,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuServiceStatusEntity">
+    insert into mro_anzhuangtiaoshi_xiangmuServiceStatus (id, serviceName, choose,
+      timeType, createTime, createName,
+      updateTime, updateName)
+    values (#{id,jdbcType=INTEGER}, #{servicename,jdbcType=VARCHAR}, #{choose,jdbcType=VARCHAR},
+      #{timetype,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR},
+      #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR})
+  </insert>
+</mapper>

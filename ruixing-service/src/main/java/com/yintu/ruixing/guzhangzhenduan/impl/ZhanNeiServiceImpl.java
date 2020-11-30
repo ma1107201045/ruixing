@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
+import com.yintu.ruixing.master.guzhangzhenduan.ZhanNeiDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +28,6 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     private ZhanNeiDao zhanNeiDao;
 
     @Autowired
-    private QuDuanInfoDao quDuanInfoDao;
-
-    @Autowired
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
     @Autowired
     private QuDuanInfoService quDuanInfoService;
@@ -36,7 +35,7 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     @Override
     public List<JSONObject> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) > 0) {
-            List<JSONObject> js=new ArrayList<>();
+            List<JSONObject> js = new ArrayList<>();
             List<QuDuanInfoEntityV2> quDuanInfoEntityV2List = quDuanInfoDaoV2.findDianMaHuaDatasByCZids(czid, tableName);
             for (QuDuanInfoEntityV2 quDuanInfoEntityV2 : quDuanInfoEntityV2List) {
                 JSONObject o = (JSONObject) JSONObject.toJSON(quDuanInfoEntityV2);
@@ -46,35 +45,35 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
                 }
                 if ("1".equals(fbjCollectionBei)) {
                     o.put("fbjCollectionBei", "落下");
-                }else {
+                } else {
                     o.put("fbjCollectionBei", "无效");
                 }
                 BigDecimal fbjCollectionZhu = o.getBigDecimal("fbjCollectionZhu");
-                if ("1".equals(fbjCollectionZhu)){
-                    o.put("fbjCollectionZhu","吸起");
+                if ("1".equals(fbjCollectionZhu)) {
+                    o.put("fbjCollectionZhu", "吸起");
                 }
-                if ("2".equals(fbjCollectionZhu)){
-                    o.put("fbjCollectionZhu","落下");
-                }else {
-                    o.put("fbjCollectionZhu","无效");
+                if ("2".equals(fbjCollectionZhu)) {
+                    o.put("fbjCollectionZhu", "落下");
+                } else {
+                    o.put("fbjCollectionZhu", "无效");
                 }
                 Integer fbjDriveBei = o.getInteger("fbjDriveBei");
-                if (fbjDriveBei==1){
-                    o.put("fbjDriveBei","正常");
+                if (fbjDriveBei == 1) {
+                    o.put("fbjDriveBei", "正常");
                 }
-                if (fbjDriveBei==2){
-                    o.put("fbjDriveBei","无");
-                }else {
-                    o.put("fbjDriveBei","无效");
+                if (fbjDriveBei == 2) {
+                    o.put("fbjDriveBei", "无");
+                } else {
+                    o.put("fbjDriveBei", "无效");
                 }
                 Integer fbjDriveZhu = o.getInteger("fbjDriveZhu");
-                if (fbjDriveZhu==1){
-                    o.put("fbjDriveZhu","正常");
+                if (fbjDriveZhu == 1) {
+                    o.put("fbjDriveZhu", "正常");
                 }
-                if (fbjDriveZhu==2){
-                    o.put("fbjDriveZhu","无");
-                }else {
-                    o.put("fbjDriveZhu","无效");
+                if (fbjDriveZhu == 2) {
+                    o.put("fbjDriveZhu", "无");
+                } else {
+                    o.put("fbjDriveZhu", "无效");
                 }
                 js.add(o);
             }
@@ -98,10 +97,7 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
         zhanNeiDao.editWangLuoLianJieById(cheZhanEntity);
     }
 
-    @Override
-    public List<QuDuanInfoEntity> findDianMaHuaDatabById(Integer id) {
-        return quDuanInfoDaoV2.findDianMaHuaDatabById(id);
-    }
+
 
     @Override
     public List<CheZhanEntity> findTieLuJuById(Integer page, Integer size) {

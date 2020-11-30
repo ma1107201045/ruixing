@@ -1,6 +1,6 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
-import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorDao;
+import com.yintu.ruixing.master.jiejuefangan.DesignLiaisonFileAuditorDao;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorService;
 import org.springframework.beans.factory.annotation.Autowired;

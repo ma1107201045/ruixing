@@ -1,7 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.danganguanli.CustomerTypeDao;
+import com.yintu.ruixing.master.danganguanli.CustomerTypeDao;
 import com.yintu.ruixing.danganguanli.CustomerTypeEntity;
 import com.yintu.ruixing.danganguanli.CustomerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

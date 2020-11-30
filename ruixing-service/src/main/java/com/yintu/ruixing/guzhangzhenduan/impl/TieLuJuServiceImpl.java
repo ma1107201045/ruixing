@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.TieLuJuDao;
+import com.yintu.ruixing.master.guzhangzhenduan.TieLuJuDao;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import org.springframework.beans.factory.annotation.Autowired;

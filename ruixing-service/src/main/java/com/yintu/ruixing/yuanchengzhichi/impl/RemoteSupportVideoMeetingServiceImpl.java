@@ -1,7 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportVideoMeetingDao;
+import com.yintu.ruixing.master.yuanchengzhichi.RemoteSupportVideoMeetingDao;
 import com.yintu.ruixing.yuanchengzhichi.RemoteSupportVideoMeetingEntityWithBLOBs;
 import com.yintu.ruixing.yuanchengzhichi.RemoteSupportVideoMeetingService;
 import org.springframework.beans.factory.annotation.Autowired;

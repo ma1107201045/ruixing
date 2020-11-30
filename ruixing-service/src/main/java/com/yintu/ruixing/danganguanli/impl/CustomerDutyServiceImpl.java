@@ -1,6 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.CustomerDutyDao;
+import com.yintu.ruixing.master.danganguanli.CustomerDutyDao;
 import com.yintu.ruixing.danganguanli.CustomerDutyEntity;
 import com.yintu.ruixing.danganguanli.CustomerDutyService;
 import org.springframework.beans.factory.annotation.Autowired;

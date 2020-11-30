@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiTrainDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        <result column="customer" jdbcType="VARCHAR" property="customer"/>
+        <result column="trainType" jdbcType="INTEGER" property="traintype"/>
+        <result column="trainContent" jdbcType="VARCHAR" property="traincontent"/>
+        <result column="trainMode" jdbcType="VARCHAR" property="trainmode"/>
+        <result column="trainAddress" jdbcType="VARCHAR" property="trainaddress"/>
+        <result column="trainStartTime" jdbcType="TIMESTAMP" property="trainstarttime"/>
+        <result column="trainEndTime" jdbcType="TIMESTAMP" property="trainendtime"/>
+        <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="createName" jdbcType="VARCHAR" property="createname" />
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+        <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, xd_name, customer, trainType, trainContent, trainMode, trainAddress, trainStartTime, 
+    trainEndTime, yuliu, createTime, createName, updateTime, updateName
+  </sql>
+
+    <select id="findTrainByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--查询所有的数据-->
+    <select id="findTrainBytraintype" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        where trainType=#{traintype}
+    </select>
+
+    <!--查询所有的数据的分类-->
+    <select id="findReJiShu"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        group by trainType
+    </select>
+
+    <!--根据线段名  或者顾客名进行模糊查询 也是初始化页面-->
+    <select id="findAllTrain" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        <where>
+            <if test="xdName != null">
+                xd_name like concat('%', #{xdName},'%')
+            </if>
+            <if test="customer != null">
+                and
+                customer like concat ('%', #{customer},'%')
+            </if>
+            group by id desc
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_train
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id  删除对应的数据-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_train
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <!--新增培训数据-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity">
+        insert into mro_anzhuangtiaoshi_train
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="xdName != null">
+                xd_name,
+            </if>
+            <if test="customer != null">
+                customer,
+            </if>
+            <if test="traintype != null">
+                trainType,
+            </if>
+            <if test="traincontent != null">
+                trainContent,
+            </if>
+            <if test="trainmode != null">
+                trainMode,
+            </if>
+            <if test="trainaddress != null">
+                trainAddress,
+            </if>
+            <if test="trainstarttime != null">
+                trainStartTime,
+            </if>
+            <if test="trainendtime != null">
+                trainEndTime,
+            </if>
+            <if test="yuliu != null">
+                yuliu,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="createname != null">
+                createName,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="updatename != null">
+                updateName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="xdName != null">
+                #{xdName,jdbcType=VARCHAR},
+            </if>
+            <if test="customer != null">
+                #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="traintype != null">
+                #{traintype,jdbcType=INTEGER},
+            </if>
+            <if test="traincontent != null">
+                #{traincontent,jdbcType=VARCHAR},
+            </if>
+            <if test="trainmode != null">
+                #{trainmode,jdbcType=VARCHAR},
+            </if>
+            <if test="trainaddress != null">
+                #{trainaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="trainstarttime != null">
+                #{trainstarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="trainendtime != null">
+                #{trainendtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="yuliu != null">
+                #{yuliu,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id  编辑对应的培训数据-->
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity">
+        update mro_anzhuangtiaoshi_train
+        <set>
+            <if test="xdName != null">
+                xd_name = #{xdName,jdbcType=VARCHAR},
+            </if>
+            <if test="customer != null">
+                customer = #{customer,jdbcType=VARCHAR},
+            </if>
+            <if test="traintype != null">
+                trainType = #{traintype,jdbcType=INTEGER},
+            </if>
+            <if test="traincontent != null">
+                trainContent = #{traincontent,jdbcType=VARCHAR},
+            </if>
+            <if test="trainmode != null">
+                trainMode = #{trainmode,jdbcType=VARCHAR},
+            </if>
+            <if test="trainaddress != null">
+                trainAddress = #{trainaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="trainstarttime != null">
+                trainStartTime = #{trainstarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="trainendtime != null">
+                trainEndTime = #{trainendtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="yuliu != null">
+                yuliu = #{yuliu,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                createName = #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                updateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity">
+    update mro_anzhuangtiaoshi_train
+    set xd_name = #{xdName,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      trainType = #{traintype,jdbcType=VARCHAR},
+      trainContent = #{traincontent,jdbcType=VARCHAR},
+      trainMode = #{trainmode,jdbcType=VARCHAR},
+      trainAddress = #{trainaddress,jdbcType=VARCHAR},
+      trainStartTime = #{trainstarttime,jdbcType=TIMESTAMP},
+      trainEndTime = #{trainendtime,jdbcType=TIMESTAMP},
+      yuliu = #{yuliu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity">
+    insert into mro_anzhuangtiaoshi_train (id, xd_name, customer,
+      trainType, trainContent, trainMode,
+      trainAddress, trainStartTime, trainEndTime,
+      yuliu)
+    values (#{id,jdbcType=INTEGER}, #{xdName,jdbcType=VARCHAR}, #{customer,jdbcType=VARCHAR},
+      #{traintype,jdbcType=VARCHAR}, #{traincontent,jdbcType=VARCHAR}, #{trainmode,jdbcType=VARCHAR},
+      #{trainaddress,jdbcType=VARCHAR}, #{trainstarttime,jdbcType=TIMESTAMP}, #{trainendtime,jdbcType=TIMESTAMP},
+      #{yuliu,jdbcType=VARCHAR})
+  </insert>
+</mapper>

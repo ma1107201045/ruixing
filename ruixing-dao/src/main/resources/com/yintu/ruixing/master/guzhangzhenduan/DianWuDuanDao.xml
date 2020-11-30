@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.guzhangzhenduan.DianWuDuanDao">
+
+    <resultMap type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" id="dianwuduan">
+        <result property="did" column="did"/>
+        <result property="dwdId" column="dwd_id"/>
+        <result property="tljId" column="tlj_id"/>
+        <result property="dwdName" column="dwd_name"/>
+        <result property="tljDwdId" column="tlj_dwd_id"/>
+        <result property="dwdMiaoShu" column="dwd_miaoshu"/>
+        <result column="dwd_state" jdbcType="INTEGER" property="dwdState"/>
+        <result column="dwd_json" jdbcType="LONGVARCHAR" property="dwdJson"/>
+    </resultMap>
+    <select id="findDianWuDuanByName" resultMap="dianwuduan" >
+        select * from mro_dianwuduan where dwd_name=#{dwdname}
+    </select>
+
+    <!--根据电务段did  查询对应的json数据-->
+    <select id="findDWDJsonByDid" resultType="java.lang.String" >
+        select dwd_json from mro_dianwuduan where did=#{did}
+    </select>
+
+    <!--根据电务段名  查询对应的数据-->
+    <select id="findDianWuDuanBydid" resultMap="dianwuduan" >
+        select
+        *
+        from mro_dianwuduan
+        where dwd_id=#{parseLong}
+        and tlj_id =#{parseLong1}
+    </select>
+
+    <!--根据电务段专用id  查询id-->
+    <select id="dwdid" resultType="java.lang.Long">
+        select did from mro_dianwuduan where dwd_id =  #{parseLong} and tlj_id=  #{parseLong1}
+    </select>
+    <!--查询所有的电务段-->
+    <select id="findDianWuDuan" resultMap="dianwuduan" >
+        select * from mro_dianwuduan
+    </select>
+
+    <!--查询电务段-->
+    <select id="findDianWuDuanById" resultMap="dianwuduan" parameterType="java.lang.Long">
+        select * from mro_dianwuduan where did =  #{did}
+    </select>
+    
+    <!--新增电务段-->
+    <insert id="addDianWuDuan" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity">
+
+		insert into mro_dianwuduan(dwd_name,dwd_id,tlj_id,dwd_miaoshu,tlj_dwd_id)
+		values
+		(#{dwdName},#{dwdId},#{tljId},#{dwdMiaoShu},#{tljDwdId})
+	</insert>
+    <!--修改电务段信息-->
+    <update id="editDianWuDuan" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity">
+        update mro_dianwuduan
+        <set>
+            <if test="dwdName !=null">
+                dwd_name=#{dwdName},
+            </if>
+            <if test="tljId !=null">
+                tlj_id=#{tljId},
+            </if>
+            <if test="dwdMiaoShu !=null">
+                dwd_miaoshu=#{dwdMiaoShu}
+            </if>
+        </set>
+        where
+        did=#{did}
+    </update>
+    <!--删除电务段-->
+    <delete id="delDianWuDuan" parameterType="long">
+		delete from mro_dianwuduan where did=#{did}
+	</delete>
+
+    <!--查询下级是否存在-->
+    <select id="findId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT
+        xd.dwd_xd_id
+        FROM
+        mro_dianwuduan dwd,
+        mro_xianduan xd
+        where
+        dwd.did=xd.dwd_xd_id
+        and
+        did=#{did}
+    </select>
+</mapper>

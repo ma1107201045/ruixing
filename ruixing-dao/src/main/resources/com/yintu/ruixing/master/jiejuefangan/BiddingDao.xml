@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.jiejuefangan.BiddingDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="project_status" jdbcType="SMALLINT" property="projectStatus"/>
+        <result column="project_date" jdbcType="DATE" property="projectDate"/>
+        <result column="task_status" jdbcType="SMALLINT" property="taskStatus"/>
+        <result column="task_finish_date" jdbcType="TIMESTAMP" property="taskFinishDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="bidder" jdbcType="VARCHAR" property="bidder"/>
+        <result column="railway_administration_id" jdbcType="INTEGER" property="railwayAdministrationId"/>
+        <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, project_name, project_status,
+    project_date, task_status, task_finish_date, remark, bidder, railway_administration_id, 
+    pre_sale_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_bidding
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_bidding
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into mro_bidding (id, create_by, create_time,
+                                 modified_by, modified_time, project_name,
+                                 project_status, project_date, task_status,
+                                 task_finish_date, remark, bidder,
+                                 railway_administration_id, pre_sale_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{projectName,jdbcType=VARCHAR},
+                #{projectStatus,jdbcType=SMALLINT}, #{projectDate,jdbcType=DATE}, #{taskStatus,jdbcType=SMALLINT},
+                #{taskFinishDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{bidder,jdbcType=VARCHAR},
+                #{railwayAdministrationId,jdbcType=INTEGER}, #{preSaleId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into mro_bidding
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="projectName != null">
+                project_name,
+            </if>
+            <if test="projectStatus != null">
+                project_status,
+            </if>
+            <if test="projectDate != null">
+                project_date,
+            </if>
+            <if test="taskStatus != null">
+                task_status,
+            </if>
+            <if test="taskFinishDate != null">
+                task_finish_date,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="bidder != null">
+                bidder,
+            </if>
+            <if test="railwayAdministrationId != null">
+                railway_administration_id,
+            </if>
+            <if test="preSaleId != null">
+                pre_sale_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="projectName != null">
+                #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectStatus != null">
+                #{projectStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="projectDate != null">
+                #{projectDate,jdbcType=DATE},
+            </if>
+            <if test="taskStatus != null">
+                #{taskStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="taskFinishDate != null">
+                #{taskFinishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bidder != null">
+                #{bidder,jdbcType=VARCHAR},
+            </if>
+            <if test="railwayAdministrationId != null">
+                #{railwayAdministrationId,jdbcType=INTEGER},
+            </if>
+            <if test="preSaleId != null">
+                #{preSaleId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+        update mro_bidding
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="projectName != null">
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectStatus != null">
+                project_status = #{projectStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="projectDate != null">
+                project_date = #{projectDate,jdbcType=DATE},
+            </if>
+            <if test="taskStatus != null">
+                task_status = #{taskStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="taskFinishDate != null">
+                task_finish_date = #{taskFinishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bidder != null">
+                bidder = #{bidder,jdbcType=VARCHAR},
+            </if>
+            <if test="railwayAdministrationId != null">
+                railway_administration_id = #{railwayAdministrationId,jdbcType=INTEGER},
+            </if>
+            <if test="preSaleId != null">
+                pre_sale_id = #{preSaleId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+        update mro_bidding
+        set create_by                 = #{createBy,jdbcType=VARCHAR},
+            create_time               = #{createTime,jdbcType=TIMESTAMP},
+            modified_by               = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time             = #{modifiedTime,jdbcType=TIMESTAMP},
+            project_name              = #{projectName,jdbcType=VARCHAR},
+            project_status            = #{projectStatus,jdbcType=SMALLINT},
+            project_date              = #{projectDate,jdbcType=DATE},
+            task_status               = #{taskStatus,jdbcType=SMALLINT},
+            task_finish_date          = #{taskFinishDate,jdbcType=TIMESTAMP},
+            remark                    = #{remark,jdbcType=VARCHAR},
+            bidder                    = #{bidder,jdbcType=VARCHAR},
+            railway_administration_id = #{railwayAdministrationId,jdbcType=INTEGER},
+            pre_sale_id               = #{preSaleId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_bidding
+    </select>
+    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_bidding
+        where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id DESC
+    </select>
+    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
+        select DISTINCT YEAR(project_date)
+        from mro_bidding
+        ORDER BY YEAR(project_date) DESC
+    </select>
+
+    <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.BiddingEntity">
+        <id column="b_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="project_status" jdbcType="SMALLINT" property="projectStatus"/>
+        <result column="project_date" jdbcType="DATE" property="projectDate"/>
+        <result column="task_status" jdbcType="SMALLINT" property="taskStatus"/>
+        <result column="task_finish_date" jdbcType="TIMESTAMP" property="taskFinishDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="bidder" jdbcType="VARCHAR" property="bidder"/>
+        <result column="railway_administration_id" jdbcType="INTEGER" property="railwayAdministrationId"/>
+        <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
+        <association column="railway_administration_id" property="tieLuJuEntity">
+            <id column="t_id" jdbcType="INTEGER" property="tljId"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
+        </association>
+    </resultMap>
+    <sql id="Connect_Column_List">
+        b.id as b_id , b.create_by, b.create_time, b.modified_by, b.modified_time, b.project_name, b.project_status,b.project_date, b.task_status, b.task_finish_date, b.remark, b.bidder, b.railway_administration_id,b. pre_sale_id,
+        t.tlj_id as t_id,t.tlj_name
+    </sql>
+    <select id="selectByExample" resultMap="ConnectResultMap">
+        select
+        <include refid="Connect_Column_List"/>
+        from mro_bidding b inner join mro_tieluju t on b.railway_administration_id=t.tlj_id
+        <where>
+            <if test="year!=null">
+                YEAR(b.project_date) = #{year,jdbcType=INTEGER}
+            </if>
+            <if test="projectName!=null">
+                and b.project_name like concat('%',#{projectName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

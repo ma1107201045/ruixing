@@ -1,10 +1,13 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
 import com.yintu.ruixing.anzhuangtiaoshi.*;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
-import com.yintu.ruixing.xitongguanli.DepartmentDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiFileDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageDao;
+import com.yintu.ruixing.master.xitongguanli.DepartmentDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiService;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntityExample;

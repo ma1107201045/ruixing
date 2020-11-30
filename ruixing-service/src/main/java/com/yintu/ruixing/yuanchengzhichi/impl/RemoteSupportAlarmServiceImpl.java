@@ -2,14 +2,14 @@ package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.system.SystemUtil;
 import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
-import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseDao;
+import com.yintu.ruixing.master.guzhangzhenduan.BaoJingYuJingBaseDao;
 import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity;
-import com.yintu.ruixing.guzhangzhenduan.CheZhanDao;
+import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
+import com.yintu.ruixing.master.yuanchengzhichi.RemoteSupportAlarmDao;
 import com.yintu.ruixing.yuanchengzhichi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class RemoteSupportAlarmServiceImpl implements RemoteSupportAlarmService 
     @Autowired
     private RemoteSupportTicketService remoteSupportTicketService;
 
-    @Value("${spring.datasource.druid.url}")
+    @Value("${spring.datasource.druid.master.url}")
     private String jdbcURL;
 
     @Override

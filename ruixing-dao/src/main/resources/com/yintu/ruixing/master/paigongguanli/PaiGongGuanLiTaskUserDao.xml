@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiTaskUserDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
+        <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+        <result column="taskTotalName" jdbcType="VARCHAR" property="tasktotalname"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, tid, score
+  </sql>
+
+
+
+
+    <!--根据tid  和最大分值和最小分值 查询对应的人员-->
+    <select id="findUser" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            mro_paigongguanli_task_user ptu
+        WHERE
+            ptu.tid = #{tid}
+            AND ptu.score BETWEEN #{minTaskshuxingNum}
+            AND #{maxTaskshuxingNum}
+        ORDER BY
+            ptu.score DESC
+    </select>
+
+    <!--根据人员id  查询所有的任务能力数据-->
+    <select id="findUserPowerScoreById" resultMap="BaseResultMap">
+        SELECT
+        ptu.id,
+        ptu.tid,
+        u.true_name,
+        pt.taskTotalName,
+        ptu.score
+        FROM
+        mro_paigongguanli_task_user ptu,
+        tb_user u,
+        mro_paigongguanli_task pt
+        <where>
+            ptu.uid = u.id
+            AND ptu.tid = pt.id
+            and ptu.uid=#{id}
+            <if test="taskTotalName !=null">
+                and
+                pt.taskTotalName like concat('%',#{taskTotalName},'%')
+            </if>
+        </where>
+        group by ptu.id desc
+    </select>
+
+
+    <!--初始化人员能力配置列表  或者根据人员名查询-->
+    <select id="findSomeUserPowerScore" resultMap="BaseResultMap">
+      SELECT
+        u.id,
+        u.true_name,
+        pt.taskTotalName,
+        ptu.score
+      FROM
+          mro_paigongguanli_task_user ptu,
+          tb_user u,
+          mro_paigongguanli_task pt
+      <where>
+          ptu.uid = u.id
+          AND ptu.tid = pt.id
+          <if test="userName!=null">
+              AND u.true_name like concat('%',#{userName},'%')
+          </if>
+      </where>
+        GROUP BY u.true_name
+    </select>
+
+
+    <!--查询中间表中是否有uid  并去重-->
+    <select id="findUid" resultType="java.lang.Integer">
+        select
+        uid
+        from mro_paigongguanli_task_user
+        GROUP BY uid
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_paigongguanli_task_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据tid  删除对应的数据-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_task_user
+    where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--新增类型的时候  给每个人员新增类型-->
+    <insert id="addTask" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
+    insert into mro_paigongguanli_task_user ( uid, tid)
+    values ( #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER})
+  </insert>
+
+
+    <!--新增任务-->
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
+        insert into mro_paigongguanli_task_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--编辑分数-->
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
+        update mro_paigongguanli_task_user
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
+    update mro_paigongguanli_task_user
+    set uid = #{uid,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,7 +1,7 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
 import com.yintu.ruixing.common.util.ExportExcelUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostZhiChuDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuCostZhiChuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostZhiChuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostZhiChuService;

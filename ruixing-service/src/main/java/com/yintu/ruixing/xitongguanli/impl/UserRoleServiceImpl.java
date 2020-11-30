@@ -1,6 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.yintu.ruixing.xitongguanli.UserRoleDao;
+import com.yintu.ruixing.master.xitongguanli.UserRoleDao;
 import com.yintu.ruixing.xitongguanli.UserRoleEntity;
 import com.yintu.ruixing.xitongguanli.UserRoleEntityExample;
 import com.yintu.ruixing.xitongguanli.UserRoleService;

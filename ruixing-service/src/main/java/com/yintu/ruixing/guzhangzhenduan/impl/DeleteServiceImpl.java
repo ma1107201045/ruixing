@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.DeleteDao;
+import com.yintu.ruixing.master.guzhangzhenduan.DeleteDao;
 import com.yintu.ruixing.guzhangzhenduan.DeleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

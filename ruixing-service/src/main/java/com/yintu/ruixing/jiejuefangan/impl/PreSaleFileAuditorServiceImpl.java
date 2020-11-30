@@ -1,6 +1,6 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
-import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorDao;
+import com.yintu.ruixing.master.jiejuefangan.PreSaleFileAuditorDao;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorService;
 import org.springframework.beans.factory.annotation.Autowired;

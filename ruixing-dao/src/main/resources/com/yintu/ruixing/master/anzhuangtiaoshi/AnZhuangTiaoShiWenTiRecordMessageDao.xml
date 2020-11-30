@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="typeId" jdbcType="INTEGER" property="typeid" />
+    <result column="operatorName" jdbcType="VARCHAR" property="operatorname" />
+    <result column="operatorTime" jdbcType="TIMESTAMP" property="operatortime" />
+    <result column="context" jdbcType="VARCHAR" property="context" />
+    <result column="typeNum" jdbcType="INTEGER" property="typenum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, typeId, operatorName, operatorTime, context, typeNum
+  </sql>
+
+  <!--根据问题id  查看时间轴-->
+  <select id="findFileRecordMessageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_recordmessage
+    where typeId = #{id,jdbcType=INTEGER}
+    and typeNum=2
+  </select>
+
+  <!--根据问题id  查看时间轴-->
+  <select id="findRecordMessageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_recordmessage
+    where typeId = #{id,jdbcType=INTEGER}
+    and typeNum=1
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_wenti_recordmessage
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageEntity">
+    insert into mro_anzhuangtiaoshi_wenti_recordmessage (id, typeId, operatorName, 
+      operatorTime, context, typeNum
+      )
+    values (#{id,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{operatorname,jdbcType=VARCHAR}, 
+      #{operatortime,jdbcType=TIMESTAMP}, #{context,jdbcType=VARCHAR}, #{typenum,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageEntity">
+    insert into mro_anzhuangtiaoshi_wenti_recordmessage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="typeid != null">
+        typeId,
+      </if>
+      <if test="operatorname != null">
+        operatorName,
+      </if>
+      <if test="operatortime != null">
+        operatorTime,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+      <if test="typenum != null">
+        typeNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="operatorname != null">
+        #{operatorname,jdbcType=VARCHAR},
+      </if>
+      <if test="operatortime != null">
+        #{operatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="typenum != null">
+        #{typenum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageEntity">
+    update mro_anzhuangtiaoshi_wenti_recordmessage
+    <set>
+      <if test="typeid != null">
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="operatorname != null">
+        operatorName = #{operatorname,jdbcType=VARCHAR},
+      </if>
+      <if test="operatortime != null">
+        operatorTime = #{operatortime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="typenum != null">
+        typeNum = #{typenum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageEntity">
+    update mro_anzhuangtiaoshi_wenti_recordmessage
+    set typeId = #{typeid,jdbcType=INTEGER},
+      operatorName = #{operatorname,jdbcType=VARCHAR},
+      operatorTime = #{operatortime,jdbcType=TIMESTAMP},
+      context = #{context,jdbcType=VARCHAR},
+      typeNum = #{typenum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

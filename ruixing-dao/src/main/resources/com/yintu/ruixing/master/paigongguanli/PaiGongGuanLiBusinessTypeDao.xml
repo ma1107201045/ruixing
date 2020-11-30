@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBusinessTypeDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+    <result column="businessName" jdbcType="VARCHAR" property="businessname" />
+    <result column="suoXie" jdbcType="VARCHAR" property="suoXie" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parentid, businessName,suoXie
+  </sql>
+
+
+  <!--根据业务类型  查询对应的出差任务-->
+  <select id="findBuinessById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where parentid=#{id}
+  </select>
+
+  <!--查询所有的业务类别-->
+  <select id="findAllBuiness" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where parentid=0
+  </select>
+
+  <!--根据业务类别id 查询对应的出差任务-->
+  <select id="findChuChaiById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    businessName
+    from mro_paigongguanli_businesstype
+    where parentid = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--查询所有的业务类别-->
+  <select id="findAllBusinessType"   resultMap="BaseResultMap">
+    select
+    id,  businessName ,suoXie
+    from mro_paigongguanli_businesstype
+    where parentid = 0
+  </select>
+
+  <!--根据parentid 查询对应的出差任务-->
+  <select id="findChuChaRenWu" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where parentid = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--初始化页面  或者根据出差任务名进行模糊查询-->
+  <select id="findSomeChuChaRenWu"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    <where>
+      parentid=#{id}
+      <if test="businessTypeaName!=null">
+        and
+        businessName like concat('%',#{businessTypeaName},'%')
+      </if>
+    </where>
+    group by id desc
+  </select>
+
+  <!--初始化页面  或者根据业务类别名进行模糊查询-->
+  <select id="findSomeBusinessTypea"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    <where>
+      <if test="businessTypeaName!=null">
+        businessName like concat('%',#{businessTypeaName},'%')
+      </if>
+      and parentid = 0
+    </where>
+    group by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_businesstype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--删除数据-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_businesstype
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--新增业务类别-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity">
+    insert into mro_paigongguanli_businesstype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="businessname != null">
+        businessName,
+      </if>
+      <if test="suoXie != null">
+        suoXie,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="businessname != null">
+        #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="suoXie != null">
+        #{suoXie,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id  编辑业务类型-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity">
+    update mro_paigongguanli_businesstype
+    <set>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="businessname != null">
+        businessName = #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="suoXie != null">
+        suoXie = #{suoXie,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity">
+    update mro_paigongguanli_businesstype
+    set parentid = #{parentid,jdbcType=INTEGER},
+      businessName = #{businessname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBusinessTypeEntity">
+    insert into mro_paigongguanli_businesstype (id, parentid, businessName
+      )
+    values (#{id,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementDbDao;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentSparePartsManagementDbDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementDbEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementDbService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
 import com.yintu.ruixing.common.util.ExportExcelUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuWenTiDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiService;

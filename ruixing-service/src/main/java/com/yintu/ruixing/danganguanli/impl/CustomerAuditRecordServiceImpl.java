@@ -1,6 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.CustomerAuditRecordDao;
+import com.yintu.ruixing.master.danganguanli.CustomerAuditRecordDao;
 import com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity;
 import com.yintu.ruixing.danganguanli.CustomerAuditRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

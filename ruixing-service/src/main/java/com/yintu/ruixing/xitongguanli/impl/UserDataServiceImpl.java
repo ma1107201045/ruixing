@@ -1,6 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.yintu.ruixing.xitongguanli.UserDataDao;
+import com.yintu.ruixing.master.xitongguanli.UserDataDao;
 import com.yintu.ruixing.xitongguanli.UserDataEntity;
 import com.yintu.ruixing.xitongguanli.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;

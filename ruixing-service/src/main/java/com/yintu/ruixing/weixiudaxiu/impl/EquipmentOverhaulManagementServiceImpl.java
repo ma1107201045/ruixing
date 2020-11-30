@@ -1,7 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementDao;
-import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntity;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentOverhaulManagementDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementEntityWithBLOBs;
 import com.yintu.ruixing.weixiudaxiu.EquipmentOverhaulManagementService;
 import org.springframework.beans.factory.annotation.Autowired;

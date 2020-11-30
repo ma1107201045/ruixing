@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.xitongguanli.UserDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.xitongguanli.UserEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="auth_type" jdbcType="SMALLINT" property="authType"/>
+        <result column="locked" jdbcType="SMALLINT" property="locked"/>
+        <result column="enableds" jdbcType="SMALLINT" property="enableds"/>
+        <result column="is_customer" jdbcType="SMALLINT" property="isCustomer"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, username, password, true_name,
+    phone, email, auth_type, locked, enableds, is_customer
+    </sql>
+    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tb_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tb_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample">
+        delete from tb_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into tb_user (id, create_by, create_time,
+                             modified_by, modified_time, username,
+                             password, true_name, phone,
+                             email, auth_type, locked,
+                             enableds, is_customer)
+        values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
+                #{password,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+                #{email,jdbcType=VARCHAR}, #{authType,jdbcType=SMALLINT}, #{locked,jdbcType=SMALLINT},
+                #{enableds,jdbcType=SMALLINT}, #{isCustomer,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into tb_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="trueName != null">
+                true_name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="authType != null">
+                auth_type,
+            </if>
+            <if test="locked != null">
+                locked,
+            </if>
+            <if test="enableds != null">
+                enableds,
+            </if>
+            <if test="isCustomer != null">
+                is_customer,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="trueName != null">
+                #{trueName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="authType != null">
+                #{authType,jdbcType=SMALLINT},
+            </if>
+            <if test="locked != null">
+                #{locked,jdbcType=SMALLINT},
+            </if>
+            <if test="enableds != null">
+                #{enableds,jdbcType=SMALLINT},
+            </if>
+            <if test="isCustomer != null">
+                #{isCustomer,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
+            resultType="java.lang.Long">
+        select count(*) from tb_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tb_user
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifiedBy != null">
+                modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifiedTime != null">
+                modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.username != null">
+                username = #{record.username,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.trueName != null">
+                true_name = #{record.trueName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.phone != null">
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.email != null">
+                email = #{record.email,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authType != null">
+                auth_type = #{record.authType,jdbcType=SMALLINT},
+            </if>
+            <if test="record.locked != null">
+                locked = #{record.locked,jdbcType=SMALLINT},
+            </if>
+            <if test="record.enableds != null">
+                enableds = #{record.enableds,jdbcType=SMALLINT},
+            </if>
+            <if test="record.isCustomer != null">
+                is_customer = #{record.isCustomer,jdbcType=SMALLINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tb_user
+        set id = #{record.id,jdbcType=BIGINT},
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+        modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
+        username = #{record.username,jdbcType=VARCHAR},
+        password = #{record.password,jdbcType=VARCHAR},
+        true_name = #{record.trueName,jdbcType=VARCHAR},
+        phone = #{record.phone,jdbcType=VARCHAR},
+        email = #{record.email,jdbcType=VARCHAR},
+        auth_type = #{record.authType,jdbcType=SMALLINT},
+        locked = #{record.locked,jdbcType=SMALLINT},
+        enableds = #{record.enableds,jdbcType=SMALLINT},
+        is_customer = #{record.isCustomer,jdbcType=SMALLINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
+        update tb_user
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="trueName != null">
+                true_name = #{trueName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="authType != null">
+                auth_type = #{authType,jdbcType=SMALLINT},
+            </if>
+            <if test="locked != null">
+                locked = #{locked,jdbcType=SMALLINT},
+            </if>
+            <if test="enableds != null">
+                enableds = #{enableds,jdbcType=SMALLINT},
+            </if>
+            <if test="isCustomer != null">
+                is_customer = #{isCustomer,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.xitongguanli.UserEntity">
+        update tb_user
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            username      = #{username,jdbcType=VARCHAR},
+            password      = #{password,jdbcType=VARCHAR},
+            true_name     = #{trueName,jdbcType=VARCHAR},
+            phone         = #{phone,jdbcType=VARCHAR},
+            email         = #{email,jdbcType=VARCHAR},
+            auth_type     = #{authType,jdbcType=SMALLINT},
+            locked        = #{locked,jdbcType=SMALLINT},
+            enableds      = #{enableds,jdbcType=SMALLINT},
+            is_customer   = #{isCustomer,jdbcType=SMALLINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="findid" resultType="java.lang.Integer">
+        select id
+        from tb_user
+        where true_name = #{truename}
+    </select>
+
+    <select id="findId" resultType="java.lang.Long">
+        select id
+        from tb_user
+        where true_name like concat('%'.#{username}, '%')
+    </select>
+
+
+    <resultMap id="BasePermissionResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="is_menu" jdbcType="SMALLINT" property="isMenu"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <select id="selectPermission" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_permission p
+        where p.parent_id = #{parentId,jdbcType=BIGINT}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+    </select>
+
+    <select id="selectPermissionById" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_user u
+                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
+                 INNER JOIN tb_role r ON r.id = ur.role_id
+                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
+                 INNER JOIN tb_permission p ON p.id = pr.permission_id
+        where u.id = #{id,jdbcType=BIGINT}
+          and p.parent_id = #{parentId,jdbcType=BIGINT}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+        GROUP BY p.id
+    </select>
+
+    <select id="selectAuthority" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_permission p
+        where p.description = #{description,jdbcType=VARCHAR}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+        GROUP BY p.id
+    </select>
+
+    <select id="selectAuthorityById" resultMap="BasePermissionResultMap">
+        SELECT p.*
+        FROM tb_user u
+                 INNER JOIN tb_user_role ur ON u.id = ur.user_id
+                 INNER JOIN tb_role r ON r.id = ur.role_id
+                 INNER JOIN tb_permission_role pr ON r.id = pr.role_id
+                 INNER JOIN tb_permission p ON p.id = pr.permission_id
+        where u.id = #{id,jdbcType=BIGINT}
+          and p.description = #{description,jdbcType=VARCHAR}
+          and p.is_menu = #{isMenu,jdbcType=SMALLINT}
+        GROUP BY p.id
+    </select>
+</mapper>

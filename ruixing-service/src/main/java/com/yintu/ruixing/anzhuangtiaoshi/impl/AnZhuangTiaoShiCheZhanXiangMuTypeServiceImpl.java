@@ -1,6 +1,6 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

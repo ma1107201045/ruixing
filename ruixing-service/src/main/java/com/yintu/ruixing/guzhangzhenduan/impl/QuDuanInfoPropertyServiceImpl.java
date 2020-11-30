@@ -1,6 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoPropertyDao;
+import com.yintu.ruixing.master.guzhangzhenduan.QuDuanInfoPropertyDao;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoPropertyEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.LineTechnologyStatusStationDeviceDao;
+import com.yintu.ruixing.master.danganguanli.LineTechnologyStatusStationDeviceDao;
 import com.yintu.ruixing.danganguanli.LineTechnologyStatusStationDeviceEntity;
 import com.yintu.ruixing.danganguanli.LineTechnologyStatusStationDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;

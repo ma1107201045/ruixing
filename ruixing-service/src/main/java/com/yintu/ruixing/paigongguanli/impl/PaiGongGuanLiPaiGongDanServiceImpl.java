@@ -1,15 +1,15 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
-import com.yintu.ruixing.common.MessageDao;
+import com.yintu.ruixing.master.common.MessageDao;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.master.paigongguanli.*;
 import com.yintu.ruixing.paigongguanli.*;
-import com.yintu.ruixing.xitongguanli.UserDao;
+import com.yintu.ruixing.master.xitongguanli.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.InetAddress;
 import java.util.*;
 
 /**

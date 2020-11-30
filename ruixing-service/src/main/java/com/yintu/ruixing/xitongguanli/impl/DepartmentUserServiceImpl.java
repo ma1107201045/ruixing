@@ -1,6 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.yintu.ruixing.xitongguanli.DepartmentUserDao;
+import com.yintu.ruixing.master.xitongguanli.DepartmentUserDao;
 import com.yintu.ruixing.xitongguanli.DepartmentUserEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentUserEntityExample;
 import com.yintu.ruixing.xitongguanli.DepartmentUserService;

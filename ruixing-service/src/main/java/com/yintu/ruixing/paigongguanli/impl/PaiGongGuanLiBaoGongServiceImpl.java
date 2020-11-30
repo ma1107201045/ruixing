@@ -1,5 +1,8 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBaoGongDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiRiQinDao;
 import com.yintu.ruixing.paigongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

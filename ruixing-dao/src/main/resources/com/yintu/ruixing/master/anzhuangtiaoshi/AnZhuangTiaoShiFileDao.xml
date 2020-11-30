@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiFileDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="xdid" jdbcType="INTEGER" property="xdid"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        <result column="createName" jdbcType="VARCHAR" property="createName"/>
+        <result column="updateName" jdbcType="VARCHAR" property="updateName"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="file_type" jdbcType="INTEGER" property="fileType"/>
+        <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
+        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="fabu_type" jdbcType="INTEGER" property="fabuType"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="leibie" jdbcType="INTEGER" property="leibie"/>
+        <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, xdid, xd_name, createtime, file_type, file_name, file_path, fabu_type, yuliu,
+    uid,createName,updateName,remarks,updateTime,auditorState,leibie
+  </sql>
+
+
+    <!--根据id  查询对应的文件数据-->
+    <select id="findFileById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+        cf.id = #{id}
+  </select>
+
+    <!--根据文件名 查询对应的文件  不要审核的-->
+    <select id="findFileByNmae" resultMap="BaseResultMap">
+        SELECT
+        cf.id,
+        xdid,
+        xd_name,
+        cf.createtime,
+        file_type,
+        file_name,
+        file_path,
+        fabu_type,
+        yuliu,
+        uid,
+        remarks,
+        auditorState,
+        cfa.auditor_id
+        FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+        <where>
+            cf.xdid = #{xdid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+            AND(cf.fabu_type = 2 )
+            and cf.leibie = 1
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype} and cf.leibie = 1)
+        </where>
+        order by id desc
+    </select>
+    <!--select
+        <include refid="Base_Column_List" />
+        from mro_anzhuangtiaoshi_file
+        <where>
+          xdid=#{xdid}
+          <if test="filetype !=null">
+            and
+            file_type=#{filetype}
+          </if>
+          <if test="filename !=null">
+            and
+            file_name like concat ('%',#{filename},'%')
+          </if>
+        </where>-->
+    <!--根据文件名 查询对应的文件  不要审核的-->
+    <select id="findFileByNmaee" resultMap="BaseResultMap">
+        SELECT
+        cf.id,
+        xdid,
+        xd_name,
+        cf.createtime,
+        file_type,
+        file_name,
+        file_path,
+        fabu_type,
+        yuliu,
+        uid,
+        remarks,
+        auditorState,
+        cfa.auditor_id
+        FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+        <where>
+            cf.xdid = #{xdid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+            and cfa.objectType=2
+            and cf.leibie = 1
+            AND(cf.fabu_type = 2 )
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype} and cf.leibie = 1)
+        </where>
+        order by id desc
+    </select>
+
+
+    <!--根据文件id  查询对应的文件-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_file
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据线段id  查询所有的输出文件-->
+    <select id="findShuChuFileByXid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_file
+        where xdid = #{id,jdbcType=INTEGER}
+        and file_type=2
+    </select>
+
+
+    <!--根据线段id  查询所有的输出文件  不需要审核的-->
+    <select id="findShuChuFile" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+        cf.xdid = #{id}
+        AND cf.file_type = 2
+        and cf.leibie = 1
+        AND ( cf.fabu_type = 2 )
+        OR (cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2 and cf.leibie = 1)
+    ORDER BY cf.id DESC
+  </select>
+
+    <!--根据线段id  查询所有的输出文件  需要审核的-->
+    <select id="findShuChuFilee" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     SELECT
+            cf.id,
+            xdid,
+            xd_name,
+            cf.createtime,
+            file_type,
+            file_name,
+            file_path,
+            fabu_type,
+            yuliu,
+            uid,
+            remarks,
+            auditorState,
+            cfa.auditor_id
+		FROM
+			mro_anzhuangtiaoshi_file cf
+			LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+		WHERE
+			cf.xdid = #{id}
+			AND cf.file_type = 2
+			and cf.leibie = 1
+			AND cfa.objectType = 2
+			AND ( cf.fabu_type = 2 )
+			OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2 and cf.leibie = 1)
+		ORDER BY
+			cf.id DESC
+  </select>
+
+    <!-- 初始化输入文件 不需要审核的-->
+    <select id="findShuRuFile" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+    mro_anzhuangtiaoshi_file cf
+    LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+    cf.xdid = #{id}
+    AND cf.file_type = 1
+    and cf.leibie = 1
+    AND ( cf.fabu_type = 2 )
+    OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1 and cf.leibie = 1)
+    ORDER BY
+    cf.id DESC
+  </select>
+
+    <!-- 初始化输入文件  要审核的-->
+    <select id="findShuRuFilee" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+    mro_anzhuangtiaoshi_file cf
+    LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+    cf.xdid = #{id}
+    AND cf.file_type = 1
+    and cf.leibie = 1
+    AND cfa.objectType = 2
+    AND ( cf.fabu_type = 2 )
+    OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1 and cf.leibie = 1 )
+    ORDER BY
+    cf.id DESC
+  </select>
+
+    <!--现场作业管理-->
+    <!--根据文件名 查询对应的文件  不要审核的-->
+    <select id="findsomeFileByNmae" resultMap="BaseResultMap">
+        SELECT
+        cf.id,
+        xdid,
+        xd_name,
+        cf.createtime,
+        file_type,
+        file_name,
+        file_path,
+        fabu_type,
+        yuliu,
+        uid,
+        remarks,
+        auditorState,
+        cfa.auditor_id
+        FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+        <where>
+            cf.xdid = #{xdid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+            AND(cf.fabu_type = 2 )
+            and cf.leibie = 2
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype} and cf.leibie = 2)
+        </where>
+        order by id desc
+    </select>
+    <!--现场作业管理-->
+    <!--根据文件名 查询对应的文件  不要审核的-->
+    <select id="findsomeFileByNmaee" resultMap="BaseResultMap">
+        SELECT
+        cf.id,
+        xdid,
+        xd_name,
+        cf.createtime,
+        file_type,
+        file_name,
+        file_path,
+        fabu_type,
+        yuliu,
+        uid,
+        remarks,
+        auditorState,
+        cfa.auditor_id
+        FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+        <where>
+            cf.xdid = #{xdid}
+            <if test="filetype!=null">
+                and file_type=#{filetype}
+            </if>
+            <if test="filename!=null">
+                and file_name like concat('%',#{filename},'%')
+            </if>
+            and cfa.objectType=2
+            and cf.leibie = 2
+            AND(cf.fabu_type = 2 )
+            OR ( cf.uid = #{uid} AND cf.fabu_type = 1 and file_type=#{filetype} and cf.leibie = 2)
+        </where>
+        order by id desc
+    </select>
+
+
+    <!--现场作业管理-->
+    <!--根据线段id  查询所有的输出文件  不需要审核的-->
+    <select id="findShuChuFileByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+        mro_anzhuangtiaoshi_file cf
+        LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+        cf.xdid = #{id}
+        AND cf.file_type = 2
+        and cf.leibie = 2
+        AND ( cf.fabu_type = 2 )
+        OR (cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2 and cf.leibie = 2)
+    ORDER BY cf.id DESC
+  </select>
+
+    <!--现场作业管理-->
+    <!--根据线段id  查询所有的输出文件  需要审核的-->
+    <select id="findShuChuFileByidd" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     SELECT
+            cf.id,
+            xdid,
+            xd_name,
+            cf.createtime,
+            file_type,
+            file_name,
+            file_path,
+            fabu_type,
+            yuliu,
+            uid,
+            remarks,
+            auditorState,
+            cfa.auditor_id
+		FROM
+			mro_anzhuangtiaoshi_file cf
+			LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+		WHERE
+			cf.xdid = #{id}
+			AND cf.file_type = 2
+			and cf.leibie = 2
+			AND cfa.objectType = 2
+			AND ( cf.fabu_type = 2 )
+			OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 2 and cf.leibie = 2)
+		ORDER BY
+			cf.id DESC
+  </select>
+
+
+
+    <!--现场作业管理-->
+    <!-- 初始化输入文件 不需要审核的-->
+    <select id="findShuRuFileByid" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+    mro_anzhuangtiaoshi_file cf
+    LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+    cf.xdid = #{id}
+    AND cf.file_type = 1
+    and cf.leibie = 2
+    AND ( cf.fabu_type = 2 )
+    OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1 and cf.leibie = 2)
+    ORDER BY
+    cf.id DESC
+  </select>
+    <!--现场作业管理-->
+    <!-- 初始化输入文件  要审核的-->
+    <select id="findShuRuFileByidd" resultMap="BaseResultMap">
+    SELECT
+    cf.id,
+    xdid,
+    xd_name,
+    cf.createtime,
+    file_type,
+    file_name,
+    file_path,
+    fabu_type,
+    yuliu,
+    uid,
+    remarks,
+    auditorState,
+    cfa.auditor_id
+    FROM
+    mro_anzhuangtiaoshi_file cf
+    LEFT JOIN mro_anzhuangtiaoshi_object_auditor cfa ON cf.id = cfa.object_id
+    WHERE
+    cf.xdid = #{id}
+    AND cf.file_type = 1
+    and cf.leibie = 2
+    AND cfa.objectType = 2
+    AND ( cf.fabu_type = 2 )
+    OR ( cf.uid = #{uid} AND cf.fabu_type = 1 AND cf.file_type = 1 and cf.leibie = 2 )
+    ORDER BY
+    cf.id DESC
+  </select>
+
+
+    <!--根据线段id  查询所有的输入文件-->
+    <select id="findShuRuFileByXid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_file
+        where xdid = #{id,jdbcType=INTEGER}
+        and file_type=1
+    </select>
+
+    <!--根据文件id  批量删除 或者单个删除文件-->
+    <delete id="deletFileByIds" parameterType="java.lang.Integer">
+        delete from mro_anzhuangtiaoshi_file
+        where id
+        in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!--在线段下新增文件-->
+    <insert id="addFile" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_anzhuangtiaoshi_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="xdid != null">
+                xdid,
+            </if>
+            <if test="xdName != null">
+                xd_name,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="fileType != null">
+                file_type,
+            </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="createName != null">
+                createName,
+            </if>
+            <if test="updateName != null">
+                updateName,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="fabuType != null">
+                fabu_type,
+            </if>
+            <if test="auditorState != null">
+                auditorState,
+            </if>
+            <if test="leibie != null">
+                leibie,
+            </if>
+            <if test="yuliu != null">
+                yuliu,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="xdid != null">
+                #{xdid,jdbcType=INTEGER},
+            </if>
+            <if test="xdName != null">
+                #{xdName,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="createName != null">
+                #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateName != null">
+                #{updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fabuType != null">
+                #{fabuType,jdbcType=INTEGER},
+            </if>
+            <if test="auditorState != null">
+                #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="leibie != null">
+                #{leibie,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu != null">
+                #{yuliu,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--根据文件id  编辑对应的文件-->
+    <update id="editFileById" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity">
+        update mro_anzhuangtiaoshi_file
+        <set>
+            <if test="xdid != null">
+                xdid = #{xdid,jdbcType=INTEGER},
+            </if>
+            <if test="xdName != null">
+                xd_name = #{xdName,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fileType != null">
+                file_type = #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="createName != null">
+                createName = #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateName != null">
+                updateName = #{updateName,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                file_name = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                file_path = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fabuType != null">
+                fabu_type = #{fabuType,jdbcType=INTEGER},
+            </if>
+            <if test="auditorState != null">
+                auditorState = #{auditorState,jdbcType=INTEGER},
+            </if>
+            <if test="leibie != null">
+                leibie = #{leibie,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu != null">
+                yuliu = #{yuliu,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity">
+    update mro_anzhuangtiaoshi_file
+    set xdid = #{xdid,jdbcType=INTEGER},
+      xd_name = #{xdName,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      file_type = #{fileType,jdbcType=INTEGER},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      fabu_type = #{fabuType,jdbcType=INTEGER},
+      yuliu = #{yuliu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiFileEntity">
+    insert into mro_anzhuangtiaoshi_file (id, xdid, xd_name,
+      createtime, file_type, file_name,
+      file_path, fabu_type, yuliu
+      )
+    values (#{id,jdbcType=INTEGER}, #{xdid,jdbcType=INTEGER}, #{xdName,jdbcType=VARCHAR},
+      #{createtime,jdbcType=TIMESTAMP}, #{fileType,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR},
+      #{filePath,jdbcType=VARCHAR}, #{fabuType,jdbcType=INTEGER}, #{yuliu,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

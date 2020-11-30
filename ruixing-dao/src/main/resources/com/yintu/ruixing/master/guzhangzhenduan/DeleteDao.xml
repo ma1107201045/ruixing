@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.guzhangzhenduan.DeleteDao">
+	<!--<resultMap type="com.yintu.ruixing.entity.DataStatsEntityEntity" id="dataStatEntities">
+		<result property="tljName" column="tlj_name"/>
+		<result property="dwdName" column="dwd_name"/>
+		<result property="dwdMiaoShu" column="dwd_miaoshu"/>
+		<result property="xdName" column="xd_name"/>
+		<result property="xdMiaoShu" column="xd_miaoshu"/>
+		<result property="cid" column="cid"/>
+		<result property="tid" column="tid"/>
+		<result property="did" column="did"/>
+		<result property="xid" column="xid"/>
+		<result property="czName" column="cz_name"/>
+		<result property="czId" column="cz_id"/>
+		<result property="xdId" column="xd_id"/>
+		<result property="czNameJianCheng" column="cz_name_jiancheng"/>
+		<result property="czIp" column="cz_ip"/>
+		<result property="czType" column="cz_type"/>
+		<result property="czStutrs" column="cz_stutrs"/>
+		<result property="czOpenStutrs" column="cz_open_stutrs"/>
+		<result property="czLastTime" column="cz_lasttime"/>
+		<result property="xdCzId" column="xd_cz_id"/>
+		<result property="czMiaoShu" column="cz_miaoshu"/>
+		<result property="czDuanTou" column="cz_duantou"/>
+	</resultMap>-->
+    <!--<select id="tljPage" resultType="com.yintu.ruixing.entity.DataStatsEntityEntity" resultMap="dataStatEntities">
+        SELECT
+			tlj.tlj_name,
+			dwd.dwd_name,
+			tlj.tlj_miaoshu
+		FROM
+			mro_dianwuduan dwd,
+			mro_tieluju tlj
+		WHERE
+			tlj.tid = dwd.tlj_dwd_id
+    </select>
+
+	<select id="dwdPage" resultType="com.yintu.ruixing.entity.DataStatsEntityEntity" resultMap="dataStatEntities">
+        SELECT
+			tlj.tlj_name,
+			dwd.dwd_name,
+			xd.xd_name,
+			dwd.dwd_miaoshu
+		FROM
+			mro_dianwuduan dwd,
+			mro_tieluju tlj,
+			mro_xianduan xd
+		WHERE
+			tlj.tid = dwd.tlj_dwd_id
+			AND dwd.did = xd.dwd_xd_id
+    </select>
+
+	<select id="czPage" resultType="com.yintu.ruixing.entity.DataStatsEntityEntity" resultMap="dataStatEntities">
+        SELECT
+			tlj.tlj_name,
+			dwd.dwd_name,
+			xd.xd_name,
+			cz.cz_name,
+			cz.cz_miaoshu
+		FROM
+			mro_dianwuduan dwd,
+			mro_tieluju tlj,
+			mro_chezhan cz,
+			mro_xianduan xd
+		WHERE
+			tlj.tid = dwd.tlj_dwd_id
+			AND dwd.did = xd.dwd_xd_id
+			AND xd.xid = cz.xd_cz_id
+
+    </select>
+
+	<select id="xdPage" resultType="com.yintu.ruixing.entity.DataStatsEntityEntity" resultMap="dataStatEntities">
+        SELECT
+			tlj.tlj_name,
+			dwd.dwd_name,
+			xd.xd_name,
+			cz.cz_name,
+			xd.xd_miaoshu
+		FROM
+			mro_dianwuduan dwd,
+			mro_tieluju tlj,
+			mro_chezhan cz,
+			mro_xianduan xd
+		WHERE
+			tlj.tid = dwd.tlj_dwd_id
+			AND dwd.did = xd.dwd_xd_id
+			AND xd.xid = cz.xd_cz_id
+
+    </select>-->
+	<!--根据id批量删除铁路局-->
+	<delete id="delTieLuJU" parameterType="java.util.List">
+		delete from mro_tieluju
+		where tid
+		in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!--根据id批量删除电务段-->
+	<delete id="delDianDuDuan" parameterType="java.util.List">
+		delete from mro_dianwuduan
+		where did
+		in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!--根据id批量删除线段-->
+	<delete id="delXianDuan" parameterType="java.util.List">
+		delete from mro_xianduan
+		where xid
+		in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+	<!--根据id批量删除车站-->
+	<delete id="delCheZhan" parameterType="java.util.List">
+		delete from mro_chezhan
+		where cid
+		in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

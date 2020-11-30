@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="xdid" jdbcType="INTEGER" property="xdid" />
+    <result column="xd_name" jdbcType="VARCHAR" property="xdName" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="file_type" jdbcType="INTEGER" property="fileType" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="fabu_type" jdbcType="INTEGER" property="fabuType" />
+    <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, xdid, xd_name, createtime, file_type, file_name, file_path, fabu_type, yuliu
+  </sql>
+
+  <!--根据文件id  批量删除 或者单个删除文件-->
+  <delete id="deletFileByIds" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_works_file
+    where id
+    in
+    <foreach collection="array" item="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </delete>
+
+  <!--根据文件名 查询对应的文件-->
+  <select id="findFileByNmae" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_works_file
+    <where>
+      xdid=#{xdid}
+      <if test="filetype !=null">
+        and
+        file_type=#{filetype}
+      </if>
+      <if test="filename !=null">
+        and
+        file_name like concat ('%',#{filename},'%')
+      </if>
+    </where>
+  </select>
+
+  <!--根据 线段id  查询对应的所有的输入文件-->
+  <select id="findShuRuFileByXid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_works_file
+    where xdid = #{id,jdbcType=INTEGER}
+    AND file_type =1
+  </select>
+
+  <!--根据 线段id  查询对应的所有的输出文件-->
+  <select id="findShuChuFileByXid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_works_file
+    where xdid = #{id,jdbcType=INTEGER}
+    AND file_type =2
+  </select>
+
+  <!--根据文件id 查询对应的文件数据 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_works_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_works_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!--新增文件-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity">
+    insert into mro_anzhuangtiaoshi_works_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="xdid != null">
+        xdid,
+      </if>
+      <if test="xdName != null">
+        xd_name,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="fabuType != null">
+        fabu_type,
+      </if>
+      <if test="yuliu != null">
+        yuliu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        #{xdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdName != null">
+        #{xdName,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fabuType != null">
+        #{fabuType,jdbcType=INTEGER},
+      </if>
+      <if test="yuliu != null">
+        #{yuliu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据线段id  编辑对应的文件数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity">
+    update mro_anzhuangtiaoshi_works_file
+    <set>
+      <if test="xdid != null">
+        xdid = #{xdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdName != null">
+        xd_name = #{xdName,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fabuType != null">
+        fabu_type = #{fabuType,jdbcType=INTEGER},
+      </if>
+      <if test="yuliu != null">
+        yuliu = #{yuliu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity">
+    update mro_anzhuangtiaoshi_works_file
+    set xdid = #{xdid,jdbcType=INTEGER},
+      xd_name = #{xdName,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      file_type = #{fileType,jdbcType=INTEGER},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      fabu_type = #{fabuType,jdbcType=INTEGER},
+      yuliu = #{yuliu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity">
+    insert into mro_anzhuangtiaoshi_works_file (id, xdid, xd_name,
+      createtime, file_type, file_name,
+      file_path, fabu_type, yuliu
+      )
+    values (#{id,jdbcType=INTEGER}, #{xdid,jdbcType=INTEGER}, #{xdName,jdbcType=VARCHAR},
+      #{createtime,jdbcType=TIMESTAMP}, #{fileType,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR},
+      #{filePath,jdbcType=VARCHAR}, #{fabuType,jdbcType=INTEGER}, #{yuliu,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

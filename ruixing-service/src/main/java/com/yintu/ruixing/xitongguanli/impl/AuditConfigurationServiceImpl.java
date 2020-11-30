@@ -1,7 +1,7 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.yintu.ruixing.common.enumobject.EnumFlag;
+import com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

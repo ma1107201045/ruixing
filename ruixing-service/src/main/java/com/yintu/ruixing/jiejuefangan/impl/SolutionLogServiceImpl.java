@@ -1,6 +1,6 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
-import com.yintu.ruixing.jiejuefangan.SolutionLogDao;
+import com.yintu.ruixing.master.jiejuefangan.SolutionLogDao;
 import com.yintu.ruixing.jiejuefangan.SolutionLogEntity;
 import com.yintu.ruixing.jiejuefangan.SolutionLogService;
 import org.springframework.beans.factory.annotation.Autowired;

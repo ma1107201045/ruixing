@@ -1,6 +1,7 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentNumberDao;
 import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
-import com.yintu.ruixing.weixiudaxiu.EquipmentFieldFaultInvestigationManagementDao;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentFieldFaultInvestigationManagementDao;
 import com.yintu.ruixing.weixiudaxiu.EquipmentFieldFaultInvestigationManagementEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentFieldFaultInvestigationManagementService;
 import org.springframework.beans.factory.annotation.Autowired;

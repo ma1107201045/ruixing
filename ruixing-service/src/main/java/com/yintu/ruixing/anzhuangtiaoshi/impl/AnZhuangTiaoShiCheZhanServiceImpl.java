@@ -1,7 +1,7 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
 import com.yintu.ruixing.common.util.ExportExcelUtil;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

@@ -1,6 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentDao;
+import com.yintu.ruixing.master.danganguanli.CustomerCustomerDepartmentDao;
 import com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentEntity;
 import com.yintu.ruixing.danganguanli.CustomerCustomerDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;

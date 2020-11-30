@@ -2,16 +2,16 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
+import com.yintu.ruixing.master.guzhangzhenduan.*;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

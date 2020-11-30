@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import com.yintu.ruixing.master.xitongguanli.AuditConfigurationUserDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

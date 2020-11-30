@@ -11,12 +11,11 @@ import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoPropertyService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
-import com.yintu.ruixing.jiejuefangan.BiddingFileEntity;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 /**

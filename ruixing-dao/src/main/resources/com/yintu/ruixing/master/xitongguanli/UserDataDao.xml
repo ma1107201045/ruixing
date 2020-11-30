@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.xitongguanli.UserDataDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.xitongguanli.UserDataEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="t_id" jdbcType="BIGINT" property="tId"/>
+        <result column="d_id" jdbcType="BIGINT" property="dId"/>
+        <result column="x_id" jdbcType="BIGINT" property="xId"/>
+        <result column="c_id" jdbcType="BIGINT" property="cId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, user_id, t_id, d_id, x_id,c_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_user_data
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from mro_user_data
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.UserDataEntity">
+        insert into mro_user_data (id, create_by, create_time,
+                                   modified_by, modified_time, user_id,
+                                   t_id, d_id, x_id, c_id)
+        values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
+                #{tId,jdbcType=BIGINT}, #{dId,jdbcType=BIGINT}, #{xId,jdbcType=BIGINT}, #{cId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.UserDataEntity">
+        insert into mro_user_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="tId != null">
+                t_id,
+            </if>
+            <if test="dId != null">
+                d_id,
+            </if>
+            <if test="xId != null">
+                x_id,
+            </if>
+            <if test="cId != null">
+                c_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="tId != null">
+                #{tId,jdbcType=BIGINT},
+            </if>
+            <if test="dId != null">
+                #{dId,jdbcType=BIGINT},
+            </if>
+            <if test="xId != null">
+                #{xId,jdbcType=BIGINT},
+            </if>
+            <if test="cId != null">
+                #{cId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.xitongguanli.UserDataEntity">
+        update mro_user_data
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="tId != null">
+                t_id = #{tId,jdbcType=BIGINT},
+            </if>
+            <if test="dId != null">
+                d_id = #{dId,jdbcType=BIGINT},
+            </if>
+            <if test="xId != null">
+                x_id = #{xId,jdbcType=BIGINT},
+            </if>
+            <if test="cId != null">
+                c_id = #{cId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.xitongguanli.UserDataEntity">
+        update mro_user_data
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            user_id       = #{userId,jdbcType=BIGINT},
+            t_id          = #{tId,jdbcType=BIGINT},
+            d_id          = #{dId,jdbcType=BIGINT},
+            x_id          = #{xId,jdbcType=BIGINT},
+            c_id          = #{cId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteByUserId">
+        delete
+        from mro_user_data
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+        from mro_user_data
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

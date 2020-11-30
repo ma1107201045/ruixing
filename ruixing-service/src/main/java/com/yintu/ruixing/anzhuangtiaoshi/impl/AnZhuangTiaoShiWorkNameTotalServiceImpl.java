@@ -3,6 +3,7 @@ package com.yintu.ruixing.anzhuangtiaoshi.impl;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.master.anzhuangtiaoshi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

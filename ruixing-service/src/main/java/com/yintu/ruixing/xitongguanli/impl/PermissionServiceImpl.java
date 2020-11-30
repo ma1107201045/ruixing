@@ -2,11 +2,10 @@ package com.yintu.ruixing.xitongguanli.impl;
 
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.master.xitongguanli.PermissionDao;
 import com.yintu.ruixing.xitongguanli.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;

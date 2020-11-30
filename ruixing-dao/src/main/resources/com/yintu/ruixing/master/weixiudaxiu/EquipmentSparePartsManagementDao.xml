@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentSparePartsManagementDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="material_number" jdbcType="VARCHAR" property="materialNumber"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="inventory_amount" jdbcType="INTEGER" property="inventoryAmount"/>
+        <result column="threshold_amount" jdbcType="INTEGER" property="thresholdAmount"/>
+        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="district_id" jdbcType="INTEGER" property="districtId"/>
+        <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="contact_person" jdbcType="VARCHAR" property="contactPerson"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time,material_number, equipment_name, inventory_amount,
+    threshold_amount, province_id, city_id, district_id, detailed_address, contact_person, 
+    contact_phone
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_equipment_spare_parts_management
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_equipment_spare_parts_management
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_equipment_spare_parts_management (id, create_by, create_time,
+                                                          modified_by, modified_time, material_number, equipment_name,
+                                                          inventory_amount, threshold_amount, province_id,
+                                                          city_id, district_id, detailed_address,
+                                                          contact_person, contact_phone)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{materialNumber,jdbcType=VARCHAR},
+                #{equipmentName,jdbcType=VARCHAR}, #{inventoryAmount,jdbcType=INTEGER},
+                #{thresholdAmount,jdbcType=INTEGER},
+                #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER},
+                #{detailedAddress,jdbcType=VARCHAR}, #{contactPerson,jdbcType=VARCHAR},
+                #{contactPhone,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mro_equipment_spare_parts_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="materialNumber != null">
+                material_number,
+            </if>
+            <if test="equipmentName != null">
+                equipment_name,
+            </if>
+            <if test="inventoryAmount != null">
+                inventory_amount,
+            </if>
+            <if test="thresholdAmount != null">
+                threshold_amount,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="districtId != null">
+                district_id,
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address,
+            </if>
+            <if test="contactPerson != null">
+                contact_person,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="materialNumber != null">
+                #{materialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null">
+                #{equipmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="inventoryAmount != null">
+                #{inventoryAmount,jdbcType=INTEGER},
+            </if>
+            <if test="thresholdAmount != null">
+                #{thresholdAmount,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="districtId != null">
+                #{districtId,jdbcType=INTEGER},
+            </if>
+            <if test="detailedAddress != null">
+                #{detailedAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPerson != null">
+                #{contactPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity">
+        update mro_equipment_spare_parts_management
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="materialNumber != null">
+                material_number= #{materialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentName != null">
+                equipment_name = #{equipmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="inventoryAmount != null">
+                inventory_amount = #{inventoryAmount,jdbcType=INTEGER},
+            </if>
+            <if test="thresholdAmount != null">
+                threshold_amount = #{thresholdAmount,jdbcType=INTEGER},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="districtId != null">
+                district_id = #{districtId,jdbcType=INTEGER},
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPerson != null">
+                contact_person = #{contactPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity">
+        update mro_equipment_spare_parts_management
+        set create_by        = #{createBy,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            modified_by      = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
+            material_number  = #{materialNumber,jdbcType=VARCHAR},
+            equipment_name   = #{equipmentName,jdbcType=VARCHAR},
+            inventory_amount = #{inventoryAmount,jdbcType=INTEGER},
+            threshold_amount = #{thresholdAmount,jdbcType=INTEGER},
+            province_id      = #{provinceId,jdbcType=INTEGER},
+            city_id          = #{cityId,jdbcType=INTEGER},
+            district_id      = #{districtId,jdbcType=INTEGER},
+            detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            contact_person   = #{contactPerson,jdbcType=VARCHAR},
+            contact_phone    = #{contactPhone,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentSparePartsManagementEntity">
+        <id column="espm_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="material_number" jdbcType="VARCHAR" property="materialNumber"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="inventory_amount" jdbcType="INTEGER" property="inventoryAmount"/>
+        <result column="threshold_amount" jdbcType="INTEGER" property="thresholdAmount"/>
+        <result column="province_id" jdbcType="INTEGER" property="provinceId"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="district_id" jdbcType="INTEGER" property="districtId"/>
+        <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
+        <result column="contact_person" jdbcType="VARCHAR" property="contactPerson"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <association column="province_id" property="provinceEntity">
+            <id column="p_id" jdbcType="INTEGER" property="id"/>
+            <result column="p_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="city_id" property="cityEntity">
+            <id column="c_id" jdbcType="INTEGER" property="id"/>
+            <result column="c_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association column="district_id" property="districtEntity">
+            <id column="d_id" jdbcType="INTEGER" property="id"/>
+            <result column="d_name" jdbcType="VARCHAR" property="name"/>
+        </association>
+    </resultMap>
+    <sql id="Much_Column_List">
+        espm.id as espm_id, create_by, create_time, modified_by, modified_time,material_number, equipment_name, inventory_amount,threshold_amount, province_id, city_id, district_id, detailed_address, contact_person, contact_phone,
+        p.id as p_id,p.name as p_name,
+        c.id as c_id,c.name as c_name,
+        d.id as d_id,d.name as d_name
+    </sql>
+    <sql id="Much_Table_List">
+        mro_equipment_spare_parts_management espm
+        inner join mro_district p on espm.province_id = p.id
+        inner join mro_district c on espm.city_id = c.id
+        inner join mro_district d on espm.district_id = d.id
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="ids != null">
+                and espm.id in
+                <foreach collection="ids" open="(" close=")" index="index" item="id" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <if test="materialNumber != null">
+                and espm.material_number like concat('%',#{materialNumber,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="equipmentName != null">
+                and espm.equipment_name like concat('%',#{equipmentName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </sql>
+    <select id="selectByCondition" resultMap="MuchResultMap">
+        select
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
+    </select>
+</mapper>

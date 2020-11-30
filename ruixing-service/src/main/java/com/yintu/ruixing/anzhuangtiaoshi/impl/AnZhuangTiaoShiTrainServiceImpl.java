@@ -1,8 +1,8 @@
 package com.yintu.ruixing.anzhuangtiaoshi.impl;
 
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainDao;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileDao;
-import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiTrainDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiTrainFileEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiXiangMuEntity;

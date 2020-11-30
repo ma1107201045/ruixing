@@ -2,6 +2,7 @@ package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.*;
+import com.yintu.ruixing.master.danganguanli.CustomerDepartmentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

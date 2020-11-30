@@ -1,11 +1,10 @@
 package com.yintu.ruixing.paigongguanli.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiRiQinDao;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinService;
-import com.yintu.ruixing.xitongguanli.UserDao;
+import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.yintu.ruixing.zhishiguanli.impl;
 
-import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeDao;
-import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileDao;
+import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeDao;
+import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeFileDao;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeService;

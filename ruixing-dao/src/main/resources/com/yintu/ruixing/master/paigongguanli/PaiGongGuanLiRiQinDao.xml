@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiRiQinDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="userDongTai" jdbcType="INTEGER" property="userdongtai" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="creatTime" jdbcType="TIMESTAMP" property="creattime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, userDongTai, startTime, endTime, creatTime, updateTime
+  </sql>
+
+  <!--   查询出差人员的状态-->
+  <select id="findPeopleAddressOnMap"   resultMap="BaseResultMap">
+    SELECT
+        b.id,
+        uid,
+        userDongTai,
+        startTime,
+        true_name
+    FROM
+        (
+    SELECT
+        a.id,
+        uid,
+        userDongTai,
+        startTime,
+        us.true_name true_name
+    FROM
+        ( SELECT * FROM mro_paigongguanli_riqin ORDER BY startTime DESC ) a,
+        tb_user us
+    WHERE
+        a.uid = us.id
+    GROUP BY
+        a.uid
+        ) b
+    WHERE
+        b.userDongTai = 2
+  </select>
+
+  <!--   查询所有人的所有日勤状态-->
+  <select id="findPropleAddress"   resultMap="BaseResultMap">
+    SELECT
+        a.id,
+        uid,
+        userDongTai,
+        startTime,
+        us.true_name
+    FROM
+        ( SELECT * FROM mro_paigongguanli_riqin ORDER BY startTime DESC ) a,
+        tb_user us
+    WHERE
+        a.uid = us.id
+    GROUP BY
+        a.uid
+  </select>
+
+
+  <!--根据uid  查询此人的所有日勤状态-->
+  <select id="findRiQinByUid"   resultMap="BaseResultMap">
+    select
+    userDongTai, startTime
+    from mro_paigongguanli_riqin
+    where uid=#{uid}
+  </select>
+
+  <!-- 查询所有人的当月日勤数据-->
+  <select id="findAllRiQinDatas"  resultMap="BaseResultMap">
+    select
+    uid,us.true_name
+    from
+    mro_paigongguanli_riqin pr,
+	tb_user us
+    WHERE
+	pr.uid = us.id
+	and
+    DATE_FORMAT(startTime, '%Y-%m')=DATE_FORMAT(now(),'%Y-%m')
+    group by uid
+  </select>
+
+  <!--根据日期 删除对应的数据-->
+  <delete id="deleteRiQin" >
+    delete from mro_paigongguanli_riqin
+    where DATE_FORMAT(startTime, '%Y-%m-%d')=DATE_FORMAT(#{starttime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+  </delete>
+
+  <!--根据uid 和上传的日期 查询此人的当前日勤状态-->
+  <select id="findRiQin"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_riqin
+    where uid=#{senderid}
+    and DATE_FORMAT(startTime, '%Y-%m-%d')=DATE_FORMAT(#{starttime,jdbcType=TIMESTAMP},'%Y-%m-%d')
+  </select>
+
+  <!--根据uid  查询此人的所有日勤状态-->
+  <select id="findAllRiQinByUid"   resultMap="BaseResultMap">
+    select
+    id, uid, userDongTai, startTime
+    from mro_paigongguanli_riqin
+    where uid=#{uid}
+  </select>
+
+  <!--根据uid  查询此人的动态-->
+  <select id="findUserDongTai"  resultType="java.lang.String">
+    select
+    userDongTai
+    from mro_paigongguanli_riqin
+    where uid=#{uid}
+  </select>
+
+  <!--查询所有的日勤数据-->
+  <select id="findAllRiQin"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_riqin
+    order by id desc
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_riqin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_riqin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!--新增日勤数据-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    insert into mro_paigongguanli_riqin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="userdongtai != null">
+        userDongTai,
+      </if>
+      <if test="starttime != null">
+        startTime,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+      <if test="creattime != null">
+        creatTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="userdongtai != null">
+        #{userdongtai,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creattime != null">
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--编辑日勤数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    update mro_paigongguanli_riqin
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="userdongtai != null">
+        userDongTai = #{userdongtai,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creattime != null">
+        creatTime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where startTime = #{starttime,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    update mro_paigongguanli_riqin
+    set uid = #{uid,jdbcType=INTEGER},
+      userDongTai = #{userdongtai,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      creatTime = #{creattime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiRiQinEntity">
+    insert into mro_paigongguanli_riqin (id, uid, userDongTai,
+      startTime, endTime, creatTime,
+      updateTime)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{userdongtai,jdbcType=VARCHAR},
+      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{creattime,jdbcType=TIMESTAMP},
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

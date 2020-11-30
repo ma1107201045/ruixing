@@ -1,7 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.yintu.ruixing.guzhangzhenduan.CheZhanDao;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseDao;
+import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
+import com.yintu.ruixing.master.guzhangzhenduan.QuDuanBaseDao;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanService;

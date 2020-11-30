@@ -1,6 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.yintu.ruixing.xitongguanli.PermissionRoleDao;
+import com.yintu.ruixing.master.xitongguanli.PermissionRoleDao;
 import com.yintu.ruixing.xitongguanli.PermissionRoleEntity;
 import com.yintu.ruixing.xitongguanli.PermissionRoleEntityExample;
 import com.yintu.ruixing.xitongguanli.PermissionRoleService;

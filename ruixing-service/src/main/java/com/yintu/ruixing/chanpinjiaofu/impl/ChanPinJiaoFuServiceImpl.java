@@ -1,7 +1,7 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuPropertyEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuService;
