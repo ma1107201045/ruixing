@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- * @author:1mlf
+ * @author:2mlf
  * @date:2020/7/9 11:32
  */
 public class FileUtil {
