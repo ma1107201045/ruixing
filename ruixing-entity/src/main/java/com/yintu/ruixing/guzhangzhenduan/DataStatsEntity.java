@@ -62,6 +62,7 @@ public class DataStatsEntity {
 
     private String czIp;
 
+
     private Long czStutrs;
 
     private Long czOpenStutrs;
@@ -76,6 +77,8 @@ public class DataStatsEntity {
     private String yuliu2;
 
     private long czDuanTou;
+
+    private String xtType;//系统类型
 
     private String czType;//车站类型
 
@@ -92,7 +95,6 @@ public class DataStatsEntity {
     private XianDuanEntity xianDuanEntity;
 
 
-
     private String xdJson;//储存的json',
     private String czdmhJson; //站内电码化储存json
     private String czJson;//储存的json',
@@ -105,6 +107,8 @@ public class DataStatsEntity {
     private String yuliushebei2;
 
     private String yuliushebei3;
+
+    private String yuliushebei4;
 
     private Integer tongxinbianmaguidaonumber;
 
@@ -187,7 +191,6 @@ public class DataStatsEntity {
     private String linzhan6ofxianduan;
 
     private String linzhan6isnobendwd;
-
 
 
 }

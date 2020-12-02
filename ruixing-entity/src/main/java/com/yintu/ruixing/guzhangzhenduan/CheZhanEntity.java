@@ -39,6 +39,8 @@ public class CheZhanEntity {
 
     private String czIp;//车站IP
 
+    private String xtType;//系统类型
+
     private String czType;//车站类型
 
     private Integer czLianJieType;//车站连接类型 0：已配置未连接  1：已配置已连接
@@ -75,7 +77,6 @@ public class CheZhanEntity {
     private XianDuanEntity xianDuanEntity;
 
 
-
     private Integer publicMessage;//公共开关量信息
 
     private String yuliushebei1;
@@ -83,6 +84,8 @@ public class CheZhanEntity {
     private String yuliushebei2;
 
     private String yuliushebei3;
+
+    private String yuliushebei4;
 
     private Integer tongxinbianmaguidaonumber;
 
@@ -172,12 +175,6 @@ public class CheZhanEntity {
     private List<QuDuanBaseEntity> quduanlist;
 
     private String quduanjson;
-
-
-
-
-
-
 
 
 }

@@ -32,6 +32,7 @@
         <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
         <result column="cz_name_jiancheng" jdbcType="VARCHAR" property="czNameJianCheng"/>
         <result column="cz_ip" jdbcType="VARCHAR" property="czIp"/>
+        <result column="xt_type" jdbcType="VARCHAR" property="xtType"/>
         <result column="cz_type" jdbcType="VARCHAR" property="czType"/>
         <result column="cz_lianjie_type" jdbcType="INTEGER" property="czLianJieType"/>
         <result column="cz_stutrs" property="czStutrs"/>
@@ -48,6 +49,7 @@
         <result column="yuliushebei1" jdbcType="VARCHAR" property="yuliushebei1"/>
         <result column="yuliushebei2" jdbcType="VARCHAR" property="yuliushebei2"/>
         <result column="yuliushebei3" jdbcType="VARCHAR" property="yuliushebei3"/>
+        <result column="yuliushebei4" jdbcType="VARCHAR" property="yuliushebei4"/>
         <result column="tongXinBianMaGuiDaoNumber" jdbcType="INTEGER" property="tongxinbianmaguidaonumber"/>
         <result column="tongXinBianMaZhanNeiOneGuiDaoNumber" jdbcType="INTEGER"
                 property="tongxinbianmazhanneioneguidaonumber"/>
@@ -491,6 +493,9 @@
             <if test="czIp != null">
                 cz_ip,
             </if>
+            <if test="xtType != null">
+                xt_type,
+            </if>
             <if test="czType != null">
                 cz_type,
             </if>
@@ -535,6 +540,9 @@
             </if>
             <if test="yuliushebei3 != null">
                 yuliushebei3,
+            </if>
+            <if test="yuliushebei4 != null">
+                yuliushebei4,
             </if>
             <if test="tongxinbianmaguidaonumber != null">
                 tongXinBianMaGuiDaoNumber,
@@ -688,6 +696,9 @@
             <if test="czIp != null">
                 #{czIp,jdbcType=VARCHAR},
             </if>
+            <if test="xtType != null">
+                #{xtType,jdbcType=VARCHAR},
+            </if>
             <if test="czType != null">
                 #{czType,jdbcType=VARCHAR},
             </if>
@@ -732,6 +743,9 @@
             </if>
             <if test="yuliushebei3 != null">
                 #{yuliushebei3,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliushebei4 != null">
+                #{yuliushebei4,jdbcType=VARCHAR},
             </if>
             <if test="tongxinbianmaguidaonumber != null">
                 #{tongxinbianmaguidaonumber,jdbcType=INTEGER},
@@ -887,6 +901,9 @@
             <if test="czIp != null">
                 cz_ip = #{czIp,jdbcType=VARCHAR},
             </if>
+            <if test="xtType != null">
+                xt_type = #{xtType,jdbcType=VARCHAR},
+            </if>
             <if test="czType != null">
                 cz_type = #{czType,jdbcType=VARCHAR},
             </if>
@@ -931,6 +948,9 @@
             </if>
             <if test="yuliushebei3 != null">
                 yuliushebei3 = #{yuliushebei3,jdbcType=VARCHAR},
+            </if>
+            <if test="yuliushebei4 != null">
+                yuliushebei4 = #{yuliushebei4,jdbcType=VARCHAR},
             </if>
             <if test="tongxinbianmaguidaonumber != null">
                 tongXinBianMaGuiDaoNumber = #{tongxinbianmaguidaonumber,jdbcType=INTEGER},

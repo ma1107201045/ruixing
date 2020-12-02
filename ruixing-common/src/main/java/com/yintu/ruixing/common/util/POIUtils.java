@@ -1,5 +1,6 @@
 package com.yintu.ruixing.common.util;
 
+import cn.hutool.core.io.FileUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,33 +33,25 @@ public class POIUtils {
         //获得Workbook工作薄对象
         Workbook workbook = getWorkBook(file);
         //创建返回对象，把每行中的值作为一个数组，所有行作为一个集合返回
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> list = new ArrayList<>();
         if (workbook != null) {
             for (int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
                 //获得当前sheet工作表
                 Sheet sheet = workbook.getSheetAt(sheetNum);
-                System.out.println("1211212" + sheet.getSheetName());
-                if (sheet == null) {
-                    continue;
-                }
+
                 //获得当前sheet的开始行
-                int firstRowNum = sheet.getFirstRowNum();
-                System.out.println("firsttttttttttttttt" + firstRowNum);
+                int firstRowNum = sheet.getFirstRowNum();//除去前边空行，下标行
+
                 //获得当前sheet的结束行
-                int lastRowNum = sheet.getLastRowNum();
-                System.out.println("lasttttttttttttttttttttttttt" + lastRowNum);
+                int lastRowNum = sheet.getLastRowNum();//总行数
                 //循环除了第二行的所有行
-                for (int rowNum = firstRowNum + 2; rowNum <= lastRowNum; rowNum++) {
+                for (int rowNum = firstRowNum + 2; rowNum < lastRowNum; rowNum++) {
                     //获得当前行
                     Row row = sheet.getRow(rowNum);
-                    if (row == null) {
-                        continue;
-                    }
                     //获得当前行的开始列
                     int firstCellNum = row.getFirstCellNum();
                     //获得当前行的列数
 
-                    //int lastCellNum = row.getPhysicalNumberOfCells();
                     int lastCellNum = row.getLastCellNum();
                     String[] cells = new String[lastCellNum];
                     //循环当前行
@@ -77,14 +70,14 @@ public class POIUtils {
     //校验文件是否合法
     public static void checkFile(MultipartFile file) throws IOException {
         //判断文件是否存在
-        if (null == file) {
+        if (file == null) {
             throw new FileNotFoundException("文件不存在！");
         }
         //获得文件名
-        String fileName = file.getOriginalFilename();
+        String extName = FileUtil.extName(file.getOriginalFilename());
         //判断文件是否是excel文件
-        if (!fileName.endsWith(xls) && !fileName.endsWith(xlsx)) {
-            throw new IOException(fileName + "不是excel文件");
+        if (!(xls.equals(extName) || xlsx.equals(extName))) {
+            throw new IOException(file.getOriginalFilename() + "不是excel文件");
         }
     }
 
