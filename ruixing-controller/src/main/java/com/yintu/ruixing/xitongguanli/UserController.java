@@ -56,13 +56,18 @@ public class UserController extends SessionController {
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Long id, UserEntity userEntity, @RequestParam Long[] roleIds, @RequestParam Long[] departmentIds, @RequestParam Long[] tids, @RequestParam Long[] dids, @RequestParam Long[] xids, @RequestParam Long[] cids) {
         Assert.notNull(userEntity.getUsername(), "用户名不能为空");
-        Assert.notNull(userEntity.getPassword(), "密码不能为空");
         Assert.notNull(userEntity.getAuthType(), "类型不能为空");
         Assert.notNull(userEntity.getEnableds(), "状态不能为空");
         userEntity.setModifiedBy(this.getLoginUserName());
         userEntity.setModifiedTime(new Date());
         userService.edit(userEntity, roleIds, departmentIds, tids, dids, xids, cids);
         return ResponseDataUtil.ok("修改用户成功");
+    }
+
+    @PutMapping("/{id}/password")
+    public Map<String, Object> editPassword(@PathVariable Long id, @RequestParam String password) {
+        userService.editPassword(id, password);
+        return ResponseDataUtil.ok("修改用户密码成功");
     }
 
     @GetMapping("/{id}")
@@ -91,8 +96,8 @@ public class UserController extends SessionController {
 
     @GetMapping("/departments")
     public Map<String, Object> findDepartments() {
-        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
-        return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
+        List<DepartmentEntity> departmentEntities = departmentService.findByExample(new DepartmentEntityExample());
+        return ResponseDataUtil.ok("查询部门列表信息成功", departmentEntities);
     }
 
     @GetMapping("/datas")

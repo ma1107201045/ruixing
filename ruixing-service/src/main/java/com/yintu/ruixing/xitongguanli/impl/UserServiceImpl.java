@@ -66,11 +66,7 @@ public class UserServiceImpl implements UserService {
         if (userEntities.size() > 0 && !userEntities.get(0).getId().equals(userEntity.getId())) {
             throw new BaseRuntimeException("修改失败，用户名重复");
         }
-        String password = userEntity.getPassword();
-        if (password != null && !password.isEmpty()) {
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userEntity.setPassword(passwordEncoder.encode(password));
-        }
+        userEntity.setPassword(null);
         userDao.updateByPrimaryKeySelective(userEntity);
     }
 
@@ -126,6 +122,17 @@ public class UserServiceImpl implements UserService {
         this.addRolesByIdAndRoleIds(userEntity.getId(), roleIds, userEntity.getModifiedBy());
         this.addDepartmentsByIdAndDepartmentIds(userEntity.getId(), departmentIds, userEntity.getModifiedBy());
         this.addDataByIdAndDataIds(userEntity.getId(), tids, dids, xids, cids, userEntity.getModifiedBy());
+    }
+
+    @Override
+    public void editPassword(Long id, String password) {
+        if (password != null && !password.isEmpty()) {
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            UserEntity userEntity = new UserEntity();
+            userEntity.setId(id);
+            userEntity.setPassword(passwordEncoder.encode(password));
+            userDao.updateByPrimaryKeySelective(userEntity);
+        }
     }
 
     @Override

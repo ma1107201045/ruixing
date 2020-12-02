@@ -62,6 +62,13 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
     void edit(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids);
 
     /**
+     *
+     * @param id 用户id
+     * @param password 密码
+     */
+    void editPassword(Long id, String password);
+
+    /**
      * 通过真实姓名查询用户
      *
      * @param truename 真是姓名
