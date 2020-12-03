@@ -7,6 +7,9 @@ import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.master.jiejuefangan.PreSaleFileDao;
+import com.yintu.ruixing.xitongguanli.RoleService;
+import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserRoleEntity;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     private SolutionLogService solutionLogService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private RoleService roleService;
 
 
     @Override
@@ -63,41 +68,53 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
+    public void add(PreSaleFileEntity preSaleFileEntity, Long[] auditorIds, String trueName) {
         this.add(preSaleFileEntity);
         if (preSaleFileEntity.getReleaseStatus() == 2 && preSaleFileEntity.getType() == 2 && auditorIds != null && auditorIds.length > 0) {
-            //添加审核人
-            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
-            for (Integer auditorId : auditorIds) {
+            //添加审核角色
+            List<UserEntity> userEntities = roleService.findUsersByIds(auditorIds);
+            auditorIds = userEntities.stream()
+                    .map(UserEntity::getId)
+                    .filter(userId -> userId != preSaleFileEntity.getUserId().longValue())
+                    .toArray(Long[]::new);
+
+            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(userEntities.size());
+            for (Long auditorId : auditorIds) {
                 if (auditorId != null) {
                     PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
                     preSaleFileAuditorEntity.setPreSaleFileId(preSaleFileEntity.getId());
-                    preSaleFileAuditorEntity.setAuditorId(auditorId);
+                    preSaleFileAuditorEntity.setAuditorId(auditorId.intValue());
                     preSaleFileAuditorEntity.setIsPass((short) 1);
                     preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                 }
             }
+
             if (preSaleFileAuditorEntities.size() > 0) {
                 preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
                 //添加审核人消息
                 PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
                 if (preSaleEntity != null) {
-                    MessageEntity messageEntity = new MessageEntity();
-                    messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
-                    messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
-                    messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
-                    messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
-                    messageEntity.setTitle("文件");
-                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
-                    messageEntity.setType((short) 1);
-                    messageEntity.setSmallType((short) 1);
-                    messageEntity.setMessageType((short) 2);
-                    messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
-                    messageEntity.setFileId(preSaleFileEntity.getId());
-                    messageEntity.setSenderId(null);
-                    messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
-                    messageEntity.setStatus((short) 1);
-                    messageService.sendMessage(messageEntity);
+
+                    for (PreSaleFileAuditorEntity preSaleFileAuditorEntity : preSaleFileAuditorEntities) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
+                        messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
+                        messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                        messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                        messageEntity.setTitle("文件");
+                        messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
+                        messageEntity.setType((short) 1);
+                        messageEntity.setSmallType((short) 1);
+                        messageEntity.setMessageType((short) 2);
+                        messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                        messageEntity.setFileId(preSaleFileEntity.getId());
+                        messageEntity.setSenderId(null);
+                        messageEntity.setReceiverId(preSaleFileAuditorEntity.getAuditorId());
+                        messageEntity.setStatus((short) 1);
+                        messageService.sendMessage(messageEntity);
+                    }
+
+
                 }
             }
         }
@@ -117,20 +134,28 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName) {
+    public void edit(PreSaleFileEntity preSaleFileEntity, Long[] auditorIds, String trueName) {
         PreSaleFileEntity psfSource = this.findById(preSaleFileEntity.getId());
         if (psfSource.getReleaseStatus() == 1) {
             this.edit(preSaleFileEntity);
             Short releaseStatus = preSaleFileEntity.getReleaseStatus();
             Short type = preSaleFileEntity.getType();
             if (releaseStatus == 2 && type == 2 && auditorIds != null && auditorIds.length > 0) {
-                //添加审核人
+
+                //添加审核角色
+                List<UserEntity> userEntities = roleService.findUsersByIds(auditorIds);
+                auditorIds = userEntities.stream()
+                        .map(UserEntity::getId)
+                        .filter(userId -> userId != psfSource.getUserId().longValue())
+                        .toArray(Long[]::new);
+
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>(auditorIds.length);
-                for (Integer auditorId : auditorIds) {
+
+                for (Long auditorId : auditorIds) {
                     if (auditorId != null) {
                         PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
                         preSaleFileAuditorEntity.setPreSaleFileId(preSaleFileEntity.getId());
-                        preSaleFileAuditorEntity.setAuditorId(auditorId);
+                        preSaleFileAuditorEntity.setAuditorId(auditorId.intValue());
                         preSaleFileAuditorEntity.setIsPass((short) 1);
                         preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                     }
@@ -140,22 +165,24 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     //添加审核人消息
                     PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
                     if (preSaleEntity != null) {
-                        MessageEntity messageEntity = new MessageEntity();
-                        messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
-                        messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
-                        messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
-                        messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
-                        messageEntity.setTitle("文件");
-                        messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
-                        messageEntity.setType((short) 1);
-                        messageEntity.setSmallType((short) 1);
-                        messageEntity.setMessageType((short) 2);
-                        messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
-                        messageEntity.setFileId(preSaleFileEntity.getId());
-                        messageEntity.setSenderId(null);
-                        messageEntity.setReceiverId(preSaleFileAuditorEntities.get(0).getAuditorId());
-                        messageEntity.setStatus((short) 1);
-                        messageService.sendMessage(messageEntity);
+                        for (PreSaleFileAuditorEntity preSaleFileAuditorEntity : preSaleFileAuditorEntities) {
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
+                            messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
+                            messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                            messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                            messageEntity.setTitle("文件");
+                            messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
+                            messageEntity.setType((short) 1);
+                            messageEntity.setSmallType((short) 1);
+                            messageEntity.setMessageType((short) 2);
+                            messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                            messageEntity.setFileId(preSaleFileEntity.getId());
+                            messageEntity.setSenderId(null);
+                            messageEntity.setReceiverId(preSaleFileAuditorEntity.getAuditorId());
+                            messageEntity.setStatus((short) 1);
+                            messageService.sendMessage(messageEntity);
+                        }
                     }
                 }
             }

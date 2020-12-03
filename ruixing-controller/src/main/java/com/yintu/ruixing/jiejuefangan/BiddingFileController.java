@@ -33,12 +33,11 @@ public class BiddingFileController extends SessionController {
     private RoleService roleService;
     @Autowired
     private AuditConfigurationService auditConfigurationService;
-    @Autowired
-    private AuditConfigurationRoleService auditConfigurationRoleService;
+
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+    public Map<String, Object> add(@Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
@@ -58,7 +57,7 @@ public class BiddingFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         biddingFileService.edit(entity, auditorIds, this.getLoginTrueName());
@@ -112,7 +111,7 @@ public class BiddingFileController extends SessionController {
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findRoles() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short)2, (short) 1, (short) 1);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 2, (short) 1, (short) 1);
         AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
         List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
         roleEntities = roleEntities

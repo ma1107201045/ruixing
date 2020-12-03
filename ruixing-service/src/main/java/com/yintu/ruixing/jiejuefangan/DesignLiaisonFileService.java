@@ -19,14 +19,14 @@ public interface DesignLiaisonFileService extends BaseService<DesignLiaisonFileE
      * @param auditorIds              审核人ids
      * @param trueName                当前登录用户真实姓名
      */
-    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName);
+    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, String trueName);
 
     /**
      * @param designLiaisonFileEntity 设计联络文件实体类
      * @param auditorIds              审核人ids
      * @param trueName                当前登录用户真实姓名
      */
-    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Integer[] auditorIds, String trueName);
+    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, String trueName);
 
     /**
      * 批量删除

@@ -3,12 +3,14 @@ package com.yintu.ruixing.xitongguanli.impl;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.xitongguanli.RoleDao;
+import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -20,6 +22,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserRoleService userRoleService;
     @Autowired
@@ -240,5 +244,17 @@ public class RoleServiceImpl implements RoleService {
                 }
             }
         }
+    }
+
+    @Override
+    public List<UserEntity> findUsersByIds(Long[] id) {
+        UserRoleEntityExample userRoleEntityExample = new UserRoleEntityExample();
+        UserRoleEntityExample.Criteria criteria = userRoleEntityExample.createCriteria();
+        criteria.andRoleIdIn(Arrays.asList(id));
+        List<UserRoleEntity> userRoleEntities = userRoleService.findByExample(userRoleEntityExample);
+        UserEntityExample userEntityExample = new UserEntityExample();
+        UserEntityExample.Criteria criteria1 = userEntityExample.createCriteria();
+        criteria1.andIdIn(userRoleEntities.stream().map(UserRoleEntity::getUserId).collect(Collectors.toList()));
+        return userService.findByExample(userEntityExample);
     }
 }

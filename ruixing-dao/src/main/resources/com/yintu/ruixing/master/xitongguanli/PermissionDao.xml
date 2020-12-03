@@ -342,20 +342,20 @@
     </update>
 
     <resultMap id="PermissionAndRoleResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="p_id" jdbcType="BIGINT" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
         <collection property="roleEntities" ofType="com.yintu.ruixing.xitongguanli.RoleEntity">
-            <id column="id" jdbcType="BIGINT" property="id"/>
+            <id column="r_id" jdbcType="BIGINT" property="id"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
         </collection>
     </resultMap>
     <select id="selectPermissionAndRole" resultMap="PermissionAndRoleResultMap">
-        select p.id,
+        select p.id as p_id,
                p.url,
                p.method,
-               r.id,
+               r.id as r_id,
                r.name
         from tb_permission p
                  inner join tb_permission_role pr on p.id = pr.permission_id

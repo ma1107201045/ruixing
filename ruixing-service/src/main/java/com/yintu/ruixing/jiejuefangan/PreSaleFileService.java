@@ -19,7 +19,7 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
      * @param auditorIds        审核人id
      * @param trueName          当前登录用户真实姓名
      */
-    void add(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName);
+    void add(PreSaleFileEntity preSaleFileEntity, Long[] auditorIds, String trueName);
 
     /**
      * 批量删除
@@ -33,7 +33,7 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
      * @param auditorIds        审核人id
      * @param trueName          当前登录用户真实姓名
      */
-    void edit(PreSaleFileEntity preSaleFileEntity, Integer[] auditorIds, String trueName);
+    void edit(PreSaleFileEntity preSaleFileEntity, Long[] auditorIds, String trueName);
 
 
     /**

@@ -101,7 +101,15 @@ public interface RoleService extends BaseService<RoleEntity, Long> {
      * @param Id            用户id
      * @param permissionIds 角色id集
      */
-    void addPermissionsByIdAndPermissionIds(Long Id, Long[] permissionIds,String loginUserName);
+    void addPermissionsByIdAndPermissionIds(Long Id, Long[] permissionIds, String loginUserName);
+
+    /**
+     * 按照角色id查询用户集
+     *
+     * @param id 角色id集合
+     * @return 用户集
+     */
+    List<UserEntity> findUsersByIds(Long[] id);
 
 
 }

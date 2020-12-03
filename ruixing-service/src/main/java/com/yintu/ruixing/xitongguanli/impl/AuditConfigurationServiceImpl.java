@@ -1,6 +1,7 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public void add(AuditConfigurationEntity entity) {
+        AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
+        AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
+        criteria.andNameIdEqualTo(entity.getNameId());
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        if (auditConfigurationEntities.size() > 0)
+            throw new BaseRuntimeException("此配置项已添加，无需重复添加");
         auditConfigurationDao.insertSelective(entity);
     }
 
@@ -36,6 +43,12 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public void edit(AuditConfigurationEntity entity) {
+        AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
+        AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
+        criteria.andNameIdEqualTo(entity.getNameId());
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        if (auditConfigurationEntities.size() > 0 && !entity.getNameId().equals(auditConfigurationEntities.get(0).getNameId()))
+            throw new BaseRuntimeException("此配置项已添加，无需重复添加");
         auditConfigurationDao.updateByPrimaryKeySelective(entity);
     }
 

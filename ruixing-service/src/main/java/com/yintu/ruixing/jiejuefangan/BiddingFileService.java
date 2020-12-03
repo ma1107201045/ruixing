@@ -18,14 +18,14 @@ public interface BiddingFileService extends BaseService<BiddingFileEntity, Integ
      * @param auditorIds        审核人ids
      * @param trueName          当前登录用户真实姓名
      */
-    void add(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName);
+    void add(BiddingFileEntity biddingFileEntity, Long[] auditorIds, String trueName);
 
     /**
      * @param biddingFileEntity 投招标文件实体类
      * @param auditorIds        审核人id
      * @param trueName          当前登录用户真实姓名
      */
-    void edit(BiddingFileEntity biddingFileEntity, Integer[] auditorIds, String trueName);
+    void edit(BiddingFileEntity biddingFileEntity, Long[] auditorIds, String trueName);
 
     /**
      * 批量删除

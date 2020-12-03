@@ -34,13 +34,10 @@ public class PreSaleFileController extends SessionController {
     @Autowired
     private AuditConfigurationService auditConfigurationService;
 
-    @Autowired
-    private AuditConfigurationRoleService auditConfigurationRoleService;
-
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+    public Map<String, Object> add(@Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
@@ -60,7 +57,7 @@ public class PreSaleFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Integer[] auditorIds) {
+    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         preSaleFileService.edit(entity, auditorIds, this.getLoginTrueName());
