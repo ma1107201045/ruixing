@@ -1,12 +1,10 @@
 package com.yintu.ruixing.master.xitongguanli;
 
-import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
-import com.yintu.ruixing.xitongguanli.AuditConfigurationEntityExample;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntityExample;
+import org.apache.ibatis.annotations.Param;
 
 public interface AuditConfigurationDao {
     long countByExample(AuditConfigurationEntityExample example);

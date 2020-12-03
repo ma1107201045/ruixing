@@ -208,12 +208,12 @@
         <include refid="Base_Column_List"/>
         from mro_bidding
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
-        ORDER BY id DESC
+        ORDER BY id
     </select>
     <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
         select DISTINCT YEAR(project_date)
         from mro_bidding
-        ORDER BY YEAR(project_date) DESC
+        ORDER BY YEAR(project_date)
     </select>
 
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.BiddingEntity">

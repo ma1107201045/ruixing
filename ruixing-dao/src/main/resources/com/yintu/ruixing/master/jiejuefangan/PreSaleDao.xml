@@ -29,7 +29,8 @@
         from mro_pre_sale
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_pre_sale (id, create_by, create_time,
                                   modified_by, modified_time, project_name,
                                   project_status, project_date, task_status,
@@ -39,7 +40,8 @@
                 #{projectStatus,jdbcType=SMALLINT}, #{projectDate,jdbcType=DATE}, #{taskStatus,jdbcType=SMALLINT},
                 #{taskFinishDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_pre_sale
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -172,7 +174,12 @@
         <include refid="Base_Column_List"/>
         from mro_pre_sale
         where YEAR(project_date) = #{year,jdbcType=INTEGER}
-        ORDER BY id DESC
+        ORDER BY id
+    </select>
+    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
+        select DISTINCT YEAR(project_date)
+        from mro_pre_sale
+        ORDER BY YEAR(project_date)
     </select>
     <select id="selectByExample" resultMap="BaseResultMap">
         select
@@ -187,9 +194,5 @@
             </if>
         </where>
     </select>
-    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
-        select DISTINCT YEAR(project_date)
-        from mro_pre_sale
-        ORDER BY YEAR(project_date) DESC
-    </select>
+
 </mapper>

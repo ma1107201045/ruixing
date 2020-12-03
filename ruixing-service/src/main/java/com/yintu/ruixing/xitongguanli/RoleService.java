@@ -92,7 +92,7 @@ public interface RoleService extends BaseService<RoleEntity, Long> {
      * @param parentId      父级id
      * @param treeNodeUtils 每一个权限树的最后一级集合
      */
-    void findPermissionsById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils);
+    void findPermissionsTreeById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils);
 
 
     /**

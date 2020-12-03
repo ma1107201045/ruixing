@@ -4,10 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
-import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
-import com.yintu.ruixing.xitongguanli.UserEntity;
-import com.yintu.ruixing.xitongguanli.UserService;
+import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -15,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,16 +24,17 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/biddings/files")
 public class BiddingFileController extends SessionController {
+    @Autowired
+    private SolutionLogService solutionLogService;
 
     @Autowired
     private BiddingFileService biddingFileService;
     @Autowired
-    private SolutionLogService solutionLogService;
-    @Autowired
-    private UserService userService;
+    private RoleService roleService;
     @Autowired
     private AuditConfigurationService auditConfigurationService;
-
+    @Autowired
+    private AuditConfigurationRoleService auditConfigurationRoleService;
 
     @PostMapping
     @ResponseBody
@@ -109,33 +104,24 @@ public class BiddingFileController extends SessionController {
         return ResponseDataUtil.ok("查询招投标技术支持文件日志信息列表成功", solutionLogEntities);
     }
 
+    /**
+     * 查询审核角色
+     *
+     * @return 角色集合
+     */
     @GetMapping("/auditors")
     @ResponseBody
-    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
-        List<UserEntity> userEntities = userService.findByTruename(trueName);
-        userEntities = userEntities
+    public Map<String, Object> findRoles() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short)2, (short) 1, (short) 1);
+        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
+        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
+        roleEntities = roleEntities
                 .stream()
-                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
+                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
                 .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
+        return ResponseDataUtil.ok("查询审核角色成功", roleEntities);
     }
 
-    /**
-     * 查询配置的用户
-     *
-     * @return 用户列表
-     */
-    @GetMapping("/audit/configurations")
-    @ResponseBody
-    public Map<String, Object> findAuditConfigurations() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 1);
-        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setUserEntities(auditConfigurationEntity.getUserEntities().stream()
-                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
-                .sorted(Comparator.comparing(UserEntity::getId).reversed())
-                .collect(Collectors.toList()))
-        );
-        return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
-    }
 
     /**
      * 审核文件

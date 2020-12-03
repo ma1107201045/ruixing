@@ -175,12 +175,12 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public void findPermissionsById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils) {
+    public void findPermissionsTreeById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils) {
         List<PermissionEntity> permissionEntities = permissionService.findByRoleId(id, parentId);
         for (PermissionEntity permissionEntity : permissionEntities) {
             List<PermissionEntity> permission = permissionService.findByRoleId(id, permissionEntity.getId());
             if (permission.size() > 0) {
-                findPermissionsById(id, permissionEntity.getId(), treeNodeUtils);
+                findPermissionsTreeById(id, permissionEntity.getId(), treeNodeUtils);
             } else {
                 TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
                 treeNodeUtil.setId(permissionEntity.getId());

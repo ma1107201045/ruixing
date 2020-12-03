@@ -21,9 +21,8 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     @Autowired
     private AuditConfigurationDao auditConfigurationDao;
     @Autowired
-    private AuditConfigurationUserService auditConfigurationUserService;
-    @Autowired
-    private DepartmentService departmentService;
+    private AuditConfigurationRoleService auditConfigurationRoleService;
+
 
     @Override
     public void add(AuditConfigurationEntity entity) {
@@ -50,9 +49,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds) {
+    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds) {
         this.add(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roleIds, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
@@ -61,71 +60,59 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds) {
+    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds) {
         this.edit(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roleIds, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
     public List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample) {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
         for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
-            auditConfigurationEntity.setDepartmentEntity(departmentService.findById(auditConfigurationEntity.getDepartmentId()));
-            auditConfigurationEntity.setUserEntities(auditConfigurationUserService.findUserById(auditConfigurationEntity.getId()));
+            if (auditConfigurationEntity.getModel() == 1)
+                auditConfigurationEntity.setRoleEntities(auditConfigurationRoleService.findRoleById(auditConfigurationEntity.getId()));
         }
         return auditConfigurationEntities;
     }
 
     @Override
-    public void addOrEditAuditConfigurationUser(Long id, Long[] userIds, String loginUserName) {
-        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
-        AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
+    public void addOrEditAuditConfigurationUser(Long id, Long[] roleIds, String loginUserName) {
+        AuditConfigurationRoleEntityExample auditConfigurationRoleEntityExample = new AuditConfigurationRoleEntityExample();
+        AuditConfigurationRoleEntityExample.Criteria criteria = auditConfigurationRoleEntityExample.createCriteria();
         criteria.andAuditConfigurationIdEqualTo(id);
-        List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
-        if (auditConfigurationUserEntities.size() > 0) {
-            auditConfigurationUserService.remove(auditConfigurationUserEntityExample);
+        List<AuditConfigurationRoleEntity> auditConfigurationRoleEntities = auditConfigurationRoleService.findByExample(auditConfigurationRoleEntityExample);
+        if (auditConfigurationRoleEntities.size() > 0) {
+            auditConfigurationRoleService.remove(auditConfigurationRoleEntityExample);
         }
         //去重
-        Set<Long> set = new HashSet<>(Arrays.asList(userIds));
-        for (Long userId : set) {
-            AuditConfigurationUserEntity auditConfigurationUserEntity = new AuditConfigurationUserEntity();
+        Set<Long> set = new HashSet<>(Arrays.asList(roleIds));
+        for (Long roleId : set) {
+            AuditConfigurationRoleEntity auditConfigurationUserEntity = new AuditConfigurationRoleEntity();
             auditConfigurationUserEntity.setCreateBy(loginUserName);
             auditConfigurationUserEntity.setCreateTime(new Date());
             auditConfigurationUserEntity.setModifiedBy(loginUserName);
             auditConfigurationUserEntity.setModifiedTime(new Date());
             auditConfigurationUserEntity.setAuditConfigurationId(id);
-            auditConfigurationUserEntity.setUserId(userId);
-            auditConfigurationUserService.add(auditConfigurationUserEntity);
+            auditConfigurationUserEntity.setRoleId(roleId);
+            auditConfigurationRoleService.add(auditConfigurationUserEntity);
         }
     }
 
     @Override
-    public List<AuditConfigurationEntity> findByExample(Short status) {
+    public List<AuditConfigurationEntity> findByExample(Short nameId, Short status, Short model) {
         AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
         AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
+        if (nameId != null)
+            criteria.andNameIdEqualTo(nameId);
         if (status != null)
             criteria.andStatusEqualTo(status);
-        return this.findByExample(auditConfigurationEntityExample);
+        if (model != null)
+            criteria.andModelEqualTo(model);
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
+            auditConfigurationEntity.setRoleEntities(auditConfigurationRoleService.findRoleById(auditConfigurationEntity.getId()));
+        }
+        return auditConfigurationEntities;
     }
 
-
-    @Override
-    public List<AuditConfigurationEntity> findByExample(Integer pageNumber, Integer pageSize, String orderBy, String name, String departmentName) {
-        AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
-        AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();
-        if (name != null && !"".equals(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        if (departmentName != null && !"".equals(departmentName)) {
-            DepartmentEntityExample departmentEntityExample = new DepartmentEntityExample();
-            DepartmentEntityExample.Criteria criteria1 = departmentEntityExample.createCriteria();
-            criteria1.andNameLike("%" + departmentName + "%");
-            List<DepartmentEntity> departmentEntities = departmentService.findByExample(departmentEntityExample);
-            if (departmentEntities.isEmpty())
-                return new ArrayList<>();
-            criteria.andDepartmentIdIn(departmentEntities.stream().map(DepartmentEntity::getId).collect(Collectors.toList()));
-        }
-        PageHelper.startPage(pageNumber, pageSize, orderBy);
-        return this.findByExample(auditConfigurationEntityExample);
-    }
 }

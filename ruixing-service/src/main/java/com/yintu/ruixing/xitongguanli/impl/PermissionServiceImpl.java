@@ -124,51 +124,11 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public List<PermissionEntity> findByIds(List<Long> ids, Long parentId) {
-        List<PermissionEntity> permissionEntities = new ArrayList<>();
-        if (ids.size() > 0) {
-            PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
-            PermissionEntityExample.Criteria criteria = permissionEntityExample.createCriteria();
-            criteria.andIdIn(ids).andParentIdEqualTo(parentId);
-            permissionEntities = this.findByExample(permissionEntityExample);
-        }
-        return permissionEntities;
-    }
-
-    @Override
-    public List<PermissionEntity> findByRoleId(Long roleId, Long parentId) {
-        PermissionRoleEntityExample permissionRoleEntityExample = new PermissionRoleEntityExample();
-        PermissionRoleEntityExample.Criteria criteria = permissionRoleEntityExample.createCriteria();
-        criteria.andRoleIdEqualTo(roleId);
-        List<PermissionRoleEntity> permissionRoleEntities = permissionRoleService.findByExample(permissionRoleEntityExample);
-        List<Long> permissionIds = new ArrayList<>();
-        for (PermissionRoleEntity permissionRoleEntity : permissionRoleEntities) {
-            permissionIds.add(permissionRoleEntity.getPermissionId());
-        }
-        return this.findByIds(permissionIds, parentId);
-    }
-
-
-    @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public List<PermissionEntity> findPermissionAndRole() {
-//        PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
-//        List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
-//        for (PermissionEntity permissionEntity : permissionEntities) {
-//            List<RoleEntity> roleEntities = roleService.findByPermissionId(permissionEntity.getId());
-//            permissionEntity.setRoleEntities(roleEntities);
-//        }
-//        return permissionEntities;
-        return permissionDao.selectPermissionAndRole();
-    }
-
-    @Override
     public List<TreeNodeUtil> findPermissionTree(Long parentId) {
         PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
         PermissionEntityExample.Criteria criteria = permissionEntityExample.createCriteria();
         criteria.andParentIdEqualTo(parentId);
         List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
-
         List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
         for (PermissionEntity permissionEntity : permissionEntities) {
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
@@ -190,7 +150,6 @@ public class PermissionServiceImpl implements PermissionService {
         return treeNodeUtils;
     }
 
-
     @Override
     public void removeByIdAndIsFirst(Long id, Boolean isFirst) {
         if (isFirst) {  //第一次掉用此方法，按照id查询权限信息，删除
@@ -210,4 +169,46 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
     }
+
+
+    @Override
+    public List<PermissionEntity> findByRoleId(Long roleId, Long parentId) {
+        PermissionRoleEntityExample permissionRoleEntityExample = new PermissionRoleEntityExample();
+        PermissionRoleEntityExample.Criteria criteria = permissionRoleEntityExample.createCriteria();
+        criteria.andRoleIdEqualTo(roleId);
+        List<PermissionRoleEntity> permissionRoleEntities = permissionRoleService.findByExample(permissionRoleEntityExample);
+        List<Long> permissionIds = new ArrayList<>();
+        for (PermissionRoleEntity permissionRoleEntity : permissionRoleEntities) {
+            permissionIds.add(permissionRoleEntity.getPermissionId());
+        }
+        return this.findByIds(permissionIds, parentId);
+    }
+
+
+    @Override
+    public List<PermissionEntity> findByIds(List<Long> ids, Long parentId) {
+        List<PermissionEntity> permissionEntities = new ArrayList<>();
+        if (ids.size() > 0) {
+            PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
+            PermissionEntityExample.Criteria criteria = permissionEntityExample.createCriteria();
+            criteria.andIdIn(ids).andParentIdEqualTo(parentId);
+            permissionEntities = this.findByExample(permissionEntityExample);
+        }
+        return permissionEntities;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<PermissionEntity> findPermissionAndRole() {
+//        PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
+//        List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
+//        for (PermissionEntity permissionEntity : permissionEntities) {
+//            List<RoleEntity> roleEntities = roleService.findByPermissionId(permissionEntity.getId());
+//            permissionEntity.setRoleEntities(roleEntities);
+//        }
+//        return permissionEntities;
+        return permissionDao.selectPermissionAndRole();
+    }
+
+
 }

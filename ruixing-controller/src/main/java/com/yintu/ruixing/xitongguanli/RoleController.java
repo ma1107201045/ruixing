@@ -77,7 +77,7 @@ public class RoleController extends SessionController {
     @GetMapping("/{id}/permissions")
     public Map<String, Object> findPermissionsById(@PathVariable Long id) {
         List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
-        roleService.findPermissionsById(id, -1L, treeNodeUtils);
+        roleService.findPermissionsTreeById(id, -1L, treeNodeUtils);
         return ResponseDataUtil.ok("查询角色权限信息成功", treeNodeUtils);
     }
 }

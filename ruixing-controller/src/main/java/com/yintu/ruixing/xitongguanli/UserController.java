@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.tree.Tree;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +66,8 @@ public class UserController extends SessionController {
     }
 
     @PutMapping("/{id}/password")
-    public Map<String, Object> editPassword(@PathVariable Long id, @RequestParam String password) {
-        userService.editPassword(id, password);
+    public Map<String, Object> editPassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        userService.editPassword(id, oldPassword, newPassword, this.getLoginUserName());
         return ResponseDataUtil.ok("修改用户密码成功");
     }
 
@@ -96,9 +97,17 @@ public class UserController extends SessionController {
 
     @GetMapping("/departments")
     public Map<String, Object> findDepartments() {
-        List<DepartmentEntity> departmentEntities = departmentService.findByExample(new DepartmentEntityExample());
-        return ResponseDataUtil.ok("查询部门列表信息成功", departmentEntities);
+        List<TreeNodeUtil> treeNodeUtils = departmentService.findDepartmentTree(-1L);
+        return ResponseDataUtil.ok("查询部门列表信息成功", treeNodeUtils);
     }
+
+    @GetMapping("/{id}/departments")
+    public Map<String, Object> findDepartmentsById(@PathVariable Long id) {
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        userService.findDepartmentsTreeById(id, -1L, treeNodeUtils);
+        return ResponseDataUtil.ok("查询用户部门信息成功", treeNodeUtils);
+    }
+
 
     @GetMapping("/datas")
     public Map<String, Object> findFourLinkage() {

@@ -11,17 +11,17 @@ import java.util.List;
  */
 public interface AuditConfigurationService extends BaseService<AuditConfigurationEntity, Long> {
 
-    void add(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds);
+    void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds);
 
     void remove(AuditConfigurationEntityExample auditConfigurationEntityExample);
 
-    void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds);
+    void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds);
 
     List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample);
 
-    void addOrEditAuditConfigurationUser(Long id, Long[] userId, String loginUserName);
 
-    List<AuditConfigurationEntity> findByExample(Short status);
+    void addOrEditAuditConfigurationUser(Long id, Long[] roleId, String loginUserName);
 
-    List<AuditConfigurationEntity> findByExample(Integer pageNumber, Integer pageSize, String orderBy, String name, String departmentName);
+    List<AuditConfigurationEntity> findByExample(Short nameId, Short status, Short model);
+
 }

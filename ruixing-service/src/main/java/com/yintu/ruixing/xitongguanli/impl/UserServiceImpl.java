@@ -125,12 +125,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editPassword(Long id, String password) {
-        if (password != null && !password.isEmpty()) {
+    public void editPassword(Long id, String oldPassword, String newPassword, String loginUserName) {
+        if (oldPassword != null && !oldPassword.isEmpty() && newPassword != null && !newPassword.isEmpty()) {
+            UserEntity userEntity = userDao.selectByPrimaryKey(id);
+            if (userEntity == null)
+                throw new BaseRuntimeException("当前用户不存在");
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            UserEntity userEntity = new UserEntity();
-            userEntity.setId(id);
-            userEntity.setPassword(passwordEncoder.encode(password));
+            if (!passwordEncoder.matches(oldPassword, userEntity.getPassword()))
+                throw new BaseRuntimeException("旧密码错误");
+            userEntity.setModifiedBy(loginUserName);
+            userEntity.setModifiedTime(new Date());
+            userEntity.setPassword(passwordEncoder.encode(newPassword));
             userDao.updateByPrimaryKeySelective(userEntity);
         }
     }
@@ -204,6 +209,44 @@ public class UserServiceImpl implements UserService {
         List<Long> departmentIds = departmentUserEntities.stream().map(DepartmentUserEntity::getDepartmentId).collect(Collectors.toList());
         return departmentService.findByIds(departmentIds);
     }
+
+    @Override
+    public List<TreeNodeUtil> findDepartmentsTreeById(Long id, Long parentId) {
+        List<DepartmentEntity> departmentEntities = departmentService.findByUserId(id, parentId);
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (DepartmentEntity departmentEntity : departmentEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setId(departmentEntity.getId());
+            treeNodeUtil.setLabel(departmentEntity.getName());
+            treeNodeUtil.setChildren(this.findDepartmentsTreeById(id, departmentEntity.getId()));
+            Map<String, Object> map = new HashMap<>();
+            map.put("parentId", departmentEntity.getParentId());
+            treeNodeUtil.setA_attr(map);
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        return treeNodeUtils;
+    }
+
+    @Override
+    public void findDepartmentsTreeById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils) {
+        List<DepartmentEntity> departmentEntities = departmentService.findByUserId(id, parentId);
+        for (DepartmentEntity departmentEntity : departmentEntities) {
+            List<DepartmentEntity> department = departmentService.findByUserId(id, departmentEntity.getId());
+            if (department.size() > 0) {
+                findDepartmentsTreeById(id, departmentEntity.getId(), treeNodeUtils);
+            } else {
+                TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+                treeNodeUtil.setId(departmentEntity.getId());
+                treeNodeUtil.setLabel(departmentEntity.getName());
+                treeNodeUtil.setChildren(this.findDepartmentsTreeById(id, departmentEntity.getId()));
+                Map<String, Object> map = new HashMap<>();
+                map.put("parentId", departmentEntity.getParentId());
+                treeNodeUtil.setA_attr(map);
+                treeNodeUtils.add(treeNodeUtil);
+            }
+        }
+    }
+
 
     @Override
     public List<TieLuJuEntity> findTieLuJusById(Long id) {

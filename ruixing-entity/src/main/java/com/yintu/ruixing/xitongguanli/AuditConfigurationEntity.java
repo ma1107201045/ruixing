@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuditConfigurationEntity implements Serializable {
-    private static final long serialVersionUID = 6526899275441329948L;
+    private static final long serialVersionUID = 3169526838873443366L;
     private Long id;
 
     private String createBy;
@@ -24,17 +22,13 @@ public class AuditConfigurationEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-    @NotBlank
-    private String name;
-    @NotNull
-    private Long departmentId;
 
-    private String workContext;
-    @NotNull
+    private Short nameId;
+
     private Short status;
 
-    private DepartmentEntity departmentEntity;
+    private Short model;
 
-    private List<UserEntity> userEntities;
+    List<RoleEntity> roleEntities;
 
 }

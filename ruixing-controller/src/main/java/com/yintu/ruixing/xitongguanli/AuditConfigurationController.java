@@ -7,9 +7,12 @@ import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.Request;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author mlf
@@ -22,19 +25,19 @@ public class AuditConfigurationController extends SessionController {
 
     @Autowired
     private AuditConfigurationService auditConfigurationService;
+
     @Autowired
-    private DepartmentService departmentService;
+    private RoleService roleService;
 
     @PostMapping
-    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, @RequestParam Long[] userIds) {
+    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, Long[] roleIds) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.add(entity, userIds);
+        auditConfigurationService.add(entity, roleIds);
         return ResponseDataUtil.ok("添加审批流配置信息成功");
     }
-
 
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Long[] ids) {
@@ -46,10 +49,10 @@ public class AuditConfigurationController extends SessionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, @RequestParam Long[] userIds) {
+    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, Long[] roleIds) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.edit(entity, userIds);
+        auditConfigurationService.edit(entity, roleIds);
         return ResponseDataUtil.ok("修改审批流配置信息成功");
     }
 
@@ -63,28 +66,17 @@ public class AuditConfigurationController extends SessionController {
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
-                                       @RequestParam(value = "name", required = false) String name,
-                                       @RequestParam(value = "department_name", required = false) String departmentName) {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(pageNumber, pageSize, orderBy, name, departmentName);
+                                       @RequestParam(value = "name_id", required = false) Short nameId,
+                                       @RequestParam(value = "model", required = false) Short model) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(nameId, null, model);
         PageInfo<AuditConfigurationEntity> pageInfo = new PageInfo<>(auditConfigurationEntities);
         return ResponseDataUtil.ok("查询审批流配置信息列表成功", pageInfo);
     }
 
-    @GetMapping("/departments")
-    public Map<String, Object> findDepartments() {
-        List<DepartmentEntity> departmentEntities = departmentService.findByExample(new DepartmentEntityExample());
-        departmentEntities = departmentEntities.stream()
-                .sorted(Comparator.comparing(DepartmentEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询部门信息列表成功", departmentEntities);
-    }
-
-    @GetMapping("/users")
-    public Map<String, Object> findUsers(@RequestParam Long departmentId) {
-        List<UserEntity> userEntities = departmentService.findUsersById(departmentId);
-        userEntities = userEntities.stream()
-                .sorted(Comparator.comparing(UserEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询用户信息列表成功", userEntities);
+    @GetMapping("/roles")
+    public Map<String, Object> findRoles() {
+        List<RoleEntity> roleEntities = roleService.findAll();
+        return ResponseDataUtil.ok("查询角色列表成功", roleEntities);
     }
 }

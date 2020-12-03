@@ -425,203 +425,63 @@ public class AuditConfigurationEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andNameIdIsNull() {
+            addCriterion("name_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andNameIdIsNotNull() {
+            addCriterion("name_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andNameIdEqualTo(Short value) {
+            addCriterion("name_id =", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andNameIdNotEqualTo(Short value) {
+            addCriterion("name_id <>", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andNameIdGreaterThan(Short value) {
+            addCriterion("name_id >", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andNameIdGreaterThanOrEqualTo(Short value) {
+            addCriterion("name_id >=", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andNameIdLessThan(Short value) {
+            addCriterion("name_id <", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andNameIdLessThanOrEqualTo(Short value) {
+            addCriterion("name_id <=", value, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andNameIdIn(List<Short> values) {
+            addCriterion("name_id in", values, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andNameIdNotIn(List<Short> values) {
+            addCriterion("name_id not in", values, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andNameIdBetween(Short value1, Short value2) {
+            addCriterion("name_id between", value1, value2, "nameId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdIsNull() {
-            addCriterion("department_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdIsNotNull() {
-            addCriterion("department_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdEqualTo(Long value) {
-            addCriterion("department_id =", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdNotEqualTo(Long value) {
-            addCriterion("department_id <>", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdGreaterThan(Long value) {
-            addCriterion("department_id >", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("department_id >=", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdLessThan(Long value) {
-            addCriterion("department_id <", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdLessThanOrEqualTo(Long value) {
-            addCriterion("department_id <=", value, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdIn(List<Long> values) {
-            addCriterion("department_id in", values, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdNotIn(List<Long> values) {
-            addCriterion("department_id not in", values, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdBetween(Long value1, Long value2) {
-            addCriterion("department_id between", value1, value2, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDepartmentIdNotBetween(Long value1, Long value2) {
-            addCriterion("department_id not between", value1, value2, "departmentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextIsNull() {
-            addCriterion("work_context is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextIsNotNull() {
-            addCriterion("work_context is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextEqualTo(String value) {
-            addCriterion("work_context =", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextNotEqualTo(String value) {
-            addCriterion("work_context <>", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextGreaterThan(String value) {
-            addCriterion("work_context >", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextGreaterThanOrEqualTo(String value) {
-            addCriterion("work_context >=", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextLessThan(String value) {
-            addCriterion("work_context <", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextLessThanOrEqualTo(String value) {
-            addCriterion("work_context <=", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextLike(String value) {
-            addCriterion("work_context like", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextNotLike(String value) {
-            addCriterion("work_context not like", value, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextIn(List<String> values) {
-            addCriterion("work_context in", values, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextNotIn(List<String> values) {
-            addCriterion("work_context not in", values, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextBetween(String value1, String value2) {
-            addCriterion("work_context between", value1, value2, "workContext");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkContextNotBetween(String value1, String value2) {
-            addCriterion("work_context not between", value1, value2, "workContext");
+        public Criteria andNameIdNotBetween(Short value1, Short value2) {
+            addCriterion("name_id not between", value1, value2, "nameId");
             return (Criteria) this;
         }
 
@@ -682,6 +542,66 @@ public class AuditConfigurationEntityExample {
 
         public Criteria andStatusNotBetween(Short value1, Short value2) {
             addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelIsNull() {
+            addCriterion("model is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelIsNotNull() {
+            addCriterion("model is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelEqualTo(Short value) {
+            addCriterion("model =", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelNotEqualTo(Short value) {
+            addCriterion("model <>", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelGreaterThan(Short value) {
+            addCriterion("model >", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelGreaterThanOrEqualTo(Short value) {
+            addCriterion("model >=", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelLessThan(Short value) {
+            addCriterion("model <", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelLessThanOrEqualTo(Short value) {
+            addCriterion("model <=", value, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelIn(List<Short> values) {
+            addCriterion("model in", values, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelNotIn(List<Short> values) {
+            addCriterion("model not in", values, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelBetween(Short value1, Short value2) {
+            addCriterion("model between", value1, value2, "model");
+            return (Criteria) this;
+        }
+
+        public Criteria andModelNotBetween(Short value1, Short value2) {
+            addCriterion("model not between", value1, value2, "model");
             return (Criteria) this;
         }
     }

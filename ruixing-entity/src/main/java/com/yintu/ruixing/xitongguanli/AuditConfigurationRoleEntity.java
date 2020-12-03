@@ -10,8 +10,8 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditConfigurationUserEntity implements Serializable {
-    private static final long serialVersionUID = 8717452241070896944L;
+public class AuditConfigurationRoleEntity implements Serializable {
+    private static final long serialVersionUID = 5408512796660543993L;
     private Long id;
 
     private String createBy;
@@ -24,7 +24,7 @@ public class AuditConfigurationUserEntity implements Serializable {
 
     private Long auditConfigurationId;
 
-    private Long userId;
+    private Long roleId;
 
 
 }

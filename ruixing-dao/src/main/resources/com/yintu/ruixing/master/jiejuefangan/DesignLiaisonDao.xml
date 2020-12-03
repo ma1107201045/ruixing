@@ -35,7 +35,8 @@
         from mro_design_liaison
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_design_liaison (id, create_by, create_time,
                                         modified_by, modified_time, project_name,
                                         project_status, project_date, task_status,
@@ -46,10 +47,12 @@
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{projectName,jdbcType=VARCHAR},
                 #{projectStatus,jdbcType=SMALLINT}, #{projectDate,jdbcType=DATE}, #{taskStatus,jdbcType=SMALLINT},
                 #{taskFinishDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{meetingStatus,jdbcType=SMALLINT},
-                #{changeStatus,jdbcType=SMALLINT}, #{bidder,jdbcType=VARCHAR}, #{railwayAdministrationId,jdbcType=INTEGER},
+                #{changeStatus,jdbcType=SMALLINT}, #{bidder,jdbcType=VARCHAR},
+                #{railwayAdministrationId,jdbcType=INTEGER},
                 #{biddingId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -227,13 +230,6 @@
         <include refid="Base_Column_List"/>
         from mro_design_liaison
     </select>
-    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from mro_design_liaison
-        where YEAR(project_date) = #{year,jdbcType=INTEGER}
-        ORDER BY id DESC
-    </select>
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         <id column="dl_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
@@ -260,6 +256,20 @@
         dl.id as dl_id, dl.create_by, dl.create_time, dl.modified_by, dl.modified_time, dl.project_name, dl.project_status,dl.project_date, dl.task_status, dl.task_finish_date, dl.remark, dl.meeting_status, dl.change_status,dl.bidder, dl.railway_administration_id, dl.bidding_id
         t.tlj_id as t_id,t.tlj_name
     </sql>
+
+    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison
+        where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id
+    </select>
+
+    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
+        select DISTINCT YEAR(project_date)
+        from mro_design_liaison
+        ORDER BY YEAR(project_date)
+    </select>
     <select id="selectByExample" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -273,9 +283,5 @@
             </if>
         </where>
     </select>
-    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
-        select DISTINCT YEAR(project_date)
-        from mro_design_liaison
-        ORDER BY YEAR(project_date) DESC
-    </select>
+
 </mapper>

@@ -62,11 +62,11 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
     void edit(UserEntity userEntity, Long[] roleIds, Long[] departmentIds, Long[] tids, Long[] dids, Long[] xids, Long[] cids);
 
     /**
-     *
-     * @param id 用户id
-     * @param password 密码
+     * @param id          用户id
+     * @param oldPassword 密码
+     * @param newPassword    密码
      */
-    void editPassword(Long id, String password);
+    void editPassword(Long id, String oldPassword, String newPassword, String loginUserName);
 
     /**
      * 通过真实姓名查询用户
@@ -101,6 +101,25 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
      */
 
     List<DepartmentEntity> findDepartmentsById(Long id);
+
+
+    /**
+     * @param id       用户id
+     * @param parentId 上级id
+     * @return 部门
+     */
+
+    List<TreeNodeUtil> findDepartmentsTreeById(Long id, Long parentId);
+
+
+    /**
+     * @param id            用户id
+     * @param parentId      上级id
+     * @param treeNodeUtils 每一个权限树的最后一级集合
+     * @return 部门
+     */
+
+    void findDepartmentsTreeById(Long id, Long parentId, List<TreeNodeUtil> treeNodeUtils);
 
     /**
      * 通过用户id查询铁路局

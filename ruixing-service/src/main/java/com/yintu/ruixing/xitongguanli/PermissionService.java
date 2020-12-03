@@ -12,7 +12,6 @@ import java.util.List;
 public interface PermissionService extends BaseService<PermissionEntity, Long> {
 
 
-
     /**
      * 按照指定条件删除权限
      *
@@ -26,26 +25,6 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
      * @return 权限集
      */
     List<PermissionEntity> findByExample(PermissionEntityExample permissionEntityExample);
-
-    /**
-     * @param ids 权限id集合
-     * @return 权限集
-     */
-    List<PermissionEntity> findByIds(List<Long> ids, Long parentId);
-
-    /**
-     * @param roleId 角色id
-     * @return 权限集
-     */
-    List<PermissionEntity> findByRoleId(Long roleId, Long parentId);
-
-    /**
-     * 查询权限集以及对应的角色集
-     *
-     * @return 权限集
-     */
-    List<PermissionEntity> findPermissionAndRole();
-
 
     /**
      * 获取权限tree
@@ -63,6 +42,32 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
      * @param isFirst 是否第一次
      */
     void removeByIdAndIsFirst(Long id, Boolean isFirst);
+
+
+
+    /**
+     * @param roleId 角色id
+     * @return 权限集
+     */
+    List<PermissionEntity> findByRoleId(Long roleId, Long parentId);
+
+
+    /**
+     * @param ids 权限id集合
+     * @return 权限集
+     */
+    List<PermissionEntity> findByIds(List<Long> ids, Long parentId);
+
+
+
+
+
+    /**
+     * 查询权限集以及对应的角色集
+     *
+     * @return 权限集
+     */
+    List<PermissionEntity> findPermissionAndRole();
 
 
 }

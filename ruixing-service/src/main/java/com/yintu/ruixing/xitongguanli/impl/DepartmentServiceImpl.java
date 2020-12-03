@@ -127,6 +127,31 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public List<DepartmentEntity> findByUserId(Long userId, Long parentId) {
+        DepartmentUserEntityExample departmentUserEntityExample = new DepartmentUserEntityExample();
+        DepartmentUserEntityExample.Criteria criteria = departmentUserEntityExample.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        List<DepartmentUserEntity> departmentUserEntities = departmentUserService.findByExample(departmentUserEntityExample);
+        List<Long> departmentIds = new ArrayList<>();
+        for (DepartmentUserEntity departmentUserEntity : departmentUserEntities) {
+            departmentIds.add(departmentUserEntity.getDepartmentId());
+        }
+        return this.findByIds(departmentIds, parentId);
+    }
+
+    @Override
+    public List<DepartmentEntity> findByIds(List<Long> ids, Long parentId) {
+        List<DepartmentEntity> departmentEntities = new ArrayList<>();
+        if (ids.size() > 0) {
+            DepartmentEntityExample departmentEntityExample = new DepartmentEntityExample();
+            DepartmentEntityExample.Criteria criteria = departmentEntityExample.createCriteria();
+            criteria.andIdIn(ids).andParentIdEqualTo(parentId);
+            departmentEntities = this.findByExample(departmentEntityExample);
+        }
+        return departmentEntities;
+    }
+
+    @Override
     public List<UserEntity> findUsersById(Long id) {
         List<UserEntity> userEntities = new ArrayList<>();
         DepartmentUserEntityExample departmentUserEntityExample = new DepartmentUserEntityExample();
