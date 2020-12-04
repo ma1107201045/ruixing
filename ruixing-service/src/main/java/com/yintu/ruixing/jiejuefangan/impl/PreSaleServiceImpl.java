@@ -2,6 +2,7 @@ package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.*;
@@ -108,6 +109,9 @@ public class PreSaleServiceImpl implements PreSaleService {
         PreSaleEntity source = this.findById(entity.getId());
         if (source != null) {
             this.edit(entity);
+            if (source.getProjectStatus() != 1 && entity.getProjectStatus() == 1)
+                throw new BaseRuntimeException("项目不能由其他状态改为未知状态");
+
             //售前技术支持项目状态为3时发送消息
             if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3) {
                 //更新项目消息
