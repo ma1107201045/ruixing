@@ -67,4 +67,5 @@ public interface BiddingFileService extends BaseService<BiddingFileEntity, Integ
 
     void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName);
 
+
 }

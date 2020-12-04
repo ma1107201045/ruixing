@@ -73,4 +73,5 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
 
     void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName);
 
+
 }

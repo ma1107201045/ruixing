@@ -31,7 +31,8 @@
         from mro_pre_sale_file
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_pre_sale_file (id, create_by, create_time,
                                        modified_by, modified_time, name,
                                        path, upload_datetime, type,
@@ -39,9 +40,11 @@
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{preSaleId,jdbcType=INTEGER})
+                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+                #{preSaleId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_pre_sale_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -208,18 +211,10 @@
             <result column="task_status" jdbcType="SMALLINT" property="taskStatus"/>
             <result column="task_finish_date" jdbcType="TIMESTAMP" property="taskFinishDate"/>
         </association>
-        <collection property="preSaleFileAuditorEntities" ofType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
-            <id column="psfa_id" jdbcType="INTEGER" property="id"/>
-            <result column="pre_sale_file_id" jdbcType="INTEGER" property="preSaleFileId"/>
-            <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
-            <result column="is_pass" jdbcType="SMALLINT" property="isPass"/>
-            <result column="reason" jdbcType="VARCHAR" property="reason"/>
-        </collection>
     </resultMap>
     <sql id="Connect_Column_List">
         psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.user_id,psf.remark, psf.pre_sale_id,
-        ps.id as ps_id , ps.project_name, ps.project_status, ps.project_date, ps.task_status, ps.task_finish_date,
-        psfa.id as psfa_id, psfa.pre_sale_file_id, psfa.auditor_id, psfa.is_pass,psfa.reason
+        ps.id as ps_id , ps.project_name, ps.project_status, ps.project_date, ps.task_status, ps.task_finish_date
     </sql>
     <sql id="Connect_condition_List">
         <where>
@@ -238,14 +233,14 @@
             <if test="type!=null">
                 and psf.type = #{type,jdbcType=SMALLINT}
             </if>
-                and (psf.user_id = #{userId,jdbcType=SMALLINT} or psf.release_status = #{releaseStatus,jdbcType=INTEGER})
+            and (psf.user_id = #{userId,jdbcType=SMALLINT} or psf.release_status = #{releaseStatus,jdbcType=INTEGER})
         </where>
     </sql>
     <select id="selectByCondition" resultMap="ConnectResultMap">
         select
         <include refid="Connect_Column_List"/>
         from mro_pre_sale_file psf inner join mro_pre_sale ps on psf.pre_sale_id=ps.id
-        left outer join mro_pre_sale_file_auditor psfa on psf.id=psfa.pre_sale_file_id
         <include refid="Connect_condition_List"/>
     </select>
+
 </mapper>

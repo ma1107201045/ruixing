@@ -6,6 +6,7 @@ import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BeanUtil;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.jiejuefangan.*;
+import com.yintu.ruixing.master.jiejuefangan.PreSaleDao;
 import com.yintu.ruixing.master.jiejuefangan.PreSaleFileDao;
 import com.yintu.ruixing.xitongguanli.RoleService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
@@ -237,7 +238,11 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
 
     @Override
     public List<PreSaleFileEntity> findByPreSaleIdAndNameAndType(Integer preSaleId, String name, String type, Integer userId) {
-        return preSaleFileDao.selectByCondition(preSaleId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        List<PreSaleFileEntity> preSaleFileEntities = preSaleFileDao.selectByCondition(preSaleId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        for (PreSaleFileEntity preSaleFileEntity : preSaleFileEntities) {
+            preSaleFileEntity.setPreSaleFileAuditorEntities(preSaleFileAuditorService.findByPreSaleFileId(preSaleFileEntity.getId()));
+        }
+        return preSaleFileEntities;
     }
 
     @Override
@@ -354,5 +359,6 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         }
 
     }
+
 
 }

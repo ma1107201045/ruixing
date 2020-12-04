@@ -1,10 +1,14 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.xitongguanli.*;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
+import com.yintu.ruixing.xitongguanli.RoleEntity;
+import com.yintu.ruixing.xitongguanli.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +33,6 @@ import java.util.stream.Collectors;
 public class BiddingFileController extends SessionController {
     @Autowired
     private SolutionLogService solutionLogService;
-
     @Autowired
     private BiddingFileService biddingFileService;
     @Autowired

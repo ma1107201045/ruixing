@@ -230,7 +230,11 @@ public class BiddingFileServiceImpl implements BiddingFileService {
 
     @Override
     public List<BiddingFileEntity> findByBiddingIdAndNameAndType(Integer biddingId, String name, String type, Integer userId) {
-        return biddingFileDao.selectByCondition(biddingId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        List<BiddingFileEntity> biddingFileEntities = biddingFileDao.selectByCondition(biddingId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
+        for (BiddingFileEntity biddingFileEntity : biddingFileEntities) {
+            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorService.findByBiddingFileIdId(biddingFileEntity.getId()));
+        }
+        return biddingFileEntities;
     }
 
     @Override

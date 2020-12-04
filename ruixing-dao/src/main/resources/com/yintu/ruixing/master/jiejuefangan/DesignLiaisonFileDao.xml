@@ -31,7 +31,8 @@
         from mro_design_liaison_file
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_design_liaison_file (id, create_by, create_time,
                                              modified_by, modified_time, name,
                                              path, upload_datetime, type,
@@ -39,9 +40,11 @@
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{designLiaisonId,jdbcType=INTEGER})
+                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+                #{designLiaisonId,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileEntity"
+            useGeneratedKeys="true" keyProperty="id">
         insert into mro_design_liaison_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -211,7 +214,8 @@
             <result column="railway_administration_id" jdbcType="INTEGER" property="railwayAdministrationId"/>
             <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
         </association>
-        <collection property="designLiaisonFileAuditorEntities" ofType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
+        <collection property="designLiaisonFileAuditorEntities"
+                    ofType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
             <id column="psfa_id" jdbcType="INTEGER" property="id"/>
             <result column="design_liaison_file_id" jdbcType="INTEGER" property="designLiaisonFileId"/>
             <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
@@ -249,7 +253,8 @@
         <include refid="Connect_Column_List"/>
         from mro_design_liaison_file dlf
         inner join mro_design_liaison dl on dlf.design_liaison_id=dl.id
-        left outer join  mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
+        left outer join mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
         <include refid="Connect_condition_List"/>
     </select>
+
 </mapper>

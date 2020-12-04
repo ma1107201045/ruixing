@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
