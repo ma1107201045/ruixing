@@ -294,11 +294,12 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
             if (isPass != 2 && isPass != 3) {
                 throw new BaseRuntimeException("此文件审核状态有误");
             }
-            designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), loginUserId, (short) 0);
-            DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = designLiaisonFileAuditorEntities.get(0);
-            designLiaisonFileAuditorEntity.setIsPass(isPass);
-            designLiaisonFileAuditorEntity.setReason(isPass == 2 ? reason : null);
-            designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
+            //查询此文件的其余审核人状态改变
+            designLiaisonFileAuditorEntities.forEach(item -> {
+                item.setIsPass(isPass);
+                item.setReason(isPass == 2 ? reason : null);
+                designLiaisonFileAuditorService.edit(item);
+            });
 
             DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());
             if (designLiaisonEntity != null) {
@@ -316,7 +317,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 messageEntity1.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
                 messageEntity1.setFileId(designLiaisonFileEntity.getId());
                 messageEntity1.setSenderId(null);
-                messageEntity1.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
+                messageEntity1.setReceiverId(loginUserId);
                 messageEntity1.setStatus((short) 1);
                 messageService.sendMessage(messageEntity1);
                 //给被审核人发消息

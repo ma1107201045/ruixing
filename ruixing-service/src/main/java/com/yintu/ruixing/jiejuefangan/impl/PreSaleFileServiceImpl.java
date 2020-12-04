@@ -304,11 +304,12 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             if (isPass != 2 && isPass != 3) {
                 throw new BaseRuntimeException("此文件审核状态有误");
             }
-            preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), loginUserId, (short) 0);
-            PreSaleFileAuditorEntity preSaleFileAuditorEntity = preSaleFileAuditorEntities.get(0);
-            preSaleFileAuditorEntity.setIsPass(isPass);
-            preSaleFileAuditorEntity.setReason(isPass == 2 ? reason : null);
-            preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
+            //查询此文件的其余审核人状态改变
+            preSaleFileAuditorEntities.forEach(item -> {
+                item.setIsPass(isPass);
+                item.setReason(isPass == 2 ? reason : null);
+                preSaleFileAuditorService.edit(item);
+            });
 
             PreSaleEntity preSaleEntity = preSaleService.findById(preSaleFileEntity.getPreSaleId());
             if (preSaleEntity != null) {
@@ -326,7 +327,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 messageEntity1.setProjectId(preSaleFileEntity.getPreSaleId());
                 messageEntity1.setFileId(preSaleFileEntity.getId());
                 messageEntity1.setSenderId(null);
-                messageEntity1.setReceiverId(preSaleFileAuditorEntity.getAuditorId());
+                messageEntity1.setReceiverId(loginUserId);
                 messageEntity1.setStatus((short) 1);
                 messageService.sendMessage(messageEntity1);
                 //给被审核人发审核结果消息

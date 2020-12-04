@@ -289,12 +289,12 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             if (isPass != 2 && isPass != 3) {
                 throw new BaseRuntimeException("此文件审核状态有误");
             }
-            biddingFileAuditorEntities = biddingFileAuditorService.findByExample(biddingFileEntity.getId(), loginUserId, (short) 0);
-            BiddingFileAuditorEntity biddingFileAuditorEntity = biddingFileAuditorEntities.get(0);
-            biddingFileAuditorEntity.setIsPass(isPass);
-            biddingFileAuditorEntity.setReason(isPass == 2 ? reason : null);
-            biddingFileAuditorService.edit(biddingFileAuditorEntity);
-
+            //查询此文件的其余审核人状态改变
+            biddingFileAuditorEntities.forEach(item -> {
+                item.setIsPass(isPass);
+                item.setReason(isPass == 2 ? reason : null);
+                biddingFileAuditorService.edit(item);
+            });
             BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());
             if (biddingEntity != null) {
                 //给审核人发审核结果消息
@@ -311,7 +311,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 messageEntity1.setProjectId(biddingFileEntity.getBiddingId());
                 messageEntity1.setFileId(biddingFileEntity.getId());
                 messageEntity1.setSenderId(null);
-                messageEntity1.setReceiverId(biddingFileAuditorEntity.getAuditorId());
+                messageEntity1.setReceiverId(loginUserId);
                 messageEntity1.setStatus((short) 1);
                 messageService.sendMessage(messageEntity1);
                 //给被审核人发消息
