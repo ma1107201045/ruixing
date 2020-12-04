@@ -277,72 +277,73 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
         DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
         if (designLiaisonFileEntity != null) {
-            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
-            if (!designLiaisonFileAuditorEntities.isEmpty()) {
-                DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = designLiaisonFileAuditorEntities.get(0);
-                if (!designLiaisonFileAuditorEntity.getAuditorId().equals(loginUserId)) {
-                    throw new BaseRuntimeException("您无权审核此文件");
-                }
-                if (designLiaisonFileAuditorEntity.getIsPass() != (short) 1) {
-                    throw new BaseRuntimeException("此文件已审核，无需重复审核");
-                }
-                if (isPass == null)
-                    throw new BaseRuntimeException("审核状态不能为空");
-                if (isPass != 2 && isPass != 3) {
-                    throw new BaseRuntimeException("此文件审核状态有误");
-                }
-                designLiaisonFileAuditorEntity.setIsPass(isPass);
-                designLiaisonFileAuditorEntity.setReason(isPass == 2 ? reason : null);
-                designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
-
-                DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());
-                if (designLiaisonEntity != null) {
-                    //给审核人发审核结果消息
-                    MessageEntity messageEntity1 = new MessageEntity();
-                    messageEntity1.setCreateBy(userName);
-                    messageEntity1.setCreateTime(new Date());
-                    messageEntity1.setModifiedBy(userName);
-                    messageEntity1.setModifiedTime(new Date());
-                    messageEntity1.setTitle("文件");
-                    messageEntity1.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被您审核！");
-                    messageEntity1.setType((short) 1);
-                    messageEntity1.setSmallType((short) 3);
-                    messageEntity1.setMessageType((short) 2);
-                    messageEntity1.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
-                    messageEntity1.setFileId(designLiaisonFileEntity.getId());
-                    messageEntity1.setSenderId(null);
-                    messageEntity1.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
-                    messageEntity1.setStatus((short) 1);
-                    messageService.sendMessage(messageEntity1);
-                    //给被审核人发消息
-                    MessageEntity messageEntity = new MessageEntity();
-                    messageEntity.setCreateBy(userName);
-                    messageEntity.setCreateTime(new Date());
-                    messageEntity.setModifiedBy(userName);
-                    messageEntity.setModifiedTime(new Date());
-                    messageEntity.setTitle("文件");
-                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被审核，请查看结果!");
-                    messageEntity.setType((short) 1);
-                    messageEntity.setSmallType((short) 3);
-                    messageEntity.setMessageType((short) 2);
-                    messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
-                    messageEntity.setFileId(designLiaisonFileEntity.getId());
-                    messageEntity.setSenderId(null);
-                    messageEntity.setReceiverId(designLiaisonFileEntity.getUserId());
-                    messageEntity.setStatus((short) 1);
-                    messageService.sendMessage(messageEntity);
-                }
-                //文件日志记录
-                StringBuilder sb = new StringBuilder();
-                sb.append("   审核人：").append(trueName)
-                        .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核通过");
-                if (isPass == 2) {
-                    sb.append("   理由：").append(reason);
-                }
-                SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 2, id, sb.toString());
-                solutionLogService.add(solutionLogEntity);
+            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), loginUserId, null);
+            if (designLiaisonFileAuditorEntities.isEmpty()) {
+                throw new BaseRuntimeException("你无权审核此文件");
             }
+            designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), null, (short) 0);
+            if (designLiaisonFileAuditorEntities.isEmpty()) {
+                throw new BaseRuntimeException("此文件已审核，无需重复审核");
+            }
+            if (isPass == null)
+                throw new BaseRuntimeException("审核状态不能为空");
+            if (isPass != 2 && isPass != 3) {
+                throw new BaseRuntimeException("此文件审核状态有误");
+            }
+            designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), loginUserId, (short) 0);
+            DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = designLiaisonFileAuditorEntities.get(0);
+            designLiaisonFileAuditorEntity.setIsPass(isPass);
+            designLiaisonFileAuditorEntity.setReason(isPass == 2 ? reason : null);
+            designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
+
+            DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());
+            if (designLiaisonEntity != null) {
+                //给审核人发审核结果消息
+                MessageEntity messageEntity1 = new MessageEntity();
+                messageEntity1.setCreateBy(userName);
+                messageEntity1.setCreateTime(new Date());
+                messageEntity1.setModifiedBy(userName);
+                messageEntity1.setModifiedTime(new Date());
+                messageEntity1.setTitle("文件");
+                messageEntity1.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被您审核！");
+                messageEntity1.setType((short) 1);
+                messageEntity1.setSmallType((short) 3);
+                messageEntity1.setMessageType((short) 2);
+                messageEntity1.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                messageEntity1.setFileId(designLiaisonFileEntity.getId());
+                messageEntity1.setSenderId(null);
+                messageEntity1.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
+                messageEntity1.setStatus((short) 1);
+                messageService.sendMessage(messageEntity1);
+                //给被审核人发消息
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(userName);
+                messageEntity.setCreateTime(new Date());
+                messageEntity.setModifiedBy(userName);
+                messageEntity.setModifiedTime(new Date());
+                messageEntity.setTitle("文件");
+                messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件已被审核，请查看结果!");
+                messageEntity.setType((short) 1);
+                messageEntity.setSmallType((short) 3);
+                messageEntity.setMessageType((short) 2);
+                messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                messageEntity.setFileId(designLiaisonFileEntity.getId());
+                messageEntity.setSenderId(null);
+                messageEntity.setReceiverId(designLiaisonFileEntity.getUserId());
+                messageEntity.setStatus((short) 1);
+                messageService.sendMessage(messageEntity);
+            }
+            //文件日志记录
+            StringBuilder sb = new StringBuilder();
+            sb.append("   审核人：").append(trueName)
+                    .append("   审核状态：").append(isPass == 2 ? "已审核未通过" : "已审核通过");
+            if (isPass == 2) {
+                sb.append("   理由：").append(reason);
+            }
+            SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 2, id, sb.toString());
+            solutionLogService.add(solutionLogEntity);
         }
     }
+
 
 }

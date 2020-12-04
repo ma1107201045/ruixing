@@ -13,6 +13,8 @@ public interface BiddingFileAuditorService extends BaseService<BiddingFileAudito
 
     List<BiddingFileAuditorEntity> findByBiddingFileIdId(Integer biddingFileId);
 
+    List<BiddingFileAuditorEntity> findByExample(Integer biddingFileId, Integer auditorId, Short isCheck);
+
     void addMuch(List<BiddingFileAuditorEntity> biddingFileAuditorEntities);
 
     void removeByBiddingFileId(Integer biddingFileId);

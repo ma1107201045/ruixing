@@ -20,6 +20,8 @@ public interface PreSaleFileAuditorDao {
 
     List<PreSaleFileAuditorEntity> selectByPreSaleFileId(Integer preSaleFileId);
 
+    List<PreSaleFileAuditorEntity> selectByExample(Integer preSaleFileId,Integer auditorId,Short isCheck);
+
     void insertMuch(List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities);
 
     void deleteByPreSaleFileId(Integer preSaleFileId);

@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.jiejuefangan;
 
 import com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity;
+import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface BiddingFileAuditorDao {
     int updateByPrimaryKey(BiddingFileAuditorEntity record);
 
     List<BiddingFileAuditorEntity> selectByBiddingFileId(Integer biddingFileId);
+
+    List<BiddingFileAuditorEntity> selectByExample(Integer biddingFileId, Integer auditorId, Short isCheck);
 
     void insertMuch(List<BiddingFileAuditorEntity> biddingFileAuditorEntities);
 

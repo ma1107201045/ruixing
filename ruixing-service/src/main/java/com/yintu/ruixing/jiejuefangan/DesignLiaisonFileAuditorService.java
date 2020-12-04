@@ -12,6 +12,8 @@ import java.util.List;
 public interface DesignLiaisonFileAuditorService extends BaseService<DesignLiaisonFileAuditorEntity, Integer> {
     List<DesignLiaisonFileAuditorEntity> findByDesignLiaisonFileId(Integer designLiaisonFileId);
 
+    List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck);
+
     void addMuch(List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities);
 
     void removeByDesignLiaisonFileId(Integer designLiaisonFileId);

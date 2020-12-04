@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.jiejuefangan;
 
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity;
+import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface DesignLiaisonFileAuditorDao {
     int updateByPrimaryKey(DesignLiaisonFileAuditorEntity record);
 
     List<DesignLiaisonFileAuditorEntity> selectByDesignLiaisonFileId(Integer designLiaisonFileId);
+
+    List<DesignLiaisonFileAuditorEntity> selectByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck);
 
     void insertMuch(List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities);
 

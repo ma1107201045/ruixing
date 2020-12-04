@@ -46,6 +46,11 @@ public class BiddingFileAuditorServiceImpl implements BiddingFileAuditorService 
     }
 
     @Override
+    public List<BiddingFileAuditorEntity> findByExample(Integer biddingFileId, Integer auditorId, Short isCheck) {
+        return biddingFileAuditorDao.selectByExample(biddingFileId,auditorId,isCheck);
+    }
+
+    @Override
     public void addMuch(List<BiddingFileAuditorEntity> biddingFileAuditorEntities) {
         biddingFileAuditorDao.insertMuch(biddingFileAuditorEntities);
     }

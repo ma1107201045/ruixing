@@ -50,7 +50,7 @@ public class GlobalExceptionController {
             return ResponseDataUtil.error("车站id有重复,请检查车站id,操作失败");
         }
         log.error("" + e.getMessage());
-        return ResponseDataUtil.error("数据库异常，操作失败");
+        return ResponseDataUtil.error("数据库异常，操作失败(" + e.getMessage() + ")");
     }
 
     @ExceptionHandler(BaseRuntimeException.class)

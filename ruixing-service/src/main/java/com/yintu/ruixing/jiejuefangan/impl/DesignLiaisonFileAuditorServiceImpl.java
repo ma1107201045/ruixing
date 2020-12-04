@@ -45,6 +45,11 @@ public class DesignLiaisonFileAuditorServiceImpl implements DesignLiaisonFileAud
     }
 
     @Override
+    public List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck) {
+        return designLiaisonFileAuditorDao.selectByExample(designLiaisonFileId, auditorId, isCheck);
+    }
+
+    @Override
     public void addMuch(List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities) {
         designLiaisonFileAuditorDao.insertMuch(designLiaisonFileAuditorEntities);
     }
