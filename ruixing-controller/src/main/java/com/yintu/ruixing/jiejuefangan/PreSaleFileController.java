@@ -127,7 +127,7 @@ public class PreSaleFileController extends SessionController {
      * 审核文件
      *
      * @param id     文件id
-     * @param isPass 是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
+     * @param isPass 是否审核状态 2.已审核未通过 3.已审核已通过
      * @param reason 已审核未通过
      * @return 已审核未通过理由
      */

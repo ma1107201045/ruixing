@@ -40,6 +40,7 @@ public class DesignLiaisonFileEntity implements Serializable {
 
     private Short auditStatus;
 
+    private String reason;
 
     private String remark;
 

@@ -462,22 +462,22 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     messageService.sendMessage(messageEntity);
                 }
                 //给审核人发审核结果消息
-                MessageEntity messageEntity1 = new MessageEntity();
-                messageEntity1.setCreateBy(userName);
-                messageEntity1.setCreateTime(new Date());
-                messageEntity1.setModifiedBy(userName);
-                messageEntity1.setModifiedTime(new Date());
-                messageEntity1.setTitle("文件");
-                messageEntity1.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被您审核！");
-                messageEntity1.setType((short) 1);
-                messageEntity1.setSmallType((short) 1);
-                messageEntity1.setMessageType((short) 2);
-                messageEntity1.setProjectId(preSaleFileEntity.getPreSaleId());
-                messageEntity1.setFileId(preSaleFileEntity.getId());
-                messageEntity1.setSenderId(null);
-                messageEntity1.setReceiverId(loginUserId);
-                messageEntity1.setStatus((short) 1);
-                messageService.sendMessage(messageEntity1);
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(userName);
+                messageEntity.setCreateTime(new Date());
+                messageEntity.setModifiedBy(userName);
+                messageEntity.setModifiedTime(new Date());
+                messageEntity.setTitle("文件");
+                messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件已被您审核！");
+                messageEntity.setType((short) 1);
+                messageEntity.setSmallType((short) 1);
+                messageEntity.setMessageType((short) 2);
+                messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                messageEntity.setFileId(preSaleFileEntity.getId());
+                messageEntity.setSenderId(null);
+                messageEntity.setReceiverId(loginUserId);
+                messageEntity.setStatus((short) 1);
+                messageService.sendMessage(messageEntity);
             }
         }
     }

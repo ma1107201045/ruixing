@@ -20,7 +20,7 @@ public class BiddingFileAuditorEntity implements Serializable {
     @NotNull
     private Short activate;
 
-    private String reason;
+
 
 
 }

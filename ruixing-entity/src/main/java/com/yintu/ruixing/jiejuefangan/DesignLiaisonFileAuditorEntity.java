@@ -20,7 +20,7 @@ public class DesignLiaisonFileAuditorEntity implements Serializable {
     @NotNull
     private Short isPass;
 
-    private String reason;
+    private Short activate;
 
 
 }
