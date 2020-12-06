@@ -133,7 +133,7 @@ public class PreSaleFileController extends SessionController {
      */
     @PutMapping("/audit/{id}")
     @ResponseBody
-    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, Integer sort, String reason) {
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
         preSaleFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核售前技术支持文件信息成功");
     }

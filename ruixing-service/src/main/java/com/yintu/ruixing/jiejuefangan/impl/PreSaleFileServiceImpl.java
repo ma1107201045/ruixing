@@ -361,7 +361,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 //查询当前人是否有审核权限
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), loginUserId, null, (short) 1);
                 if (preSaleFileAuditorEntities.isEmpty()) {
-                    throw new BaseRuntimeException("你无权审核此文件或其他人已审批");
+                    throw new BaseRuntimeException("你无权审核此文件或已被其他人审批");
                 }
                 preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), null, null, (short) 1);
                 if (preSaleFileAuditorEntities.isEmpty()) {
@@ -434,12 +434,13 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileEntity.setModifiedBy(userName);
                     preSaleFileEntity.setModifiedTime(new Date());
                     preSaleFileEntity.setAuditStatus((short) 4);
+                    preSaleFileEntity.setReason(reason);
                     this.edit(preSaleFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();
                     sb.append("   审核人：").append(trueName)
                             .append("   文件审核状态：").append("已审核未通过")
-                            .append("   理由：").append("........");
+                            .append("   理由：").append(reason);
                     SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, id, sb.toString());
                     solutionLogService.add(solutionLogEntity);
                     //给发起文件审核的人发消息
