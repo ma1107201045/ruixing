@@ -5,11 +5,12 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="design_liaison_file_id" jdbcType="INTEGER" property="designLiaisonFileId"/>
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
-        <result column="is_pass" jdbcType="SMALLINT" property="isPass"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="activate" jdbcType="SMALLINT" property="activate"/>
         <result column="reason" jdbcType="VARCHAR" property="reason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, design_liaison_file_id, auditor_id, is_pass, reason
+        id, design_liaison_file_id, auditor_id,sort, activate, reason
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -23,10 +24,10 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
-        insert into mro_design_liaison_file_auditor (id, design_liaison_file_id, auditor_id,
-                                                     is_pass, reason)
+        insert into mro_design_liaison_file_auditor (id, design_liaison_file_id, auditor_id, sort,
+                                                     activate, reason)
         values (#{id,jdbcType=INTEGER}, #{designLiaisonFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
-                #{isPass,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR})
+                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity"
             useGeneratedKeys="true" keyProperty="id">
@@ -41,8 +42,11 @@
             <if test="auditorId != null">
                 auditor_id,
             </if>
-            <if test="isPass != null">
-                is_pass,
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="activate != null">
+                activate,
             </if>
             <if test="reason != null">
                 reason,
@@ -58,8 +62,11 @@
             <if test="auditorId != null">
                 #{auditorId,jdbcType=INTEGER},
             </if>
-            <if test="isPass != null">
-                #{isPass,jdbcType=SMALLINT},
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="activate != null">
+                #{activate,jdbcType=SMALLINT},
             </if>
             <if test="reason != null">
                 #{reason,jdbcType=VARCHAR},
@@ -76,8 +83,11 @@
             <if test="auditorId != null">
                 auditor_id = #{auditorId,jdbcType=INTEGER},
             </if>
-            <if test="isPass != null">
-                is_pass = #{isPass,jdbcType=SMALLINT},
+            <if test="sort != null">
+                sort= #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="activate != null">
+                activate = #{activate,jdbcType=SMALLINT},
             </if>
             <if test="reason != null">
                 reason = #{reason,jdbcType=VARCHAR},
@@ -89,7 +99,7 @@
         update mro_design_liaison_file_auditor
         set design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER},
             auditor_id             = #{auditorId,jdbcType=INTEGER},
-            is_pass                = #{isPass,jdbcType=SMALLINT},
+            activate                = #{activate,jdbcType=SMALLINT},
             reason                 = #{reason,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -97,14 +107,15 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         insert into mro_design_liaison_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            design_liaison_file_id,auditor_id, is_pass,reason
+            design_liaison_file_id,auditor_id,sort, activate,reason
         </trim>
         values
         <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">
             <trim prefix=" (" suffix=")" suffixOverrides=",">
                 #{designLiaisonFileAuditorEntity.designLiaisonFileId,jdbcType=INTEGER},
                 #{designLiaisonFileAuditorEntity.auditorId,jdbcType=INTEGER},
-                #{designLiaisonFileAuditorEntity.isPass,jdbcType=SMALLINT},
+                #{designLiaisonFileAuditorEntity.sort,jdbcType=INTEGER},
+                #{designLiaisonFileAuditorEntity.activate,jdbcType=SMALLINT},
                 #{designLiaisonFileAuditorEntity.reason,jdbcType=VARCHAR},
             </trim>
         </foreach>
@@ -134,10 +145,10 @@
             </if>
             <if test="isCheck!=null">
                 <if test="isCheck==1">
-                    and ( is_pass = 2 or is_pass=3)
+                    and ( activate = 2 or activate=3)
                 </if>
                 <if test="isCheck==0">
-                    and is_pass = 1
+                    and activate = 1
                 </if>
             </if>
         </where>

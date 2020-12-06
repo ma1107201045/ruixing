@@ -83,7 +83,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
                     biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                     biddingFileAuditorEntity.setAuditorId(auditorId.intValue());
-                    biddingFileAuditorEntity.setIsPass((short) 1);
                     biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                 }
             }
@@ -156,7 +155,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
                         biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                         biddingFileAuditorEntity.setAuditorId(auditorId.intValue());
-                        biddingFileAuditorEntity.setIsPass((short) 1);
                         biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                     }
                 }
@@ -291,7 +289,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             }
             //查询此文件的其余审核人状态改变
             biddingFileAuditorEntities.forEach(item -> {
-                item.setIsPass(isPass);
                 item.setReason(isPass == 2 ? reason : null);
                 biddingFileAuditorService.edit(item);
             });

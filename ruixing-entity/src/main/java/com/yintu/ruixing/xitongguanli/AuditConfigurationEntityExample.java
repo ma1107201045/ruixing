@@ -604,66 +604,6 @@ public class AuditConfigurationEntityExample {
             addCriterion("model not between", value1, value2, "model");
             return (Criteria) this;
         }
-
-        public Criteria andActivateIsNull() {
-            addCriterion("activate is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateIsNotNull() {
-            addCriterion("activate is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateEqualTo(Short value) {
-            addCriterion("activate =", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateNotEqualTo(Short value) {
-            addCriterion("activate <>", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateGreaterThan(Short value) {
-            addCriterion("activate >", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateGreaterThanOrEqualTo(Short value) {
-            addCriterion("activate >=", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateLessThan(Short value) {
-            addCriterion("activate <", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateLessThanOrEqualTo(Short value) {
-            addCriterion("activate <=", value, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateIn(List<Short> values) {
-            addCriterion("activate in", values, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateNotIn(List<Short> values) {
-            addCriterion("activate not in", values, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateBetween(Short value1, Short value2) {
-            addCriterion("activate between", value1, value2, "activate");
-            return (Criteria) this;
-        }
-
-        public Criteria andActivateNotBetween(Short value1, Short value2) {
-            addCriterion("activate not between", value1, value2, "activate");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

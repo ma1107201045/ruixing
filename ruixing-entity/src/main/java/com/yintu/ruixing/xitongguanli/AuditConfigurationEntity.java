@@ -29,7 +29,7 @@ public class AuditConfigurationEntity implements Serializable {
 
     private Short model;
 
-    private Short activate;
+    List<AuditConfigurationUserEntity> auditConfigurationUserEntities;
 
 
 }

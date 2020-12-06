@@ -30,12 +30,12 @@
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.xitongguanli"
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.xitongguanli"
                          targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.xitongguanli"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.xitongguanli"
                              targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

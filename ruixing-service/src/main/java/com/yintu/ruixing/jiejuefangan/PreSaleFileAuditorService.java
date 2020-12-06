@@ -13,7 +13,7 @@ public interface PreSaleFileAuditorService extends BaseService<PreSaleFileAudito
 
     List<PreSaleFileAuditorEntity> findByPreSaleFileId(Integer preSaleFileId);
 
-    List<PreSaleFileAuditorEntity> findByExample(Integer preSaleFileId, Integer auditorId, Short isCheck);
+    List<PreSaleFileAuditorEntity> findByExample(Integer preSaleFileId, Integer auditorId, Integer sort, Short activate);
 
     void addMuch(List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities);
 

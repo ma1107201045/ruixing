@@ -62,7 +62,6 @@ class RuixingApplicationTests {
         PreSaleFileAuditorEntity preSaleFileAuditorEntity = new PreSaleFileAuditorEntity();
         preSaleFileAuditorEntity.setPreSaleFileId(0);
         preSaleFileAuditorEntity.setAuditorId(0);
-        preSaleFileAuditorEntity.setIsPass((short) 0);
         preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
         preSaleFileAuditorService.addMuch(preSaleFileAuditorEntities);
     }

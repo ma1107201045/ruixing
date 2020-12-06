@@ -18,7 +18,7 @@ public class BiddingFileAuditorEntity implements Serializable {
     @NotNull
     private Integer auditorId;
     @NotNull
-    private Short isPass;
+    private Short activate;
 
     private String reason;
 

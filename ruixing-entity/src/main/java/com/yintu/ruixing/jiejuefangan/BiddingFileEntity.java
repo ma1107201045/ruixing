@@ -38,6 +38,8 @@ public class BiddingFileEntity implements Serializable {
 
     private Integer userId;
 
+    private Short auditStatus;
+
     private String remark;
 
     @NotNull

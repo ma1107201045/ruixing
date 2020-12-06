@@ -45,8 +45,8 @@ public class PreSaleFileAuditorServiceImpl implements PreSaleFileAuditorService 
     }
 
     @Override
-    public List<PreSaleFileAuditorEntity> findByExample(Integer preSaleFileId, Integer auditorId, Short isCheck) {
-        return preSaleFileAuditorDao.selectByExample(preSaleFileId, auditorId, isCheck);
+    public List<PreSaleFileAuditorEntity> findByExample(Integer preSaleFileId, Integer auditorId, Integer sort, Short activate) {
+        return preSaleFileAuditorDao.selectByExample(preSaleFileId, auditorId, sort, activate);
     }
 
     @Override

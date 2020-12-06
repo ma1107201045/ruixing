@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao;
@@ -34,7 +35,6 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
         if (auditConfigurationEntities.size() > 0)
             throw new BaseRuntimeException("此配置项已添加，无需重复添加");
-        entity.setActivate((short) 0);
         auditConfigurationDao.insertSelective(entity);
     }
 
@@ -51,7 +51,6 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
         if (auditConfigurationEntities.size() > 0 && !entity.getNameId().equals(auditConfigurationEntities.get(0).getNameId()))
             throw new BaseRuntimeException("此配置项已添加，无需重复添加");
-        entity.setActivate((short) 0);
         auditConfigurationDao.updateByPrimaryKeySelective(entity);
     }
 
@@ -118,7 +117,15 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             criteria.andStatusEqualTo(status);
         if (model != null)
             criteria.andModelEqualTo(model);
-        return this.findByExample(auditConfigurationEntityExample);
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+        AuditConfigurationUserEntityExample.Criteria criteria1 = auditConfigurationUserEntityExample.createCriteria();
+        auditConfigurationEntities.forEach(item -> {
+            criteria1.andAuditConfigurationIdEqualTo(item.getId());
+            List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
+            item.setAuditConfigurationUserEntities(auditConfigurationUserEntities);
+        });
+        return auditConfigurationEntities;
     }
 
     @Override
@@ -137,6 +144,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(userEntity.getId());
                 secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
             }
         }

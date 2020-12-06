@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,8 +30,6 @@ public class DesignLiaisonFileController extends SessionController {
     private DesignLiaisonFileService designLiaisonFileService;
     @Autowired
     private SolutionLogService solutionLogService;
-    @Autowired
-    private RoleService roleService;
     @Autowired
     private AuditConfigurationService auditConfigurationService;
 
@@ -113,13 +108,9 @@ public class DesignLiaisonFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> findRoles() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 3, (short) 1, (short) 1);
-//        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
-//        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
-//        roleEntities = roleEntities
-//                .stream()
-//                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-//                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationEntities);
+        if (auditConfigurationEntities.isEmpty())
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+        return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
     }
 
 

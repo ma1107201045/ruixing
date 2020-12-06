@@ -1,12 +1,11 @@
 package com.yintu.ruixing.jiejuefangan;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.xitongguanli.*;
-import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -14,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 售前文件技术支持
@@ -31,20 +32,20 @@ public class PreSaleFileController extends SessionController {
     @Autowired
     private PreSaleFileService preSaleFileService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private AuditConfigurationService auditConfigurationService;
 
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> add(@Validated PreSaleFileEntity entity,
+                                   @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                   @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         entity.setUserId(this.getLoginUserId().intValue());
-        preSaleFileService.add(entity, auditorIds, this.getLoginTrueName());
+        preSaleFileService.add(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加售前技术支持文件信息成功");
     }
 
@@ -58,10 +59,12 @@ public class PreSaleFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> edit(Integer id, @Validated PreSaleFileEntity entity,
+                                    @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                    @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        preSaleFileService.edit(entity, auditorIds, this.getLoginTrueName());
+        preSaleFileService.edit(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("更新售前技术支持文件信息成功");
     }
 
@@ -114,13 +117,9 @@ public class PreSaleFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> findRoles() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 1, (short) 1, (short) 1);
-//        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
-//        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
-//        roleEntities = roleEntities
-//                .stream()
-//                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-//                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationEntities);
+        if (auditConfigurationEntities.isEmpty())
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+        return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
     }
 
 
@@ -134,7 +133,7 @@ public class PreSaleFileController extends SessionController {
      */
     @PutMapping("/audit/{id}")
     @ResponseBody
-    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, Integer sort, String reason) {
         preSaleFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核售前技术支持文件信息成功");
     }

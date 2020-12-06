@@ -13,14 +13,14 @@ import java.io.Serializable;
 public class PreSaleFileAuditorEntity implements Serializable {
     private static final long serialVersionUID = -9174666833401218840L;
     private Integer id;
-    @NotNull
-    private Integer preSaleFileId;
-    @NotNull
-    private Integer auditorId;
-    @NotNull
-    private Short isPass;
 
-    private String reason;
+    private Integer preSaleFileId;
+
+    private Integer auditorId;
+
+    private Integer sort;
+
+    private Short activate;
 
 
 }

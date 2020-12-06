@@ -71,7 +71,7 @@ public class AuditConfigurationController extends SessionController {
         return ResponseDataUtil.ok("查询审批流配置信息列表成功", pageInfo);
     }
 
-    @GetMapping("/tree")
+    @GetMapping("/roles")
     public Map<String, Object> findTree() {
         List<TreeNodeUtil> treeNodeUtils = auditConfigurationService.findTree();
         return ResponseDataUtil.ok("查询树信息列表成功", treeNodeUtils);
