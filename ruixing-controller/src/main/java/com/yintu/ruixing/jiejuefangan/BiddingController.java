@@ -9,9 +9,12 @@ import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +25,7 @@ import java.util.Map;
  * @author:mlf
  * @date:2020/7/2 11:54
  */
-@RestController
+@Controller
 @RequestMapping("/biddings")
 public class BiddingController extends SessionController implements BaseController<BiddingEntity, Integer> {
     @Autowired
@@ -33,6 +36,7 @@ public class BiddingController extends SessionController implements BaseControll
     private TieLuJuService tieLuJuService;
 
     @PostMapping
+    @ResponseBody
     public Map<String, Object> add(@Validated BiddingEntity entity) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
@@ -48,12 +52,14 @@ public class BiddingController extends SessionController implements BaseControll
     }
 
     @DeleteMapping("/{ids}")
+    @ResponseBody
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
         biddingService.remove(ids);
         return ResponseDataUtil.ok("删除售前技术支持信息成功");
     }
 
     @PutMapping("/{id}")
+    @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingEntity entity) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
@@ -63,12 +69,14 @@ public class BiddingController extends SessionController implements BaseControll
 
 
     @GetMapping("/{id}")
+    @ResponseBody
     public Map<String, Object> findById(@PathVariable Integer id) {
         BiddingEntity biddingEntity = biddingService.findById(id);
         return ResponseDataUtil.ok("查询投招标技术支持信息成功", biddingEntity);
     }
 
     @GetMapping
+    @ResponseBody
     public Map<String, Object> findTree() {
         List<TreeNodeUtil> treeNodeUtils = biddingService.findByTree();
         return ResponseDataUtil.ok("查询投招标技术支持信息树成功", treeNodeUtils);
@@ -76,6 +84,7 @@ public class BiddingController extends SessionController implements BaseControll
 
 
     @GetMapping("/list")
+    @ResponseBody
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "id DESC") String orderBy,
@@ -87,6 +96,16 @@ public class BiddingController extends SessionController implements BaseControll
         return ResponseDataUtil.ok("查询投招标技术支持信息列表成功", pageInfo);
     }
 
+    @GetMapping("/export/{ids}")
+    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "投招标技术支持-项目列表" + System.currentTimeMillis() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        biddingService.exportFile(response.getOutputStream(), ids);
+    }
+
     @GetMapping("/{id}/log")
     @ResponseBody
     public Map<String, Object> findLogByExample(@PathVariable Integer id) {
@@ -95,6 +114,7 @@ public class BiddingController extends SessionController implements BaseControll
     }
 
     @GetMapping("/tielujus")
+    @ResponseBody
     public Map<String, Object> findTieLuJus() {
         List<TieLuJuEntity> tieLuJuEntities = tieLuJuService.findAllTieLuJu();
         return ResponseDataUtil.ok("查询铁路局列表信息成功", tieLuJuEntities);

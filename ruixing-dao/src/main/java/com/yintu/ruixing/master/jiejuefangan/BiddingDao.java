@@ -23,7 +23,7 @@ public interface BiddingDao {
 
     List<BiddingEntity> selectByYear(Integer year);
 
-    List<BiddingEntity> selectByExample(Integer year, String projectName);
+    List<BiddingEntity> selectByExample(Integer[] ids, Integer year, String projectName);
 
     List<Integer> selectByDistinctProjectDate();
 }

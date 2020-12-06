@@ -4,7 +4,10 @@ import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author:mlf
@@ -71,4 +74,21 @@ public interface DesignLiaisonService extends BaseService<DesignLiaisonEntity, I
      * @return 树信息集合
      */
     List<TreeNodeUtil> findByTree();
+
+    /**
+     * 导出项目列表
+     *
+     * @param outputStream 输出流
+     * @param ids          项目ID集
+     * @return 导出的项目列表
+     */
+    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
+
+    /**
+     * 查询售前支持 投招标技术支持 状态为3的项目总和
+     *
+     * @return 项目集合
+     */
+    List<Map<String, Object>> findProjectsByProjectStatus();
+
 }

@@ -23,7 +23,7 @@ public interface PreSaleDao {
 
     List<PreSaleEntity> selectByYear(Integer year);
 
-    List<PreSaleEntity> selectByExample(Integer year, String projectName);
+    List<PreSaleEntity> selectByExample(Integer[] ids, Integer year, String projectName);
 
     List<Integer> selectByDistinctProjectDate();
 

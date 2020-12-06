@@ -1,21 +1,28 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
+import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
-import com.yintu.ruixing.jiejuefangan.*;
+import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
+import com.yintu.ruixing.jiejuefangan.DesignLiaisonService;
+import com.yintu.ruixing.jiejuefangan.SolutionLogEntity;
+import com.yintu.ruixing.jiejuefangan.SolutionLogService;
 import com.yintu.ruixing.master.jiejuefangan.DesignLiaisonDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -155,7 +162,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
 
     @Override
     public List<DesignLiaisonEntity> findByExample(Integer year, String projectName) {
-        return designLiaisonDao.selectByExample(year, projectName);
+        return designLiaisonDao.selectByExample(null, year, projectName, null);
     }
 
     @Override
@@ -182,7 +189,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(designLiaisonEntity.getProjectName());
                 secondTreeNodeUtil.setValue(String.valueOf(designLiaisonEntity.getId()));
-                Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
+                Map<String, Object> secondMap = cn.hutool.core.bean.BeanUtil.beanToMap(designLiaisonEntity);
                 secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
@@ -199,5 +206,47 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
             }
         }
         return firstTreeNodeUtils;
+    }
+
+    @Override
+    public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
+        //excel标题
+        String title = "招标投标技术支持-项目列表";
+        //excel表名
+        String[] headers = {"序号", "项目名称", "项目状态", "项目创建日期", "任务状态", "任务完成时间", "会议状态", "变更状态", "所属路局", "备注"};
+        //获取数据
+        List<DesignLiaisonEntity> designLiaisonEntities = designLiaisonDao.selectByExample(ids, null, null, null);
+        designLiaisonEntities = designLiaisonEntities.stream()
+                .sorted(Comparator.comparing(DesignLiaisonEntity::getId).reversed())
+                .collect(Collectors.toList());
+        //excel元素
+        String[][] content = new String[designLiaisonEntities.size()][headers.length];
+        for (int i = 0; i < designLiaisonEntities.size(); i++) {
+            DesignLiaisonEntity designLiaisonEntity = designLiaisonEntities.get(i);
+            content[i][0] = designLiaisonEntity.getId().toString();
+            content[i][1] = designLiaisonEntity.getProjectName();
+            Short projectStatus = designLiaisonEntity.getProjectStatus();
+            content[i][2] = projectStatus == 1 ? "未知" : projectStatus == 2 ? "后续招标" : projectStatus == 3 ? "确定采用" : "关闭";
+            Short taskStatus = designLiaisonEntity.getTaskStatus();
+            content[i][3] = DateUtil.formatDate(designLiaisonEntity.getProjectDate());
+            content[i][4] = taskStatus == 1 ? "正在进行" : "已完成";
+            content[i][5] = DateUtil.formatDate(designLiaisonEntity.getTaskFinishDate());
+            Short meetingStatus = designLiaisonEntity.getMeetingStatus();
+            content[i][6] = meetingStatus == 1 ? "不召开会议" : meetingStatus == 2 ? "尚未开会" : "已召开设计联络会";
+            Short changeStatus = designLiaisonEntity.getChangeStatus();
+            content[i][7] = changeStatus == 1 ? "无变更" : changeStatus == 2 ? "变更设计中" : "变更已定型";
+            content[i][8] = designLiaisonEntity.getTieLuJuEntity().getTljName();
+            content[i][9] = designLiaisonEntity.getRemark();
+        }
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    @Override
+    public List<Map<String, Object>> findProjectsByProjectStatus() {
+        return designLiaisonDao.selectProjectsByProjectStatus((short) 3);
     }
 }

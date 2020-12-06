@@ -1,7 +1,7 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author mlf
@@ -22,7 +21,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     @Autowired
     private AuditConfigurationDao auditConfigurationDao;
     @Autowired
-    private AuditConfigurationRoleService auditConfigurationRoleService;
+    private AuditConfigurationUserService auditConfigurationUserService;
+    @Autowired
+    private RoleService roleService;
 
 
     @Override
@@ -33,6 +34,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
         if (auditConfigurationEntities.size() > 0)
             throw new BaseRuntimeException("此配置项已添加，无需重复添加");
+        entity.setActivate((short) 0);
         auditConfigurationDao.insertSelective(entity);
     }
 
@@ -49,6 +51,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
         if (auditConfigurationEntities.size() > 0 && !entity.getNameId().equals(auditConfigurationEntities.get(0).getNameId()))
             throw new BaseRuntimeException("此配置项已添加，无需重复添加");
+        entity.setActivate((short) 0);
         auditConfigurationDao.updateByPrimaryKeySelective(entity);
     }
 
@@ -62,9 +65,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds) {
+    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds, Integer[] sorts) {
         this.add(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roleIds, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, sorts, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
@@ -73,41 +76,35 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roleIds) {
+    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds, Integer[] sorts) {
         this.edit(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roleIds, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, sorts, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
     public List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample) {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
-        for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
-            if (auditConfigurationEntity.getModel() == 1)
-                auditConfigurationEntity.setRoleEntities(auditConfigurationRoleService.findRoleById(auditConfigurationEntity.getId()));
-        }
-        return auditConfigurationEntities;
+        return auditConfigurationDao.selectByExample(auditConfigurationEntityExample);
     }
 
     @Override
-    public void addOrEditAuditConfigurationUser(Long id, Long[] roleIds, String loginUserName) {
-        AuditConfigurationRoleEntityExample auditConfigurationRoleEntityExample = new AuditConfigurationRoleEntityExample();
-        AuditConfigurationRoleEntityExample.Criteria criteria = auditConfigurationRoleEntityExample.createCriteria();
+    public void addOrEditAuditConfigurationUser(Long id, Long[] userIds, Integer[] sortIds, String loginUserName) {
+        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+        AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
         criteria.andAuditConfigurationIdEqualTo(id);
-        List<AuditConfigurationRoleEntity> auditConfigurationRoleEntities = auditConfigurationRoleService.findByExample(auditConfigurationRoleEntityExample);
-        if (auditConfigurationRoleEntities.size() > 0) {
-            auditConfigurationRoleService.remove(auditConfigurationRoleEntityExample);
+        List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
+        if (auditConfigurationUserEntities.size() > 0) {
+            auditConfigurationUserService.remove(auditConfigurationUserEntityExample);
         }
-        //去重
-        Set<Long> set = new HashSet<>(Arrays.asList(roleIds));
-        for (Long roleId : set) {
-            AuditConfigurationRoleEntity auditConfigurationUserEntity = new AuditConfigurationRoleEntity();
+        for (int i = 0; i < userIds.length; i++) {
+            AuditConfigurationUserEntity auditConfigurationUserEntity = new AuditConfigurationUserEntity();
             auditConfigurationUserEntity.setCreateBy(loginUserName);
             auditConfigurationUserEntity.setCreateTime(new Date());
             auditConfigurationUserEntity.setModifiedBy(loginUserName);
             auditConfigurationUserEntity.setModifiedTime(new Date());
             auditConfigurationUserEntity.setAuditConfigurationId(id);
-            auditConfigurationUserEntity.setRoleId(roleId);
-            auditConfigurationRoleService.add(auditConfigurationUserEntity);
+            auditConfigurationUserEntity.setUserId(userIds[i]);
+            auditConfigurationUserEntity.setSort(sortIds[i]);
+            auditConfigurationUserService.add(auditConfigurationUserEntity);
         }
     }
 
@@ -121,11 +118,29 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             criteria.andStatusEqualTo(status);
         if (model != null)
             criteria.andModelEqualTo(model);
-        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
-        for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
-            auditConfigurationEntity.setRoleEntities(auditConfigurationRoleService.findRoleById(auditConfigurationEntity.getId()));
+        return this.findByExample(auditConfigurationEntityExample);
+    }
+
+    @Override
+    public List<TreeNodeUtil> findTree() {
+        List<RoleEntity> roleEntities = roleService.findAll();
+        List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
+        for (RoleEntity roleEntity : roleEntities) {
+            List<UserEntity> userEntities = roleService.findUsersByIds(new Long[]{roleEntity.getId()});
+            List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
+            TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
+            firstTreeNodeUtil.setId(roleEntity.getId());
+            firstTreeNodeUtil.setLabel(roleEntity.getName());
+            firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
+            firstTreeNodeUtils.add(firstTreeNodeUtil);
+            for (UserEntity userEntity : userEntities) {
+                TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
+                secondTreeNodeUtil.setId(userEntity.getId());
+                secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                secondTreeNodeUtils.add(secondTreeNodeUtil);
+            }
         }
-        return auditConfigurationEntities;
+        return firstTreeNodeUtils;
     }
 
 }

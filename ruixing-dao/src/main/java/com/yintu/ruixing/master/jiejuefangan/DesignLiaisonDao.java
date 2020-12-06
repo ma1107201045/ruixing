@@ -4,6 +4,7 @@ import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface DesignLiaisonDao {
@@ -23,7 +24,9 @@ public interface DesignLiaisonDao {
 
     List<DesignLiaisonEntity> selectByYear(Integer year);
 
-    List<DesignLiaisonEntity> selectByExample(Integer year, String projectName);
+    List<DesignLiaisonEntity> selectByExample(Integer[] ids, Integer year, String projectName, Integer projectId);
 
     List<Integer> selectByDistinctProjectDate();
+
+    List<Map<String, Object>> selectProjectsByProjectStatus(Short projectStatus);
 }

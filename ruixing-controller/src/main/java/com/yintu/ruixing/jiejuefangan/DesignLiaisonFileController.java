@@ -113,13 +113,13 @@ public class DesignLiaisonFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> findRoles() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 3, (short) 1, (short) 1);
-        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
-        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
-        roleEntities = roleEntities
-                .stream()
-                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核角色成功", roleEntities);
+//        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
+//        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
+//        roleEntities = roleEntities
+//                .stream()
+//                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
+//                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationEntities);
     }
 
 

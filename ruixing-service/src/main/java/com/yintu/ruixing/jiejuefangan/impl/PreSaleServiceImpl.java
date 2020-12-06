@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.BeanUtil;
+import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.common.MessageEntity;
@@ -11,11 +12,15 @@ import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.master.jiejuefangan.PreSaleDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -186,7 +191,7 @@ public class PreSaleServiceImpl implements PreSaleService {
 
     @Override
     public List<PreSaleEntity> findByExample(Integer year, String projectName) {
-        return preSaleDao.selectByExample(year, projectName);
+        return preSaleDao.selectByExample(null, year, projectName);
     }
 
     @Override
@@ -217,7 +222,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(preSaleEntity.getProjectName());
                 secondTreeNodeUtil.setValue(String.valueOf(preSaleEntity.getId()));
-                Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(preSaleEntity).toString(), Map.class);
+                Map<String, Object> secondMap = cn.hutool.core.bean.BeanUtil.beanToMap(preSaleEntity);
                 secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
@@ -235,5 +240,37 @@ public class PreSaleServiceImpl implements PreSaleService {
             }
         }
         return firstTreeNodeUtils;
+    }
+
+    @Override
+    public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
+        //excel标题
+        String title = "售前技术支持-项目列表";
+        //excel表名
+        String[] headers = {"序号", "项目名称", "项目状态", "项目创建日期", "任务状态", "任务完成时间", "备注"};
+        //获取数据
+        List<PreSaleEntity> preSaleEntities = preSaleDao.selectByExample(ids, null, null);
+        preSaleEntities = preSaleEntities.stream()
+                .sorted(Comparator.comparing(PreSaleEntity::getId).reversed())
+                .collect(Collectors.toList());
+        //excel元素
+        String[][] content = new String[preSaleEntities.size()][headers.length];
+        for (int i = 0; i < preSaleEntities.size(); i++) {
+            PreSaleEntity preSaleEntity = preSaleEntities.get(i);
+            content[i][0] = preSaleEntity.getId().toString();
+            content[i][1] = preSaleEntity.getProjectName();
+            Short projectStatus = preSaleEntity.getProjectStatus();
+            content[i][2] = projectStatus == 1 ? "未知" : projectStatus == 2 ? "后续招标" : projectStatus == 3 ? "确定采用" : "关闭";
+            Short taskStatus = preSaleEntity.getTaskStatus();
+            content[i][3] = DateUtil.formatDate(preSaleEntity.getProjectDate());
+            content[i][4] = taskStatus == 1 ? "正在进行" : "已完成";
+            content[i][5] = DateUtil.formatDate(preSaleEntity.getTaskFinishDate());
+            content[i][6] = preSaleEntity.getRemark();
+        }
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 }

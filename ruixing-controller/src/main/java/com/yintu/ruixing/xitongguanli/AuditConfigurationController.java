@@ -4,10 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -26,16 +26,13 @@ public class AuditConfigurationController extends SessionController {
     @Autowired
     private AuditConfigurationService auditConfigurationService;
 
-    @Autowired
-    private RoleService roleService;
-
     @PostMapping
-    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, Long[] roleIds) {
+    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, Long[] userIds, Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.add(entity, roleIds);
+        auditConfigurationService.add(entity, userIds, sorts);
         return ResponseDataUtil.ok("添加审批流配置信息成功");
     }
 
@@ -49,10 +46,10 @@ public class AuditConfigurationController extends SessionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, Long[] roleIds) {
+    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, Long[] userIds, Integer[] sorts) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.edit(entity, roleIds);
+        auditConfigurationService.edit(entity, userIds, sorts);
         return ResponseDataUtil.ok("修改审批流配置信息成功");
     }
 
@@ -74,9 +71,10 @@ public class AuditConfigurationController extends SessionController {
         return ResponseDataUtil.ok("查询审批流配置信息列表成功", pageInfo);
     }
 
-    @GetMapping("/roles")
-    public Map<String, Object> findRoles() {
-        List<RoleEntity> roleEntities = roleService.findAll();
-        return ResponseDataUtil.ok("查询角色列表成功", roleEntities);
+    @GetMapping("/tree")
+    public Map<String, Object> findTree() {
+        List<TreeNodeUtil> treeNodeUtils = auditConfigurationService.findTree();
+        return ResponseDataUtil.ok("查询树信息列表成功", treeNodeUtils);
     }
+
 }

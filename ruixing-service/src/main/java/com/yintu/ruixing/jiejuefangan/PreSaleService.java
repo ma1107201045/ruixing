@@ -4,6 +4,8 @@ import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.PreSaleEntity;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -46,6 +48,8 @@ public interface PreSaleService extends BaseService<PreSaleEntity, Integer> {
     List<PreSaleEntity> findByYear(Integer year);
 
     /**
+     * 按照年份或者项目名称查询
+     *
      * @param year        年份
      * @param projectName 项目名称
      * @return
@@ -65,6 +69,15 @@ public interface PreSaleService extends BaseService<PreSaleEntity, Integer> {
      * @return 树信息集合
      */
     List<TreeNodeUtil> findByTree();
+
+
+    /**
+     * 导出项目列表
+     *
+     * @param outputStream 输出流
+     * @param ids          项目ID集
+     */
+    void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
 
 
 }

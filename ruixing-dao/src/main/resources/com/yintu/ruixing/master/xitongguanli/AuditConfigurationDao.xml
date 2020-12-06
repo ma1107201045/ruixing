@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao">
-    <resultMap id="BaseResultMap" type="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity">
+<mapper namespace="com.yintu.ruixing.master.xitongguanli.AuditConfigurationDao1">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.master.xitongguanli.AuditConfigurationEntity">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -10,6 +10,7 @@
         <result column="name_id" jdbcType="SMALLINT" property="nameId"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
         <result column="model" jdbcType="SMALLINT" property="model"/>
+        <result column="activate" jdbcType="SMALLINT" property="activate"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -72,7 +73,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, name_id, status, model
+        id, create_by, create_time, modified_by, modified_time, name_id, status, model, activate
     </sql>
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntityExample"
             resultMap="BaseResultMap">
@@ -106,18 +107,15 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity" useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity">
         insert into tb_audit_configuration (id, create_by, create_time,
                                             modified_by, modified_time, name_id,
-                                            status, model)
+                                            status, model, activate)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{nameId,jdbcType=SMALLINT},
-                #{status,jdbcType=SMALLINT}, #{model,jdbcType=SMALLINT})
+                #{status,jdbcType=SMALLINT}, #{model,jdbcType=SMALLINT}, #{activate,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity"
-            useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity">
         insert into tb_audit_configuration
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -144,6 +142,9 @@
             <if test="model != null">
                 model,
             </if>
+            <if test="activate != null">
+                activate,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -169,6 +170,9 @@
             </if>
             <if test="model != null">
                 #{model,jdbcType=SMALLINT},
+            </if>
+            <if test="activate != null">
+                #{activate,jdbcType=SMALLINT},
             </if>
         </trim>
     </insert>
@@ -206,6 +210,9 @@
             <if test="record.model != null">
                 model = #{record.model,jdbcType=SMALLINT},
             </if>
+            <if test="record.activate != null">
+                activate = #{record.activate,jdbcType=SMALLINT},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -220,7 +227,8 @@
         modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
         name_id = #{record.nameId,jdbcType=SMALLINT},
         status = #{record.status,jdbcType=SMALLINT},
-        model = #{record.model,jdbcType=SMALLINT}
+        model = #{record.model,jdbcType=SMALLINT},
+        activate = #{record.activate,jdbcType=SMALLINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -249,6 +257,9 @@
             <if test="model != null">
                 model = #{model,jdbcType=SMALLINT},
             </if>
+            <if test="activate != null">
+                activate = #{activate,jdbcType=SMALLINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -260,7 +271,8 @@
             modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             name_id       = #{nameId,jdbcType=SMALLINT},
             status        = #{status,jdbcType=SMALLINT},
-            model         = #{model,jdbcType=SMALLINT}
+            model         = #{model,jdbcType=SMALLINT},
+            activate      = #{activate,jdbcType=SMALLINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>
