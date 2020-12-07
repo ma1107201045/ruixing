@@ -428,7 +428,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 BiddingEntity biddingEntity = biddingService.findById(biddingId);
                 biddingFileEntity.setBiddingEntity(biddingEntity);
             }
-            List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByBiddingFileIdId(id);
+            List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByExample(biddingFileEntity.getId(), null, null, (short) 1);
             biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorEntities);
         }
         return biddingFileEntity == null ? new BiddingFileEntity() : biddingFileEntity;
@@ -438,7 +438,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     public List<BiddingFileEntity> findByBiddingIdAndNameAndType(Integer biddingId, String name, String type, Integer userId) {
         List<BiddingFileEntity> biddingFileEntities = biddingFileDao.selectByCondition(biddingId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
         for (BiddingFileEntity biddingFileEntity : biddingFileEntities) {
-            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorService.findByBiddingFileIdId(biddingFileEntity.getId()));
+            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorService.findByExample(biddingFileEntity.getId(), null, null, (short) 1));
         }
         return biddingFileEntities;
     }

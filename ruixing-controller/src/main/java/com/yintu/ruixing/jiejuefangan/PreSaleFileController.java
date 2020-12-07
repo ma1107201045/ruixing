@@ -91,15 +91,15 @@ public class PreSaleFileController extends SessionController {
     }
 
 
-    @GetMapping("/export/{ids}")
-    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "售前技术支持列表" + System.currentTimeMillis() + ".xlsx";
-        response.setContentType("application/octet-stream;charset=ISO8859-1");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-        response.addHeader("Pargam", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
-    }
+//    @GetMapping("/export/{ids}")
+//    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+//        String fileName = "售前技术支持列表" + System.currentTimeMillis() + ".xlsx";
+//        response.setContentType("application/octet-stream;charset=ISO8859-1");
+//        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+//        response.addHeader("Pargam", "no-cache");
+//        response.addHeader("Cache-Control", "no-cache");
+//        preSaleFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
+//    }
 
     @GetMapping("/{id}/log")
     @ResponseBody

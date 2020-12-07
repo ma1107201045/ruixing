@@ -247,11 +247,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<UserEntity> findUsersByIds(Long[] id) {
+    public List<UserEntity> findUsersByIds(Long id) {
         UserRoleEntityExample userRoleEntityExample = new UserRoleEntityExample();
         UserRoleEntityExample.Criteria criteria = userRoleEntityExample.createCriteria();
-        criteria.andRoleIdIn(Arrays.asList(id));
+        criteria.andRoleIdEqualTo(id);
         List<UserRoleEntity> userRoleEntities = userRoleService.findByExample(userRoleEntityExample);
+        if (userRoleEntities.isEmpty())
+            return new ArrayList<>();
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria1 = userEntityExample.createCriteria();
         criteria1.andIdIn(userRoleEntities.stream().map(UserRoleEntity::getUserId).collect(Collectors.toList()));

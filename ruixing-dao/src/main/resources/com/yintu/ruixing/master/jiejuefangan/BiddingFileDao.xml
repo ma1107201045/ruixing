@@ -14,12 +14,13 @@
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
-    type, release_status,user_id,audit_status,remark,bidding_id
+    type, release_status,user_id,audit_status,reason,remark,bidding_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -37,11 +38,12 @@
         insert into mro_bidding_file (id, create_by, create_time,
                                       modified_by, modified_time, name,
                                       path, upload_datetime, type,
-                                      release_status, user_id, audit_status, remark, bidding_id)
+                                      release_status, user_id, audit_status, reason, remark, bidding_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
                 #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER}, #{audit_status,jdbcType=SMALLINT},
+                #{reason,jdbcType=VARCHAR},
                 #{remark,jdbcType=VARCHAR},
                 #{biddingId,jdbcType=INTEGER})
     </insert>
@@ -79,11 +81,17 @@
             <if test="releaseStatus != null">
                 release_status,
             </if>
+            <if test="reason != null">
+                reason,
+            </if>
             <if test="userId != null">
                 user_id,
             </if>
             <if test="auditStatus != null">
                 audit_status,
+            </if>
+            <if test="reason != null">
+                reason,
             </if>
             <if test="remark != null">
                 remark,
@@ -128,6 +136,9 @@
             </if>
             <if test="auditStatus != null">
                 #{auditStatus,jdbcType=INTEGER},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -195,6 +206,7 @@
             release_status  = #{releaseStatus,jdbcType=SMALLINT},
             user_id         = #{userId,jdbcType=INTEGER},
             audit_status    = #{auditStatus,jdbcType=INTEGER},
+            reason          = #{reason,jdbcType=VARCHAR},
             remark          = #{remark,jdbcType=VARCHAR},
             bidding_id      = #{biddingId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -213,6 +225,7 @@
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
         <result column="bidding_id" jdbcType="INTEGER" property="biddingId"/>
         <association column="bidding_id" property="biddingEntity">
             <id column="b_id" jdbcType="INTEGER" property="id"/>
@@ -227,7 +240,7 @@
         </association>
     </resultMap>
     <sql id="Connect_Column_List">
-        bf.id as bf_id,bf.create_by, bf.create_time, bf.modified_by, bf.modified_time,  bf.name,  bf.path,  bf.upload_datetime,  bf.type,  bf.release_status,bf.user_id,bf.audit_status,bf.remark, bf.bidding_id,
+        bf.id as bf_id,bf.create_by, bf.create_time, bf.modified_by, bf.modified_time,  bf.name,  bf.path,  bf.upload_datetime,  bf.type,  bf.release_status,bf.user_id,bf.audit_status,bf.reason,bf.remark, bf.bidding_id,
         b.id as b_id , b.project_name, b.project_status, b.project_date, b.task_status, b.task_finish_date, b.bidder, b.railway_administration_id, b.pre_sale_id
     </sql>
     <sql id="Connect_condition_List">
@@ -253,8 +266,7 @@
     <select id="selectByCondition" resultMap="ConnectResultMap">
         select
         <include refid="Connect_Column_List"/>
-        from mro_bidding_file bf
-        inner join mro_bidding b on bf.bidding_id=b.id
+        from mro_bidding_file bf inner join mro_bidding b on bf.bidding_id=b.id
         <include refid="Connect_condition_List"/>
     </select>
 </mapper>

@@ -420,7 +420,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonId);
                 designLiaisonFileEntity.setDesignLiaisonEntity(designLiaisonEntity);
             }
-            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
+            List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), null, null, (short) 1);
             designLiaisonFileEntity.setDesignLiaisonFileAuditorEntities(designLiaisonFileAuditorEntities);
         }
         return designLiaisonFileEntity == null ? new DesignLiaisonFileEntity() : designLiaisonFileEntity;
@@ -438,7 +438,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     public List<DesignLiaisonFileEntity> findByDesignLiaisonIdIdAndNameAndType(Integer designLiaisonId, String name, String type, Integer userId) {
         List<DesignLiaisonFileEntity> designLiaisonFileEntities = designLiaisonFileDao.selectByCondition(designLiaisonId, null, name, type == null || "".equals(type) ? null : "输入文件".equals(type) ? (short) 1 : (short) 2, userId, (short) 2);
         for (DesignLiaisonFileEntity designLiaisonFileEntity : designLiaisonFileEntities) {
-            designLiaisonFileEntity.setDesignLiaisonFileAuditorEntities(designLiaisonFileAuditorService.findByDesignLiaisonFileId(designLiaisonFileEntity.getId()));
+            designLiaisonFileEntity.setDesignLiaisonFileAuditorEntities(designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), null, null, (short) 1));
         }
         return designLiaisonFileEntities;
     }

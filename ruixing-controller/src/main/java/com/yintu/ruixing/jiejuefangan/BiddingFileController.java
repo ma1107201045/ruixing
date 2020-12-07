@@ -1,14 +1,11 @@
 package com.yintu.ruixing.jiejuefangan;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
-import com.yintu.ruixing.xitongguanli.RoleEntity;
-import com.yintu.ruixing.xitongguanli.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 投招标文件技术支持
@@ -91,15 +90,15 @@ public class BiddingFileController extends SessionController {
         return ResponseDataUtil.ok("查询招投标技术支持以及文件信息列表成功", pageInfo);
     }
 
-    @GetMapping("/export/{ids}")
-    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "投招标技术支持列表" + System.currentTimeMillis() + ".xlsx";
-        response.setContentType("application/octet-stream;charset=ISO8859-1");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-        response.addHeader("Pargam", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        biddingFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
-    }
+//    @GetMapping("/export/{ids}")
+//    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+//        String fileName = "投招标技术支持列表" + System.currentTimeMillis() + ".xlsx";
+//        response.setContentType("application/octet-stream;charset=ISO8859-1");
+//        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+//        response.addHeader("Pargam", "no-cache");
+//        response.addHeader("Cache-Control", "no-cache");
+//        biddingFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
+//    }
 
     @GetMapping("/{id}/log")
     @ResponseBody

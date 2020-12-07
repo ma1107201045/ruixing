@@ -99,7 +99,6 @@ public class BiddingServiceImpl implements BiddingService {
         //项目日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
-                .append("   投标人：").append(entity.getBidder())
                 .append("   项目名称：").append(entity.getProjectName())
                 .append("   所属路局：").append(tieLuJuService.findByTljId(entity.getRailwayAdministrationId().longValue()).getTljName())
                 .append("   任务状态：").append(entity.getTaskStatus() == 1 ? "正在进行" : entity.getTaskStatus() == 2 ? "已完成" : "错误")
@@ -123,16 +122,15 @@ public class BiddingServiceImpl implements BiddingService {
             this.edit(entity);
             if (source.getProjectStatus() != 1 && entity.getProjectStatus() == 1)
                 throw new BaseRuntimeException("项目不能由其他状态改为正在投标");
-            if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3) {
+            if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3 && !entity.getProjectName().equals(source.getProjectName())) {
                 //更新项目消息
                 MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
-                        (short) 1, (short) 1, (short) 1, entity.getId(), null, null, null, null, null);
+                        (short) 1, (short) 2, (short) 1, entity.getId(), null, null, null, null, null);
                 List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
                 for (MessageEntity messageEntity : messageEntities) {
                     messageEntity.setModifiedBy(entity.getModifiedBy());
                     messageEntity.setModifiedTime(entity.getModifiedTime());
                     messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
-                    messageEntity.setStatus((short) 1);
                     messageService.edit(messageEntity);
                 }
             }
@@ -170,9 +168,6 @@ public class BiddingServiceImpl implements BiddingService {
             //项目日志记录
             BiddingEntity target = BeanUtil.compareFieldValues(source, entity, BiddingEntity.class);
             StringBuilder sb = new StringBuilder();
-            if (target.getBidder() != null) {
-                sb.append("   投标人：").append(entity.getBidder());
-            }
             if (target.getProjectName() != null) {
                 sb.append("   项目名称：").append(entity.getProjectName());
             }

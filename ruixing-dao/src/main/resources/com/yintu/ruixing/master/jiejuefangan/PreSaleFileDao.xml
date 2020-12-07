@@ -42,8 +42,8 @@
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
-                #{releaseStatus,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR}, #{user_id,jdbcType=INTEGER},
-                #{audit_status,jdbcType=SMALLINT},
+                #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER},
+                #{audit_status,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR},
                 #{remark,jdbcType=VARCHAR},
                 #{preSaleId,jdbcType=INTEGER})
     </insert>
@@ -128,14 +128,14 @@
             <if test="releaseStatus != null">
                 #{releaseStatus,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                #{reason,jdbcType=VARCHAR},
-            </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
             </if>
             <if test="auditStatus != null">
                 #{auditStatus,jdbcType=INTEGER},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -175,14 +175,14 @@
             <if test="releaseStatus != null">
                 release_status = #{releaseStatus,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                reason = #{reason,jdbcType=VARCHAR},
-            </if>
             <if test="userId != null">
                 user_id=#{userId,jdbcType=INTEGER},
             </if>
             <if test="auditStatus != null">
                 audit_status = #{auditStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
@@ -204,9 +204,9 @@
             upload_datetime = #{uploadDatetime,jdbcType=TIMESTAMP},
             type            = #{type,jdbcType=SMALLINT},
             release_status  = #{releaseStatus,jdbcType=SMALLINT},
-            reason          = #{reason,jdbcType=VARCHAR},
             user_id         = #{userId,jdbcType=INTEGER},
             audit_status    = #{auditStatus,jdbcType=INTEGER},
+            reason          = #{reason,jdbcType=VARCHAR},
             remark          = #{remark,jdbcType=VARCHAR},
             pre_sale_id     = #{preSaleId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -223,10 +223,10 @@
         <result column="upload_datetime" jdbcType="TIMESTAMP" property="uploadDatetime"/>
         <result column="type" jdbcType="SMALLINT" property="type"/>
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
         <association column="pre_sale_id" property="preSaleEntity">
             <id column="ps_id" jdbcType="INTEGER" property="id"/>

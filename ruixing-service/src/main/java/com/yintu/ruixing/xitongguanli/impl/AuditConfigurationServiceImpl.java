@@ -137,7 +137,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<RoleEntity> roleEntities = roleService.findAll();
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
         for (RoleEntity roleEntity : roleEntities) {
-            List<UserEntity> userEntities = roleService.findUsersByIds(new Long[]{roleEntity.getId()});
+            List<UserEntity> userEntities = roleService.findUsersByIds(roleEntity.getId());
             List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(roleEntity.getId());

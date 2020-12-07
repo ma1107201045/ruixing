@@ -118,7 +118,7 @@ public class PreSaleServiceImpl implements PreSaleService {
                 throw new BaseRuntimeException("项目不能由其他状态改为未知状态");
 
             //售前技术支持项目状态为3时发送消息
-            if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3) {
+            if (entity.getProjectStatus() == 3 && source.getProjectStatus() == 3 && !entity.getProjectName().equals(source.getProjectName())) {
                 //更新项目消息
                 MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
                         (short) 1, (short) 1, (short) 1, entity.getId(), null, null, null, null, null);
@@ -127,7 +127,6 @@ public class PreSaleServiceImpl implements PreSaleService {
                     messageEntity.setModifiedBy(entity.getModifiedBy());
                     messageEntity.setModifiedTime(entity.getModifiedTime());
                     messageEntity.setContext("“" + entity.getProjectName() + "”项目已中标，请关注项目进展情况，及时进行设计联络！");
-                    messageEntity.setStatus((short) 1);
                     messageService.edit(messageEntity);
                 }
             }
