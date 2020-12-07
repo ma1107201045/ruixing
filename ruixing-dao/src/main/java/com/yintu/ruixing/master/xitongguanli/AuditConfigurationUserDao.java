@@ -2,9 +2,8 @@ package com.yintu.ruixing.master.xitongguanli;
 
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AuditConfigurationUserDao {
     long countByExample(AuditConfigurationUserEntityExample example);

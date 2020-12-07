@@ -64,9 +64,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds, Integer[] sorts) {
+    public void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sorts) {
         this.add(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, sorts, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roles, userIds, sorts, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
@@ -75,9 +75,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] userIds, Integer[] sorts) {
+    public void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sorts) {
         this.edit(auditConfigurationEntity);
-        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), userIds, sorts, auditConfigurationEntity.getModifiedBy());
+        this.addOrEditAuditConfigurationUser(auditConfigurationEntity.getId(), roles, userIds, sorts, auditConfigurationEntity.getModifiedBy());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public void addOrEditAuditConfigurationUser(Long id, Long[] userIds, Integer[] sortIds, String loginUserName) {
+    public void addOrEditAuditConfigurationUser(Long id, Long[] roles, Long[] userIds, Integer[] sortIds, String loginUserName) {
         AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
         AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
         criteria.andAuditConfigurationIdEqualTo(id);
@@ -101,6 +101,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             auditConfigurationUserEntity.setModifiedBy(loginUserName);
             auditConfigurationUserEntity.setModifiedTime(new Date());
             auditConfigurationUserEntity.setAuditConfigurationId(id);
+            auditConfigurationUserEntity.setRoleId(roles[i]);
             auditConfigurationUserEntity.setUserId(userIds[i]);
             auditConfigurationUserEntity.setSort(sortIds[i]);
             auditConfigurationUserService.add(auditConfigurationUserEntity);

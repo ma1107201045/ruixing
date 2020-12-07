@@ -24,6 +24,8 @@ public class AuditConfigurationUserEntity implements Serializable {
 
     private Long auditConfigurationId;
 
+    private Long roleId;
+
     private Long userId;
 
     private Integer sort;

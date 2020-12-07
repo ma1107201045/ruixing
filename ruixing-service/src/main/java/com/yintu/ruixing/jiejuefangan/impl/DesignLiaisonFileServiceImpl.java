@@ -297,7 +297,6 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
             //查询此文件的其余审核人状态改变
             designLiaisonFileAuditorEntities.forEach(item -> {
                 item.setIsPass(isPass);
-                item.setReason(isPass == 2 ? reason : null);
                 designLiaisonFileAuditorService.edit(item);
             });
 

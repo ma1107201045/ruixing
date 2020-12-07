@@ -8,6 +8,7 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="audit_configuration_id" jdbcType="BIGINT" property="auditConfigurationId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
     </resultMap>
@@ -72,11 +73,10 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, audit_configuration_id, user_id,
-    sort
+        id, create_by, create_time, modified_by, modified_time, audit_configuration_id, role_id,
+    user_id, sort
     </sql>
-    <select id="selectByExample"
-            parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample"
+    <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample"
             resultMap="BaseResultMap">
         select
         <if test="distinct">
@@ -102,8 +102,7 @@
         from tb_audit_configuration_user
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <delete id="deleteByExample"
-            parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample">
+    <delete id="deleteByExample" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample">
         delete from tb_audit_configuration_user
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
@@ -112,11 +111,11 @@
     <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity">
         insert into tb_audit_configuration_user (id, create_by, create_time,
                                                  modified_by, modified_time, audit_configuration_id,
-                                                 user_id, sort)
+                                                 role_id, user_id, sort)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
                 #{auditConfigurationId,jdbcType=BIGINT},
-                #{userId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER})
+                #{roleId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{sort,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity">
         insert into tb_audit_configuration_user
@@ -138,6 +137,9 @@
             </if>
             <if test="auditConfigurationId != null">
                 audit_configuration_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
             </if>
             <if test="userId != null">
                 user_id,
@@ -165,6 +167,9 @@
             <if test="auditConfigurationId != null">
                 #{auditConfigurationId,jdbcType=BIGINT},
             </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=BIGINT},
+            </if>
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
             </if>
@@ -173,8 +178,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample"
-            parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample"
+    <select id="countByExample" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample"
             resultType="java.lang.Long">
         select count(*) from tb_audit_configuration_user
         <if test="_parameter != null">
@@ -202,6 +206,9 @@
             <if test="record.auditConfigurationId != null">
                 audit_configuration_id = #{record.auditConfigurationId,jdbcType=BIGINT},
             </if>
+            <if test="record.roleId != null">
+                role_id = #{record.roleId,jdbcType=BIGINT},
+            </if>
             <if test="record.userId != null">
                 user_id = #{record.userId,jdbcType=BIGINT},
             </if>
@@ -221,6 +228,7 @@
         modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
         modified_time = #{record.modifiedTime,jdbcType=TIMESTAMP},
         audit_configuration_id = #{record.auditConfigurationId,jdbcType=BIGINT},
+        role_id = #{record.roleId,jdbcType=BIGINT},
         user_id = #{record.userId,jdbcType=BIGINT},
         sort = #{record.sort,jdbcType=INTEGER}
         <if test="_parameter != null">
@@ -246,6 +254,9 @@
             <if test="auditConfigurationId != null">
                 audit_configuration_id = #{auditConfigurationId,jdbcType=BIGINT},
             </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=BIGINT},
+            </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
             </if>
@@ -262,6 +273,7 @@
             modified_by            = #{modifiedBy,jdbcType=VARCHAR},
             modified_time          = #{modifiedTime,jdbcType=TIMESTAMP},
             audit_configuration_id = #{auditConfigurationId,jdbcType=BIGINT},
+            role_id                = #{roleId,jdbcType=BIGINT},
             user_id                = #{userId,jdbcType=BIGINT},
             sort                   = #{sort,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}

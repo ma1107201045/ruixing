@@ -289,7 +289,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
             }
             //查询此文件的其余审核人状态改变
             biddingFileAuditorEntities.forEach(item -> {
-                item.setReason(isPass == 2 ? reason : null);
                 biddingFileAuditorService.edit(item);
             });
             BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());

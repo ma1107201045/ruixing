@@ -40,9 +40,9 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="tb_audit_configuration"
-               domainObjectName="AuditConfigurationEntity1"
-               mapperName="AuditConfigurationDao1"
+        <table tableName="tb_audit_configuration_user"
+               domainObjectName="AuditConfigurationUserEntity1"
+               mapperName="AuditConfigurationUserDao1"
                enableCountByExample="true"
                enableDeleteByExample="true"
                enableUpdateByExample="true"

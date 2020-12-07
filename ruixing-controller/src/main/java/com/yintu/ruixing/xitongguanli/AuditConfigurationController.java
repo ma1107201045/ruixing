@@ -27,12 +27,12 @@ public class AuditConfigurationController extends SessionController {
     private AuditConfigurationService auditConfigurationService;
 
     @PostMapping
-    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, Long[] userIds, Integer[] sorts) {
+    public Map<String, Object> add(@Validated AuditConfigurationEntity entity, Long[] roles, Long[] userIds, Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.add(entity, userIds, sorts);
+        auditConfigurationService.add(entity, roles, userIds, sorts);
         return ResponseDataUtil.ok("添加审批流配置信息成功");
     }
 
@@ -46,10 +46,10 @@ public class AuditConfigurationController extends SessionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, Long[] userIds, Integer[] sorts) {
+    public Map<String, Object> edit(@PathVariable Long id, @Validated AuditConfigurationEntity entity, Long[] roles, Long[] userIds, Integer[] sorts) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        auditConfigurationService.edit(entity, userIds, sorts);
+        auditConfigurationService.edit(entity, roles, userIds, sorts);
         return ResponseDataUtil.ok("修改审批流配置信息成功");
     }
 
