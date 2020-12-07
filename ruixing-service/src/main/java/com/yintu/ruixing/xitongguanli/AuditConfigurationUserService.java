@@ -16,6 +16,8 @@ public interface AuditConfigurationUserService extends BaseService<AuditConfigur
     List<AuditConfigurationUserEntity> findByExample(AuditConfigurationUserEntityExample auditConfigurationUserEntityExample);
 
     List<UserEntity> findUsersById(Long auditConfigurationId);
+
+    List<Long> findDistinctRoleId(Long auditConfigurationId);
 }
 
 

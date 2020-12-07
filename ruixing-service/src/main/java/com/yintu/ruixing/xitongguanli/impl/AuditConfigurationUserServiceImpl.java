@@ -70,4 +70,9 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
                 .collect(Collectors.toList());
         return userEntities;
     }
+
+    @Override
+    public List<Long> findDistinctRoleId(Long auditConfigurationId) {
+        return auditConfigurationUserDao.selectDistinctRoleId(auditConfigurationId);
+    }
 }

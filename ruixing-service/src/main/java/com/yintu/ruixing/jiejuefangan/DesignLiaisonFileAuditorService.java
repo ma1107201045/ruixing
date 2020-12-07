@@ -12,7 +12,7 @@ import java.util.List;
 public interface DesignLiaisonFileAuditorService extends BaseService<DesignLiaisonFileAuditorEntity, Integer> {
     List<DesignLiaisonFileAuditorEntity> findByDesignLiaisonFileId(Integer designLiaisonFileId);
 
-    List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck);
+    List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId,  Integer sort, Short activate);
 
     void addMuch(List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities);
 

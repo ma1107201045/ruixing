@@ -17,16 +17,18 @@ public interface DesignLiaisonFileService extends BaseService<DesignLiaisonFileE
     /**
      * @param designLiaisonFileEntity 设计联络文件实体类
      * @param auditorIds              审核人ids
+     * @param sorts                   ...
      * @param trueName                当前登录用户真实姓名
      */
-    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, String trueName);
+    void add(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, Integer[] sorts, String trueName);
 
     /**
      * @param designLiaisonFileEntity 设计联络文件实体类
      * @param auditorIds              审核人ids
+     * @param sorts                   ...
      * @param trueName                当前登录用户真实姓名
      */
-    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, String trueName);
+    void edit(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, Integer[] sorts, String trueName);
 
     /**
      * 批量删除

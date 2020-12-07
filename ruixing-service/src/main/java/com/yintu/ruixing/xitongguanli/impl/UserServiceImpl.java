@@ -98,6 +98,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserEntity> findByIds(List<Long> ids) {
+        UserEntityExample userEntityExample = new UserEntityExample();
+        UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
+        criteria.andIdIn(ids);
+        return userDao.selectByExample(userEntityExample);
+    }
+
+    @Override
     public List<UserEntity> findAll() {
         UserEntityExample userEntityExample = new UserEntityExample();
         return userDao.selectByExample(userEntityExample);

@@ -77,4 +77,10 @@ public class AuditConfigurationController extends SessionController {
         return ResponseDataUtil.ok("查询树信息列表成功", treeNodeUtils);
     }
 
+    @GetMapping("/{id}/roles")
+    public Map<String, Object> findTree(@PathVariable Long id) {
+        List<TreeNodeUtil> treeNodeUtils = auditConfigurationService.findTreeById(id);
+        return ResponseDataUtil.ok("查询树信息列表成功", treeNodeUtils);
+    }
+
 }

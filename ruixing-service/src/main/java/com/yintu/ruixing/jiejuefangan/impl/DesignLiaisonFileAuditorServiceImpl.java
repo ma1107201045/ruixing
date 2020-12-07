@@ -45,8 +45,8 @@ public class DesignLiaisonFileAuditorServiceImpl implements DesignLiaisonFileAud
     }
 
     @Override
-    public List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck) {
-        return designLiaisonFileAuditorDao.selectByExample(designLiaisonFileId, auditorId, isCheck);
+    public List<DesignLiaisonFileAuditorEntity> findByExample(Integer designLiaisonFileId, Integer auditorId, Integer sort, Short activate) {
+        return designLiaisonFileAuditorDao.selectByExample(designLiaisonFileId, auditorId, sort, activate);
     }
 
     @Override

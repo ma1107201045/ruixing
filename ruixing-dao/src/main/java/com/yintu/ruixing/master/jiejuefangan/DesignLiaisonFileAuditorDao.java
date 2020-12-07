@@ -21,7 +21,7 @@ public interface DesignLiaisonFileAuditorDao {
 
     List<DesignLiaisonFileAuditorEntity> selectByDesignLiaisonFileId(Integer designLiaisonFileId);
 
-    List<DesignLiaisonFileAuditorEntity> selectByExample(Integer designLiaisonFileId, Integer auditorId, Short isCheck);
+    List<DesignLiaisonFileAuditorEntity> selectByExample(Integer designLiaisonFileId, Integer auditorId, Integer sort, Short activate);
 
     void insertMuch(List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities);
 

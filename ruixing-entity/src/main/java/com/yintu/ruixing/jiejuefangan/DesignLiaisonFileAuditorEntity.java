@@ -13,12 +13,12 @@ import java.io.Serializable;
 public class DesignLiaisonFileAuditorEntity implements Serializable {
     private static final long serialVersionUID = 441858108475262315L;
     private Integer id;
-    @NotNull
+
     private Integer designLiaisonFileId;
-    @NotNull
+
     private Integer auditorId;
-    @NotNull
-    private Short isPass;
+
+    private Integer sort;
 
     private Short activate;
 

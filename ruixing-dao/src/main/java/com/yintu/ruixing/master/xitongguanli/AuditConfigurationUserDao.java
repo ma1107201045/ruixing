@@ -2,7 +2,9 @@ package com.yintu.ruixing.master.xitongguanli;
 
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface AuditConfigurationUserDao {
@@ -27,4 +29,6 @@ public interface AuditConfigurationUserDao {
     int updateByPrimaryKeySelective(AuditConfigurationUserEntity record);
 
     int updateByPrimaryKey(AuditConfigurationUserEntity record);
+
+    List<Long> selectDistinctRoleId(Long auditConfigurationId);
 }

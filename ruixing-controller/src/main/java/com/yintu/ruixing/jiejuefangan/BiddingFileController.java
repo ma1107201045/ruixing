@@ -38,13 +38,15 @@ public class BiddingFileController extends SessionController {
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> add(@Validated BiddingFileEntity entity,
+                                   @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                   @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         entity.setUserId(this.getLoginUserId().intValue());
-        biddingFileService.add(entity, auditorIds, this.getLoginTrueName());
+        biddingFileService.add(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加招投标技术支持文件信息成功");
     }
 
@@ -58,10 +60,12 @@ public class BiddingFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated BiddingFileEntity entity,
+                                    @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                    @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        biddingFileService.edit(entity, auditorIds, this.getLoginTrueName());
+        biddingFileService.edit(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改招投标技术支持文件信息成功");
     }
 

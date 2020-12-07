@@ -35,13 +35,15 @@ public class DesignLiaisonFileController extends SessionController {
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity,
+                                   @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                   @RequestParam(value = "sorts", required = false) Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         entity.setUserId(this.getLoginUserId().intValue());
-        designLiaisonFileService.add(entity, auditorIds, this.getLoginTrueName());
+        designLiaisonFileService.add(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加设计联络及后续技术交流文件信息成功");
     }
 
@@ -55,8 +57,10 @@ public class DesignLiaisonFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
-        designLiaisonFileService.edit(entity, auditorIds, this.getLoginTrueName());
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity,
+                                    @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                    @RequestParam(value = "sorts", required = false) Integer[] sorts) {
+        designLiaisonFileService.edit(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改设计联络及后续技术交流文件信息成功");
     }
 

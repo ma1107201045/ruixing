@@ -278,4 +278,9 @@
             sort                   = #{sort,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <select id="selectDistinctRoleId" resultType="java.lang.Long">
+        select distinct role_id
+        from tb_audit_configuration_user
+        where audit_configuration_id = #{auditConfigurationId,jdbcType=BIGINT}
+    </select>
 </mapper>

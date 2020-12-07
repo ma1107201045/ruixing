@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author mlf
@@ -25,6 +26,8 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     private AuditConfigurationUserService auditConfigurationUserService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -146,6 +149,37 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                 secondTreeNodeUtil.setId(userEntity.getId());
                 secondTreeNodeUtil.setLabel(userEntity.getTrueName());
                 secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
+                secondTreeNodeUtils.add(secondTreeNodeUtil);
+            }
+        }
+        return firstTreeNodeUtils;
+    }
+
+    @Override
+    public List<TreeNodeUtil> findTreeById(Long id) {
+        List<Long> roleIds = auditConfigurationUserService.findDistinctRoleId(id);
+
+        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+        AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
+        criteria.andAuditConfigurationIdEqualTo(id);
+
+
+        List<RoleEntity> roleEntities = roleService.findByIds(roleIds);
+        List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
+        for (RoleEntity roleEntity : roleEntities) {
+            criteria.andRoleIdEqualTo(roleEntity.getId());
+            List<Long> userIds = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample).stream().map(AuditConfigurationUserEntity::getId).collect(Collectors.toList());
+            List<UserEntity> userEntities = userService.findByIds(userIds);
+            List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
+            TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
+            firstTreeNodeUtil.setId(roleEntity.getId());
+            firstTreeNodeUtil.setLabel(roleEntity.getName());
+            firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
+            firstTreeNodeUtils.add(firstTreeNodeUtil);
+            for (UserEntity userEntity : userEntities) {
+                TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
+                secondTreeNodeUtil.setId(userEntity.getId());
+                secondTreeNodeUtil.setLabel(userEntity.getTrueName());
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
             }
         }

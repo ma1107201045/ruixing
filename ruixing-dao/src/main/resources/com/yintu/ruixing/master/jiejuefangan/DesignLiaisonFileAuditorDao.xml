@@ -7,10 +7,9 @@
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="activate" jdbcType="SMALLINT" property="activate"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, design_liaison_file_id, auditor_id,sort, activate, reason
+        id, design_liaison_file_id, auditor_id,sort, activate
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -25,9 +24,9 @@
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         insert into mro_design_liaison_file_auditor (id, design_liaison_file_id, auditor_id, sort,
-                                                     activate, reason)
+                                                     activate)
         values (#{id,jdbcType=INTEGER}, #{designLiaisonFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
-                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR})
+                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity"
             useGeneratedKeys="true" keyProperty="id">
@@ -48,9 +47,6 @@
             <if test="activate != null">
                 activate,
             </if>
-            <if test="reason != null">
-                reason,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -67,9 +63,6 @@
             </if>
             <if test="activate != null">
                 #{activate,jdbcType=SMALLINT},
-            </if>
-            <if test="reason != null">
-                #{reason,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -89,9 +82,6 @@
             <if test="activate != null">
                 activate = #{activate,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                reason = #{reason,jdbcType=VARCHAR},
-            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -99,8 +89,7 @@
         update mro_design_liaison_file_auditor
         set design_liaison_file_id = #{designLiaisonFileId,jdbcType=INTEGER},
             auditor_id             = #{auditorId,jdbcType=INTEGER},
-            activate                = #{activate,jdbcType=SMALLINT},
-            reason                 = #{reason,jdbcType=VARCHAR}
+            activate               = #{activate,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -116,7 +105,6 @@
                 #{designLiaisonFileAuditorEntity.auditorId,jdbcType=INTEGER},
                 #{designLiaisonFileAuditorEntity.sort,jdbcType=INTEGER},
                 #{designLiaisonFileAuditorEntity.activate,jdbcType=SMALLINT},
-                #{designLiaisonFileAuditorEntity.reason,jdbcType=VARCHAR},
             </trim>
         </foreach>
     </insert>
@@ -143,13 +131,11 @@
             <if test="auditorId!=null">
                 and auditor_id = #{auditorId,jdbcType=INTEGER}
             </if>
-            <if test="isCheck!=null">
-                <if test="isCheck==1">
-                    and ( activate = 2 or activate=3)
-                </if>
-                <if test="isCheck==0">
-                    and activate = 1
-                </if>
+            <if test="sort!=null">
+                and sort = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test="activate!=null">
+                and activate = #{activate,jdbcType=SMALLINT}
             </if>
         </where>
     </select>
