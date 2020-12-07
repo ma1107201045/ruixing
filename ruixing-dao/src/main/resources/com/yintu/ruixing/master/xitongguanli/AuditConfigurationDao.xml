@@ -106,7 +106,8 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into tb_audit_configuration (id, create_by, create_time,
                                             modified_by, modified_time, name_id,
                                             status, model)
@@ -114,7 +115,9 @@
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{nameId,jdbcType=SMALLINT},
                 #{status,jdbcType=SMALLINT}, #{model,jdbcType=SMALLINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntity"
+            useGeneratedKeys="true"
+            keyProperty="id">
         insert into tb_audit_configuration
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

@@ -118,8 +118,26 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
             }
         }
         //售前技术支持或者投招标技术支持消息更改
-
-
+        String biddingId = String.valueOf(entity.getBiddingId());
+        String flag = biddingId.substring(0, 1);
+        String projectId = biddingId.substring(1);
+        MessageEntity messageExample = null;
+        if ("1".equals(flag)) {
+            messageExample = new MessageEntity(null, null, null, null, null, null,
+                    (short) 1, (short) 1, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+        } else if ("2".equals(flag)) {
+            messageExample = new MessageEntity(null, null, null, null, null, null,
+                    (short) 1, (short) 2, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+        }
+        if (messageExample != null) {
+            List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+            for (MessageEntity messageEntity : messageEntities) {
+                messageEntity.setModifiedBy(entity.getModifiedBy());
+                messageEntity.setModifiedTime(entity.getModifiedTime());
+                messageEntity.setStatus((short) 3);
+                messageService.edit(messageEntity);
+            }
+        }
         //项目日志记录
         StringBuilder sb = new StringBuilder();
         sb.append("   项目创建日期：").append(DateUtil.formatDate(entity.getProjectDate()))
@@ -211,7 +229,6 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 }
             }
             if (entity.getChangeStatus() != 3 && source.getChangeStatus() == 2) {
-                //消息
                 MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
                         (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
                 List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
@@ -222,7 +239,6 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 }
             }
             if (entity.getChangeStatus() == 2 && source.getChangeStatus() == 2 && !entity.getProjectName().equals(source.getProjectName())) {
-                //消息
                 MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
                         (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
                 List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
@@ -235,6 +251,29 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                     }
                 }
             }
+
+            //售前技术支持或者投招标技术支持消息更改
+            String biddingId = String.valueOf(entity.getBiddingId());
+            String flag = biddingId.substring(0, 1);
+            String projectId = biddingId.substring(1);
+            MessageEntity messageExample = null;
+            if ("1".equals(flag)) {
+                messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 1, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+            } else if ("2".equals(flag)) {
+                messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 2, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+            }
+            if (messageExample != null) {
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    messageEntity.setModifiedBy(entity.getModifiedBy());
+                    messageEntity.setModifiedTime(entity.getModifiedTime());
+                    messageEntity.setStatus((short) 3);
+                    messageService.edit(messageEntity);
+                }
+            }
+
             //项目日志记录
             DesignLiaisonEntity target = BeanUtil.compareFieldValues(source, entity, DesignLiaisonEntity.class);
             StringBuilder sb = new StringBuilder();
