@@ -1,5 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.QuXianService;
 import com.yintu.ruixing.master.guzhangzhenduan.QuDuanBaseDao;
@@ -27,9 +28,10 @@ public class QuXianServiceImpl implements QuXianService {
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
     @Autowired
     private QuDuanBaseDao quDuanBaseDao;
-
     @Autowired
     private QuDuanBaseService quDuanBaseService;
+    @Autowired
+    private MenXianService menXianService;
 
     /* @Override
      public List<SheBeiEntity> findSheBeiByCid(Integer id) {
@@ -41,11 +43,21 @@ public class QuXianServiceImpl implements QuXianService {
         return quXianDao.findQuDuanById(id);
     }
 
+    @Override
+    public String findMinNumber(Integer czid, Integer qdid, Integer mid) {
+        return menXianService.findMinNumber(czid,qdid,mid);
+    }
+
+    @Override
+    public String findMaxNumber(Integer czid, Integer qdid, Integer mid) {
+        return menXianService.findMaxNumber(czid,qdid,mid);
+    }
+
     /* @Override
-     public List<QuDuanInfoEntity> findQuDuanDataByTime(Date time) {
-         return quDuanInfoDao.findQuDuanDataByTime(time);
-     }
- */
+         public List<QuDuanInfoEntity> findQuDuanDataByTime(Date time) {
+             return quDuanInfoDao.findQuDuanDataByTime(time);
+         }
+     */
     @Override
     public List<QuDuanBaseEntity> findQuDuanDataByTime1(Date time) {
         return quXianDao.findQuDuanDataByTime1(time);
@@ -122,7 +134,7 @@ public class QuXianServiceImpl implements QuXianService {
             Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
             return quDuanInfoDaoV2.findQuDuanShiShiData(shuxingname, qdIds, qdid, tableName);
         } else {
-            return new ArrayList<>();
+            throw new BaseRuntimeException("暂无数据");
         }
     }
 
@@ -132,7 +144,7 @@ public class QuXianServiceImpl implements QuXianService {
             Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
             return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, qdIds, qdid, tableName);
         } else {
-            return new ArrayList<>();
+             throw new BaseRuntimeException("暂无数据");
         }
     }
 

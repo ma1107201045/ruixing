@@ -17,6 +17,29 @@
         id,cz_id, quduan_id, property_id,  superior_limit_value,superior_limit_value_unit, lower_limit_value, lower_limit_value_unit, outburst_value,
     outburst_value_unit
     </sql>
+
+    <!--根据车站id 区段id 和属性id  查询最小值-->
+    <select id="findMinNumber"  resultType="java.lang.String">
+        select
+        lower_limit_value
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+        and quduan_id = #{qdid,jdbcType=INTEGER}
+        and property_id = #{mid,jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据车站id 区段id 和属性id  查询最大值-->
+    <select id="findMaxNumber"  resultType="java.lang.String">
+        select
+        superior_limit_value
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+        and quduan_id = #{qdid,jdbcType=INTEGER}
+        and property_id = #{mid,jdbcType=INTEGER}
+    </select>
+
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
