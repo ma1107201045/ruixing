@@ -45,7 +45,7 @@ public class POIUtils {
                 //获得当前sheet的结束行
                 int lastRowNum = sheet.getLastRowNum();//总行数
                 //循环除了第二行的所有行
-                for (int rowNum = firstRowNum + 2; rowNum < lastRowNum; rowNum++) {
+                for (int rowNum = firstRowNum + 2; rowNum < lastRowNum + 1; rowNum++) {
                     //获得当前行
                     Row row = sheet.getRow(rowNum);
                     //获得当前行的开始列

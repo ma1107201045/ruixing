@@ -230,6 +230,21 @@
         <include refid="Base_Column_List"/>
         from mro_design_liaison
     </select>
+
+    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_design_liaison
+        where YEAR(project_date) = #{year,jdbcType=INTEGER}
+        ORDER BY id
+    </select>
+
+    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
+        select DISTINCT YEAR(project_date)
+        from mro_design_liaison
+        ORDER BY YEAR(project_date)
+    </select>
+
     <resultMap id="ConnectResultMap" type="com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity">
         <id column="dl_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
@@ -253,35 +268,38 @@
         </association>
     </resultMap>
     <sql id="Connect_Column_List">
-        dl.id as dl_id, dl.create_by, dl.create_time, dl.modified_by, dl.modified_time, dl.project_name, dl.project_status,dl.project_date, dl.task_status, dl.task_finish_date, dl.remark, dl.meeting_status, dl.change_status,dl.bidder, dl.railway_administration_id, dl.bidding_id
+        dl.id as dl_id, dl.create_by, dl.create_time, dl.modified_by, dl.modified_time, dl.project_name, dl.project_status,dl.project_date, dl.task_status, dl.task_finish_date, dl.remark, dl.meeting_status, dl.change_status,dl.bidder, dl.railway_administration_id, dl.bidding_id,
         t.tlj_id as t_id,t.tlj_name
     </sql>
-
-    <select id="selectByYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByExample" resultMap="ConnectResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from mro_design_liaison
-        where YEAR(project_date) = #{year,jdbcType=INTEGER}
-        ORDER BY id
-    </select>
-
-    <select id="selectByDistinctProjectDate" resultType="java.lang.Integer">
-        select DISTINCT YEAR(project_date)
-        from mro_design_liaison
-        ORDER BY YEAR(project_date)
-    </select>
-    <select id="selectByExample" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        <include refid="Connect_Column_List"/>
         from mro_design_liaison dl inner join mro_tieluju t on dl.railway_administration_id=t.tlj_id
         <where>
+            <if test="ids!=null and ids.length > 0">
+                and dl.id in
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
             <if test="year!=null">
-                YEAR(dl.project_date) = #{year,jdbcType=INTEGER}
+                and YEAR(dl.project_date) = #{year,jdbcType=INTEGER}
             </if>
             <if test="projectName!=null">
                 and dl.project_name like concat('%',#{projectName,jdbcType=VARCHAR},'%')
             </if>
+            <if test="projectId!=null">
+                and dl.bidding_id =#{projectId,jdbcType=VARCHAR}
+            </if>
         </where>
     </select>
-
+    <select id="selectProjectsByProjectStatus" resultType="java.util.Map">
+        select CONVERT(CONCAT('1', id) + 0, SIGNED) as id, project_name as projectName
+        from mro_pre_sale
+        where project_status = #{projectStatus,jdbcType=SMALLINT}
+        UNION ALL
+        select CONVERT(CONCAT('2', id) + 0, SIGNED) as id, project_name as projectName
+        from mro_bidding
+        where project_status = #{projectStatus,jdbcType=SMALLINT}
+    </select>
 </mapper>

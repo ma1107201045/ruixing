@@ -1,21 +1,28 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.util.BeanUtil;
+import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuService;
-import com.yintu.ruixing.jiejuefangan.*;
+import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
+import com.yintu.ruixing.jiejuefangan.DesignLiaisonService;
+import com.yintu.ruixing.jiejuefangan.SolutionLogEntity;
+import com.yintu.ruixing.jiejuefangan.SolutionLogService;
 import com.yintu.ruixing.master.jiejuefangan.DesignLiaisonDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -68,24 +75,68 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
     @Override
     public void add(DesignLiaisonEntity entity, String trueName) {
         this.add(entity);
-        List<UserEntity> userEntities = userService.findByTruename(null);
-        for (UserEntity userEntity : userEntities) {
-            //消息
-            MessageEntity messageEntity = new MessageEntity();
-            messageEntity.setCreateBy(entity.getCreateBy());
-            messageEntity.setCreateTime(entity.getCreateTime());
-            messageEntity.setModifiedBy(entity.getModifiedBy());
-            messageEntity.setModifiedTime(entity.getModifiedTime());
-            messageEntity.setTitle("项目");
-            messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目进展情况，及时确认产品和服务需求，在SAP中下达！");
-            messageEntity.setType((short) 1);
-            messageEntity.setSmallType((short) 3);
-            messageEntity.setMessageType((short) 1);
-            messageEntity.setProjectId(entity.getId());
-            messageEntity.setSenderId(null);
-            messageEntity.setReceiverId(userEntity.getId().intValue());
-            messageEntity.setStatus((short) 1);
-            messageService.sendMessage(messageEntity);
+        if (entity.getProjectStatus() != 3) {
+            List<UserEntity> userEntities = userService.findByTruename(null);
+            for (UserEntity userEntity : userEntities) {
+                //消息
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(entity.getCreateBy());
+                messageEntity.setCreateTime(entity.getCreateTime());
+                messageEntity.setModifiedBy(entity.getModifiedBy());
+                messageEntity.setModifiedTime(entity.getModifiedTime());
+                messageEntity.setTitle("项目");
+                messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目进展情况，及时确认产品和服务需求，在SAP中下达！");
+                messageEntity.setType((short) 1);
+                messageEntity.setSmallType((short) 3);
+                messageEntity.setMessageType((short) 1);
+                messageEntity.setProjectId(entity.getId());
+                messageEntity.setSenderId(null);
+                messageEntity.setReceiverId(userEntity.getId().intValue());
+                messageEntity.setStatus((short) 1);
+                messageService.sendMessage(messageEntity);
+            }
+        }
+        if (entity.getChangeStatus() == 2) {
+            List<UserEntity> userEntities = userService.findByTruename(null);
+            for (UserEntity userEntity : userEntities) {
+                //消息
+                MessageEntity messageEntity = new MessageEntity();
+                messageEntity.setCreateBy(entity.getCreateBy());
+                messageEntity.setCreateTime(entity.getCreateTime());
+                messageEntity.setModifiedBy(entity.getModifiedBy());
+                messageEntity.setModifiedTime(entity.getModifiedTime());
+                messageEntity.setTitle("项目");
+                messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目变更情况，及时调整需求！");
+                messageEntity.setType((short) 1);
+                messageEntity.setSmallType((short) 3);
+                messageEntity.setMessageType((short) 1);
+                messageEntity.setProjectId(entity.getId());
+                messageEntity.setSenderId(null);
+                messageEntity.setReceiverId(userEntity.getId().intValue());
+                messageEntity.setStatus((short) 1);
+                messageService.sendMessage(messageEntity);
+            }
+        }
+        //售前技术支持或者投招标技术支持消息更改
+        String biddingId = String.valueOf(entity.getBiddingId());
+        String flag = biddingId.substring(0, 1);
+        String projectId = biddingId.substring(1);
+        MessageEntity messageExample = null;
+        if ("1".equals(flag)) {
+            messageExample = new MessageEntity(null, null, null, null, null, null,
+                    (short) 1, (short) 1, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+        } else if ("2".equals(flag)) {
+            messageExample = new MessageEntity(null, null, null, null, null, null,
+                    (short) 1, (short) 2, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+        }
+        if (messageExample != null) {
+            List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+            for (MessageEntity messageEntity : messageEntities) {
+                messageEntity.setModifiedBy(entity.getModifiedBy());
+                messageEntity.setModifiedTime(entity.getModifiedTime());
+                messageEntity.setStatus((short) 3);
+                messageService.edit(messageEntity);
+            }
         }
         //项目日志记录
         StringBuilder sb = new StringBuilder();
@@ -113,6 +164,116 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
         DesignLiaisonEntity source = this.findById(entity.getId());
         if (source != null) {
             this.edit(entity);
+            //项目状态
+            if (entity.getProjectStatus() == 3 && source.getProjectStatus() != 3) {
+                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    if (messageEntity.getContext().contains("项目进展情况")) {
+                        messageEntity.setModifiedBy(entity.getModifiedBy());
+                        messageEntity.setModifiedTime(entity.getModifiedTime());
+                        messageEntity.setStatus((short) 3);
+                        messageService.edit(messageEntity);
+                    }
+                }
+            }
+            if (entity.getProjectStatus() != 3 && source.getProjectStatus() == 3) {
+                List<UserEntity> userEntities = userService.findByTruename(null);
+                for (UserEntity userEntity : userEntities) {
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(entity.getCreateBy());
+                    messageEntity.setCreateTime(entity.getCreateTime());
+                    messageEntity.setModifiedBy(entity.getModifiedBy());
+                    messageEntity.setModifiedTime(entity.getModifiedTime());
+                    messageEntity.setTitle("项目");
+                    messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目进展情况，及时确认产品和服务需求，在SAP中下达！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 3);
+                    messageEntity.setMessageType((short) 1);
+                    messageEntity.setProjectId(entity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(userEntity.getId().intValue());
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                }
+            }
+            if (entity.getProjectStatus() != 3 && source.getProjectStatus() != 3 && !entity.getProjectName().equals(source.getProjectName())) {
+                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    if (messageEntity.getContext().contains("项目进展情况")) {
+                        messageEntity.setModifiedBy(entity.getModifiedBy());
+                        messageEntity.setModifiedTime(entity.getModifiedTime());
+                        messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目进展情况，及时确认产品和服务需求，在SAP中下达！");
+                        messageService.edit(messageEntity);
+                    }
+                }
+            }
+
+
+            //变更状态
+            if (entity.getChangeStatus() == 3 && source.getChangeStatus() == 2) {
+                //消息
+                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    if (messageEntity.getContext().contains("项目变更情况")) {
+                        messageEntity.setModifiedBy(entity.getModifiedBy());
+                        messageEntity.setModifiedTime(entity.getModifiedTime());
+                        messageEntity.setStatus((short) 3);
+                        messageService.edit(messageEntity);
+                    }
+                }
+            }
+            if (entity.getChangeStatus() != 3 && source.getChangeStatus() == 2) {
+                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    if (messageEntity.getContext().contains("项目变更情况")) {
+                        messageService.remove(messageEntity.getId());
+                    }
+                }
+            }
+            if (entity.getChangeStatus() == 2 && source.getChangeStatus() == 2 && !entity.getProjectName().equals(source.getProjectName())) {
+                MessageEntity messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 3, (short) 1, entity.getId(), null, null, null, null, null);
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    if (messageEntity.getContext().contains("项目变更情况")) {
+                        messageEntity.setModifiedBy(entity.getModifiedBy());
+                        messageEntity.setModifiedTime(entity.getModifiedTime());
+                        messageEntity.setContext("请关注“" + entity.getProjectName() + "”项目变更情况，及时调整需求！");
+                        messageService.edit(messageEntity);
+                    }
+                }
+            }
+
+            //售前技术支持或者投招标技术支持消息更改
+            String biddingId = String.valueOf(entity.getBiddingId());
+            String flag = biddingId.substring(0, 1);
+            String projectId = biddingId.substring(1);
+            MessageEntity messageExample = null;
+            if ("1".equals(flag)) {
+                messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 1, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+            } else if ("2".equals(flag)) {
+                messageExample = new MessageEntity(null, null, null, null, null, null,
+                        (short) 1, (short) 2, (short) 1, Integer.valueOf(projectId), null, null, null, null, null);
+            }
+            if (messageExample != null) {
+                List<MessageEntity> messageEntities = messageService.findByExample(messageExample);
+                for (MessageEntity messageEntity : messageEntities) {
+                    messageEntity.setModifiedBy(entity.getModifiedBy());
+                    messageEntity.setModifiedTime(entity.getModifiedTime());
+                    messageEntity.setStatus((short) 3);
+                    messageService.edit(messageEntity);
+                }
+            }
+
             //项目日志记录
             DesignLiaisonEntity target = BeanUtil.compareFieldValues(source, entity, DesignLiaisonEntity.class);
             StringBuilder sb = new StringBuilder();
@@ -155,7 +316,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
 
     @Override
     public List<DesignLiaisonEntity> findByExample(Integer year, String projectName) {
-        return designLiaisonDao.selectByExample(year, projectName);
+        return designLiaisonDao.selectByExample(null, year, projectName, null);
     }
 
     @Override
@@ -182,7 +343,7 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
                 secondTreeNodeUtil.setId(2L);
                 secondTreeNodeUtil.setLabel(designLiaisonEntity.getProjectName());
                 secondTreeNodeUtil.setValue(String.valueOf(designLiaisonEntity.getId()));
-                Map<String, Object> secondMap = JSONObject.parseObject(JSONObject.toJSON(designLiaisonEntity).toString(), Map.class);
+                Map<String, Object> secondMap = cn.hutool.core.bean.BeanUtil.beanToMap(designLiaisonEntity);
                 secondTreeNodeUtil.setA_attr(secondMap);
                 secondTreeNodeUtil.setChildren(thirdTreeNodeUtils);
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
@@ -199,5 +360,47 @@ public class DesignLiaisonServiceImpl implements DesignLiaisonService {
             }
         }
         return firstTreeNodeUtils;
+    }
+
+    @Override
+    public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
+        //excel标题
+        String title = "招标投标技术支持-项目列表";
+        //excel表名
+        String[] headers = {"序号", "项目名称", "项目状态", "项目创建日期", "任务状态", "任务完成时间", "会议状态", "变更状态", "所属路局", "备注"};
+        //获取数据
+        List<DesignLiaisonEntity> designLiaisonEntities = designLiaisonDao.selectByExample(ids, null, null, null);
+        designLiaisonEntities = designLiaisonEntities.stream()
+                .sorted(Comparator.comparing(DesignLiaisonEntity::getId).reversed())
+                .collect(Collectors.toList());
+        //excel元素
+        String[][] content = new String[designLiaisonEntities.size()][headers.length];
+        for (int i = 0; i < designLiaisonEntities.size(); i++) {
+            DesignLiaisonEntity designLiaisonEntity = designLiaisonEntities.get(i);
+            content[i][0] = designLiaisonEntity.getId().toString();
+            content[i][1] = designLiaisonEntity.getProjectName();
+            Short projectStatus = designLiaisonEntity.getProjectStatus();
+            content[i][2] = projectStatus == 1 ? "未知" : projectStatus == 2 ? "后续招标" : projectStatus == 3 ? "确定采用" : "关闭";
+            Short taskStatus = designLiaisonEntity.getTaskStatus();
+            content[i][3] = DateUtil.formatDate(designLiaisonEntity.getProjectDate());
+            content[i][4] = taskStatus == 1 ? "正在进行" : "已完成";
+            content[i][5] = DateUtil.formatDate(designLiaisonEntity.getTaskFinishDate());
+            Short meetingStatus = designLiaisonEntity.getMeetingStatus();
+            content[i][6] = meetingStatus == 1 ? "不召开会议" : meetingStatus == 2 ? "尚未开会" : "已召开设计联络会";
+            Short changeStatus = designLiaisonEntity.getChangeStatus();
+            content[i][7] = changeStatus == 1 ? "无变更" : changeStatus == 2 ? "变更设计中" : "变更已定型";
+            content[i][8] = designLiaisonEntity.getTieLuJuEntity().getTljName();
+            content[i][9] = designLiaisonEntity.getRemark();
+        }
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    @Override
+    public List<Map<String, Object>> findProjectsByProjectStatus() {
+        return designLiaisonDao.selectProjectsByProjectStatus((short) 3);
     }
 }

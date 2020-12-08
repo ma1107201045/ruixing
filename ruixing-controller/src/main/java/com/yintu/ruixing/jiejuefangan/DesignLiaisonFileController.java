@@ -1,11 +1,11 @@
 package com.yintu.ruixing.jiejuefangan;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.xitongguanli.*;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 设计联络以及后续文件技术交流
@@ -34,19 +33,19 @@ public class DesignLiaisonFileController extends SessionController {
     @Autowired
     private SolutionLogService solutionLogService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private AuditConfigurationService auditConfigurationService;
 
     @PostMapping
     @ResponseBody
-    public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
+    public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity,
+                                   @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                   @RequestParam(value = "sorts", required = false) Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
         entity.setUserId(this.getLoginUserId().intValue());
-        designLiaisonFileService.add(entity, auditorIds, this.getLoginTrueName());
+        designLiaisonFileService.add(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("添加设计联络及后续技术交流文件信息成功");
     }
 
@@ -60,8 +59,10 @@ public class DesignLiaisonFileController extends SessionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity, @RequestParam(value = "auditorIds", required = false) Long[] auditorIds) {
-        designLiaisonFileService.edit(entity, auditorIds, this.getLoginTrueName());
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity,
+                                    @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
+                                    @RequestParam(value = "sorts", required = false) Integer[] sorts) {
+        designLiaisonFileService.edit(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改设计联络及后续技术交流文件信息成功");
     }
 
@@ -87,15 +88,15 @@ public class DesignLiaisonFileController extends SessionController {
     }
 
 
-    @GetMapping("/export/{ids}")
-    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
-        String fileName = "设计联络及后续技术交流列表" + System.currentTimeMillis() + ".xlsx";
-        response.setContentType("application/octet-stream;charset=ISO8859-1");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
-        response.addHeader("Pargam", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        designLiaisonFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
-    }
+//    @GetMapping("/export/{ids}")
+//    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+//        String fileName = "设计联络及后续技术交流列表" + System.currentTimeMillis() + ".xlsx";
+//        response.setContentType("application/octet-stream;charset=ISO8859-1");
+//        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+//        response.addHeader("Pargam", "no-cache");
+//        response.addHeader("Cache-Control", "no-cache");
+//        designLiaisonFileService.exportFile(response.getOutputStream(), ids, this.getLoginUserId().intValue());
+//    }
 
     @GetMapping("/{id}/log")
     @ResponseBody
@@ -113,13 +114,9 @@ public class DesignLiaisonFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> findRoles() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 3, (short) 1, (short) 1);
-        AuditConfigurationEntity auditConfigurationEntity = auditConfigurationEntities.stream().findFirst().orElse(null);
-        List<RoleEntity> roleEntities = auditConfigurationEntity == null ? roleService.findAll() : auditConfigurationEntity.getRoleEntities();
-        roleEntities = roleEntities
-                .stream()
-                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核角色成功", roleEntities);
+        if (auditConfigurationEntities.isEmpty())
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+        return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
     }
 
 

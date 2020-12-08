@@ -1,8 +1,8 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.yintu.ruixing.common.util.ExportExcelUtil;
-import com.yintu.ruixing.master.danganguanli.EquipmentFullLifeCycleRraceabilityDao;
-import com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityEntity;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentFullLifeCycleRraceabilityDao;
+import com.yintu.ruixing.weixiudaxiu.EquipmentFullLifeCycleRraceabilityEntity;
 import com.yintu.ruixing.weixiudaxiu.EquipmentFullLifeCycleRraceabilityService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;

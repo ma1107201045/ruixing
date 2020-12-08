@@ -38,7 +38,7 @@ public class QuDuanDownloadController extends SessionController {
         time.add(Calendar.MINUTE, minute);
         Date endDateTime = time.getTime();
         Integer id = quDuanDownloadService.add(czId, type, startDateTime, endDateTime);
-        //webSocketServer.sendMessage(czId, id);
+        webSocketServer.sendMessage(czId, id);
         return ResponseDataUtil.ok("添加下载记录成功");
     }
 

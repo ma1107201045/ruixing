@@ -163,11 +163,11 @@ public class CustomerController extends SessionController {
     @ResponseBody
     public Map<String, Object> findAuditConfigurations() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, (short) 1, null);
-        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setRoleEntities(auditConfigurationEntity.getRoleEntities().stream()
-                .filter(roleEntity -> !roleEntity.getId().equals(this.getLoginUserId()))
-                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-                .collect(Collectors.toList()))
-        );
+//        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setRoleEntities(auditConfigurationEntity.getRoleEntities().stream()
+//                .filter(roleEntity -> !roleEntity.getId().equals(this.getLoginUserId()))
+//                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
+//                .collect(Collectors.toList()))
+//        );
         return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
     }
 

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +83,16 @@ public class PreSaleController extends SessionController implements BaseControll
         List<PreSaleEntity> preSaleEntities = preSaleService.findByExample(year, projectName);
         PageInfo<PreSaleEntity> pageInfo = new PageInfo<>(preSaleEntities);
         return ResponseDataUtil.ok("查询售前技术支持项目信息列表成功", pageInfo);
+    }
+
+    @GetMapping("/export/{ids}")
+    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "售前技术支持-项目列表" + System.currentTimeMillis() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        preSaleService.exportFile(response.getOutputStream(), ids);
     }
 
     @GetMapping("/{id}/log")

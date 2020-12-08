@@ -15,8 +15,18 @@ import java.security.Permission;
 import java.util.List;
 
 public interface UserService extends UserDetailsService, BaseService<UserEntity, Long> {
-
+    /**
+     *
+     * @param ids
+     */
     void removeByIds(Long[] ids);
+
+    /**
+     *
+     * @param ids
+     * @return
+     */
+    List<UserEntity> findByIds(List<Long> ids);
 
     /**
      * 查询所有用户
@@ -64,7 +74,7 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
     /**
      * @param id          用户id
      * @param oldPassword 密码
-     * @param newPassword    密码
+     * @param newPassword 密码
      */
     void editPassword(Long id, String oldPassword, String newPassword, String loginUserName);
 

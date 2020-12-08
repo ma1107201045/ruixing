@@ -38,6 +38,10 @@ public class DesignLiaisonFileEntity implements Serializable {
 
     private Integer userId;
 
+    private Short auditStatus;
+
+    private String reason;
+
     private String remark;
 
     @NotNull

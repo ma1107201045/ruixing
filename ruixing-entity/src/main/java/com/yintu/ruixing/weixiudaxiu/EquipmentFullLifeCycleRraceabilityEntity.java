@@ -1,4 +1,4 @@
-package com.yintu.ruixing.danganguanli;
+package com.yintu.ruixing.weixiudaxiu;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

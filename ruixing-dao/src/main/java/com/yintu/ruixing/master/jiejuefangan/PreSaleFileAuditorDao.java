@@ -2,6 +2,7 @@ package com.yintu.ruixing.master.jiejuefangan;
 
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface PreSaleFileAuditorDao {
 
     List<PreSaleFileAuditorEntity> selectByPreSaleFileId(Integer preSaleFileId);
 
-    List<PreSaleFileAuditorEntity> selectByExample(Integer preSaleFileId,Integer auditorId,Short isCheck);
+    List<PreSaleFileAuditorEntity> selectByExample(Integer preSaleFileId, Integer auditorId, Integer sort, Short activate);
 
     void insertMuch(List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities);
 

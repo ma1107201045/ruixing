@@ -106,10 +106,10 @@ public interface RoleService extends BaseService<RoleEntity, Long> {
     /**
      * 按照角色id查询用户集
      *
-     * @param id 角色id集合
+     * @param id 角色id
      * @return 用户集
      */
-    List<UserEntity> findUsersByIds(Long[] id);
+    List<UserEntity> findUsersByIds(Long id);
 
 
 }

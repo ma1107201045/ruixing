@@ -46,8 +46,8 @@ public class BiddingFileAuditorServiceImpl implements BiddingFileAuditorService 
     }
 
     @Override
-    public List<BiddingFileAuditorEntity> findByExample(Integer biddingFileId, Integer auditorId, Short isCheck) {
-        return biddingFileAuditorDao.selectByExample(biddingFileId,auditorId,isCheck);
+    public List<BiddingFileAuditorEntity> findByExample(Integer biddingFileId, Integer auditorId, Integer sort, Short activate) {
+        return biddingFileAuditorDao.selectByExample(biddingFileId, auditorId, sort, activate);
     }
 
     @Override

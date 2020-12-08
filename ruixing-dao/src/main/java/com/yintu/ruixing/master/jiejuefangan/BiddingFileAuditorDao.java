@@ -20,7 +20,7 @@ public interface BiddingFileAuditorDao {
 
     List<BiddingFileAuditorEntity> selectByBiddingFileId(Integer biddingFileId);
 
-    List<BiddingFileAuditorEntity> selectByExample(Integer biddingFileId, Integer auditorId, Short isCheck);
+    List<BiddingFileAuditorEntity> selectByExample(Integer biddingFileId, Integer auditorId, Integer sort, Short activate);
 
     void insertMuch(List<BiddingFileAuditorEntity> biddingFileAuditorEntities);
 

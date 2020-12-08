@@ -29,6 +29,7 @@ public class AuditConfigurationEntity implements Serializable {
 
     private Short model;
 
-    List<RoleEntity> roleEntities;
+    List<AuditConfigurationUserEntity> auditConfigurationUserEntities;
+
 
 }
