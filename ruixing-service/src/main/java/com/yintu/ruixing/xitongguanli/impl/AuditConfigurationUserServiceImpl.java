@@ -73,7 +73,7 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     }
 
     @Override
-    public List<Map<String, Object>> findDistinctRoleIdAndSort(Long auditConfigurationId) {
-        return auditConfigurationUserDao.selectDistinctRoleIdAndSort(auditConfigurationId);
+    public List<Long> findDistinctRoleId(Long auditConfigurationId) {
+        return auditConfigurationUserDao.selectDistinctRoleId(auditConfigurationId);
     }
 }

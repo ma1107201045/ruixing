@@ -18,7 +18,7 @@ public interface AuditConfigurationUserService extends BaseService<AuditConfigur
 
     List<UserEntity> findUsersById(Long auditConfigurationId);
 
-    List<Map<String, Object>> findDistinctRoleIdAndSort(Long auditConfigurationId);
+    List<Long> findDistinctRoleId(Long auditConfigurationId);
 }
 
 

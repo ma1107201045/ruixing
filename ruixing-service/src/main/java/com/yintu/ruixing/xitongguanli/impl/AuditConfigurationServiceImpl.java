@@ -149,24 +149,25 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public List<TreeNodeUtil> findTreeById(Long id) {
-        List<Map<String, Object>> maps = auditConfigurationUserService.findDistinctRoleIdAndSort(id);
+        List<Long> roleIds = auditConfigurationUserService.findDistinctRoleId(id);
 
 
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
-        for (Map<String, Object> map : maps) {
-            RoleEntity roleEntity = roleService.findById((Long) map.get("role_id"));
+        for (Long roleId : roleIds) {
+            RoleEntity roleEntity = roleService.findById(roleId);
 
             AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
             AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
             criteria.andAuditConfigurationIdEqualTo(id);
             criteria.andRoleIdEqualTo(roleEntity.getId());
             List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
-            List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
+            Integer sort = auditConfigurationUserEntities.get(0).getSort();
 
+            List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(roleEntity.getId());
             firstTreeNodeUtil.setLabel(roleEntity.getName());
-            firstTreeNodeUtil.setValue(map.get("sort").toString());
+            firstTreeNodeUtil.setValue(sort.toString());
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
             for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
@@ -174,7 +175,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(userEntity.getId());
                 secondTreeNodeUtil.setLabel(userEntity.getTrueName());
-                secondTreeNodeUtil.setValue(auditConfigurationUserEntity.getSort().toString());
+                secondTreeNodeUtil.setValue(sort.toString());
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
             }
         }
