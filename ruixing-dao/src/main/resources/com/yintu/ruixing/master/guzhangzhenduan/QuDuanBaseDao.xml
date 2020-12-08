@@ -114,6 +114,18 @@
     </resultMap>
 
 
+    <!--根据车站cid 和 区段id 查询对应的数据-->
+    <select id="findQuDuanByCZidAndQdid" resultMap="BaseResultMapp">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        mro_quduan_base
+        WHERE
+        cz_id = #{integer}
+        AND qdid = #{integer1}
+    </select>
+
+
     <select id="findQuduanName" resultType="java.lang.String">
         SELECT quDuanYunYing_name
         FROM mro_quduan_base
