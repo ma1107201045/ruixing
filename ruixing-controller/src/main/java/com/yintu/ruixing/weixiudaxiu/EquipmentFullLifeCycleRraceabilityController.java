@@ -4,8 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentFullLifeCycleRraceabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

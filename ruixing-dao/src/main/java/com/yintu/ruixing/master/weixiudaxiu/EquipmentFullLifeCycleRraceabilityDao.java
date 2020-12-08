@@ -1,7 +1,6 @@
-package com.yintu.ruixing.master.danganguanli;
+package com.yintu.ruixing.master.weixiudaxiu;
 
-import com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityEntity;
-import org.apache.ibatis.annotations.Mapper;
+import com.yintu.ruixing.weixiudaxiu.EquipmentFullLifeCycleRraceabilityEntity;
 
 import java.util.List;
 

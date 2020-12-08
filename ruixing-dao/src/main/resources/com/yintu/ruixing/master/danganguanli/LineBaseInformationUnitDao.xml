@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.danganguanli.LineBaseInformationUnitDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="line_base_information_id" jdbcType="INTEGER" property="lineBaseInformationId"/>
+        <result column="unit_id" jdbcType="INTEGER" property="unitId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, line_base_information_id,
+    unit_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_line_base_information_unit
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_line_base_information_unit
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity">
+        insert into mro_line_base_information_unit (id, create_by, create_time,
+                                                    modified_by, modified_time, line_base_information_id,
+                                                    unit_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{lineBaseInformationId,jdbcType=INTEGER},
+                #{unitId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity">
+        insert into mro_line_base_information_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="lineBaseInformationId != null">
+                line_base_information_id,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lineBaseInformationId != null">
+                #{lineBaseInformationId,jdbcType=INTEGER},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity">
+        update mro_line_base_information_unit
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lineBaseInformationId != null">
+                line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity">
+        update mro_line_base_information_unit
+        set create_by                = #{createBy,jdbcType=VARCHAR},
+            create_time              = #{createTime,jdbcType=TIMESTAMP},
+            modified_by              = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time            = #{modifiedTime,jdbcType=TIMESTAMP},
+            line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
+            unit_id                  = #{unitId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

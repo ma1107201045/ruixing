@@ -1,7 +1,5 @@
 package com.yintu.ruixing.weixiudaxiu;
 
-import com.yintu.ruixing.danganguanli.EquipmentFullLifeCycleRraceabilityEntity;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;

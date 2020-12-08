@@ -155,6 +155,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             RoleEntity roleEntity = roleService.findById((Long) map.get("role_id"));
+
             AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
             AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
             criteria.andAuditConfigurationIdEqualTo(id);
