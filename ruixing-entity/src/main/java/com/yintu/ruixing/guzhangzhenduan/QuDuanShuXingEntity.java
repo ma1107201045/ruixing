@@ -22,4 +22,8 @@ public class QuDuanShuXingEntity implements Serializable {
     private String name;
 
     private String sqlname;
+
+    private Integer type;
+
+    private Integer mid;
 }

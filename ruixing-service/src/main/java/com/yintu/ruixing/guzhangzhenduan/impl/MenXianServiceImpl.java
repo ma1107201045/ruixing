@@ -421,4 +421,13 @@ public class MenXianServiceImpl implements MenXianService {
         outputStream.close();
     }
 
+    @Override
+    public String findMinNumber(Integer czid, Integer qdid, Integer mid) {
+        return menXianDao.findMinNumber(czid,qdid,mid);
+    }
+
+    @Override
+    public String findMaxNumber(Integer czid, Integer qdid, Integer mid) {
+        return menXianDao.findMaxNumber(czid,qdid,mid);
+    }
 }

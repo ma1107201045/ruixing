@@ -53,4 +53,7 @@ public interface QuXianService {
     List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
 
+    String findMaxNumber(Integer czid, Integer qdid, Integer mid);
+
+    String findMinNumber(Integer czid, Integer qdid, Integer mid);
 }

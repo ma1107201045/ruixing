@@ -239,6 +239,13 @@
         <result column="v5" jdbcType="DECIMAL" property="name"/>
         <result column="v6" jdbcType="DECIMAL" property="name"/>
         <result column="v7" jdbcType="DECIMAL" property="name"/>
+        <result column="v8" jdbcType="DECIMAL" property="name"/>
+        <result column="v9" jdbcType="DECIMAL" property="name"/>
+        <result column="v10" jdbcType="DECIMAL" property="name"/>
+        <result column="v11" jdbcType="DECIMAL" property="name"/>
+        <result column="v12" jdbcType="DECIMAL" property="name"/>
+        <result column="v13" jdbcType="DECIMAL" property="name"/>
+        <result column="v14" jdbcType="DECIMAL" property="name"/>
         <result column="v15" jdbcType="DECIMAL" property="name"/>
         <result column="v16" jdbcType="DECIMAL" property="name"/>
         <result column="v17" jdbcType="DECIMAL" property="name"/>
@@ -248,6 +255,13 @@
         <result column="v21" jdbcType="DECIMAL" property="name"/>
         <result column="v22" jdbcType="DECIMAL" property="name"/>
         <result column="v23" jdbcType="DECIMAL" property="name"/>
+        <result column="v24" jdbcType="DECIMAL" property="name"/>
+        <result column="v25" jdbcType="DECIMAL" property="name"/>
+        <result column="v26" jdbcType="DECIMAL" property="name"/>
+        <result column="v27" jdbcType="DECIMAL" property="name"/>
+        <result column="v28" jdbcType="DECIMAL" property="name"/>
+        <result column="v29" jdbcType="DECIMAL" property="name"/>
+        <result column="v30" jdbcType="DECIMAL" property="name"/>
         <result column="v42" jdbcType="DECIMAL" property="name"/>
         <result column="v43" jdbcType="DECIMAL" property="name"/>
         <result column="v44" jdbcType="DECIMAL" property="name"/>
@@ -258,16 +272,29 @@
         <result column="v55" jdbcType="DECIMAL" property="name"/>
         <result column="v56" jdbcType="DECIMAL" property="name"/>
         <result column="v57" jdbcType="DECIMAL" property="name"/>
+        <result column="v58" jdbcType="DECIMAL" property="name"/>
+        <result column="v59" jdbcType="DECIMAL" property="name"/>
+        <result column="v60" jdbcType="DECIMAL" property="name"/>
+        <result column="v61" jdbcType="DECIMAL" property="name"/>
         <result column="v62" jdbcType="DECIMAL" property="name"/>
         <result column="v63" jdbcType="DECIMAL" property="name"/>
         <result column="v64" jdbcType="DECIMAL" property="name"/>
         <result column="v65" jdbcType="DECIMAL" property="name"/>
+        <result column="v66" jdbcType="DECIMAL" property="name"/>
+        <result column="v67" jdbcType="DECIMAL" property="name"/>
+        <result column="v68" jdbcType="DECIMAL" property="name"/>
+        <result column="v69" jdbcType="DECIMAL" property="name"/>
         <result column="v47" jdbcType="DECIMAL" property="name"/>
         <result column="v48" jdbcType="DECIMAL" property="name"/>
         <result column="v49" jdbcType="DECIMAL" property="name"/>
         <result column="v50" jdbcType="DECIMAL" property="name"/>
         <result column="v51" jdbcType="DECIMAL" property="name"/>
         <result column="v53" jdbcType="DECIMAL" property="name"/>
+        <result column="v39_sc4" jdbcType="DECIMAL" property="name"/>
+        <result column="v39_sc3" jdbcType="DECIMAL" property="name"/>
+        <result column="v39_sc2" jdbcType="DECIMAL" property="name"/>
+        <result column="v40" jdbcType="DECIMAL" property="name"/>
+        <result column="v41" jdbcType="DECIMAL" property="name"/>
     </resultMap>
 
     <select id="findDianMaHuaDatasByCZids" resultMap="quduanBaseResultMap">
