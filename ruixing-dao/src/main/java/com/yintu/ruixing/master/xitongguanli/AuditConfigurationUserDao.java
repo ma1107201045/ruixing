@@ -4,6 +4,7 @@ import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -30,5 +31,5 @@ public interface AuditConfigurationUserDao {
 
     int updateByPrimaryKey(AuditConfigurationUserEntity record);
 
-    List<Long> selectDistinctRoleId(Long auditConfigurationId);
+    List<Map<String, Object>> selectDistinctRoleIdAndSort(Long auditConfigurationId);
 }

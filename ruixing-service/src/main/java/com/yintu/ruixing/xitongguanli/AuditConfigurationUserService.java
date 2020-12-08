@@ -3,6 +3,7 @@ package com.yintu.ruixing.xitongguanli;
 import com.yintu.ruixing.common.util.BaseService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mlf
@@ -17,7 +18,7 @@ public interface AuditConfigurationUserService extends BaseService<AuditConfigur
 
     List<UserEntity> findUsersById(Long auditConfigurationId);
 
-    List<Long> findDistinctRoleId(Long auditConfigurationId);
+    List<Map<String, Object>> findDistinctRoleIdAndSort(Long auditConfigurationId);
 }
 
 

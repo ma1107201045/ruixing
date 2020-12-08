@@ -121,15 +121,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             criteria.andStatusEqualTo(status);
         if (model != null)
             criteria.andModelEqualTo(model);
-        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
-        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
-        AuditConfigurationUserEntityExample.Criteria criteria1 = auditConfigurationUserEntityExample.createCriteria();
-        auditConfigurationEntities.forEach(item -> {
-            criteria1.andAuditConfigurationIdEqualTo(item.getId());
-            List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
-            item.setAuditConfigurationUserEntities(auditConfigurationUserEntities);
-        });
-        return auditConfigurationEntities;
+        return this.findByExample(auditConfigurationEntityExample);
     }
 
     @Override
@@ -157,29 +149,31 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public List<TreeNodeUtil> findTreeById(Long id) {
-        List<Long> roleIds = auditConfigurationUserService.findDistinctRoleId(id);
-
-        AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
-        AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
-        criteria.andAuditConfigurationIdEqualTo(id);
+        List<Map<String, Object>> maps = auditConfigurationUserService.findDistinctRoleIdAndSort(id);
 
 
-        List<RoleEntity> roleEntities = roleService.findByIds(roleIds);
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
-        for (RoleEntity roleEntity : roleEntities) {
+        for (Map<String, Object> map : maps) {
+            RoleEntity roleEntity = roleService.findById((Long) map.get("role_id"));
+            AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+            AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
+            criteria.andAuditConfigurationIdEqualTo(id);
             criteria.andRoleIdEqualTo(roleEntity.getId());
-            List<Long> userIds = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample).stream().map(AuditConfigurationUserEntity::getId).collect(Collectors.toList());
-            List<UserEntity> userEntities = userService.findByIds(userIds);
+            List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample);
             List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
+
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(roleEntity.getId());
             firstTreeNodeUtil.setLabel(roleEntity.getName());
+            firstTreeNodeUtil.setValue(map.get("sort").toString());
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
-            for (UserEntity userEntity : userEntities) {
+            for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
+                UserEntity userEntity = userService.findById(auditConfigurationUserEntity.getUserId());
                 TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
                 secondTreeNodeUtil.setId(userEntity.getId());
                 secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                secondTreeNodeUtil.setValue(auditConfigurationUserEntity.getSort().toString());
                 secondTreeNodeUtils.add(secondTreeNodeUtil);
             }
         }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +73,7 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     }
 
     @Override
-    public List<Long> findDistinctRoleId(Long auditConfigurationId) {
-        return auditConfigurationUserDao.selectDistinctRoleId(auditConfigurationId);
+    public List<Map<String, Object>> findDistinctRoleIdAndSort(Long auditConfigurationId) {
+        return auditConfigurationUserDao.selectDistinctRoleIdAndSort(auditConfigurationId);
     }
 }
