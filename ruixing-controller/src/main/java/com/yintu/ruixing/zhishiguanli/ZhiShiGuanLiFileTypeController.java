@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.UserService;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
@@ -32,8 +33,34 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
     @Autowired
     private ZhiShiGuanLiFileTypeService zhiShiGuanLiFileTypeService;
 
+    //树形结构图.
+    @GetMapping
+    public Map<String,Object>findShuXing(){
+        List<TreeNodeUtil> treeNodeUtils=zhiShiGuanLiFileTypeService.findShuXing(0);
+        return ResponseDataUtil.ok("查询成功", treeNodeUtils);
+    }
 
+    //根据parentid  查询对应的文件类型.
+    @GetMapping("/findFileTypeByParentid/{parentid}")
+    public Map<String,Object>findFileTypeByParentid(@PathVariable Integer parentid){
+        List<ZhiShiGuanLiFileTypeEntity> fileTypeEntityList=zhiShiGuanLiFileTypeService.findFileTypeByParentid(parentid);
+        return ResponseDataUtil.ok("查询成功",fileTypeEntityList);
+    }
 
+    //粘贴文件。
+    @PutMapping("/pasteFileByParentid")
+    public Map<String,Object>pasteFileByParentid(Integer parentid,Integer[] fileid,ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity){
+        zhiShiGuanLiFileTypeService.pasteFileByParentid(parentid,fileid,zhiShiGuanLiFileTypeFileEntity);
+        return ResponseDataUtil.ok("操作成功");
+    }
+
+    //复制文件.
+    @PostMapping("/copyFileByParentid")
+    public Map<String,Object>copyFileByParentid(Integer parentid,Integer[] fileid,ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity){
+        String username = this.getLoginUser().getTrueName();
+        zhiShiGuanLiFileTypeService.copyFileByParentid(parentid,fileid,zhiShiGuanLiFileTypeFileEntity,username);
+        return ResponseDataUtil.ok("操作成功");
+    }
     //初始化页面  或者根据文档分类名进行模糊查询
     @GetMapping("findSomeFileType")
     public Map<String, Object> findSomeFileType(Integer page, Integer size, String fileTypeName) {
@@ -45,9 +72,9 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
 
     //新增文件类型
     @PostMapping("/addFileType")
-    public Map<String, Object> addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
+    public Map<String, Object> addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,Integer parentid) {
         String username = this.getLoginUser().getTrueName();
-        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity,username);
+        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity,username,parentid);
         return ResponseDataUtil.ok("新增文件类型成功");
     }
 

@@ -45,6 +45,7 @@
   <select id="findXiangMu" resultType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity">
         SELECT
             id,
+            xiangmu_bianhao as xiangmuBianhao,
             xiangmu_name as xiangmuName
         FROM
             mro_chanpinjiaofu_xiangmu

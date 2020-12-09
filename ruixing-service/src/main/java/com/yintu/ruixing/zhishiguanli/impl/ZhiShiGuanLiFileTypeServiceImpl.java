@@ -1,5 +1,6 @@
 package com.yintu.ruixing.zhishiguanli.impl;
 
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeDao;
 import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeFileDao;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,56 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
 
     @Autowired
     private ZhiShiGuanLiFileTypeFileDao zhiShiGuanLiFileTypeFileDao;
+
+    @Override
+    public void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username) {
+        for (int i = 0; i < fileid.length; i++) {
+            ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity=zhiShiGuanLiFileTypeFileDao.selectByPrimaryKey(fileid[i]);
+            String fileName = fileTypeFileEntity.getFileName();
+            String filePath = fileTypeFileEntity.getFilePath();
+            Integer fabuType = fileTypeFileEntity.getFabuType();
+            ZhiShiGuanLiFileTypeFileEntity fileEntity=new ZhiShiGuanLiFileTypeFileEntity();
+            fileEntity.setTid(parentid);
+            fileEntity.setFileName(fileName);
+            fileEntity.setFilePath(filePath);
+            fileEntity.setFabuType(fabuType);
+            fileEntity.setCreateName(username);
+            fileEntity.setCreatetime(new Date());
+            zhiShiGuanLiFileTypeFileDao.insertSelective(fileEntity);
+        }
+    }
+
+    @Override
+    public void pasteFileByParentid(Integer parentid, Integer[] typeid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
+        for (int i = 0; i < typeid.length; i++) {
+            zhiShiGuanLiFileTypeFileEntity.setId(typeid[i]);
+            zhiShiGuanLiFileTypeFileEntity.setParentid(parentid);
+            zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeFileEntity);
+        }
+    }
+
+    @Override
+    public List<ZhiShiGuanLiFileTypeEntity> findFileTypeByParentid(Integer parentid) {
+        return zhiShiGuanLiFileTypeDao.findFileTypeByParentid(parentid);
+    }
+
+    @Override
+    public List<TreeNodeUtil> findShuXing(Integer id) {
+        List<ZhiShiGuanLiFileTypeEntity> zhiShiGuanLiFileTypeEntityList=zhiShiGuanLiFileTypeDao.findFristType(id);
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity : zhiShiGuanLiFileTypeEntityList) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            Integer idd = zhiShiGuanLiFileTypeEntity.getId();
+            String filetype = zhiShiGuanLiFileTypeEntity.getFiletype();
+            String filemiaoshu = zhiShiGuanLiFileTypeEntity.getFilemiaoshu();
+            treeNodeUtil.setId((long) idd);
+            treeNodeUtil.setLabel(filetype);
+            treeNodeUtil.setValue(filemiaoshu);
+            treeNodeUtil.setChildren(this.findShuXing(idd));
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        return treeNodeUtils;
+    }
 
     @Override
     public void deleteFileByIds(Integer id) {
@@ -101,9 +153,10 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     }
 
     @Override
-    public void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username) {
+    public void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username,Integer parentid) {
         zhiShiGuanLiFileTypeEntity.setCreateTime(new Date());
         zhiShiGuanLiFileTypeEntity.setCreateName(username);
+        zhiShiGuanLiFileTypeEntity.setParentid(parentid);
         zhiShiGuanLiFileTypeDao.insertSelective(zhiShiGuanLiFileTypeEntity);
     }
 

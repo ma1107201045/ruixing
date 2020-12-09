@@ -1,5 +1,6 @@
 package com.yintu.ruixing.zhishiguanli;
 
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ZhiShiGuanLiFileTypeService {
     List<ZhiShiGuanLiFileTypeEntity> findSomeFileType(Integer page, Integer size, String fileTypeName);
 
-    void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
+    void addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username,Integer parentid);
 
     void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
 
@@ -42,4 +43,14 @@ public interface ZhiShiGuanLiFileTypeService {
     List<ZhiShiGuanLiFileTypeFileEntity> findFileByParentid(Integer id);
 
     void deleteFileByIds(Integer id);
+
+    List<TreeNodeUtil> findShuXing(Integer id);
+
+    List<ZhiShiGuanLiFileTypeEntity> findFileTypeByParentid(Integer parentid);
+
+    void pasteFileByParentid(Integer parentid, Integer[] typeid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity);
+
+    void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
+
+
 }

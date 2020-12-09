@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="fileType" jdbcType="VARCHAR" property="filetype" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
     <result column="fileMiaoShu" jdbcType="VARCHAR" property="filemiaoshu" />
     <result column="createName" jdbcType="VARCHAR" property="createName" />
     <result column="updateName" jdbcType="VARCHAR" property="updateName" />
@@ -12,8 +13,26 @@
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, fileType, fileMiaoShu, yuliu,createName,updateName,createTime,updateTime
+    id,parentid, fileType, fileMiaoShu, yuliu,createName,updateName,createTime,updateTime
   </sql>
+
+  <!--根据parentid 查询对应的文件类型-->
+  <select id="findFileTypeByParentid"  resultMap="BaseResultMap">
+    select
+    id, fileType,
+    from mro_zhishiguanli_filetype
+    where parentid =#{parentid,jdbcType=INTEGER}
+  </select>
+
+  <!--查询第一级的文件类型-->
+  <select id="findFristType"   resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype
+    where parentid =#{id,jdbcType=INTEGER}
+  </select>
+
+
   <!--初始化页面  或者根据文档分类名进行模糊查询-->
   <select id="findSomeFileType"  resultMap="BaseResultMap">
     select
@@ -48,6 +67,9 @@
       <if test="id != null">
         id,
       </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
       <if test="filetype != null">
         fileType,
       </if>
@@ -73,6 +95,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
       </if>
       <if test="filetype != null">
         #{filetype,jdbcType=VARCHAR},
@@ -104,6 +129,9 @@
     <set>
       <if test="filetype != null">
         fileType = #{filetype,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
       </if>
       <if test="filemiaoshu != null">
         fileMiaoShu = #{filemiaoshu,jdbcType=VARCHAR},
