@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuCostDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="xiangmuNumber" jdbcType="VARCHAR" property="xiangmunumber" />
+    <result column="xiangmuName" jdbcType="VARCHAR" property="xiangmuname" />
+    <result column="salesIncome" jdbcType="DECIMAL" property="salesincome" />
+    <result column="beiPinSalesIncome" jdbcType="DECIMAL" property="beipinsalesincome" />
+    <result column="otherIncome" jdbcType="DECIMAL" property="otherincome" />
+    <result column="directOutcome" jdbcType="DECIMAL" property="directoutcome" />
+    <result column="yunZaOutcome" jdbcType="DECIMAL" property="yunzaoutcome" />
+    <result column="testingOutcome" jdbcType="DECIMAL" property="testingoutcome" />
+    <result column="otherOutcome" jdbcType="DECIMAL" property="otheroutcome" />
+    <result column="createName" jdbcType="VARCHAR" property="createName" />
+    <result column="updateName" jdbcType="VARCHAR" property="updateName" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, xiangmuNumber, xiangmuName, salesIncome, beiPinSalesIncome, otherIncome, directOutcome, 
+    yunZaOutcome, testingOutcome, otherOutcome,createName,updateName,createTime,updateTime
+  </sql>
+
+  <!--批量删除数据  或者单个删除-->
+  <delete id="deleteByIds" parameterType="java.lang.Integer">
+    delete from mro_chanpinjiaofu_cost
+    where id in
+    <foreach collection="array" item="ids" open="(" separator="," close=")">
+      #{ids,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
+  <!--初始化分页查询  或者根据项目名模糊查询-->
+  <select id="findCost" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_chanpinjiaofu_cost
+    <if test="xmName !=null">
+      where xiangmuName like concat('%',#{xmName},'%')
+    </if>
+  </select>
+
+  <!--查询项目名和编号-->
+  <select id="findXiangMu" resultType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity">
+        SELECT
+            id,
+            xiangmu_bianhao as xiangmuBianhao,
+            xiangmu_name as xiangmuName
+        FROM
+            mro_chanpinjiaofu_xiangmu
+    </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_chanpinjiaofu_cost
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_chanpinjiaofu_cost
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!--新增费用数据-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostEntity">
+    insert into mro_chanpinjiaofu_cost
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="xiangmunumber != null">
+        xiangmuNumber,
+      </if>
+      <if test="xiangmuname != null">
+        xiangmuName,
+      </if>
+      <if test="salesincome != null">
+        salesIncome,
+      </if>
+      <if test="beipinsalesincome != null">
+        beiPinSalesIncome,
+      </if>
+      <if test="otherincome != null">
+        otherIncome,
+      </if>
+      <if test="directoutcome != null">
+        directOutcome,
+      </if>
+      <if test="yunzaoutcome != null">
+        yunZaOutcome,
+      </if>
+      <if test="testingoutcome != null">
+        testingOutcome,
+      </if>
+      <if test="otheroutcome != null">
+        otherOutcome,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="createName != null">
+        createName,
+      </if>
+      <if test="updateName != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="xiangmunumber != null">
+        #{xiangmunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="xiangmuname != null">
+        #{xiangmuname,jdbcType=VARCHAR},
+      </if>
+      <if test="salesincome != null">
+        #{salesincome,jdbcType=DECIMAL},
+      </if>
+      <if test="beipinsalesincome != null">
+        #{beipinsalesincome,jdbcType=DECIMAL},
+      </if>
+      <if test="otherincome != null">
+        #{otherincome,jdbcType=DECIMAL},
+      </if>
+      <if test="directoutcome != null">
+        #{directoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="yunzaoutcome != null">
+        #{yunzaoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="testingoutcome != null">
+        #{testingoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="otheroutcome != null">
+        #{otheroutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        #{updateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id 编辑对应的费用数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostEntity">
+    update mro_chanpinjiaofu_cost
+    <set>
+      <if test="xiangmunumber != null">
+        xiangmuNumber = #{xiangmunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="xiangmuname != null">
+        xiangmuName = #{xiangmuname,jdbcType=VARCHAR},
+      </if>
+      <if test="salesincome != null">
+        salesIncome = #{salesincome,jdbcType=DECIMAL},
+      </if>
+      <if test="beipinsalesincome != null">
+        beiPinSalesIncome = #{beipinsalesincome,jdbcType=DECIMAL},
+      </if>
+      <if test="otherincome != null">
+        otherIncome = #{otherincome,jdbcType=DECIMAL},
+      </if>
+      <if test="directoutcome != null">
+        directOutcome = #{directoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="yunzaoutcome != null">
+        yunZaOutcome = #{yunzaoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="testingoutcome != null">
+        testingOutcome = #{testingoutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="otheroutcome != null">
+        otherOutcome = #{otheroutcome,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        createName = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateName != null">
+        updateName = #{updateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostEntity">
+    update mro_chanpinjiaofu_cost
+    set xiangmuNumber = #{xiangmunumber,jdbcType=VARCHAR},
+      xiangmuName = #{xiangmuname,jdbcType=VARCHAR},
+      salesIncome = #{salesincome,jdbcType=DECIMAL},
+      beiPinSalesIncome = #{beipinsalesincome,jdbcType=DECIMAL},
+      otherIncome = #{otherincome,jdbcType=DECIMAL},
+      directOutcome = #{directoutcome,jdbcType=DECIMAL},
+      yunZaOutcome = #{yunzaoutcome,jdbcType=DECIMAL},
+      testingOutcome = #{testingoutcome,jdbcType=DECIMAL},
+      otherOutcome = #{otheroutcome,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuCostEntity">
+    insert into mro_chanpinjiaofu_cost (id, xiangmuNumber, xiangmuName,
+      salesIncome, beiPinSalesIncome, otherIncome,
+      directOutcome, yunZaOutcome, testingOutcome,
+      otherOutcome)
+    values (#{id,jdbcType=INTEGER}, #{xiangmunumber,jdbcType=VARCHAR}, #{xiangmuname,jdbcType=VARCHAR},
+      #{salesincome,jdbcType=DECIMAL}, #{beipinsalesincome,jdbcType=DECIMAL}, #{otherincome,jdbcType=DECIMAL},
+      #{directoutcome,jdbcType=DECIMAL}, #{yunzaoutcome,jdbcType=DECIMAL}, #{testingoutcome,jdbcType=DECIMAL},
+      #{otheroutcome,jdbcType=DECIMAL})
+  </insert>
+</mapper>
