@@ -170,12 +170,12 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         if (psfSource.getReleaseStatus() != 2) {//发布状态不能修改数据
             Short type = preSaleFileEntity.getType();//文件类型
             Short releaseStatus = preSaleFileEntity.getReleaseStatus();//发布状态
-            Integer currentUserId = preSaleFileEntity.getUserId();//当前文件创建者
+            Integer currentUserId = psfSource.getUserId();//当前文件创建者
             short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
             if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
                 auditStatus = 2;
                 preSaleFileEntity.setAuditStatus(auditStatus);
-                this.add(preSaleFileEntity);
+                this.edit(preSaleFileEntity);
 
                 List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = new ArrayList<>();
                 if (auditorIds == null || auditorIds.length == 0) {//此审核流程已提前配置好，需要查询配置信息 同步到 当前文件的审核流程
@@ -249,7 +249,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
             } else {
                 auditStatus = 1;
                 preSaleFileEntity.setAuditStatus(auditStatus);
-                this.add(preSaleFileEntity);
+                this.edit(preSaleFileEntity);
             }
 
             //文件日志记录
@@ -351,7 +351,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
         if (isPass == null)
             throw new BaseRuntimeException("审核状态不能为空");
-        if (isPass != 2 && isPass != 3) {
+        if (isPass != 3 && isPass != 4) {
             throw new BaseRuntimeException("此文件审核状态有误");
         }
         PreSaleFileEntity preSaleFileEntity = this.findById(id);
@@ -373,7 +373,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
                 }
                 //判断是否通过 通过继续让下一批人审批，直到所有人审批通过,不通过此次文件审核流程结束。
-                if (isPass == 2) {
+                if (isPass == 3) {
                     Integer sort = preSaleFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
                     preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), null, sort + 1, null);
                     if (preSaleFileAuditorEntities.isEmpty()) {

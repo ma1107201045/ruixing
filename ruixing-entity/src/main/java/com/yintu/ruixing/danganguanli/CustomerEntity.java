@@ -26,23 +26,23 @@ public class CustomerEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-    @NotNull
+
     private Integer typeId;
     @NotNull
     private Integer dutyId;
     @NotBlank
     private String name;
-
+    @NotBlank
     private String phone;
 
     private String specialPlane;
 
     private String email;
-    @NotNull
+
     private Integer provinceId;
-    @NotNull
+
     private Integer cityId;
-    @NotNull
+
     private Integer districtId;
 
     private String detailedAddress;

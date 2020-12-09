@@ -31,5 +31,7 @@ public class AuditConfigurationEntity implements Serializable {
 
     List<AuditConfigurationUserEntity> auditConfigurationUserEntities;
 
+    List<List<UserEntity>> list;
+
 
 }

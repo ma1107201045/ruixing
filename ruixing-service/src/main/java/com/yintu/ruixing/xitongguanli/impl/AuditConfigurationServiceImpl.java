@@ -126,7 +126,11 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             criteria.andStatusEqualTo(status);
         if (model != null)
             criteria.andModelEqualTo(model);
-        return this.findByExample(auditConfigurationEntityExample);
+        List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
+        for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
+            auditConfigurationEntity.setAuditConfigurationUserEntities(auditConfigurationUserService.findByExample(new AuditConfigurationUserEntityExample()));
+        }
+        return auditConfigurationEntities;
     }
 
     @Override
@@ -181,6 +185,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                     secondTreeNodeUtil.setId(userEntity.getId());
                     secondTreeNodeUtil.setLabel(userEntity.getTrueName());
                     secondTreeNodeUtil.setValue(auditConfigurationUserEntity.getSort().toString());
+                    secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
                     secondTreeNodeUtils.add(secondTreeNodeUtil);
                 }
             }

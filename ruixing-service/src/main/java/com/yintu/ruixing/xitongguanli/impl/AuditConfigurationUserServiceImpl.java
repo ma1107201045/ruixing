@@ -1,6 +1,7 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
 import com.yintu.ruixing.master.xitongguanli.AuditConfigurationUserDao;
+import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     private AuditConfigurationUserDao auditConfigurationUserDao;
     @Autowired
     private UserService userService;
+  
 
     @Override
     public void add(AuditConfigurationUserEntity entity) {
@@ -59,16 +61,14 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     public List<UserEntity> findUsersById(Long auditConfigurationId) {
         List<UserEntity> userEntities = new ArrayList<>();
         AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
-        AuditConfigurationUserEntityExample.Criteria criteria1 = auditConfigurationUserEntityExample.createCriteria();
-        criteria1.andAuditConfigurationIdEqualTo(auditConfigurationId);
+        AuditConfigurationUserEntityExample.Criteria criteria = auditConfigurationUserEntityExample.createCriteria();
+        criteria.andAuditConfigurationIdEqualTo(auditConfigurationId);
+        auditConfigurationUserEntityExample.setOrderByClause("sort");
         List<AuditConfigurationUserEntity> auditConfigurationUserEntities = this.findByExample(auditConfigurationUserEntityExample);
         for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
             UserEntity userEntity = userService.findById(auditConfigurationUserEntity.getUserId());
             userEntities.add(userEntity);
         }
-        userEntities = userEntities.stream()
-                .sorted(Comparator.comparing(UserEntity::getId).reversed())
-                .collect(Collectors.toList());
         return userEntities;
     }
 
