@@ -82,4 +82,6 @@ public interface QuDuanBaseDao {
     List<QuDuanBaseEntity> selectByCzIdAndQdId(Integer czId, Integer qdId, Boolean isDianMaHua);
 
     List<QuDuanBaseEntity> selectByQdIdAndQuDuanYunYingName(String quDuanYunYingName);
+
+    QuDuanBaseEntity findQuDuanByCZidAndQdid(Integer integer, Integer integer1);
 }

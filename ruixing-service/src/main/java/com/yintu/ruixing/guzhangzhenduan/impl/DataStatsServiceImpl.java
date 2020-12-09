@@ -96,90 +96,171 @@ public class DataStatsServiceImpl implements DataStatsService {
 
             //System.out.println("444444++++++444444");
             Long cid = dataStatsService.findchezhanid(Long.parseLong(czid));//根据车站专用czid  查询对应的id
-
-            //System.out.println("55555555555555555");
-            Integer lastParentid = dataStatsService.findLastParentid();
-            QuDuanBaseEntity quDuanBaseEntity = new QuDuanBaseEntity();
-            quDuanBaseEntity.setCzid(Integer.parseInt(czid));
-            quDuanBaseEntity.setParentId(lastParentid);
-            //System.out.println("666666666666666666");
-            Integer xdid = dataStatsService.findxianduanid(Long.parseLong(czid));
-            quDuanBaseEntity.setXid(xdid);
-            quDuanBaseEntity.setCid(Integer.parseInt(cid.toString()));
-            quDuanBaseEntity.setQdid(Integer.parseInt(qdid));
-            quDuanBaseEntity.setLine(line);
-            //System.out.println("77777777777777777");
-            quDuanBaseEntity.setOfXianDuan(ofxianduan);
-            quDuanBaseEntity.setLeftRight(leftright);
-            if (xingbie.equals("上行")) {
-                quDuanBaseEntity.setXingBie(1);
+            Integer integer = Integer.parseInt(czid);
+            System.out.println("hhhhhhhhhhhhh"+integer);
+            Integer integer1 = Integer.parseInt(qdid);
+            System.out.println("hhhhhhhhhhhhh"+integer1);
+            QuDuanBaseEntity quDuanBase = quDuanBaseDao.findQuDuanByCZidAndQdid(Integer.parseInt(czid), Integer.parseInt(qdid));
+            if (quDuanBase == null) {//添加新的区段
+                //System.out.println("55555555555555555");
+                Integer lastParentid = dataStatsService.findLastParentid();
+                QuDuanBaseEntity quDuanBaseEntity = new QuDuanBaseEntity();
+                quDuanBaseEntity.setCzid(Integer.parseInt(czid));
+                quDuanBaseEntity.setParentId(lastParentid);
+                //System.out.println("666666666666666666");
+                Integer xdid = dataStatsService.findxianduanid(Long.parseLong(czid));
+                quDuanBaseEntity.setXid(xdid);
+                quDuanBaseEntity.setCid(Integer.parseInt(cid.toString()));
+                quDuanBaseEntity.setQdid(Integer.parseInt(qdid));
+                quDuanBaseEntity.setLine(line);
+                //System.out.println("77777777777777777");
+                quDuanBaseEntity.setOfXianDuan(ofxianduan);
+                quDuanBaseEntity.setLeftRight(leftright);
+                if (xingbie.equals("上行")) {
+                    quDuanBaseEntity.setXingBie(1);
+                }
+                if (xingbie.equals("下行")) {
+                    quDuanBaseEntity.setXingBie(2);
+                }
+                if (xingbie.equals("——") || xingbie.equals("")) {
+                    quDuanBaseEntity.setXingBie(0);
+                }
+                if (type.equals("接近")) {
+                    quDuanBaseEntity.setType(1);
+                }
+                if (type.equals("离去")) {
+                    quDuanBaseEntity.setType(2);
+                }
+                if (type.equals("——") || type.equals("")) {
+                    quDuanBaseEntity.setType(0);
+                }
+                quDuanBaseEntity.setZongheId(zongheid);
+                quDuanBaseEntity.setQuduanshejiName(quduanshejiname);
+                quDuanBaseEntity.setQuduanyunyingName(qudunyunyingname);
+                if (quduanlength.equals("") || quduanlength.equals("——")) {
+                    quDuanBaseEntity.setQuduanLength(null);
+                } else {
+                    quDuanBaseEntity.setQuduanLength(Integer.parseInt(quduanlength));
+                }
+                //System.out.println("888888888888888888");
+                quDuanBaseEntity.setCarrier(carrier);
+                quDuanBaseEntity.setDiduanType(diduantype);
+                quDuanBaseEntity.setXianluqingkuang(xianluqingkuang);
+                if (bianjie.equals("") || bianjie.equals("否")) {
+                    quDuanBaseEntity.setBianjie(0);
+                } else {
+                    quDuanBaseEntity.setBianjie(1);
+                }
+                quDuanBaseEntity.setFenjiedianWhere(fenjiedianwhere);
+                // System.out.println("99999999999999999");
+                if (zhanqufenjie.equals("") || zhanqufenjie.equals("否")) {
+                    quDuanBaseEntity.setZhanqufenjie(0);
+                } else {
+                    quDuanBaseEntity.setZhanqufenjie(1);
+                }
+                quDuanBaseEntity.setJinzhanxinhaojiName(jinzhanxinhaojiname);
+                quDuanBaseEntity.setXinhaojiorbiaozhiming(xinhaojiorbiaozhiming);
+                quDuanBaseEntity.setXinhaobiaozhipaiWhere(xinhaojizhanpaiwhere);
+                quDuanBaseEntity.setXinhaojiWhere(xinhaojiewhere);
+                quDuanBaseEntity.setZuocejueyuanType(zuocejueyuantype);
+                quDuanBaseEntity.setYoucejueyuanType(youcejueyuantype);
+                //System.out.println("111111112222222222222");
+                quDuanBaseEntity.setZhengxianhoufangquduanId(zhengxianhoufangquduanid);
+                quDuanBaseEntity.setZhengxianqianfangquduanId(zhengxianqianfangquduanid);
+                //System.out.println("123");
+                quDuanBaseEntity.setDaochaguanlianquduan1Id(daochaguanlianquduan1id);
+                quDuanBaseEntity.setDaochaguanlianquduan2Id(daochaguanlianquduan2id);
+                System.out.println("456");
+                quDuanBaseEntity.setDianmahuaguihao(dianmahuaguidao);
+                if (guineidizhi.equals("")) {
+                    quDuanBaseEntity.setGuineidizhi(null);
+                } else {
+                    quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
+                }
+                if ("".equals(zongZuoBiao)) {
+                    quDuanBaseEntity.setZongZuoBiao(null);
+                } else {
+                    quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
+                }
+                dataStatsService.addQuDuan(quDuanBaseEntity);
+            }else {//根据id修改
+                Integer id = quDuanBase.getId();
+                QuDuanBaseEntity quDuanBaseEntity = new QuDuanBaseEntity();
+                quDuanBaseEntity.setId(id);
+                //System.out.println("666666666666666666");
+                quDuanBaseEntity.setLine(line);
+                //System.out.println("77777777777777777");
+                quDuanBaseEntity.setOfXianDuan(ofxianduan);
+                quDuanBaseEntity.setLeftRight(leftright);
+                if (xingbie.equals("上行")) {
+                    quDuanBaseEntity.setXingBie(1);
+                }
+                if (xingbie.equals("下行")) {
+                    quDuanBaseEntity.setXingBie(2);
+                }
+                if (xingbie.equals("——") || xingbie.equals("")) {
+                    quDuanBaseEntity.setXingBie(0);
+                }
+                if (type.equals("接近")) {
+                    quDuanBaseEntity.setType(1);
+                }
+                if (type.equals("离去")) {
+                    quDuanBaseEntity.setType(2);
+                }
+                if (type.equals("——") || type.equals("")) {
+                    quDuanBaseEntity.setType(0);
+                }
+                quDuanBaseEntity.setZongheId(zongheid);
+                quDuanBaseEntity.setQuduanshejiName(quduanshejiname);
+                quDuanBaseEntity.setQuduanyunyingName(qudunyunyingname);
+                if (quduanlength.equals("") || quduanlength.equals("——")) {
+                    quDuanBaseEntity.setQuduanLength(null);
+                } else {
+                    quDuanBaseEntity.setQuduanLength(Integer.parseInt(quduanlength));
+                }
+                //System.out.println("888888888888888888");
+                quDuanBaseEntity.setCarrier(carrier);
+                quDuanBaseEntity.setDiduanType(diduantype);
+                quDuanBaseEntity.setXianluqingkuang(xianluqingkuang);
+                if (bianjie.equals("") || bianjie.equals("否")) {
+                    quDuanBaseEntity.setBianjie(0);
+                } else {
+                    quDuanBaseEntity.setBianjie(1);
+                }
+                quDuanBaseEntity.setFenjiedianWhere(fenjiedianwhere);
+                // System.out.println("99999999999999999");
+                if (zhanqufenjie.equals("") || zhanqufenjie.equals("否")) {
+                    quDuanBaseEntity.setZhanqufenjie(0);
+                } else {
+                    quDuanBaseEntity.setZhanqufenjie(1);
+                }
+                quDuanBaseEntity.setJinzhanxinhaojiName(jinzhanxinhaojiname);
+                quDuanBaseEntity.setXinhaojiorbiaozhiming(xinhaojiorbiaozhiming);
+                quDuanBaseEntity.setXinhaobiaozhipaiWhere(xinhaojizhanpaiwhere);
+                quDuanBaseEntity.setXinhaojiWhere(xinhaojiewhere);
+                quDuanBaseEntity.setZuocejueyuanType(zuocejueyuantype);
+                quDuanBaseEntity.setYoucejueyuanType(youcejueyuantype);
+                //System.out.println("111111112222222222222");
+                quDuanBaseEntity.setZhengxianhoufangquduanId(zhengxianhoufangquduanid);
+                quDuanBaseEntity.setZhengxianqianfangquduanId(zhengxianqianfangquduanid);
+                //System.out.println("123");
+                quDuanBaseEntity.setDaochaguanlianquduan1Id(daochaguanlianquduan1id);
+                quDuanBaseEntity.setDaochaguanlianquduan2Id(daochaguanlianquduan2id);
+                System.out.println("456");
+                quDuanBaseEntity.setDianmahuaguihao(dianmahuaguidao);
+                if (guineidizhi.equals("")) {
+                    quDuanBaseEntity.setGuineidizhi(null);
+                } else {
+                    quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
+                }
+                if ("".equals(zongZuoBiao)) {
+                    quDuanBaseEntity.setZongZuoBiao(null);
+                } else {
+                    quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
+                }
+                dataStatsService.editQuDuanById(quDuanBaseEntity);
             }
-            if (xingbie.equals("下行")) {
-                quDuanBaseEntity.setXingBie(2);
-            }
-            if (xingbie.equals("——") || xingbie.equals("")) {
-                quDuanBaseEntity.setXingBie(0);
-            }
-            if (type.equals("接近")) {
-                quDuanBaseEntity.setType(1);
-            }
-            if (type.equals("离去")) {
-                quDuanBaseEntity.setType(2);
-            }
-            if (type.equals("——") || type.equals("")) {
-                quDuanBaseEntity.setType(0);
-            }
-            quDuanBaseEntity.setZongheId(zongheid);
-            quDuanBaseEntity.setQuduanshejiName(quduanshejiname);
-            quDuanBaseEntity.setQuduanyunyingName(qudunyunyingname);
-            if (quduanlength.equals("") || quduanlength.equals("——")) {
-                quDuanBaseEntity.setQuduanLength(null);
-            } else {
-                quDuanBaseEntity.setQuduanLength(Integer.parseInt(quduanlength));
-            }
-            //System.out.println("888888888888888888");
-            quDuanBaseEntity.setCarrier(carrier);
-            quDuanBaseEntity.setDiduanType(diduantype);
-            quDuanBaseEntity.setXianluqingkuang(xianluqingkuang);
-            if (bianjie.equals("") || bianjie.equals("否")) {
-                quDuanBaseEntity.setBianjie(0);
-            } else {
-                quDuanBaseEntity.setBianjie(1);
-            }
-            quDuanBaseEntity.setFenjiedianWhere(fenjiedianwhere);
-            // System.out.println("99999999999999999");
-            if (zhanqufenjie.equals("") || zhanqufenjie.equals("否")) {
-                quDuanBaseEntity.setZhanqufenjie(0);
-            } else {
-                quDuanBaseEntity.setZhanqufenjie(1);
-            }
-            quDuanBaseEntity.setJinzhanxinhaojiName(jinzhanxinhaojiname);
-            quDuanBaseEntity.setXinhaojiorbiaozhiming(xinhaojiorbiaozhiming);
-            quDuanBaseEntity.setXinhaobiaozhipaiWhere(xinhaojizhanpaiwhere);
-            quDuanBaseEntity.setXinhaojiWhere(xinhaojiewhere);
-            quDuanBaseEntity.setZuocejueyuanType(zuocejueyuantype);
-            quDuanBaseEntity.setYoucejueyuanType(youcejueyuantype);
-            //System.out.println("111111112222222222222");
-            quDuanBaseEntity.setZhengxianhoufangquduanId(zhengxianhoufangquduanid);
-            quDuanBaseEntity.setZhengxianqianfangquduanId(zhengxianqianfangquduanid);
-            //System.out.println("123");
-            quDuanBaseEntity.setDaochaguanlianquduan1Id(daochaguanlianquduan1id);
-            quDuanBaseEntity.setDaochaguanlianquduan2Id(daochaguanlianquduan2id);
-            System.out.println("456");
-            quDuanBaseEntity.setDianmahuaguihao(dianmahuaguidao);
-            if (guineidizhi.equals("")) {
-                quDuanBaseEntity.setGuineidizhi(null);
-            } else {
-                quDuanBaseEntity.setGuineidizhi(Integer.parseInt(guineidizhi));
-            }
-            if ("".equals(zongZuoBiao)) {
-                quDuanBaseEntity.setZongZuoBiao(null);
-            } else {
-                quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
-            }
-            dataStatsService.addQuDuan(quDuanBaseEntity);
         }
-
     }
 
  /*   @Override
