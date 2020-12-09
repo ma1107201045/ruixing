@@ -21,6 +21,8 @@
         <result column="manufacturer_information" jdbcType="VARCHAR" property="manufacturerInformation"/>
         <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
         <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="xiangmutype_id" jdbcType="INTEGER" property="xiangmutypeId"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
@@ -28,8 +30,9 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, short_name, length, station_num,
-    quduan_num, dianmahua_num, axle_points, info_num, technology_state, open_time, guarantee_period_information, 
-    auxiliary_product_information, manufacturer_information, file_name, file_path
+    xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state, 
+    open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information, 
+    file_name, file_path,tid
     </sql>
     <sql id="Blob_Column_List">
         modify_situation
@@ -50,19 +53,20 @@
     <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         insert into mro_line_base_information (id, create_by, create_time,
                                                modified_by, modified_time, short_name,
-                                               length, station_num, quduan_num,
-                                               dianmahua_num, axle_points, info_num,
-                                               technology_state, open_time, guarantee_period_information,
-                                               auxiliary_product_information, manufacturer_information,
-                                               file_name, file_path, modify_situation)
+                                               length, station_num, xiangmutype_id,
+                                               quduan_num, dianmahua_num, axle_points,
+                                               info_num, technology_state, open_time,
+                                               guarantee_period_information, auxiliary_product_information,
+                                               manufacturer_information, file_name, file_path,
+                                               modify_situation, tid)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{shortName,jdbcType=VARCHAR},
-                #{length,jdbcType=DOUBLE}, #{stationNum,jdbcType=INTEGER}, #{quduanNum,jdbcType=INTEGER},
-                #{dianmahuaNum,jdbcType=INTEGER}, #{axlePoints,jdbcType=INTEGER}, #{infoNum,jdbcType=INTEGER},
-                #{technologyState,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP},
-                #{guaranteePeriodInformation,jdbcType=VARCHAR},
-                #{auxiliaryProductInformation,jdbcType=VARCHAR}, #{manufacturerInformation,jdbcType=VARCHAR},
-                #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{modifySituation,jdbcType=LONGVARCHAR})
+                #{length,jdbcType=DOUBLE}, #{stationNum,jdbcType=INTEGER}, #{xiangmutypeId,jdbcType=INTEGER},
+                #{quduanNum,jdbcType=INTEGER}, #{dianmahuaNum,jdbcType=INTEGER}, #{axlePoints,jdbcType=INTEGER},
+                #{infoNum,jdbcType=INTEGER}, #{technologyState,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP},
+                #{guaranteePeriodInformation,jdbcType=VARCHAR}, #{auxiliaryProductInformation,jdbcType=VARCHAR},
+                #{manufacturerInformation,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR},
+                #{modifySituation,jdbcType=LONGVARCHAR}, #{tid,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         insert into mro_line_base_information
@@ -90,6 +94,9 @@
             </if>
             <if test="stationNum != null">
                 station_num,
+            </if>
+            <if test="xiangmutypeId != null">
+                xiangmutype_id,
             </if>
             <if test="quduanNum != null">
                 quduan_num,
@@ -127,6 +134,9 @@
             <if test="modifySituation != null">
                 modify_situation,
             </if>
+            <if test="tid != null">
+                tid,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -152,6 +162,9 @@
             </if>
             <if test="stationNum != null">
                 #{stationNum,jdbcType=INTEGER},
+            </if>
+            <if test="xiangmutypeId != null">
+                #{xiangmutypeId,jdbcType=INTEGER},
             </if>
             <if test="quduanNum != null">
                 #{quduanNum,jdbcType=INTEGER},
@@ -189,6 +202,9 @@
             <if test="modifySituation != null">
                 #{modifySituation,jdbcType=LONGVARCHAR},
             </if>
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
@@ -214,6 +230,9 @@
             </if>
             <if test="stationNum != null">
                 station_num = #{stationNum,jdbcType=INTEGER},
+            </if>
+            <if test="xiangmutypeId != null">
+                xiangmutype_id = #{xiangmutypeId,jdbcType=INTEGER},
             </if>
             <if test="quduanNum != null">
                 quduan_num = #{quduanNum,jdbcType=INTEGER},
@@ -251,6 +270,9 @@
             <if test="modifySituation != null">
                 modify_situation = #{modifySituation,jdbcType=LONGVARCHAR},
             </if>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=INTEGER},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -263,8 +285,9 @@
             short_name                    = #{shortName,jdbcType=VARCHAR},
             length                        = #{length,jdbcType=DOUBLE},
             station_num                   = #{stationNum,jdbcType=INTEGER},
+            xiangmutype_id                = #{xiangmutypeId,jdbcType=INTEGER},
             quduan_num                    = #{quduanNum,jdbcType=INTEGER},
-            dianmahua_num                  = #{dianmahuaNum,jdbcType=INTEGER},
+            dianmahua_num                 = #{dianmahuaNum,jdbcType=INTEGER},
             axle_points                   = #{axlePoints,jdbcType=INTEGER},
             info_num                      = #{infoNum,jdbcType=INTEGER},
             technology_state              = #{technologyState,jdbcType=VARCHAR},
@@ -274,7 +297,8 @@
             manufacturer_information      = #{manufacturerInformation,jdbcType=VARCHAR},
             file_name                     = #{fileName,jdbcType=VARCHAR},
             file_path                     = #{filePath,jdbcType=VARCHAR},
-            modify_situation              = #{modifySituation,jdbcType=LONGVARCHAR}
+            modify_situation              = #{modifySituation,jdbcType=LONGVARCHAR},
+            tid                           = #{tid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
@@ -286,8 +310,9 @@
             short_name                    = #{shortName,jdbcType=VARCHAR},
             length                        = #{length,jdbcType=DOUBLE},
             station_num                   = #{stationNum,jdbcType=INTEGER},
+            xiangmutype_id                = #{xiangmutypeId,jdbcType=INTEGER},
             quduan_num                    = #{quduanNum,jdbcType=INTEGER},
-            dianmahua_num                  = #{dianmahuaNum,jdbcType=INTEGER},
+            dianmahua_num                 = #{dianmahuaNum,jdbcType=INTEGER},
             axle_points                   = #{axlePoints,jdbcType=INTEGER},
             info_num                      = #{infoNum,jdbcType=INTEGER},
             technology_state              = #{technologyState,jdbcType=VARCHAR},
@@ -296,7 +321,80 @@
             auxiliary_product_information = #{auxiliaryProductInformation,jdbcType=VARCHAR},
             manufacturer_information      = #{manufacturerInformation,jdbcType=VARCHAR},
             file_name                     = #{fileName,jdbcType=VARCHAR},
-            file_path                     = #{filePath,jdbcType=VARCHAR}
+            file_path                     = #{filePath,jdbcType=VARCHAR},
+            tid                           = #{tid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
+        <id column="lbi_id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
+        <result column="length" jdbcType="DOUBLE" property="length"/>
+        <result column="station_num" jdbcType="INTEGER" property="stationNum"/>
+        <result column="quduan_num" jdbcType="INTEGER" property="quduanNum"/>
+        <result column="dianmahua_num" jdbcType="INTEGER" property="dianmahuaNum"/>
+        <result column="axle_points" jdbcType="INTEGER" property="axlePoints"/>
+        <result column="info_num" jdbcType="INTEGER" property="infoNum"/>
+        <result column="technology_state" jdbcType="VARCHAR" property="technologyState"/>
+        <result column="open_time" jdbcType="TIMESTAMP" property="openTime"/>
+        <result column="guarantee_period_information" jdbcType="VARCHAR" property="guaranteePeriodInformation"/>
+        <result column="auxiliary_product_information" jdbcType="VARCHAR" property="auxiliaryProductInformation"/>
+        <result column="manufacturer_information" jdbcType="VARCHAR" property="manufacturerInformation"/>
+        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="modify_situation" jdbcType="LONGVARCHAR" property="modifySituation"/>
+        <result column="lbi_tid" jdbcType="INTEGER" property="tid"/>
+        <result column="xiangmutype_id" jdbcType="INTEGER" property="xiangmutypeId"/>
+        <association column="lbi_tid" property="tieLuJuEntity">
+            <id column="t_tid" jdbcType="INTEGER" property="tid"/>
+            <result column="tlj_name" jdbcType="VARCHAR" property="tljName"/>
+        </association>
+        <association column="xiangmutype_id" property="anZhuangTiaoShiCheZhanXiangMuTypeEntity">
+            <id column="ax_id" jdbcType="INTEGER" property="id"/>
+            <result column="xiangmuleixing" jdbcType="VARCHAR" property="xiangmuleixing"/>
+        </association>
+    </resultMap>
+    <sql id="Much_Column_List">
+        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,file_name, file_path,modify_situation,lbi.tid as lbi_tid,
+        t.tid as t_tid,tlj_name,
+        ax.id as ax_id,xiangmuleixing
+    </sql>
+    <sql id="Much_Table_List">
+        mro_line_base_information lbi  inner join mro_tieluju t on lbi.tid = t.tid
+         inner join  mro_anzhuangtiaoshi_xiangmutype ax on lbi.xiangmutype_id = ax.id
+    </sql>
+    <sql id="Much_Where_List">
+        <where>
+            <if test="ids!=null and ids.length > 0">
+                <foreach collection="array" open="(" close=")" separator="," item="id" index="index">
+                    lbi.id=#{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+    <select id="selectByExample" resultMap="MuchResultMap">
+        select
+        <include refid="Much_Column_List"/>
+        from
+        <include refid="Much_Table_List"/>
+        <include refid="Much_Where_List"/>
+    </select>
+
+
+    <resultMap id="dResultMap" type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity">
+        <id column="did" jdbcType="BIGINT" property="did"/>
+        <result column="dwd_name" jdbcType="VARCHAR" property="dwdName"/>
+    </resultMap>
+
+    <select id="selectDianWuDuanEntityById" parameterType="java.lang.Integer" resultMap="dResultMap">
+        select did, dwd_name
+        from mro_dianwuduan d
+                 inner join mro_line_base_information_unit lbiu
+                            on lbiu.unit_id = d.did
+        where lbiu.line_base_information_id = #{id,jdbcType=INTEGER}
+    </select>
 </mapper>

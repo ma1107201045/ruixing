@@ -79,8 +79,8 @@ public class AuditConfigurationController extends SessionController {
 
     @GetMapping("/{id}/roles")
     public Map<String, Object> findTree(@PathVariable Long id) {
-        List<TreeNodeUtil> treeNodeUtils = auditConfigurationService.findTreeById(id);
-        return ResponseDataUtil.ok("查询树信息列表成功", treeNodeUtils);
+        List<List<TreeNodeUtil>> lists = auditConfigurationService.findTreeById(id);
+        return ResponseDataUtil.ok("查询树信息列表成功", lists);
     }
 
 }

@@ -12,20 +12,20 @@ import java.util.List;
  */
 public interface AuditConfigurationService extends BaseService<AuditConfigurationEntity, Long> {
 
-    void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sortIds);
+    void add(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sorts);
 
     void remove(AuditConfigurationEntityExample auditConfigurationEntityExample);
 
-    void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sortIds);
+    void edit(AuditConfigurationEntity auditConfigurationEntity, Long[] roles, Long[] userIds, Integer[] sorts);
 
     List<AuditConfigurationEntity> findByExample(AuditConfigurationEntityExample auditConfigurationEntityExample);
 
-    void addOrEditAuditConfigurationUser(Long id, Long[] roles, Long[] userIds, Integer[] sortIds, String loginUserName);
+    void addOrEditAuditConfigurationUser(Long id, Long[] roles, Long[] userIds, Integer[] sorts, String loginUserName);
 
     List<AuditConfigurationEntity> findByExample(Short nameId, Short status, Short model);
 
     List<TreeNodeUtil> findTree();
 
-    List<TreeNodeUtil> findTreeById(Long id);
+    List<List<TreeNodeUtil>> findTreeById(Long id);
 
 }

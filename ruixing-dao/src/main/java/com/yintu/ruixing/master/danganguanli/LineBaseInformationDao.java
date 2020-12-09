@@ -1,6 +1,9 @@
 package com.yintu.ruixing.master.danganguanli;
 
 import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+
+import java.util.List;
 
 public interface LineBaseInformationDao {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,8 @@ public interface LineBaseInformationDao {
     int updateByPrimaryKeyWithBLOBs(LineBaseInformationEntity record);
 
     int updateByPrimaryKey(LineBaseInformationEntity record);
+
+    List<LineBaseInformationEntity> selectByExample(Integer[] ids);
+
+    List<DianWuDuanEntity> selectDianWuDuanEntityById(Integer id);
 }

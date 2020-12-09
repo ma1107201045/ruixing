@@ -1,17 +1,21 @@
 package com.yintu.ruixing.danganguanli;
 
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LineBaseInformationEntity implements Serializable {
-    private static final long serialVersionUID = 4000263142275847007L;
+    private static final long serialVersionUID = -4440508152894094017L;
     private Integer id;
 
     private String createBy;
@@ -52,4 +56,13 @@ public class LineBaseInformationEntity implements Serializable {
 
     private String modifySituation;
 
+    private Integer xiangmutypeId;
+
+    private Integer tid;
+
+    private TieLuJuEntity tieLuJuEntity;
+
+    private AnZhuangTiaoShiCheZhanXiangMuTypeEntity anZhuangTiaoShiCheZhanXiangMuTypeEntity;
+
+    private List<DianWuDuanEntity> dianWuDuanEntities;
 }

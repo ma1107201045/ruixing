@@ -73,7 +73,7 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     }
 
     @Override
-    public List<Long> findDistinctRoleId(Long auditConfigurationId) {
-        return auditConfigurationUserDao.selectDistinctRoleId(auditConfigurationId);
+    public List<Long> findDistinctFieldByExample(String field, Long auditConfigurationId, Integer sort) {
+        return auditConfigurationUserDao.selectDistinctFieldByExample(field, auditConfigurationId, sort);
     }
 }

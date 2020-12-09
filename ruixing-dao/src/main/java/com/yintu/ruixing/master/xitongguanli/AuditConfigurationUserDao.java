@@ -31,5 +31,5 @@ public interface AuditConfigurationUserDao {
 
     int updateByPrimaryKey(AuditConfigurationUserEntity record);
 
-    List<Long> selectDistinctRoleId(Long auditConfigurationId);
+    List<Long> selectDistinctFieldByExample(String field, Long auditConfigurationId, Integer sort);
 }

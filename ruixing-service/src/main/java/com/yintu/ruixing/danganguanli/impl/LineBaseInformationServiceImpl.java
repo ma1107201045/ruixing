@@ -2,10 +2,13 @@ package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationService;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @Author: mlf
@@ -37,4 +40,20 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
     public LineBaseInformationEntity findById(Integer id) {
         return lineBaseInformationDao.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id) {
+        return lineBaseInformationDao.selectDianWuDuanEntityById(id);
+    }
+
+    @Override
+    public List<LineBaseInformationEntity> findByExample(Integer[] ids) {
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(ids);
+        for (LineBaseInformationEntity lineBaseInformationEntity : lineBaseInformationEntities) {
+            lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
+        }
+        return lineBaseInformationEntities;
+    }
+
+
 }

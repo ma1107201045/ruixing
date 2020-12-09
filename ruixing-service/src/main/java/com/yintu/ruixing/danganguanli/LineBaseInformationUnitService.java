@@ -8,4 +8,6 @@ import com.yintu.ruixing.common.util.BaseService;
  * @Version: 1.0
  */
 public interface LineBaseInformationUnitService extends BaseService<LineBaseInformationUnitEntity, Integer> {
+
+
 }

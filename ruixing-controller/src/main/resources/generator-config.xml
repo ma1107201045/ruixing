@@ -41,15 +41,8 @@
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
         <table tableName="mro_line_base_information"
-               domainObjectName="LineBaseInformationEntity"
-               mapperName="LineBaseInformationDao"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableUpdateByExample="false"
-               enableSelectByExample="false"/>
-        <table tableName="mro_line_base_information_unit"
-               domainObjectName="LineBaseInformationUnitEntity"
-               mapperName="LineBaseInformationUnitDao"
+               domainObjectName="LineBaseInformationEntity1"
+               mapperName="LineBaseInformationDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

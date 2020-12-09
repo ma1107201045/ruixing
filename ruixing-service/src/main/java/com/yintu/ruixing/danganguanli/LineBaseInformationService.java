@@ -1,6 +1,9 @@
 package com.yintu.ruixing.danganguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+
+import java.util.List;
 
 /**
  * @Author: mlf
@@ -8,4 +11,10 @@ import com.yintu.ruixing.common.util.BaseService;
  * @Version: 1.0
  */
 public interface LineBaseInformationService extends BaseService<LineBaseInformationEntity, Integer> {
+
+    List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id);
+
+    List<LineBaseInformationEntity> findByExample(Integer[] ids);
+
+
 }
