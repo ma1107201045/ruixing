@@ -30,6 +30,16 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     private ZhiShiGuanLiFileTypeFileDao zhiShiGuanLiFileTypeFileDao;
 
     @Override
+    public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, Integer id) {
+        return zhiShiGuanLiFileTypeFileDao.findSomeFileBySize(id);
+    }
+
+    @Override
+    public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size,  Integer id) {
+        return zhiShiGuanLiFileTypeFileDao.findSomeFileByTime(id);
+    }
+
+    @Override
     public void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username) {
         for (int i = 0; i < fileid.length; i++) {
             ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity=zhiShiGuanLiFileTypeFileDao.selectByPrimaryKey(fileid[i]);
@@ -68,12 +78,17 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
         for (ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity : zhiShiGuanLiFileTypeEntityList) {
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             Integer idd = zhiShiGuanLiFileTypeEntity.getId();
+            Integer parentid = zhiShiGuanLiFileTypeEntity.getParentid();
             String filetype = zhiShiGuanLiFileTypeEntity.getFiletype();
             String filemiaoshu = zhiShiGuanLiFileTypeEntity.getFilemiaoshu();
             treeNodeUtil.setId((long) idd);
             treeNodeUtil.setLabel(filetype);
             treeNodeUtil.setValue(filemiaoshu);
-            treeNodeUtil.setChildren(this.findShuXing(idd));
+            treeNodeUtil.setIcon(parentid.toString());
+            List<TreeNodeUtil> shuXing = this.findShuXing(idd);
+            if (shuXing.size()!=0) {
+                treeNodeUtil.setChildren(shuXing);
+            }
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;

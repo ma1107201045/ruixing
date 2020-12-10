@@ -34,4 +34,8 @@ public interface ZhiShiGuanLiFileTypeFileDao {
     List<ZhiShiGuanLiFileTypeFileEntity> findFiles(Integer id);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findFileByParentid(Integer id);
+
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer id);
+
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer id);
 }

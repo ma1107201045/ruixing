@@ -15,6 +15,8 @@ public class ZhiShiGuanLiFileTypeFileEntity {
 
     private Integer tid;
 
+    private Integer filesize;
+
     private String fileName;
 
     private String filePath;
