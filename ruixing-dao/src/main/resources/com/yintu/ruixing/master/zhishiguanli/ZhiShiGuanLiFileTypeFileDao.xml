@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="parentid" jdbcType="INTEGER" property="parentid" />
     <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="filesize" jdbcType="INTEGER" property="filesize" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="createName" jdbcType="VARCHAR" property="createName" />
@@ -15,8 +16,34 @@
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parentid, tid, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName
+    id, parentid, tid,filesize, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName
   </sql>
+
+  <!--根据 大小 排序-->
+  <select id="findSomeFileBySize"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    <where>
+      <if test="id!=null">
+        tid =#{id}
+      </if>
+    </where>
+    ORDER BY filesize DESC
+  </select>
+
+  <!--根据 时间 排序-->
+  <select id="findSomeFileByTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    <where>
+      <if test="id!=null">
+        tid =#{id}
+      </if>
+    </where>
+    ORDER BY createtime DESC
+  </select>
 
   <!--根据id 查询对应的文件数据-->
   <select id="findFileByParentid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -46,7 +73,7 @@
         file_name like concat('%',#{fileName},'%')
       </if>
     </where>
-    group by id desc
+    ORDER BY id desc
   </select>
 
   <!--文件初始化   或者根据文件名查询文件-->
@@ -62,7 +89,7 @@
        and tid =#{id}
       </if>
     </where>
-    group by id desc
+    ORDER BY id desc
   </select>
 
   <!--根据id 查询对应的文件数据-->
@@ -82,9 +109,9 @@
 
   <!--新增文件-->
   <insert id="addOneFile" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
-    insert into mro_zhishiguanli_filetype_file ( parentid,
+    insert into mro_zhishiguanli_filetype_file ( parentid,filesize,
     file_name, file_path, updateTime,updateName)
-    values ( #{id1,jdbcType=INTEGER},
+    values ( #{id1,jdbcType=INTEGER},#{filesize,jdbcType=INTEGER},
     #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR})
   </insert>
 
@@ -101,6 +128,9 @@
       </if>
       <if test="tid != null">
         tid,
+      </if>
+      <if test="filesize != null">
+        filesize,
       </if>
       <if test="fileName != null">
         file_name,
@@ -136,6 +166,9 @@
       </if>
       <if test="tid != null">
         #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="filesize != null">
+        #{filesize,jdbcType=INTEGER},
       </if>
       <if test="fileName != null">
         #{fileName,jdbcType=VARCHAR},
@@ -173,6 +206,9 @@
       </if>
       <if test="tid != null">
         tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="filesize != null">
+        filesize = #{filesize,jdbcType=INTEGER},
       </if>
       <if test="fileName != null">
         file_name = #{fileName,jdbcType=VARCHAR},

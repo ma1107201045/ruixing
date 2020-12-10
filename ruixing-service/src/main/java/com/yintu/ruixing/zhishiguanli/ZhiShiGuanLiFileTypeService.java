@@ -52,5 +52,7 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
 
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size , Integer id);
 
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, Integer id);
 }

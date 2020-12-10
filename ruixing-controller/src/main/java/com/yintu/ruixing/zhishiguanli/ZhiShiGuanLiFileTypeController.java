@@ -149,6 +149,24 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
     }
 
+    //根据 时间 排序.
+    @GetMapping("/findSomeFileByTime")
+    public Map<String, Object> findSomeFileByTime(Integer page, Integer size,Integer id) {
+        PageHelper.startPage(page, size);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size,id);
+        PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+    }
+
+    //根据 大小 排序.
+    @GetMapping("/findSomeFileBySize")
+    public Map<String, Object> findSomeFileBySize(Integer page, Integer size,Integer id) {
+        PageHelper.startPage(page, size);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size,id);
+        PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+    }
+
     //根据文件id  查询其历史版本文件
     @GetMapping("/findFileById/{id}")
     public Map<String, Object> findFileById(@PathVariable Integer id, Integer page, Integer size, String fileName) {
