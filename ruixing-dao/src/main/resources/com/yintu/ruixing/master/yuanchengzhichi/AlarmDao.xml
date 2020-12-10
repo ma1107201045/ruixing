@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.master.yuanchengzhichi.AlarmDao1">
-    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmEntity1">
+<mapper namespace="com.yintu.ruixing.master.yuanchengzhichi.AlarmDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
         <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
@@ -36,7 +36,7 @@
         from alarm
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity1">
+    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         insert into alarm (id, msg_id, send_num,
                            createtime, station_id, section_id,
                            alarmcode, reserved1, reserved2,
@@ -50,7 +50,7 @@
                 #{status,jdbcType=BIT}, #{faultStatus,jdbcType=INTEGER}, #{disposeStatus,jdbcType=INTEGER},
                 #{idea,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity1">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         insert into alarm
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -159,7 +159,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity1">
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         update alarm
         <set>
             <if test="msgId != null">
@@ -213,7 +213,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity1">
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         update alarm
         set msg_id         = #{msgId,jdbcType=INTEGER},
             send_num       = #{sendNum,jdbcType=INTEGER},
