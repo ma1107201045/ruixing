@@ -13,6 +13,8 @@ import java.util.Date;
 public class ZhiShiGuanLiFileTypeEntity {
     private Integer id;
 
+    private Integer parentid;
+
     private String filetype;
 
     private String filemiaoshu;

@@ -24,4 +24,9 @@ public interface ZhiShiGuanLiFileTypeDao {
     List<ZhiShiGuanLiFileTypeEntity> findSomeFileType(String fileTypeName);
 
 
+    List<ZhiShiGuanLiFileTypeEntity> findFristType(Integer id);
+
+    List<ZhiShiGuanLiFileTypeEntity> findFileType(Integer id);
+
+    List<ZhiShiGuanLiFileTypeEntity> findFileTypeByParentid(Integer parentid);
 }
