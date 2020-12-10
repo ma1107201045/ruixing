@@ -1,8 +1,17 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class AlarmTicketEntity {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AlarmTicketEntity implements Serializable {
+    private static final long serialVersionUID = -1900221034734089765L;
     private Integer id;
 
     private String createBy;
@@ -13,43 +22,6 @@ public class AlarmTicketEntity {
 
     private Date modifiedTime;
 
-    public Integer getId() {
-        return id;
-    }
+    private Integer alarmId;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy == null ? null : modifiedBy.trim();
-    }
-
-    public Date getModifiedTime() {
-        return modifiedTime;
-    }
-
-    public void setModifiedTime(Date modifiedTime) {
-        this.modifiedTime = modifiedTime;
-    }
 }

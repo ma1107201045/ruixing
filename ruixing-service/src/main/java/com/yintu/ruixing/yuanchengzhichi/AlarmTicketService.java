@@ -6,4 +6,7 @@ package com.yintu.ruixing.yuanchengzhichi;
  * @Version: 1.0
  */
 public interface AlarmTicketService {
+
+
+    void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 }

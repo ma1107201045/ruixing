@@ -48,8 +48,8 @@
                enableUpdateByExample="false"
                enableSelectByExample="false"/>
         <table tableName="alarm_ticket"
-               domainObjectName="AlarmTicketEntity"
-               mapperName="AlarmTicketDao"
+               domainObjectName="AlarmTicketEntity1"
+               mapperName="AlarmTicketDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
