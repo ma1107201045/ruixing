@@ -57,6 +57,10 @@ public interface DataStatsDao {
 
     List<CheZhanEntity> findCheZhanByXid(Integer xid);
 
+    List<QuDuanBaseEntity> selectQuDuanByCid(Integer cid);
+
+    List<QuDuanBaseEntity> findQuDuanByCid(Integer page, Integer size);
+
     List<QuDuanBaseEntity> findAllQuDuan();
 
     void qingChuaByDid(DianWuDuanEntity dianWuDuanEntity);

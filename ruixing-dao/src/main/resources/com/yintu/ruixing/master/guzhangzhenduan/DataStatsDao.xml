@@ -88,7 +88,6 @@
     </resultMap>
 
 
-
     <!--查詢所有的车站数据-->
     <select id="findAll" resultType="com.yintu.ruixing.guzhangzhenduan.DataStatsEntity" resultMap="dataStatEntities">
         SELECT tlj.tlj_name,
@@ -755,6 +754,12 @@
         WHERE xd_cz_id = #{xid}
     </select>
 
+    <!--根据cid查询区段的名字和id-->
+    <select id="selectQuDuanByCid" parameterType="java.lang.Integer" resultMap="quduan">
+        SELECT id, quDuanYunYing_name
+        FROM mro_quduan_base
+        WHERE cid = #{cid}
+    </select>
 
     <resultMap id="quduan" type="com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>

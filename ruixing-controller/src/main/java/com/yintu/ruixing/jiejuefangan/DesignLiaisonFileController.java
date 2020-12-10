@@ -39,7 +39,7 @@ public class DesignLiaisonFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> add(@Validated DesignLiaisonFileEntity entity,
                                    @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
-                                   @RequestParam(value = "sorts", required = false) Integer[] sorts) {
+                                   @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
@@ -61,7 +61,7 @@ public class DesignLiaisonFileController extends SessionController {
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated DesignLiaisonFileEntity entity,
                                     @RequestParam(value = "auditorIds", required = false) Long[] auditorIds,
-                                    @RequestParam(value = "sorts", required = false) Integer[] sorts) {
+                                    @RequestParam(value = "sortIds", required = false) Integer[] sorts) {
         designLiaisonFileService.edit(entity, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改设计联络及后续技术交流文件信息成功");
     }

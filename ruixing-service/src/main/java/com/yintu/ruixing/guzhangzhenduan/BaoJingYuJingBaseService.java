@@ -20,4 +20,6 @@ public interface BaoJingYuJingBaseService {
     List<BaoJingYuJingBaseEntity> findAllBaoJing(Integer page, Integer size);
 
     List<BaoJingYuJingBaseEntity> findBJDataBySomething(Integer page, Integer size, String context);
+
+    String findAlarmContext(Integer alarmcode, Integer bjyjType);
 }

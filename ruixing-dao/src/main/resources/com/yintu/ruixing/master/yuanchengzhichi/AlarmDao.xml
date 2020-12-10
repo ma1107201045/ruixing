@@ -15,10 +15,15 @@
         <result column="platform_time" jdbcType="INTEGER" property="platformTime"/>
         <result column="recover_time" jdbcType="INTEGER" property="recoverTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <result column="fault_status" jdbcType="INTEGER" property="faultStatus"/>
+        <result column="dispose_status" jdbcType="INTEGER" property="disposeStatus"/>
+        <result column="idea" jdbcType="INTEGER" property="idea"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,
-    alarmlevel, platform_time, recover_time, status
+    alarmlevel, platform_time, recover_time, status, fault_status, dispose_status, idea, 
+    remark
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -36,12 +41,14 @@
                            createtime, station_id, section_id,
                            alarmcode, reserved1, reserved2,
                            alarmlevel, platform_time, recover_time,
-                           status)
+                           status, fault_status, dispose_status,
+                           idea, remark)
         values (#{id,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, #{sendNum,jdbcType=INTEGER},
                 #{createtime,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER},
                 #{alarmcode,jdbcType=INTEGER}, #{reserved1,jdbcType=INTEGER}, #{reserved2,jdbcType=INTEGER},
                 #{alarmlevel,jdbcType=INTEGER}, #{platformTime,jdbcType=INTEGER}, #{recoverTime,jdbcType=INTEGER},
-                #{status,jdbcType=BIT})
+                #{status,jdbcType=BIT}, #{faultStatus,jdbcType=INTEGER}, #{disposeStatus,jdbcType=INTEGER},
+                #{idea,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         insert into alarm
@@ -85,6 +92,18 @@
             <if test="status != null">
                 status,
             </if>
+            <if test="faultStatus != null">
+                fault_status,
+            </if>
+            <if test="disposeStatus != null">
+                dispose_status,
+            </if>
+            <if test="idea != null">
+                idea,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -125,6 +144,18 @@
             </if>
             <if test="status != null">
                 #{status,jdbcType=BIT},
+            </if>
+            <if test="faultStatus != null">
+                #{faultStatus,jdbcType=INTEGER},
+            </if>
+            <if test="disposeStatus != null">
+                #{disposeStatus,jdbcType=INTEGER},
+            </if>
+            <if test="idea != null">
+                #{idea,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -167,27 +198,44 @@
             <if test="status != null">
                 status = #{status,jdbcType=BIT},
             </if>
+            <if test="faultStatus != null">
+                fault_status = #{faultStatus,jdbcType=INTEGER},
+            </if>
+            <if test="disposeStatus != null">
+                dispose_status = #{disposeStatus,jdbcType=INTEGER},
+            </if>
+            <if test="idea != null">
+                idea = #{idea,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         update alarm
-        set msg_id        = #{msgId,jdbcType=INTEGER},
-            send_num      = #{sendNum,jdbcType=INTEGER},
-            createtime    = #{createtime,jdbcType=INTEGER},
-            station_id    = #{stationId,jdbcType=INTEGER},
-            section_id    = #{sectionId,jdbcType=INTEGER},
-            alarmcode     = #{alarmcode,jdbcType=INTEGER},
-            reserved1     = #{reserved1,jdbcType=INTEGER},
-            reserved2     = #{reserved2,jdbcType=INTEGER},
-            alarmlevel    = #{alarmlevel,jdbcType=INTEGER},
-            platform_time = #{platformTime,jdbcType=INTEGER},
-            recover_time  = #{recoverTime,jdbcType=INTEGER},
-            status        = #{status,jdbcType=BIT}
+        set msg_id         = #{msgId,jdbcType=INTEGER},
+            send_num       = #{sendNum,jdbcType=INTEGER},
+            createtime     = #{createtime,jdbcType=INTEGER},
+            station_id     = #{stationId,jdbcType=INTEGER},
+            section_id     = #{sectionId,jdbcType=INTEGER},
+            alarmcode      = #{alarmcode,jdbcType=INTEGER},
+            reserved1      = #{reserved1,jdbcType=INTEGER},
+            reserved2      = #{reserved2,jdbcType=INTEGER},
+            alarmlevel     = #{alarmlevel,jdbcType=INTEGER},
+            platform_time  = #{platformTime,jdbcType=INTEGER},
+            recover_time   = #{recoverTime,jdbcType=INTEGER},
+            status         = #{status,jdbcType=BIT},
+            fault_status   = #{faultStatus,jdbcType=INTEGER},
+            dispose_status = #{disposeStatus,jdbcType=INTEGER},
+            idea           = #{idea,jdbcType=INTEGER},
+            remark         = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="a_id" jdbcType="INTEGER" property="id"/>
         <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
         <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
         <result column="createtime" jdbcType="INTEGER" property="createtime"/>
@@ -200,13 +248,72 @@
         <result column="platform_time" jdbcType="INTEGER" property="platformTime"/>
         <result column="recover_time" jdbcType="INTEGER" property="recoverTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <association column="section_id" property="quDuanBaseEntity">
+            <result column="qdid" jdbcType="INTEGER" property="qdid"/>
+            <result column="quDuanYunYing_name" jdbcType="INTEGER" property="quduanyunyingName"/>
+        </association>
+        <association column="station_id" property="cheZhanEntity">
+            <result column="cz_id" jdbcType="BIGINT" property="czId"/>
+            <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+            <result column="xt_type" jdbcType="VARCHAR" property="xtType"/>
+        </association>
+        <association column="xd_id" property="xianDuanEntity">
+            <result column="xd_id" jdbcType="BIGINT" property="xdId"/>
+            <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
+        </association>
     </resultMap>
     <sql id="Example_Column_List">
-        id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status
+        a.id as a_id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,
+        qb.qdid ,qb.quDuanYunYing_name,
+        c.cz_id,c.cz_name,c.xt_type,
+        x.xd_id,x.xd_name
     </sql>
     <select id="selectByExample" resultMap="ExampleResultMap">
         select
         <include refid="Example_Column_List"/>
-        from alarm a inner join mro_chezhan c on a.section_id
+        from alarm a
+        INNER JOIN mro_quduan_base qb ON a.station_id = qb.cz_id AND a.section_id = qb.qdid
+        INNER JOIN mro_chezhan c ON a.station_id = c.cz_id
+        INNER JOIN mro_xianduan x ON c.xd_cz_id = x.xid
+        INNER JOIN mro_dianwuduan d ON x.dwd_xd_id=d.did
+        INNER JOIN mro_tieluju t ON d.tlj_dwd_id=t.tid
+        <where>
+            <if test="tid != null">
+                AND t.tid=#{tid,jdbcType=INTEGER}
+            </if>
+            <if test="did != null">
+                AND d.did=#{did,jdbcType=INTEGER}
+            </if>
+            <if test="xid != null">
+                AND x.xid=#{xid,jdbcType=INTEGER}
+            </if>
+            <if test="cid != null">
+                AND c.cid=#{cid,jdbcType=INTEGER}
+            </if>
+            <if test="qid != null">
+                AND qb.id=#{qid,jdbcType=INTEGER}
+            </if>
+            <if test="beginTime!=null and endTime!=null">
+                AND a.createtime BETWEEN #{beginTime} AND #{endTime}
+            </if>
+            <if test="id">
+                AND a.id=#{id,jdbcType=INTEGER}
+            </if>
+            <if test="xtType">
+                AND c.xt_type=#{xtType,jdbcType=INTEGER}
+            </if>
+            <if test="alarmlevel">
+                AND a.alarmlevel=#{alarmlevel,jdbcType=INTEGER}
+            </if>
+            <if test="faultStatus">
+                AND a.fault_status=#{faultStatus,jdbcType=INTEGER}
+            </if>
+            <if test="disposeStatus">
+                AND a.dispose_status=#{disposeStatus,jdbcType=INTEGER}
+            </if>
+            <if test="idea">
+                AND a.idea=#{idea,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 </mapper>

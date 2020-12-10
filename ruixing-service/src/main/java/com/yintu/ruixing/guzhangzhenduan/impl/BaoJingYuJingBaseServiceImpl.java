@@ -29,6 +29,11 @@ public class BaoJingYuJingBaseServiceImpl implements BaoJingYuJingBaseService {
     }
 
     @Override
+    public String findAlarmContext(Integer alarmcode, Integer bjyjType) {
+        return baoJingYuJingBaseDao.findAlarmContext(alarmcode, bjyjType);
+    }
+
+    @Override
     public List<BaoJingYuJingBaseEntity> findAllBaoJing(Integer page, Integer size) {
         return baoJingYuJingBaseDao.findAllBaoJing();
     }
@@ -49,7 +54,7 @@ public class BaoJingYuJingBaseServiceImpl implements BaoJingYuJingBaseService {
 
     @Override
     public List<BaoJingYuJingBaseEntity> findBJYJData(Integer page, Integer size, String context, Integer bjyjType) {
-        return baoJingYuJingBaseDao.findBJYJData(context,bjyjType);
+        return baoJingYuJingBaseDao.findBJYJData(context, bjyjType);
     }
 
     @Override

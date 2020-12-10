@@ -1,6 +1,22 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
-public class AlarmEntity {
+import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
+import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
+
+import java.io.Serializable;
+
+@Alias("alarm")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AlarmEntity implements Serializable {
+    private static final long serialVersionUID = -1532247728711658070L;
     private Integer id;
 
     private Integer msgId;
@@ -27,107 +43,21 @@ public class AlarmEntity {
 
     private Boolean status;
 
-    public Integer getId() {
-        return id;
-    }
+    private Integer faultStatus;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer disposeStatus;
 
-    public Integer getMsgId() {
-        return msgId;
-    }
+    private Integer idea;
 
-    public void setMsgId(Integer msgId) {
-        this.msgId = msgId;
-    }
+    private String remark;
 
-    public Integer getSendNum() {
-        return sendNum;
-    }
+    private String bjcontext;
 
-    public void setSendNum(Integer sendNum) {
-        this.sendNum = sendNum;
-    }
+    private QuDuanBaseEntity quDuanBaseEntity;
 
-    public Integer getCreatetime() {
-        return createtime;
-    }
+    private CheZhanEntity cheZhanEntity;
 
-    public void setCreatetime(Integer createtime) {
-        this.createtime = createtime;
-    }
+    private XianDuanEntity xianDuanEntity;
 
-    public Integer getStationId() {
-        return stationId;
-    }
 
-    public void setStationId(Integer stationId) {
-        this.stationId = stationId;
-    }
-
-    public Integer getSectionId() {
-        return sectionId;
-    }
-
-    public void setSectionId(Integer sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public Integer getAlarmcode() {
-        return alarmcode;
-    }
-
-    public void setAlarmcode(Integer alarmcode) {
-        this.alarmcode = alarmcode;
-    }
-
-    public Integer getReserved1() {
-        return reserved1;
-    }
-
-    public void setReserved1(Integer reserved1) {
-        this.reserved1 = reserved1;
-    }
-
-    public Integer getReserved2() {
-        return reserved2;
-    }
-
-    public void setReserved2(Integer reserved2) {
-        this.reserved2 = reserved2;
-    }
-
-    public Integer getAlarmlevel() {
-        return alarmlevel;
-    }
-
-    public void setAlarmlevel(Integer alarmlevel) {
-        this.alarmlevel = alarmlevel;
-    }
-
-    public Integer getPlatformTime() {
-        return platformTime;
-    }
-
-    public void setPlatformTime(Integer platformTime) {
-        this.platformTime = platformTime;
-    }
-
-    public Integer getRecoverTime() {
-        return recoverTime;
-    }
-
-    public void setRecoverTime(Integer recoverTime) {
-        this.recoverTime = recoverTime;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

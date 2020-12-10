@@ -62,6 +62,8 @@ public interface DataStatsService {
 
     List<CheZhanEntity> findCheZhanByXid(Integer xid);
 
+    List<QuDuanBaseEntity> findQuDuanByCid(Integer cid);
+
     List<QuDuanBaseEntity> findAllQuDuan(Integer page, Integer size);
 
     List<QuDuanBaseEntity> findAllDianMaHua(Integer page, Integer size);

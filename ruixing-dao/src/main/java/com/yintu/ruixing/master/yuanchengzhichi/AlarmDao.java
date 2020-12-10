@@ -17,5 +17,5 @@ public interface AlarmDao {
 
     int updateByPrimaryKey(AlarmEntity record);
 
-    List<AlarmDao> selectByExample(Integer stationId);
+    List<AlarmEntity> selectByExample(Integer tid, Integer did, Integer xid, Integer cid, Integer qid, Integer beginTime, Integer endTime, Integer id, Integer xtType, Integer alarmlevel, Integer faultStatus, Integer disposeStatus, Integer idea);
 }

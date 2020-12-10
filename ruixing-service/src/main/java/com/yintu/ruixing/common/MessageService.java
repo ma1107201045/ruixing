@@ -31,7 +31,7 @@ public interface MessageService extends BaseService<MessageEntity, Integer> {
     /**
      * 从未读消息改为已读消息
      *
-     * @param id 主键
+     * @param ids 主键
      */
     void changeStatus(Integer[] ids);
 

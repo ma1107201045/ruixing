@@ -1,7 +1,6 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
-import com.yintu.ruixing.guzhangzhenduan.AlarmEntity;
-
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,5 +10,9 @@ import java.util.List;
  */
 public interface AlarmService {
 
-    List<AlarmEntity> findByExample();
+    void edit(Integer id, Integer faultStatus, Integer idea, String remark);
+
+    AlarmEntity findById(Integer id);
+
+    List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, Integer xtType);
 }

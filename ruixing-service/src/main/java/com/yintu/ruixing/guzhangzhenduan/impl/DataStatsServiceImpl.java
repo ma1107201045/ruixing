@@ -97,9 +97,9 @@ public class DataStatsServiceImpl implements DataStatsService {
             //System.out.println("444444++++++444444");
             Long cid = dataStatsService.findchezhanid(Long.parseLong(czid));//根据车站专用czid  查询对应的id
             Integer integer = Integer.parseInt(czid);
-            System.out.println("hhhhhhhhhhhhh"+integer);
+            System.out.println("hhhhhhhhhhhhh" + integer);
             Integer integer1 = Integer.parseInt(qdid);
-            System.out.println("hhhhhhhhhhhhh"+integer1);
+            System.out.println("hhhhhhhhhhhhh" + integer1);
             QuDuanBaseEntity quDuanBase = quDuanBaseDao.findQuDuanByCZidAndQdid(Integer.parseInt(czid), Integer.parseInt(qdid));
             if (quDuanBase == null) {//添加新的区段
                 //System.out.println("55555555555555555");
@@ -183,7 +183,7 @@ public class DataStatsServiceImpl implements DataStatsService {
                     quDuanBaseEntity.setZongZuoBiao(zongZuoBiao);
                 }
                 dataStatsService.addQuDuan(quDuanBaseEntity);
-            }else {//根据id修改
+            } else {//根据id修改
                 Integer id = quDuanBase.getId();
                 QuDuanBaseEntity quDuanBaseEntity = new QuDuanBaseEntity();
                 quDuanBaseEntity.setId(id);
@@ -1060,6 +1060,11 @@ public class DataStatsServiceImpl implements DataStatsService {
     @Override
     public List<CheZhanEntity> findCheZhanByXid(Integer xid) {
         return dataStatsDao.findCheZhanByXid(xid);
+    }
+
+    @Override
+    public List<QuDuanBaseEntity> findQuDuanByCid(Integer cid) {
+        return dataStatsDao.selectQuDuanByCid(cid);
     }
 
     @Override
