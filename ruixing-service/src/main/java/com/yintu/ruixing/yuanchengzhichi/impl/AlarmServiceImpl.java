@@ -32,13 +32,17 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
-    public void edit(Integer id, Integer faultStatus, Integer idea, String remark) {
+    public void edit(AlarmEntity alarmEntity) {
+        alarmDao.updateByPrimaryKeySelective(alarmEntity);
+    }
+
+    @Override
+    public void edit(Integer id, Integer idea, String remark) {
         AlarmEntity alarmEntity = this.findById(id);
         if (alarmEntity != null) {
-            alarmEntity.setFaultStatus(faultStatus);
             alarmEntity.setIdea(idea);
             alarmEntity.setRemark(remark);
-            alarmDao.updateByPrimaryKeySelective(alarmEntity);
+            this.edit(alarmEntity);
         }
     }
 

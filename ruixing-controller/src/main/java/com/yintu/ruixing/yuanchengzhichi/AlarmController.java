@@ -27,8 +27,8 @@ public class AlarmController extends SessionController {
     private DataStatsService dataStatsService;
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer faultStatus, @RequestParam Integer idea, String remark) {
-        alarmService.edit(id, faultStatus, idea, remark);
+    public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer idea, String remark) {
+        alarmService.edit(id, idea, remark);
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
     }
 

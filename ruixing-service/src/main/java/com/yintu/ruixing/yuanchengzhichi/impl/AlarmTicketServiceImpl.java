@@ -1,6 +1,8 @@
 package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import com.yintu.ruixing.master.yuanchengzhichi.AlarmTicketDao;
+import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
+import com.yintu.ruixing.yuanchengzhichi.AlarmService;
 import com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs;
 import com.yintu.ruixing.yuanchengzhichi.AlarmTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class AlarmTicketServiceImpl implements AlarmTicketService {
     @Autowired
     private AlarmTicketDao alarmTicketDao;
+    @Autowired
+    private AlarmService alarmService;
 
     @Override
-    public void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
-        alarmTicketDao.insertSelective(alarmTicketEntityWithBLOBs);
+    public void add(Integer alarmId, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        AlarmEntity alarmEntity = alarmService.findById(alarmId);
+        if (alarmEntity != null) {
+            alarmEntity.setFaultStatus(faultStatus);
+            alarmEntity.setDisposeStatus(disposeStatus);
+            alarmService.edit(alarmEntity);
+            alarmTicketDao.insertSelective(alarmTicketEntityWithBLOBs);
+        }
     }
 }

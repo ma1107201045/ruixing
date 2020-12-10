@@ -20,8 +20,8 @@ public class AlarmTicketController extends SessionController {
     private AlarmTicketService alarmTicketService;
 
     @PostMapping
-    public Map<String, Object> add(@Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
-        alarmTicketService.add(alarmTicketEntityWithBLOBs);
+    public Map<String, Object> add(@RequestParam Integer alarmId, @RequestParam Integer faultStatus, @RequestParam Integer disposeStatus, @Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        alarmTicketService.add(alarmId, faultStatus, disposeStatus, alarmTicketEntityWithBLOBs);
         return ResponseDataUtil.ok("添加报警、预警处置意见信息");
     }
 

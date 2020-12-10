@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface AlarmService {
 
-    void edit(Integer id, Integer faultStatus, Integer idea, String remark);
+    void edit(AlarmEntity alarmEntity);
+
+    void edit(Integer id, Integer idea, String remark);
 
     AlarmEntity findById(Integer id);
 
