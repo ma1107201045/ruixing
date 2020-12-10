@@ -248,6 +248,10 @@
         <result column="platform_time" jdbcType="INTEGER" property="platformTime"/>
         <result column="recover_time" jdbcType="INTEGER" property="recoverTime"/>
         <result column="status" jdbcType="BIT" property="status"/>
+        <result column="fault_status" jdbcType="INTEGER" property="faultStatus"/>
+        <result column="dispose_status" jdbcType="INTEGER" property="disposeStatus"/>
+        <result column="idea" jdbcType="INTEGER" property="idea"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <association column="section_id" property="quDuanBaseEntity">
             <result column="qdid" jdbcType="INTEGER" property="qdid"/>
             <result column="quDuanYunYing_name" jdbcType="INTEGER" property="quduanyunyingName"/>
@@ -263,7 +267,7 @@
         </association>
     </resultMap>
     <sql id="Example_Column_List">
-        a.id as a_id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,
+        a.id as a_id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,idea, remark,
         qb.qdid ,qb.quDuanYunYing_name,
         c.cz_id,c.cz_name,c.xt_type,
         x.xd_id,x.xd_name
