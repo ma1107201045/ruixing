@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -38,19 +37,19 @@ public class QuDuanInfoEntityV2 implements Serializable {
 
     private String djcollection;
 
-    private BigDecimal vInAll;
+    private String vInAll;
 
-    private BigDecimal mvInZhu;
+    private String mvInZhu;
 
-    private BigDecimal mvInBing;
+    private String mvInBing;
 
-    private BigDecimal mvInDiaoZhu;
+    private String mvInDiaoZhu;
 
-    private BigDecimal mvInDiaoBing;
+    private String mvInDiaoBing;
 
-    private BigDecimal hzInLowZhu;
+    private String hzInLowZhu;
 
-    private BigDecimal hzInLowBing;
+    private String hzInLowBing;
 
     private Integer gjDriveZhu;
 
@@ -82,25 +81,25 @@ public class QuDuanInfoEntityV2 implements Serializable {
 
     private String v39;
 
-    private BigDecimal vOutZhu;
+    private String vOutZhu;
 
-    private BigDecimal vOutBei;
+    private String vOutBei;
 
-    private BigDecimal maOutZhu;
+    private String maOutZhu;
 
-    private BigDecimal maOutBei;
+    private String maOutBei;
 
-    private BigDecimal hzUpZhu;
+    private String hzUpZhu;
 
-    private BigDecimal hzUpBei;
+    private String hzUpBei;
 
-    private BigDecimal hzDownZhu;
+    private String hzDownZhu;
 
-    private BigDecimal hzDownBei;
+    private String hzDownBei;
 
-    private BigDecimal hzLowZhu;
+    private String hzLowZhu;
 
-    private BigDecimal hzLowBei;
+    private String hzLowBei;
 
     private Integer fbjDriveZhu;
 
@@ -110,71 +109,71 @@ public class QuDuanInfoEntityV2 implements Serializable {
 
     private String fbjCollectionBei;
 
-    private BigDecimal vSongduanCable;
+    private String vSongduanCable;
 
-    private BigDecimal maSongduanCable;
+    private String maSongduanCable;
 
-    private BigDecimal vShouduanCableHost;
+    private String vShouduanCableHost;
 
-    private BigDecimal vShouduanCableSpare;
+    private String vShouduanCableSpare;
 
-    private BigDecimal maShouduanCable;
+    private String maShouduanCable;
 
-    private BigDecimal maCableJbp;
+    private String maCableJbp;
 
-    private BigDecimal aLonginJbp;
+    private String aLonginJbp;
 
-    private BigDecimal aLongoutJbp;
+    private String aLongoutJbp;
 
-    private BigDecimal aShortinJbp;
+    private String aShortinJbp;
 
-    private BigDecimal aShortoutJbp;
+    private String aShortoutJbp;
 
     private Integer tJbp;
 
-    private BigDecimal maCableFbp;
+    private String maCableFbp;
 
-    private BigDecimal aLonginFbp;
+    private String aLonginFbp;
 
-    private BigDecimal aLongoutFbp;
+    private String aLongoutFbp;
 
-    private BigDecimal aShortinFbp;
+    private String aShortinFbp;
 
-    private BigDecimal aShortoutFbp;
+    private String aShortoutFbp;
 
     private Integer tFbp;
 
-    private BigDecimal aLonginFbaZhu;
+    private String aLonginFbaZhu;
 
-    private BigDecimal aLonginFbaDiao;
+    private String aLonginFbaDiao;
 
-    private BigDecimal aLongoutFbaZhu;
+    private String aLongoutFbaZhu;
 
-    private BigDecimal aLongoutFbaDiao;
+    private String aLongoutFbaDiao;
 
-    private BigDecimal aShortinFbaZhu;
+    private String aShortinFbaZhu;
 
-    private BigDecimal aShortinFbaDiao;
+    private String aShortinFbaDiao;
 
-    private BigDecimal aShortoutFbaZhu;
+    private String aShortoutFbaZhu;
 
-    private BigDecimal aShortoutFbaDiao;
+    private String aShortoutFbaDiao;
 
-    private BigDecimal aLonginJbaZhu;
+    private String aLonginJbaZhu;
 
-    private BigDecimal aLonginJbaDiao;
+    private String aLonginJbaDiao;
 
-    private BigDecimal aLongoutJbaZhu;
+    private String aLongoutJbaZhu;
 
-    private BigDecimal aLongoutJbaDiao;
+    private String aLongoutJbaDiao;
 
-    private BigDecimal aShortinJbaZhu;
+    private String aShortinJbaZhu;
 
-    private BigDecimal aShortinJbaDiao;
+    private String aShortinJbaDiao;
 
-    private BigDecimal aShortoutJbaZhu;
+    private String aShortoutJbaZhu;
 
-    private BigDecimal aShortoutJbaDiao;
+    private String aShortoutJbaDiao;
 
     private String rackAddress;
 

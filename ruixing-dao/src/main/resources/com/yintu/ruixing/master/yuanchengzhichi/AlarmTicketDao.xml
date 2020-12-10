@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.yuanchengzhichi.AlarmTicketDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+        <result column="reason_analysis" jdbcType="LONGVARCHAR" property="reasonAnalysis"/>
+        <result column="treatment_measure" jdbcType="LONGVARCHAR" property="treatmentMeasure"/>
+        <result column="data_feature" jdbcType="LONGVARCHAR" property="dataFeature"/>
+        <result column="fault_equipment" jdbcType="LONGVARCHAR" property="faultEquipment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time
+    </sql>
+    <sql id="Blob_Column_List">
+        reason_analysis, treatment_measure, data_feature, fault_equipment
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from alarm_ticket
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from alarm_ticket
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+        insert into alarm_ticket (id, create_by, create_time,
+                                  modified_by, modified_time, reason_analysis,
+                                  treatment_measure, data_feature,
+                                  fault_equipment)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{reasonAnalysis,jdbcType=LONGVARCHAR},
+                #{treatmentMeasure,jdbcType=LONGVARCHAR}, #{dataFeature,jdbcType=LONGVARCHAR},
+                #{faultEquipment,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+        insert into alarm_ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="reasonAnalysis != null">
+                reason_analysis,
+            </if>
+            <if test="treatmentMeasure != null">
+                treatment_measure,
+            </if>
+            <if test="dataFeature != null">
+                data_feature,
+            </if>
+            <if test="faultEquipment != null">
+                fault_equipment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reasonAnalysis != null">
+                #{reasonAnalysis,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="treatmentMeasure != null">
+                #{treatmentMeasure,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dataFeature != null">
+                #{dataFeature,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="faultEquipment != null">
+                #{faultEquipment,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+        update alarm_ticket
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reasonAnalysis != null">
+                reason_analysis = #{reasonAnalysis,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="treatmentMeasure != null">
+                treatment_measure = #{treatmentMeasure,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dataFeature != null">
+                data_feature = #{dataFeature,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="faultEquipment != null">
+                fault_equipment = #{faultEquipment,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+        update alarm_ticket
+        set create_by         = #{createBy,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
+            reason_analysis   = #{reasonAnalysis,jdbcType=LONGVARCHAR},
+            treatment_measure = #{treatmentMeasure,jdbcType=LONGVARCHAR},
+            data_feature      = #{dataFeature,jdbcType=LONGVARCHAR},
+            fault_equipment   = #{faultEquipment,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntity">
+        update alarm_ticket
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
