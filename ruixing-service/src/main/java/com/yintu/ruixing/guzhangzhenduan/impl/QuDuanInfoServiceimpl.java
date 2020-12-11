@@ -532,9 +532,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             return jo;
         }
         //表头数组
-        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = new ArrayList<>();
-        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
-        quDuanInfoPropertyEntities.addAll(quDuanInfoPropertyService.findByIds(properties));
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
+//        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
         jo.put("title", quDuanInfoPropertyEntities);
 
         //表头对应数据数组
@@ -768,7 +767,15 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         return jo;
     }
 
-
+    /**
+     * 日报表
+     *
+     * @param czId        车站id
+     * @param time        时间
+     * @param properties  属性集合
+     * @param isDianMaHua 是否电码化
+     * @return
+     */
     @Override
     public JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua) {
         JSONObject jo = new JSONObject();
@@ -798,6 +805,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 14:
                 case 15:
                 case 16:
+                case 17:
                 case 24:
                 case 25:
                 case 26:
@@ -825,7 +833,6 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                     treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
                     treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
                     break;
-                case 17:
                 case 18:
                 case 19:
                 case 20:
@@ -886,21 +893,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         //表头对应数据数组
 
         List<Map<String, Object>> maps = new ArrayList<>();
-        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
-        if (czStutrs) {
-            String tableName = StringUtil.getTableName(czId, time);
-            if (this.isTableExist(tableName)) {
-                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
-                maps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
-                for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                    for (Map<String, Object> map : maps) {
-                        if (quDuanBaseEntity.getQdid().equals(map.get("v1"))) {
-                            map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
-                        }
+        String tableName = StringUtil.getTableName(czId, time);
+        if (this.isTableExist(tableName)) {
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
+            List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
+            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                for (Map<String, Object> map : finalMaps) {
+                    if (quDuanBaseEntity.getQdid().equals(map.get("v1"))) {
+                        map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+                        maps.add(map);
                     }
                 }
             }
-
         }
         jo.put("data", maps);
         return jo;

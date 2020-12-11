@@ -1,7 +1,5 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 /**
  * @Author: mlf
  * @Date: 2020/12/10 15:36
@@ -9,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface AlarmTicketService {
 
+    void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 
-    void add(Integer alarmId, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
+    void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer[] alarmIds, Integer[] faultStatus, Integer[] disposeStatus);
+
+    AlarmTicketEntityWithBLOBs findById(Integer id);
 }

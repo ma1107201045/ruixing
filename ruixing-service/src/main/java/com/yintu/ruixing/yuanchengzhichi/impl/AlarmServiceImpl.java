@@ -8,6 +8,7 @@ import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.master.yuanchengzhichi.AlarmDao;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import com.yintu.ruixing.yuanchengzhichi.AlarmService;
+import com.yintu.ruixing.yuanchengzhichi.AlarmTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +41,20 @@ public class AlarmServiceImpl implements AlarmService {
     public void edit(Integer id, Integer idea, String remark) {
         AlarmEntity alarmEntity = this.findById(id);
         if (alarmEntity != null) {
+            if (alarmEntity.getAlarmTicketId() == null)
+                throw new BaseRuntimeException("请先填写处置单再修改维护单位意见");
             alarmEntity.setIdea(idea);
             alarmEntity.setRemark(remark);
+            this.edit(alarmEntity);
+        }
+    }
+
+    @Override
+    public void edit(Integer id, Integer faultStatus, Integer disposeStatus) {
+        AlarmEntity alarmEntity = this.findById(id);
+        if (alarmEntity != null) {
+            alarmEntity.setFaultStatus(faultStatus);
+            alarmEntity.setDisposeStatus(disposeStatus);
             this.edit(alarmEntity);
         }
     }
@@ -75,6 +88,22 @@ public class AlarmServiceImpl implements AlarmService {
         }
         List<AlarmEntity> alarmEntities = alarmDao.selectByExample(tid, did, xid, alarmEntityQuery.getStationId(), alarmEntityQuery.getSectionId(), bt, dt, alarmEntityQuery.getId(), xtType,
                 alarmEntityQuery.getAlarmlevel(), alarmEntityQuery.getFaultStatus(), alarmEntityQuery.getDisposeStatus(), alarmEntityQuery.getIdea());
+        for (AlarmEntity alarmEntity : alarmEntities) {
+            String context;
+            Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());
+            if (alarmEntity.getAlarmlevel() == 1) {
+                context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
+            } else {
+                context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
+            }
+            alarmEntity.setBjcontext(context);
+        }
+        return alarmEntities;
+    }
+
+    @Override
+    public List<AlarmEntity> findByIds(Integer[] ids) {
+        List<AlarmEntity> alarmEntities = alarmDao.selectByIds(ids);
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
             Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());

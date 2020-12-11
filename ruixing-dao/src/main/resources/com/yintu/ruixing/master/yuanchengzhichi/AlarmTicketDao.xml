@@ -7,7 +7,6 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
-        <result column="alarm_id" jdbcType="INTEGER" property="alarmId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
@@ -17,7 +16,7 @@
         <result column="fault_equipment" jdbcType="LONGVARCHAR" property="faultEquipment"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, alarm_id
+        id, create_by, create_time, modified_by, modified_time
     </sql>
     <sql id="Blob_Column_List">
         reason_analysis, treatment_measure, data_feature, fault_equipment
@@ -36,16 +35,16 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
-        insert into alarm_ticket (id, create_by, create_time,
-                                  modified_by, modified_time, alarm_id,
+        insert into alarm_ticket (id, create_by, create_time, modified_by, modified_time,
                                   reason_analysis, treatment_measure,
                                   data_feature, fault_equipment)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{alarmId,jdbcType=INTEGER},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
                 #{reasonAnalysis,jdbcType=LONGVARCHAR}, #{treatmentMeasure,jdbcType=LONGVARCHAR},
                 #{dataFeature,jdbcType=LONGVARCHAR}, #{faultEquipment,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs"
+            useGeneratedKeys="true" keyProperty="id">
         insert into alarm_ticket
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -62,9 +61,6 @@
             </if>
             <if test="modifiedTime != null">
                 modified_time,
-            </if>
-            <if test="alarmId != null">
-                alarm_id,
             </if>
             <if test="reasonAnalysis != null">
                 reason_analysis,
@@ -94,9 +90,6 @@
             </if>
             <if test="modifiedTime != null">
                 #{modifiedTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="alarmId != null">
-                #{alarmId,jdbcType=INTEGER},
             </if>
             <if test="reasonAnalysis != null">
                 #{reasonAnalysis,jdbcType=LONGVARCHAR},
@@ -128,9 +121,6 @@
             <if test="modifiedTime != null">
                 modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="alarmId != null">
-                alarm_id = #{alarmId,jdbcType=INTEGER},
-            </if>
             <if test="reasonAnalysis != null">
                 reason_analysis = #{reasonAnalysis,jdbcType=LONGVARCHAR},
             </if>
@@ -153,7 +143,6 @@
             create_time       = #{createTime,jdbcType=TIMESTAMP},
             modified_by       = #{modifiedBy,jdbcType=VARCHAR},
             modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
-            alarm_id          = #{alarmId,jdbcType=INTEGER},
             reason_analysis   = #{reasonAnalysis,jdbcType=LONGVARCHAR},
             treatment_measure = #{treatmentMeasure,jdbcType=LONGVARCHAR},
             data_feature      = #{dataFeature,jdbcType=LONGVARCHAR},
@@ -165,8 +154,7 @@
         set create_by     = #{createBy,jdbcType=VARCHAR},
             create_time   = #{createTime,jdbcType=TIMESTAMP},
             modified_by   = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-            alarm_id      = #{alarmId,jdbcType=INTEGER}
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
