@@ -22,7 +22,7 @@ public interface QuDuanInfoDaoV2 {
 
 
     //日报表
-    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer s, Integer e, String tableName);
+    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer[] properties, Integer s, Integer e, String tableName);
 
 
     //根据传过来的数据查询数据 展示在曲线上

@@ -886,21 +886,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         //表头对应数据数组
 
         List<Map<String, Object>> maps = new ArrayList<>();
-        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
-        if (czStutrs) {
-            String tableName = StringUtil.getTableName(czId, time);
-            if (this.isTableExist(tableName)) {
-                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
-                maps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
-                for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                    for (Map<String, Object> map : maps) {
-                        if (quDuanBaseEntity.getQdid().equals(map.get("v1"))) {
-                            map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
-                        }
+        String tableName = StringUtil.getTableName(czId, time);
+        if (this.isTableExist(tableName)) {
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
+            List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
+            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                for (Map<String, Object> map : finalMaps) {
+                    if (quDuanBaseEntity.getQdid().equals(map.get("v1"))) {
+                        map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+                        maps.add(map);
                     }
                 }
             }
-
         }
         jo.put("data", maps);
         return jo;
