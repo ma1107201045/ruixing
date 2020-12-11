@@ -51,6 +51,8 @@ public class AlarmEntity implements Serializable {
 
     private String remark;
 
+    private Integer alarmTicketId;
+
     private String bjcontext;
 
     private QuDuanBaseEntity quDuanBaseEntity;
@@ -58,6 +60,8 @@ public class AlarmEntity implements Serializable {
     private CheZhanEntity cheZhanEntity;
 
     private XianDuanEntity xianDuanEntity;
+
+    private AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs;
 
 
 }

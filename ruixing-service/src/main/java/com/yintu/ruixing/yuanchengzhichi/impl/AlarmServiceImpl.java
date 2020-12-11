@@ -28,11 +28,12 @@ public class AlarmServiceImpl implements AlarmService {
     @Autowired
     private AlarmDao alarmDao;
     @Autowired
-    private AlarmTicketService alarmTicketService;
-    @Autowired
     private CheZhanDao cheZhanDao;
+
     @Autowired
     private BaoJingYuJingBaseService baoJingYuJingBaseService;
+    @Autowired
+    private AlarmTicketService alarmTicketService;
 
 
     @Override
@@ -51,15 +52,12 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void edit(Integer id, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+    public void edit(Integer id, Integer faultStatus, Integer disposeStatus) {
         AlarmEntity alarmEntity = this.findById(id);
         if (alarmEntity != null) {
             alarmEntity.setFaultStatus(faultStatus);
             alarmEntity.setDisposeStatus(disposeStatus);
             this.edit(alarmEntity);
-            if (faultStatus != 2) { //如果故障状态为天窗的不需要填写处置单
-                alarmTicketService.add(alarmTicketEntityWithBLOBs);
-            }
         }
     }
 
@@ -101,7 +99,16 @@ public class AlarmServiceImpl implements AlarmService {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
             }
             alarmEntity.setBjcontext(context);
+            Integer alarmTicketId = alarmEntity.getAlarmTicketId();
+            if (alarmTicketId != null) {
+                alarmEntity.setAlarmTicketEntityWithBLOBs(alarmTicketService.findById(alarmTicketId));
+            }
         }
         return alarmEntities;
+    }
+
+    @Override
+    public List<AlarmEntity> findByIds(Integer[] ids) {
+        return alarmDao.selectByIds(ids);
     }
 }

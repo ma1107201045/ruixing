@@ -32,12 +32,6 @@ public class AlarmController extends SessionController {
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
     }
 
-    @PutMapping("/{id}/ticket")
-    public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer faultStatus, @RequestParam Integer disposeStatus, @Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
-        alarmService.edit(id, faultStatus, disposeStatus, alarmTicketEntityWithBLOBs);
-        return ResponseDataUtil.ok("修改报警、预警处置意见信息");
-    }
-
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
         AlarmEntity alarmEntity = new AlarmEntity();
