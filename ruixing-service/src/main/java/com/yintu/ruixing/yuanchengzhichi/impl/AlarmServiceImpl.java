@@ -8,7 +8,6 @@ import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.master.yuanchengzhichi.AlarmDao;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import com.yintu.ruixing.yuanchengzhichi.AlarmService;
-import com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs;
 import com.yintu.ruixing.yuanchengzhichi.AlarmTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +28,8 @@ public class AlarmServiceImpl implements AlarmService {
     private AlarmDao alarmDao;
     @Autowired
     private CheZhanDao cheZhanDao;
-
     @Autowired
     private BaoJingYuJingBaseService baoJingYuJingBaseService;
-    @Autowired
-    private AlarmTicketService alarmTicketService;
 
 
     @Override
@@ -45,6 +41,8 @@ public class AlarmServiceImpl implements AlarmService {
     public void edit(Integer id, Integer idea, String remark) {
         AlarmEntity alarmEntity = this.findById(id);
         if (alarmEntity != null) {
+            if (alarmEntity.getAlarmTicketId() == null)
+                throw new BaseRuntimeException("请先填写处置单再修改维护单位意见");
             alarmEntity.setIdea(idea);
             alarmEntity.setRemark(remark);
             this.edit(alarmEntity);
