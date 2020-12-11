@@ -28,4 +28,6 @@ public interface AuditConfigurationDao {
     int updateByPrimaryKeySelective(AuditConfigurationEntity record);
 
     int updateByPrimaryKey(AuditConfigurationEntity record);
+
+    List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
 }

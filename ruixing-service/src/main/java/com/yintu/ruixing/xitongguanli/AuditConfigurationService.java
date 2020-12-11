@@ -28,4 +28,5 @@ public interface AuditConfigurationService extends BaseService<AuditConfiguratio
 
     List<List<TreeNodeUtil>> findTreeById(Long id);
 
+    List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
 }

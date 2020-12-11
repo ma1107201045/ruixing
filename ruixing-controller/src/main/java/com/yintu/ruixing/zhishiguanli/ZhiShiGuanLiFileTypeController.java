@@ -117,15 +117,16 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("上传文件成功", jo);
     }
 
-   /* //查询审核角色
+     //查询审核角色
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findRoles() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = zhiShiGuanLiFileTypeService.findByExample((short) 1, (short) 1, (short) 1);
-        if (auditConfigurationEntities.isEmpty())
-            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+        List<AuditConfigurationEntity> auditConfigurationEntities = zhiShiGuanLiFileTypeService.findAudit((short) 4, (short) 1, (short) 1);
+        if (auditConfigurationEntities.isEmpty()) {
+            return ResponseDataUtil.ok("查询审核角色成功", zhiShiGuanLiFileTypeService.findTree());
+        }
         return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
-    }*/
+    }
 
 
     //新增文件

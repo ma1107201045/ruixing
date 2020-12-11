@@ -1,6 +1,7 @@
 package com.yintu.ruixing.zhishiguanli;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 
@@ -55,4 +56,8 @@ public interface ZhiShiGuanLiFileTypeService {
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size , Integer id);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, Integer id);
+
+    List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
+
+    List<TreeNodeUtil> findTree();
 }

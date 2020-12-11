@@ -1,5 +1,6 @@
 package com.yintu.ruixing.master.guzhangzhenduan;
 
+import com.github.pagehelper.Page;
 import com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import org.apache.ibatis.annotations.Mapper;

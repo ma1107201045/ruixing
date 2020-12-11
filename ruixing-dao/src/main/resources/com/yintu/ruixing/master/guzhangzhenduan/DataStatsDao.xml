@@ -749,6 +749,7 @@
     <!--根据xid查询车站的名字和id-->
     <select id="findCheZhanByXid" parameterType="java.lang.Integer" resultMap="chezhan">
         SELECT cid,
+               cz_id,
                cz_name
         FROM mro_chezhan
         WHERE xd_cz_id = #{xid}

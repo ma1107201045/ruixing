@@ -1,8 +1,10 @@
 package com.yintu.ruixing.zhishiguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeDao;
 import com.yintu.ruixing.master.zhishiguanli.ZhiShiGuanLiFileTypeFileDao;
+import com.yintu.ruixing.xitongguanli.*;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeService;
@@ -28,6 +30,44 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
 
     @Autowired
     private ZhiShiGuanLiFileTypeFileDao zhiShiGuanLiFileTypeFileDao;
+
+    @Autowired
+    private AuditConfigurationService auditConfigurationService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private UserService userService;
+
+
+    @Override
+    public List<AuditConfigurationEntity> findAudit(short i, short i1, short i2) {
+        return auditConfigurationService.findAudit(i,i1,i2);
+    }
+
+    @Override
+    public List<TreeNodeUtil> findTree() {
+        List<RoleEntity> roleEntities = roleService.findAll();
+        List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
+        for (RoleEntity roleEntity : roleEntities) {
+            List<UserEntity> userEntities = roleService.findUsersByIds(roleEntity.getId());
+            List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
+            TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
+            firstTreeNodeUtil.setId(roleEntity.getId());
+            firstTreeNodeUtil.setLabel(roleEntity.getName());
+            firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
+            firstTreeNodeUtils.add(firstTreeNodeUtil);
+            for (UserEntity userEntity : userEntities) {
+                TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
+                secondTreeNodeUtil.setId(userEntity.getId());
+                secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
+                secondTreeNodeUtils.add(secondTreeNodeUtil);
+            }
+        }
+        return firstTreeNodeUtils;
+    }
 
     @Override
     public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, Integer id) {

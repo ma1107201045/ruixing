@@ -1,5 +1,6 @@
 package com.yintu.ruixing.master.xitongguanli;
 
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationUserEntityExample;
 

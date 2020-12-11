@@ -42,11 +42,11 @@
     </where>-->
 
     SELECT
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     FROM
     alarm
     <where>
-    STATUS = 0
+    STATUS = 1
     AND station_id IN (
     SELECT
     cz_id
@@ -76,7 +76,7 @@
     alarm
     <where>
 
-    STATUS = 0
+    STATUS = 1
     AND station_id IN (
     SELECT cz_id
         FROM mro_dianwuduan dwd,
@@ -102,7 +102,7 @@
     FROM
     alarm
     <where>
-    STATUS = 0
+    STATUS = 1
     AND station_id =#{czid}
     <if test="starTime!=null">
     AND createtime BETWEEN ${starTime}
