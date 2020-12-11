@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlarmEntity {
+public class AlarmsEntity {
 
     private Integer bjyjType;
 

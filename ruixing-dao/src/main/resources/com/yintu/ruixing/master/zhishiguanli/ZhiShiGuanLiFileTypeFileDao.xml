@@ -14,9 +14,14 @@
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="fabu_type" jdbcType="INTEGER" property="fabuType" />
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="auditstatus" jdbcType="INTEGER" property="auditstatus" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parentid, tid,filesize, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName
+    id, parentid, tid,filesize, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName,
+    userid, auditstatus, reason ,remark
   </sql>
 
   <!--根据 大小 排序-->
@@ -156,6 +161,18 @@
       <if test="updateName != null">
         updateName,
       </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="auditstatus != null">
+        auditstatus,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -193,6 +210,18 @@
       </if>
       <if test="updateName != null">
         #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="auditstatus != null">
+        #{auditstatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -233,6 +262,18 @@
       </if>
       <if test="updateName != null">
         updateName = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="auditstatus != null">
+        auditstatus = #{auditstatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

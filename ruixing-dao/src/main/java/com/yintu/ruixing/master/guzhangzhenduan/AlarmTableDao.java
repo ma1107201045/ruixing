@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.guzhangzhenduan;
 
 import com.yintu.ruixing.guzhangzhenduan.AlarmTableEntity;
+import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,20 +23,29 @@ public interface AlarmTableDao {
     int updateByPrimaryKey(AlarmTableEntity record);
 
     /////////////////////////////////////////////////////////
-    Integer findAlarmNumber(@Param("tableName") String tableName);
+    Integer findAlarmNumber(@Param("czid") Integer czid);
 
-    void editAlarmState( @Param("status")Integer status, @Param("tableName") String tableName);
+    void editAlarmState( @Param("status")boolean status);
 
-    List<AlarmTableEntity> findAllNotReadAlarmDatas(@Param("toString") String toString);
+    List<AlarmEntity> findAllNotReadAlarmDatas();
 
-    List<AlarmTableEntity> findAllAlarmDatas(@Param("tableName") String tableName);
+    List<AlarmEntity> findAllAlarmDatas();
 
     List<AlarmTableEntity> findAllAlarmDatasByTimes(@Param("tableName")String tableName,@Param("starTime") Long starTime,@Param("endTime") Long endTime);
 
-    List<AlarmTableEntity> findAllAlarmDatasBySomethings(@Param("toString") String toString,@Param("starTime") Date starTime,@Param("endTime") Date endTime);
+    List<AlarmEntity> findAllAlarmDatasBySomethings(@Param("dwdid") Integer dwdid,@Param("starTime") long starTime,@Param("endTime") long endTime);
 
-    Integer findAllAlarmNumber(String toString);
+    //Integer findAllAlarmNumber(String toString);
 
-    List<AlarmTableEntity> findAllNotReadAlarmDatasByCZid(String tableName);
+    List<AlarmEntity> findAllNotReadAlarmDatasByCZid(Integer czid);
 
+    Integer findAllAlarmNumber();
+
+    Integer findAllAlarmNumberByDwdid(Integer dwdid);
+
+    Integer findAllAlarmNumberByDwdidAndXid(Integer dwdid, Integer xdid);
+
+    List<AlarmEntity> findAllAlarmDatasByDwdidAndXdid(Integer dwdid, Integer xdid, long starTime, long endTime);
+
+    List<AlarmEntity> findAllAlarmDatasByczid(Integer czid, long starTime, long endTime);
 }

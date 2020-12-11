@@ -7,6 +7,7 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +116,17 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         jo.put("fileName", fileName);
         return ResponseDataUtil.ok("上传文件成功", jo);
     }
+
+   /* //查询审核角色
+    @GetMapping("/auditors")
+    @ResponseBody
+    public Map<String, Object> findRoles() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = zhiShiGuanLiFileTypeService.findByExample((short) 1, (short) 1, (short) 1);
+        if (auditConfigurationEntities.isEmpty())
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+        return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
+    }*/
+
 
     //新增文件
     @PostMapping("/addFile")

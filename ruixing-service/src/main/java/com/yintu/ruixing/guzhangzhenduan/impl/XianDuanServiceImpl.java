@@ -79,7 +79,7 @@ public class XianDuanServiceImpl implements XianDuanService {
                 int czid = (int ) cheZhanEntity.getCzId();
                 String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
                 if ( quDuanInfoDaoV2.isTableExist(tableName)==1){
-                    Integer alarmNumber = alarmTableDao.findAlarmNumber(tableName);
+                    Integer alarmNumber = alarmTableDao.findAlarmNumber(czid);
                     cheZhanEntity.setAlarmNumber(alarmNumber);
                 }else {
                     cheZhanEntity.setAlarmNumber(0);

@@ -10,6 +10,7 @@ import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.master.guzhangzhenduan.*;
 import com.yintu.ruixing.master.yuanchengzhichi.RemoteSupportAlarmDao;
 import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
+import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,10 +48,12 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
     private RemoteSupportAlarmDao alarmDao;
 
     @Override
-    public List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size) {
+    public List<AlarmsEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size) {
         List<String> times = new ArrayList<>();
-        Page<AlarmEntity> alarmEntityList = new Page<>();
-        String databaseName = "ruixing";
+        Page<AlarmsEntity> alarmsEntityList = new Page<>();
+     //   List<AlarmsEntity> alarmsEntityList = new ArrayList<>();
+
+        /*String databaseName = "ruixing";
         boolean isTime = false;
         if (starTime != null && endTime != null) { //判断时间
 
@@ -64,13 +67,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                 diffTime = DateUtil.offsetMonth(diffTime, 1);
             }
             isTime = true;
-        }
+        }*/
 
         if (dwdid != null && xdid == null && czid == null) {
-            List<String> cztables = new ArrayList<>();
+            /* List<String> cztables = new ArrayList<>();
             List<Integer> czidlist = new ArrayList<>();
             //查询此电务段下面所有的车站
-            List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findczidBydwdName(dwdid);
+           List<CheZhanEntity> cheZhanEntityList = cheZhanDao.findczidBydwdName(dwdid);
             for (CheZhanEntity cheZhanEntity : cheZhanEntityList) {
                 Integer czId = new Long(cheZhanEntity.getCzId()).intValue();
                 czidlist.add(czId);
@@ -98,13 +101,20 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     }
                 }
             }
-            if (!"".equals(sb.toString())) {
-                PageHelper.startPage(page, size);
-                Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllAlarmDatasBySomethings(sb.toString(), starTime, endTime);
-                alarmEntityList.setTotal(alarmTableEntityList.getTotal());
-                for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-                    AlarmEntity alarmEntity = new AlarmEntity();
-
+            if (!"".equals(sb.toString())) {*/
+            Long startimee =null;
+            Long endtimee =null;
+            if (starTime!=null && endTime!=null) {
+                 startimee = starTime.getTime() / 1000;
+                  endtimee = endTime.getTime() / 1000;
+            }
+            PageHelper.startPage(page, size);
+            Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllAlarmDatasBySomethings(dwdid, startimee, endtimee);
+            //List<AlarmEntity> alarmTableEntityList =  alarmTableDao.findAllAlarmDatasBySomethings(dwdid, startimee, endtimee);
+            if (alarmTableEntityList!=null) {
+               alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
+                for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+                    AlarmsEntity alarmsEntity = new AlarmsEntity();
                     Integer stationId = alarmTableEntity.getStationId();//车站id
                     Integer sectionId = alarmTableEntity.getSectionId();//区段id
                     Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
@@ -168,18 +178,22 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    alarmEntity.setBjyjType(bjyjType);
-                    alarmEntity.setBjyjcontext(alarmContext);
-                    alarmEntity.setQuduan(quduanNmae);
-                    alarmEntity.setIsnotsky(isnotsky);
-                    alarmEntity.setOpentime(parse);
-                    alarmEntityList.add(alarmEntity);
+                    alarmsEntity.setBjyjType(bjyjType);
+                    alarmsEntity.setBjyjcontext(alarmContext);
+                    alarmsEntity.setQuduan(quduanNmae);
+                    alarmsEntity.setIsnotsky(isnotsky);
+                    alarmsEntity.setOpentime(parse);
+                    alarmsEntityList.add(alarmsEntity);
                 }
+            } else {
+                return new ArrayList<>();
             }
+            //}
 
         }
 
         if (dwdid != null && xdid != null && czid == null) {
+            /*
             List<String> cztables = new ArrayList<>();
             List<Integer> czidlist = new ArrayList<>();
             //查询此电务段下面所有的车站
@@ -211,14 +225,21 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     }
                 }
             }
-            if (!"".equals(sb.toString())) {
-                PageHelper.startPage(page, size);
-                Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllAlarmDatasBySomethings(sb.toString(), starTime, endTime);
-                alarmEntityList.setTotal(alarmTableEntityList.getTotal());
+            if (!"".equals(sb.toString())) {*/
+            Long startimee =null;
+            Long endtimee =null;
+            if (starTime!=null && endTime!=null) {
+                startimee = starTime.getTime() / 1000;
+                endtimee = endTime.getTime() / 1000;
+            }
+            PageHelper.startPage(page, size);
+             Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllAlarmDatasByDwdidAndXdid(dwdid, xdid, startimee, endtimee);
+           // List<AlarmEntity> alarmTableEntityList =  alarmTableDao.findAllAlarmDatasByDwdidAndXdid(dwdid, xdid, startimee, endtimee);
+            if (!alarmTableEntityList.isEmpty()) {
+                 alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
 
-
-                for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-                    AlarmEntity alarmEntity = new AlarmEntity();
+                for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+                    AlarmsEntity alarmsEntity = new AlarmsEntity();
 
                     Integer stationId = alarmTableEntity.getStationId();//车站id
                     Integer sectionId = alarmTableEntity.getSectionId();//区段id
@@ -283,20 +304,23 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    alarmEntity.setBjyjType(bjyjType);
-                    alarmEntity.setBjyjcontext(alarmContext);
-                    alarmEntity.setQuduan(quduanNmae);
-                    alarmEntity.setIsnotsky(isnotsky);
-                    alarmEntity.setOpentime(parse);
-                    alarmEntityList.add(alarmEntity);
+                    alarmsEntity.setBjyjType(bjyjType);
+                    alarmsEntity.setBjyjcontext(alarmContext);
+                    alarmsEntity.setQuduan(quduanNmae);
+                    alarmsEntity.setIsnotsky(isnotsky);
+                    alarmsEntity.setOpentime(parse);
+                    alarmsEntityList.add(alarmsEntity);
                 }
+            } else {
+                return new ArrayList<>();
             }
+            //}
         }
 
 
         if (dwdid != null && xdid != null && czid != null) {
 
-
+/*
             List<String> cztables = new ArrayList<>();
             List<Integer> czidlist = new ArrayList<>();
             //查询此电务段下面所有的车站
@@ -326,13 +350,20 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             }
 
 
-            if (!"".equals(sb.toString())) {
-                PageHelper.startPage(page, size);
-                Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllAlarmDatasBySomethings(sb.toString(), starTime, endTime);
-                alarmEntityList.setTotal(alarmTableEntityList.getTotal());
-
-                for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-                    AlarmEntity alarmEntity = new AlarmEntity();
+            if (!"".equals(sb.toString())) {*/
+            Long startimee =null;
+            Long endtimee =null;
+            if (starTime!=null && endTime!=null) {
+                startimee = starTime.getTime() / 1000;
+                endtimee = endTime.getTime() / 1000;
+            }
+            PageHelper.startPage(page, size);
+             Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllAlarmDatasByczid(czid, startimee, endtimee);
+           // List<AlarmEntity> alarmTableEntityList =  alarmTableDao.findAllAlarmDatasByczid(czid, startimee, endtimee);
+            if (!alarmTableEntityList.isEmpty()) {
+                 alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
+                for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+                    AlarmsEntity alarmsEntity = new AlarmsEntity();
 
                     Integer stationId = alarmTableEntity.getStationId();//车站id
                     Integer sectionId = alarmTableEntity.getSectionId();//区段id
@@ -396,28 +427,29 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    alarmEntity.setBjyjType(bjyjType);
-                    alarmEntity.setBjyjcontext(alarmContext);
-                    alarmEntity.setQuduan(quduanNmae);
-                    alarmEntity.setIsnotsky(isnotsky);
-                    alarmEntity.setOpentime(parse);
-                    alarmEntityList.add(alarmEntity);
+                    alarmsEntity.setBjyjType(bjyjType);
+                    alarmsEntity.setBjyjcontext(alarmContext);
+                    alarmsEntity.setQuduan(quduanNmae);
+                    alarmsEntity.setIsnotsky(isnotsky);
+                    alarmsEntity.setOpentime(parse);
+                    alarmsEntityList.add(alarmsEntity);
                 }
+            } else {
+                return new ArrayList<>();
             }
+            // }
         }
-
-
-        return alarmEntityList;
+        return alarmsEntityList;
     }
 
 
     @Override
-    public List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName) {
-        Page<AlarmEntity> alarmEntityList = new Page<>();
-        Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllAlarmDatas(tableName);
-        alarmEntityList.setTotal(alarmTableEntityList.getTotal());
-        for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-            AlarmEntity alarmEntity = new AlarmEntity();
+    public List<AlarmsEntity> findAllHistoryAlarmDatas(Integer page, Integer size) {
+        Page<AlarmsEntity> alarmsEntityList = new Page<>();
+        Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllAlarmDatas();
+        alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
+        for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+            AlarmsEntity alarmsEntity = new AlarmsEntity();
 
             Integer stationId = alarmTableEntity.getStationId();//车站id
             Integer sectionId = alarmTableEntity.getSectionId();//区段id
@@ -482,27 +514,27 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            alarmEntity.setBjyjType(bjyjType);
-            alarmEntity.setBjyjcontext(alarmContext);
-            alarmEntity.setQuduan(quduanNmae);
-            alarmEntity.setIsnotsky(isnotsky);
-            alarmEntity.setOpentime(parse);
-            alarmEntityList.add(alarmEntity);
+            alarmsEntity.setBjyjType(bjyjType);
+            alarmsEntity.setBjyjcontext(alarmContext);
+            alarmsEntity.setQuduan(quduanNmae);
+            alarmsEntity.setIsnotsky(isnotsky);
+            alarmsEntity.setOpentime(parse);
+            alarmsEntityList.add(alarmsEntity);
         }
-        return alarmEntityList;
+        return alarmsEntityList;
     }
 
 
     @Override
-    public List<AlarmEntity> findAllNotReadAlarmDatasByCZid(Integer page, Integer size, Integer czid) {
+    public List<AlarmsEntity> findAllNotReadAlarmDatasByCZid(Integer page, Integer size, Integer czid) {
         Date dayTime = new Date();
         String tableName = StringUtil.getBaoJingYuJingTableName(czid, dayTime);
         PageHelper.startPage(page, size);
-        Page<AlarmEntity> alarmEntityList = new Page<>();
-        Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllNotReadAlarmDatasByCZid(tableName);
-        alarmEntityList.setTotal(alarmTableEntityList.getTotal());
-        for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-            AlarmEntity alarmEntity = new AlarmEntity();
+        Page<AlarmsEntity> alarmsEntityList = new Page<>();
+        Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllNotReadAlarmDatasByCZid(czid);
+        alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
+        for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+            AlarmsEntity alarmsEntity = new AlarmsEntity();
 
             Integer stationId = alarmTableEntity.getStationId();//车站id
             Integer sectionId = alarmTableEntity.getSectionId();//区段id
@@ -567,19 +599,19 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            alarmEntity.setBjyjType(bjyjType);
-            alarmEntity.setBjyjcontext(alarmContext);
-            alarmEntity.setQuduan(quduanNmae);
-            alarmEntity.setIsnotsky(isnotsky);
-            alarmEntityList.add(alarmEntity);
-            alarmEntity.setOpentime(parse);
+            alarmsEntity.setBjyjType(bjyjType);
+            alarmsEntity.setBjyjcontext(alarmContext);
+            alarmsEntity.setQuduan(quduanNmae);
+            alarmsEntity.setIsnotsky(isnotsky);
+            alarmsEntityList.add(alarmsEntity);
+            alarmsEntity.setOpentime(parse);
         }
-        return alarmEntityList;
+        return alarmsEntityList;
     }
 
     @Override
-    public List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size) {
-        String databaseName = "ruixing";
+    public List<AlarmsEntity> findAllNotReadAlarmDatas(Integer page, Integer size) {
+       /* String databaseName = "ruixing";
         String tableName = "alarm" + "_%" ;
         List<String> cztables = new ArrayList<>();
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
@@ -589,13 +621,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
         StringBuilder sb = new StringBuilder();
         for (String table : cztables) {
             sb.append("SELECT * FROM (SELECT * FROM ").append(table).append(" ORDER BY id DESC) AS ").append(table).append(" UNION ALL ");
-        }
+        }*/
         PageHelper.startPage(page, size);
-        Page<AlarmEntity> alarmEntityList = new Page<>();
-        Page<AlarmTableEntity> alarmTableEntityList = (Page<AlarmTableEntity>) alarmTableDao.findAllNotReadAlarmDatas(sb.toString());
-        alarmEntityList.setTotal(alarmTableEntityList.getTotal());
-        for (AlarmTableEntity alarmTableEntity : alarmTableEntityList) {
-            AlarmEntity alarmEntity = new AlarmEntity();
+        Page<AlarmsEntity> alarmsEntityList = new Page<>();
+        Page<AlarmEntity> alarmTableEntityList = (Page<AlarmEntity>) alarmTableDao.findAllNotReadAlarmDatas();
+        alarmsEntityList.setTotal(alarmTableEntityList.getTotal());
+        for (AlarmEntity alarmTableEntity : alarmTableEntityList) {
+            AlarmsEntity alarmsEntity = new AlarmsEntity();
 
             Integer stationId = alarmTableEntity.getStationId();//车站id
             Integer sectionId = alarmTableEntity.getSectionId();//区段id
@@ -660,33 +692,37 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            alarmEntity.setBjyjType(bjyjType);
-            alarmEntity.setBjyjcontext(alarmContext);
-            alarmEntity.setQuduan(quduanNmae);
-            alarmEntity.setIsnotsky(isnotsky);
-            alarmEntityList.add(alarmEntity);
-            alarmEntity.setOpentime(parse);
+            alarmsEntity.setBjyjType(bjyjType);
+            alarmsEntity.setBjyjcontext(alarmContext);
+            alarmsEntity.setQuduan(quduanNmae);
+            alarmsEntity.setIsnotsky(isnotsky);
+            alarmsEntityList.add(alarmsEntity);
+            alarmsEntity.setOpentime(parse);
         }
-        return alarmEntityList;
+        return alarmsEntityList;
 
     }
 
     @Override
-    public void editAlarmState(AlarmTableEntity alarmTableEntity) {
-        alarmTableEntity.setStatus(1);
-        Integer status = 1;
+    public void editAlarmState(AlarmEntity alarmTableEntity) {
+        boolean status = true;
+       /* alarmTableEntity.setStatus(1);
         String databaseName = "ruixing";
         String tableName = "alarm" + "_%" ;
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
         for (String table : tables) {
             alarmTableDao.editAlarmState(status, table);
-        }
+        }*/
+
+
+        alarmTableDao.editAlarmState(status);
     }
 
 
     @Override
     public Integer findAllAlarmNumberByXDid(Integer dwdid, Integer xdid) {
-        String databaseName = "ruixing";
+
+      /*  String databaseName = "ruixing";
         List<String> cztables = new ArrayList<>();
         List<Integer> czidlist = new ArrayList<>();
         //查询此电务段下面所有的车站
@@ -706,16 +742,18 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             for (String table : cztables) {
                 sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
             }
-            return alarmTableDao.findAllAlarmNumber(sb.toString());
+            return alarmTableDao.findAllAlarmNumber();
         } else {
             Integer alarmNum = 0;
             return alarmNum;
-        }
+        }*/
+        return alarmTableDao.findAllAlarmNumberByDwdidAndXid(dwdid, xdid);
     }
 
     @Override
     public Integer findAllAlarmNumberByDWDid(Integer dwdid) {
-        String databaseName = "ruixing";
+
+      /*  String databaseName = "ruixing";
         List<String> cztables = new ArrayList<>();
         List<Integer> czidlist = new ArrayList<>();
         //查询此电务段下面所有的车站
@@ -735,17 +773,19 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             for (String table : cztables) {
                 sb.append("SELECT * FROM  ").append(table).append(" UNION ALL ");
             }
-            return alarmTableDao.findAllAlarmNumber(sb.toString());
+            return alarmTableDao.findAllAlarmNumber();
         } else {
             Integer alarmNum = 0;
             return alarmNum;
-        }
+        }*/
+
+        return alarmTableDao.findAllAlarmNumberByDwdid(dwdid);
     }
 
 
     @Override
     public Integer findAllAlarmNumber() {
-        String databaseName = "ruixing";
+        /*String databaseName = "ruixing";
         String tableName = "alarm" + "_%";
         List<String> cztables = new ArrayList<>();
         List<String> tables = alarmDao.selectLikeTable(databaseName, tableName);
@@ -761,16 +801,18 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
         } else {
             Integer alarmNum = 0;
             return alarmNum;
-        }
+        }*/
+        return alarmTableDao.findAllAlarmNumber();
     }
 
     @Override
-    public Integer findAlarmNumber(String tableName) {
-        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+    public Integer findAlarmNumber(Integer czid) {
+       /* if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
             return alarmTableDao.findAlarmNumber(tableName);
         } else {
             return 0;
-        }
+        }*/
+        return alarmTableDao.findAlarmNumber(czid);
     }
 
 

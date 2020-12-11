@@ -1,8 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import com.yintu.ruixing.common.util.TreeNodeUtil;
-import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingEntity;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
+import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -22,15 +21,15 @@ public interface BaoJingYuJingPropertyService {
 
     List<QuDuanBaseEntity> findAllQuDuan();
 
-    Integer findAlarmNumber(String tableName);
+    Integer findAlarmNumber(Integer czid);
 
-    void editAlarmState(AlarmTableEntity alarmTableEntity);
+    void editAlarmState(AlarmEntity alarmTableEntity);
 
-    List<AlarmEntity> findAllNotReadAlarmDatas(Integer page, Integer size);
+    List<AlarmsEntity> findAllNotReadAlarmDatas(Integer page, Integer size);
 
-    List<AlarmEntity> findAllHistoryAlarmDatas(Integer page, Integer size, String tableName);
+    List<AlarmsEntity> findAllHistoryAlarmDatas(Integer page, Integer size );
 
-    List<AlarmEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size);
+    List<AlarmsEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size);
 
     Integer findAllAlarmNumber();
 
@@ -38,5 +37,5 @@ public interface BaoJingYuJingPropertyService {
 
     Integer findAllAlarmNumberByXDid(Integer dwdid,Integer xdid);
 
-    List<AlarmEntity> findAllNotReadAlarmDatasByCZid(Integer page, Integer size, Integer czid);
+    List<AlarmsEntity> findAllNotReadAlarmDatasByCZid(Integer page, Integer size, Integer czid);
 }
