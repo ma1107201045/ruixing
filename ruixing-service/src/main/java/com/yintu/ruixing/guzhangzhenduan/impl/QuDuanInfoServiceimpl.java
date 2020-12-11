@@ -797,6 +797,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 14:
                 case 15:
                 case 16:
+                case 17:
                 case 24:
                 case 25:
                 case 26:
@@ -824,7 +825,6 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                     treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
                     treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
                     break;
-                case 17:
                 case 18:
                 case 19:
                 case 20:
