@@ -30,10 +30,9 @@ public class StringUtil {
     }
 
     public static String getTableName(int czId, Date time) {
-        int month = DateUtil.month(time) + 1;
-        String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
-        return "data_applydata_" + czId + "_" + DateUtil.year(time) + monthStr;
+        return "data_applydata_" + czId + "_" + DateUtil.format(time, "yyyyMMdd");
     }
+
 
     public static String getBaoJingYuJingTableName(int czId, Date time) {
         int month = DateUtil.month(time) + 1;

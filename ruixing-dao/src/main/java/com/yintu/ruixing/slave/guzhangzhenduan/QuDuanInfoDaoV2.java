@@ -20,8 +20,9 @@ public interface QuDuanInfoDaoV2 {
 
     List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Integer startTime, Integer endTime, String tableName);
 
+
     //日报表
-    Map<String, Object> selectStatisticsByCzIdAndTime(Integer czId, Integer qid, Integer s, Integer e, String tableName);
+    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer s, Integer e, String tableName);
 
 
     //根据传过来的数据查询数据 展示在曲线上

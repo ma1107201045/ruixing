@@ -54,19 +54,15 @@ public class ReportController extends SessionController {
 
 
     /**
-     * 日报表
-     *
-     * @param cZid        车站id
-     * @param time        时间
-     * @param isDianMaHua 是否是电码化
-     * @return 报表数据
+     * @param czId        车站
+     * @param properties  属性集
+     * @param isDianMaHua 是否电码化
+     * @return
      */
-    @GetMapping("/dailypaper")
-    public Map<String, Object> findStatisticsByDate(@RequestParam("cz_id") Integer cZid,
-                                                    @RequestParam("time") Date time,
-                                                    @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
-        List<Map<String, Object>> maps = quDuanInfoService.findStatisticsByCzIdAndTime(cZid, time, isDianMaHua);
-        return ResponseDataUtil.ok("查询日报表成功", maps);
+    @GetMapping("/dayreport/v2")
+    public Map<String, Object> dayReport(@RequestParam("cz_id") Integer czId, @RequestParam("time") Date time, @RequestParam("properties") Integer[] properties, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+        JSONObject jo = quDuanInfoService.dayReport(czId, time, properties, isDianMaHua);
+        return ResponseDataUtil.ok("查询实时报表成功", jo);
     }
 
 }

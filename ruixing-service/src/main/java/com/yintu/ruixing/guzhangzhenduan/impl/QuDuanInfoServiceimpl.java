@@ -770,19 +770,141 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
 
     @Override
-    public List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua) {
-        String tableName = StringUtil.getTableName(czId, time);
-        if (this.isTableExist(tableName)) {
-            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
-            List<Map<String, Object>> maps = new ArrayList<>();
-            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                Map<String, Object> map = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, quDuanBaseEntity.getQdid(), (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
-                map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
-                maps.add(map);
-            }
-            return maps;
+    public JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua) {
+        JSONObject jo = new JSONObject();
+        if (properties == null || properties.length == 0) {
+            jo.put("title", new JSONArray());
+            jo.put("data", new JSONArray());
+            return jo;
         }
-        return new ArrayList<>();
+        //表头数组
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
+//        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
+        List<TreeNodeUtil> first = new ArrayList<>();
+        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setLabel(quDuanInfoPropertyEntity.getName());
+            List<TreeNodeUtil> second = new ArrayList<>();
+            treeNodeUtil.setChildren(second);
+            TreeNodeUtil treeNodeUtil1 = null;
+            TreeNodeUtil treeNodeUtil2 = null;
+            switch (quDuanInfoPropertyEntity.getId()) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 24:
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 38:
+                case 39:
+                case 40:
+                case 41:
+                case 42:
+                case 43:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    break;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    break;
+                case 30:
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                case 35:
+                case 36:
+                case 37:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    break;
+            }
+            if (treeNodeUtil1 != null)
+                second.add(treeNodeUtil1);
+            if (treeNodeUtil2 != null)
+                second.add(treeNodeUtil2);
+            if (treeNodeUtil1 != null) {
+                List<TreeNodeUtil> third = new ArrayList<>();
+                treeNodeUtil1.setChildren(third);
+                TreeNodeUtil treeNodeUtilMax = new TreeNodeUtil();
+                treeNodeUtilMax.setValue("a" + quDuanInfoPropertyEntity.getId());
+                treeNodeUtilMax.setLabel("max");
+                TreeNodeUtil treeNodeUtilMin = new TreeNodeUtil();
+                treeNodeUtilMin.setValue("b" + quDuanInfoPropertyEntity.getId());
+                treeNodeUtilMin.setLabel("min");
+                third.add(treeNodeUtilMax);
+                third.add(treeNodeUtilMin);
+            }
+            if (treeNodeUtil2 != null) {
+                List<TreeNodeUtil> third = new ArrayList<>();
+                treeNodeUtil2.setChildren(third);
+                TreeNodeUtil treeNodeUtilMax = new TreeNodeUtil();
+                treeNodeUtilMax.setValue("c" + quDuanInfoPropertyEntity.getId());
+                treeNodeUtilMax.setLabel("max");
+                TreeNodeUtil treeNodeUtilMin = new TreeNodeUtil();
+                treeNodeUtilMin.setValue("d" + quDuanInfoPropertyEntity.getId());
+                treeNodeUtilMin.setLabel("min");
+                third.add(treeNodeUtilMax);
+                third.add(treeNodeUtilMin);
+            }
+            first.add(treeNodeUtil);
+        }
+        jo.put("title", first);
+
+        //表头对应数据数组
+
+        List<Map<String, Object>> maps = new ArrayList<>();
+        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
+        if (czStutrs) {
+            String tableName = StringUtil.getTableName(czId, time);
+            if (this.isTableExist(tableName)) {
+                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
+                maps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
+                for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                    for (Map<String, Object> map : maps) {
+                        if (quDuanBaseEntity.getQdid().equals(map.get("v1"))) {
+                            map.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+                        }
+                    }
+                }
+            }
+
+        }
+        jo.put("data", maps);
+        return jo;
     }
+
 
 }

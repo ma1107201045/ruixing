@@ -80,19 +80,27 @@ public interface QuDuanInfoService {
     /**
      * 实时报表
      *
-     * @param properties 属性集合
      * @param czId       车站id
+     * @param properties 属性集合
      * @return
      */
     JSONObject realTimeReport(Integer czId, Integer[] properties, Boolean isDianMaHua);
 
     /**
-     * 日报表
-     *
-     * @param time 日期
-     * @return 统计
+     * @param czId        车站id
+     * @param properties  属性集合
+     * @param isDianMaHua 是否电码化
+     * @return
      */
-    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua);
+    JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua);
+
+//    /**
+//     * 日报表
+//     *
+//     * @param time 日期
+//     * @return 统计
+//     */
+//    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua);
 
 
 }
