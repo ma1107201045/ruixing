@@ -767,7 +767,15 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         return jo;
     }
 
-
+    /**
+     * 日报表
+     *
+     * @param czId        车站id
+     * @param time        时间
+     * @param properties  属性集合
+     * @param isDianMaHua 是否电码化
+     * @return
+     */
     @Override
     public JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua) {
         JSONObject jo = new JSONObject();

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface AlarmTicketService {
 
+    void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 
     void add(Integer alarmId, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 }

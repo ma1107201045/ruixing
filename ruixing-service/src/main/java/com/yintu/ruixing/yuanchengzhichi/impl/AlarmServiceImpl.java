@@ -8,6 +8,8 @@ import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.master.yuanchengzhichi.AlarmDao;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import com.yintu.ruixing.yuanchengzhichi.AlarmService;
+import com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs;
+import com.yintu.ruixing.yuanchengzhichi.AlarmTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class AlarmServiceImpl implements AlarmService {
     @Autowired
     private AlarmDao alarmDao;
     @Autowired
+    private AlarmTicketService alarmTicketService;
+    @Autowired
     private CheZhanDao cheZhanDao;
     @Autowired
     private BaoJingYuJingBaseService baoJingYuJingBaseService;
@@ -43,6 +47,19 @@ public class AlarmServiceImpl implements AlarmService {
             alarmEntity.setIdea(idea);
             alarmEntity.setRemark(remark);
             this.edit(alarmEntity);
+        }
+    }
+
+    @Override
+    public void edit(Integer id, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        AlarmEntity alarmEntity = this.findById(id);
+        if (alarmEntity != null) {
+            alarmEntity.setFaultStatus(faultStatus);
+            alarmEntity.setDisposeStatus(disposeStatus);
+            this.edit(alarmEntity);
+            if (faultStatus != 2) { //如果故障状态为天窗的不需要填写处置单
+                alarmTicketService.add(alarmTicketEntityWithBLOBs);
+            }
         }
     }
 

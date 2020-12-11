@@ -1,5 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public interface AlarmService {
     void edit(AlarmEntity alarmEntity);
 
     void edit(Integer id, Integer idea, String remark);
+
+    void edit(Integer id, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 
     AlarmEntity findById(Integer id);
 

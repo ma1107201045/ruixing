@@ -23,13 +23,12 @@ public class AlarmTicketServiceImpl implements AlarmTicketService {
     private AlarmService alarmService;
 
     @Override
+    public void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        alarmTicketDao.insertSelective(alarmTicketEntityWithBLOBs);
+    }
+
+    @Override
     public void add(Integer alarmId, Integer faultStatus, Integer disposeStatus, AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
-        AlarmEntity alarmEntity = alarmService.findById(alarmId);
-        if (alarmEntity != null) {
-            alarmEntity.setFaultStatus(faultStatus);
-            alarmEntity.setDisposeStatus(disposeStatus);
-            alarmService.edit(alarmEntity);
-            alarmTicketDao.insertSelective(alarmTicketEntityWithBLOBs);
-        }
+
     }
 }

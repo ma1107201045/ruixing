@@ -6,6 +6,7 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/alarm")
 public class AlarmController extends SessionController {
-
     @Autowired
     private AlarmService alarmService;
     @Autowired
@@ -30,6 +30,21 @@ public class AlarmController extends SessionController {
     public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer idea, String remark) {
         alarmService.edit(id, idea, remark);
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
+    }
+
+    @PutMapping("/{id}/ticket")
+    public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer faultStatus, @RequestParam Integer disposeStatus, @Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        alarmService.edit(id, faultStatus, disposeStatus, alarmTicketEntityWithBLOBs);
+        return ResponseDataUtil.ok("修改报警、预警处置意见信息");
+    }
+
+    @GetMapping("/{id}")
+    public Map<String, Object> findById(@PathVariable Integer id) {
+        AlarmEntity alarmEntity = new AlarmEntity();
+        alarmEntity.setId(id);
+        List<AlarmEntity> alarmEntities = alarmService.findByExample(null, null, null, null, null, alarmEntity, null);
+        PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
+        return ResponseDataUtil.ok("查询报警、预警处置意见信息", pageInfo);
     }
 
     @GetMapping
