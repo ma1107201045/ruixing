@@ -99,10 +99,6 @@ public class AlarmServiceImpl implements AlarmService {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
             }
             alarmEntity.setBjcontext(context);
-            Integer alarmTicketId = alarmEntity.getAlarmTicketId();
-            if (alarmTicketId != null) {
-                alarmEntity.setAlarmTicketEntityWithBLOBs(alarmTicketService.findById(alarmTicketId));
-            }
         }
         return alarmEntities;
     }
@@ -119,10 +115,6 @@ public class AlarmServiceImpl implements AlarmService {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
             }
             alarmEntity.setBjcontext(context);
-            Integer alarmTicketId = alarmEntity.getAlarmTicketId();
-            if (alarmTicketId != null) {
-                alarmEntity.setAlarmTicketEntityWithBLOBs(alarmTicketService.findById(alarmTicketId));
-            }
         }
         return alarmEntities;
     }

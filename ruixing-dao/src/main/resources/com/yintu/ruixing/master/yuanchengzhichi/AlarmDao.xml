@@ -277,12 +277,24 @@
             <result column="xd_id" jdbcType="BIGINT" property="xdId"/>
             <result column="xd_name" jdbcType="VARCHAR" property="xdName"/>
         </association>
+        <association column="alarm_ticket_id" property="alarmTicketEntityWithBLOBs">
+            <id column="t1_id" jdbcType="INTEGER" property="id"/>
+            <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+            <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+            <result column="reason_analysis" jdbcType="LONGVARCHAR" property="reasonAnalysis"/>
+            <result column="treatment_measure" jdbcType="LONGVARCHAR" property="treatmentMeasure"/>
+            <result column="data_feature" jdbcType="LONGVARCHAR" property="dataFeature"/>
+            <result column="fault_equipment" jdbcType="LONGVARCHAR" property="faultEquipment"/>
+        </association>
     </resultMap>
     <sql id="Example_Column_List">
         a.id as a_id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,idea, remark,alarm_ticket_id,
         qb.qdid ,qb.quDuanYunYing_name,
         c.cz_id,c.cz_name,c.xt_type,
-        x.xd_id,x.xd_name
+        x.xd_id,x.xd_name,
+        t1.id as t1_id, create_by, create_time, modified_by, modified_time, reason_analysis, treatment_measure, data_feature, fault_equipment
     </sql>
     <select id="selectByExample" resultMap="ExampleResultMap">
         select
@@ -293,6 +305,7 @@
         INNER JOIN mro_xianduan x ON c.xd_cz_id = x.xid
         INNER JOIN mro_dianwuduan d ON x.dwd_xd_id=d.did
         INNER JOIN mro_tieluju t ON d.tlj_dwd_id=t.tid
+        LEFT OUTER JOIN alarm_ticket t1 on a.alarm_ticket_id = t1.id
         <where>
             <if test="tid != null">
                 AND t.tid=#{tid,jdbcType=INTEGER}
@@ -342,6 +355,7 @@
         INNER JOIN mro_xianduan x ON c.xd_cz_id = x.xid
         INNER JOIN mro_dianwuduan d ON x.dwd_xd_id=d.did
         INNER JOIN mro_tieluju t ON d.tlj_dwd_id=t.tid
+        LEFT OUTER JOIN alarm_ticket t1 on a.alarm_ticket_id = t1.id
         where a.id in
         <foreach collection="array" open="(" close=")" separator="," item="id">
             #{id,jdbcType=INTEGER}
