@@ -532,9 +532,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             return jo;
         }
         //表头数组
-        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = new ArrayList<>();
-        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
-        quDuanInfoPropertyEntities.addAll(quDuanInfoPropertyService.findByIds(properties));
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
+//        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
         jo.put("title", quDuanInfoPropertyEntities);
 
         //表头对应数据数组

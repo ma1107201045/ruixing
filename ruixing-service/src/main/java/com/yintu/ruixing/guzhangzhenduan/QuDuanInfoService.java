@@ -94,13 +94,5 @@ public interface QuDuanInfoService {
      */
     JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua);
 
-//    /**
-//     * 日报表
-//     *
-//     * @param time 日期
-//     * @return 统计
-//     */
-//    List<Map<String, Object>> findStatisticsByCzIdAndTime(Integer czId, Date time, Boolean isDianMaHua);
-
 
 }
