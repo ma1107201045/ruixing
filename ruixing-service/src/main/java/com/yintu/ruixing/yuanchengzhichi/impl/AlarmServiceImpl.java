@@ -33,6 +33,11 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
+    public void remove(Integer id) {
+
+    }
+
+    @Override
     public void edit(AlarmEntity alarmEntity) {
         alarmDao.updateByPrimaryKeySelective(alarmEntity);
     }

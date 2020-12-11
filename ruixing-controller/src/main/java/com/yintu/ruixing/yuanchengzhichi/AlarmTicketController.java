@@ -30,12 +30,21 @@ public class AlarmTicketController extends SessionController {
         alarmTicketEntityWithBLOBs.setModifiedBy(this.getLoginUserName());
         alarmTicketEntityWithBLOBs.setModifiedTime(new Date());
         alarmTicketService.add(alarmTicketEntityWithBLOBs, alarmIds, faultStatus, disposeStatus);
-        return ResponseDataUtil.ok("修改报警、预警处置意见信息");
+        return ResponseDataUtil.ok("添加报警、预警处置单信息成功");
     }
+
+    @PutMapping
+    public Map<String, Object> edit(@Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, @RequestParam Integer alarmId, @RequestParam Integer faultStatus, @RequestParam Integer disposeStatus) {
+        alarmTicketEntityWithBLOBs.setModifiedBy(this.getLoginUserName());
+        alarmTicketEntityWithBLOBs.setModifiedTime(new Date());
+        alarmTicketService.edit(alarmTicketEntityWithBLOBs, alarmId, faultStatus, disposeStatus);
+        return ResponseDataUtil.ok("修改报警、预警处置单信息成功");
+    }
+
 
     @GetMapping("/{alarmIds}/alarm")
     public Map<String, Object> findAlarmByAlarmIds(@PathVariable Integer[] alarmIds) {
         List<AlarmEntity> alarmEntities = alarmService.findByIds(alarmIds);
-        return ResponseDataUtil.ok("查询报警、预警处置意见信息列表", alarmEntities);
+        return ResponseDataUtil.ok("修改报警、预警处置单信息列表成功", alarmEntities);
     }
 }

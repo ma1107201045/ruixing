@@ -27,6 +27,11 @@ public class AlarmTicketServiceImpl implements AlarmTicketService {
     }
 
     @Override
+    public void edit(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs) {
+        alarmTicketDao.updateByPrimaryKeySelective(alarmTicketEntityWithBLOBs);
+    }
+
+    @Override
     public void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer[] alarmIds, Integer[] faultStatus, Integer[] disposeStatus) {
         boolean flag = true;
         for (Integer status : faultStatus) {
@@ -42,6 +47,14 @@ public class AlarmTicketServiceImpl implements AlarmTicketService {
             alarmService.edit(alarmIds[i], faultStatus[i], disposeStatus[i]);
         }
 
+    }
+
+    @Override
+    public void edit(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer alarmId, Integer faultStatus, Integer disposeStatus) {
+        if (faultStatus != 2) {
+            this.edit(alarmTicketEntityWithBLOBs);
+        }
+        alarmService.edit(alarmId, faultStatus, disposeStatus);
     }
 
     @Override

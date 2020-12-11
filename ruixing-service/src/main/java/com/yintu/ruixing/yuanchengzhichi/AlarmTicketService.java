@@ -9,7 +9,12 @@ public interface AlarmTicketService {
 
     void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
 
+    void edit(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs);
+
     void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer[] alarmIds, Integer[] faultStatus, Integer[] disposeStatus);
+
+    void edit(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer alarmId, Integer faultStatus, Integer disposeStatus);
+
 
     AlarmTicketEntityWithBLOBs findById(Integer id);
 }

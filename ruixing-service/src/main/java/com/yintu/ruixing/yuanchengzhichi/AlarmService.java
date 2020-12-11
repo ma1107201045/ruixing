@@ -9,6 +9,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface AlarmService {
+    void remove(Integer id);
 
     void edit(AlarmEntity alarmEntity);
 

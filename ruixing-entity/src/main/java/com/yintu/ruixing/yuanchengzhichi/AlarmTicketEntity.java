@@ -22,6 +22,5 @@ public class AlarmTicketEntity implements Serializable {
 
     private Date modifiedTime;
 
-    private Integer alarmId;
 
 }

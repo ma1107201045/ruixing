@@ -26,19 +26,16 @@ public class AlarmController extends SessionController {
     @Autowired
     private DataStatsService dataStatsService;
 
+    @DeleteMapping("/{id}")
+    public Map<String, Object> remove(@PathVariable Integer id) {
+        alarmService.remove(id);
+        return ResponseDataUtil.ok("删除报警、预警处置意见信息");
+    }
+
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, @RequestParam Integer idea, String remark) {
         alarmService.edit(id, idea, remark);
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
-    }
-
-    @GetMapping("/{id}")
-    public Map<String, Object> findById(@PathVariable Integer id) {
-        AlarmEntity alarmEntity = new AlarmEntity();
-        alarmEntity.setId(id);
-        List<AlarmEntity> alarmEntities = alarmService.findByExample(null, null, null, null, null, alarmEntity, null);
-        PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
-        return ResponseDataUtil.ok("查询报警、预警处置意见信息", pageInfo);
     }
 
     @GetMapping
