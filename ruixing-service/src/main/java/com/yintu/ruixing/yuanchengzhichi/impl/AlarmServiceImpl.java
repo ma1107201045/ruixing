@@ -109,6 +109,21 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public List<AlarmEntity> findByIds(Integer[] ids) {
-        return alarmDao.selectByIds(ids);
+        List<AlarmEntity> alarmEntities = alarmDao.selectByIds(ids);
+        for (AlarmEntity alarmEntity : alarmEntities) {
+            String context;
+            Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());
+            if (alarmEntity.getAlarmlevel() == 1) {
+                context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
+            } else {
+                context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
+            }
+            alarmEntity.setBjcontext(context);
+            Integer alarmTicketId = alarmEntity.getAlarmTicketId();
+            if (alarmTicketId != null) {
+                alarmEntity.setAlarmTicketEntityWithBLOBs(alarmTicketService.findById(alarmTicketId));
+            }
+        }
+        return alarmEntities;
     }
 }
