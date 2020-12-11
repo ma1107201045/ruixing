@@ -1,5 +1,7 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +44,13 @@ public class AlarmTicketController extends SessionController {
     }
 
 
-    @GetMapping("/{alarmIds}/alarm")
-    public Map<String, Object> findAlarmByAlarmIds(@PathVariable Integer[] alarmIds) {
-        List<AlarmEntity> alarmEntities = alarmService.findByIds(alarmIds);
-        return ResponseDataUtil.ok("修改报警、预警处置单信息列表成功", alarmEntities);
+    @GetMapping("/alarms")
+    public Map<String, Object> findByDisposeStatus(@RequestParam("page_number") Integer pageNumber,
+                                                   @RequestParam("page_size") Integer pageSize,
+                                                   @RequestParam(value = "order_by", required = false, defaultValue = "a.id DESC") String orderBy) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<AlarmEntity> alarmEntities = alarmService.findByDisposeStatus();
+        PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
+        return ResponseDataUtil.ok("查询报警、预警处置意见信息列表成功", pageInfo);
     }
 }

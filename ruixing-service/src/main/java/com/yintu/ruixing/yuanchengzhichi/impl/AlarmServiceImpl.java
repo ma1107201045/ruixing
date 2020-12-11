@@ -107,8 +107,8 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public List<AlarmEntity> findByIds(Integer[] ids) {
-        List<AlarmEntity> alarmEntities = alarmDao.selectByIds(ids);
+    public List<AlarmEntity> findByDisposeStatus() {
+        List<AlarmEntity> alarmEntities = alarmDao.selectByDisposeStatus();
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
             Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());

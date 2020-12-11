@@ -346,7 +346,7 @@
         </where>
     </select>
 
-    <select id="selectByIds" resultMap="ExampleResultMap">
+    <select id="selectByDisposeStatus" resultMap="ExampleResultMap">
         select
         <include refid="Example_Column_List"/>
         from alarm a
@@ -356,10 +356,6 @@
         INNER JOIN mro_dianwuduan d ON x.dwd_xd_id=d.did
         INNER JOIN mro_tieluju t ON d.tlj_dwd_id=t.tid
         LEFT OUTER JOIN alarm_ticket t1 on a.alarm_ticket_id = t1.id
-        where a.id in
-        <foreach collection="array" open="(" close=")" separator="," item="id">
-            #{id,jdbcType=INTEGER}
-        </foreach>
-        AND (dispose_status=1 OR dispose_status=2)
+        where dispose_status=1 OR dispose_status=2
     </select>
 </mapper>

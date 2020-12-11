@@ -19,5 +19,5 @@ public interface AlarmDao {
 
     List<AlarmEntity> selectByExample(Integer tid, Integer did, Integer xid, Integer cid, Integer qid, Integer beginTime, Integer endTime, Integer id, Integer xtType, Integer alarmlevel, Integer faultStatus, Integer disposeStatus, Integer idea);
 
-    List<AlarmEntity> selectByIds(Integer[] ids);
+    List<AlarmEntity> selectByDisposeStatus();
 }

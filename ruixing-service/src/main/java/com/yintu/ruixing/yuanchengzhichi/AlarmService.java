@@ -21,5 +21,5 @@ public interface AlarmService {
 
     List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, Integer xtType);
 
-    List<AlarmEntity> findByIds(Integer[] ids);
+    List<AlarmEntity> findByDisposeStatus();
 }
