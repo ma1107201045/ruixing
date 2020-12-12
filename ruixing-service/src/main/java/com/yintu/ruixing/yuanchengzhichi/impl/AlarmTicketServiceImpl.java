@@ -38,11 +38,9 @@ public class AlarmTicketServiceImpl implements AlarmTicketService {
     public void add(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer[] alarmIds, Integer[] faultStatus, Integer[] disposeStatus) {
         if (disposeStatus.length > 0 && disposeStatus[0] == 1)
             throw new BaseRuntimeException("处置状态不能为未处理");
-        if (faultStatus.length > 0 && faultStatus[0] != 2) {
-            this.add(alarmTicketEntityWithBLOBs);
-            for (int i = 0; i < alarmIds.length; i++) {
-                alarmService.edit(alarmIds[i], faultStatus[i], disposeStatus[i], alarmTicketEntityWithBLOBs.getId());
-            }
+        this.add(alarmTicketEntityWithBLOBs);
+        for (int i = 0; i < alarmIds.length; i++) {
+            alarmService.edit(alarmIds[i], faultStatus[i], disposeStatus[i], alarmTicketEntityWithBLOBs.getId());
         }
     }
 

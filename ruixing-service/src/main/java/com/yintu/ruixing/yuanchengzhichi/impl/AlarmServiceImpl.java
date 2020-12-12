@@ -36,8 +36,10 @@ public class AlarmServiceImpl implements AlarmService {
 
 
     @Override
-    public void remove(Integer id) {
-
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            alarmDao.deleteByPrimaryKey(id);
+        }
     }
 
     @Override

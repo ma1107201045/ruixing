@@ -28,9 +28,9 @@ public class AlarmController extends SessionController {
     @Autowired
     private DataStatsService dataStatsService;
 
-    @DeleteMapping("/{id}")
-    public Map<String, Object> remove(@PathVariable Integer id) {
-        alarmService.remove(id);
+    @DeleteMapping("/{ids}")
+    public Map<String, Object> remove(@PathVariable Integer[] ids) {
+        alarmService.remove(ids);
         return ResponseDataUtil.ok("删除报警、预警处置意见信息");
     }
 
