@@ -120,6 +120,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
                     Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+                    Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
                     String quduanNmae = null;
@@ -171,10 +172,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                         }
                     }
                     Date parse = null;
+                    Date recoverparse = null;
                     Date date = new Date(createtime * 1000L);
+                    Date recoverdate = new Date(recoverTime * 1000L);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     try {
                         parse = sdf.parse(sdf.format(date));
+                        recoverparse = sdf.parse(sdf.format(recoverdate));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -183,6 +187,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     alarmsEntity.setQuduan(quduanNmae);
                     alarmsEntity.setIsnotsky(isnotsky);
                     alarmsEntity.setOpentime(parse);
+                    alarmsEntity.setEndtime(recoverparse);
                     alarmsEntityList.add(alarmsEntity);
                 }
             } else {
@@ -246,6 +251,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
                     Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+                    Integer recoverTime = alarmTableEntity.getRecoverTime();
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
                     String quduanNmae = null;
@@ -297,10 +303,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                         }
                     }
                     Date parse = null;
+                    Date recoverparse = null;
                     Date date = new Date(createtime * 1000L);
+                    Date recoverdate = new Date(recoverTime * 1000L);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     try {
                         parse = sdf.parse(sdf.format(date));
+                        recoverparse = sdf.parse(sdf.format(recoverdate));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -309,6 +318,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     alarmsEntity.setQuduan(quduanNmae);
                     alarmsEntity.setIsnotsky(isnotsky);
                     alarmsEntity.setOpentime(parse);
+                    alarmsEntity.setEndtime(recoverparse);
                     alarmsEntityList.add(alarmsEntity);
                 }
             } else {
@@ -370,6 +380,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
                     Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+                    Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
                     String quduanNmae = null;
@@ -420,10 +431,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                         }
                     }
                     Date parse = null;
+                    Date recoverparse = null;
                     Date date = new Date(createtime * 1000L);
+                    Date recoverdate = new Date(recoverTime * 1000L);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     try {
                         parse = sdf.parse(sdf.format(date));
+                        recoverparse = sdf.parse(sdf.format(recoverdate));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -432,6 +446,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     alarmsEntity.setQuduan(quduanNmae);
                     alarmsEntity.setIsnotsky(isnotsky);
                     alarmsEntity.setOpentime(parse);
+                    alarmsEntity.setEndtime(recoverparse);
                     alarmsEntityList.add(alarmsEntity);
                 }
             } else {
@@ -456,6 +471,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
             Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+            Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
             String quduanNmae = null;
@@ -507,10 +523,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                 }
             }
             Date parse = null;
+            Date recoverparse = null;
             Date date = new Date(createtime * 1000L);
+            Date recoverdate = new Date(recoverTime * 1000L);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             try {
                 parse = sdf.parse(sdf.format(date));
+                recoverparse = sdf.parse(sdf.format(recoverdate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -519,6 +538,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             alarmsEntity.setQuduan(quduanNmae);
             alarmsEntity.setIsnotsky(isnotsky);
             alarmsEntity.setOpentime(parse);
+            alarmsEntity.setEndtime(recoverparse);
             alarmsEntityList.add(alarmsEntity);
         }
         return alarmsEntityList;
@@ -634,6 +654,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer alarmcode = alarmTableEntity.getAlarmcode();//报警预警
             Integer alarmlevel = alarmTableEntity.getAlarmlevel();//报警预警类别
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
+            Integer recoverTime = alarmTableEntity.getRecoverTime();//恢复时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
 
             String quduanNmae = null;
@@ -685,10 +706,13 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                 }
             }
             Date parse = null;
+            Date recoverparse = null;
             Date date = new Date(createtime * 1000L);
+            Date recoverdate = new Date(recoverTime * 1000L);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             try {
                 parse = sdf.parse(sdf.format(date));
+                recoverparse = sdf.parse(sdf.format(recoverdate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -696,8 +720,9 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             alarmsEntity.setBjyjcontext(alarmContext);
             alarmsEntity.setQuduan(quduanNmae);
             alarmsEntity.setIsnotsky(isnotsky);
-            alarmsEntityList.add(alarmsEntity);
             alarmsEntity.setOpentime(parse);
+            alarmsEntity.setEndtime(recoverparse);
+            alarmsEntityList.add(alarmsEntity);
         }
         return alarmsEntityList;
 

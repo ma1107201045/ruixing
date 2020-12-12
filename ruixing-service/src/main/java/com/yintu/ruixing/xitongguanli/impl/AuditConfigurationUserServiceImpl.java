@@ -25,7 +25,6 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     private AuditConfigurationUserDao auditConfigurationUserDao;
     @Autowired
     private UserService userService;
-  
 
     @Override
     public void add(AuditConfigurationUserEntity entity) {

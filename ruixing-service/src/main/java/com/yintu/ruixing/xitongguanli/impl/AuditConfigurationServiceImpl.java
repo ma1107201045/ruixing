@@ -31,6 +31,11 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
 
     @Override
+    public List<AuditConfigurationEntity> findAudit(short i, short i1, short i2) {
+        return auditConfigurationDao.findAudit(i,i1,i2);
+    }
+
+    @Override
     public void add(AuditConfigurationEntity entity) {
         AuditConfigurationEntityExample auditConfigurationEntityExample = new AuditConfigurationEntityExample();
         AuditConfigurationEntityExample.Criteria criteria = auditConfigurationEntityExample.createCriteria();

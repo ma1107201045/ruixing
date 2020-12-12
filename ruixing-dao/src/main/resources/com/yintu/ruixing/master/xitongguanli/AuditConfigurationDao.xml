@@ -74,6 +74,17 @@
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name_id, status, model
     </sql>
+
+    <!--根据三个id 吃查询对应的数据-->
+    <select id="findAudit" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_audit_configuration
+        where name_id = #{i}
+        and status = #{i1}
+        and model = #{i2}
+    </select>
+
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.AuditConfigurationEntityExample"
             resultMap="BaseResultMap">
         select
