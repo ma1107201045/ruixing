@@ -13,11 +13,11 @@ public interface AlarmService {
 
     void edit(AlarmEntity alarmEntity);
 
+    AlarmEntity findById(Integer id);
+
     void edit(Integer id, Integer idea, String remark);
 
-    void edit(Integer id, Integer faultStatus, Integer disposeStatus);
-
-    AlarmEntity findById(Integer id);
+    void edit(Integer id, Integer faultStatus, Integer disposeStatus, Integer alarmTicketId);
 
     List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, Integer xtType);
 

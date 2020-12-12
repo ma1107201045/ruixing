@@ -42,19 +42,20 @@ public class AlarmTicketServiceImpl implements AlarmTicketService {
         }
         if (flag) {
             this.add(alarmTicketEntityWithBLOBs);
+            for (int i = 0; i < alarmIds.length; i++) {
+                alarmService.edit(alarmIds[i], faultStatus[i], disposeStatus[i], alarmTicketEntityWithBLOBs.getId());
+            }
         }
-        for (int i = 0; i < alarmIds.length; i++) {
-            alarmService.edit(alarmIds[i], faultStatus[i], disposeStatus[i]);
-        }
-
     }
 
     @Override
     public void edit(AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, Integer alarmId, Integer faultStatus, Integer disposeStatus) {
-        if (faultStatus != 2) {
+        if (alarmTicketEntityWithBLOBs.getId() == null && faultStatus == 2) {
+            this.add(alarmTicketEntityWithBLOBs);
+        } else {
             this.edit(alarmTicketEntityWithBLOBs);
         }
-        alarmService.edit(alarmId, faultStatus, disposeStatus);
+        alarmService.edit(alarmId, faultStatus, disposeStatus, alarmTicketEntityWithBLOBs.getId());
     }
 
     @Override

@@ -23,8 +23,8 @@
         <include refid="Base_Column_List"/>
         from mro_skylight_time
         WHERE
-        cz_id =  #{stationId,jdbcType=INTEGER}
-        AND qd_id =  #{sectionId,jdbcType=INTEGER}
+        cz_id = #{stationId,jdbcType=INTEGER}
+        AND qd_id = #{sectionId,jdbcType=INTEGER}
         ORDER BY
         start_time DESC
         LIMIT 1
@@ -214,5 +214,14 @@
         from
         <include refid="Connect_Table_List"/>
         <include refid="Connect_Condition_List"/>
+    </select>
+
+    <select id="countByCzIdAndQdIdAndTime" resultType="java.lang.Long">
+        select count(*)
+        from mro_skylight_time
+        where cz_id = #{czId,jdbcType=INTEGER}
+          and qd_id = #{qdId,jdbcType=INTEGER}
+          and start_time &lt;= #{time,jdbcType=TIMESTAMP}
+          and end_time &gt;= #{time,jdbcType=TIMESTAMP}
     </select>
 </mapper>

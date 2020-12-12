@@ -2,13 +2,14 @@ package com.yintu.ruixing.yuanchengzhichi.impl;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseService;
+import com.yintu.ruixing.guzhangzhenduan.SkylightTimeService;
 import com.yintu.ruixing.master.guzhangzhenduan.CheZhanDao;
 import com.yintu.ruixing.master.yuanchengzhichi.AlarmDao;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import com.yintu.ruixing.yuanchengzhichi.AlarmService;
-import com.yintu.ruixing.yuanchengzhichi.AlarmTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,8 @@ public class AlarmServiceImpl implements AlarmService {
     private CheZhanDao cheZhanDao;
     @Autowired
     private BaoJingYuJingBaseService baoJingYuJingBaseService;
+    @Autowired
+    private SkylightTimeService skylightTimeService;
 
 
     @Override
@@ -55,11 +58,12 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void edit(Integer id, Integer faultStatus, Integer disposeStatus) {
+    public void edit(Integer id, Integer faultStatus, Integer disposeStatus, Integer alarmTicketId) {
         AlarmEntity alarmEntity = this.findById(id);
         if (alarmEntity != null) {
             alarmEntity.setFaultStatus(faultStatus);
             alarmEntity.setDisposeStatus(disposeStatus);
+            alarmEntity.setAlarmTicketId(alarmTicketId);
             this.edit(alarmEntity);
         }
     }
@@ -102,6 +106,14 @@ public class AlarmServiceImpl implements AlarmService {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), 3);
             }
             alarmEntity.setBjcontext(context);
+            //判断故障状态是否是天窗状态
+            if (alarmEntity.getFaultStatus() != 2 && alarmEntity.getAlarmTicketId() == null) {
+                boolean isSkylightTime = skylightTimeService.isSkylightTime(alarmEntity.getStationId(), alarmEntity.getSectionId(), new Date(alarmEntity.getCreatetime() * 1000L));
+                if (isSkylightTime) {
+                    alarmEntity.setFaultStatus(2);
+                    this.edit(alarmEntity);
+                }
+            }
         }
         return alarmEntities;
     }

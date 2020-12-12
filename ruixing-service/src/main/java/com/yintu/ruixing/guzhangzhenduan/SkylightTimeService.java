@@ -49,4 +49,14 @@ public interface SkylightTimeService extends BaseService<SkylightTimeEntity, Int
      */
     void templateFile(OutputStream outputStream) throws IOException;
 
+    /**
+     * 是否是天窗时间
+     *
+     * @param czId 车站
+     * @param qdId 区段id
+     * @param time 时间
+     * @return
+     */
+    boolean isSkylightTime(Integer czId, Integer qdId, Date time);
+
 }

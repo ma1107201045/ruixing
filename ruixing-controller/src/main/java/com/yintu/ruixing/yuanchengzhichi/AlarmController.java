@@ -24,6 +24,8 @@ public class AlarmController extends SessionController {
     @Autowired
     private AlarmService alarmService;
     @Autowired
+    private AlarmTicketService alarmTicketService;
+    @Autowired
     private DataStatsService dataStatsService;
 
     @DeleteMapping("/{id}")
@@ -88,4 +90,35 @@ public class AlarmController extends SessionController {
         List<QuDuanBaseEntity> quDuanBaseEntities = dataStatsService.findQuDuanByCid(stationId);
         return ResponseDataUtil.ok("查询区段成功", quDuanBaseEntities);
     }
+
+
+    @PostMapping("/ticket")
+    public Map<String, Object> add(@Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, @RequestParam Integer[] alarmIds, @RequestParam Integer[] faultStatus, @RequestParam Integer[] disposeStatus) {
+        alarmTicketEntityWithBLOBs.setCreateBy(this.getLoginUserName());
+        alarmTicketEntityWithBLOBs.setCreateTime(new Date());
+        alarmTicketEntityWithBLOBs.setModifiedBy(this.getLoginUserName());
+        alarmTicketEntityWithBLOBs.setModifiedTime(new Date());
+        alarmTicketService.add(alarmTicketEntityWithBLOBs, alarmIds, faultStatus, disposeStatus);
+        return ResponseDataUtil.ok("添加报警、预警处置单信息成功");
+    }
+
+    @PutMapping("/ticket")
+    public Map<String, Object> edit(@Validated AlarmTicketEntityWithBLOBs alarmTicketEntityWithBLOBs, @RequestParam Integer alarmId, @RequestParam Integer faultStatus, @RequestParam Integer disposeStatus) {
+        alarmTicketEntityWithBLOBs.setModifiedBy(this.getLoginUserName());
+        alarmTicketEntityWithBLOBs.setModifiedTime(new Date());
+        alarmTicketService.edit(alarmTicketEntityWithBLOBs, alarmId, faultStatus, disposeStatus);
+        return ResponseDataUtil.ok("修改报警、预警处置单信息成功");
+    }
+
+
+    @GetMapping("/ticket/alarms")
+    public Map<String, Object> findByDisposeStatus(@RequestParam("page_number") Integer pageNumber,
+                                                   @RequestParam("page_size") Integer pageSize,
+                                                   @RequestParam(value = "order_by", required = false, defaultValue = "a.id DESC") String orderBy) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<AlarmEntity> alarmEntities = alarmService.findByDisposeStatus();
+        PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
+        return ResponseDataUtil.ok("查询报警、预警处置意见信息列表成功", pageInfo);
+    }
+
 }

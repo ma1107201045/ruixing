@@ -25,5 +25,7 @@ public interface SkylightTimeDao {
 
     List<SkylightTimeEntity> connectSelectByCondition(Integer id, Date startTime, Date endTime, Integer czId);
 
-    SkylightTimeEntity findSkyLight(@Param("stationId") Integer stationId,@Param("sectionId")  Integer sectionId);
+    SkylightTimeEntity findSkyLight(@Param("stationId") Integer stationId, @Param("sectionId") Integer sectionId);
+
+    long countByCzIdAndQdIdAndTime(Integer czId, Integer qdId, Date time);
 }

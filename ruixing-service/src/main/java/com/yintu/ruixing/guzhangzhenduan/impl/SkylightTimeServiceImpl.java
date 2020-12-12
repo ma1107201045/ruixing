@@ -159,4 +159,9 @@ public class SkylightTimeServiceImpl implements SkylightTimeService {
         outputStream.close();
     }
 
+    @Override
+    public boolean isSkylightTime(Integer czId, Integer qdId, Date time) {
+        return skylightTimeDao.countByCzIdAndQdIdAndTime(czId, qdId, time) > 0;
+    }
+
 }
