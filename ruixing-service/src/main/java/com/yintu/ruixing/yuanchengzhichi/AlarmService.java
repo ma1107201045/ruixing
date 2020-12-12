@@ -19,7 +19,9 @@ public interface AlarmService {
 
     void edit(Integer id, Integer faultStatus, Integer disposeStatus, Integer alarmTicketId);
 
-    List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, Integer xtType);
+    List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, String xtType);
 
     List<AlarmEntity> findByDisposeStatus();
+
+    long count();
 }

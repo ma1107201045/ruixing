@@ -9,7 +9,7 @@ import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.jiejuefangan.SolutionService;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanService;
 import com.yintu.ruixing.xitongguanli.UserService;
-import com.yintu.ruixing.yuanchengzhichi.RemoteSupportAlarmService;
+import com.yintu.ruixing.yuanchengzhichi.AlarmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,14 +39,13 @@ public class IndexController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RemoteSupportAlarmService remoteSupportAlarmService;
-
+    private AlarmService alarmService;
     @Autowired
     private PaiGongGuanLiPaiGongDanService paiGongGuanLiPaiGongDanService;
 
     @Autowired
     private CheZhanService cheZhanService;
-    
+
     @GetMapping("/project/statistics")
     public Map<String, Object> getProjectSum() {
         List<Object[]> list = new ArrayList<>();
@@ -67,7 +66,7 @@ public class IndexController {
     public Map<String, Object> getQuantitySum() {
         List<Object[]> list = new ArrayList<>();
         Object[] userSum = new Object[]{userService.findUserSum()};
-        Object[] alarmSum = new Object[]{remoteSupportAlarmService.findAlarmSum()};
+        Object[] alarmSum = new Object[]{alarmService.count()};
         Object[] workOrderSum = new Object[]{paiGongGuanLiPaiGongDanService.findWorkOrderSum(), userSum[0]};
         Object[] stationConfigurationSum = new Object[]{cheZhanService.findStationConfigurationSum(), cheZhanService.findStationSum()};
         list.add(userSum);

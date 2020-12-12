@@ -74,7 +74,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, Integer xtType) {
+    public List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, String xtType) {
         int bt = 0;
         int dt = 0;
         //多条件查询
@@ -99,7 +99,7 @@ public class AlarmServiceImpl implements AlarmService {
                 alarmEntityQuery.getAlarmlevel(), alarmEntityQuery.getFaultStatus(), alarmEntityQuery.getDisposeStatus(), alarmEntityQuery.getIdea());
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
-            Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());
+            Integer number = cheZhanDao.findCzNumberByCid(alarmEntity.getStationId());
             if (alarmEntity.getAlarmlevel() == 1) {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
             } else {
@@ -123,7 +123,7 @@ public class AlarmServiceImpl implements AlarmService {
         List<AlarmEntity> alarmEntities = alarmDao.selectByDisposeStatus();
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
-            Integer number = cheZhanDao.findCzNumber(alarmEntity.getSectionId());
+            Integer number = cheZhanDao.findCzNumberByCid(alarmEntity.getStationId());
             if (alarmEntity.getAlarmlevel() == 1) {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
             } else {
@@ -132,5 +132,10 @@ public class AlarmServiceImpl implements AlarmService {
             alarmEntity.setBjcontext(context);
         }
         return alarmEntities;
+    }
+
+    @Override
+    public long count() {
+        return alarmDao.count();
     }
 }

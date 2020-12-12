@@ -17,7 +17,9 @@ public interface AlarmDao {
 
     int updateByPrimaryKey(AlarmEntity record);
 
-    List<AlarmEntity> selectByExample(Integer tid, Integer did, Integer xid, Integer cid, Integer qid, Integer beginTime, Integer endTime, Integer id, Integer xtType, Integer alarmlevel, Integer faultStatus, Integer disposeStatus, Integer idea);
+    List<AlarmEntity> selectByExample(Integer tid, Integer did, Integer xid, Integer cid, Integer qid, Integer beginTime, Integer endTime, Integer id, String xtType, Integer alarmlevel, Integer faultStatus, Integer disposeStatus, Integer idea);
 
     List<AlarmEntity> selectByDisposeStatus();
+
+    long count();
 }

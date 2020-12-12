@@ -8,7 +8,6 @@ import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.master.guzhangzhenduan.*;
-import com.yintu.ruixing.master.yuanchengzhichi.RemoteSupportAlarmDao;
 import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import com.yintu.ruixing.yuanchengzhichi.AlarmEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +43,6 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
     private SkylightTimeDao skylightTimeDao;
     @Autowired
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
-    @Autowired
-    private RemoteSupportAlarmDao alarmDao;
 
     @Override
     public List<AlarmsEntity> findSomeAlarmDatasByChoose(Date starTime, Date endTime, Integer dwdid, Integer xdid, Integer czid, Integer page, Integer size) {

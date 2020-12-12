@@ -50,7 +50,7 @@ public class AlarmController extends SessionController {
                                       @RequestParam(value = "begin_time", required = false) Date beginTime,
                                       @RequestParam(value = "end_time", required = false) Date endTime,
                                       AlarmEntity alarmEntityQuery,
-                                      @RequestParam(value = "xt_type", required = false) Integer xtType) {
+                                      @RequestParam(value = "xt_type", required = false) String xtType) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<AlarmEntity> alarmEntities = alarmService.findByExample(tid, did, xid, beginTime, endTime, alarmEntityQuery, xtType);
         PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);

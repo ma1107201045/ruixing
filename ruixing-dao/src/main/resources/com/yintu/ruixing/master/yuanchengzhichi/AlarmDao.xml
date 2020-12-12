@@ -328,8 +328,8 @@
             <if test="id != null">
                 AND a.id=#{id,jdbcType=INTEGER}
             </if>
-            <if test="xtType != null">
-                AND c.xt_type=#{xtType,jdbcType=INTEGER}
+            <if test="xtType != null and xtType!=''">
+                AND c.xt_type=#{xtType,jdbcType=VARCHAR}
             </if>
             <if test="alarmlevel!= null">
                 AND a.alarmlevel=#{alarmlevel,jdbcType=INTEGER}
@@ -357,5 +357,10 @@
         INNER JOIN mro_tieluju t ON d.tlj_dwd_id=t.tid
         LEFT OUTER JOIN alarm_ticket t1 on a.alarm_ticket_id = t1.id
         where dispose_status=1 OR dispose_status=2
+    </select>
+
+    <select id="count" resultType="_long">
+        select count(*)
+        from alarm
     </select>
 </mapper>
