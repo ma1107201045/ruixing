@@ -82,7 +82,7 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
         String[] arr = strArr.split("/");
         String host = arr[1];
         String databaseName = arr[2];
-        List<String> tableNames = this.findLikeTableNames(databaseName, "alarm%", "data%", "tb_database_operating_record");
+        List<String> tableNames = this.findLikeTableNames(databaseName, "data%", "tb_database_operating_record");
         StringBuilder sb = new StringBuilder();
         for (String tableName : tableNames) {
             sb.append("--ignore-table").append(" ").append(databaseName).append(".").append(tableName).append(" ");
@@ -130,7 +130,7 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
                 System.out.println(mysqlCommand);
                 System.out.println(result);
                 if (StrUtil.containsIgnoreCase(result, "[ERROR]"))
-                    throw new BaseRuntimeException("备份失败");
+                    throw new BaseRuntimeException("还原失败");
             }
             databaseOperatingRecordEntity.setModifiedBy(loginUserName);
             databaseOperatingRecordEntity.setModifiedTime(new Date());

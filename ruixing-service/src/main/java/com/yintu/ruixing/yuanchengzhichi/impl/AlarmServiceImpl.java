@@ -99,7 +99,7 @@ public class AlarmServiceImpl implements AlarmService {
                 alarmEntityQuery.getAlarmlevel(), alarmEntityQuery.getFaultStatus(), alarmEntityQuery.getDisposeStatus(), alarmEntityQuery.getIdea());
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
-            Integer number = cheZhanDao.findCzNumberByCid(alarmEntity.getStationId());
+            Integer number = cheZhanDao.findCzNumber(alarmEntity.getStationId());
             if (alarmEntity.getAlarmlevel() == 1) {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
             } else {
@@ -123,7 +123,7 @@ public class AlarmServiceImpl implements AlarmService {
         List<AlarmEntity> alarmEntities = alarmDao.selectByDisposeStatus();
         for (AlarmEntity alarmEntity : alarmEntities) {
             String context;
-            Integer number = cheZhanDao.findCzNumberByCid(alarmEntity.getStationId());
+            Integer number = cheZhanDao.findCzNumber(alarmEntity.getStationId());
             if (alarmEntity.getAlarmlevel() == 1) {
                 context = baoJingYuJingBaseService.findAlarmContext(alarmEntity.getAlarmcode(), number == 0 ? 1 : 2);
             } else {
