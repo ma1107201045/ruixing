@@ -11,7 +11,6 @@ import java.util.Map;
 
 public interface QuDuanInfoDaoV2 {
 
-    QuDuanInfoEntityV2 selectLastByCzId(Integer czId, String tableName);
 
 
     int isTableExist(String tableName);

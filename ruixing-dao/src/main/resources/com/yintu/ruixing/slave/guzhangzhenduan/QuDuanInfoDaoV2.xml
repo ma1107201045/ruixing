@@ -555,19 +555,6 @@
     </select>
 
 
-    <!--按照车站查询一条区段详情-->
-    <select id="selectLastByCzId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ${tableName} qi
-        <where>
-            <if test="czId!=null">
-                qi.station_id=#{czId,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by qi.createtime DESC limit 1
-    </select>
-
     <!--查询表是否存在-->
     <select id="isTableExist" parameterType="string" resultType="int">
         select count(*)

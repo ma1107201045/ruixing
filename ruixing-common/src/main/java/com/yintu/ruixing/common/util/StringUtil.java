@@ -33,6 +33,9 @@ public class StringUtil {
         return "data_applydata_" + czId + "_" + DateUtil.format(time, "yyyyMMdd");
     }
 
+    public static String getTableNames(int czId, Date time) {
+        return "data_public_switch_" + czId + "_" + DateUtil.format(time, "yyyyMMdd");
+    }
 
     public static String getBaoJingYuJingTableName(int czId, Date time) {
         int month = DateUtil.month(time) + 1;

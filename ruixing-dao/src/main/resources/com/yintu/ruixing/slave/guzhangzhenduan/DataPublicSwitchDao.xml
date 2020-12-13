@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.slave.guzhangzhenduan.DataPublicSwitchDao">
+
+
+    <!--查询表是否存在-->
+    <select id="isTableExist" parameterType="string" resultType="int">
+        select count(*)
+        from information_schema.TABLES
+        where table_name = #{tableName}
+    </select>
+    
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.guzhangzhenduan.DataPublicSwitchEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
+        <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
+        <result column="createtime" jdbcType="INTEGER" property="createtime"/>
+        <result column="station_id" jdbcType="INTEGER" property="stationId"/>
+        <result column="ps1" jdbcType="TINYINT" property="ps1"/>
+        <result column="ps2" jdbcType="TINYINT" property="ps2"/>
+        <result column="ps3" jdbcType="TINYINT" property="ps3"/>
+        <result column="ps4" jdbcType="TINYINT" property="ps4"/>
+        <result column="ps5" jdbcType="TINYINT" property="ps5"/>
+        <result column="ps6" jdbcType="TINYINT" property="ps6"/>
+        <result column="ps7" jdbcType="TINYINT" property="ps7"/>
+        <result column="ps8" jdbcType="TINYINT" property="ps8"/>
+        <result column="ps9" jdbcType="TINYINT" property="ps9"/>
+        <result column="ps10" jdbcType="TINYINT" property="ps10"/>
+        <result column="ps11" jdbcType="TINYINT" property="ps11"/>
+        <result column="ps12" jdbcType="TINYINT" property="ps12"/>
+        <result column="ps13" jdbcType="TINYINT" property="ps13"/>
+        <result column="ps14" jdbcType="TINYINT" property="ps14"/>
+        <result column="ps15" jdbcType="TINYINT" property="ps15"/>
+        <result column="ps16" jdbcType="TINYINT" property="ps16"/>
+        <result column="ps17" jdbcType="TINYINT" property="ps17"/>
+        <result column="ps18" jdbcType="TINYINT" property="ps18"/>
+        <result column="ps19" jdbcType="TINYINT" property="ps19"/>
+        <result column="ps20" jdbcType="TINYINT" property="ps20"/>
+        <result column="ps21" jdbcType="TINYINT" property="ps21"/>
+        <result column="ps22" jdbcType="TINYINT" property="ps22"/>
+        <result column="ps23" jdbcType="TINYINT" property="ps23"/>
+        <result column="ps24" jdbcType="TINYINT" property="ps24"/>
+        <result column="ps25" jdbcType="TINYINT" property="ps25"/>
+        <result column="ps26" jdbcType="TINYINT" property="ps26"/>
+        <result column="ps27" jdbcType="TINYINT" property="ps27"/>
+        <result column="ps28" jdbcType="TINYINT" property="ps28"/>
+        <result column="ps29" jdbcType="TINYINT" property="ps29"/>
+        <result column="ps30" jdbcType="TINYINT" property="ps30"/>
+        <result column="ps31" jdbcType="TINYINT" property="ps31"/>
+        <result column="ps32" jdbcType="TINYINT" property="ps32"/>
+        <result column="ps33" jdbcType="TINYINT" property="ps33"/>
+        <result column="ps34" jdbcType="TINYINT" property="ps34"/>
+        <result column="ps35" jdbcType="TINYINT" property="ps35"/>
+        <result column="ps36" jdbcType="TINYINT" property="ps36"/>
+        <result column="ps37" jdbcType="TINYINT" property="ps37"/>
+        <result column="ps38" jdbcType="TINYINT" property="ps38"/>
+        <result column="ps39" jdbcType="TINYINT" property="ps39"/>
+        <result column="ps40" jdbcType="TINYINT" property="ps40"/>
+        <result column="ps41" jdbcType="TINYINT" property="ps41"/>
+        <result column="ps42" jdbcType="TINYINT" property="ps42"/>
+        <result column="ps43" jdbcType="TINYINT" property="ps43"/>
+        <result column="ps44" jdbcType="TINYINT" property="ps44"/>
+        <result column="ps45" jdbcType="TINYINT" property="ps45"/>
+        <result column="ps46" jdbcType="TINYINT" property="ps46"/>
+        <result column="ps47" jdbcType="TINYINT" property="ps47"/>
+        <result column="ps48" jdbcType="TINYINT" property="ps48"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, msg_id, send_num, createtime, station_id, ps1, ps2, ps3, ps4, ps5, ps6, ps7,
+    ps8, ps9, ps10, ps11, ps12, ps13, ps14, ps15, ps16, ps17, ps18, ps19, ps20, ps21, 
+    ps22, ps23, ps24, ps25, ps26, ps27, ps28, ps29, ps30, ps31, ps32, ps33, ps34, ps35, 
+    ps36, ps37, ps38, ps39, ps40, ps41, ps42, ps43, ps44, ps45, ps46, ps47, ps48
+    </sql>
+    <select id="selectNewFirstData" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName} pw
+        order by pw.createtime DESC limit 1
+    </select>
+
+</mapper>

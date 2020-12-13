@@ -24,6 +24,8 @@ public class QuDuanInfoController extends SessionController {
     private QuDuanInfoService quDuanInfoService;
     @Autowired
     private WebSocketServer webSocketServer;
+    @Autowired
+    private DataPublicSwitchService dataPublicSwitchService;
 
     @PostMapping("/receives")
     public Map<String, Object> changeDataStatus(@RequestParam("czId") Integer czId, @RequestParam("dataStatus") Short dataStatus) {
@@ -69,22 +71,20 @@ public class QuDuanInfoController extends SessionController {
     public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId,
                                                @RequestParam(value = "startTime", required = false) Date startTime,
                                                @RequestParam(value = "endTime", required = false) Date endTime) {
-
-
         List<JSONObject> jsonObjects = quDuanInfoService.findByCondition(czId, startTime, endTime);
         return ResponseDataUtil.ok("查询区段详情成功", jsonObjects);
     }
 
     /**
-     * 按照车站随机取出一条区段详情
      *
-     * @param czId 区段id
+     * @param czId 车站id
      * @return
      */
-    @GetMapping("/random")
-    public Map<String, Object> findLastBycZId(@RequestParam("czId") Integer czId) {
-        QuDuanInfoEntityV2 quDuanInfoEntity = quDuanInfoService.findLastBycZId(czId);
-        return ResponseDataUtil.ok("查询区段详情成功", quDuanInfoEntity);
+    @GetMapping("/datas")
+    public Map<String, Object> findByCondition(@RequestParam("czId") Integer czId) {
+        List<JSONObject> jsonObjects = dataPublicSwitchService.findByCondition(czId);
+        return ResponseDataUtil.ok("查询车站详情成功", jsonObjects);
     }
+
 
 }
