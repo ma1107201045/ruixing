@@ -47,8 +47,16 @@ public class QuXianController {
     @GetMapping("/shuXingMing")
     public Map<String, Object> shuXingMing() {
         List<QuDuanShuXingEntity> quDuanShuXingEntities = quXianService.shuXingMing();
-        return ResponseDataUtil.ok("查询区段名成功", quDuanShuXingEntities);
+        return ResponseDataUtil.ok("查询属性名成功", quDuanShuXingEntities);
     }
+
+    //获取区段的属性名
+    @GetMapping("/kaiguanliang")
+    public Map<String, Object> kaiguanliang() {
+        List<QuDuanShuXingEntity> quDuanShuXingEntities = quXianService.kaiguanliang();
+        return ResponseDataUtil.ok("查询开关量成功", quDuanShuXingEntities);
+    }
+
 
 
     //电码化实时曲线

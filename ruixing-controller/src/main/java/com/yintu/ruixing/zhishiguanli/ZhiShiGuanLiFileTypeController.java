@@ -3,6 +3,7 @@ package com.yintu.ruixing.zhishiguanli;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
@@ -49,7 +50,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("查询成功",fileTypeEntityList);
     }
 
-    //粘贴文件。
+    //转移文件。
     @PutMapping("/pasteFileByParentid")
     public Map<String,Object>pasteFileByParentid(Integer parentid,Integer[] fileid,ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity){
         zhiShiGuanLiFileTypeService.pasteFileByParentid(parentid,fileid,zhiShiGuanLiFileTypeFileEntity);
@@ -128,55 +129,85 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
     }
 
+    //查询文件日志消息
+    @GetMapping("/findRecordmessageByFileid/{id}")
+    public Map<String,Object>findRecordmessageByFileid(@PathVariable Integer id){
+        List<ZhiShiGuanLiFileTypeFileRecordmessageEntity> recordmessageEntityList=zhiShiGuanLiFileTypeService.findRecordmessageByFileid(id);
+        return ResponseDataUtil.ok("查询日志数据成功",recordmessageEntityList);
+    }
+
+    //查询消息
+    @GetMapping("/findXiaoXi")
+    public Map<String, Object> findXiaoXi() {
+        Integer senderid = this.getLoginUser().getId().intValue();
+        List<MessageEntity> contextlist = zhiShiGuanLiFileTypeService.findXiaoXi(senderid);
+        return ResponseDataUtil.ok("查询消息成功", contextlist);
+    }
+
+    //审核文件
 
     //新增文件
     @PostMapping("/addFile")
-    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
-        //登录人名
-        String username = this.getLoginUser().getTrueName();
-        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity,username);
+    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer[] auditorid,Integer[] sort) {
+        String username = this.getLoginUser().getTrueName();//登录人名
+        Integer uid = this.getLoginUser().getId().intValue();//登录人id
+        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity,username,uid,auditorid,sort);
         return ResponseDataUtil.ok("新增文件成功");
     }
 
     //更新文件版本
     @PutMapping("updateFileById")
-    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
+    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer[] auditorid,Integer[] sort) {
         ZhiShiGuanLiFileTypeFileEntity fileEntity = zhiShiGuanLiFileTypeService.findFile(id);
-        //登录人名
-        String username = this.getLoginUser().getTrueName();
+        String username = this.getLoginUser().getTrueName();//登录人名
+        Integer uid = this.getLoginUser().getId().intValue();//登录人id
         String fileName = fileEntity.getFileName();
         Date createtime = fileEntity.getCreatetime();
         String filePath = fileEntity.getFilePath();
+        Integer filesize = fileEntity.getFilesize();
         Integer id1 = fileEntity.getId();
         Integer tid = fileEntity.getTid();
-        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1,username);
-        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity,id,username);
+        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1,username,filesize);//新增历史文件
+        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity,id,username,uid,auditorid,sort);//添加新文件
         return ResponseDataUtil.ok("更新成功");
     }
 
     //文件初始化   或者根据文件名查询文件
     @GetMapping("/findSomeFile")
-    public Map<String, Object> findSomeFile(Integer page, Integer size, String fileName,Integer id) {
-        PageHelper.startPage(page, size);
-        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFile(page, size, fileName,id);
-        PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
-        return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+    public Map<String, Object> findSomeFile(Integer page, Integer size, String fileName,Integer id,Integer typeid) {//typeid ；1 时间  2 大小
+        if (typeid==null) {
+            PageHelper.startPage(page, size);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFile(page, size, fileName, id);
+            PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+        }
+        if (typeid==1){
+            PageHelper.startPage(page, size);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size, fileName, id);
+            PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+        }else {
+            PageHelper.startPage(page, size);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size, fileName, id);
+            PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+            return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+        }
     }
 
     //根据 时间 排序.
     @GetMapping("/findSomeFileByTime")
-    public Map<String, Object> findSomeFileByTime(Integer page, Integer size,Integer id) {
+    public Map<String, Object> findSomeFileByTime(Integer page, Integer size, String fileName,Integer id) {
         PageHelper.startPage(page, size);
-        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size,id);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size,fileName,id);
         PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
         return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
     }
 
     //根据 大小 排序.
     @GetMapping("/findSomeFileBySize")
-    public Map<String, Object> findSomeFileBySize(Integer page, Integer size,Integer id) {
+    public Map<String, Object> findSomeFileBySize(Integer page, Integer size, String fileName,Integer id) {
         PageHelper.startPage(page, size);
-        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size,id);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size,fileName,id);
         PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
         return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
     }

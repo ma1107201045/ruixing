@@ -70,6 +70,11 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
+    public List<QuDuanShuXingEntity> kaiguanliang() {
+        return quXianDao.kaiguanliang();
+    }
+
+    @Override
     public List<QuDuanShuXingEntity> shuXingMing() {
         return quXianDao.shuXingMing();
     }

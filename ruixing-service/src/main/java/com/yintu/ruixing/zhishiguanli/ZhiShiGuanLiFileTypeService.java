@@ -1,5 +1,6 @@
 package com.yintu.ruixing.zhishiguanli;
 
+import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
@@ -21,13 +22,13 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
 
-    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
+    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username,Integer uid,Integer[] auditorid,Integer[] sort);
 
     ZhiShiGuanLiFileTypeFileEntity findFile(Integer id);
 
-    void addOneFile(String fileName, Date createtime, String filePath, Integer id1,String username);
+    void addOneFile(String fileName, Date createtime, String filePath, Integer id1,String username,Integer filesize);
 
-    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username);
+    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username,Integer uid,Integer[] auditorid,Integer[] sort);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName,Integer id);
 
@@ -53,11 +54,15 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size , Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size, String fileName , Integer id);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, String fileName, Integer id);
 
     List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
 
     List<TreeNodeUtil> findTree();
+
+    List<ZhiShiGuanLiFileTypeFileRecordmessageEntity> findRecordmessageByFileid(Integer id);
+
+    List<MessageEntity> findXiaoXi(Integer senderid);
 }

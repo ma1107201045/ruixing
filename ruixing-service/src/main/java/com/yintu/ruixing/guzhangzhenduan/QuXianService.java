@@ -56,4 +56,6 @@ public interface QuXianService {
     String findMaxNumber(Integer czid, Integer qdid, Integer mid);
 
     String findMinNumber(Integer czid, Integer qdid, Integer mid);
+
+    List<QuDuanShuXingEntity> kaiguanliang();
 }

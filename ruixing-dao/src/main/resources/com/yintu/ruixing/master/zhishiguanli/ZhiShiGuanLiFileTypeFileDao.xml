@@ -30,8 +30,12 @@
     <include refid="Base_Column_List" />
     from mro_zhishiguanli_filetype_file
     <where>
+      tid!=''
+      <if test="fileName!=null">
+       and file_name like concat('%',#{fileName},'%')
+      </if>
       <if test="id!=null">
-        tid =#{id}
+       and tid =#{id}
       </if>
     </where>
     ORDER BY filesize DESC
@@ -43,8 +47,12 @@
     <include refid="Base_Column_List" />
     from mro_zhishiguanli_filetype_file
     <where>
+       tid!=''
+      <if test="fileName!=null">
+      and file_name like concat('%',#{fileName},'%')
+      </if>
       <if test="id!=null">
-        tid =#{id}
+      and tid =#{id}
       </if>
     </where>
     ORDER BY createtime DESC
@@ -87,12 +95,14 @@
     <include refid="Base_Column_List" />
     from mro_zhishiguanli_filetype_file
     <where>
+        tid!=''
       <if test="fileName!=null">
-        file_name like concat('%',#{fileName},'%')
+       and file_name like concat('%',#{fileName},'%')
       </if>
       <if test="id!=null">
        and tid =#{id}
       </if>
+
     </where>
     ORDER BY id desc
   </select>
@@ -112,7 +122,7 @@
   </delete>
 
 
-  <!--新增文件-->
+  <!--更新文件-->
   <insert id="addOneFile" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
     insert into mro_zhishiguanli_filetype_file ( parentid,filesize,
     file_name, file_path, updateTime,updateName)
@@ -122,7 +132,7 @@
 
 
   <!--新增文件-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity">
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity" keyProperty="id" useGeneratedKeys="true">
     insert into mro_zhishiguanli_filetype_file
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

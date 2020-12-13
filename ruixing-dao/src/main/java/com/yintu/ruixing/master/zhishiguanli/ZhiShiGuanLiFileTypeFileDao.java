@@ -25,7 +25,7 @@ public interface ZhiShiGuanLiFileTypeFileDao {
     int insertSelective(ZhiShiGuanLiFileTypeFileEntity record);
 
     void addOneFile(@Param("fileName") String fileName, @Param("createtime") Date createtime,
-                    @Param("filePath") String filePath, @Param("id1") Integer id1, @Param("username") String username);
+                    @Param("filePath") String filePath, @Param("id1") Integer id1, @Param("username") String username,Integer filesize);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(@Param("fileName") String fileName, @Param("id") Integer id);
 
@@ -35,7 +35,7 @@ public interface ZhiShiGuanLiFileTypeFileDao {
 
     List<ZhiShiGuanLiFileTypeFileEntity> findFileByParentid(Integer id);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime( String fileName,Integer id);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize( String fileName,Integer id);
 }

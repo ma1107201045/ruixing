@@ -29,4 +29,7 @@ public interface QuXianDao {
     String findShuXingHanZiName(Integer shuxingId);
 
     List<String> findDMHQuDuanById(Integer id);
+
+    List<QuDuanShuXingEntity> kaiguanliang();
+
 }

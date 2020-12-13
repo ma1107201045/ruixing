@@ -99,7 +99,12 @@
     </select>
     <!--查询区段里面电流电压温度属性-->
     <select id="shuXingMing" resultType="com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity">
-        select * from mro_quduan_shuxing
+        select * from mro_quduan_shuxing WHERE type !=2
+    </select>
+
+    <!--查询区段里面开关量-->
+    <select id="kaiguanliang" resultType="com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity">
+        select * from mro_quduan_shuxing WHERE type =2
     </select>
     <!--根据传来的区段属性id数组  查询对应的属性名-->
     <select id="findShuXingName" resultType="java.lang.String" parameterType="java.lang.Integer">
