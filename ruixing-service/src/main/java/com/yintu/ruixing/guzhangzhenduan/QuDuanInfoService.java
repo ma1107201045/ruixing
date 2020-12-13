@@ -75,7 +75,7 @@ public interface QuDuanInfoService {
      * @param properties 属性集合
      * @return
      */
-    JSONObject realTimeReport(Integer czId, Integer[] properties, Boolean isDianMaHua);
+    JSONObject realTimeReport(Integer czId, Integer[] properties, String qName, Boolean isDianMaHua);
 
     /**
      * @param czId        车站id
@@ -83,7 +83,7 @@ public interface QuDuanInfoService {
      * @param isDianMaHua 是否电码化
      * @return
      */
-    JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua);
+    JSONObject dayReport(Integer czId, Date time, Integer[] properties, String qName, Boolean isDianMaHua);
 
 
 }

@@ -14,7 +14,7 @@ public interface QuDuanBaseService extends BaseService<QuDuanBaseEntity, Integer
 
     QuDuanBaseEntity findByCzIdAndQuduanyunyingName(Integer czId, String quDuanYunYingName);
 
-    List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdId, Boolean isDianMaHua);
+    List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdId, String qName, Boolean isDianMaHua);
 
     List<QuDuanBaseEntity> findByQdIdAndQuDuanYunYingName(String quDuanYunYingName);
 

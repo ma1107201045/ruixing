@@ -46,12 +46,12 @@ public class QuDuanBaseServiceImpl implements QuDuanBaseService {
     }
 
     @Override
-    public List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdid, Boolean isDianMaHua) {
-        return quDuanBaseDao.selectByCzIdAndQdId(czId, qdid, isDianMaHua);
+    public List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdid, String qName, Boolean isDianMaHua) {
+        return quDuanBaseDao.selectByCzIdAndQdId(czId, qdid, qName, isDianMaHua);
     }
 
     @Override
-    public List<QuDuanBaseEntity> findByQdIdAndQuDuanYunYingName( String quDuanYunYingName) {
+    public List<QuDuanBaseEntity> findByQdIdAndQuDuanYunYingName(String quDuanYunYingName) {
         return quDuanBaseDao.selectByQdIdAndQuDuanYunYingName(quDuanYunYingName);
     }
 }

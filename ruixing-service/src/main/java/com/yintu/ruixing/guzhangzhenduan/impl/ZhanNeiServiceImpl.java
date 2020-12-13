@@ -38,7 +38,7 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     public List<JSONObject> findDianMaHuaDatasByCZids(Integer czid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) > 0) {
             List<JSONObject> js = new ArrayList<>();
-            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, true)
+            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, null, true)
                     .stream()
                     .map(QuDuanBaseEntity::getQdid)
                     .toArray(Integer[]::new);
@@ -113,7 +113,7 @@ public class ZhanNeiServiceImpl implements ZhanNeiService {
     public List<QuDuanInfoEntityV2> findDianMaHuaDatasByCZid(Integer czid, Date startTime, Date endTime) {
         if (startTime.after(endTime))
             throw new BaseRuntimeException("开始时间不能大于结束时间");
-        Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, true)
+        Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czid, null, null, true)
                 .stream()
                 .map(QuDuanBaseEntity::getQdid)
                 .toArray(Integer[]::new);

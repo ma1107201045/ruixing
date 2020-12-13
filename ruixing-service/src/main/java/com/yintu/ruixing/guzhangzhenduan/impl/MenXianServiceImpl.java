@@ -80,7 +80,7 @@ public class MenXianServiceImpl implements MenXianService {
         jo.put("title", treeNodeUtils);
 
         //表头对应数据数组
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null);
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, null);
         JSONArray dataJa = new JSONArray();
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
             QuDuanInfoEntityV2 quDuanInfoEntityV2 = quDuanInfoService.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
@@ -423,11 +423,11 @@ public class MenXianServiceImpl implements MenXianService {
 
     @Override
     public String findMinNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianDao.findMinNumber(czid,qdid,mid);
+        return menXianDao.findMinNumber(czid, qdid, mid);
     }
 
     @Override
     public String findMaxNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianDao.findMaxNumber(czid,qdid,mid);
+        return menXianDao.findMaxNumber(czid, qdid, mid);
     }
 }

@@ -79,7 +79,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = this.findPropertiesByCzId(czId);
         List<JSONObject> jsonObjects = new ArrayList<>();
         if (startTime == null || endTime == null) {
-            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, false);
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, false);
             for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
                 QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
                 if (quDuanInfoEntityV2 == null) {
@@ -90,7 +90,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 jsonObjects.add(jo);
             }
         } else {
-            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czId, null, false)
+            Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czId, null, null, false)
                     .stream()
                     .map(QuDuanBaseEntity::getQdid)
                     .toArray(Integer[]::new);
@@ -517,7 +517,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
      * @return
      */
     @Override
-    public JSONObject realTimeReport(Integer czId, Integer[] properties, Boolean isDianMaHua) {
+    public JSONObject realTimeReport(Integer czId, Integer[] properties, String qName, Boolean isDianMaHua) {
         JSONObject jo = new JSONObject(true);
         if (properties == null || properties.length == 0) {
             jo.put("title", new JSONArray());
@@ -527,30 +527,319 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         //表头数组
         List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
 //        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
-        jo.put("title", quDuanInfoPropertyEntities);
-
-        //表头对应数据数组
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
-        JSONArray dataJa = new JSONArray();
-        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
-        if (czStutrs) {
-            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
-                if (quDuanInfoEntityV2 == null) {
-                    quDuanInfoEntityV2 = new QuDuanInfoEntityV2();
-                }
-                quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
-                JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
-                dataJa.add(jsonObject);
+        List<TreeNodeUtil> first = new ArrayList<>();
+        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setLabel(quDuanInfoPropertyEntity.getName());
+            List<TreeNodeUtil> second = new ArrayList<>();
+            treeNodeUtil.setChildren(second);
+            TreeNodeUtil treeNodeUtil1 = null;
+            TreeNodeUtil treeNodeUtil2 = null;
+            switch (quDuanInfoPropertyEntity.getId()) {
+                case 1:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 2:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 3:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 11:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 12:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 13:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 14:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 15:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 16:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 21:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 24:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 25:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 26:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 27:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 28:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 29:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 38:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 39:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 40:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 41:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 42:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 43:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 4:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 5:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 6:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 7:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 8:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 9:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 10:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 17:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 18:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 19:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 20:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 22:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 23:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 30:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 31:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 32:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 33:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 34:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 35:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 36:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
+                case 37:
+                    treeNodeUtil1 = new TreeNodeUtil();
+                    treeNodeUtil2 = new TreeNodeUtil();
+                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setValue(quDuanInfoPropertyEntity.getId().toString());
+                    break;
             }
+            if (treeNodeUtil1 != null)
+                second.add(treeNodeUtil1);
+            if (treeNodeUtil2 != null)
+                second.add(treeNodeUtil2);
+            first.add(treeNodeUtil);
+        }
+        jo.put("title", first);
+        //表头对应数据数组
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
+        JSONArray dataJa = new JSONArray();
+        for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+            QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
+            if (quDuanInfoEntityV2 == null) {
+                quDuanInfoEntityV2 = new QuDuanInfoEntityV2();
+            }
+            quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
+            JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
+            dataJa.add(jsonObject);
         }
         jo.put("data", dataJa);
-
         return jo;
     }
 
     public JSONObject findDate(List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities, QuDuanInfoEntityV2 quDuanInfoEntityV2) {
-        JSONObject jo = new JSONObject(true);
+        JSONObject jo = new JSONObject();
         jo.put("id", quDuanInfoEntityV2.getId());
         jo.put("cid", quDuanInfoEntityV2.getCid());
         jo.put("qid", quDuanInfoEntityV2.getQid());
@@ -568,94 +857,94 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                     jo.put(idStr, quDuanInfoEntityV2.getDirection() == null ? null : quDuanInfoEntityV2.getDirection().equals(1) ? "正向" : quDuanInfoEntityV2.getDirection().equals(2) ? "反向" : "无效");
                     break;
                 case "3":
-                    jo.put(idStr, quDuanInfoEntityV2.getGjcollection() == null ? null : quDuanInfoEntityV2.getGjcollection().equals("2") ? "落下" : quDuanInfoEntityV2.getGjcollection().equals("1") ? "吸起" : "无效");
-                    break;
-                case "4":
                     jo.put(idStr, quDuanInfoEntityV2.getDjcollection() == null ? null : quDuanInfoEntityV2.getDjcollection().equals("2") ? "落下" : quDuanInfoEntityV2.getDjcollection().equals("1") ? "吸起" : "无效");
                     break;
-                case "5":
+                case "4":
                     JSONArray jsonArray5 = new JSONArray();
                     jsonArray5.add(quDuanInfoEntityV2.getVOutZhu());
                     jsonArray5.add(quDuanInfoEntityV2.getVOutBei().toString());
                     jo.put(idStr, jsonArray5.get(0) + "/" + jsonArray5.get(1));
                     break;
-                case "6":
+                case "5":
                     JSONArray jsonArray6 = new JSONArray();
                     jsonArray6.add(quDuanInfoEntityV2.getMaOutZhu());
                     jsonArray6.add(quDuanInfoEntityV2.getMaOutBei());
                     jo.put(idStr, jsonArray6.get(0) + "/" + jsonArray6.get(1));
                     break;
-                case "7":
+                case "6":
                     JSONArray jsonArray7 = new JSONArray();
                     jsonArray7.add(quDuanInfoEntityV2.getHzUpZhu());
                     jsonArray7.add(quDuanInfoEntityV2.getHzUpBei());
                     jo.put(idStr, jsonArray7.get(0) + "/" + jsonArray7.get(1));
                     break;
-                case "8":
+                case "7":
                     JSONArray jsonArray8 = new JSONArray();
                     jsonArray8.add(quDuanInfoEntityV2.getHzDownZhu());
                     jsonArray8.add(quDuanInfoEntityV2.getHzDownBei());
                     jo.put(idStr, jsonArray8.get(0) + "/" + jsonArray8.get(1));
                     break;
-                case "9":
+                case "8":
                     JSONArray jsonArray9 = new JSONArray();
                     jsonArray9.add(quDuanInfoEntityV2.getHzLowZhu());
                     jsonArray9.add(quDuanInfoEntityV2.getHzLowBei());
                     jo.put(idStr, jsonArray9.get(0) + "/" + jsonArray9.get(1));
                     break;
-                case "10":
+                case "9":
                     JSONArray jsonArray10 = new JSONArray();
                     jsonArray10.add(quDuanInfoEntityV2.getFbjDriveZhu() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveZhu() == 2 ? "无" : "无效");
                     jsonArray10.add(quDuanInfoEntityV2.getFbjDriveBei() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveBei() == 2 ? "无" : "无效");
                     jo.put(idStr, jsonArray10.get(0) + "/" + jsonArray10.get(1));
                     break;
-                case "11":
+                case "10":
                     JSONArray jsonArray11 = new JSONArray();
                     jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionZhu() == null ? null : quDuanInfoEntityV2.getFbjCollectionZhu().equals("2") ? "落下" : quDuanInfoEntityV2.getFbjCollectionZhu().equals("1") ? "吸起" : "无效");
                     jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionBei() == null ? null : quDuanInfoEntityV2.getFbjCollectionBei().equals("2") ? "落下" : quDuanInfoEntityV2.getFbjCollectionBei().equals("1") ? "吸起" : "无效");
                     jo.put(idStr, jsonArray11.get(0) + "/" + jsonArray11.get(1));
                     break;
-                case "12":
+                case "11":
                     jo.put(idStr, quDuanInfoEntityV2.getVSongduanCable());
                     break;
-                case "13":
+                case "12":
                     jo.put(idStr, quDuanInfoEntityV2.getMaSongduanCable());
                     break;
-                case "14":
+                case "13":
                     jo.put(idStr, quDuanInfoEntityV2.getVShouduanCableHost());
                     break;
-                case "15":
+                case "14":
                     jo.put(idStr, quDuanInfoEntityV2.getVShouduanCableSpare());
                     break;
-                case "16":
+                case "15":
                     jo.put(idStr, quDuanInfoEntityV2.getMaShouduanCable());
                     break;
-                case "17":
+                case "16":
                     jo.put(idStr, quDuanInfoEntityV2.getVInAll());
                     break;
-                case "18":
+                case "17":
                     JSONArray jsonArray18 = new JSONArray();
                     jsonArray18.add(quDuanInfoEntityV2.getMvInZhu());
                     jsonArray18.add(quDuanInfoEntityV2.getMvInBing());
                     jo.put(idStr, jsonArray18.get(0) + "/" + jsonArray18.get(1));
                     break;
-                case "19":
+                case "18":
                     JSONArray jsonArray19 = new JSONArray();
                     jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoZhu());
                     jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoBing());
                     jo.put(idStr, jsonArray19.get(0) + "/" + jsonArray19.get(1));
                     break;
-                case "20":
+                case "19":
                     JSONArray jsonArray20 = new JSONArray();
                     jsonArray20.add(quDuanInfoEntityV2.getHzInLowZhu());
                     jsonArray20.add(quDuanInfoEntityV2.getHzInLowBing());
                     jo.put(idStr, jsonArray20.get(0) + "/" + jsonArray20.get(1));
                     break;
-                case "21":
+                case "20":
                     JSONArray jsonArray21 = new JSONArray();
                     jsonArray21.add(quDuanInfoEntityV2.getGjDriveZhu() == null ? null : quDuanInfoEntityV2.getGjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveZhu() == 2 ? "无" : "无效");
                     jsonArray21.add(quDuanInfoEntityV2.getGjDriveBing() == null ? null : quDuanInfoEntityV2.getGjDriveBing() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveBing() == 2 ? "无" : "无效");
                     jo.put(idStr, jsonArray21.get(0) + "/" + jsonArray21.get(1));
+                    break;
+                case "21":
+                    jo.put(idStr, quDuanInfoEntityV2.getGjcollection() == null ? null : quDuanInfoEntityV2.getGjcollection().equals("2") ? "落下" : quDuanInfoEntityV2.getGjcollection().equals("1") ? "吸起" : "无效");
                     break;
                 case "22":
                     JSONArray jsonArray22 = new JSONArray();
@@ -770,7 +1059,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
      * @return
      */
     @Override
-    public JSONObject dayReport(Integer czId, Date time, Integer[] properties, Boolean isDianMaHua) {
+    public JSONObject dayReport(Integer czId, Date time, Integer[] properties, String qName, Boolean isDianMaHua) {
         JSONObject jo = new JSONObject();
         if (properties == null || properties.length == 0) {
             jo.put("title", new JSONArray());
@@ -859,11 +1148,11 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 List<TreeNodeUtil> third = new ArrayList<>();
                 treeNodeUtil1.setChildren(third);
                 TreeNodeUtil treeNodeUtilMax = new TreeNodeUtil();
-                treeNodeUtilMax.setValue("a" + quDuanInfoPropertyEntity.getId());
                 treeNodeUtilMax.setLabel("max");
+                treeNodeUtilMax.setValue("a" + quDuanInfoPropertyEntity.getId());
                 TreeNodeUtil treeNodeUtilMin = new TreeNodeUtil();
-                treeNodeUtilMin.setValue("b" + quDuanInfoPropertyEntity.getId());
                 treeNodeUtilMin.setLabel("min");
+                treeNodeUtilMin.setValue("b" + quDuanInfoPropertyEntity.getId());
                 third.add(treeNodeUtilMax);
                 third.add(treeNodeUtilMin);
             }
@@ -871,11 +1160,11 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 List<TreeNodeUtil> third = new ArrayList<>();
                 treeNodeUtil2.setChildren(third);
                 TreeNodeUtil treeNodeUtilMax = new TreeNodeUtil();
-                treeNodeUtilMax.setValue("c" + quDuanInfoPropertyEntity.getId());
                 treeNodeUtilMax.setLabel("max");
+                treeNodeUtilMax.setValue("c" + quDuanInfoPropertyEntity.getId());
                 TreeNodeUtil treeNodeUtilMin = new TreeNodeUtil();
-                treeNodeUtilMin.setValue("d" + quDuanInfoPropertyEntity.getId());
                 treeNodeUtilMin.setLabel("min");
+                treeNodeUtilMin.setValue("d" + quDuanInfoPropertyEntity.getId());
                 third.add(treeNodeUtilMax);
                 third.add(treeNodeUtilMin);
             }
@@ -888,7 +1177,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         List<Map<String, Object>> maps = new ArrayList<>();
         String tableName = StringUtil.getTableName(czId, time);
         if (this.isTableExist(tableName)) {
-            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, isDianMaHua);
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
             List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
             for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
                 for (Map<String, Object> map : finalMaps) {

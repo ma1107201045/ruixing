@@ -47,21 +47,23 @@ public class ReportController extends SessionController {
      * @return
      */
     @GetMapping("/realreport/v2")
-    public Map<String, Object> realTimeReport(@RequestParam("cz_id") Integer czId, @RequestParam("properties") Integer[] properties, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
-        JSONObject jo = quDuanInfoService.realTimeReport(czId, properties, isDianMaHua);
+    public Map<String, Object> realTimeReport(@RequestParam("cz_id") Integer czId, @RequestParam("properties") Integer[] properties, @RequestParam("q_name") String qName, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+        JSONObject jo = quDuanInfoService.realTimeReport(czId, properties, qName, isDianMaHua);
         return ResponseDataUtil.ok("查询实时报表成功", jo);
     }
 
 
     /**
+     * 日报表
+     *
      * @param czId        车站
      * @param properties  属性集
      * @param isDianMaHua 是否电码化
      * @return
      */
     @GetMapping("/dayreport/v2")
-    public Map<String, Object> dayReport(@RequestParam("cz_id") Integer czId, @RequestParam("time") Date time, @RequestParam("properties") Integer[] properties, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
-        JSONObject jo = quDuanInfoService.dayReport(czId, time, properties, isDianMaHua);
+    public Map<String, Object> dayReport(@RequestParam("cz_id") Integer czId, @RequestParam("time") Date time, @RequestParam("properties") Integer[] properties, @RequestParam("q_name") String qName, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+        JSONObject jo = quDuanInfoService.dayReport(czId, time, properties, qName, isDianMaHua);
         return ResponseDataUtil.ok("查询实时报表成功", jo);
     }
 

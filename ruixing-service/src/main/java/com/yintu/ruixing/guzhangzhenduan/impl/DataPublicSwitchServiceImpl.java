@@ -44,11 +44,11 @@ public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
         for (int i = 0; i < 16; i++) {
             JSONObject jo = new JSONObject();
             try {
-                Method m1 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16 * 0));
+                Method m1 = clazz.getDeclaredMethod(methodPrefix + (i + 1));
                 Object v1 = m1.invoke(dataPublicSwitchEntity);
                 jo.put("GJ", get(v1));
 
-                Method m2 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16 * 1));
+                Method m2 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16));
                 Object v2 = m2.invoke(dataPublicSwitchEntity);
                 jo.put("DJ", get(v2));
 

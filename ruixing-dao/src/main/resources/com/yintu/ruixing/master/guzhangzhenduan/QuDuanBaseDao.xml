@@ -1027,6 +1027,9 @@
             <if test="qdId!=null">
                 and qdid=#{qdId,jdbcType=INTEGER}
             </if>
+            <if test="qName!=null">
+                and quDuanYunYing_name like concat('%',#{qName,jdbcType=VARCHAR},'%')
+            </if>
             <if test="isDianMaHua!=null">
                 <if test="isDianMaHua">
                     and line='电码化'
