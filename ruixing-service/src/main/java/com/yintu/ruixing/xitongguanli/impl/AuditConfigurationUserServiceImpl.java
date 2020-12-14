@@ -72,6 +72,11 @@ public class AuditConfigurationUserServiceImpl implements AuditConfigurationUser
     }
 
     @Override
+    public List<AuditConfigurationUserEntity> findByauditConfigurationId(Long id) {
+        return auditConfigurationUserDao.findByauditConfigurationId(id);
+    }
+
+    @Override
     public List<Long> findDistinctFieldByExample(String field, Long auditConfigurationId, Integer sort) {
         return auditConfigurationUserDao.selectDistinctFieldByExample(field, auditConfigurationId, sort);
     }

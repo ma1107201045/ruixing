@@ -33,4 +33,6 @@ public interface AuditConfigurationUserDao {
     int updateByPrimaryKey(AuditConfigurationUserEntity record);
 
     List<Long> selectDistinctFieldByExample(String field, Long auditConfigurationId, Integer sort);
+
+    List<AuditConfigurationUserEntity> findByauditConfigurationId(Long id);
 }
