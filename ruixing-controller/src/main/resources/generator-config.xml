@@ -23,33 +23,26 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.yintu.ruixing.yuanchengzhichi"
+        <javaModelGenerator targetPackage="com.yintu.ruixing.guzhangzhenduan"
                             targetProject="../ruixing-entity/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.yuanchengzhichi"
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.guzhangzhenduan"
                          targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.yuanchengzhichi"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.guzhangzhenduan"
                              targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="alarm"
-               domainObjectName="AlarmEntity1"
-               mapperName="AlarmDao1"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableUpdateByExample="false"
-               enableSelectByExample="false"/>
-        <table tableName="alarm_ticket"
-               domainObjectName="AlarmTicketEntity1"
-               mapperName="AlarmTicketDao1"
+        <table tableName="mro_menxian"
+               domainObjectName="MenXianEntity1"
+               mapperName="MenXianDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

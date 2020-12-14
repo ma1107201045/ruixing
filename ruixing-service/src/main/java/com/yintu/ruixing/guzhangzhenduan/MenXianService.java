@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * @author:mlf
@@ -47,6 +48,20 @@ public interface MenXianService {
      * @return
      */
     MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId);
+
+
+    /**
+     *
+     * @param menXianEntities
+     */
+    void removeBatch(List<MenXianEntity> menXianEntities);
+
+    /**
+     *
+     * @param menXianEntities
+     */
+    void addBatch(List<MenXianEntity> menXianEntities);
+
 
     /**
      * @param properties 属性集合

@@ -22,16 +22,24 @@ public class MenXianEntity implements Serializable {
 
     private Integer propertyId;
 
-    private String superiorLimitValue;
+    private String lcSuperior;
 
-    private String superiorLimitValueUnit;
+    private String lcLower;
 
-    private String lowerLimitValue;
+    private String alarmSuperior;
 
-    private String lowerLimitValueUnit;
+    private String alarmSuperiorZ;
 
-    private String outburstValue;
+    private String alarmSuperiorK;
 
-    private String outburstValueUnit;
+    private String alarmLower;
+
+    private String alarmLowerZ;
+
+    private String alarmLowerK;
+
+    private Integer level;
+
+    private String yuliu1;
 
 }

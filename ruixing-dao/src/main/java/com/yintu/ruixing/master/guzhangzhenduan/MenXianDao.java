@@ -1,10 +1,8 @@
 package com.yintu.ruixing.master.guzhangzhenduan;
 
 import com.yintu.ruixing.guzhangzhenduan.MenXianEntity;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
 
 public interface MenXianDao {
     int deleteByPrimaryKey(Integer id);
@@ -20,6 +18,11 @@ public interface MenXianDao {
     int updateByPrimaryKey(MenXianEntity record);
 
     MenXianEntity selectByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quduanId, Integer propertyId);
+
+
+    void insertBatch(List<MenXianEntity> menXianEntities);
+
+    void deleteBatch(List<MenXianEntity> menXianEntities);
 
     String findMaxNumber(Integer czid, Integer qdid, Integer mid);
 

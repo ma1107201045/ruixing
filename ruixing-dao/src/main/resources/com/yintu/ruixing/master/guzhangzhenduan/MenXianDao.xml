@@ -6,40 +6,21 @@
         <result column="cz_id" jdbcType="INTEGER" property="czId"/>
         <result column="quduan_id" jdbcType="INTEGER" property="quduanId"/>
         <result column="property_id" jdbcType="INTEGER" property="propertyId"/>
-        <result column="superior_limit_value" jdbcType="VARCHAR" property="superiorLimitValue"/>
-        <result column="superior_limit_value_unit" jdbcType="VARCHAR" property="superiorLimitValueUnit"/>
-        <result column="lower_limit_value" jdbcType="VARCHAR" property="lowerLimitValue"/>
-        <result column="lower_limit_value_unit" jdbcType="VARCHAR" property="lowerLimitValueUnit"/>
-        <result column="outburst_value" jdbcType="VARCHAR" property="outburstValue"/>
-        <result column="outburst_value_unit" jdbcType="VARCHAR" property="outburstValueUnit"/>
+        <result column="lc_superior" jdbcType="VARCHAR" property="lcSuperior"/>
+        <result column="lc_lower" jdbcType="VARCHAR" property="lcLower"/>
+        <result column="alarm_superior" jdbcType="VARCHAR" property="alarmSuperior"/>
+        <result column="alarm_superior_z" jdbcType="VARCHAR" property="alarmSuperiorZ"/>
+        <result column="alarm_superior_k" jdbcType="VARCHAR" property="alarmSuperiorK"/>
+        <result column="alarm_lower" jdbcType="VARCHAR" property="alarmLower"/>
+        <result column="alarm_lower_z" jdbcType="VARCHAR" property="alarmLowerZ"/>
+        <result column="alarm_lower_k" jdbcType="VARCHAR" property="alarmLowerK"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,cz_id, quduan_id, property_id,  superior_limit_value,superior_limit_value_unit, lower_limit_value, lower_limit_value_unit, outburst_value,
-    outburst_value_unit
+        id, cz_id, quduan_id, property_id, lc_superior, lc_lower, alarm_superior, alarm_superior_z,
+    alarm_superior_k, alarm_lower, alarm_lower_z, alarm_lower_k, level, yuliu1
     </sql>
-
-    <!--根据车站id 区段id 和属性id  查询最小值-->
-    <select id="findMinNumber"  resultType="java.lang.String">
-        select
-        lower_limit_value
-        from mro_menxian
-        where cz_id = #{czid,jdbcType=INTEGER}
-        and quduan_id = #{qdid,jdbcType=INTEGER}
-        and property_id = #{mid,jdbcType=INTEGER}
-    </select>
-
-
-    <!--根据车站id 区段id 和属性id  查询最大值-->
-    <select id="findMaxNumber"  resultType="java.lang.String">
-        select
-        superior_limit_value
-        from mro_menxian
-        where cz_id = #{czid,jdbcType=INTEGER}
-        and quduan_id = #{qdid,jdbcType=INTEGER}
-        and property_id = #{mid,jdbcType=INTEGER}
-    </select>
-
-
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -52,13 +33,17 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
-        insert into mro_menxian (id, cz_id, quduan_id, property_id, superior_limit_value,
-                                 superior_limit_value_unit, lower_limit_value,
-                                 lower_limit_value_unit, outburst_value, outburst_value_unit)
-        values (#{id,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER},
-                #{superiorLimitValue,jdbcType=VARCHAR}, #{superiorLimitValueUnit,jdbcType=VARCHAR},
-                #{lowerLimitValue,jdbcType=VARCHAR}, #{lowerLimitValueUnit,jdbcType=VARCHAR},
-                #{outburstValue,jdbcType=VARCHAR}, #{outburstValueUnit,jdbcType=VARCHAR})
+        insert into mro_menxian (id, cz_id, quduan_id,
+                                 property_id, lc_superior, lc_lower,
+                                 alarm_superior, alarm_superior_z, alarm_superior_k,
+                                 alarm_lower, alarm_lower_z, alarm_lower_k,
+                                 level, yuliu1)
+        values (#{id,jdbcType=INTEGER}, #{czId,jdbcType=INTEGER}, #{quduanId,jdbcType=INTEGER},
+                #{propertyId,jdbcType=INTEGER}, #{lcSuperior,jdbcType=VARCHAR}, #{lcLower,jdbcType=VARCHAR},
+                #{alarmSuperior,jdbcType=VARCHAR}, #{alarmSuperiorZ,jdbcType=VARCHAR},
+                #{alarmSuperiorK,jdbcType=VARCHAR},
+                #{alarmLower,jdbcType=VARCHAR}, #{alarmLowerZ,jdbcType=VARCHAR}, #{alarmLowerK,jdbcType=VARCHAR},
+                #{level,jdbcType=INTEGER}, #{yuliu1,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         insert into mro_menxian
@@ -75,23 +60,35 @@
             <if test="propertyId != null">
                 property_id,
             </if>
-            <if test="superiorLimitValue != null">
-                superior_limit_value,
+            <if test="lcSuperior != null">
+                lc_superior,
             </if>
-            <if test="superiorLimitValueUnit != null">
-                superior_limit_value_unit,
+            <if test="lcLower != null">
+                lc_lower,
             </if>
-            <if test="lowerLimitValue != null">
-                lower_limit_value,
+            <if test="alarmSuperior != null">
+                alarm_superior,
             </if>
-            <if test="lowerLimitValueUnit != null">
-                lower_limit_value_unit,
+            <if test="alarmSuperiorZ != null">
+                alarm_superior_z,
             </if>
-            <if test="outburstValue != null">
-                outburst_value,
+            <if test="alarmSuperiorK != null">
+                alarm_superior_k,
             </if>
-            <if test="outburstValueUnit != null">
-                outburst_value_unit,
+            <if test="alarmLower != null">
+                alarm_lower,
+            </if>
+            <if test="alarmLowerZ != null">
+                alarm_lower_z,
+            </if>
+            <if test="alarmLowerK != null">
+                alarm_lower_k,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -107,23 +104,35 @@
             <if test="propertyId != null">
                 #{propertyId,jdbcType=INTEGER},
             </if>
-            <if test="superiorLimitValue != null">
-                #{superiorLimitValue,jdbcType=VARCHAR},
+            <if test="lcSuperior != null">
+                #{lcSuperior,jdbcType=VARCHAR},
             </if>
-            <if test="superiorLimitValueUnit != null">
-                #{superiorLimitValueUnit,jdbcType=VARCHAR},
+            <if test="lcLower != null">
+                #{lcLower,jdbcType=VARCHAR},
             </if>
-            <if test="lowerLimitValue != null">
-                #{lowerLimitValue,jdbcType=VARCHAR},
+            <if test="alarmSuperior != null">
+                #{alarmSuperior,jdbcType=VARCHAR},
             </if>
-            <if test="lowerLimitValueUnit != null">
-                #{lowerLimitValueUnit,jdbcType=VARCHAR},
+            <if test="alarmSuperiorZ != null">
+                #{alarmSuperiorZ,jdbcType=VARCHAR},
             </if>
-            <if test="outburstValue != null">
-                #{outburstValue,jdbcType=VARCHAR},
+            <if test="alarmSuperiorK != null">
+                #{alarmSuperiorK,jdbcType=VARCHAR},
             </if>
-            <if test="outburstValueUnit != null">
-                #{outburstValueUnit,jdbcType=VARCHAR},
+            <if test="alarmLower != null">
+                #{alarmLower,jdbcType=VARCHAR},
+            </if>
+            <if test="alarmLowerZ != null">
+                #{alarmLowerZ,jdbcType=VARCHAR},
+            </if>
+            <if test="alarmLowerK != null">
+                #{alarmLowerK,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu1 != null">
+                #{yuliu1,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -139,41 +148,56 @@
             <if test="propertyId != null">
                 property_id = #{propertyId,jdbcType=INTEGER},
             </if>
-            <if test="superiorLimitValue != null">
-                superior_limit_value = #{superiorLimitValue,jdbcType=VARCHAR},
+            <if test="lcSuperior != null">
+                lc_superior = #{lcSuperior,jdbcType=VARCHAR},
             </if>
-            <if test="superiorLimitValueUnit != null">
-                superior_limit_value_unit = #{superiorLimitValueUnit,jdbcType=VARCHAR},
+            <if test="lcLower != null">
+                lc_lower = #{lcLower,jdbcType=VARCHAR},
             </if>
-            <if test="lowerLimitValue != null">
-                lower_limit_value = #{lowerLimitValue,jdbcType=VARCHAR},
+            <if test="alarmSuperior != null">
+                alarm_superior = #{alarmSuperior,jdbcType=VARCHAR},
             </if>
-            <if test="lowerLimitValueUnit != null">
-                lower_limit_value_unit = #{lowerLimitValueUnit,jdbcType=VARCHAR},
+            <if test="alarmSuperiorZ != null">
+                alarm_superior_z = #{alarmSuperiorZ,jdbcType=VARCHAR},
             </if>
-            <if test="outburstValue != null">
-                outburst_value = #{outburstValue,jdbcType=VARCHAR},
+            <if test="alarmSuperiorK != null">
+                alarm_superior_k = #{alarmSuperiorK,jdbcType=VARCHAR},
             </if>
-            <if test="outburstValueUnit != null">
-                outburst_value_unit = #{outburstValueUnit,jdbcType=VARCHAR},
+            <if test="alarmLower != null">
+                alarm_lower = #{alarmLower,jdbcType=VARCHAR},
+            </if>
+            <if test="alarmLowerZ != null">
+                alarm_lower_z = #{alarmLowerZ,jdbcType=VARCHAR},
+            </if>
+            <if test="alarmLowerK != null">
+                alarm_lower_k = #{alarmLowerK,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="yuliu1 != null">
+                yuliu1 = #{yuliu1,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
         update mro_menxian
-        set cz_id                     = #{czId,jdbcType=INTEGER},
-            quduan_id                 = #{quduanId,jdbcType=INTEGER},
-            property_id               = #{propertyId,jdbcType=INTEGER},
-            superior_limit_value      = #{superiorLimitValue,jdbcType=VARCHAR},
-            superior_limit_value_unit = #{superiorLimitValueUnit,jdbcType=VARCHAR},
-            lower_limit_value         = #{lowerLimitValue,jdbcType=VARCHAR},
-            lower_limit_value_unit    = #{lowerLimitValueUnit,jdbcType=VARCHAR},
-            outburst_value            = #{outburstValue,jdbcType=VARCHAR},
-            outburst_value_unit       = #{outburstValueUnit,jdbcType=VARCHAR}
+        set cz_id            = #{czId,jdbcType=INTEGER},
+            quduan_id        = #{quduanId,jdbcType=INTEGER},
+            property_id      = #{propertyId,jdbcType=INTEGER},
+            lc_superior      = #{lcSuperior,jdbcType=VARCHAR},
+            lc_lower         = #{lcLower,jdbcType=VARCHAR},
+            alarm_superior   = #{alarmSuperior,jdbcType=VARCHAR},
+            alarm_superior_z = #{alarmSuperiorZ,jdbcType=VARCHAR},
+            alarm_superior_k = #{alarmSuperiorK,jdbcType=VARCHAR},
+            alarm_lower      = #{alarmLower,jdbcType=VARCHAR},
+            alarm_lower_z    = #{alarmLowerZ,jdbcType=VARCHAR},
+            alarm_lower_k    = #{alarmLowerK,jdbcType=VARCHAR},
+            level            = #{level,jdbcType=INTEGER},
+            yuliu1           = #{yuliu1,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
 
     <select id="selectByCzIdAndQuduanIdAndPropertyId" resultMap="BaseResultMap">
         select
@@ -191,4 +215,64 @@
             </if>
         </where>
     </select>
+    <!--根据车站id 区段id 和属性id  查询最小值-->
+    <select id="findMinNumber" resultType="java.lang.String">
+        select lc_superior
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据车站id 区段id 和属性id  查询最大值-->
+    <select id="findMaxNumber" resultType="java.lang.String">
+        select lc_lower
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+    </select>
+
+
+    <insert id="insertBatch" parameterType="com.yintu.ruixing.guzhangzhenduan.MenXianEntity">
+        insert into mro_menxian (cz_id, quduan_id,property_id, lc_superior, lc_lower,alarm_superior,
+        alarm_superior_z,alarm_superior_k,
+        alarm_lower, alarm_lower_z, alarm_lower_k,
+        level)
+        values
+        <foreach collection="list" item="menXianEntity" index="index" separator=",">
+            <trim prefix=" (" suffix=")" suffixOverrides=",">
+                #{menXianEntity.czId,jdbcType=INTEGER},
+                #{menXianEntity.quduanId,jdbcType=INTEGER},
+                #{menXianEntity.propertyId,jdbcType=INTEGER},
+                #{menXianEntity.lcSuperior,jdbcType=VARCHAR},
+                #{menXianEntity.lcLower,jdbcType=VARCHAR},
+                #{menXianEntity.alarmSuperior,jdbcType=VARCHAR},
+                #{menXianEntity.alarmSuperiorZ,jdbcType=VARCHAR},
+                #{menXianEntity.alarmSuperiorK,jdbcType=VARCHAR},
+                #{menXianEntity.alarmLower,jdbcType=VARCHAR},
+                #{menXianEntity.alarmLowerZ,jdbcType=VARCHAR},
+                #{menXianEntity.alarmLowerK,jdbcType=VARCHAR},
+                #{menXianEntity.level,jdbcType=INTEGER}
+            </trim>
+        </foreach>
+    </insert>
+    <delete id="deleteBatch">
+        delete from mro_menxian
+        <where>
+            and cz_id in
+            <foreach collection="list" item="menXianEntity" index="index" separator="," open="(" close=")">
+                #{menXianEntity.czId,jdbcType=INTEGER}
+            </foreach>
+            and quduan_id in
+            <foreach collection="list" item="menXianEntity" index="index" separator="," open="(" close=")">
+                #{menXianEntity.quduanId,jdbcType=INTEGER}
+            </foreach>
+            and property_id in
+            <foreach collection="list" item="menXianEntity" index="index" separator="," open="(" close=")">
+                #{menXianEntity.propertyId,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </delete>
 </mapper>
