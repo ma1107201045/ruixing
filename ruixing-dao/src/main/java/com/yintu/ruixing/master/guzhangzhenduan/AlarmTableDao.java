@@ -49,4 +49,7 @@ public interface AlarmTableDao {
     List<AlarmEntity> findAllAlarmDatasByDwdidAndXdid(Integer dwdid, Integer xdid, long starTime, long endTime);
 
     List<AlarmEntity> findAllAlarmDatasByczid(Integer czid, long starTime, long endTime);
+
+    List<AlarmEntity> findNotRecoveryAlarmDatas();
+
 }

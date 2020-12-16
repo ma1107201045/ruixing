@@ -155,6 +155,13 @@
     </resultMap>
 
 
+    <!--根据czid 查询车站名-->
+    <select id="findczName" resultType="java.lang.String">
+        SELECT cz_name
+        FROM mro_chezhan
+        WHERE cz_id = #{sectionId}
+    </select>
+
     <!--根据cid 查询jidianjiashidianmahuashebeinumber 的个数-->
     <select id="findjidianjiashidianmahuashebeinumberByCid" resultType="java.lang.Integer">
         SELECT jiDianJiaShiDianMaHuaSheBeiNumber

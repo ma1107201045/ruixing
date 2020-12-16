@@ -111,6 +111,16 @@
     </where>
   </select>
 
+  <!--查询所有未读 并且 还未恢复的 报警预警数据-->
+  <select id="findNotRecoveryAlarmDatas"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from alarm
+    where
+    STATUS = 0
+    and recover_time=0
+  </select>
+
 
   <!--根据时间段  查询所有的报警预警数据-->
   <select id="findAllAlarmDatasByTimes"  resultMap="BaseResultMap">

@@ -44,13 +44,69 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
-    public String findMinNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianService.findMinNumber(czid,qdid,mid);
+    public String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMaxNumberK(czid,qdid,mid,typee);
     }
 
     @Override
-    public String findMaxNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianService.findMaxNumber(czid,qdid,mid);
+    public String findMaxNumberZ(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMaxNumberZ(czid,qdid,mid,typee);
+    }
+
+    @Override
+    public String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMinNumberK(czid,qdid,mid,typee);
+    }
+
+    @Override
+    public String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMinNumberZ(czid,qdid,mid,typee);
+    }
+
+    @Override
+    public String findMinNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMinNumber(czid,qdid,mid,typee);
+    }
+
+    @Override
+    public String findMaxNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee=0;
+        if (type==0){
+            typee=1;
+        }else {
+            typee=2;
+        }
+        return menXianService.findMaxNumber(czid,qdid,mid,typee);
     }
 
     /* @Override

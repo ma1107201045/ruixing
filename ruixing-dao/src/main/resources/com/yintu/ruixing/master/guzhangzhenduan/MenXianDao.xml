@@ -215,23 +215,64 @@
             </if>
         </where>
     </select>
-    <!--根据车站id 区段id 和属性id  查询最小值-->
-    <select id="findMinNumber" resultType="java.lang.String">
-        select lc_superior
+    <!--根据车站id 区段id 和属性id  查询最小值(占用)-->
+    <select id="findMinNumberZ" resultType="java.lang.String">
+        select alarm_lower_z
         from mro_menxian
         where cz_id = #{czid,jdbcType=INTEGER}
           and quduan_id = #{qdid,jdbcType=INTEGER}
           and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
     </select>
 
+    <!--根据车站id 区段id 和属性id  查询最小值(空闲)-->
+    <select id="findMinNumberK" resultType="java.lang.String">
+        select alarm_lower_k
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
+
+    <!--根据车站id 区段id 和属性id  查询最小值-->
+    <select id="findMinNumber" resultType="java.lang.String">
+        select alarm_lower
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
+
+    <!--根据车站id 区段id 和属性id  查询最大值(空闲)-->
+    <select id="findMaxNumberK" resultType="java.lang.String">
+        select alarm_superior_z
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
+
+    <!--根据车站id 区段id 和属性id  查询最大值(占用)-->
+    <select id="findMaxNumberZ" resultType="java.lang.String">
+        select alarm_superior_k
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
 
     <!--根据车站id 区段id 和属性id  查询最大值-->
     <select id="findMaxNumber" resultType="java.lang.String">
-        select lc_lower
+        select alarm_superior
         from mro_menxian
         where cz_id = #{czid,jdbcType=INTEGER}
           and quduan_id = #{qdid,jdbcType=INTEGER}
           and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
     </select>
 
 

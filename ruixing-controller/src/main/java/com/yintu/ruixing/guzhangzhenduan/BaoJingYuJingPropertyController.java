@@ -130,6 +130,14 @@ public class BaoJingYuJingPropertyController {
         }
     }
 
+    //隐藏已恢复的报警
+    @GetMapping("/findNotRecoveryAlarmDatas")
+    public Map<String,Object>findNotRecoveryAlarmDatas(Integer page,Integer size){
+        List<AlarmsEntity> alarmsEntityList = baoJingYuJingPropertyService.findNotRecoveryAlarmDatas(page, size);
+        PageInfo<AlarmsEntity> alarmEntityPageInfo = new PageInfo<>(alarmsEntityList);
+        return ResponseDataUtil.ok("查询数据成功", alarmEntityPageInfo);
+    }
+
     //查询历史记录的预警报警数据
     @GetMapping("/findAllHistoryAlarmDatas")
     public Map<String, Object> findAllHistoryAlarmDatas(Integer page, Integer size, Integer czid) {

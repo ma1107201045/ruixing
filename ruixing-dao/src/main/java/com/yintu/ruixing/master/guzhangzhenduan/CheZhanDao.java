@@ -147,4 +147,6 @@ public interface CheZhanDao {
     long selectStationSum();
 
     Integer findjidianjiashidianmahuashebeinumberByCid(Integer cid);
+
+    String findczName(Integer sectionId);
 }

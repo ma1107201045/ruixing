@@ -96,7 +96,15 @@ public interface MenXianService {
     void templateFile(OutputStream outputStream) throws IOException;
 
 
-    String findMaxNumber(Integer czid, Integer qdid, Integer mid);
+    String findMaxNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
 
-    String findMinNumber(Integer czid, Integer qdid, Integer mid);
+    String findMinNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findMaxNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee);
 }

@@ -30,4 +30,11 @@ public class AlarmsEntity {
 
     private Integer isnotsky;
 
+    private  Integer czid;
+
+    private String czName;
+
+    private Integer quid;
+
+
 }
