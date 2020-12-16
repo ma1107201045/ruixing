@@ -93,11 +93,11 @@ public class MenXianServiceImpl implements MenXianService {
         Set<Integer> types = new HashSet<>();
         for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
             Short type = quDuanInfoPropertyEntity.getType();
-            if (type != null)
+            if (type != null && type != 1000)
                 types.add(type.intValue());
         }
 
-        List<TreeNodeUtil> treeNodeUtils = quDuanInfoService.findByTypes(types);
+        List<TreeNodeUtil> treeNodeUtils = quDuanInfoService.findByTypess(types);
         for (TreeNodeUtil treeNodeUtil : treeNodeUtils) {
             List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities1 = quDuanInfoPropertyService.findByType(treeNodeUtil.getId().shortValue());
             List<TreeNodeUtil> trees = new ArrayList<>();
@@ -316,38 +316,38 @@ public class MenXianServiceImpl implements MenXianService {
                     TreeNodeUtil d18 = new TreeNodeUtil();
                     d18.setLabel("报警下限(空闲)");
                     d18.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil e18 = new TreeNodeUtil();
+                    e18.setLabel("报警下限(占用)");
+                    e18.setValue("e" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
                     TreeNodeUtil g18 = new TreeNodeUtil();
-                    g18.setLabel("报警上限(占用)");
-                    g18.setValue("g" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
-                    TreeNodeUtil h18 = new TreeNodeUtil();
-                    h18.setLabel("报警上限(空闲)");
-                    h18.setValue("h" + quDuanInfoPropertyEntity.getId());
+                    g18.setLabel("报警上限(空闲)");
+                    g18.setValue("g" + quDuanInfoPropertyEntity.getId());
                     third18.add(a18);
                     third18.add(b18);
                     third18.add(d18);
+                    third18.add(e18);
                     third18.add(g18);
-                    third18.add(h18);
 
                     TreeNodeUtil a181 = new TreeNodeUtil();
                     a181.setLabel("量程下限");
-                    a18.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    a181.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
                     TreeNodeUtil b181 = new TreeNodeUtil();
-                    b18.setLabel("量程上限");
-                    b18.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    b181.setLabel("量程上限");
+                    b181.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
                     TreeNodeUtil d181 = new TreeNodeUtil();
                     d181.setLabel("报警下限(空闲)");
                     d181.setValue("d" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil e181 = new TreeNodeUtil();
+                    e181.setLabel("报警下限(占用)");
+                    e181.setValue("e" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
                     TreeNodeUtil g181 = new TreeNodeUtil();
-                    g181.setLabel("报警上限(占用)");
-                    g181.setValue("g" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
-                    TreeNodeUtil h181 = new TreeNodeUtil();
-                    h181.setLabel("报警上限(空闲)");
-                    h181.setValue("h" + quDuanInfoPropertyEntity.getId() + "1");
+                    g181.setLabel("报警上限(空闲)");
+                    g181.setValue("g" + quDuanInfoPropertyEntity.getId() + "1");
                     third181.add(a181);
                     third181.add(b181);
                     third181.add(d181);
+                    third181.add(e181);
                     third181.add(g181);
-                    third181.add(h181);
                     second.add(treeNodeUtil118);
                     second.add(treeNodeUtil218);
                     break;
@@ -385,22 +385,22 @@ public class MenXianServiceImpl implements MenXianService {
                     a191.setLabel("量程下限");
                     a191.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
                     TreeNodeUtil b191 = new TreeNodeUtil();
-                    b19.setLabel("量程上限");
-                    b19.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    b191.setLabel("量程上限");
+                    b191.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
                     TreeNodeUtil d191 = new TreeNodeUtil();
                     d191.setLabel("报警下限(空闲)");
                     d191.setValue("d" + quDuanInfoPropertyEntity.getId() + "1");
                     TreeNodeUtil e191 = new TreeNodeUtil();
                     e191.setLabel("报警下限(占用)");
                     e191.setValue("e" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
-                    TreeNodeUtil f181 = new TreeNodeUtil();
-                    f181.setLabel("报警上限");
-                    f181.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil f191 = new TreeNodeUtil();
+                    f191.setLabel("报警上限");
+                    f191.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
                     third191.add(a191);
                     third191.add(b191);
                     third191.add(d191);
                     third191.add(e191);
-                    third191.add(f181);
+                    third191.add(f191);
                     second.add(treeNodeUtil119);
                     second.add(treeNodeUtil219);
                     break;
@@ -654,27 +654,41 @@ public class MenXianServiceImpl implements MenXianService {
                         jos.put("h" + propertyId, menXianEntity171.getAlarmSuperiorZ());
 
                         MenXianEntity menXianEntity172 = result.get(1);
-                        jos.put("a" + propertyId, menXianEntity172.getLcLower());
-                        jos.put("b" + propertyId, menXianEntity172.getLcSuperior());
-                        jos.put("c" + propertyId, menXianEntity172.getAlarmLower());
-                        jos.put("g" + propertyId, menXianEntity172.getAlarmSuperiorK());
-                        jos.put("h" + propertyId, menXianEntity172.getAlarmSuperiorZ());
+                        jos.put("a" + propertyId + "1", menXianEntity172.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity172.getLcSuperior());
+                        jos.put("c" + propertyId + "1", menXianEntity172.getAlarmLower());
+                        jos.put("g" + propertyId + "1", menXianEntity172.getAlarmSuperiorK());
+                        jos.put("h" + propertyId + "1", menXianEntity172.getAlarmSuperiorZ());
                         break;
                     case 18:
-                        MenXianEntity menXianEntity18 = result.get(0);
-                        jos.put("a" + propertyId, menXianEntity18.getLcLower());
-                        jos.put("b" + propertyId, menXianEntity18.getLcSuperior());
-                        jos.put("d" + propertyId, menXianEntity18.getAlarmLowerK());
-                        jos.put("g" + propertyId, menXianEntity18.getAlarmSuperiorK());
-                        jos.put("h" + propertyId, menXianEntity18.getAlarmSuperiorZ());
+                        MenXianEntity menXianEntity181 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity181.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity181.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity181.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity181.getAlarmLowerZ());
+                        jos.put("g" + propertyId, menXianEntity181.getAlarmSuperiorK());
+
+                        MenXianEntity menXianEntity182 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity182.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity182.getLcSuperior());
+                        jos.put("d" + propertyId + "1", menXianEntity182.getAlarmLowerK());
+                        jos.put("e" + propertyId + "1", menXianEntity182.getAlarmLowerZ());
+                        jos.put("g" + propertyId + "1", menXianEntity182.getAlarmSuperiorK());
                         break;
                     case 19:
-                        MenXianEntity menXianEntity19 = result.get(0);
-                        jos.put("a" + propertyId, menXianEntity19.getLcLower());
-                        jos.put("b" + propertyId, menXianEntity19.getLcSuperior());
-                        jos.put("d" + propertyId, menXianEntity19.getAlarmLowerK());
-                        jos.put("e" + propertyId, menXianEntity19.getAlarmLowerZ());
-                        jos.put("f" + propertyId, menXianEntity19.getAlarmSuperior());
+                        MenXianEntity menXianEntity191 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity191.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity191.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity191.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity191.getAlarmLowerZ());
+                        jos.put("f" + propertyId, menXianEntity191.getAlarmSuperior());
+
+                        MenXianEntity menXianEntity192 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity192.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity192.getLcSuperior());
+                        jos.put("d" + propertyId + "1", menXianEntity192.getAlarmLowerK());
+                        jos.put("e" + propertyId + "1", menXianEntity192.getAlarmLowerZ());
+                        jos.put("f" + propertyId + "1", menXianEntity192.getAlarmSuperior());
                         break;
                     case 24:
                         MenXianEntity menXianEntity24 = result.get(0);

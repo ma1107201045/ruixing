@@ -33,7 +33,7 @@ public class ReportController extends SessionController {
      */
     @GetMapping("/properties/tree")
     public Map<String, Object> findByCzId(@RequestParam("czId") Integer czId, @RequestParam("isAll") Boolean isAll) {
-        List<TreeNodeUtil> treeNodeUtils = quDuanInfoService.findPropertiesTree(czId, isAll);
+        List<TreeNodeUtil> treeNodeUtils = isAll ? quDuanInfoService.findPropertiesTree(czId) : quDuanInfoService.findPropertiesTrees(czId);
         return ResponseDataUtil.ok("查询实时报表属性树成功", treeNodeUtils);
     }
 
