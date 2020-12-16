@@ -412,6 +412,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         return jo;
     }
 
+    public boolean idIsInArr(int i) {
+        int[] ids = new int[]{21, 22};
+        for (int id : ids) {
+            if (id == i)
+                return true;
+        }
+        return false;
+    }
 
     /**
      * 实时报表 属性分类
@@ -420,7 +428,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
      * @return
      */
     @Override
-    public List<TreeNodeUtil> findPropertiesTree(Integer czId) {
+    public List<TreeNodeUtil> findPropertiesTree(Integer czId, Boolean isAll) {
         List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = this.findPropertiesByCzId(czId);
         Set<Integer> types = new HashSet<>();
         for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
@@ -434,10 +442,12 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities1 = quDuanInfoPropertyService.findByType(treeNodeUtil.getId().shortValue());
             List<TreeNodeUtil> trees = new ArrayList<>();
             for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities1) {
-                TreeNodeUtil tree = new TreeNodeUtil();
-                tree.setId(quDuanInfoPropertyEntity.getId().longValue());
-                tree.setLabel(quDuanInfoPropertyEntity.getName());
-                trees.add(tree);
+                if (!this.idIsInArr(quDuanInfoPropertyEntity.getId())) {
+                    TreeNodeUtil tree = new TreeNodeUtil();
+                    tree.setId(quDuanInfoPropertyEntity.getId().longValue());
+                    tree.setLabel(quDuanInfoPropertyEntity.getName());
+                    trees.add(tree);
+                }
             }
             treeNodeUtil.setChildren(trees);
         }
@@ -828,7 +838,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
             QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
             if (quDuanInfoEntityV2 == null) {
-                quDuanInfoEntityV2 = new QuDuanInfoEntityV2();
+                continue;
             }
             quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
             JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
@@ -1087,7 +1097,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 14:
                 case 15:
                 case 16:
-                case 21:
+//                case 21:
                 case 24:
                 case 25:
                 case 26:
@@ -1119,7 +1129,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 18:
                 case 19:
                 case 20:
-                case 22:
+//                case 22:
                 case 23:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();

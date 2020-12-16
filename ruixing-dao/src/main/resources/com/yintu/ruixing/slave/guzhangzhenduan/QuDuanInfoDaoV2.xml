@@ -818,16 +818,16 @@
                 MAX(qi.v29) AS c20,
                 MIN(qi.v29) AS d20,
             </if>
-            <if test="property==21">
-                MAX(qi.v39_sc4) AS a21,
-                MIN(qi.v39_sc4) AS b21,
-            </if>
-            <if test="property==22">
-                MAX(qi.v24) AS a22,
-                MIN(qi.v24) AS b22,
-                MAX(qi.v29) AS c22,
-                MIN(qi.v29) AS d22,
-            </if>
+<!--            <if test="property==21">-->
+<!--                MAX(qi.v39_sc4) AS a21,-->
+<!--                MIN(qi.v39_sc4) AS b21,-->
+<!--            </if>-->
+<!--            <if test="property==22">-->
+<!--                MAX(qi.v24) AS a22,-->
+<!--                MIN(qi.v24) AS b22,-->
+<!--                MAX(qi.v29) AS c22,-->
+<!--                MIN(qi.v29) AS d22,-->
+<!--            </if>-->
             <if test="property==23">
                 MAX(qi.v25) AS a23,
                 MIN(qi.v25) AS b23,

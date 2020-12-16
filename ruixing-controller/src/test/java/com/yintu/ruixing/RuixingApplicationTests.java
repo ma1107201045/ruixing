@@ -77,7 +77,7 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads2() {
-        System.out.println(quDuanInfoService.findPropertiesTree(11));
+        System.out.println(quDuanInfoService.findPropertiesTree(11, Boolean.FALSE));
     }
 
     @Test

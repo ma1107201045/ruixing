@@ -66,7 +66,7 @@ public interface QuDuanInfoService {
      * @param czId 车站id
      * @return
      */
-    List<TreeNodeUtil> findPropertiesTree(Integer czId);
+    List<TreeNodeUtil> findPropertiesTree(Integer czId, Boolean isAll);
 
     /**
      * 实时报表
