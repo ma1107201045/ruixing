@@ -862,7 +862,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case "4":
                     JSONArray jsonArray5 = new JSONArray();
                     jsonArray5.add(quDuanInfoEntityV2.getVOutZhu());
-                    jsonArray5.add(quDuanInfoEntityV2.getVOutBei().toString());
+                    jsonArray5.add(quDuanInfoEntityV2.getVOutBei());
                     jo.put(idStr, jsonArray5.get(0) + "/" + jsonArray5.get(1));
                     break;
                 case "5":

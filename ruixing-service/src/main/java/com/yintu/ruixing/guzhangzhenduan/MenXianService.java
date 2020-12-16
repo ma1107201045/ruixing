@@ -1,6 +1,7 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,21 +48,24 @@ public interface MenXianService {
      * @param propertyId 属性id
      * @return
      */
-    MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId);
+    List<MenXianEntity> findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId);
 
 
     /**
-     *
      * @param menXianEntities
      */
     void removeBatch(List<MenXianEntity> menXianEntities);
 
     /**
-     *
      * @param menXianEntities
      */
     void addBatch(List<MenXianEntity> menXianEntities);
 
+    /**
+     * @param czId 车站id
+     * @return
+     */
+    List<TreeNodeUtil> findPropertiesTree(Integer czId);
 
     /**
      * @param properties 属性集合

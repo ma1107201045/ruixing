@@ -17,7 +17,7 @@ public interface MenXianDao {
 
     int updateByPrimaryKey(MenXianEntity record);
 
-    MenXianEntity selectByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quduanId, Integer propertyId);
+    List<MenXianEntity> selectByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quduanId, Integer propertyId);
 
 
     void insertBatch(List<MenXianEntity> menXianEntities);
