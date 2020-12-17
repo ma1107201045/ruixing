@@ -714,6 +714,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                     //Map<String,Object> map=new HashMap();
                     Integer id = pinJiaoFuXiangMuEntity.getId() + 1111;
+                    Integer idd = pinJiaoFuXiangMuEntity.getId() ;
                     treeNodeUtil1.setValue(id.toString());
                     treeNodeUtil1.setId((long) pinJiaoFuXiangMuEntity.getId());
                     treeNodeUtil1.setLabel(pinJiaoFuXiangMuEntity.getXiangmuBianhao());
@@ -729,10 +730,12 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                     TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
                     TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
                     treeNodeUtil2.setId((long) 1);
+                    treeNodeUtil2.setIcon(idd.toString());//父id
                     treeNodeUtil2.setLabel("输入文件");
                     treeNodeUtil2.setValue(aa.toString());
                     treeNodeUtil2.setChildren(treeNodeUtilss3);
                     treeNodeUtil3.setId((long) 2);
+                    treeNodeUtil3.setIcon(idd.toString());//父id
                     treeNodeUtil3.setLabel("输出文件");
                     treeNodeUtil3.setValue(aaa.toString());
                     treeNodeUtil3.setChildren(treeNodeUtilss3);

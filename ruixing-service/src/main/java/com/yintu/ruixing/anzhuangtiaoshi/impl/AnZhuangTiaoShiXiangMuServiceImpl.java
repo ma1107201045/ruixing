@@ -302,6 +302,7 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
                 Map<String, Object> map = new HashMap();
                 Integer id = zhuangTiaoShiXiangMuEntity.getId() + 1568;
+                Integer iidd = zhuangTiaoShiXiangMuEntity.getId();
                 treeNodeUtil1.setValue(id.toString());
                 treeNodeUtil1.setId((long) zhuangTiaoShiXiangMuEntity.getId());
                 treeNodeUtil1.setLabel(zhuangTiaoShiXiangMuEntity.getXdName());
@@ -317,10 +318,12 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
                 TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
                 TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
                 treeNodeUtil2.setId((long) 1);
+                treeNodeUtil2.setIcon(iidd.toString());//父id
                 treeNodeUtil2.setLabel("输入文件");
                 treeNodeUtil2.setValue(idd.toString());
                 treeNodeUtil2.setChildren(treeNodeUtilss3);
                 treeNodeUtil3.setId((long) 2);
+                treeNodeUtil3.setIcon(iidd.toString());//父id
                 treeNodeUtil3.setLabel("输出文件");
                 treeNodeUtil3.setValue(iddd.toString());
                 treeNodeUtil3.setChildren(treeNodeUtilss3);
