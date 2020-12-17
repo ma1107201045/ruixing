@@ -2169,9 +2169,9 @@ public class QuXianController {
 
             long statrtime = dayTime.getTime() / 1000;
             if (nowdaytime != statrtime) {
-                endtime = statrtime + 1000;//86399
+                endtime = statrtime + 86399;//86399
                 System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                for (int i = 0; i <= 1000; i++) {
+                for (int i = 0; i <= 86399; i++) {
                     long onetime = statrtime + i;
                     long value = onetime * 1000L;
                     SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
@@ -2183,7 +2183,7 @@ public class QuXianController {
                 long times = todaytime - statrtime;
                 endtime = todaytime;
                 //  for (int i = 0; i <= times; i++) {
-                for (int i = 0; i <= 1000; i++) {
+                for (int i = 0; i <= times; i++) {
                     long onetime = statrtime + i;
                     long value = onetime * 1000L;
                     SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
