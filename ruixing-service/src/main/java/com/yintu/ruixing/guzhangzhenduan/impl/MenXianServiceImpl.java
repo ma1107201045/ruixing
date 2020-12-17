@@ -125,7 +125,6 @@ public class MenXianServiceImpl implements MenXianService {
         }
         //表头数组
         List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
-//        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
         List<TreeNodeUtil> first = new ArrayList<>();
         for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
             List<TreeNodeUtil> second = new ArrayList<>();
@@ -650,15 +649,15 @@ public class MenXianServiceImpl implements MenXianService {
                         jos.put("a" + propertyId, menXianEntity171.getLcLower());
                         jos.put("b" + propertyId, menXianEntity171.getLcSuperior());
                         jos.put("c" + propertyId, menXianEntity171.getAlarmLower());
-                        jos.put("g" + propertyId, menXianEntity171.getAlarmSuperiorK());
                         jos.put("h" + propertyId, menXianEntity171.getAlarmSuperiorZ());
+                        jos.put("g" + propertyId, menXianEntity171.getAlarmSuperiorK());
 
                         MenXianEntity menXianEntity172 = result.get(1);
                         jos.put("a" + propertyId + "1", menXianEntity172.getLcLower());
                         jos.put("b" + propertyId + "1", menXianEntity172.getLcSuperior());
                         jos.put("c" + propertyId + "1", menXianEntity172.getAlarmLower());
-                        jos.put("g" + propertyId + "1", menXianEntity172.getAlarmSuperiorK());
                         jos.put("h" + propertyId + "1", menXianEntity172.getAlarmSuperiorZ());
+                        jos.put("g" + propertyId + "1", menXianEntity172.getAlarmSuperiorK());
                         break;
                     case 18:
                         MenXianEntity menXianEntity181 = result.get(0);

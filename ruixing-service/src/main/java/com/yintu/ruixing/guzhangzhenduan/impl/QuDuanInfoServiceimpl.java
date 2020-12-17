@@ -641,200 +641,1295 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
     public JSONObject findDate(List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities, QuDuanInfoEntityV2 quDuanInfoEntityV2) {
         JSONObject jo = new JSONObject();
-        jo.put("id", quDuanInfoEntityV2.getId());
-        jo.put("cid", quDuanInfoEntityV2.getCid());
-        jo.put("qid", quDuanInfoEntityV2.getQid());
-        jo.put("time", quDuanInfoEntityV2.getTime());
-        jo.put("type", quDuanInfoEntityV2.getType());
-        jo.put("dataZhengchang", quDuanInfoEntityV2.getDataZhengchang());
-        jo.put("-1", quDuanInfoEntityV2.getQuDuanBaseEntity().getQuduanyunyingName());
+        jo.put("quDuanYunYingName", quDuanInfoEntityV2.getQuDuanBaseEntity().getQuduanyunyingName());
         for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
             String idStr = String.valueOf(quDuanInfoPropertyEntity.getId());
+            List<MenXianEntity> menXianEntities = menXianService.findByCzIdAndQuduanIdAndPropertyId(quDuanInfoEntityV2.getCid(), quDuanInfoEntityV2.getQid(), quDuanInfoPropertyEntity.getId());
+            Integer status = quDuanInfoEntityV2.getDataZhengchang();
+            MenXianEntity m1 = null;
+            MenXianEntity m2 = null;
+            if (menXianEntities.size() == 1)
+                m1 = menXianEntities.get(0);
+            if (menXianEntities.size() == 2) {
+                m1 = menXianEntities.get(0);
+                m2 = menXianEntities.get(1);
+            }
             switch (idStr) {
                 case "1":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getDesignCarrier());
+                    JSONObject jo11 = new JSONObject();
+                    jo11.put("value", quDuanInfoEntityV2.getDesignCarrier());
+                    jo.put("a" + idStr, jo11);
                     break;
                 case "2":
                     Integer direction = quDuanInfoEntityV2.getDirection();
-                    jo.put("a" + idStr, direction == null ? null : direction == 1 ? "正向" : direction == 2 ? "反向" : "无效");
+                    JSONObject jo12 = new JSONObject();
+                    jo12.put("value", direction == null ? null : direction == 1 ? "正向" : direction == 2 ? "反向" : "无效");
+                    jo.put("a" + idStr, jo12);
                     break;
                 case "3":
                     String djcollection = quDuanInfoEntityV2.getDjcollection();
-                    jo.put("a" + idStr, djcollection == null ? null : djcollection.equals("2") ? "落下" : djcollection.equals("1") ? "吸起" : "无效");
+                    JSONObject jo13 = new JSONObject();
+                    jo13.put("value", djcollection == null ? null : djcollection.equals("2") ? "落下" : djcollection.equals("1") ? "吸起" : "无效");
+                    jo.put("a" + idStr, jo13);
                     break;
                 case "4":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getVOutZhu());
-                    jo.put("b" + idStr, quDuanInfoEntityV2.getVOutBei());
+                    JSONObject jo14 = new JSONObject();
+                    String vOutZhu = quDuanInfoEntityV2.getVOutZhu();
+                    jo14.put("value", vOutZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo14.put("isOver", Double.parseDouble(vOutZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(vOutZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo14.put("text", ja);
+                        }
+                    }
+
+                    JSONObject jo24 = new JSONObject();
+                    String vOutBei = quDuanInfoEntityV2.getVOutBei();
+                    jo24.put("value", vOutBei);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo24.put("isOver", Double.parseDouble(vOutBei) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(vOutBei) > Double.parseDouble(m2.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m2.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m2.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo24.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo14);
+                    jo.put("b" + idStr, jo24);
                     break;
                 case "5":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getMaOutZhu());
-                    jo.put("b" + idStr, quDuanInfoEntityV2.getMaOutBei());
+                    JSONObject jo15 = new JSONObject();
+                    String maOutZhu = quDuanInfoEntityV2.getMaOutZhu();
+                    jo15.put("value", maOutZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo15.put("isOver", Double.parseDouble(maOutZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(maOutZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo15.put("text", ja);
+                        }
+                    }
+                    JSONObject jo25 = new JSONObject();
+                    String maOutBei = quDuanInfoEntityV2.getMaOutBei();
+                    jo25.put("value", maOutBei);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo25.put("isOver", Double.parseDouble(maOutBei) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(maOutBei) > Double.parseDouble(m2.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m2.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m2.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo25.put("text", ja);
+                        }
+                    }
+
+                    jo.put("a" + idStr, jo15);
+                    jo.put("b" + idStr, jo25);
                     break;
                 case "6":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getHzUpZhu());
-                    jo.put("b" + idStr, quDuanInfoEntityV2.getHzUpBei());
+                    JSONObject jo16 = new JSONObject();
+                    String hzUpZhu = quDuanInfoEntityV2.getHzUpZhu();
+                    jo16.put("value", hzUpZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo16.put("isOver", Double.parseDouble(hzUpZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(hzUpZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo16.put("text", ja);
+                        }
+                    }
+                    JSONObject jo26 = new JSONObject();
+                    String hzUpBei = quDuanInfoEntityV2.getHzUpBei();
+                    jo26.put("value", hzUpBei);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo26.put("isOver", Double.parseDouble(hzUpBei) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(hzUpBei) > Double.parseDouble(m2.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m2.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m2.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo26.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo16);
+                    jo.put("b" + idStr, jo26);
                     break;
                 case "7":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getHzDownZhu());
-                    jo.put("b" + idStr, quDuanInfoEntityV2.getHzDownBei());
+                    JSONObject jo17 = new JSONObject();
+                    String hzDownZhu = quDuanInfoEntityV2.getHzDownZhu();
+                    jo17.put("value", hzDownZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo17.put("isOver", Double.parseDouble(hzDownZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(hzDownZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo17.put("text", ja);
+                        }
+                    }
+                    JSONObject jo27 = new JSONObject();
+                    String hzDownBei = quDuanInfoEntityV2.getHzDownBei();
+                    jo27.put("value", hzDownBei);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo27.put("isOver", Double.parseDouble(hzDownBei) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(hzDownBei) > Double.parseDouble(m2.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m2.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m2.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo27.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo17);
+                    jo.put("b" + idStr, jo27);
                     break;
                 case "8":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getHzLowZhu());
-                    jo.put("b" + idStr, quDuanInfoEntityV2.getHzLowBei());
+                    JSONObject jo18 = new JSONObject();
+                    String hzLowZhu = quDuanInfoEntityV2.getHzLowZhu();
+                    jo18.put("value", hzLowZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo18.put("isOver", Double.parseDouble(hzLowZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(hzLowZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo18.put("text", ja);
+                        }
+                    }
+                    JSONObject jo28 = new JSONObject();
+                    String hzLowBei = quDuanInfoEntityV2.getHzLowBei();
+                    jo28.put("value", hzLowBei);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo28.put("isOver", Double.parseDouble(hzLowBei) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(hzLowBei) > Double.parseDouble(m2.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m2.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m2.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo28.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo18);
+                    jo.put("b" + idStr, jo28);
                     break;
                 case "9":
-                    Integer fbjDriveZhu = quDuanInfoEntityV2.getFbjDriveZhu();
-                    Integer fbjDriveBei = quDuanInfoEntityV2.getFbjDriveBei();
-                    jo.put("a" + idStr, fbjDriveZhu == null ? null : fbjDriveZhu == 1 ? "正常" : fbjDriveZhu == 2 ? "无" : "无效");
-                    jo.put("b" + idStr, fbjDriveBei == null ? null : fbjDriveBei == 1 ? "正常" : fbjDriveBei == 2 ? "无" : "无效");
+                    JSONObject jo19 = new JSONObject();
+                    Integer fbjDriveZhu1 = quDuanInfoEntityV2.getFbjDriveZhu();
+                    String str1 = fbjDriveZhu1 == null ? null : fbjDriveZhu1 == 1 ? "正常" : fbjDriveZhu1 == 2 ? "无" : "无效";
+                    jo19.put("value", str1);
+                    jo19.put("isOver", "无".equals(str1) || "无效".equals(str1));
+                    JSONObject jo29 = new JSONObject();
+                    Integer fbjDriveBei2 = quDuanInfoEntityV2.getFbjDriveBei();
+                    String str2 = fbjDriveBei2 == null ? null : fbjDriveBei2 == 1 ? "正常" : fbjDriveBei2 == 2 ? "无" : "无效";
+                    jo29.put("value", str2);
+                    jo29.put("isOver", "无".equals(str2) || "无效".equals(str2));
+
+                    jo.put("a" + idStr, jo19);
+                    jo.put("b" + idStr, jo29);
                     break;
                 case "10":
+                    JSONObject jo110 = new JSONObject();
                     String fbjCollectionZhu = quDuanInfoEntityV2.getFbjCollectionZhu();
+                    jo110.put("value", fbjCollectionZhu == null ? null : fbjCollectionZhu.equals("2") ? "落下" : fbjCollectionZhu.equals("1") ? "吸起" : "无效");
+                    JSONObject jo210 = new JSONObject();
                     String fbjCollectionBei = quDuanInfoEntityV2.getFbjCollectionBei();
-                    jo.put("a" + idStr, fbjCollectionZhu == null ? null : fbjCollectionZhu.equals("2") ? "落下" : fbjCollectionZhu.equals("1") ? "吸起" : "无效");
-                    jo.put("b" + idStr, fbjCollectionBei == null ? null : fbjCollectionBei.equals("2") ? "落下" : fbjCollectionBei.equals("1") ? "吸起" : "无效");
+                    jo210.put("value", fbjCollectionBei == null ? null : fbjCollectionBei.equals("2") ? "落下" : fbjCollectionBei.equals("1") ? "吸起" : "无效");
+                    jo.put("a" + idStr, jo110);
+                    jo.put("b" + idStr, jo210);
                     break;
                 case "11":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getVSongduanCable());
+                    JSONObject jo111 = new JSONObject();
+                    String vSongduanCable = quDuanInfoEntityV2.getVSongduanCable();
+                    jo111.put("value", vSongduanCable);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo111.put("isOver", Double.parseDouble(vSongduanCable) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(vSongduanCable) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo111.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo111);
                     break;
                 case "12":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getMaSongduanCable());
+                    JSONObject jo112 = new JSONObject();
+                    String maSongduanCable = quDuanInfoEntityV2.getMaSongduanCable();
+                    jo112.put("value", maSongduanCable);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo112.put("isOver", Double.parseDouble(maSongduanCable) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(maSongduanCable) > Double.parseDouble(m1.getAlarmSuperior()));
+                            JSONArray ja = new JSONArray();
+                            JSONObject x = new JSONObject();
+                            x.put("label", "报警下限");
+                            x.put("value", m1.getAlarmLower());
+                            JSONObject s = new JSONObject();
+                            s.put("label", "报警上限");
+                            s.put("value", m1.getAlarmSuperior());
+                            ja.add(x);
+                            ja.add(s);
+                            jo112.put("text", ja);
+                        }
+                    }
+                    jo.put("a" + idStr, jo112);
                     break;
                 case "13":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getVShouduanCableHost());
+                    JSONObject jo113 = new JSONObject();
+                    String vShouduanCableHost = quDuanInfoEntityV2.getVShouduanCableHost();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo113.put("value", vShouduanCableHost + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo113.put("isOver", Double.parseDouble(vShouduanCableHost) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(vShouduanCableHost) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo113.put("value", vShouduanCableHost + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerZ()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo113.put("isOver", Double.parseDouble(vShouduanCableHost) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(vShouduanCableHost) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m1.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo113.put("value", vShouduanCableHost);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo113.put("text", ja);
+
+                    }
+                    jo.put("a" + idStr, jo113);
                     break;
                 case "14":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getVShouduanCableSpare());
+                    JSONObject jo114 = new JSONObject();
+                    String vShouduanCableSpare = quDuanInfoEntityV2.getVShouduanCableSpare();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo114.put("value", vShouduanCableSpare + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo114.put("isOver", Double.parseDouble(vShouduanCableSpare) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(vShouduanCableSpare) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo114.put("value", vShouduanCableSpare + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerZ()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo114.put("isOver", Double.parseDouble(vShouduanCableSpare) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(vShouduanCableSpare) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m1.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo114.put("value", vShouduanCableSpare);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo114.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo114);
                     break;
                 case "15":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getMaShouduanCable());
+                    JSONObject jo115 = new JSONObject();
+                    String maShouduanCable = quDuanInfoEntityV2.getMaShouduanCable();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo115.put("value", maShouduanCable + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo115.put("isOver", Double.parseDouble(maShouduanCable) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(maShouduanCable) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo115.put("value", maShouduanCable + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerZ()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo115.put("isOver", Double.parseDouble(maShouduanCable) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(maShouduanCable) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m1.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo115.put("value", maShouduanCable);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo115.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo115);
                     break;
                 case "16":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getVInAll());
+                    JSONObject jo116 = new JSONObject();
+                    String vInAll = quDuanInfoEntityV2.getVInAll();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo116.put("value", vInAll + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo116.put("isOver", Double.parseDouble(vInAll) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(vInAll) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo116.put("value", vInAll + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo116.put("isOver", Double.parseDouble(vInAll) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(vInAll) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m1.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo116.put("value", vInAll);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo116.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo116);
                     break;
                 case "17":
+                    JSONObject jo117 = new JSONObject();
                     String mvInZhu = quDuanInfoEntityV2.getMvInZhu();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        if (status == 1) {
+                            jo117.put("value", mvInZhu + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperiorK())) {
+                                jo117.put("isOver", Double.parseDouble(mvInZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(mvInZhu) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                s.put("label", "报警上限(空闲)");
+                                s.put("value", m1.getAlarmSuperiorK());
+                            }
+                        } else if (status == 2) {
+                            jo117.put("value", mvInZhu + "(占用)");
+                            if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperiorZ())) {
+                                jo117.put("isOver", Double.parseDouble(mvInZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(mvInZhu) > Double.parseDouble(m1.getAlarmSuperiorZ()));
+                                s.put("label", "报警上限(占用)");
+                                s.put("value", m1.getAlarmSuperiorZ());
+                            }
+                        } else {
+                            jo117.put("value", mvInZhu);
+                        }
+                        ja.add(x);
+                        ja.add(s);
+                        jo117.put("text", ja);
+                    }
+
+                    JSONObject jo217 = new JSONObject();
                     String mvInBing = quDuanInfoEntityV2.getMvInBing();
-                    jo.put("a" + idStr, mvInZhu);
-                    jo.put("b" + idStr, mvInBing);
+                    if (m2 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        if (status == 1) {
+                            jo217.put("value", mvInZhu + "(空闲)");
+                            if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperiorK())) {
+                                jo217.put("isOver", Double.parseDouble(mvInBing) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(mvInBing) > Double.parseDouble(m2.getAlarmSuperiorK()));
+                                s.put("label", "报警上限(空闲)");
+                                s.put("value", m2.getAlarmSuperiorK());
+                            }
+                        } else if (status == 2) {
+                            jo217.put("value", mvInZhu + "(占用)");
+                            if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperiorZ())) {
+                                jo217.put("isOver", Double.parseDouble(mvInBing) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(mvInBing) > Double.parseDouble(m2.getAlarmSuperiorZ()));
+                                s.put("label", "报警上限(占用)");
+                                s.put("value", m2.getAlarmSuperiorZ());
+                            }
+                        } else {
+                            jo217.put("value", mvInBing);
+                        }
+                        ja.add(x);
+                        ja.add(s);
+                        jo217.put("text", ja);
+                    }
+
+                    jo.put("a" + idStr, jo117);
+                    jo.put("b" + idStr, jo217);
                     break;
                 case "18":
+                    JSONObject jo118 = new JSONObject();
                     String mvInDiaoZhu = quDuanInfoEntityV2.getMvInDiaoZhu();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        JSONObject s = new JSONObject();
+                        if (status == 1) {
+                            jo118.put("value", mvInDiaoZhu + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperiorK())) {
+                                jo118.put("isOver", Double.parseDouble(mvInDiaoZhu) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(mvInDiaoZhu) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                                s.put("label", "报警上限(空闲)");
+                                s.put("value", m1.getAlarmSuperiorK());
+                            }
+                        } else {
+                            jo118.put("value", mvInDiaoZhu);
+                        }
+                        ja.add(x);
+                        ja.add(s);
+                        jo118.put("text", ja);
+                    }
+
+                    JSONObject jo218 = new JSONObject();
                     String mvInDiaoBing = quDuanInfoEntityV2.getMvInDiaoBing();
-                    jo.put("a" + idStr, mvInDiaoZhu);
-                    jo.put("b" + idStr, mvInDiaoBing);
+                    if (m2 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        JSONObject s = new JSONObject();
+                        if (status == 1) {
+                            jo218.put("value", mvInDiaoBing + "(空闲)");
+                            if (!"——".equals(m2.getAlarmLowerK()) && !"——".equals(m2.getAlarmSuperiorK())) {
+                                jo218.put("isOver", Double.parseDouble(mvInDiaoZhu) < Double.parseDouble(m2.getAlarmLowerK()) || Double.parseDouble(mvInDiaoZhu) > Double.parseDouble(m2.getAlarmSuperiorK()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m2.getAlarmLowerK());
+                                s.put("label", "报警上限(空闲)");
+                                s.put("value", m2.getAlarmSuperiorK());
+                            }
+                        } else {
+                            jo118.put("value", mvInDiaoBing);
+                        }
+                        ja.add(x);
+                        ja.add(s);
+                        jo218.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo118);
+                    jo.put("b" + idStr, jo218);
                     break;
                 case "19":
+                    JSONObject jo119 = new JSONObject();
                     String hzInLowZhu = quDuanInfoEntityV2.getHzInLowZhu();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo119.put("value", hzInLowZhu + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo119.put("isOver", Double.parseDouble(hzInLowZhu) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(hzInLowZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo119.put("value", hzInLowZhu + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerZ()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo119.put("isOver", Double.parseDouble(hzInLowZhu) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(hzInLowZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m1.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo119.put("value", hzInLowZhu);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo119.put("text", ja);
+                    }
+
+                    JSONObject jo219 = new JSONObject();
                     String hzInLowBing = quDuanInfoEntityV2.getHzInLowBing();
-                    jo.put("a" + idStr, hzInLowZhu);
-                    jo.put("b" + idStr, hzInLowBing);
+                    if (m2 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo219.put("value", hzInLowBing + "(空闲)");
+                            if (!"——".equals(m2.getAlarmLowerK()) && !"——".equals(m2.getAlarmSuperior())) {
+                                jo219.put("isOver", Double.parseDouble(hzInLowBing) < Double.parseDouble(m2.getAlarmLowerK()) || Double.parseDouble(hzInLowBing) > Double.parseDouble(m2.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m2.getAlarmLowerK());
+                            }
+                        } else if (status == 2) {
+                            jo219.put("value", hzInLowBing + "(占用)");
+                            if (!"——".equals(m2.getAlarmLowerZ()) && !"——".equals(m2.getAlarmSuperior())) {
+                                jo219.put("isOver", Double.parseDouble(hzInLowBing) < Double.parseDouble(m2.getAlarmLowerZ()) || Double.parseDouble(hzInLowBing) > Double.parseDouble(m2.getAlarmSuperior()));
+                                x.put("label", "报警下限(占用)");
+                                x.put("value", m2.getAlarmLowerZ());
+                            }
+                        } else {
+                            jo219.put("value", hzInLowBing);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo219.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo119);
+                    jo.put("b" + idStr, jo219);
                     break;
                 case "20":
                     Integer gjDriveZhu = quDuanInfoEntityV2.getGjDriveZhu();
+                    JSONObject jo120 = new JSONObject();
+                    String str120 = gjDriveZhu == null ? null : gjDriveZhu == 1 ? "正常" : gjDriveZhu == 2 ? "无" : "无效";
+                    jo120.put("value", str120);
+                    jo120.put("isOver", "无".equals(str120) || "无效".equals(str120));
+
                     Integer gjDriveBing = quDuanInfoEntityV2.getGjDriveBing();
-                    jo.put("a" + idStr, gjDriveZhu == null ? null : gjDriveZhu == 1 ? "正常" : gjDriveZhu == 2 ? "无" : "无效");
-                    jo.put("b" + idStr, gjDriveBing == null ? null : gjDriveBing == 1 ? "正常" : gjDriveBing == 2 ? "无" : "无效");
+                    JSONObject jo220 = new JSONObject();
+                    String str220 = gjDriveBing == null ? null : gjDriveBing == 1 ? "正常" : gjDriveBing == 2 ? "无" : "无效";
+                    jo220.put("value", str120);
+                    jo220.put("isOver", "无".equals(str220) || "无效".equals(str220));
+
+                    jo.put("a" + idStr, jo120);
+                    jo.put("b" + idStr, jo220);
                     break;
                 case "21":
+                    JSONObject jo121 = new JSONObject();
                     String gjcollection = quDuanInfoEntityV2.getGjcollection();
-                    jo.put("a" + idStr, gjcollection == null ? null : gjcollection.equals("2") ? "落下" : gjcollection.equals("1") ? "吸起" : "无效");
+                    jo121.put("value", gjcollection == null ? null : gjcollection.equals("2") ? "落下" : gjcollection.equals("1") ? "吸起" : "无效");
+
+                    jo.put("a" + idStr, jo121);
                     break;
                 case "22":
+                    JSONObject jo122 = new JSONObject();
                     String gjRearCollectionZhu = quDuanInfoEntityV2.getGjRearCollectionBing();
+                    jo122.put("value", gjRearCollectionZhu == null ? null : gjRearCollectionZhu.equals("2") ? "落下" : gjRearCollectionZhu.equals("1") ? "吸起" : "无效");
+
+                    JSONObject jo222 = new JSONObject();
                     String gjRearCollectionBing = quDuanInfoEntityV2.getGjRearCollectionZhu();
-                    jo.put("a" + idStr, gjRearCollectionZhu == null ? null : gjRearCollectionZhu.equals("2") ? "落下" : gjRearCollectionZhu.equals("1") ? "吸起" : "无效");
-                    jo.put("b" + idStr, gjRearCollectionBing == null ? null : gjRearCollectionBing.equals("2") ? "落下" : gjRearCollectionBing.equals("1") ? "吸起" : "无效");
+                    jo222.put("value", gjRearCollectionBing == null ? null : gjRearCollectionBing.equals("2") ? "落下" : gjRearCollectionBing.equals("1") ? "吸起" : "无效");
+
+                    jo.put("a" + idStr, jo122);
+                    jo.put("b" + idStr, jo222);
                     break;
                 case "23":
                     Integer baojingZhu = quDuanInfoEntityV2.getBaojingZhu();
+                    JSONObject jo123 = new JSONObject();
+                    String str123 = baojingZhu == null ? null : baojingZhu == 1 ? "正常" : baojingZhu == 2 ? "报警" : "无效";
+                    jo123.put("value", str123);
+                    jo123.put("isOver", "报警".equals(str123) || "无效".equals(str123));
+
                     Integer baojingBing = quDuanInfoEntityV2.getBaojingBing();
-                    jo.put("a" + idStr, baojingZhu == null ? null : baojingZhu == 1 ? "正常" : baojingZhu == 2 ? "报警" : "无效");
-                    jo.put("b" + idStr, baojingBing == null ? null : quDuanInfoEntityV2.getBaojingBing() == 1 ? "正常" : quDuanInfoEntityV2.getBaojingZhu() == 2 ? "报警" : "无效");
+                    JSONObject jo223 = new JSONObject();
+                    String str223 = baojingBing == null ? null : baojingBing == 1 ? "正常" : baojingBing == 2 ? "报警" : "无效";
+                    jo223.put("value", str223);
+                    jo223.put("isOver", "报警".equals(str223) || "无效".equals(str223));
+
+                    jo.put("a" + idStr, jo123);
+                    jo.put("b" + idStr, jo223);
                     break;
                 case "24":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getMaCableFbp());
+                    JSONObject jo124 = new JSONObject();
+                    String maCableFbp = quDuanInfoEntityV2.getMaCableFbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo124.put("value", maCableFbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo124.put("isOver", Double.parseDouble(maCableFbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(maCableFbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                                x.put("label", "报警下限(空闲)");
+                                x.put("value", m1.getAlarmLowerK());
+                            }
+                        } else {
+                            jo124.put("value", maCableFbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo124.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo124);
                     break;
                 case "25":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getALonginFbp());
+                    JSONObject jo125 = new JSONObject();
+                    String aLonginFbp = quDuanInfoEntityV2.getALonginFbp();
+                    jo125.put("value", aLonginFbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo125.put("isOver", Double.parseDouble(aLonginFbp) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLonginFbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo125.put("text", ja);
+
+                    }
+                    jo.put("a" + idStr, jo125);
                     break;
                 case "26":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getALongoutFbp());
+                    JSONObject jo126 = new JSONObject();
+                    String aLongoutFbp = quDuanInfoEntityV2.getALongoutFbp();
+                    jo126.put("value", aLongoutFbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo126.put("isOver", Double.parseDouble(aLongoutFbp) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLongoutFbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo126.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo126);
                     break;
                 case "27":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getAShortinFbp());
+                    JSONObject jo127 = new JSONObject();
+                    String aShortinFbp = quDuanInfoEntityV2.getAShortinFbp();
+                    jo127.put("value", aShortinFbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo127.put("isOver", Double.parseDouble(aShortinFbp) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortinFbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo127.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo127);
                     break;
                 case "28":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getAShortoutFbp());
+                    JSONObject jo128 = new JSONObject();
+                    String aShortoutFbp = quDuanInfoEntityV2.getAShortoutFbp();
+                    jo128.put("value", aShortoutFbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo128.put("isOver", Double.parseDouble(aShortoutFbp) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortoutFbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo128.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo128);
                     break;
                 case "29":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getTFbp());
+                    JSONObject jo129 = new JSONObject();
+                    Integer tFbp = quDuanInfoEntityV2.getTFbp();
+                    jo129.put("value", tFbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo129.put("isOver", Double.parseDouble(String.valueOf(tFbp)) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(String.valueOf(tFbp)) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo129.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo129);
                     break;
                 case "30":
+                    JSONObject jo130 = new JSONObject();
                     String aLonginFbaZhu = quDuanInfoEntityV2.getALonginFbaZhu();
+                    jo130.put("value", aLonginFbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo130.put("isOver", Double.parseDouble(aLonginFbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLonginFbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo130.put("text", ja);
+                    }
+
+                    JSONObject jo230 = new JSONObject();
                     String aLonginFbaDiao = quDuanInfoEntityV2.getALonginFbaDiao();
-                    jo.put("a" + idStr, aLonginFbaZhu);
-                    jo.put("b" + idStr, aLonginFbaDiao);
+                    jo230.put("value", aLonginFbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo230.put("isOver", Double.parseDouble(aLonginFbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aLonginFbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo230.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo130);
+                    jo.put("b" + idStr, jo230);
                     break;
                 case "31":
+                    JSONObject jo131 = new JSONObject();
                     String aLongoutFbaZhu = quDuanInfoEntityV2.getALongoutFbaZhu();
+                    jo131.put("value", aLongoutFbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo131.put("isOver", Double.parseDouble(aLongoutFbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLongoutFbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo131.put("text", ja);
+                    }
+
+                    JSONObject jo231 = new JSONObject();
                     String aLongoutFbaDiao = quDuanInfoEntityV2.getALongoutFbaDiao();
-                    jo.put("a" + idStr, aLongoutFbaZhu);
-                    jo.put("b" + idStr, aLongoutFbaDiao);
+                    jo231.put("value", aLongoutFbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo231.put("isOver", Double.parseDouble(aLongoutFbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aLongoutFbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo231.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo131);
+                    jo.put("b" + idStr, jo231);
                     break;
                 case "32":
+                    JSONObject jo132 = new JSONObject();
                     String aShortinFbaZhu = quDuanInfoEntityV2.getAShortinFbaZhu();
+                    jo132.put("value", aShortinFbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo132.put("isOver", Double.parseDouble(aShortinFbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortinFbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo132.put("text", ja);
+                    }
+                    JSONObject jo232 = new JSONObject();
                     String aShortinFbaDiao = quDuanInfoEntityV2.getAShortinFbaDiao();
-                    jo.put("a" + idStr, aShortinFbaZhu);
-                    jo.put("b" + idStr, aShortinFbaDiao);
+                    jo232.put("value", aShortinFbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo232.put("isOver", Double.parseDouble(aShortinFbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aShortinFbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo232.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo132);
+                    jo.put("b" + idStr, jo232);
                     break;
                 case "33":
+                    JSONObject jo133 = new JSONObject();
                     String aShortoutFbaZhu = quDuanInfoEntityV2.getAShortoutFbaZhu();
+                    jo133.put("value", aShortoutFbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo133.put("isOver", Double.parseDouble(aShortoutFbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortoutFbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo133.put("text", ja);
+                    }
+                    JSONObject jo233 = new JSONObject();
                     String aShortoutFbaDiao = quDuanInfoEntityV2.getAShortoutFbaDiao();
-                    jo.put("a" + idStr, aShortoutFbaZhu);
-                    jo.put("b" + idStr, aShortoutFbaDiao);
+                    jo233.put("value", aShortoutFbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo233.put("isOver", Double.parseDouble(aShortoutFbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aShortoutFbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo233.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo133);
+                    jo.put("b" + idStr, jo233);
                     break;
                 case "34":
+                    JSONObject jo134 = new JSONObject();
                     String aLonginJbaZhu = quDuanInfoEntityV2.getALonginJbaZhu();
+                    jo134.put("value", aLonginJbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo134.put("isOver", Double.parseDouble(aLonginJbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLonginJbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo134.put("text", ja);
+                    }
+                    JSONObject jo234 = new JSONObject();
                     String aLonginJbaDiao = quDuanInfoEntityV2.getALonginJbaDiao();
-                    jo.put("a" + idStr, aLonginJbaZhu);
-                    jo.put("b" + idStr, aLonginJbaDiao);
+                    jo234.put("value", aLonginJbaZhu);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo234.put("isOver", Double.parseDouble(aLonginJbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aLonginJbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo234.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo134);
+                    jo.put("b" + idStr, jo234);
                     break;
                 case "35":
+                    JSONObject jo135 = new JSONObject();
                     String aLongoutJbaZhu = quDuanInfoEntityV2.getALongoutJbaZhu();
+                    jo135.put("value", aLongoutJbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo135.put("isOver", Double.parseDouble(aLongoutJbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aLongoutJbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo135.put("text", ja);
+                    }
+                    JSONObject jo235 = new JSONObject();
                     String aLongoutJbaDiao = quDuanInfoEntityV2.getALongoutJbaDiao();
-                    jo.put("a" + idStr, aLongoutJbaZhu);
-                    jo.put("b" + idStr, aLongoutJbaDiao);
+                    jo235.put("value", aLongoutJbaZhu);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo235.put("isOver", Double.parseDouble(aLongoutJbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aLongoutJbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo235.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo135);
+                    jo.put("b" + idStr, jo235);
                     break;
                 case "36":
+                    JSONObject jo136 = new JSONObject();
                     String aShortinJbaZhu = quDuanInfoEntityV2.getAShortinJbaZhu();
+                    jo136.put("value", aShortinJbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo136.put("isOver", Double.parseDouble(aShortinJbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortinJbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo136.put("text", ja);
+                    }
+                    JSONObject jo236 = new JSONObject();
                     String aShortinJbaDiao = quDuanInfoEntityV2.getAShortinJbaDiao();
-                    jo.put("a" + idStr, aShortinJbaZhu);
-                    jo.put("b" + idStr, aShortinJbaDiao);
+                    jo236.put("value", aShortinJbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo236.put("isOver", Double.parseDouble(aShortinJbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aShortinJbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo236.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo136);
+                    jo.put("b" + idStr, jo236);
                     break;
                 case "37":
+                    JSONObject jo137 = new JSONObject();
                     String aShortoutJbaZhu = quDuanInfoEntityV2.getAShortoutJbaZhu();
+                    jo137.put("value", aShortoutJbaZhu);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo137.put("isOver", Double.parseDouble(aShortoutJbaZhu) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(aShortoutJbaZhu) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo137.put("text", ja);
+                    }
+                    JSONObject jo237 = new JSONObject();
                     String aShortoutJbaDiao = quDuanInfoEntityV2.getAShortoutJbaDiao();
-                    jo.put("a" + idStr, aShortoutJbaZhu);
-                    jo.put("b" + idStr, aShortoutJbaDiao);
+                    jo237.put("value", aShortoutJbaDiao);
+                    if (m2 != null) {
+                        if (!"——".equals(m2.getAlarmLower()) && !"——".equals(m2.getAlarmSuperior())) {
+                            jo237.put("isOver", Double.parseDouble(aShortoutJbaDiao) < Double.parseDouble(m2.getAlarmLower()) || Double.parseDouble(aShortoutJbaDiao) > Double.parseDouble(m2.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m2.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m2.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo237.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo137);
+                    jo.put("b" + idStr, jo237);
                     break;
                 case "38":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getMaCableJbp());
+                    JSONObject jo138 = new JSONObject();
+                    String maCableJbp = quDuanInfoEntityV2.getMaCableJbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo138.put("value", maCableJbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo138.put("isOver", Double.parseDouble(maCableJbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(maCableJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(空闲)");
+                            x.put("value", m1.getAlarmLowerK());
+                        } else if (status == 2) {
+                            jo138.put("value", maCableJbp + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerZ()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo138.put("isOver", Double.parseDouble(maCableJbp) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(maCableJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(占用)");
+                            x.put("value", m1.getAlarmLowerZ());
+                        } else {
+                            jo138.put("value", maCableJbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo138.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo138);
                     break;
                 case "39":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getALonginJbp());
+                    JSONObject jo139 = new JSONObject();
+                    String aLonginJbp = quDuanInfoEntityV2.getALonginJbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo139.put("value", aLonginJbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo139.put("isOver", Double.parseDouble(aLonginJbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(aLonginJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(空闲)");
+                            x.put("value", m1.getAlarmLowerK());
+                        } else if (status == 2) {
+                            jo139.put("value", aLonginJbp + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo139.put("isOver", Double.parseDouble(aLonginJbp) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(aLonginJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(占用)");
+                            x.put("value", m1.getAlarmLowerZ());
+                        } else {
+                            jo139.put("value", aLonginJbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo139.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo139);
                     break;
                 case "40":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getALongoutJbp());
+                    JSONObject jo140 = new JSONObject();
+                    String aLongoutJbp = quDuanInfoEntityV2.getALongoutJbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo140.put("value", aLongoutJbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo140.put("isOver", Double.parseDouble(aLongoutJbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(aLongoutJbp) > Double.parseDouble(m1.getAlarmLowerK()));
+                            }
+                            x.put("label", "报警下限(空闲)");
+                            x.put("value", m1.getAlarmLowerK());
+                        } else if (status == 2) {
+                            jo140.put("value", aLongoutJbp + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo140.put("isOver", Double.parseDouble(aLongoutJbp) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(aLongoutJbp) > Double.parseDouble(m1.getAlarmLowerZ()));
+                            }
+                            x.put("label", "报警下限(占用)");
+                            x.put("value", m1.getAlarmLowerZ());
+                        } else {
+                            jo140.put("value", aLongoutJbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo140.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo140);
                     break;
                 case "41":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getAShortinJbp());
+                    JSONObject jo141 = new JSONObject();
+                    String aShortinJbp = quDuanInfoEntityV2.getAShortinJbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo141.put("value", aShortinJbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo141.put("isOver", Double.parseDouble(aShortinJbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(aShortinJbp) > Double.parseDouble(m1.getAlarmLowerK()));
+                            }
+                            x.put("label", "报警下限(空闲)");
+                            x.put("value", m1.getAlarmLowerK());
+                        } else if (status == 2) {
+                            jo141.put("value", aShortinJbp + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo141.put("isOver", Double.parseDouble(aShortinJbp) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(aShortinJbp) > Double.parseDouble(m1.getAlarmLowerZ()));
+                            }
+                            x.put("label", "报警下限(占用)");
+                            x.put("value", m1.getAlarmLowerZ());
+                        } else {
+                            jo141.put("value", aShortinJbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo141.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo141);
                     break;
                 case "42":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getAShortoutJbp());
+                    JSONObject jo142 = new JSONObject();
+                    String aShortoutJbp = quDuanInfoEntityV2.getAShortoutJbp();
+                    if (m1 != null) {
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        if (status == 1) {
+                            jo142.put("value", aShortoutJbp + "(空闲)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo142.put("isOver", Double.parseDouble(aShortoutJbp) < Double.parseDouble(m1.getAlarmLowerK()) || Double.parseDouble(aShortoutJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(空闲)");
+                            x.put("value", m1.getAlarmLowerK());
+                        } else if (status == 2) {
+                            jo142.put("value", aShortoutJbp + "(占用)");
+                            if (!"——".equals(m1.getAlarmLowerK()) && !"——".equals(m1.getAlarmSuperior())) {
+                                jo142.put("isOver", Double.parseDouble(aShortoutJbp) < Double.parseDouble(m1.getAlarmLowerZ()) || Double.parseDouble(aShortoutJbp) > Double.parseDouble(m1.getAlarmSuperior()));
+                            }
+                            x.put("label", "报警下限(占用)");
+                            x.put("value", m1.getAlarmLowerZ());
+                        } else {
+                            jo142.put("value", aShortoutJbp);
+                        }
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo142.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo142);
                     break;
                 case "43":
-                    jo.put("a" + idStr, quDuanInfoEntityV2.getTJbp());
+                    JSONObject jo143 = new JSONObject();
+                    Integer tJbp = quDuanInfoEntityV2.getTJbp();
+                    jo143.put("value", tJbp);
+                    if (m1 != null) {
+                        if (!"——".equals(m1.getAlarmLower()) && !"——".equals(m1.getAlarmSuperior())) {
+                            jo143.put("isOver", Double.parseDouble(String.valueOf(tJbp)) < Double.parseDouble(m1.getAlarmLower()) || Double.parseDouble(String.valueOf(tJbp)) > Double.parseDouble(m1.getAlarmSuperior()));
+                        }
+                        JSONArray ja = new JSONArray();
+                        JSONObject x = new JSONObject();
+                        x.put("label", "报警下限");
+                        x.put("value", m1.getAlarmLower());
+                        JSONObject s = new JSONObject();
+                        s.put("label", "报警上限");
+                        s.put("value", m1.getAlarmSuperior());
+                        ja.add(x);
+                        ja.add(s);
+                        jo143.put("text", ja);
+                    }
+                    jo.put("a" + idStr, jo143);
                     break;
             }
         }
