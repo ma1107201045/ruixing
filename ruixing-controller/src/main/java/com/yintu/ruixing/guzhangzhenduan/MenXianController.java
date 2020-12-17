@@ -60,7 +60,7 @@ public class MenXianController extends SessionController {
      */
     @RequestMapping("/tree")
     public Map<String, Object> findTreeByCzId(@RequestParam("czId") Integer czId) {
-        List<TreeNodeUtil> treeNodeUtils = quDuanInfoService.findPropertiesTree(czId);
+        List<TreeNodeUtil> treeNodeUtils = menXianService.findPropertiesTree(czId);
         return ResponseDataUtil.ok("查询门限参数属性树成功", treeNodeUtils);
     }
 
@@ -84,7 +84,7 @@ public class MenXianController extends SessionController {
 
     @GetMapping("/template")
     public void templateFile(HttpServletResponse response) throws IOException {
-        String fileName = "门限参数列表-模板" + DateUtil.now() + ".xlsx";
+        String fileName = "门限参数模板.xlsx";
         response.setContentType("application/octet-stream;charset=ISO8859-1");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
         response.addHeader("Pargam", "no-cache");

@@ -1,9 +1,9 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
+import cn.hutool.system.SystemUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
-import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.FileUtil;
 import com.yintu.ruixing.common.util.ImportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -15,11 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -35,7 +39,7 @@ public class MenXianServiceImpl implements MenXianService {
     @Autowired
     private QuDuanInfoPropertyService quDuanInfoPropertyService;
     @Autowired
-    private QuDuanInfoService quDuanInfoService;
+    private QuDuanInfoServiceimpl quDuanInfoService;
 
 
     @Override
@@ -59,10 +63,9 @@ public class MenXianServiceImpl implements MenXianService {
     }
 
     @Override
-    public MenXianEntity findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId) {
+    public List<MenXianEntity> findByCzIdAndQuduanIdAndPropertyId(Integer czId, Integer quanduanId, Integer propertyId) {
         return menXianDao.selectByCzIdAndQuduanIdAndPropertyId(czId, quanduanId, propertyId);
     }
-
 
 
     @Override
@@ -75,289 +78,695 @@ public class MenXianServiceImpl implements MenXianService {
         menXianDao.insertBatch(menXianEntities);
     }
 
+    public boolean idIsInArr(int i) {
+        int[] ids = new int[]{9, 10, 20, 21, 22, 23};
+        for (int id : ids) {
+            if (id == i)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<TreeNodeUtil> findPropertiesTree(Integer czId) {
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoService.findPropertiesByCzId(czId);
+        Set<Integer> types = new HashSet<>();
+        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
+            Short type = quDuanInfoPropertyEntity.getType();
+            if (type != null && type != 1000)
+                types.add(type.intValue());
+        }
+
+        List<TreeNodeUtil> treeNodeUtils = quDuanInfoService.findByTypess(types);
+        for (TreeNodeUtil treeNodeUtil : treeNodeUtils) {
+            List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities1 = quDuanInfoPropertyService.findByType(treeNodeUtil.getId().shortValue());
+            List<TreeNodeUtil> trees = new ArrayList<>();
+            for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities1) {
+                if (!this.idIsInArr(quDuanInfoPropertyEntity.getId())) {
+                    TreeNodeUtil tree = new TreeNodeUtil();
+                    tree.setId(quDuanInfoPropertyEntity.getId().longValue());
+                    tree.setLabel(quDuanInfoPropertyEntity.getName());
+                    trees.add(tree);
+                }
+            }
+            treeNodeUtil.setChildren(trees);
+        }
+        return treeNodeUtils;
+    }
+
+
     @Override
     public JSONObject findByCzIdAndProperties(Integer czId, Integer[] properties) {
-        JSONObject jo = new JSONObject(true);
+        JSONObject jo = new JSONObject();
         if (properties == null || properties.length == 0) {
             jo.put("title", new JSONArray());
             jo.put("data", new JSONArray());
             return jo;
         }
         //表头数组
-        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = new ArrayList<>();
-        quDuanInfoPropertyEntities.add(new QuDuanInfoPropertyEntity(-1, "区段运用名称", null));
-        quDuanInfoPropertyEntities.addAll(quDuanInfoPropertyService.findByIds(properties));
-        List<TreeNodeUtil> treeNodeUtils = this.findTitle(quDuanInfoPropertyEntities);
-        jo.put("title", treeNodeUtils);
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
+        List<TreeNodeUtil> first = new ArrayList<>();
+        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
+            List<TreeNodeUtil> second = new ArrayList<>();
+
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setLabel(quDuanInfoPropertyEntity.getName());
+            treeNodeUtil.setChildren(second);
+
+            switch (quDuanInfoPropertyEntity.getId()) {
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                    List<TreeNodeUtil> third8 = new ArrayList<>();
+                    List<TreeNodeUtil> third81 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil18 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil28 = new TreeNodeUtil();
+                    treeNodeUtil18.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil18.setChildren(third8);
+                    treeNodeUtil28.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil28.setChildren(third81);
+
+                    TreeNodeUtil a8 = new TreeNodeUtil();
+                    a8.setLabel("量程下限");
+                    a8.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b8 = new TreeNodeUtil();
+                    b8.setLabel("量程上限");
+                    b8.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil c8 = new TreeNodeUtil();
+                    c8.setLabel("报警下限");
+                    c8.setValue("c" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d8 = new TreeNodeUtil();
+                    d8.setLabel("报警上限");
+                    d8.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third8.add(a8);
+                    third8.add(b8);
+                    third8.add(c8);
+                    third8.add(d8);
+
+                    TreeNodeUtil a81 = new TreeNodeUtil();
+                    a81.setLabel("量程下限");
+                    a81.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b81 = new TreeNodeUtil();
+                    b81.setLabel("量程上限");
+                    b81.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil c81 = new TreeNodeUtil();
+                    c81.setLabel("报警下限");
+                    c81.setValue("c" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil d81 = new TreeNodeUtil();
+                    d81.setLabel("报警上限");
+                    d81.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
+                    third81.add(a81);
+                    third81.add(b81);
+                    third81.add(c81);
+                    third81.add(d81);
+                    second.add(treeNodeUtil18);
+                    second.add(treeNodeUtil28);
+                    break;
+                case 11:
+                case 12:
+                case 25://
+                case 26:
+                case 27:
+                case 28:
+                case 29://
+                case 43:
+                    List<TreeNodeUtil> third12 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil12 = new TreeNodeUtil();
+                    treeNodeUtil12.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil12.setChildren(third12);
+                    TreeNodeUtil a12 = new TreeNodeUtil();
+                    a12.setLabel("量程下限");
+                    a12.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b12 = new TreeNodeUtil();
+                    b12.setLabel("量程上限");
+                    b12.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil c12 = new TreeNodeUtil();
+                    c12.setLabel("报警下限");
+                    c12.setValue("c" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil f12 = new TreeNodeUtil();
+                    f12.setLabel("报警上限");
+                    f12.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third12.add(a12);
+                    third12.add(b12);
+                    third12.add(c12);
+                    third12.add(f12);
+                    second.add(treeNodeUtil12);
+                    break;
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    List<TreeNodeUtil> third16 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil16 = new TreeNodeUtil();
+                    treeNodeUtil16.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil16.setChildren(third16);
+                    TreeNodeUtil a15 = new TreeNodeUtil();
+                    a15.setLabel("量程下限");
+                    a15.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b15 = new TreeNodeUtil();
+                    b15.setLabel("量程上限");
+                    b15.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d15 = new TreeNodeUtil();
+                    d15.setLabel("报警下限(空闲)");
+                    d15.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil e15 = new TreeNodeUtil();
+                    e15.setLabel("报警下限(占用)");
+                    e15.setValue("e" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil f15 = new TreeNodeUtil();
+                    f15.setLabel("报警上限");
+                    f15.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third16.add(a15);
+                    third16.add(b15);
+                    third16.add(d15);
+                    third16.add(f15);
+                    second.add(treeNodeUtil16);
+                    break;
+                case 17:
+                    List<TreeNodeUtil> third17 = new ArrayList<>();
+                    List<TreeNodeUtil> third171 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil117 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil217 = new TreeNodeUtil();
+                    treeNodeUtil117.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil117.setChildren(third17);
+                    treeNodeUtil217.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil217.setChildren(third171);
+
+                    TreeNodeUtil a17 = new TreeNodeUtil();
+                    a17.setLabel("量程下限");
+                    a17.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b17 = new TreeNodeUtil();
+                    b17.setLabel("量程上限");
+                    b17.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil c17 = new TreeNodeUtil();
+                    c17.setLabel("报警下限");
+                    c17.setValue("c" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil g17 = new TreeNodeUtil();
+                    g17.setLabel("报警上限(占用)");
+                    g17.setValue("g" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
+                    TreeNodeUtil h17 = new TreeNodeUtil();
+                    h17.setLabel("报警上限(空闲)");
+                    h17.setValue("h" + quDuanInfoPropertyEntity.getId());
+                    third17.add(a17);
+                    third17.add(b17);
+                    third17.add(c17);
+                    third17.add(g17);
+                    third17.add(h17);
+
+                    TreeNodeUtil a171 = new TreeNodeUtil();
+                    a171.setLabel("量程下限");
+                    a171.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b171 = new TreeNodeUtil();
+                    b171.setLabel("量程上限");
+                    b171.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil c171 = new TreeNodeUtil();
+                    c171.setLabel("报警下限");
+                    c171.setValue("c" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil g171 = new TreeNodeUtil();
+                    g171.setLabel("报警上限(占用)");
+                    g171.setValue("g" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
+                    TreeNodeUtil h171 = new TreeNodeUtil();
+                    h171.setLabel("报警上限(空闲)");
+                    h171.setValue("h" + quDuanInfoPropertyEntity.getId() + "1");
+                    third171.add(a171);
+                    third171.add(b171);
+                    third171.add(c171);
+                    third171.add(g171);
+                    third171.add(h171);
+                    second.add(treeNodeUtil117);
+                    second.add(treeNodeUtil217);
+                    break;
+                case 18:
+                    List<TreeNodeUtil> third18 = new ArrayList<>();
+                    List<TreeNodeUtil> third181 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil118 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil218 = new TreeNodeUtil();
+                    treeNodeUtil118.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil118.setChildren(third18);
+                    treeNodeUtil218.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil218.setChildren(third181);
+                    TreeNodeUtil a18 = new TreeNodeUtil();
+                    a18.setLabel("量程下限");
+                    a18.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b18 = new TreeNodeUtil();
+                    b18.setLabel("量程上限");
+                    b18.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d18 = new TreeNodeUtil();
+                    d18.setLabel("报警下限(空闲)");
+                    d18.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil e18 = new TreeNodeUtil();
+                    e18.setLabel("报警下限(占用)");
+                    e18.setValue("e" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
+                    TreeNodeUtil g18 = new TreeNodeUtil();
+                    g18.setLabel("报警上限(空闲)");
+                    g18.setValue("g" + quDuanInfoPropertyEntity.getId());
+                    third18.add(a18);
+                    third18.add(b18);
+                    third18.add(d18);
+                    third18.add(e18);
+                    third18.add(g18);
+
+                    TreeNodeUtil a181 = new TreeNodeUtil();
+                    a181.setLabel("量程下限");
+                    a181.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b181 = new TreeNodeUtil();
+                    b181.setLabel("量程上限");
+                    b181.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil d181 = new TreeNodeUtil();
+                    d181.setLabel("报警下限(空闲)");
+                    d181.setValue("d" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil e181 = new TreeNodeUtil();
+                    e181.setLabel("报警下限(占用)");
+                    e181.setValue("e" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
+                    TreeNodeUtil g181 = new TreeNodeUtil();
+                    g181.setLabel("报警上限(空闲)");
+                    g181.setValue("g" + quDuanInfoPropertyEntity.getId() + "1");
+                    third181.add(a181);
+                    third181.add(b181);
+                    third181.add(d181);
+                    third181.add(e181);
+                    third181.add(g181);
+                    second.add(treeNodeUtil118);
+                    second.add(treeNodeUtil218);
+                    break;
+                case 19:
+                    List<TreeNodeUtil> third19 = new ArrayList<>();
+                    List<TreeNodeUtil> third191 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil119 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil219 = new TreeNodeUtil();
+                    treeNodeUtil119.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil119.setChildren(third19);
+                    treeNodeUtil219.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil219.setChildren(third191);
+                    TreeNodeUtil a19 = new TreeNodeUtil();
+                    a19.setLabel("量程下限");
+                    a19.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b19 = new TreeNodeUtil();
+                    b19.setLabel("量程上限");
+                    b19.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d19 = new TreeNodeUtil();
+                    d19.setLabel("报警下限(空闲)");
+                    d19.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil e19 = new TreeNodeUtil();
+                    e19.setLabel("报警下限(占用)");
+                    e19.setValue("e" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
+                    TreeNodeUtil f18 = new TreeNodeUtil();
+                    f18.setLabel("报警上限");
+                    f18.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third19.add(a19);
+                    third19.add(b19);
+                    third19.add(d19);
+                    third19.add(e19);
+                    third19.add(f18);
+
+                    TreeNodeUtil a191 = new TreeNodeUtil();
+                    a191.setLabel("量程下限");
+                    a191.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b191 = new TreeNodeUtil();
+                    b191.setLabel("量程上限");
+                    b191.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil d191 = new TreeNodeUtil();
+                    d191.setLabel("报警下限(空闲)");
+                    d191.setValue("d" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil e191 = new TreeNodeUtil();
+                    e191.setLabel("报警下限(占用)");
+                    e191.setValue("e" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
+                    TreeNodeUtil f191 = new TreeNodeUtil();
+                    f191.setLabel("报警上限");
+                    f191.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
+                    third191.add(a191);
+                    third191.add(b191);
+                    third191.add(d191);
+                    third191.add(e191);
+                    third191.add(f191);
+                    second.add(treeNodeUtil119);
+                    second.add(treeNodeUtil219);
+                    break;
+                case 24:
+                    List<TreeNodeUtil> third24 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil124 = new TreeNodeUtil();
+                    treeNodeUtil124.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil124.setChildren(third24);
+                    TreeNodeUtil a24 = new TreeNodeUtil();
+                    a24.setLabel("量程下限");
+                    a24.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b24 = new TreeNodeUtil();
+                    b24.setLabel("量程上限");
+                    b24.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d24 = new TreeNodeUtil();
+                    d24.setLabel("报警下限(空闲)");
+                    d24.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil f24 = new TreeNodeUtil();
+                    f24.setLabel("报警上限");
+                    f24.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third24.add(a24);
+                    third24.add(b24);
+                    third24.add(d24);
+                    third24.add(f24);
+                    second.add(treeNodeUtil124);
+                    break;
+//                    List<TreeNodeUtil> third29 = new ArrayList<>();
+//                    TreeNodeUtil treeNodeUtil129 = new TreeNodeUtil();
+//                    treeNodeUtil129.setLabel(quDuanInfoPropertyEntity.getName());
+//                    treeNodeUtil129.setChildren(third29);
+//                    TreeNodeUtil a29 = new TreeNodeUtil();
+//                    a29.setLabel("量程下限");
+//                    a29.setValue("a" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil b29 = new TreeNodeUtil();
+//                    b29.setLabel("量程上限");
+//                    b29.setValue("b" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil c29 = new TreeNodeUtil();
+//                    c29.setLabel("报警下限");
+//                    c29.setValue("c" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil f28 = new TreeNodeUtil();
+//                    f28.setLabel("报警上限");
+//                    f28.setValue("f" + quDuanInfoPropertyEntity.getId());
+//                    third29.add(a29);
+//                    third29.add(b29);
+//                    third29.add(c29);
+//                    third29.add(f28);
+//                    second.add(treeNodeUtil129);
+//                    break;
+                case 30:
+                case 31:
+                case 32:
+                case 33:
+                    List<TreeNodeUtil> third33 = new ArrayList<>();
+                    List<TreeNodeUtil> third331 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil133 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil233 = new TreeNodeUtil();
+                    treeNodeUtil133.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil133.setChildren(third33);
+                    treeNodeUtil233.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil233.setChildren(third331);
+
+                    TreeNodeUtil a33 = new TreeNodeUtil();
+                    a33.setLabel("量程下限");
+                    a33.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b33 = new TreeNodeUtil();
+                    b33.setLabel("量程上限");
+                    b33.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil c33 = new TreeNodeUtil();
+                    c33.setLabel("报警下限");
+                    c33.setValue("c" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
+                    TreeNodeUtil f33 = new TreeNodeUtil();
+                    f33.setLabel("报警上限");
+                    f33.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third33.add(a33);
+                    third33.add(b33);
+                    third33.add(c33);
+                    third33.add(f33);
+
+                    TreeNodeUtil a331 = new TreeNodeUtil();
+                    a331.setLabel("量程下限");
+                    a331.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b331 = new TreeNodeUtil();
+                    b331.setLabel("量程上限");
+                    b331.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil c331 = new TreeNodeUtil();
+                    c331.setLabel("报警下限");
+                    c331.setValue("c" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
+                    TreeNodeUtil f331 = new TreeNodeUtil();
+                    f331.setLabel("报警上限");
+                    f331.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
+                    third331.add(a331);
+                    third331.add(b331);
+                    third331.add(c331);
+                    third331.add(f331);
+
+                    second.add(treeNodeUtil133);
+                    second.add(treeNodeUtil233);
+                    break;
+                case 34:
+                case 35:
+                case 36:
+                case 37:
+                    List<TreeNodeUtil> third37 = new ArrayList<>();
+                    List<TreeNodeUtil> third371 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil137 = new TreeNodeUtil();
+                    TreeNodeUtil treeNodeUtil237 = new TreeNodeUtil();
+                    treeNodeUtil137.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil137.setChildren(third37);
+                    treeNodeUtil237.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil237.setChildren(third371);
+
+                    TreeNodeUtil a37 = new TreeNodeUtil();
+                    a37.setLabel("量程下限");
+                    a37.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b37 = new TreeNodeUtil();
+                    b37.setLabel("量程上限");
+                    b37.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d37 = new TreeNodeUtil();
+                    d37.setLabel("报警下限(空闲)");
+                    d37.setValue("d" + quDuanInfoPropertyEntity.getId());//a b c d e f g h
+                    TreeNodeUtil e37 = new TreeNodeUtil();
+                    e37.setLabel("报警下限(占用)");
+                    e37.setValue("e" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil f37 = new TreeNodeUtil();
+                    f37.setLabel("报警上限");
+                    f37.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third37.add(a37);
+                    third37.add(b37);
+                    third37.add(d37);
+                    third37.add(e37);
+                    third37.add(f37);
+
+                    TreeNodeUtil a371 = new TreeNodeUtil();
+                    a371.setLabel("量程下限");
+                    a371.setValue("a" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil b371 = new TreeNodeUtil();
+                    b371.setLabel("量程上限");
+                    b371.setValue("b" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil d371 = new TreeNodeUtil();
+                    d371.setLabel("报警下限(空闲)");
+                    d371.setValue("d" + quDuanInfoPropertyEntity.getId() + "1");//a b c d e f g h
+                    TreeNodeUtil e371 = new TreeNodeUtil();
+                    e371.setLabel("报警下限(占用)");
+                    e371.setValue("e" + quDuanInfoPropertyEntity.getId() + "1");
+                    TreeNodeUtil f371 = new TreeNodeUtil();
+                    f371.setLabel("报警上限");
+                    f371.setValue("f" + quDuanInfoPropertyEntity.getId() + "1");
+                    third371.add(a371);
+                    third371.add(b371);
+                    third371.add(d371);
+                    third371.add(e371);
+                    third371.add(f371);
+                    second.add(treeNodeUtil137);
+                    second.add(treeNodeUtil237);
+                    break;
+                case 38:
+                case 39:
+                case 40:
+                case 41:
+                case 42:
+                    List<TreeNodeUtil> third42 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil142 = new TreeNodeUtil();
+                    treeNodeUtil142.setLabel(quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil142.setChildren(third42);
+                    TreeNodeUtil a42 = new TreeNodeUtil();
+                    a42.setLabel("量程下限");
+                    a42.setValue("a" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil b42 = new TreeNodeUtil();
+                    b42.setLabel("量程上限");
+                    b42.setValue("b" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil d42 = new TreeNodeUtil();
+                    d42.setLabel("报警下限(空闲)");
+                    d42.setValue("d" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil e42 = new TreeNodeUtil();
+                    e42.setLabel("报警下限(占用)");
+                    e42.setValue("e" + quDuanInfoPropertyEntity.getId());
+                    TreeNodeUtil f42 = new TreeNodeUtil();
+                    f42.setLabel("报警上限");
+                    f42.setValue("f" + quDuanInfoPropertyEntity.getId());
+                    third42.add(a42);
+                    third42.add(b42);
+                    third42.add(d42);
+                    third42.add(e42);
+                    third42.add(f42);
+                    second.add(treeNodeUtil142);
+                    break;
+
+            }
+            first.add(treeNodeUtil);
+        }
+        jo.put("title", first);
 
         //表头对应数据数组
         List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, null);
-        JSONArray dataJa = new JSONArray();
+        List<JSONObject> list = new ArrayList<>();
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-            QuDuanInfoEntityV2 quDuanInfoEntityV2 = quDuanInfoService.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
-            if (quDuanInfoEntityV2 == null) {
-                quDuanInfoEntityV2 = new QuDuanInfoEntityV2();
+            List<MenXianEntity> menXianEntities = this.findByCzIdAndQuduanIdAndPropertyId(czId, quDuanBaseEntity.getQdid(), null);
+            JSONObject jos = new JSONObject();
+            jos.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+            for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
+                Integer propertyId = quDuanInfoPropertyEntity.getId();
+                List<MenXianEntity> result = menXianEntities.stream().filter(menXianEntity -> propertyId.equals(menXianEntity.getPropertyId())).collect(Collectors.toList());
+                switch (propertyId) {
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        MenXianEntity menXianEntity81 = result.get(0);
+                        MenXianEntity menXianEntity82 = result.get(1);
+                        jos.put("a" + propertyId, menXianEntity81.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity81.getLcSuperior());
+                        jos.put("c" + propertyId, menXianEntity81.getAlarmLower());
+                        jos.put("f" + propertyId, menXianEntity81.getAlarmSuperior());
+                        jos.put("a" + propertyId + "1", menXianEntity82.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity82.getLcSuperior());
+                        jos.put("c" + propertyId + "1", menXianEntity82.getAlarmLower());
+                        jos.put("f" + propertyId + "1", menXianEntity82.getAlarmSuperior());
+                        break;
+                    case 11:
+                    case 12:
+                    case 25://
+                    case 26:
+                    case 27:
+                    case 28:
+                    case 29://
+                    case 43:
+                        MenXianEntity menXianEntity43 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity43.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity43.getLcSuperior());
+                        jos.put("c" + propertyId, menXianEntity43.getAlarmLower());
+                        jos.put("f" + propertyId, menXianEntity43.getAlarmSuperior());
+                        break;
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+                        MenXianEntity menXianEntity16 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity16.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity16.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity16.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity16.getAlarmLowerZ());
+                        jos.put("f" + propertyId, menXianEntity16.getAlarmSuperior());
+                        break;
+                    case 17:
+                        MenXianEntity menXianEntity171 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity171.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity171.getLcSuperior());
+                        jos.put("c" + propertyId, menXianEntity171.getAlarmLower());
+                        jos.put("h" + propertyId, menXianEntity171.getAlarmSuperiorZ());
+                        jos.put("g" + propertyId, menXianEntity171.getAlarmSuperiorK());
+
+                        MenXianEntity menXianEntity172 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity172.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity172.getLcSuperior());
+                        jos.put("c" + propertyId + "1", menXianEntity172.getAlarmLower());
+                        jos.put("h" + propertyId + "1", menXianEntity172.getAlarmSuperiorZ());
+                        jos.put("g" + propertyId + "1", menXianEntity172.getAlarmSuperiorK());
+                        break;
+                    case 18:
+                        MenXianEntity menXianEntity181 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity181.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity181.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity181.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity181.getAlarmLowerZ());
+                        jos.put("g" + propertyId, menXianEntity181.getAlarmSuperiorK());
+
+                        MenXianEntity menXianEntity182 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity182.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity182.getLcSuperior());
+                        jos.put("d" + propertyId + "1", menXianEntity182.getAlarmLowerK());
+                        jos.put("e" + propertyId + "1", menXianEntity182.getAlarmLowerZ());
+                        jos.put("g" + propertyId + "1", menXianEntity182.getAlarmSuperiorK());
+                        break;
+                    case 19:
+                        MenXianEntity menXianEntity191 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity191.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity191.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity191.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity191.getAlarmLowerZ());
+                        jos.put("f" + propertyId, menXianEntity191.getAlarmSuperior());
+
+                        MenXianEntity menXianEntity192 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity192.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity192.getLcSuperior());
+                        jos.put("d" + propertyId + "1", menXianEntity192.getAlarmLowerK());
+                        jos.put("e" + propertyId + "1", menXianEntity192.getAlarmLowerZ());
+                        jos.put("f" + propertyId + "1", menXianEntity192.getAlarmSuperior());
+                        break;
+                    case 24:
+                        MenXianEntity menXianEntity24 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity24.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity24.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity24.getAlarmLowerK());
+                        jos.put("f" + propertyId, menXianEntity24.getAlarmSuperior());
+                        break;
+//                    List<TreeNodeUtil> third29 = new ArrayList<>();
+//                    TreeNodeUtil treeNodeUtil129 = new TreeNodeUtil();
+//                    treeNodeUtil129.setLabel(quDuanInfoPropertyEntity.getName());
+//                    treeNodeUtil129.setChildren(third29);
+//                    TreeNodeUtil a29 = new TreeNodeUtil();
+//                    a29.setLabel("量程下限");
+//                    a29.setValue("a" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil b29 = new TreeNodeUtil();
+//                    b29.setLabel("量程上限");
+//                    b29.setValue("b" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil c29 = new TreeNodeUtil();
+//                    c29.setLabel("报警下限");
+//                    c29.setValue("c" + quDuanInfoPropertyEntity.getId());
+//                    TreeNodeUtil f28 = new TreeNodeUtil();
+//                    f28.setLabel("报警上限");
+//                    f28.setValue("f" + quDuanInfoPropertyEntity.getId());
+//                    third29.add(a29);
+//                    third29.add(b29);
+//                    third29.add(c29);
+//                    third29.add(f28);
+//                    second.add(treeNodeUtil129);
+//                    break;
+                    case 30:
+                    case 31:
+                    case 32:
+                    case 33:
+                        MenXianEntity menXianEntity331 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity331.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity331.getLcSuperior());
+                        jos.put("c" + propertyId, menXianEntity331.getAlarmLower());
+                        jos.put("f" + propertyId, menXianEntity331.getAlarmLower());
+
+                        MenXianEntity menXianEntity332 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity332.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity332.getLcSuperior());
+                        jos.put("c" + propertyId + "1", menXianEntity332.getAlarmLower());
+                        jos.put("f" + propertyId + "1", menXianEntity332.getAlarmLower());
+
+                    case 34:
+                    case 35:
+                    case 36:
+                    case 37:
+                        MenXianEntity menXianEntity371 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity371.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity371.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity371.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity371.getAlarmLowerZ());
+                        jos.put("f" + propertyId, menXianEntity371.getAlarmSuperior());
+                        MenXianEntity menXianEntity372 = result.get(1);
+                        jos.put("a" + propertyId + "1", menXianEntity372.getLcLower());
+                        jos.put("b" + propertyId + "1", menXianEntity372.getLcSuperior());
+                        jos.put("d" + propertyId + "1", menXianEntity372.getAlarmLowerK());
+                        jos.put("e" + propertyId + "1", menXianEntity372.getAlarmLowerZ());
+                        jos.put("f" + propertyId + "1", menXianEntity371.getAlarmSuperior());
+                    case 38:
+                    case 39:
+                    case 40:
+                    case 41:
+                    case 42:
+                        MenXianEntity menXianEntity42 = result.get(0);
+                        jos.put("a" + propertyId, menXianEntity42.getLcLower());
+                        jos.put("b" + propertyId, menXianEntity42.getLcSuperior());
+                        jos.put("d" + propertyId, menXianEntity42.getAlarmLowerK());
+                        jos.put("e" + propertyId, menXianEntity42.getAlarmLowerZ());
+                        jos.put("f" + propertyId, menXianEntity42.getAlarmSuperior());
+                }
             }
-            quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
-            JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
-            dataJa.add(jsonObject);
+            list.add(jos);
         }
-        jo.put("data", dataJa);
+        jo.put("data", list);
 
-        return jo;
-    }
-
-    public List<TreeNodeUtil> findTitle(List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities) {
-        List<TreeNodeUtil> t = new ArrayList<>();
-        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
-            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
-            treeNodeUtil.setId(quDuanInfoPropertyEntity.getId().longValue());
-            treeNodeUtil.setValue(quDuanInfoPropertyEntity.getName());
-            if (quDuanInfoPropertyEntity.getId() != -1) {
-                List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
-                TreeNodeUtil treeNodeUtil1 = new TreeNodeUtil();
-                treeNodeUtil1.setId(quDuanInfoPropertyEntity.getId() * 10 + 1L);
-                treeNodeUtil1.setValue("实测值");
-                TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
-                treeNodeUtil2.setId(quDuanInfoPropertyEntity.getId() * 10 + 2L);
-                treeNodeUtil2.setValue("上限");
-                TreeNodeUtil treeNodeUtil3 = new TreeNodeUtil();
-                treeNodeUtil3.setId(quDuanInfoPropertyEntity.getId() * 10 + 3L);
-                treeNodeUtil3.setValue("下限");
-                TreeNodeUtil treeNodeUtil4 = new TreeNodeUtil();
-                treeNodeUtil4.setId(quDuanInfoPropertyEntity.getId() * 10 + 4L);
-                treeNodeUtil4.setValue("跳变系数");
-                treeNodeUtils.add(treeNodeUtil1);
-                treeNodeUtils.add(treeNodeUtil2);
-                treeNodeUtils.add(treeNodeUtil3);
-                treeNodeUtils.add(treeNodeUtil4);
-                treeNodeUtil.setChildren(treeNodeUtils);
-            } else {
-                treeNodeUtil.setChildren(new ArrayList<>());
-            }
-            t.add(treeNodeUtil);
-        }
-        return t;
-    }
-
-
-    public JSONObject findDate(List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities, QuDuanInfoEntityV2 quDuanInfoEntityV2) {
-        JSONObject jo = new JSONObject(true);
-        jo.put("id", quDuanInfoEntityV2.getId());
-        jo.put("cid", quDuanInfoEntityV2.getCid());
-        jo.put("qid", quDuanInfoEntityV2.getQid());
-        jo.put("time", quDuanInfoEntityV2.getTime());
-        jo.put("type", quDuanInfoEntityV2.getType());
-        jo.put("dataZhengchang", quDuanInfoEntityV2.getDataZhengchang());
-        jo.put("-1", quDuanInfoEntityV2.getQuDuanBaseEntity().getQuduanyunyingName());
-        for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
-            if (quDuanInfoPropertyEntity.getId() == -1)
-                continue;
-            MenXianEntity menXianEntity = this.findByCzIdAndQuduanIdAndPropertyId(quDuanInfoEntityV2.getQuDuanBaseEntity().getCzid(),
-                    quDuanInfoEntityV2.getQuDuanBaseEntity().getQdid(), quDuanInfoPropertyEntity.getId());
-            menXianEntity = menXianEntity == null ? new MenXianEntity() : menXianEntity;
-//            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 2L), menXianEntity.getSuperiorLimitValue() == null ? 0 : menXianEntity.getSuperiorLimitValue());
-//            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 3L), menXianEntity.getLowerLimitValue() == null ? 0 : menXianEntity.getLowerLimitValue());
-//            jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 4L), menXianEntity.getOutburstValue() == null ? 0 : menXianEntity.getOutburstValue());
-            String idStr = String.valueOf(quDuanInfoPropertyEntity.getId());
-            switch (idStr) {
-                case "1":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDesignCarrier());
-                    break;
-                case "2":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDirection() == null ? null : quDuanInfoEntityV2.getDirection().equals(1) ? "正向" : quDuanInfoEntityV2.getDirection().equals(2) ? "反向" : "无效");
-                    break;
-                case "3":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getGjcollection() == null ? null : quDuanInfoEntityV2.getGjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getGjcollection().equals("1") ? "吸起" : "无效");
-                    break;
-                case "4":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getDjcollection() == null ? null : quDuanInfoEntityV2.getDjcollection().equals("10") ? "落下" : quDuanInfoEntityV2.getDjcollection().equals("1") ? "吸起" : "无效");
-                    break;
-                case "5":
-                    JSONArray jsonArray5 = new JSONArray();
-                    jsonArray5.add(quDuanInfoEntityV2.getVOutZhu());
-                    jsonArray5.add(quDuanInfoEntityV2.getVOutBei().toString());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray5.get(0) + "/" + jsonArray5.get(1));
-                    break;
-                case "6":
-                    JSONArray jsonArray6 = new JSONArray();
-                    jsonArray6.add(quDuanInfoEntityV2.getMaOutZhu());
-                    jsonArray6.add(quDuanInfoEntityV2.getMaOutBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray6.get(0) + "/" + jsonArray6.get(1));
-                    break;
-                case "7":
-                    JSONArray jsonArray7 = new JSONArray();
-                    jsonArray7.add(quDuanInfoEntityV2.getHzUpZhu());
-                    jsonArray7.add(quDuanInfoEntityV2.getHzUpBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray7.get(0) + "/" + jsonArray7.get(1));
-                    break;
-                case "8":
-                    JSONArray jsonArray8 = new JSONArray();
-                    jsonArray8.add(quDuanInfoEntityV2.getHzDownZhu());
-                    jsonArray8.add(quDuanInfoEntityV2.getHzDownBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray8.get(0) + "/" + jsonArray8.get(1));
-                    break;
-                case "9":
-                    JSONArray jsonArray9 = new JSONArray();
-                    jsonArray9.add(quDuanInfoEntityV2.getHzLowZhu());
-                    jsonArray9.add(quDuanInfoEntityV2.getHzLowBei());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray9.get(0) + "/" + jsonArray9.get(1));
-                    break;
-                case "10":
-                    JSONArray jsonArray10 = new JSONArray();
-                    jsonArray10.add(quDuanInfoEntityV2.getFbjDriveZhu() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveZhu() == 2 ? "无" : "无效");
-                    jsonArray10.add(quDuanInfoEntityV2.getFbjDriveBei() == null ? null : quDuanInfoEntityV2.getFbjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getFbjDriveBei() == 2 ? "无" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray10.get(0) + "/" + jsonArray10.get(1));
-                    break;
-                case "11":
-                    JSONArray jsonArray11 = new JSONArray();
-                    jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionZhu() == null ? null : quDuanInfoEntityV2.getFbjCollectionZhu().equals("10") ? "落下" : quDuanInfoEntityV2.getFbjCollectionZhu().equals("1") ? "吸起" : "无效");
-                    jsonArray11.add(quDuanInfoEntityV2.getFbjCollectionBei() == null ? null : quDuanInfoEntityV2.getFbjCollectionBei().equals("10") ? "落下" : quDuanInfoEntityV2.getFbjCollectionBei().equals("1") ? "吸起" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray11.get(0) + "/" + jsonArray11.get(1));
-                    break;
-                case "12":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVSongduanCable());
-                    break;
-                case "13":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaSongduanCable());
-                    break;
-                case "14":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVShouduanCableHost());
-                    break;
-                case "15":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVShouduanCableSpare());
-                    break;
-                case "16":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaShouduanCable());
-                    break;
-                case "17":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getVInAll());
-                    break;
-                case "18":
-                    JSONArray jsonArray18 = new JSONArray();
-                    jsonArray18.add(quDuanInfoEntityV2.getMvInZhu());
-                    jsonArray18.add(quDuanInfoEntityV2.getMvInBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray18.get(0) + "/" + jsonArray18.get(1));
-                    break;
-                case "19":
-                    JSONArray jsonArray19 = new JSONArray();
-                    jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoZhu());
-                    jsonArray19.add(quDuanInfoEntityV2.getMvInDiaoBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray19.get(0) + "/" + jsonArray19.get(1));
-                    break;
-                case "20":
-                    JSONArray jsonArray20 = new JSONArray();
-                    jsonArray20.add(quDuanInfoEntityV2.getHzInLowZhu());
-                    jsonArray20.add(quDuanInfoEntityV2.getHzInLowBing());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray20.get(0) + "/" + jsonArray20.get(1));
-                    break;
-                case "21":
-                    JSONArray jsonArray21 = new JSONArray();
-                    jsonArray21.add(quDuanInfoEntityV2.getGjDriveZhu() == null ? null : quDuanInfoEntityV2.getGjDriveZhu() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveZhu() == 2 ? "无" : "无效");
-                    jsonArray21.add(quDuanInfoEntityV2.getGjDriveBing() == null ? null : quDuanInfoEntityV2.getGjDriveBing() == 1 ? "正常" : quDuanInfoEntityV2.getGjDriveBing() == 2 ? "无" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray21.get(0) + "/" + jsonArray21.get(1));
-                    break;
-                case "22":
-                    JSONArray jsonArray22 = new JSONArray();
-                    jsonArray22.add(quDuanInfoEntityV2.getGjRearCollectionZhu() == null ? null : quDuanInfoEntityV2.getGjRearCollectionZhu().equals("10") ? "落下" : quDuanInfoEntityV2.getGjRearCollectionZhu().equals("1") ? "吸起" : "无效");
-                    jsonArray22.add(quDuanInfoEntityV2.getGjRearCollectionBing() == null ? null : quDuanInfoEntityV2.getGjRearCollectionBing().equals("10") ? "落下" : quDuanInfoEntityV2.getGjRearCollectionBing().equals("1") ? "吸起" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray22.get(0) + "/" + jsonArray22.get(1));
-                    break;
-                case "23":
-                    JSONArray jsonArray23 = new JSONArray();
-                    jsonArray23.add(null == quDuanInfoEntityV2.getBaojingZhu() ? null : quDuanInfoEntityV2.getBaojingZhu() == 1 ? "正常" : quDuanInfoEntityV2.getBaojingZhu() == 2 ? "报警" : "无效");
-                    jsonArray23.add(null == quDuanInfoEntityV2.getBaojingBing() ? null : quDuanInfoEntityV2.getBaojingBing() == 1 ? "正常" : quDuanInfoEntityV2.getBaojingZhu() == 2 ? "报警" : "无效");
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray23.get(0) + "/" + jsonArray23.get(1));
-                    break;
-
-                case "24":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaCableFbp());
-                    break;
-                case "25":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALonginFbp());
-                    break;
-                case "26":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALongoutFbp());
-                    break;
-                case "27":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortinFbp());
-                    break;
-                case "28":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortoutFbp());
-                    break;
-                case "29":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getTFbp());
-                    break;
-
-                case "30":
-                    JSONArray jsonArray30 = new JSONArray();
-                    jsonArray30.add(quDuanInfoEntityV2.getALonginFbaZhu());
-                    jsonArray30.add(quDuanInfoEntityV2.getALonginFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray30.get(0) + "/" + jsonArray30.get(1));
-                    break;
-                case "31":
-                    JSONArray jsonArray31 = new JSONArray();
-                    jsonArray31.add(quDuanInfoEntityV2.getALongoutFbaZhu());
-                    jsonArray31.add(quDuanInfoEntityV2.getALongoutFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray31.get(0) + "/" + jsonArray31.get(1));
-                    break;
-                case "32":
-                    JSONArray jsonArray32 = new JSONArray();
-                    jsonArray32.add(quDuanInfoEntityV2.getAShortinFbaZhu());
-                    jsonArray32.add(quDuanInfoEntityV2.getAShortinFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray32.get(0) + "/" + jsonArray32.get(1));
-                    break;
-                case "33":
-                    JSONArray jsonArray33 = new JSONArray();
-                    jsonArray33.add(quDuanInfoEntityV2.getAShortoutFbaZhu());
-                    jsonArray33.add(quDuanInfoEntityV2.getAShortoutFbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray33.get(0) + "/" + jsonArray33.get(1));
-                    break;
-                case "34":
-                    JSONArray jsonArray34 = new JSONArray();
-                    jsonArray34.add(quDuanInfoEntityV2.getALonginJbaZhu());
-                    jsonArray34.add(quDuanInfoEntityV2.getALonginJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray34.get(0) + "/" + jsonArray34.get(1));
-                    break;
-                case "35":
-                    JSONArray jsonArray35 = new JSONArray();
-                    jsonArray35.add(quDuanInfoEntityV2.getALongoutJbaZhu());
-                    jsonArray35.add(quDuanInfoEntityV2.getALongoutJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray35.get(0) + "/" + jsonArray35.get(1));
-                    break;
-                case "36":
-                    JSONArray jsonArray36 = new JSONArray();
-                    jsonArray36.add(quDuanInfoEntityV2.getAShortinJbaZhu());
-                    jsonArray36.add(quDuanInfoEntityV2.getAShortinJbaDiao());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray36.get(0) + "/" + jsonArray36.get(1));
-                    break;
-                case "37":
-                    JSONArray jsonArray37 = new JSONArray();
-                    jsonArray37.add(quDuanInfoEntityV2.getAShortoutJbaZhu());
-                    jsonArray37.add(quDuanInfoEntityV2.getAShortoutJbaZhu());
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), jsonArray37.get(0) + "/" + jsonArray37.get(1));
-                    break;
-                case "38":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getMaCableJbp());
-                    break;
-                case "39":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALonginJbp());
-                    break;
-                case "40":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getALongoutJbp());
-                    break;
-                case "41":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortinJbp());
-                    break;
-                case "42":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getAShortoutJbp());
-                    break;
-                case "43":
-                    jo.put(String.valueOf(quDuanInfoPropertyEntity.getId() * 10 + 1L), quDuanInfoEntityV2.getTJbp());
-                    break;
-            }
-
-        }
         return jo;
     }
 
@@ -379,8 +788,8 @@ public class MenXianServiceImpl implements MenXianService {
     @Override
     public void importData(String[][] context, String loginUserName) {
         List<MenXianEntity> menXianEntities = new ArrayList<>();
-        for (int i = 0; i < context.length; i++) {
-            JSONArray jsonArray = (JSONArray) JSONArray.toJSON(context[i]);
+        for (String[] strings : context) {
+            JSONArray jsonArray = (JSONArray) JSONArray.toJSON(strings);
             Integer cid = jsonArray.getInteger(0);
             Integer qid = jsonArray.getInteger(2);
             List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(cid, qid, null, null);
@@ -682,7 +1091,7 @@ public class MenXianServiceImpl implements MenXianService {
                 MenXianEntity menXianEntity38 = new MenXianEntity();
                 menXianEntity38.setCzId(cid);
                 menXianEntity38.setQuduanId(qid);
-                menXianEntity38.setPropertyId(39);
+                menXianEntity38.setPropertyId(38);
                 menXianEntity38.setLevel(1);
                 menXianEntity38.setLcLower(jsonArray.getString(114));
                 menXianEntity38.setLcSuperior(jsonArray.getString(115));
@@ -736,12 +1145,15 @@ public class MenXianServiceImpl implements MenXianService {
     @Override
     public void templateFile(OutputStream outputStream) throws IOException {
         //excel标题
-        String title = "门限参数列表";
-        //excel表名
-        String[] headers = {"序号", "车站名称", "区段名称", "属性名称", "上限", "下限", "跳变系数"};
-        //创建HSSFWorkbook
-        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
-        wb.write(outputStream);
+        String title = "门限参数模板";
+        File file = SystemUtil.getOsInfo().isWindows() ? cn.hutool.core.io.FileUtil.file("C:\\data\\ruixing\\templates\\" + title + ".xlsx")
+                : cn.hutool.core.io.FileUtil.file("/data/ruixing/templates/" + title + ".xlsx");
+        InputStream is = cn.hutool.core.io.FileUtil.getInputStream(file);
+        byte[] b = new byte[1024];
+        int len;
+        while ((len = is.read(b, 0, b.length)) != -1) {
+            outputStream.write(b, 0, len);
+        }
         outputStream.flush();
         outputStream.close();
     }

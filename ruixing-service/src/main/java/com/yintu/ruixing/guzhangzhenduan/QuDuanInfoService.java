@@ -77,6 +77,16 @@ public interface QuDuanInfoService {
      */
     JSONObject realTimeReport(Integer czId, Integer[] properties, String qName, Boolean isDianMaHua);
 
+
+
+    /**
+     * 日报表树
+     *
+     * @param czId 车站id
+     * @return
+     */
+    List<TreeNodeUtil> findPropertiesTrees(Integer czId);
+
     /**
      * @param czId        车站id
      * @param properties  属性集合

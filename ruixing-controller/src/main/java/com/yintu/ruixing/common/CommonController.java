@@ -1,5 +1,6 @@
 package com.yintu.ruixing.common;
 
+import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -167,9 +168,11 @@ public class CommonController extends SessionController {
             if (multipartFile.getSize() == 0)
                 throw new BaseRuntimeException("不能上传空文件");
             String fileName = multipartFile.getOriginalFilename();
-            String filePath = FileUploadUtil.save(multipartFile.getInputStream(), fileName);
+            String extName = cn.hutool.core.io.FileUtil.extName(fileName);
+            String cFileName = UUID.fastUUID().toString(true) + "." + extName;
+            String filePath = FileUploadUtil.save(multipartFile.getInputStream(), cFileName);
             JSONObject jo = new JSONObject();
-            jo.put("filePath", prefix + filePath.substring(1) + "/" + fileName);
+            jo.put("filePath", prefix + filePath.substring(1) + "/" + cFileName);
             jo.put("fileName", fileName);
             ja.add(jo);
         }
@@ -192,11 +195,13 @@ public class CommonController extends SessionController {
             if (multipartFile.getSize() == 0)
                 throw new BaseRuntimeException("不能上传空文件");
             String photoName = multipartFile.getOriginalFilename();
-            String photoPath = FileUploadUtil.save(multipartFile.getInputStream(), photoName);
+            String extName = cn.hutool.core.io.FileUtil.extName(photoName);
+            String cPhotoName = UUID.fastUUID().toString(true) + "." + extName;
+            String photoPath = FileUploadUtil.save(multipartFile.getInputStream(), cPhotoName);
             if (!FileUtil.isImage(new File(FileUploadUtil.FilePath + File.separator + photoPath + File.separator + photoName)))//判断是否为图片文件
                 throw new BaseRuntimeException("此文件不是图片文件");
             JSONObject jo = new JSONObject();
-            jo.put("photoPath", prefix + photoPath.substring(1) + "/" + photoName);
+            jo.put("photoPath", prefix + photoPath.substring(1) + "/" + cPhotoName);
             jo.put("photoName", photoName);
             ja.add(jo);
         }
