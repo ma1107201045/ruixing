@@ -1159,12 +1159,32 @@ public class MenXianServiceImpl implements MenXianService {
     }
 
     @Override
-    public String findMinNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianDao.findMinNumber(czid, qdid, mid);
+    public String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMaxNumberK(czid, qdid, mid,typee);
     }
 
     @Override
-    public String findMaxNumber(Integer czid, Integer qdid, Integer mid) {
-        return menXianDao.findMaxNumber(czid, qdid, mid);
+    public String findMaxNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMaxNumberZ(czid, qdid, mid,typee);
+    }
+
+    @Override
+    public String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMinNumberK(czid, qdid, mid,typee);
+    }
+
+    @Override
+    public String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMinNumberZ(czid, qdid, mid,typee);
+    }
+
+    @Override
+    public String findMinNumber(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMinNumber(czid, qdid, mid,typee);
+    }
+
+    @Override
+    public String findMaxNumber(Integer czid, Integer qdid, Integer mid, Integer typee) {
+        return menXianDao.findMaxNumber(czid, qdid, mid,typee);
     }
 }

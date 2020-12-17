@@ -38,4 +38,6 @@ public interface BaoJingYuJingPropertyService {
     Integer findAllAlarmNumberByXDid(Integer dwdid,Integer xdid);
 
     List<AlarmsEntity> findAllNotReadAlarmDatasByCZid(Integer page, Integer size, Integer czid);
+
+    List<AlarmsEntity> findNotRecoveryAlarmDatas(Integer page, Integer size);
 }
