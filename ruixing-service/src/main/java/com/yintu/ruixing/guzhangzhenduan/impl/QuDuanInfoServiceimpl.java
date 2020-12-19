@@ -2206,13 +2206,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a4.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a4.put("text", ja);
                                         }
                                         a4.put("time", ta4.get("createtime"));
                                         maps.put("a4", a4);
@@ -2224,13 +2224,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b4.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b4.put("text", ja);
+
                                         }
                                         b4.put("time", tb4.get("createtime"));
                                         maps.put("b4", b4);
@@ -2242,13 +2243,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 c4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                c4.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            c4.put("text", ja);
+
                                         }
                                         c4.put("time", tc4.get("createtime"));
                                         maps.put("c4", c4);
@@ -2260,13 +2262,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                d4.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            d4.put("text", ja);
+
                                         }
                                         d4.put("time", td4.get("createtime"));
                                         maps.put("d4", d4);
@@ -2278,13 +2281,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 a5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a5.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a5.put("text", ja);
+
                                         }
                                         a5.put("time", ta5.get("createtime"));
                                         maps.put("a5", a5);
@@ -2296,13 +2300,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b5.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b5.put("text", ja);
+
                                         }
                                         b5.put("time", tb5.get("createtime"));
                                         maps.put("b5", b5);
@@ -2314,13 +2319,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 c5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c5.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c5.put("text", ja);
+
                                         }
                                         c5.put("time", tc5.get("createtime"));
                                         maps.put("c5", c5);
@@ -2332,13 +2338,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d5.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d5.put("text", ja);
                                         }
                                         d5.put("time", td5.get("createtime"));
                                         maps.put("d5", d5);
@@ -2350,13 +2356,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 a6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a6.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a6.put("text", ja);
                                         }
                                         a6.put("time", ta6.get("createtime"));
                                         maps.put("a6", a6);
@@ -2368,13 +2374,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b6.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b6.put("text", ja);
                                         }
                                         b6.put("time", tb6.get("createtime"));
                                         maps.put("b6", b6);
@@ -2386,13 +2392,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c6.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c6.put("text", ja);
+
                                         }
                                         c6.put("time", tc6.get("createtime"));
                                         maps.put("c6", c6);
@@ -2404,13 +2411,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d6.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d6.put("text", ja);
+
                                         }
                                         d6.put("time", td6.get("createtime"));
                                         maps.put("d6", d6);
@@ -2422,13 +2430,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a7.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a7.put("text", ja);
+
                                         }
                                         a7.put("time", ta7.get("createtime"));
                                         maps.put("a7", a7);
@@ -2440,13 +2449,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b7.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b7.put("text", ja);
+
                                         }
                                         b7.put("time", tb7.get("createtime"));
                                         maps.put("b7", b7);
@@ -2458,13 +2468,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                c7.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            c7.put("text", ja);
+
                                         }
                                         c7.put("time", tc7.get("createtime"));
                                         maps.put("c7", c7);
@@ -2476,13 +2487,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                d7.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            d7.put("text", ja);
+
                                         }
                                         d7.put("time", td7.get("createtime"));
                                         maps.put("d7", d7);
@@ -2494,13 +2506,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a8.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a8.put("text", ja);
                                         }
                                         a8.put("time", ta8.get("createtime"));
                                         maps.put("a8", a8);
@@ -2512,13 +2524,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b8.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b8.put("text", ja);
+
                                         }
                                         b8.put("time", tb8.get("createtime"));
                                         maps.put("b8", b8);
@@ -2530,13 +2543,13 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                c8.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            c8.put("text", ja);
                                         }
                                         c8.put("time", tc8.get("createtime"));
                                         maps.put("c8", c8);
@@ -2548,13 +2561,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 d8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                d8.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            d8.put("text", ja);
+
                                         }
                                         d8.put("time", td8.get("createtime"));
                                         maps.put("d8", d8);
@@ -2567,13 +2581,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a11.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a11.put("text", ja);
+
                                         }
                                         a11.put("time", ta11.get("createtime"));
                                         maps.put("a11", a11);
@@ -2585,13 +2600,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b11.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b11.put("text", ja);
+
                                         }
                                         b11.put("time", tb11.get("createtime"));
                                         maps.put("b11", b11);
@@ -2603,13 +2619,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a12.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a12.put("text", ja);
+
                                         }
                                         a12.put("time", ta12.get("createtime"));
                                         maps.put("a12", a12);
@@ -2621,13 +2638,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                tb12.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            tb12.put("text", ja);
+
                                         }
                                         b12.put("time", tb12.get("createtime"));
                                         maps.put("b12", b12);
@@ -2639,13 +2657,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a13.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a13.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a13.put("text", ja);
+
                                         }
                                         a13.put("time", ta13.get("createtime"));
                                         maps.put("a11", a13);
@@ -2661,15 +2680,17 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status13 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             } else if (status13 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             ja.add(text);
                                             b13.put("text", ja);
@@ -2685,13 +2706,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a14.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a14.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a14.put("text", ja);
+
                                         }
                                         a14.put("time", ta14.get("createtime"));
                                         maps.put("a14", a14);
@@ -2707,15 +2729,17 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status14 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             } else if (status14 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             ja.add(text);
                                             b14.put("text", ja);
@@ -2731,13 +2755,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a15.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a15.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a15.put("text", ja);
+
                                         }
                                         a15.put("time", ta15.get("createtime"));
                                         maps.put("a15", a15);
@@ -2753,15 +2778,17 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status15 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             } else if (status15 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b15.put("text", ja);
@@ -2779,13 +2806,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a16.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a16.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a16.put("text", ja);
+
                                         }
                                         a16.put("time", ta16.get("createtime"));
                                         maps.put("a16", a16);
@@ -2801,15 +2829,16 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status16 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             } else if (status16 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerK());
                                             }
                                             ja.add(text);
                                             b16.put("text", ja);
@@ -2829,15 +2858,17 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status171 == 1) {
                                                 if (!"——".equals(m1.getAlarmSuperiorK())) {
                                                     a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
-                                                    text.put("label", "报警上限(空闲)");
-                                                    text.put("value", m1.getAlarmSuperiorK());
                                                 }
+                                                text.put("label", "报警上限(空闲)");
+                                                text.put("value", m1.getAlarmSuperiorK());
+
                                             } else if (status171 == 2) {
                                                 if (!"——".equals(m1.getAlarmSuperiorZ())) {
                                                     a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorZ()));
-                                                    text.put("label", "报警上限(占用)");
-                                                    text.put("value", m1.getAlarmSuperiorZ());
                                                 }
+                                                text.put("label", "报警上限(占用)");
+                                                text.put("value", m1.getAlarmSuperiorZ());
+
                                             }
                                             ja.add(text);
                                             a17.put("text", ja);
@@ -2852,13 +2883,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b17.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b17.put("text", ja);
+
                                         }
                                         b17.put("time", tb17.get("createtime"));
                                         maps.put("b17", b17);
@@ -2874,15 +2906,17 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status172 == 1) {
                                                 if (!"——".equals(m2.getAlarmSuperiorK())) {
                                                     c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
-                                                    text.put("label", "报警上限(空闲)");
-                                                    text.put("value", m2.getAlarmSuperiorK());
                                                 }
+                                                text.put("label", "报警上限(空闲)");
+                                                text.put("value", m2.getAlarmSuperiorK());
+
                                             } else if (status172 == 2) {
                                                 if (!"——".equals(m2.getAlarmSuperiorZ())) {
                                                     c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorZ()));
-                                                    text.put("label", "报警上限(占用)");
-                                                    text.put("value", m2.getAlarmSuperiorZ());
                                                 }
+                                                text.put("label", "报警上限(占用)");
+                                                text.put("value", m2.getAlarmSuperiorZ());
+
                                             }
                                             ja.add(text);
                                             c17.put("text", ja);
@@ -2897,13 +2931,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d17.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d17.put("text", ja);
+
                                         }
                                         d17.put("time", td17.get("createtime"));
                                         maps.put("d17", d17);
@@ -2919,9 +2954,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status181 == 1) {
                                                 if (!"——".equals(m1.getAlarmSuperiorK())) {
                                                     a18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
-                                                    text.put("label", "报警上限(空闲)");
-                                                    text.put("value", m1.getAlarmSuperiorK());
                                                 }
+                                                text.put("label", "报警上限(空闲)");
+                                                text.put("value", m1.getAlarmSuperiorK());
+
                                             }
                                             ja.add(text);
                                             a18.put("text", ja);
@@ -2940,16 +2976,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status182 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status182 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b18.put("text", ja);
@@ -2968,9 +3006,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status183 == 1) {
                                                 if (!"——".equals(m2.getAlarmSuperiorK())) {
                                                     c18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
-                                                    text.put("label", "报警上限(空闲)");
-                                                    text.put("value", m2.getAlarmSuperiorK());
                                                 }
+                                                text.put("label", "报警上限(空闲)");
+                                                text.put("value", m2.getAlarmSuperiorK());
+
                                             }
                                             ja.add(text);
                                             c18.put("text", ja);
@@ -2989,16 +3028,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status184 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status184 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d18.put("text", ja);
@@ -3015,11 +3056,12 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             JSONObject text = new JSONObject();
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a19.put("text", ja);
                                             }
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a19.put("text", ja);
+
                                         }
                                         a19.put("time", ta19.get("createtime"));
                                         maps.put("a18", a19);
@@ -3035,16 +3077,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status192 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status192 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b19.put("text", ja);
@@ -3061,11 +3105,12 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             JSONObject text = new JSONObject();
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c19.put("text", ja);
                                             }
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c19.put("text", ja);
+
                                         }
                                         c19.put("time", tc19.get("createtime"));
                                         maps.put("a18", c19);
@@ -3081,16 +3126,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status194 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmLowerK());
+
                                             }
                                             if (status194 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d19.put("text", ja);
@@ -3108,11 +3155,12 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             JSONObject text = new JSONObject();
                                             if (!"——".equals(m1.getAlarmSuperiorK())) {
                                                 a24.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperiorK());
-                                                ja.add(text);
-                                                a24.put("text", ja);
                                             }
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperiorK());
+                                            ja.add(text);
+                                            a24.put("text", ja);
+
                                         }
                                         a24.put("time", ta24.get("createtime"));
                                         maps.put("a24", a24);
@@ -3128,9 +3176,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status242 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     b24.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmSuperiorK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmSuperiorK());
+
                                             }
                                             ja.add(text);
                                             b24.put("text", ja);
@@ -3145,13 +3194,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a25.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a25.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a25.put("text", ja);
+
                                         }
                                         a25.put("time", ta25.get("createtime"));
                                         maps.put("a25", a25);
@@ -3163,13 +3213,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b25.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b25.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b25.put("text", ja);
+
                                         }
                                         b25.put("time", tb25.get("createtime"));
                                         maps.put("b25", b25);
@@ -3181,13 +3232,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a26.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a26.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a26.put("text", ja);
+
                                         }
                                         a26.put("time", ta26.get("createtime"));
                                         maps.put("a26", a26);
@@ -3199,13 +3251,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b26.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b26.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b26.put("text", ja);
+
                                         }
                                         b26.put("time", tb26.get("createtime"));
                                         maps.put("b26", b26);
@@ -3217,13 +3270,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a27.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a27.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a27.put("text", ja);
+
                                         }
                                         a27.put("time", ta27.get("createtime"));
                                         maps.put("a27", a27);
@@ -3235,13 +3289,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b27.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b27.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b27.put("text", ja);
+
                                         }
                                         b27.put("time", tb27.get("createtime"));
                                         maps.put("b27", b27);
@@ -3253,13 +3308,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a28.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a28.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a28.put("text", ja);
+
                                         }
                                         a28.put("time", ta28.get("createtime"));
                                         maps.put("a28", a28);
@@ -3271,13 +3327,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b28.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b28.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b28.put("text", ja);
+
                                         }
                                         b28.put("time", tb28.get("createtime"));
                                         maps.put("b28", b28);
@@ -3289,13 +3346,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a29.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a29.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a29.put("text", ja);
+
                                         }
                                         a29.put("time", ta29.get("createtime"));
                                         maps.put("a29", a29);
@@ -3307,13 +3365,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b29.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b29.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b29.put("text", ja);
+
                                         }
                                         b29.put("time", tb29.get("createtime"));
                                         maps.put("b29", b29);
@@ -3325,13 +3384,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a30.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a30.put("text", ja);
+
                                         }
                                         a30.put("time", ta30.get("createtime"));
                                         maps.put("a30", a30);
@@ -3343,13 +3403,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b30.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b30.put("text", ja);
+
                                         }
                                         b30.put("time", tb30.get("createtime"));
                                         maps.put("b30", b30);
@@ -3361,13 +3422,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c30.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c30.put("text", ja);
+
                                         }
                                         c30.put("time", tc30.get("createtime"));
                                         maps.put("c30", c30);
@@ -3379,13 +3441,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d30.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d30.put("text", ja);
+
                                         }
                                         d30.put("time", td30.get("createtime"));
                                         maps.put("d30", d30);
@@ -3397,13 +3460,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a31.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a31.put("text", ja);
+
                                         }
                                         a31.put("time", ta31.get("createtime"));
                                         maps.put("a31", a31);
@@ -3415,13 +3479,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b31.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b31.put("text", ja);
+
                                         }
                                         b31.put("time", tb31.get("createtime"));
                                         maps.put("b31", b31);
@@ -3433,13 +3498,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c31.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c31.put("text", ja);
+
                                         }
                                         c31.put("time", tc31.get("createtime"));
                                         maps.put("c31", c31);
@@ -3451,13 +3517,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d31.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d31.put("text", ja);
+
                                         }
                                         d31.put("time", td31.get("createtime"));
                                         maps.put("d31", d31);
@@ -3469,13 +3536,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a32.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a32.put("text", ja);
+
                                         }
                                         a32.put("time", ta32.get("createtime"));
                                         maps.put("a32", a32);
@@ -3487,13 +3555,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b32.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b32.put("text", ja);
+
                                         }
                                         b32.put("time", tb32.get("createtime"));
                                         maps.put("b32", b32);
@@ -3505,13 +3574,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c32.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c32.put("text", ja);
+
                                         }
                                         c32.put("time", tc32.get("createtime"));
                                         maps.put("c32", c32);
@@ -3523,13 +3593,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d32.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d32.put("text", ja);
+
                                         }
                                         d32.put("time", td32.get("createtime"));
                                         maps.put("d32", d32);
@@ -3541,13 +3612,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a33.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a33.put("text", ja);
+
                                         }
                                         a33.put("time", ta33.get("createtime"));
                                         maps.put("a33", a33);
@@ -3559,13 +3631,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b33.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b33.put("text", ja);
+
                                         }
                                         b33.put("time", tb33.get("createtime"));
                                         maps.put("b33", b33);
@@ -3577,13 +3650,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c33.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c33.put("text", ja);
+
                                         }
                                         c33.put("time", tc33.get("createtime"));
                                         maps.put("c33", c33);
@@ -3595,13 +3669,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmLower())) {
                                                 d33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m2.getAlarmLower());
-                                                ja.add(text);
-                                                d33.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m2.getAlarmLower());
+                                            ja.add(text);
+                                            d33.put("text", ja);
+
                                         }
                                         d33.put("time", td33.get("createtime"));
                                         maps.put("d33", d33);
@@ -3613,13 +3688,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a34.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a34.put("text", ja);
+
                                         }
                                         a34.put("time", ta34.get("createtime"));
                                         maps.put("a34", a34);
@@ -3635,16 +3711,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status342 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status342 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b34.put("text", ja);
@@ -3659,13 +3737,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c34.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c34.put("text", ja);
+
                                         }
                                         c34.put("time", tc34.get("createtime"));
                                         maps.put("c34", c34);
@@ -3681,16 +3760,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status344 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmLowerK());
+
                                             }
                                             if (status344 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d34.put("text", ja);
@@ -3705,13 +3786,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a35.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a35.put("text", ja);
+
                                         }
                                         a35.put("time", ta35.get("createtime"));
                                         maps.put("a34", a35);
@@ -3727,16 +3809,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status352 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status352 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b35.put("text", ja);
@@ -3751,13 +3835,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c35.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c35.put("text", ja);
+
                                         }
                                         c35.put("time", tc35.get("createtime"));
                                         maps.put("c35", c35);
@@ -3773,16 +3858,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status354 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmLowerK());
+
                                             }
                                             if (status354 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d35.put("text", ja);
@@ -3797,13 +3884,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a36.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a36.put("text", ja);
+
                                         }
                                         a36.put("time", ta36.get("createtime"));
                                         maps.put("a36", a36);
@@ -3819,16 +3907,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status362 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status362 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b36.put("text", ja);
@@ -3843,13 +3933,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c36.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c36.put("text", ja);
+
                                         }
                                         c36.put("time", tc36.get("createtime"));
                                         maps.put("c36", c36);
@@ -3865,16 +3956,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status364 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmLowerK());
+
                                             }
                                             if (status364 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d36.put("text", ja);
@@ -3889,13 +3982,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a37.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a37.put("text", ja);
+
                                         }
                                         a37.put("time", ta37.get("createtime"));
                                         maps.put("a37", a37);
@@ -3911,16 +4005,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status372 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status372 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b37.put("text", ja);
@@ -3935,13 +4031,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             if (!"——".equals(m2.getAlarmSuperior())) {
                                                 c37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m2.getAlarmSuperior());
-                                                ja.add(text);
-                                                c37.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m2.getAlarmSuperior());
+                                            ja.add(text);
+                                            c37.put("text", ja);
+
                                         }
                                         c37.put("time", tc37.get("createtime"));
                                         maps.put("c37", c37);
@@ -3957,16 +4054,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status374 == 1) {
                                                 if (!"——".equals(m2.getAlarmLowerK())) {
                                                     d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m2.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m2.getAlarmLowerK());
+
                                             }
                                             if (status374 == 2) {
                                                 if (!"——".equals(m2.getAlarmLowerZ())) {
                                                     d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m2.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m2.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             d37.put("text", ja);
@@ -3981,13 +4080,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a38.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a38.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a38.put("text", ja);
+
                                         }
                                         a38.put("time", ta38.get("createtime"));
                                         maps.put("a37", a38);
@@ -4003,16 +4103,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status382 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status382 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b38.put("text", ja);
@@ -4027,13 +4129,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a39.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a39.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a39.put("text", ja);
+
                                         }
                                         a39.put("time", ta39.get("createtime"));
                                         maps.put("a37", a39);
@@ -4049,16 +4152,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status392 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status392 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b39.put("text", ja);
@@ -4073,13 +4178,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a40.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a40.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a40.put("text", ja);
+
                                         }
                                         a40.put("time", ta40.get("createtime"));
                                         maps.put("a37", a40);
@@ -4095,16 +4201,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status402 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
                                             }
+
                                             if (status402 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b40.put("text", ja);
@@ -4119,13 +4227,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a41.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a41.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a41.put("text", ja);
+
                                         }
                                         a41.put("time", ta41.get("createtime"));
                                         maps.put("a41", a41);
@@ -4141,16 +4250,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status412 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status412 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b41.put("text", ja);
@@ -4165,13 +4276,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a42.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a42.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a42.put("text", ja);
+
                                         }
                                         a42.put("time", ta42.get("createtime"));
                                         maps.put("a42", a42);
@@ -4187,16 +4299,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                             if (status422 == 1) {
                                                 if (!"——".equals(m1.getAlarmLowerK())) {
                                                     b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                    text.put("label", "报警下限(空闲)");
-                                                    text.put("value", m1.getAlarmLowerK());
                                                 }
+                                                text.put("label", "报警下限(空闲)");
+                                                text.put("value", m1.getAlarmLowerK());
+
                                             }
                                             if (status422 == 2) {
                                                 if (!"——".equals(m1.getAlarmLowerZ())) {
                                                     b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                    text.put("label", "报警下限(占用)");
-                                                    text.put("value", m1.getAlarmLowerZ());
                                                 }
+                                                text.put("label", "报警下限(占用)");
+                                                text.put("value", m1.getAlarmLowerZ());
+
                                             }
                                             ja.add(text);
                                             b42.put("text", ja);
@@ -4211,13 +4325,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmSuperior())) {
                                                 a43.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperior());
-                                                ja.add(text);
-                                                a43.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警上限");
+                                            text.put("value", m1.getAlarmSuperior());
+                                            ja.add(text);
+                                            a43.put("text", ja);
+
                                         }
                                         a43.put("time", ta43.get("createtime"));
                                         maps.put("a43", a43);
@@ -4229,13 +4344,14 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             if (!"——".equals(m1.getAlarmLower())) {
                                                 b43.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                                JSONArray ja = new JSONArray();
-                                                JSONObject text = new JSONObject();
-                                                text.put("label", "报警下限");
-                                                text.put("value", m1.getAlarmLower());
-                                                ja.add(text);
-                                                b43.put("text", ja);
                                             }
+                                            JSONArray ja = new JSONArray();
+                                            JSONObject text = new JSONObject();
+                                            text.put("label", "报警下限");
+                                            text.put("value", m1.getAlarmLower());
+                                            ja.add(text);
+                                            b43.put("text", ja);
+
                                         }
                                         b43.put("time", tb43.get("createtime"));
                                         maps.put("b43", b43);
