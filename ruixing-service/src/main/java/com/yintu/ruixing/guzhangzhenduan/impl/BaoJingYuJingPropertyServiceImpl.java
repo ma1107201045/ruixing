@@ -69,7 +69,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
                     Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
-                    String czname = cheZhanDao.findczName(sectionId);
+                    String czname = cheZhanDao.findczName(stationId);
 
                     String quduanNmae = null;
                     String alarmContext = null;
@@ -172,7 +172,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
                     Integer recoverTime = alarmTableEntity.getRecoverTime();
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
-                    String czname = cheZhanDao.findczName(sectionId);
+                    String czname = cheZhanDao.findczName(stationId);
 
                     String quduanNmae = null;
                     String alarmContext = null;
@@ -279,7 +279,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
                     Integer createtime = alarmTableEntity.getCreatetime();//开始时间
                     Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
                     Integer czNumber = cheZhanDao.findCzNumber(stationId);
-                    String czname = cheZhanDao.findczName(sectionId);
+                    String czname = cheZhanDao.findczName(stationId);
 
                     String quduanNmae = null;
                     String alarmContext = null;
@@ -380,7 +380,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
             Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
-            String czname = cheZhanDao.findczName(sectionId);
+            String czname = cheZhanDao.findczName(stationId);
 
             String quduanNmae = null;
             String alarmContext = null;
@@ -480,7 +480,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
             Integer recoverTime = alarmTableEntity.getRecoverTime();//结束时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
-            String czname = cheZhanDao.findczName(sectionId);
+            String czname = cheZhanDao.findczName(stationId);
 
             String quduanNmae = null;
             String alarmContext = null;
@@ -575,7 +575,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
             Integer recoverTime = alarmTableEntity.getRecoverTime();//恢复时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
-            String czname = cheZhanDao.findczName(sectionId);
+            String czname = cheZhanDao.findczName(stationId);
 
             String quduanNmae = null;
             String alarmContext = null;
@@ -683,7 +683,7 @@ public class BaoJingYuJingPropertyServiceImpl implements BaoJingYuJingPropertySe
             Integer createtime = alarmTableEntity.getCreatetime();//开始时间
             Integer recoverTime = alarmTableEntity.getRecoverTime();//恢复时间
             Integer czNumber = cheZhanDao.findCzNumber(stationId);
-            String czname = cheZhanDao.findczName(sectionId);
+            String czname = cheZhanDao.findczName(stationId);
 
             String quduanNmae = null;
             String alarmContext = null;

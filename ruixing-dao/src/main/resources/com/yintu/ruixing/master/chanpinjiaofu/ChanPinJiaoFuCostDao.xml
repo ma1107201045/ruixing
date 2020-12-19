@@ -39,6 +39,7 @@
     <if test="xmName !=null">
       where xiangmuName like concat('%',#{xmName},'%')
     </if>
+    order by id desc
   </select>
 
   <!--查询项目名和编号-->

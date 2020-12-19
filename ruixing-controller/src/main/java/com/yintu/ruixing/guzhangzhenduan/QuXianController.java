@@ -2846,8 +2846,8 @@ public class QuXianController {
 
     //查看门限参数
     @GetMapping("/findMenXianDatas")
-    public Map<String, Object> findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName) {
-        JSONObject jo = menXianService.findMenXianDatas(czid, shuxingId, quduanName);
+    public Map<String, Object> findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName,Integer[] types,Integer[] mids) {
+        JSONObject jo = menXianService.findMenXianDatas(czid, shuxingId, quduanName,types,mids);
         return ResponseDataUtil.ok("查询门限列表成功", jo);
     }
 

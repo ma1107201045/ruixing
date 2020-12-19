@@ -87,4 +87,6 @@ public interface QuDuanBaseDao {
     QuDuanBaseEntity findQuDuanByCZidAndQdid(Integer integer, Integer integer1);
 
     List<QuDuanShuXingEntity> findQuDuanShuXing(Integer[] shuxingId);
+
+    List<QuDuanBaseEntity> findByCzIdAndQdName(Integer czid, String[] quduanName);
 }
