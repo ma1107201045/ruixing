@@ -3006,10 +3006,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m1 != null) {
                                             JSONArray ja = new JSONArray();
                                             JSONObject text = new JSONObject();
-                                            if (!"——".equals(m1.getAlarmSuperiorK())) {
-                                                a19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                            if (!"——".equals(m1.getAlarmSuperior())) {
+                                                a19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                                 text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperiorK());
+                                                text.put("value", m1.getAlarmSuperior());
                                                 ja.add(text);
                                                 a19.put("text", ja);
                                             }
@@ -3052,10 +3052,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                         if (m2 != null) {
                                             JSONArray ja = new JSONArray();
                                             JSONObject text = new JSONObject();
-                                            if (!"——".equals(m1.getAlarmSuperiorK())) {
-                                                c19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                            if (!"——".equals(m2.getAlarmSuperior())) {
+                                                c19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                                 text.put("label", "报警上限");
-                                                text.put("value", m1.getAlarmSuperiorK());
+                                                text.put("value", m2.getAlarmSuperior());
                                                 ja.add(text);
                                                 c19.put("text", ja);
                                             }
