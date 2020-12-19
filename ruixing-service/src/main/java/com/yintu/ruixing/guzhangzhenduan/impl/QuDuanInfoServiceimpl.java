@@ -89,15 +89,18 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = this.findPropertiesByCzId(czId);
         List<JSONObject> jsonObjects = new ArrayList<>();
         if (startTime == null || endTime == null) {
-            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, false);
-            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
-                if (quDuanInfoEntityV2 == null) {
-                    jsonObjects.add(null);
-                    continue;
+            Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
+            if (czStutrs) {
+                List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, false);
+                for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                    QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
+                    if (quDuanInfoEntityV2 == null) {
+                        jsonObjects.add(null);
+                        continue;
+                    }
+                    JSONObject jo = this.convert(quDuanInfoPropertyEntities, quDuanInfoEntityV2, false);
+                    jsonObjects.add(jo);
                 }
-                JSONObject jo = this.convert(quDuanInfoPropertyEntities, quDuanInfoEntityV2, false);
-                jsonObjects.add(jo);
             }
         } else {
             Integer[] qids = quDuanBaseService.findByCzIdAndQdId(czId, null, null, false)
@@ -538,8 +541,9 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             return jo;
         }
         //表头数组
-        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
         List<TreeNodeUtil> first = new ArrayList<>();
+
+        List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities = quDuanInfoPropertyService.findByIds(properties);
         for (QuDuanInfoPropertyEntity quDuanInfoPropertyEntity : quDuanInfoPropertyEntities) {
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             treeNodeUtil.setLabel(quDuanInfoPropertyEntity.getName());
@@ -626,16 +630,19 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         }
         jo.put("title", first);
         //表头对应数据数组
-        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
         JSONArray dataJa = new JSONArray();
-        for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-            QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
-            if (quDuanInfoEntityV2 == null) {
-                continue;
+        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
+        if (czStutrs) {
+            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
+            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+                QuDuanInfoEntityV2 quDuanInfoEntityV2 = this.findFirstByCzId1(czId, quDuanBaseEntity.getQdid());
+                if (quDuanInfoEntityV2 == null) {
+                    continue;
+                }
+                quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
+                JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
+                dataJa.add(jsonObject);
             }
-            quDuanInfoEntityV2.setQuDuanBaseEntity(quDuanBaseEntity);
-            JSONObject jsonObject = this.findDate(quDuanInfoPropertyEntities, quDuanInfoEntityV2);
-            dataJa.add(jsonObject);
         }
         jo.put("data", dataJa);
         return jo;

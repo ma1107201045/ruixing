@@ -23,7 +23,7 @@ public interface SkylightTimeDao {
 
     SkylightTimeEntity selectByCzIdAndQdId(Integer czId, Integer qdId);
 
-    List<SkylightTimeEntity> connectSelectByCondition(Integer id, Date startTime, Date endTime, Integer czId);
+    List<SkylightTimeEntity> connectSelectByCondition(Integer id, Date startTime, Date endTime, Integer czId, Integer qdId);
 
     SkylightTimeEntity findSkyLight(@Param("stationId") Integer stationId, @Param("sectionId") Integer sectionId);
 

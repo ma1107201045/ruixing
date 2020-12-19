@@ -78,8 +78,8 @@ public class SkylightTimeServiceImpl implements SkylightTimeService {
     }
 
     @Override
-    public List<SkylightTimeEntity> findByCondition(Integer id, Date startTime, Date endTime, Integer czId) {
-        return skylightTimeDao.connectSelectByCondition(id, startTime, endTime, czId);
+    public List<SkylightTimeEntity> findByCondition(Integer id, Date startTime, Date endTime, Integer czId, Integer qdId) {
+        return skylightTimeDao.connectSelectByCondition(id, startTime, endTime, czId, qdId);
     }
 
 
