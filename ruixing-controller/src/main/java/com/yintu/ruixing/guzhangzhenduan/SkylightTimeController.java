@@ -36,6 +36,10 @@ public class SkylightTimeController extends SessionController {
     private DataStatsService dataStatsService;
     @Autowired
     private UserDataService userDataService;
+    @Autowired
+    private CheZhanService cheZhanService;
+    @Autowired
+    private QuDuanBaseService quDuanBaseService;
 
     @PostMapping
     @ResponseBody
@@ -152,6 +156,34 @@ public class SkylightTimeController extends SessionController {
         return ResponseDataUtil.ok("查询区段成功", quDuanBaseEntities);
     }
 
+
+    @GetMapping("/chezhans")
+    @ResponseBody
+    public Map<String, Object> findChezhan() {
+        List<CheZhanEntity> cheZhanEntities = cheZhanService.findAll();
+        UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
+        List<UserDataEntity> userDataEntities = userDataService.findByUserId(userEntity.getId());
+        if (userEntity.getIsCustomer() == 1) { //判断当前用户是否是顾客
+            cheZhanEntities = cheZhanEntities.stream().filter(cheZhanEntitiy -> {
+                boolean result = false;
+                for (UserDataEntity userDataEntity : userDataEntities) {
+                    if (cheZhanEntitiy.getCid() == userDataEntity.getCId()) {
+                        result = true;
+                        break;
+                    }
+                }
+                return result;
+            }).collect(Collectors.toList());
+        }
+        return ResponseDataUtil.ok("查询车站列表信息成功", cheZhanEntities);
+    }
+
+    @GetMapping("/quduans")
+    @ResponseBody
+    public Map<String, Object> findQuduanByczId(@RequestParam Integer czId) {
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, null);
+        return ResponseDataUtil.ok("查询区段列表信息成功", quDuanBaseEntities);
+    }
 
     @PostMapping("/import")
     @ResponseBody

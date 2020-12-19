@@ -1,6 +1,5 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
-import com.yintu.ruixing.guzhangzhenduan.BaoJingYuJingBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
@@ -18,8 +17,6 @@ import java.io.Serializable;
 public class AlarmEntity implements Serializable {
     private static final long serialVersionUID = -1532247728711658070L;
     private Integer id;
-
-    private Integer msgId;
 
     private Integer sendNum;
 

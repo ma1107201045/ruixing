@@ -88,7 +88,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                         biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
                         Integer sort = auditConfigurationUserEntity.getSort();
-                        auditConfigurationUserEntity.setSort(sort);
+                        biddingFileAuditorEntity.setSort(sort);
                         if (sort == 1) {
                             biddingFileAuditorEntity.setActivate((short) 1);
                         } else {

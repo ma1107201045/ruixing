@@ -588,9 +588,9 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 10:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主机");
                     treeNodeUtil1.setValue("a" + quDuanInfoPropertyEntity.getId().toString());
-                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("备机");
                     treeNodeUtil2.setValue("b" + quDuanInfoPropertyEntity.getId().toString());
                     break;
                 case 17:
@@ -601,9 +601,9 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 23:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主机");
                     treeNodeUtil1.setValue("a" + quDuanInfoPropertyEntity.getId().toString());
-                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("并机");
                     treeNodeUtil2.setValue("b" + quDuanInfoPropertyEntity.getId().toString());
                     break;
                 case 30:
@@ -616,9 +616,9 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 37:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主信号");
                     treeNodeUtil1.setValue("a" + quDuanInfoPropertyEntity.getId().toString());
-                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil2.setLabel("调信号");
                     treeNodeUtil2.setValue("b" + quDuanInfoPropertyEntity.getId().toString());
                     break;
             }
@@ -2114,8 +2114,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 10:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
-                    treeNodeUtil2.setLabel("备机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主机");
+                    treeNodeUtil2.setLabel("备机");
                     break;
                 case 17:
                 case 18:
@@ -2125,8 +2125,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 23:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主机" + quDuanInfoPropertyEntity.getName());
-                    treeNodeUtil2.setLabel("并机" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主机");
+                    treeNodeUtil2.setLabel("并机");
                     break;
                 case 30:
                 case 31:
@@ -2138,8 +2138,8 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                 case 37:
                     treeNodeUtil1 = new TreeNodeUtil();
                     treeNodeUtil2 = new TreeNodeUtil();
-                    treeNodeUtil1.setLabel("主信号" + quDuanInfoPropertyEntity.getName());
-                    treeNodeUtil2.setLabel("调信号" + quDuanInfoPropertyEntity.getName());
+                    treeNodeUtil1.setLabel("主信号");
+                    treeNodeUtil2.setLabel("调信号");
                     break;
             }
             if (treeNodeUtil1 != null)

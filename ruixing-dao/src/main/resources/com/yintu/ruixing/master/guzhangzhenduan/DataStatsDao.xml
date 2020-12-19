@@ -757,7 +757,7 @@
 
     <!--根据cid查询区段的名字和id-->
     <select id="selectQuDuanByCid" parameterType="java.lang.Integer" resultMap="quduan">
-        SELECT id, quDuanYunYing_name
+        SELECT id, qdid, quDuanYunYing_name
         FROM mro_quduan_base
         WHERE cid = #{cid}
     </select>
@@ -765,6 +765,7 @@
     <resultMap id="quduan" type="com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="qdid" jdbcType="INTEGER" property="qdid"/>
         <result column="cid" jdbcType="INTEGER" property="cid"/>
         <result column="xid" jdbcType="INTEGER" property="xid"/>
         <result column="sid" jdbcType="INTEGER" property="sid"/>

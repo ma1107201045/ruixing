@@ -35,7 +35,7 @@ public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
 
     public DataPublicSwitchEntity findNewFirstData(Integer czId) {
         String tableName = StringUtil.getTableNames(czId, new Date());
-        return this.isTableExist(tableName) ? dataPublicSwitchDao.selectNewFirstData(tableName) : new DataPublicSwitchEntity();
+        return this.isTableExist(tableName) ? dataPublicSwitchDao.selectNewFirstData(tableName) : null;
     }
 
     @Override
@@ -44,6 +44,8 @@ public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
         Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
         if (czStutrs) {
             DataPublicSwitchEntity dataPublicSwitchEntity = this.findNewFirstData(czId);
+            if (dataPublicSwitchEntity == null)
+                return jsonObjects;
             Class<?> clazz = dataPublicSwitchEntity.getClass();
             String methodPrefix = "getPs";
             for (int i = 0; i < 16; i++) {
@@ -70,7 +72,7 @@ public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
     }
 
     public String get(Object v1) {
-        return v1 == null ? "" : "1".equals(v1.toString()) ? "吸起" : "2".equals(v1.toString()) ? "落下" : "无效";
+        return v1 == null ? null : "1".equals(v1.toString()) ? "吸起" : "2".equals(v1.toString()) ? "落下" : "无效";
     }
 
 

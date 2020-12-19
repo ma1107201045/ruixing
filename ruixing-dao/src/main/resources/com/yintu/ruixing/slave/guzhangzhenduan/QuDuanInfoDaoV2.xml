@@ -124,7 +124,7 @@
         </association>
     </resultMap>
     <sql id="Base_Column_List">
-        qi.id as qiId, msg_id, send_num, createtime as time, station_id as cid, qi.type,v1 as qbId, v2 as data_zhengChang,
+        qi.id as qiId, send_num, createtime as time, station_id as cid, qi.type,v1 as qbId, v2 as data_zhengChang,
 
     v3 as V_out_zhu , v4 as mA_out_zhu,  v5 as Hz_up_zhu,  v6 as Hz_down_zhu,  v7 as Hz_low_zhu,  v8 as FBJ_drive_zhu,
     v9 as V_out_bei, v10 as mA_out_bei, v11 as Hz_up_bei, v12 as Hz_down_bei, v13 as Hz_low_bei, v14 as FBJ_drive_bei,
@@ -646,7 +646,7 @@
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
     </resultMap>
     <sql id="Base_Column_List1">
-        qi.id as qiId, msg_id, send_num, createtime as time, station_id as cid, type,v1 as qid, v2 as data_zhengChang,
+        qi.id as qiId, send_num, createtime as time, station_id as cid, type,v1 as qid, v2 as data_zhengChang,
 
     v3 as V_out_zhu , v4 as mA_out_zhu,  v5 as Hz_up_zhu,  v6 as Hz_down_zhu,  v7 as Hz_low_zhu,  v8 as FBJ_drive_zhu,
     v9 as V_out_bei, v10 as mA_out_bei, v11 as Hz_up_bei, v12 as Hz_down_bei, v13 as Hz_low_bei, v14 as FBJ_drive_bei,

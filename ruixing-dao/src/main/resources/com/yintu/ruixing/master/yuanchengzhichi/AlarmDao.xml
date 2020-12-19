@@ -3,7 +3,6 @@
 <mapper namespace="com.yintu.ruixing.master.yuanchengzhichi.AlarmDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
         <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
         <result column="createtime" jdbcType="INTEGER" property="createtime"/>
         <result column="station_id" jdbcType="INTEGER" property="stationId"/>
@@ -22,7 +21,7 @@
         <result column="alarm_ticket_id" jdbcType="INTEGER" property="alarmTicketId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,
+        id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,
     alarmlevel, platform_time, recover_time, status, fault_status, dispose_status, idea, 
     remark,alarm_ticket_id
     </sql>
@@ -38,13 +37,13 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
-        insert into alarm (id, msg_id, send_num,
+        insert into alarm (id, send_num,
                            createtime, station_id, section_id,
                            alarmcode, reserved1, reserved2,
                            alarmlevel, platform_time, recover_time,
                            status, fault_status, dispose_status,
                            idea, remark, alarm_ticket_id)
-        values (#{id,jdbcType=INTEGER}, #{msgId,jdbcType=INTEGER}, #{sendNum,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{sendNum,jdbcType=INTEGER},
                 #{createtime,jdbcType=INTEGER}, #{stationId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER},
                 #{alarmcode,jdbcType=INTEGER}, #{reserved1,jdbcType=INTEGER}, #{reserved2,jdbcType=INTEGER},
                 #{alarmlevel,jdbcType=INTEGER}, #{platformTime,jdbcType=INTEGER}, #{recoverTime,jdbcType=INTEGER},
@@ -56,9 +55,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
-            </if>
-            <if test="msgId != null">
-                msg_id,
             </if>
             <if test="sendNum != null">
                 send_num,
@@ -113,9 +109,6 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="msgId != null">
-                #{msgId,jdbcType=INTEGER},
-            </if>
             <if test="sendNum != null">
                 #{sendNum,jdbcType=INTEGER},
             </if>
@@ -169,9 +162,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         update alarm
         <set>
-            <if test="msgId != null">
-                msg_id = #{msgId,jdbcType=INTEGER},
-            </if>
             <if test="sendNum != null">
                 send_num = #{sendNum,jdbcType=INTEGER},
             </if>
@@ -225,8 +215,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         update alarm
-        set msg_id          = #{msgId,jdbcType=INTEGER},
-            send_num        = #{sendNum,jdbcType=INTEGER},
+        set send_num        = #{sendNum,jdbcType=INTEGER},
             createtime      = #{createtime,jdbcType=INTEGER},
             station_id      = #{stationId,jdbcType=INTEGER},
             section_id      = #{sectionId,jdbcType=INTEGER},
@@ -247,7 +236,6 @@
 
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmEntity">
         <id column="a_id" jdbcType="INTEGER" property="id"/>
-        <result column="msg_id" jdbcType="INTEGER" property="msgId"/>
         <result column="send_num" jdbcType="INTEGER" property="sendNum"/>
         <result column="createtime" jdbcType="INTEGER" property="createtime"/>
         <result column="station_id" jdbcType="INTEGER" property="stationId"/>
@@ -290,7 +278,7 @@
         </association>
     </resultMap>
     <sql id="Example_Column_List">
-        a.id as a_id, msg_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,idea, remark,alarm_ticket_id,
+        a.id as a_id, send_num, createtime, station_id, section_id, alarmcode, reserved1, reserved2,alarmlevel, platform_time, recover_time, status, fault_status, dispose_status,idea, remark,alarm_ticket_id,
         qb.qdid ,qb.quDuanYunYing_name,
         c.cz_id,c.cz_name,c.xt_type,
         x.xd_id,x.xd_name,
