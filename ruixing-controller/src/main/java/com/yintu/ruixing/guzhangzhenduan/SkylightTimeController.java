@@ -71,6 +71,7 @@ public class SkylightTimeController extends SessionController {
 
 
     @GetMapping("/railways/bureau")
+    @ResponseBody
     public Map<String, Object> findAllTieLuJu() {
         List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJu();
         UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
@@ -92,6 +93,7 @@ public class SkylightTimeController extends SessionController {
 
     //根据铁路局的id  查询对应的电务段
     @GetMapping("/signal/depot")
+    @ResponseBody
     public Map<String, Object> findDianWuDuanByTid(@RequestParam Integer tid) {
         List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByTid(tid);
         UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
@@ -113,6 +115,7 @@ public class SkylightTimeController extends SessionController {
 
     //根据电务段的id  查找线段的名字和id
     @GetMapping("/special/railway/line")
+    @ResponseBody
     public Map<String, Object> findXianDuanByDid(@RequestParam Integer did) {
         List<XianDuanEntity> xianDuanEntities = dataStatsService.findXianDuanByDid(did);
         UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
@@ -134,6 +137,7 @@ public class SkylightTimeController extends SessionController {
 
     //根据线段的id  查找车站的名字和id
     @GetMapping("/station")
+    @ResponseBody
     public Map<String, Object> findCheZhanByXid(@RequestParam Integer xid) {
         List<CheZhanEntity> cheZhanEntities = dataStatsService.findCheZhanByXid(xid);
         return ResponseDataUtil.ok("查询车站成功", cheZhanEntities);
@@ -141,6 +145,7 @@ public class SkylightTimeController extends SessionController {
 
     //根据车站的id  查找区段的名字和id
     @GetMapping("/section")
+    @ResponseBody
     public Map<String, Object> findQuDuanByCid(@RequestParam Integer stationId) {
         List<QuDuanBaseEntity> quDuanBaseEntities = dataStatsService.findQuDuanByCid(stationId);
         return ResponseDataUtil.ok("查询区段成功", quDuanBaseEntities);
