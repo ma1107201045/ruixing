@@ -111,4 +111,6 @@ public interface MenXianService {
     String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer typee);
 
     String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    JSONObject findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName);
 }

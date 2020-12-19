@@ -1,5 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
+import com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity;
 import com.yintu.ruixing.master.guzhangzhenduan.QuDuanBaseDao;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseService;
@@ -48,6 +49,11 @@ public class QuDuanBaseServiceImpl implements QuDuanBaseService {
     @Override
     public List<QuDuanBaseEntity> findByCzIdAndQdId(Integer czId, Integer qdid, String qName, Boolean isDianMaHua) {
         return quDuanBaseDao.selectByCzIdAndQdId(czId, qdid, qName, isDianMaHua);
+    }
+
+    @Override
+    public List<QuDuanShuXingEntity> findQuDuanShuXing(Integer[] shuxingId) {
+        return quDuanBaseDao.findQuDuanShuXing(shuxingId);
     }
 
     @Override
