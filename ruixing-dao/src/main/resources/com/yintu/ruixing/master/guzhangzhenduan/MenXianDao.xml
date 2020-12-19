@@ -21,6 +21,18 @@
         id, cz_id, quduan_id, property_id, lc_superior, lc_lower, alarm_superior, alarm_superior_z,
     alarm_superior_k, alarm_lower, alarm_lower_z, alarm_lower_k, level, yuliu1
     </sql>
+
+    <!--根据 czid 属性id 和level  查询对应的数据-->
+    <select id="findDatasBySomethings"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+        and property_id = #{mid,jdbcType=INTEGER}
+        and level = #{type,jdbcType=INTEGER}
+        and quduan_id = #{qdid,jdbcType=INTEGER}
+    </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

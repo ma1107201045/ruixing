@@ -19,4 +19,6 @@ public interface QuDuanBaseService extends BaseService<QuDuanBaseEntity, Integer
     List<QuDuanBaseEntity> findByQdIdAndQuDuanYunYingName(String quDuanYunYingName);
 
     List<QuDuanShuXingEntity> findQuDuanShuXing(Integer[] shuxingId);
+
+    List<QuDuanBaseEntity> findByCzIdAndQdName(Integer czid, String[] quduanName);
 }

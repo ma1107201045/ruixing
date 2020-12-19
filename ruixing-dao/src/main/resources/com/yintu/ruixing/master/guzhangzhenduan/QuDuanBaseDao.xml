@@ -113,6 +113,18 @@
         <result column="yuliu" jdbcType="VARCHAR" property="yuliu"/>
     </resultMap>
 
+    <!--根据czid  区段运营名  查询对应的区段属性数据-->
+    <select id="findByCzIdAndQdName" resultMap="BaseResultMapp">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_quduan_base
+        where quDuanYunYing_name in
+        <foreach collection="quduanName" item="quduanName" index="index" open="(" close=")" separator=",">
+            #{quduanName}
+        </foreach>
+        AND cz_id = #{czid,jdbcType=INTEGER}
+    </select>
+
 
     <!--根据id  查询对应的区段属性数据-->
     <select id="findQuDuanShuXing" resultType="com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity">

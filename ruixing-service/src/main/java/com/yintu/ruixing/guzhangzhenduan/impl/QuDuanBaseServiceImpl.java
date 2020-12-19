@@ -60,4 +60,10 @@ public class QuDuanBaseServiceImpl implements QuDuanBaseService {
     public List<QuDuanBaseEntity> findByQdIdAndQuDuanYunYingName(String quDuanYunYingName) {
         return quDuanBaseDao.selectByQdIdAndQuDuanYunYingName(quDuanYunYingName);
     }
+
+    @Override
+    public List<QuDuanBaseEntity> findByCzIdAndQdName(Integer czid, String[] quduanName) {
+        return quDuanBaseDao.findByCzIdAndQdName(czid,quduanName);
+    }
 }
+
