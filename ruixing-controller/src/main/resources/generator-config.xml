@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
-    <classPathEntry location="D:/java/repository_maven/mysql/mysql-connector-java/8.0.20/mysql-connector-java-8.0.20.jar"/>
+    <classPathEntry location="D:\MavenDB\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
     <context id="context" targetRuntime="MyBatis3">
         <!--定义生成的java类的编码格式-->
         <property name="javaFileEncoding" value="UTF-8"/>
@@ -15,44 +15,39 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://121.89.223.9/ruixing?serverTimezone=Asia/Shanghai"
-                        userId="ruixing"
-                        password="FahdTPbPKR6GWGEC">
+                        connectionURL="jdbc:mysql://192.168.68.132/db_dev_ruixing?serverTimezone=Asia/Shanghai"
+                        userId="root"
+                        password="199726Ma.">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.yintu.ruixing.zhishiguanli" targetProject="../ruixing-entity/src/main/java">
+        <javaModelGenerator targetPackage="com.yintu.ruixing.guzhangzhenduan"
+                            targetProject="../ruixing-entity/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.zhishiguanli" targetProject="../ruixing-dao/src/main/resources">
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.guzhangzhenduan"
+                         targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.zhishiguanli"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.guzhangzhenduan"
                              targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <!--        <table tableName="tb_user" domainObjectName="UserEntity" mapperName="UserDao"/>-->
-        <!--        <table tableName="tb_role" domainObjectName="RoleEntity" mapperName="RoleDao"/>-->
-        <!--        <table tableName="tb_user_role" domainObjectName="UserRoleEntity" mapperName="UserRoleDao"/>-->
-        <!--        <table tableName="tb_permission" domainObjectName="PermissionEntity1" mapperName="PermissionDao1"/>-->
-        <!--        <table tableName="tb_permission_role" domainObjectName="PermissionRoleEntity" mapperName="PermissionRoleDao"/>-->
-        <!--        <table tableName="mro_pre_sale" domainObjectName="PreSaleEntity" mapperName="PreSaleDao"-->
-        <!--               enableCountByExample="false" enableUpdateByExample="false"-->
-        <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
-        <!--               selectByExampleQueryId="false"/>-->
-        <table tableName="mro_zhishiguanli_filetype_file_recordmessage"
-               domainObjectName="ZhiShiGuanLiFileTypeFileRecordmessageEntity"
-               mapperName="ZhiShiGuanLiFileTypeFileRecordmessageDao"
+        <table tableName="mro_menxian"
+               domainObjectName="MenXianEntity1"
+               mapperName="MenXianDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
                enableSelectByExample="false"/>
+
+
     </context>
 </generatorConfiguration>

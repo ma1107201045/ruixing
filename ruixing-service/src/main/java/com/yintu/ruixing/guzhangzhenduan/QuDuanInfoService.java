@@ -78,7 +78,6 @@ public interface QuDuanInfoService {
     JSONObject realTimeReport(Integer czId, Integer[] properties, String qName, Boolean isDianMaHua);
 
 
-
     /**
      * 日报表树
      *
@@ -94,6 +93,18 @@ public interface QuDuanInfoService {
      * @return
      */
     JSONObject dayReport(Integer czId, Date time, Integer[] properties, String qName, Boolean isDianMaHua);
+
+
+    /**
+     * 查询最大值或者最小值时间
+     *
+     * @param qid       区段id
+     * @param n         属性名
+     * @param v         属性值
+     * @param tableName 表名
+     * @return
+     */
+    Map<String, Object> findByQidAndNV(Integer qid, String n, String v, String tableName);
 
 
 }

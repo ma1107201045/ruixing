@@ -719,14 +719,15 @@
     </select>
 
 
+
     <!--日报表-->
     <select id="selectStatisticsByCzIdAndTime" resultType="map">
         SELECT
         <foreach collection="properties" item="property" index="index">
-            <if test="property==3">
-                MAX(qi.v39_sc1) AS a3,
-                MIN(qi.v39_sc1) AS b3,
-            </if>
+            <!--            <if test="property==3">-->
+            <!--                MAX(qi.v39_sc1) AS a3,-->
+            <!--                MIN(qi.v39_sc1) AS b3,-->
+            <!--            </if>-->
             <if test="property==4">
                 MAX(qi.v3) AS a4,
                 MIN(qi.v3) AS b4,
@@ -757,18 +758,18 @@
                 MAX(qi.v13) AS c8,
                 MIN(qi.v13) AS d8,
             </if>
-            <if test="property==9">
-                MAX(qi.v39_sc3) AS a9,
-                MIN(qi.v39_sc3) AS b9,
-                MAX(qi.v39_sc2) AS c9,
-                MIN(qi.v39_sc2) AS d9,
-            </if>
-            <if test="property==10">
-                MAX(qi.v39_sc3) AS a10,
-                MIN(qi.v39_sc3) AS b10,
-                MAX(qi.v39_sc2) AS c10,
-                MIN(qi.v39_sc2) AS d10,
-            </if>
+            <!--            <if test="property==9">-->
+            <!--                MAX(qi.v39_sc3) AS a9,-->
+            <!--                MIN(qi.v39_sc3) AS b9,-->
+            <!--                MAX(qi.v39_sc2) AS c9,-->
+            <!--                MIN(qi.v39_sc2) AS d9,-->
+            <!--            </if>-->
+            <!--            <if test="property==10">-->
+            <!--                MAX(qi.v39_sc3) AS a10,-->
+            <!--                MIN(qi.v39_sc3) AS b10,-->
+            <!--                MAX(qi.v39_sc2) AS c10,-->
+            <!--                MIN(qi.v39_sc2) AS d10,-->
+            <!--            </if>-->
 
             <if test="property==11">
                 MAX(qi.v15) AS a11,
@@ -818,16 +819,16 @@
                 MAX(qi.v29) AS c20,
                 MIN(qi.v29) AS d20,
             </if>
-<!--            <if test="property==21">-->
-<!--                MAX(qi.v39_sc4) AS a21,-->
-<!--                MIN(qi.v39_sc4) AS b21,-->
-<!--            </if>-->
-<!--            <if test="property==22">-->
-<!--                MAX(qi.v24) AS a22,-->
-<!--                MIN(qi.v24) AS b22,-->
-<!--                MAX(qi.v29) AS c22,-->
-<!--                MIN(qi.v29) AS d22,-->
-<!--            </if>-->
+            <!--            <if test="property==21">-->
+            MAX(qi.v39_sc4) AS a21,
+            MIN(qi.v39_sc4) AS b21,
+            <!--            </if>-->
+            <!--            <if test="property==22">-->
+            MAX(qi.v24) AS a22,
+            MIN(qi.v24) AS b22,
+            MAX(qi.v29) AS c22,
+            MIN(qi.v29) AS d22,
+            <!--            </if>-->
             <if test="property==23">
                 MAX(qi.v25) AS a23,
                 MIN(qi.v25) AS b23,
@@ -942,5 +943,14 @@
         </where>
         GROUP BY
         qi.v1
+    </select>
+
+
+    <select id="selectByQidAndNV" resultType="map">
+        select createtime,
+               v2
+        from ${tableName}
+        where v1 = ${qid}
+          and ${n} = ${v} limit 1
     </select>
 </mapper>

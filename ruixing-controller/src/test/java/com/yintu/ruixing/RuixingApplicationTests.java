@@ -11,6 +11,7 @@ import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorService;
 import com.yintu.ruixing.jiejuefangan.SolutionService;
 import com.yintu.ruixing.master.xitongguanli.UserDao;
+import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import com.yintu.ruixing.xitongguanli.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -48,13 +49,16 @@ class RuixingApplicationTests {
     @Autowired
     private DatabaseOperatingRecordService databaseOperatingRecordService;
 
-    @Value("${spring.datasource.druid.url}")
+    @Value("${spring.datasource.druid.master.url}")
     private String jdbcUrl;
 
     @Autowired
     private PermissionService permissionService;
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private QuDuanInfoDaoV2 quDuanInfoDaoV2;
 
     @Test
     void contextLoads() {
@@ -173,4 +177,8 @@ class RuixingApplicationTests {
         System.out.println((System.currentTimeMillis() - s2) / 1000.0);
     }
 
+    @Test
+    void contextLoads15() {
+        System.out.println(quDuanInfoDaoV2.selectByQidAndNV(1, "v3", "110.0", "data_applydata_11_20201212"));
+    }
 }

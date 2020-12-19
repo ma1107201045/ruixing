@@ -12,17 +12,19 @@ import java.util.Map;
 public interface QuDuanInfoDaoV2 {
 
 
-
     int isTableExist(String tableName);
 
     QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
 
-   //实时报表
+    //实时报表
     List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Integer startTime, Integer endTime, String tableName);
 
 
     //日报表
     List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer[] properties, Integer s, Integer e, String tableName);
+
+
+    Map<String, Object> selectByQidAndNV(Integer qid, String n, String v, String tableName);
 
 
     //根据传过来的数据查询数据 展示在曲线上
