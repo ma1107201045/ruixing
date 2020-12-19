@@ -6,10 +6,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
-import com.yintu.ruixing.xitongguanli.UserDataEntity;
-import com.yintu.ruixing.xitongguanli.UserDataService;
-import com.yintu.ruixing.xitongguanli.UserEntity;
-import com.yintu.ruixing.yuanchengzhichi.AlarmTicketEntityWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +17,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author:mlf
@@ -33,9 +28,9 @@ public class SkylightTimeController extends SessionController {
     @Autowired
     private SkylightTimeService skylightTimeService;
     @Autowired
-    private DataStatsService dataStatsService;
+    private CheZhanService cheZhanService;
     @Autowired
-    private UserDataService userDataService;
+    private QuDuanBaseService quDuanBaseService;
 
     @PostMapping
     @ResponseBody
@@ -69,83 +64,19 @@ public class SkylightTimeController extends SessionController {
         return ResponseDataUtil.ok("查询天窗时间列表信息成功", pageInfo);
     }
 
-
-    @GetMapping("/railways/bureau")
-    public Map<String, Object> findAllTieLuJu() {
-        List<TieLuJuEntity> tieLuJuEntities = dataStatsService.findAllTieLuJu();
-        UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
-        if (userEntity.getIsCustomer() == 1) {
-            List<UserDataEntity> userDataEntities = userDataService.findByUserId(userEntity.getId());
-            tieLuJuEntities = tieLuJuEntities.stream().filter(tieLuJuEntity -> {
-                boolean result = false;
-                for (UserDataEntity userDataEntity : userDataEntities) {
-                    if (tieLuJuEntity.getTid() == userDataEntity.getTId()) {
-                        result = true;
-                        break;
-                    }
-                }
-                return result;
-            }).collect(Collectors.toList());
-        }
-        return ResponseDataUtil.ok("查询铁路局成功", tieLuJuEntities);
+    @GetMapping("/chezhans")
+    @ResponseBody
+    public Map<String, Object> findChezhan() {
+        List<CheZhanEntity> cheZhanEntities = cheZhanService.findAll();
+        return ResponseDataUtil.ok("查询车站列表信息成功", cheZhanEntities);
     }
 
-    //根据铁路局的id  查询对应的电务段
-    @GetMapping("/signal/depot")
-    public Map<String, Object> findDianWuDuanByTid(@RequestParam Integer tid) {
-        List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByTid(tid);
-        UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
-        if (userEntity.getIsCustomer() == 1) { //判断当前用户是否是顾客
-            List<UserDataEntity> userDataEntities = userDataService.findByUserId(userEntity.getId());
-            dianWuDuanEntities = dianWuDuanEntities.stream().filter(dianWuDuanEntity -> {
-                boolean result = false;
-                for (UserDataEntity userDataEntity : userDataEntities) {
-                    if (dianWuDuanEntity.getDid() == userDataEntity.getDId()) {
-                        result = true;
-                        break;
-                    }
-                }
-                return result;
-            }).collect(Collectors.toList());
-        }
-        return ResponseDataUtil.ok("查询电务段成功", dianWuDuanEntities);
+    @GetMapping("/quduans")
+    @ResponseBody
+    public Map<String, Object> findQuduanByczId(@RequestParam Integer czId) {
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, null, null);
+        return ResponseDataUtil.ok("查询区段列表信息成功", quDuanBaseEntities);
     }
-
-    //根据电务段的id  查找线段的名字和id
-    @GetMapping("/special/railway/line")
-    public Map<String, Object> findXianDuanByDid(@RequestParam Integer did) {
-        List<XianDuanEntity> xianDuanEntities = dataStatsService.findXianDuanByDid(did);
-        UserEntity userEntity = this.getLoginUser();//判断是否是客户用户
-        List<UserDataEntity> userDataEntities = userDataService.findByUserId(userEntity.getId());
-        if (userEntity.getIsCustomer() == 1) { //判断当前用户是否是顾客
-            xianDuanEntities = xianDuanEntities.stream().filter(xianDuanEntity -> {
-                boolean result = false;
-                for (UserDataEntity userDataEntity : userDataEntities) {
-                    if (xianDuanEntity.getXid().equals(userDataEntity.getXId())) {
-                        result = true;
-                        break;
-                    }
-                }
-                return result;
-            }).collect(Collectors.toList());
-        }
-        return ResponseDataUtil.ok("查询线段成功", xianDuanEntities);
-    }
-
-    //根据线段的id  查找车站的名字和id
-    @GetMapping("/station")
-    public Map<String, Object> findCheZhanByXid(@RequestParam Integer xid) {
-        List<CheZhanEntity> cheZhanEntities = dataStatsService.findCheZhanByXid(xid);
-        return ResponseDataUtil.ok("查询车站成功", cheZhanEntities);
-    }
-
-    //根据车站的id  查找区段的名字和id
-    @GetMapping("/section")
-    public Map<String, Object> findQuDuanByCid(@RequestParam Integer stationId) {
-        List<QuDuanBaseEntity> quDuanBaseEntities = dataStatsService.findQuDuanByCid(stationId);
-        return ResponseDataUtil.ok("查询区段成功", quDuanBaseEntities);
-    }
-
 
     @PostMapping("/import")
     @ResponseBody
