@@ -2,6 +2,7 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.StringUtil;
+import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import com.yintu.ruixing.guzhangzhenduan.DataPublicSwitchEntity;
 import com.yintu.ruixing.guzhangzhenduan.DataPublicSwitchService;
 import com.yintu.ruixing.slave.guzhangzhenduan.DataPublicSwitchDao;
@@ -24,6 +25,8 @@ import java.util.List;
 public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
     @Autowired
     private DataPublicSwitchDao dataPublicSwitchDao;
+    @Autowired
+    private CheZhanService cheZhanService;
 
     @Override
     public boolean isTableExist(String tableName) {
@@ -38,26 +41,29 @@ public class DataPublicSwitchServiceImpl implements DataPublicSwitchService {
     @Override
     public List<JSONObject> findByCondition(Integer czId) {
         List<JSONObject> jsonObjects = new ArrayList<>();
-        DataPublicSwitchEntity dataPublicSwitchEntity = this.findNewFirstData(czId);
-        Class<?> clazz = dataPublicSwitchEntity.getClass();
-        String methodPrefix = "getPs";
-        for (int i = 0; i < 16; i++) {
-            JSONObject jo = new JSONObject();
-            try {
-                Method m1 = clazz.getDeclaredMethod(methodPrefix + (i + 1));
-                Object v1 = m1.invoke(dataPublicSwitchEntity);
-                jo.put("GJ", get(v1));
+        Boolean czStutrs = cheZhanService.findCzStutrs(Long.parseLong(czId.toString()), false);
+        if (czStutrs) {
+            DataPublicSwitchEntity dataPublicSwitchEntity = this.findNewFirstData(czId);
+            Class<?> clazz = dataPublicSwitchEntity.getClass();
+            String methodPrefix = "getPs";
+            for (int i = 0; i < 16; i++) {
+                JSONObject jo = new JSONObject();
+                try {
+                    Method m1 = clazz.getDeclaredMethod(methodPrefix + (i + 1));
+                    Object v1 = m1.invoke(dataPublicSwitchEntity);
+                    jo.put("GJ", get(v1));
 
-                Method m2 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16));
-                Object v2 = m2.invoke(dataPublicSwitchEntity);
-                jo.put("DJ", get(v2));
+                    Method m2 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16));
+                    Object v2 = m2.invoke(dataPublicSwitchEntity);
+                    jo.put("DJ", get(v2));
 
-                Method m3 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16 * 2));
-                Object v3 = m3.invoke(dataPublicSwitchEntity);
-                jo.put("DJS", get(v3));
-                jsonObjects.add(jo);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    Method m3 = clazz.getDeclaredMethod(methodPrefix + (i + 1 + 16 * 2));
+                    Object v3 = m3.invoke(dataPublicSwitchEntity);
+                    jo.put("DJS", get(v3));
+                    jsonObjects.add(jo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return jsonObjects;

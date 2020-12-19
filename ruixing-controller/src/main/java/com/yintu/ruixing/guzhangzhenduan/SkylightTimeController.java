@@ -61,10 +61,11 @@ public class SkylightTimeController extends SessionController {
                                        @RequestParam("page_size") Integer pageSize,
                                        @RequestParam(value = "order_by", required = false, defaultValue = "st.id DESC") String orderBy,
                                        @RequestParam(value = "cz_id", required = false) Integer czId,
+                                       @RequestParam(value = "qd_id", required = false) Integer qdId,
                                        @RequestParam(value = "start_time", required = false) Date startTime,
                                        @RequestParam(value = "end_time", required = false) Date endTime) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<SkylightTimeEntity> skylightTimeEntities = skylightTimeService.findByCondition(null, startTime, endTime, czId);
+        List<SkylightTimeEntity> skylightTimeEntities = skylightTimeService.findByCondition(null, startTime, endTime, czId, qdId);
         PageInfo<SkylightTimeEntity> pageInfo = new PageInfo<>(skylightTimeEntities);
         return ResponseDataUtil.ok("查询天窗时间列表信息成功", pageInfo);
     }

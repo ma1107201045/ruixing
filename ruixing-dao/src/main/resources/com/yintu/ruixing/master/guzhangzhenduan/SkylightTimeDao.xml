@@ -206,6 +206,9 @@
             <if test="czId != null">
                 and st.cz_id=#{czId,jdbcType=INTEGER}
             </if>
+            <if test="qdId != null">
+                and st.qd_id=#{qdId,jdbcType=INTEGER}
+            </if>
         </where>
     </sql>
     <select id="connectSelectByCondition" resultMap="ConnectResultMap">

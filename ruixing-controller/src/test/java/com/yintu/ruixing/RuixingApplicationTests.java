@@ -115,7 +115,7 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads6() {
-        System.out.println(skylightTimeService.findByCondition(null, null, null, null));
+        System.out.println(skylightTimeService.findByCondition(null, null, null, null, null));
 
     }
 

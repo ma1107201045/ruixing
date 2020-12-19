@@ -1,6 +1,5 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
-import com.alibaba.fastjson.JSONArray;
 import com.yintu.ruixing.common.util.BaseService;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public interface SkylightTimeService extends BaseService<SkylightTimeEntity, Int
 
     SkylightTimeEntity findByCzIdAndQdId(Integer czId, Integer qdId);
 
-    List<SkylightTimeEntity> findByCondition(Integer id, Date startTime, Date endTime, Integer czId);
+    List<SkylightTimeEntity> findByCondition(Integer id, Date startTime, Date endTime, Integer czId, Integer qdId);
 
     /**
      * 批量导入excel数据
