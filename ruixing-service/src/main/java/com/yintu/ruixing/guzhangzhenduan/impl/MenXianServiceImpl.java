@@ -116,6 +116,167 @@ public class MenXianServiceImpl implements MenXianService {
 
 
     @Override
+    public JSONObject findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName) {
+        JSONObject jo = new JSONObject();
+        if (shuxingId == null || quduanName.length == 0) {
+            jo.put("title", new JSONArray());
+            jo.put("data", new JSONArray());
+            return jo;
+        }
+        //表头
+        List<QuDuanShuXingEntity> shuXingEntityList = quDuanBaseService.findQuDuanShuXing(shuxingId);
+        List<TreeNodeUtil> first = new ArrayList<>();
+        for (QuDuanShuXingEntity quDuanShuXingEntity : shuXingEntityList) {
+            List<TreeNodeUtil> second = new ArrayList<>();
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setLabel(quDuanShuXingEntity.getName());
+            treeNodeUtil.setChildren(second);
+            switch (quDuanShuXingEntity.getId()) {
+                case 2:
+                case 3:
+                    List<TreeNodeUtil> third2 = new ArrayList<>();
+                    TreeNodeUtil treeNodeUtil2 = new TreeNodeUtil();
+
+                    TreeNodeUtil a23 = new TreeNodeUtil();
+                    a23.setLabel("量程下限");
+                    a23.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b23 = new TreeNodeUtil();
+                    b23.setLabel("量程上限");
+                    b23.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c23 = new TreeNodeUtil();
+                    c23.setLabel("报警下限");
+                    c23.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d23 = new TreeNodeUtil();
+                    d23.setLabel("报警上限");
+                    d23.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a23);
+                    second.add(b23);
+                    second.add(c23);
+                    second.add(d23);
+                    break;
+                case 4:
+                case 5:
+                    TreeNodeUtil a45 = new TreeNodeUtil();
+                    a45.setLabel("量程下限");
+                    a45.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b45 = new TreeNodeUtil();
+                    b45.setLabel("量程上限");
+                    b45.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c45 = new TreeNodeUtil();
+                    c45.setLabel("报警下限");
+                    c45.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d45 = new TreeNodeUtil();
+                    d45.setLabel("报警上限");
+                    d45.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a45);
+                    second.add(b45);
+                    second.add(c45);
+                    second.add(d45);
+                    break;
+                case 6:
+                case 8:
+                    TreeNodeUtil a68 = new TreeNodeUtil();
+                    a68.setLabel("量程下限");
+                    a68.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b68 = new TreeNodeUtil();
+                    b68.setLabel("量程上限");
+                    b68.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c68 = new TreeNodeUtil();
+                    c68.setLabel("报警下限");
+                    c68.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d68 = new TreeNodeUtil();
+                    d68.setLabel("报警上限");
+                    d68.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a68);
+                    second.add(b68);
+                    second.add(c68);
+                    second.add(d68);
+                    break;
+                case 9:
+                case 11:
+                    TreeNodeUtil a911 = new TreeNodeUtil();
+                    a911.setLabel("量程下限");
+                    a911.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b911 = new TreeNodeUtil();
+                    b911.setLabel("量程上限");
+                    b911.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c911 = new TreeNodeUtil();
+                    c911.setLabel("报警下限");
+                    c911.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d911 = new TreeNodeUtil();
+                    d911.setLabel("报警上限");
+                    d911.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a911);
+                    second.add(b911);
+                    second.add(c911);
+                    second.add(d911);
+                    break;
+                case 12:
+                case 13:
+                    TreeNodeUtil a1213 = new TreeNodeUtil();
+                    a1213.setLabel("量程下限");
+                    a1213.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b1213 = new TreeNodeUtil();
+                    b1213.setLabel("量程上限");
+                    b1213.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c1213 = new TreeNodeUtil();
+                    c1213.setLabel("报警下限");
+                    c1213.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d1213 = new TreeNodeUtil();
+                    d1213.setLabel("报警上限");
+                    d1213.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a1213);
+                    second.add(b1213);
+                    second.add(c1213);
+                    second.add(d1213);
+                    break;
+                case 17:
+                    TreeNodeUtil a17 = new TreeNodeUtil();
+                    a17.setLabel("量程下限");
+                    a17.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b17 = new TreeNodeUtil();
+                    b17.setLabel("量程上限");
+                    b17.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c17 = new TreeNodeUtil();
+                    c17.setLabel("报警下限");
+                    c17.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d17 = new TreeNodeUtil();
+                    d17.setLabel("报警上限");
+                    d17.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a17);
+                    second.add(b17);
+                    second.add(c17);
+                    second.add(d17);
+                    break;
+                case 18:
+                    TreeNodeUtil a18 = new TreeNodeUtil();
+                    a18.setLabel("量程下限");
+                    a18.setValue("a" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil b18 = new TreeNodeUtil();
+                    b18.setLabel("量程上限");
+                    b18.setValue("b" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil c18 = new TreeNodeUtil();
+                    c18.setLabel("报警下限");
+                    c18.setValue("c" + quDuanShuXingEntity.getId());
+                    TreeNodeUtil d18 = new TreeNodeUtil();
+                    d18.setLabel("报警上限");
+                    d18.setValue("f" + quDuanShuXingEntity.getId());
+                    second.add(a18);
+                    second.add(b18);
+                    second.add(c18);
+                    second.add(d18);
+                    break;
+
+            }
+            first.add(treeNodeUtil);
+
+        }
+        jo.put("title", first);
+
+        return jo;
+    }
+
+    @Override
     public JSONObject findByCzIdAndProperties(Integer czId, Integer[] properties) {
         JSONObject jo = new JSONObject();
         if (properties == null || properties.length == 0) {
@@ -1160,31 +1321,31 @@ public class MenXianServiceImpl implements MenXianService {
 
     @Override
     public String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMaxNumberK(czid, qdid, mid,typee);
+        return menXianDao.findMaxNumberK(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMaxNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMaxNumberZ(czid, qdid, mid,typee);
+        return menXianDao.findMaxNumberZ(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMinNumberK(czid, qdid, mid,typee);
+        return menXianDao.findMinNumberK(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMinNumberZ(czid, qdid, mid,typee);
+        return menXianDao.findMinNumberZ(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumber(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMinNumber(czid, qdid, mid,typee);
+        return menXianDao.findMinNumber(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMaxNumber(Integer czid, Integer qdid, Integer mid, Integer typee) {
-        return menXianDao.findMaxNumber(czid, qdid, mid,typee);
+        return menXianDao.findMaxNumber(czid, qdid, mid, typee);
     }
 }

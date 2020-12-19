@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.guzhangzhenduan;
 
 import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
+import com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -84,4 +85,6 @@ public interface QuDuanBaseDao {
     List<QuDuanBaseEntity> selectByQdIdAndQuDuanYunYingName(String quDuanYunYingName);
 
     QuDuanBaseEntity findQuDuanByCZidAndQdid(Integer integer, Integer integer1);
+
+    List<QuDuanShuXingEntity> findQuDuanShuXing(Integer[] shuxingId);
 }

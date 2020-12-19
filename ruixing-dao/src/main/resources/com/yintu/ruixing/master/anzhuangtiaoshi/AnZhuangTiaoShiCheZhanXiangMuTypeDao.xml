@@ -16,6 +16,7 @@
     select
     <include refid="Base_Column_List" />
     from mro_anzhuangtiaoshi_xiangmutype
+    order by id desc
   </select>
 
   <!--根据项目类型名  进行模糊查询-->

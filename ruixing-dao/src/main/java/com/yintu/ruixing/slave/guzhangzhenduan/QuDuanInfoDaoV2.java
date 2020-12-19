@@ -49,7 +49,7 @@ public interface QuDuanInfoDaoV2 {
 
 
     List<quduanEntity> findQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
-                                            @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+                                            @Param("qdid") Integer qdid, @Param("tableName") String tableName,@Param("Timee") long Timee);
 
     List<quduanEntity> findQuDuanDayData(@Param("statrtime") long statrtime, @Param("endtime") long endtime,
                                          @Param("shuxingname") String shuxingname,
@@ -58,7 +58,7 @@ public interface QuDuanInfoDaoV2 {
 
 
     List<quduanEntity> findDMHQuDuanShiShiData(@Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
-                                               @Param("qdid") Integer qdid, @Param("tableName") String tableName);
+                                               @Param("qdid") Integer qdid, @Param("tableName") String tableName,@Param("Timee") long Timee);
 
 
     List<quduanEntity> findDMHQuDuanData(@Param("starttime") long starttime, @Param("endtime") long endtime,

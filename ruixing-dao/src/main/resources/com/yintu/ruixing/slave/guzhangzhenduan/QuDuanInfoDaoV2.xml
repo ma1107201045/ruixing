@@ -395,8 +395,7 @@
             ${qid}
         </foreach>
         and qi.v1 = "${qdid}"
-        order by qi.createtime DESC
-        limit 1
+        and qi.createtime=${Timee}
     </select>
 
 
@@ -423,8 +422,7 @@
             ${qid}
         </foreach>
         and qi.v1 = "${qdid}"
-        order by qi.createtime DESC
-        limit 1
+        and qi.createtime=${Timee}
     </select>
 
 

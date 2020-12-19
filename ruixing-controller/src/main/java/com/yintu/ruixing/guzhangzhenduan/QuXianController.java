@@ -29,6 +29,9 @@ public class QuXianController {
     @Autowired
     private CheZhanService cheZhanService;
 
+    @Autowired
+    private MenXianService menXianService;
+
     //根据车站id   获取车站下 的所有区段
     @GetMapping("/findQuDuanById/{id}")
     public Map<String, Object> findQuDuanById(@PathVariable Integer id) {
@@ -89,7 +92,7 @@ public class QuXianController {
                 ss.put("data", aa);
                 return ss;
             } else {
-                if (times == 0) {
+                if (times == -1) {
                     List<Long> timelist = new ArrayList<>();
                     long endtime = today.getTime() / 1000;
                     long statrtime = endtime - 1800;
@@ -105,8 +108,6 @@ public class QuXianController {
                     Integer k = 0;
                     for (int i = 0; i < sqlname.size(); i++) {
                         k++;
-                        List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                        List<String> MINNumber = new ArrayList<>();//区段属性的最小值
 
                         System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                         String shuxingname = sqlname.get(i);
@@ -239,19 +240,19 @@ public class QuXianController {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
                                 }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                                     js.put("max_k" + k.toString(), maxNumbers_k);
                                 }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                                     js.put("max_z" + k.toString(), maxNumbers_z);
                                 }
-                                if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                                     js.put("min" + k.toString(), minNumbers);
                                 }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                                     js.put("min_k" + k.toString(), minNumbers_k);
                                 }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                                     js.put("min_z" + k.toString(), minNumbers_z);
                                 }
                             }
@@ -481,11 +482,10 @@ public class QuXianController {
                             }
                         }
                     }
-                } else if (times != 0) {
+                } else if (times != -1) {
                     Integer k = 0;
                     for (int i = 0; i < sqlname.size(); i++) {
-                        List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                        List<String> MINNumber = new ArrayList<>();//区段属性的最小值
+                        long Timee = today.getTime() / 1000;
                         k++;
                         System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                         String shuxingname = sqlname.get(i);
@@ -495,51 +495,98 @@ public class QuXianController {
                         Integer type = types[i];//区段类型
                         Integer mid = mids[i];//本区段对应的最大值和最小值id
                         String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
-                        System.out.println("maxNumbers="+maxNumbers);
+                        System.out.println("maxNumbers=" + maxNumbers);
                         String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
-                        System.out.println("maxNumbers_k="+maxNumbers_k);
+                        System.out.println("maxNumbers_k=" + maxNumbers_k);
                         String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
-                        System.out.println("maxNumbers_z="+maxNumbers_z);
+                        System.out.println("maxNumbers_z=" + maxNumbers_z);
                         String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
-                        System.out.println("minNumbers="+minNumbers);
+                        System.out.println("minNumbers=" + minNumbers);
                         String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
-                        System.out.println("minNumbers_k="+minNumbers_k);
+                        System.out.println("minNumbers_k=" + minNumbers_k);
                         String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-                        System.out.println("minNumbers_z="+minNumbers_z);
+                        System.out.println("minNumbers_z=" + minNumbers_z);
 
-                        List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
-                        for (quduanEntity quduanEntity : date) {
-                            long createtime = quduanEntity.getCreatetime();
-                            long value = createtime * 1000L;
-                            SimpleDateFormat format12 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String time = format12.format(new Date(value));
-                            list.add(time);
-                            System.out.println("1234" + date);
+                        List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName,Timee);
+                        if (date.size() != 0 || date != null) {
+                            for (quduanEntity quduanEntity : date) {
+
+                               /* long createtime = quduanEntity.getCreatetime();
+                                long value = createtime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);
+                                */
+                                System.out.println("1234" + date);
+                                if (k == 1) {
+                                    listt1.add(quduanEntity.getName());
+                                }
+                                if (k == 2) {
+                                    listt2.add(quduanEntity.getName());
+                                }
+                                if (k == 3) {
+                                    listt3.add(quduanEntity.getName());
+                                }
+                                if (k == 4) {
+                                    listt4.add(quduanEntity.getName());
+                                }
+                                if (k == 5) {
+                                    listt5.add(quduanEntity.getName());
+                                }
+                                if (k == 6) {
+                                    listt6.add(quduanEntity.getName());
+                                }
+                                if (k == 7) {
+                                    listt7.add(quduanEntity.getName());
+                                }
+                                if (k == 8) {
+                                    listt8.add(quduanEntity.getName());
+                                }
+                            }
+                        }else {
                             if (k == 1) {
-                                listt1.add(quduanEntity.getName());
+                                listt1.add(null);
                             }
                             if (k == 2) {
-                                listt2.add(quduanEntity.getName());
+                                listt2.add(null);
                             }
                             if (k == 3) {
-                                listt3.add(quduanEntity.getName());
+                                listt3.add(null);
                             }
                             if (k == 4) {
-                                listt4.add(quduanEntity.getName());
+                                listt4.add(null);
                             }
                             if (k == 5) {
-                                listt5.add(quduanEntity.getName());
+                                listt5.add(null);
                             }
                             if (k == 6) {
-                                listt6.add(quduanEntity.getName());
+                                listt6.add(null);
                             }
                             if (k == 7) {
-                                listt7.add(quduanEntity.getName());
+                                listt7.add(null);
                             }
                             if (k == 8) {
-                                listt8.add(quduanEntity.getName());
+                                listt8.add(null);
                             }
                         }
+                        if (times == 0) {
+                            for (int j = 1; j <= 300; j++) {
+                                long starttime = Timee + j;
+                                long value = starttime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);
+                            }
+                        }else if (times%300==0){
+                            for (int j = 1; j <= 300; j++) {
+                                long starttime = Timee + j;
+                                long value = starttime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);
+                            }
+                        }
+
                         js.put("shijian", list);
                         System.out.println("~~~~~~~~~~~~~~~=" + list);
                         if (k == 1) {
@@ -557,19 +604,19 @@ public class QuXianController {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
                                 }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                                     js.put("max_k" + k.toString(), maxNumbers_k);
                                 }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                                     js.put("max_z" + k.toString(), maxNumbers_z);
                                 }
-                                if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                                     js.put("min" + k.toString(), minNumbers);
                                 }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                                     js.put("min_k" + k.toString(), minNumbers_k);
                                 }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                                     js.put("min_z" + k.toString(), minNumbers_z);
                                 }
                             }
@@ -1002,19 +1049,19 @@ public class QuXianController {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
-                        if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                        if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                             js.put("max_k" + k.toString(), maxNumbers_k);
                         }
-                        if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                        if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                             js.put("max_z" + k.toString(), maxNumbers_z);
                         }
-                        if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                        if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                             js.put("min" + k.toString(), minNumbers);
                         }
-                        if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                        if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                             js.put("min_k" + k.toString(), minNumbers_k);
                         }
-                        if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                        if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                             js.put("min_z" + k.toString(), minNumbers_z);
                         }
                     }
@@ -1422,7 +1469,7 @@ public class QuXianController {
                 ss.put("data", aa);
                 return ss;
             } else {
-                if (times == 0) {
+                if (times == -1) {
                     List<Long> timelist = new ArrayList<>();
                     long endtime = today.getTime() / 1000;
                     long statrtime = endtime - 1800;
@@ -1571,19 +1618,19 @@ public class QuXianController {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
                                 }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                                     js.put("max_k" + k.toString(), maxNumbers_k);
                                 }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                                     js.put("max_z" + k.toString(), maxNumbers_z);
                                 }
-                                if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                                     js.put("min" + k.toString(), minNumbers);
                                 }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                                     js.put("min_k" + k.toString(), minNumbers_k);
                                 }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                                     js.put("min_z" + k.toString(), minNumbers_z);
                                 }
                             }
@@ -1813,11 +1860,10 @@ public class QuXianController {
                             }
                         }
                     }
-                } else if (times != 0) {
+                } else if (times != -1) {
+                    long Timee = today.getTime() / 1000;
                     Integer k = 0;
                     for (int i = 0; i < sqlname.size(); i++) {
-                        List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                        List<String> MINNumber = new ArrayList<>();//区段属性的最小值
                         k++;
                         System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                         String shuxingname = sqlname.get(i);
@@ -1834,39 +1880,86 @@ public class QuXianController {
                         String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                         String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
 
-                        List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
-                        for (quduanEntity quduanEntity : date) {
-                            long createtime = quduanEntity.getCreatetime();
-                            long value = createtime * 1000L;
-                            SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                            String time = format12.format(new Date(value));
-                            list.add(time);
-                            System.out.println("1234" + date);
+                        List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName, Timee);
+                        if (date.size() != 0 || date != null) {
+                            for (quduanEntity quduanEntity : date) {
+
+                               /* long createtime = quduanEntity.getCreatetime();
+                                long value = createtime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);*/
+
+                                System.out.println("1234" + date);
+                                if (k == 1) {
+                                    listt1.add(quduanEntity.getName());
+                                }
+                                if (k == 2) {
+                                    listt2.add(quduanEntity.getName());
+                                }
+                                if (k == 3) {
+                                    listt3.add(quduanEntity.getName());
+                                }
+                                if (k == 4) {
+                                    listt4.add(quduanEntity.getName());
+                                }
+                                if (k == 5) {
+                                    listt5.add(quduanEntity.getName());
+                                }
+                                if (k == 6) {
+                                    listt6.add(quduanEntity.getName());
+                                }
+                                if (k == 7) {
+                                    listt7.add(quduanEntity.getName());
+                                }
+                                if (k == 8) {
+                                    listt8.add(quduanEntity.getName());
+                                }
+                            }
+                        } else {
                             if (k == 1) {
-                                listt1.add(quduanEntity.getName());
+                                listt1.add(null);
                             }
                             if (k == 2) {
-                                listt2.add(quduanEntity.getName());
+                                listt2.add(null);
                             }
                             if (k == 3) {
-                                listt3.add(quduanEntity.getName());
+                                listt3.add(null);
                             }
                             if (k == 4) {
-                                listt4.add(quduanEntity.getName());
+                                listt4.add(null);
                             }
                             if (k == 5) {
-                                listt5.add(quduanEntity.getName());
+                                listt5.add(null);
                             }
                             if (k == 6) {
-                                listt6.add(quduanEntity.getName());
+                                listt6.add(null);
                             }
                             if (k == 7) {
-                                listt7.add(quduanEntity.getName());
+                                listt7.add(null);
                             }
                             if (k == 8) {
-                                listt8.add(quduanEntity.getName());
+                                listt8.add(null);
                             }
                         }
+                        if (times == 0) {
+                            for (int j = 1; j <= 300; j++) {
+                                long starttime = Timee + j;
+                                long value = starttime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);
+                            }
+                        }else if (times%300==0){
+                            for (int j = 1; j <= 300; j++) {
+                                long starttime = Timee + j;
+                                long value = starttime * 1000L;
+                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
+                                String time = format12.format(new Date(value));
+                                list.add(time);
+                            }
+                        }
+
                         js.put("shijian", list);
                         System.out.println("~~~~~~~~~~~~~~~=" + list);
                         if (k == 1) {
@@ -1884,19 +1977,19 @@ public class QuXianController {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
                                 }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                                     js.put("max_k" + k.toString(), maxNumbers_k);
                                 }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                                     js.put("max_z" + k.toString(), maxNumbers_z);
                                 }
-                                if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                                     js.put("min" + k.toString(), minNumbers);
                                 }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                                     js.put("min_k" + k.toString(), minNumbers_k);
                                 }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                                     js.put("min_z" + k.toString(), minNumbers_z);
                                 }
                             }
@@ -2211,11 +2304,17 @@ public class QuXianController {
                 Integer type = types[i];//区段类型
                 Integer mid = mids[i];//本区段对应的最大值和最小值id
                 String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
+                System.out.println("maxNumbers=" + maxNumbers);
                 String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
+                System.out.println("maxNumbers_k=" + maxNumbers_k);
                 String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
+                System.out.println("maxNumbers_z=" + maxNumbers_z);
                 String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
+                System.out.println("minNumbers=" + minNumbers);
                 String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
+                System.out.println("minNumbers_k=" + minNumbers_k);
                 String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
+                System.out.println("minNumbers_z=" + minNumbers_z);
                 if (type == 2) {
                     kk++;
                 }
@@ -2353,19 +2452,19 @@ public class QuXianController {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
-                        if (maxNumbers_k != null && !("——").equals(maxNumbers_k)&& !("0").equals(maxNumbers_k)) {
+                        if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
                             js.put("max_k" + k.toString(), maxNumbers_k);
                         }
-                        if (maxNumbers_z != null && !("——").equals(maxNumbers_z)&& !("0").equals(maxNumbers_z)) {
+                        if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
                             js.put("max_z" + k.toString(), maxNumbers_z);
                         }
-                        if (minNumbers != null && !("——").equals(minNumbers)&& !("0").equals(minNumbers)) {
+                        if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
                             js.put("min" + k.toString(), minNumbers);
                         }
-                        if (minNumbers_k != null && !("——").equals(minNumbers_k)&& !("0").equals(minNumbers_k)) {
+                        if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
                             js.put("min_k" + k.toString(), minNumbers_k);
                         }
-                        if (minNumbers_z != null && !("——").equals(minNumbers_z)&& !("0").equals(minNumbers_z)) {
+                        if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
                             js.put("min_z" + k.toString(), minNumbers_z);
                         }
                     }
@@ -2742,6 +2841,14 @@ public class QuXianController {
             System.out.println("jsssssssssssssss" + js);
             return ResponseDataUtil.ok("查询数据成功", js);
         }
+    }
+
+
+    //查看门限参数
+    @GetMapping("/findMenXianDatas")
+    public Map<String, Object> findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName) {
+        JSONObject jo = menXianService.findMenXianDatas(czid, shuxingId, quduanName);
+        return ResponseDataUtil.ok("查询门限列表成功", jo);
     }
 
 

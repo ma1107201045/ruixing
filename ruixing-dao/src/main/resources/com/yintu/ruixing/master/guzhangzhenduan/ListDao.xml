@@ -54,7 +54,7 @@
     <!--          and mro_dianwuduan.tlj_dwd_id = #{tljId}-->
     <!--    </select>-->
 
-    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
+    <!--<select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
         SELECT mro_dianwuduan.did,
                mro_dianwuduan.dwd_id,
                mro_dianwuduan.tlj_id,
@@ -64,8 +64,30 @@
                mro_dianwuduan.dwd_state
         FROM `mro_dianwuduan`
         WHERE mro_dianwuduan.tlj_dwd_id = #{tljId}
-    </select>
+    </select>-->
 
+    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
+        SELECT
+            dwd.did,
+            dwd.dwd_id,
+            dwd.tlj_id,
+            dwd.tlj_dwd_id,
+            dwd.dwd_name,
+            dwd.dwd_miaoshu,
+            dwd.dwd_state
+        FROM
+            mro_tieluju tlj,
+            mro_dianwuduan dwd,
+            mro_xianduan xd,
+            mro_chezhan cz
+        WHERE
+            tlj.tlj_id = dwd.tlj_id
+            AND dwd.dwd_id = xd.dwd_id
+            AND xd.xd_id = cz.xd_id
+            AND dwd.tlj_dwd_id = #{tljId}
+        GROUP BY
+            dwd.dwd_id
+    </select>
 
     <select id="selectDwdListByDwdId" resultMap="dianwuduan">
         SELECT did, dwd_id, tlj_id, tlj_dwd_id, dwd_name, dwd_miaoshu, dwd_state

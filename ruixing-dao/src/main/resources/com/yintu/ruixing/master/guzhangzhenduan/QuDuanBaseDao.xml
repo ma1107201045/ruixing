@@ -114,6 +114,20 @@
     </resultMap>
 
 
+    <!--根据id  查询对应的区段属性数据-->
+    <select id="findQuDuanShuXing" resultType="com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity">
+        select * from mro_quduan_shuxing
+        where id in
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+        ORDER BY field
+        <foreach collection="array" item="id" index="index" open="(id," separator="," close=")">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+
     <!--根据车站cid 和 区段id 查询对应的数据-->
     <select id="findQuDuanByCZidAndQdid" resultMap="BaseResultMapp">
         SELECT
