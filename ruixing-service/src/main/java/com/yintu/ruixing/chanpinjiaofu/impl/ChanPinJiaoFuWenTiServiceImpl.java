@@ -1,8 +1,10 @@
 package com.yintu.ruixing.chanpinjiaofu.impl;
 
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiFileEntity;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuWenTiDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuWenTiFileDao;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,20 @@ import java.util.stream.Collectors;
 public class ChanPinJiaoFuWenTiServiceImpl implements ChanPinJiaoFuWenTiService {
     @Autowired
     private ChanPinJiaoFuWenTiDao chanPinJiaoFuWenTiDao;
+    @Autowired
+    private ChanPinJiaoFuWenTiFileDao chanPinJiaoFuWenTiFileDao;
+
+    @Override
+    public List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer fileType) {
+        return chanPinJiaoFuWenTiFileDao.findWenTiFileByType(fileType);
+    }
+
+    @Override
+    public void addWenTiFile(ChanPinJiaoFuWenTiFileEntity chanPinJiaoFuWenTiFileEntity,String username) {
+        chanPinJiaoFuWenTiFileEntity.setCreatename(username);
+        chanPinJiaoFuWenTiFileEntity.setCreatetime(new Date());
+        chanPinJiaoFuWenTiFileDao.insertSelective(chanPinJiaoFuWenTiFileEntity);
+    }
 
     @Override
     public void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException {

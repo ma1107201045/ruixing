@@ -29,6 +29,7 @@
         <result column="qianshou_state" jdbcType="INTEGER" property="qianshouState"/>
         <result column="yangong_state" jdbcType="INTEGER" property="yangongState"/>
         <result column="xianchangfuwu" jdbcType="INTEGER" property="xianchangfuwu"/>
+        <result column="isnotYanGong" jdbcType="INTEGER" property="isnotYanGong"/>
         <result column="fahuo_tixing_time" jdbcType="TIMESTAMP" property="fahuoTixingTime"/>
         <result column="xiangmu_money" property="xiangMuMoney"/>
         <result column="shebei_money" property="sheBeiMoney"/>
@@ -41,7 +42,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state,
-    yangong_state, xianchangfuwu, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,
+    yangong_state, xianchangfuwu,isnotYanGong, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,
     createTime,updateTime,operatorName,remarks
   </sql>
 
@@ -539,6 +540,9 @@
             <if test="xianchangfuwu != null">
                 xianchangfuwu,
             </if>
+            <if test="isnotYanGong != null">
+                isnotYanGong,
+            </if>
             <if test="fahuoTixingTime != null">
                 fahuo_tixing_time,
             </if>
@@ -585,6 +589,9 @@
             </if>
             <if test="xianchangfuwu != null">
                 #{xianchangfuwu,jdbcType=INTEGER},
+            </if>
+            <if test="isnotYanGong != null">
+                #{isnotYanGong,jdbcType=INTEGER},
             </if>
             <if test="fahuoTixingTime != null">
                 #{fahuoTixingTime,jdbcType=TIMESTAMP},
@@ -633,6 +640,9 @@
             </if>
             <if test="xianchangfuwu != null">
                 xianchangfuwu = #{xianchangfuwu,jdbcType=INTEGER},
+            </if>
+            <if test="isnotYanGong != null">
+                isnotYanGong = #{isnotYanGong,jdbcType=INTEGER},
             </if>
             <if test="fahuoTixingTime != null">
                 fahuo_tixing_time = #{fahuoTixingTime,jdbcType=TIMESTAMP},

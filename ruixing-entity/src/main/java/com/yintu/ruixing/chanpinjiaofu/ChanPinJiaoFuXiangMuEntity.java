@@ -33,6 +33,8 @@ public class ChanPinJiaoFuXiangMuEntity {
 
     private Integer xianchangfuwu;//是否需要现场服务   0：否 ，1：是',
 
+    private Integer isnotYanGong;//'是否需要验工 0：否，1：是',
+
     private Date fahuoTixingTime;//发货提醒日期
 
     private Double xiangMuMoney;//项目钱

@@ -32,4 +32,8 @@ public interface ChanPinJiaoFuWenTiService {
     List<ChanPinJiaoFuWenTiEntity> downLoadByIds(Integer[] ids);
 
     void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
+
+    void addWenTiFile(ChanPinJiaoFuWenTiFileEntity chanPinJiaoFuWenTiFileEntity,String username);
+
+    List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer fileType);
 }

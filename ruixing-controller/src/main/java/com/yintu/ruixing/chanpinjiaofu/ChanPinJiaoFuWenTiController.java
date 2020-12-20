@@ -2,6 +2,7 @@ package com.yintu.ruixing.chanpinjiaofu;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
@@ -22,56 +23,60 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/chanPinJiaoFuWenTiAll")
-public class ChanPinJiaoFuWenTiController {
+public class ChanPinJiaoFuWenTiController extends SessionController {
     @Autowired
     private ChanPinJiaoFuWenTiService chanPinJiaoFuWenTiService;
 
 
     //查询所有的数据
     @GetMapping("/findAllData")
-    public Map<String,Object>findAllData(Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities=chanPinJiaoFuWenTiService.findAllData(page,size);
-        PageInfo<ChanPinJiaoFuWenTiEntity> pageInfo=new PageInfo<>(chanPinJiaoFuWenTiEntities);
-        return ResponseDataUtil.ok("查询数据成功",pageInfo);
+    public Map<String, Object> findAllData(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities = chanPinJiaoFuWenTiService.findAllData(page, size);
+        PageInfo<ChanPinJiaoFuWenTiEntity> pageInfo = new PageInfo<>(chanPinJiaoFuWenTiEntities);
+        return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
+
     //查询所有的部门
     @GetMapping("/findAllDepartment")
-    public Map<String,Object>findAllDepartment(){
-        List<DepartmentEntity> departmentEntities=chanPinJiaoFuWenTiService.findAllDepartment();
-        return ResponseDataUtil.ok("查询部门成功",departmentEntities);
+    public Map<String, Object> findAllDepartment() {
+        List<DepartmentEntity> departmentEntities = chanPinJiaoFuWenTiService.findAllDepartment();
+        return ResponseDataUtil.ok("查询部门成功", departmentEntities);
     }
+
     //查询符合条件的项目名
     @GetMapping("/findXiangMuMing")
-    public Map<String,Object>findXiangMuMing(){
-        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities=chanPinJiaoFuWenTiService.findXiangMuMing();
-        return ResponseDataUtil.ok("查询项目名字成功",chanPinJiaoFuWenTiEntities);
+    public Map<String, Object> findXiangMuMing() {
+        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities = chanPinJiaoFuWenTiService.findXiangMuMing();
+        return ResponseDataUtil.ok("查询项目名字成功", chanPinJiaoFuWenTiEntities);
     }
+
     //新增问题
     @PostMapping("/addWenTi")
-    public Map<String,Object>addWenTi(ChanPinJiaoFuWenTiEntity chanPinJiaoFuWenTiEntity){
+    public Map<String, Object> addWenTi(ChanPinJiaoFuWenTiEntity chanPinJiaoFuWenTiEntity) {
         chanPinJiaoFuWenTiService.addWenTi(chanPinJiaoFuWenTiEntity);
         return ResponseDataUtil.ok("新增问题成功");
     }
+
     //根据id  编辑问题
     @PutMapping("/editWenTiById/{id}")
-    public Map<String,Object>editWenTiById(@PathVariable Integer id,ChanPinJiaoFuWenTiEntity chanPinJiaoFuWenTiEntity){
+    public Map<String, Object> editWenTiById(@PathVariable Integer id, ChanPinJiaoFuWenTiEntity chanPinJiaoFuWenTiEntity) {
         chanPinJiaoFuWenTiService.editWenTiById(chanPinJiaoFuWenTiEntity);
         return ResponseDataUtil.ok("编辑问题成功");
     }
 
     //根据项目名称  进行模糊查询
     @GetMapping("/findWenTiByName")
-    public Map<String,Object>findWenTiByName(String xiangMuName,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities=chanPinJiaoFuWenTiService.findWenTiByName(xiangMuName,page,size);
-        PageInfo<ChanPinJiaoFuWenTiEntity> pageInfo=new PageInfo<>(chanPinJiaoFuWenTiEntities);
-        return ResponseDataUtil.ok("查询成功",pageInfo);
+    public Map<String, Object> findWenTiByName(String xiangMuName, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities = chanPinJiaoFuWenTiService.findWenTiByName(xiangMuName, page, size);
+        PageInfo<ChanPinJiaoFuWenTiEntity> pageInfo = new PageInfo<>(chanPinJiaoFuWenTiEntities);
+        return ResponseDataUtil.ok("查询成功", pageInfo);
     }
 
     //根据id  进行单个或者批量删除
     @DeleteMapping("/deletWenTiByIds/{ids}")
-    public Map<String,Object>deletWenTiByIds(@PathVariable Integer[] ids){
+    public Map<String, Object> deletWenTiByIds(@PathVariable Integer[] ids) {
         chanPinJiaoFuWenTiService.deletWenTiByIds(ids);
         return ResponseDataUtil.ok("删除数据成功");
     }
@@ -87,6 +92,20 @@ public class ChanPinJiaoFuWenTiController {
         chanPinJiaoFuWenTiService.exportFile(response.getOutputStream(), ids);
     }
 
+    //新增文件
+    @PostMapping("/addWenTiFile")
+    public Map<String, Object> addWenTiFile(ChanPinJiaoFuWenTiFileEntity chanPinJiaoFuWenTiFileEntity) {
+        String username = this.getLoginUser().getTrueName();
+        chanPinJiaoFuWenTiService.addWenTiFile(chanPinJiaoFuWenTiFileEntity, username);
+        return ResponseDataUtil.ok("新增文件成功");
+    }
+
+    //查看文件
+    @GetMapping("findWenTiFileByType")
+    public Map<String,Object>findWenTiFileByType(Integer fileType){
+        List<ChanPinJiaoFuWenTiFileEntity> wenTiFileEntityList=chanPinJiaoFuWenTiService.findWenTiFileByType(fileType);
+        return ResponseDataUtil.ok("查询文件成功",wenTiFileEntityList);
+    }
     /*//根据id 进行单个或者批量下载到Excel
 
     @GetMapping("/downLoadByIds/{ids}")

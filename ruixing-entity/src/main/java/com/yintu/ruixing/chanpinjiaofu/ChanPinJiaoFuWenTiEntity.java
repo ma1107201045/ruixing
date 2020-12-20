@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class ChanPinJiaoFuWenTiEntity {
     private Integer id;
 
+    private String xiangmuBianhao;//项目编号
+
     private String xiangmuName;//项目名
 
     private String wentihuanjie;//问题环节
