@@ -405,7 +405,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
-                biddingFileAuditorService.add(now);//记录每次审核人审核回复以及上传的附件
+                biddingFileAuditorService.edit(now);//记录每次审核人审核回复以及上传的附件
 
                 //判断是否通过 通过继续让下一批人审批，直到所有人审批通过,不通过此次文件审核流程结束。
                 if (isPass == 3) {
