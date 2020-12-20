@@ -43,6 +43,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     private RoleService roleService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void add(DesignLiaisonFileEntity entity) {
@@ -351,10 +353,10 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     }
 
     @Override
-    public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
+    public void audit(Integer id, Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId, Integer loginUserId, String userName, String trueName) {
         if (isPass == null)
             throw new BaseRuntimeException("审核状态不能为空");
-        if (isPass != 3 && isPass != 4) {
+        if (isPass != 3 && isPass != 4 && isPass != 5) {
             throw new BaseRuntimeException("此文件审核状态有误");
         }
         DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
@@ -366,6 +368,9 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 if (designLiaisonFileAuditorEntities.isEmpty()) {
                     throw new BaseRuntimeException("你无权审核此文件或已被其他人审批");
                 }
+                //取出当前审核人
+                DesignLiaisonFileAuditorEntity now = designLiaisonFileAuditorEntities.get(0);
+
                 designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), null, null, (short) 1);
                 if (designLiaisonFileAuditorEntities.isEmpty()) {
                     throw new BaseRuntimeException("此文件已审核，无需重复审核");
@@ -375,9 +380,45 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileAuditorEntity.setActivate((short) 0);
                     designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
                 }
+                Integer sort = designLiaisonFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
+                //转交时候
+                if (isPass == 5) {
+                    if (passUserId == null)
+                        throw new BaseRuntimeException("转交人id不能为空");
+                    DesignLiaisonFileAuditorEntity d = new DesignLiaisonFileAuditorEntity();
+                    d.setDesignLiaisonFileId(id);
+                    d.setAuditorId(passUserId);
+                    d.setSort(sort);
+                    d.setActivate((short) 1);
+                    designLiaisonFileAuditorService.add(d);
+                    //转交只给这个人发信息
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(designLiaisonFileEntity.getModifiedBy());
+                    messageEntity.setCreateTime(designLiaisonFileEntity.getModifiedTime());
+                    messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                    messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                    messageEntity.setFileId(designLiaisonFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(passUserId);
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                    return;
+                }
+
+                now.setContext(context);
+                now.setAccessoryName(accessoryName);
+                now.setAccessoryPath(accessoryPath);
+                designLiaisonFileAuditorService.add(now);//记录每次审核人审核回复以及上传的附件
+
+
                 //判断是否通过 通过继续让下一批人审批，直到所有人审批通过,不通过此次文件审核流程结束。
                 if (isPass == 3) {
-                    Integer sort = designLiaisonFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
                     designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByExample(designLiaisonFileEntity.getId(), null, sort + 1, null);
                     if (designLiaisonFileAuditorEntities.isEmpty()) {
                         designLiaisonFileEntity.setModifiedBy(userName);
@@ -437,13 +478,13 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileEntity.setModifiedBy(userName);
                     designLiaisonFileEntity.setModifiedTime(new Date());
                     designLiaisonFileEntity.setAuditStatus((short) 4);
-                    designLiaisonFileEntity.setReason(reason);
+                   // designLiaisonFileEntity.setReason(reason);
                     this.edit(designLiaisonFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();
                     sb.append("   审核人：").append(trueName)
-                            .append("   文件审核状态：").append("已审核未通过")
-                            .append("   理由：").append(reason);
+                            .append("   文件审核状态：").append("已审核未通过");
+//                            .append("   理由：").append(reason);
                     SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 3, (short) 2, id, sb.toString());
                     solutionLogService.add(solutionLogEntity);
                     //给发起文件审核的人发消息
@@ -483,5 +524,17 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 messageService.sendMessage(messageEntity);
             }
         }
+    }
+
+    @Override
+    public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
+        List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
+        List<Long> auditorIds = designLiaisonFileAuditorEntities.stream().map(designLiaisonFileAuditorEntity -> Long.valueOf(designLiaisonFileAuditorEntity.getAuditorId())).collect(Collectors.toList());
+        auditorIds.add(loginUserId);
+
+        UserEntityExample userEntityExample = new UserEntityExample();
+        UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
+        criteria.andIdNotIn(auditorIds);
+        return userService.findByExample(userEntityExample);
     }
 }

@@ -7,13 +7,24 @@
         <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="activate" jdbcType="SMALLINT" property="activate"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, pre_sale_file_id, auditor_id,sort, activate
+        id, pre_sale_file_id, auditor_id, sort, activate, accessory_name, accessory_path
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <sql id="Blob_Column_List">
+        context
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_pre_sale_file_auditor
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -23,9 +34,12 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
-        insert into mro_pre_sale_file_auditor (id, pre_sale_file_id, auditor_id, sort, activate)
+        insert into mro_pre_sale_file_auditor (id, pre_sale_file_id, auditor_id,
+                                               sort, activate, accessory_name,
+                                               accessory_path, context)
         values (#{id,jdbcType=INTEGER}, #{preSaleFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
-                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT})
+                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{accessoryName,jdbcType=VARCHAR},
+                #{accessoryPath,jdbcType=VARCHAR}, #{context,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
         insert into mro_pre_sale_file_auditor
@@ -45,6 +59,15 @@
             <if test="activate != null">
                 activate,
             </if>
+            <if test="accessoryName != null">
+                accessory_name,
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -62,6 +85,15 @@
             <if test="activate != null">
                 #{activate,jdbcType=SMALLINT},
             </if>
+            <if test="accessoryName != null">
+                #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="context != null">
+                #{context,jdbcType=LONGVARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
@@ -74,12 +106,32 @@
                 auditor_id = #{auditorId,jdbcType=INTEGER},
             </if>
             <if test="sort != null">
-                sort= #{sort,jdbcType=INTEGER},
+                sort = #{sort,jdbcType=INTEGER},
             </if>
             <if test="activate != null">
                 activate = #{activate,jdbcType=SMALLINT},
             </if>
+            <if test="accessoryName != null">
+                accessory_name = #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path = #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
+            </if>
         </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
+        update mro_pre_sale_file_auditor
+        set pre_sale_file_id = #{preSaleFileId,jdbcType=INTEGER},
+            auditor_id       = #{auditorId,jdbcType=INTEGER},
+            sort             = #{sort,jdbcType=INTEGER},
+            activate         = #{activate,jdbcType=SMALLINT},
+            accessory_name   = #{accessoryName,jdbcType=VARCHAR},
+            accessory_path   = #{accessoryPath,jdbcType=VARCHAR},
+            context          = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
@@ -87,13 +139,15 @@
         set pre_sale_file_id = #{preSaleFileId,jdbcType=INTEGER},
             auditor_id       = #{auditorId,jdbcType=INTEGER},
             sort             = #{sort,jdbcType=INTEGER},
-            activate         = #{activate,jdbcType=SMALLINT}
+            activate         = #{activate,jdbcType=SMALLINT},
+            accessory_name   = #{accessoryName,jdbcType=VARCHAR},
+            accessory_path   = #{accessoryPath,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity">
         insert into mro_pre_sale_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            pre_sale_file_id,auditor_id,sort, activate
+            pre_sale_file_id,auditor_id,sort, activate,accessory_name,accessory_path,context
         </trim>
         values
         <foreach collection="list" item="preSaleFileAuditorEntity" index="index" separator=",">
@@ -102,6 +156,9 @@
                 #{preSaleFileAuditorEntity.auditorId,jdbcType=INTEGER},
                 #{preSaleFileAuditorEntity.sort,jdbcType=INTEGER},
                 #{preSaleFileAuditorEntity.activate,jdbcType=SMALLINT},
+                #{preSaleFileAuditorEntity.accessoryName,jdbcType=INTEGER},
+                #{preSaleFileAuditorEntity.accessoryPath,jdbcType=SMALLINT},
+                #{preSaleFileAuditorEntity.context,jdbcType=LONGVARCHAR}
             </trim>
         </foreach>
     </insert>
@@ -111,16 +168,21 @@
         from mro_pre_sale_file_auditor
         where pre_sale_file_id = #{preSaleFileId,jdbcType=INTEGER}
     </delete>
-    <select id="selectByPreSaleFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    <select id="selectByPreSaleFileId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_pre_sale_file_auditor
         where pre_sale_file_id = #{preSaleFileId,jdbcType=INTEGER}
     </select>
 
-    <select id="selectByExample" resultMap="BaseResultMap">
+    <select id="selectByExample" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from mro_pre_sale_file_auditor
         <where>
             <if test="preSaleFileId!=null">

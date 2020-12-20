@@ -23,26 +23,40 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.yintu.ruixing.common"
+        <javaModelGenerator targetPackage="com.yintu.ruixing.jiejuefangan"
                             targetProject="../ruixing-entity/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.common"
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.jiejuefangan"
                          targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.common"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.jiejuefangan"
                              targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="mro_audit_total"
-               domainObjectName="AuditTotalEntity1"
-               mapperName="AuditTotalDao1"
+        <table tableName="mro_pre_sale_file_auditor"
+               domainObjectName="PreSaleFileAuditorEntity1"
+               mapperName="PreSaleFileAuditorDao1"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableSelectByExample="false"/>
+        <table tableName="mro_bidding_file_auditor"
+               domainObjectName="BiddingFileAuditorEntity1"
+               mapperName="BiddingFileAuditorDao1"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableSelectByExample="false"/>
+        <table tableName="mro_design_liaison_file_auditor"
+               domainObjectName="DesignLiaisonFileAuditorEntity1"
+               mapperName="DesignLiaisonFileAuditorDao1"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

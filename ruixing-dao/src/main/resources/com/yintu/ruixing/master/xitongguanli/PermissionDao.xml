@@ -15,6 +15,7 @@
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="path_name" jdbcType="VARCHAR" property="pathName"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -78,7 +79,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, parent_id, name, url, method,
-    is_menu, path, icon_cls, description
+    is_menu, path, icon_cls, description, path_name
     </sql>
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.PermissionEntityExample"
             resultMap="BaseResultMap">
@@ -117,12 +118,12 @@
                                    modified_by, modified_time, parent_id,
                                    name, url, method,
                                    is_menu, path, icon_cls,
-                                   description)
+                                   description, path_name)
         values (#{id,jdbcType=BIGINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{parentId,jdbcType=BIGINT},
                 #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR},
                 #{isMenu,jdbcType=SMALLINT}, #{path,jdbcType=VARCHAR}, #{iconCls,jdbcType=VARCHAR},
-                #{description,jdbcType=VARCHAR})
+                #{description,jdbcType=VARCHAR}, #{pathName,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.xitongguanli.PermissionEntity">
         insert into tb_permission
@@ -166,6 +167,9 @@
             <if test="description != null">
                 description,
             </if>
+            <if test="pathName != null">
+                path_name,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -206,6 +210,9 @@
             </if>
             <if test="description != null">
                 #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="pathName != null">
+                #{pathName,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -258,6 +265,9 @@
             <if test="record.description != null">
                 description = #{record.description,jdbcType=VARCHAR},
             </if>
+            <if test="record.pathName != null">
+                path_name = #{record.pathName,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -277,7 +287,8 @@
         is_menu = #{record.isMenu,jdbcType=SMALLINT},
         path = #{record.path,jdbcType=VARCHAR},
         icon_cls = #{record.iconCls,jdbcType=VARCHAR},
-        description = #{record.description,jdbcType=VARCHAR}
+        description = #{record.description,jdbcType=VARCHAR},
+        path_name = #{record.pathName,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -321,6 +332,9 @@
             <if test="description != null">
                 description = #{description,jdbcType=VARCHAR},
             </if>
+            <if test="pathName != null">
+                path_name = #{pathName,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -337,16 +351,19 @@
             is_menu       = #{isMenu,jdbcType=SMALLINT},
             path          = #{path,jdbcType=VARCHAR},
             icon_cls      = #{iconCls,jdbcType=VARCHAR},
-            description   = #{description,jdbcType=VARCHAR}
+            description   = #{description,jdbcType=VARCHAR},
+            path_name     = #{pathName,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
-
+    
     <resultMap id="PermissionAndRoleResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <id column="p_id" jdbcType="BIGINT" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
         <collection property="roleEntities" ofType="com.yintu.ruixing.xitongguanli.RoleEntity">
+            <id column="id" jdbcType="BIGINT" property="id"/>
             <id column="r_id" jdbcType="BIGINT" property="id"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
         </collection>

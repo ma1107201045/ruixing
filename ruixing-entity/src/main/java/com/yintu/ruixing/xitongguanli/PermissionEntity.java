@@ -42,6 +42,8 @@ public class PermissionEntity implements Serializable {
 
     private String description;
 
+    private String pathName;
+
     private List<RoleEntity> roleEntities;
 
 }

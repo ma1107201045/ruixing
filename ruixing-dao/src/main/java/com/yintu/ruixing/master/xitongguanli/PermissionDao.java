@@ -1,12 +1,12 @@
 package com.yintu.ruixing.master.xitongguanli;
 
 import com.yintu.ruixing.xitongguanli.PermissionEntity;
+import com.yintu.ruixing.xitongguanli.PermissionEntity;
 import com.yintu.ruixing.xitongguanli.PermissionEntityExample;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 
 public interface PermissionDao {
     long countByExample(PermissionEntityExample example);

@@ -63,15 +63,26 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
     /**
      * 审核文件
      *
-     * @param id          文件id
-     * @param isPass      是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
-     * @param reason      已审核未通过理由
-     * @param loginUserId 登录id
-     * @param userName    用户名
-     * @param trueName    真实姓名
+     * @param id            文件id
+     * @param isPass        是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
+     * @param context       审核内容
+     * @param accessoryName 附件名称
+     * @param accessoryPath 附件路径
+     * @param passUserId    转交人id
+     * @param loginUserId   登录id
+     * @param userName      用户名
+     * @param trueName      真实姓名
      */
+    void audit(Integer id, Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId, Integer loginUserId, String userName, String trueName);
 
-    void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName);
+    /**
+     * 查询转交人列表（排除当前审核文件人列表以及当前登录人）
+     *
+     * @param id          文件id
+     * @param loginUserId 当前登录用户id
+     * @return 审核人列表
+     */
+    List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId);
 
 
 }

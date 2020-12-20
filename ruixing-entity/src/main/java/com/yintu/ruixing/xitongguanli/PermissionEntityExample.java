@@ -964,6 +964,76 @@ public class PermissionEntityExample {
             addCriterion("description not between", value1, value2, "description");
             return (Criteria) this;
         }
+
+        public Criteria andPathNameIsNull() {
+            addCriterion("path_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameIsNotNull() {
+            addCriterion("path_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameEqualTo(String value) {
+            addCriterion("path_name =", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameNotEqualTo(String value) {
+            addCriterion("path_name <>", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameGreaterThan(String value) {
+            addCriterion("path_name >", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameGreaterThanOrEqualTo(String value) {
+            addCriterion("path_name >=", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameLessThan(String value) {
+            addCriterion("path_name <", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameLessThanOrEqualTo(String value) {
+            addCriterion("path_name <=", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameLike(String value) {
+            addCriterion("path_name like", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameNotLike(String value) {
+            addCriterion("path_name not like", value, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameIn(List<String> values) {
+            addCriterion("path_name in", values, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameNotIn(List<String> values) {
+            addCriterion("path_name not in", values, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameBetween(String value1, String value2) {
+            addCriterion("path_name between", value1, value2, "pathName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPathNameNotBetween(String value1, String value2) {
+            addCriterion("path_name not between", value1, value2, "pathName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

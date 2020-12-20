@@ -42,6 +42,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     private SolutionLogService solutionLogService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -348,10 +350,10 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public void audit(Integer id, Short isPass, String reason, Integer loginUserId, String userName, String trueName) {
+    public void audit(Integer id, Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId, Integer loginUserId, String userName, String trueName) {
         if (isPass == null)
             throw new BaseRuntimeException("审核状态不能为空");
-        if (isPass != 3 && isPass != 4) {
+        if (isPass != 3 && isPass != 4 && isPass != 5) {
             throw new BaseRuntimeException("此文件审核状态有误");
         }
         PreSaleFileEntity preSaleFileEntity = this.findById(id);
@@ -363,18 +365,55 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 if (preSaleFileAuditorEntities.isEmpty()) {
                     throw new BaseRuntimeException("你无权审核此文件或已被其他人审批");
                 }
+                //取出当前审核人
+                PreSaleFileAuditorEntity now = preSaleFileAuditorEntities.get(0);
+
                 preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), null, null, (short) 1);
                 if (preSaleFileAuditorEntities.isEmpty()) {
                     throw new BaseRuntimeException("此文件已审核，无需重复审核");
                 }
-
                 for (PreSaleFileAuditorEntity preSaleFileAuditorEntity : preSaleFileAuditorEntities) {//更改当前顺序的审核人群的激活状态
                     preSaleFileAuditorEntity.setActivate((short) 0);
                     preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
                 }
+                Integer sort = preSaleFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
+                //转交时候
+                if (isPass == 5) {
+                    if (passUserId == null)
+                        throw new BaseRuntimeException("转交人id不能为空");
+                    PreSaleFileAuditorEntity p = new PreSaleFileAuditorEntity();
+                    p.setPreSaleFileId(id);
+                    p.setAuditorId(passUserId);
+                    p.setSort(sort);
+                    p.setActivate((short) 1);
+                    preSaleFileAuditorService.add(p);
+                    //转交只给这个人发信息
+                    MessageEntity messageEntity = new MessageEntity();
+                    messageEntity.setCreateBy(preSaleFileEntity.getModifiedBy());
+                    messageEntity.setCreateTime(preSaleFileEntity.getModifiedTime());
+                    messageEntity.setModifiedBy(preSaleFileEntity.getModifiedBy());
+                    messageEntity.setModifiedTime(preSaleFileEntity.getModifiedTime());
+                    messageEntity.setTitle("文件");
+                    messageEntity.setContext("“" + preSaleEntity.getProjectName() + "”项目中，“" + preSaleFileEntity.getName() + "”文件需要您审核！");
+                    messageEntity.setType((short) 1);
+                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setMessageType((short) 2);
+                    messageEntity.setProjectId(preSaleFileEntity.getPreSaleId());
+                    messageEntity.setFileId(preSaleFileEntity.getId());
+                    messageEntity.setSenderId(null);
+                    messageEntity.setReceiverId(passUserId);
+                    messageEntity.setStatus((short) 1);
+                    messageService.sendMessage(messageEntity);
+                    return;
+                }
+
+                now.setContext(context);
+                now.setAccessoryName(accessoryName);
+                now.setAccessoryPath(accessoryPath);
+                preSaleFileAuditorService.add(now);//记录每次审核人审核回复以及上传的附件
+
                 //判断是否通过 通过继续让下一批人审批，直到所有人审批通过,不通过此次文件审核流程结束。
                 if (isPass == 3) {
-                    Integer sort = preSaleFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
                     preSaleFileAuditorEntities = preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), null, sort + 1, null);
                     if (preSaleFileAuditorEntities.isEmpty()) {
                         preSaleFileEntity.setModifiedBy(userName);
@@ -434,13 +473,13 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileEntity.setModifiedBy(userName);
                     preSaleFileEntity.setModifiedTime(new Date());
                     preSaleFileEntity.setAuditStatus((short) 4);
-                    preSaleFileEntity.setReason(reason);
+                    //  preSaleFileEntity.setReason(reason);
                     this.edit(preSaleFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();
                     sb.append("   审核人：").append(trueName)
-                            .append("   文件审核状态：").append("已审核未通过")
-                            .append("   理由：").append(reason);
+                            .append("   文件审核状态：").append("已审核未通过");
+                    // .append("   理由：").append(reason);
                     SolutionLogEntity solutionLogEntity = new SolutionLogEntity(null, trueName, new Date(), (short) 1, (short) 2, id, sb.toString());
                     solutionLogService.add(solutionLogEntity);
                     //给发起文件审核的人发消息
@@ -480,5 +519,17 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 messageService.sendMessage(messageEntity);
             }
         }
+    }
+
+    @Override
+    public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
+        List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
+        List<Long> auditorIds = preSaleFileAuditorEntities.stream().map(preSaleFileAuditorEntity -> Long.valueOf(preSaleFileAuditorEntity.getAuditorId())).collect(Collectors.toList());
+        auditorIds.add(loginUserId);
+
+        UserEntityExample userEntityExample = new UserEntityExample();
+        UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
+        criteria.andIdNotIn(auditorIds);
+        return userService.findByExample(userEntityExample);
     }
 }

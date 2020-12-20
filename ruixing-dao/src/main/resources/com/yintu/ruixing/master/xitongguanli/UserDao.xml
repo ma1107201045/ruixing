@@ -373,6 +373,10 @@
 
     <resultMap id="BasePermissionResultMap" type="com.yintu.ruixing.xitongguanli.PermissionEntity">
         <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
@@ -381,6 +385,7 @@
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="icon_cls" jdbcType="VARCHAR" property="iconCls"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="path_name" jdbcType="VARCHAR" property="pathName"/>
     </resultMap>
     <select id="selectPermission" resultMap="BasePermissionResultMap">
         SELECT p.*

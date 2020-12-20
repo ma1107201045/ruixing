@@ -22,5 +22,11 @@ public class BiddingFileAuditorEntity implements Serializable {
 
     private Short activate;
 
+    private String accessoryName;
+
+    private String accessoryPath;
+
+    private String context;
+
 
 }

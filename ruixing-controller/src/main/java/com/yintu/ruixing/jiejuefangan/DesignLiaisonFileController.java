@@ -6,6 +6,7 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationService;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -123,17 +124,31 @@ public class DesignLiaisonFileController extends SessionController {
     /**
      * 审核文件
      *
-     * @param id     文件id
-     * @param isPass 是否 审核状态 1.待审核 2.已审核未通过 3.已审核已通过
-     * @param reason 已审核未通过
-     * @return 已审核未通过理由
+     * @param id            文件id
+     * @param isPass        审核状态 3.通过 4.拒绝 5.转交
+     * @param context       审核内容
+     * @param accessoryName 附件名称
+     * @param accessoryPath 附件路径
+     * @param passUserId    如果审核状态为转交时候，转交其他人id
+     * @return
      */
     @PutMapping("/audit/{id}")
     @ResponseBody
-    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String reason) {
-        designLiaisonFileService.audit(id, isPass, reason, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId) {
+        designLiaisonFileService.audit(id, isPass, context, accessoryName, accessoryPath, passUserId, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核设计联络及后续技术交流文件信息成功");
     }
 
 
+    /**
+     * 转交审核列表列表
+     *
+     * @param id 文件id
+     */
+    @PutMapping("/audit/{id}/auditors")
+    @ResponseBody
+    public Map<String, Object> auditors(@PathVariable Integer id) {
+        List<UserEntity> userEntities = designLiaisonFileService.findByOtherAuditors(id, this.getLoginUserId());
+        return ResponseDataUtil.ok("查询转交审核人列表成功", userEntities);
+    }
 }
