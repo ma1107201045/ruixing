@@ -146,7 +146,7 @@ public class BiddingFileController extends SessionController {
      *
      * @param id 文件id
      */
-    @PutMapping("/audit/{id}/auditors")
+    @GetMapping("/audit/{id}/auditors")
     @ResponseBody
     public Map<String, Object> auditors(@PathVariable Integer id) {
         List<UserEntity> userEntities = biddingFileService.findByOtherAuditors(id, this.getLoginUserId());

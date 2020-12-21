@@ -150,7 +150,7 @@
     <insert id="insertMuch" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         insert into mro_design_liaison_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            design_liaison_file_id,auditor_id,sort, activate
+            design_liaison_file_id,auditor_id,sort, activate,accessory_name,accessory_path,context
         </trim>
         values
         <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">

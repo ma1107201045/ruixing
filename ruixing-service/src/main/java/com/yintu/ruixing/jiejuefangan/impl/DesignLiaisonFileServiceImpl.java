@@ -400,7 +400,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     messageEntity.setTitle("文件");
                     messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
                     messageEntity.setType((short) 1);
-                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setSmallType((short) 3);
                     messageEntity.setMessageType((short) 2);
                     messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
                     messageEntity.setFileId(designLiaisonFileEntity.getId());
@@ -410,7 +410,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     messageService.sendMessage(messageEntity);
                     return;
                 }
-
+                now.setActivate((short) 0);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);

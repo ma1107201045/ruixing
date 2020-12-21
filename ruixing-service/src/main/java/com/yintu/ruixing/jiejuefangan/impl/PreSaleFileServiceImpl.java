@@ -406,7 +406,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     messageService.sendMessage(messageEntity);
                     return;
                 }
-
+                now.setActivate((short) 0);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);

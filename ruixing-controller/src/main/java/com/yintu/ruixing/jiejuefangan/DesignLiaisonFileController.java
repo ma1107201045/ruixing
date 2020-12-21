@@ -145,7 +145,7 @@ public class DesignLiaisonFileController extends SessionController {
      *
      * @param id 文件id
      */
-    @PutMapping("/audit/{id}/auditors")
+    @GetMapping("/audit/{id}/auditors")
     @ResponseBody
     public Map<String, Object> auditors(@PathVariable Integer id) {
         List<UserEntity> userEntities = designLiaisonFileService.findByOtherAuditors(id, this.getLoginUserId());

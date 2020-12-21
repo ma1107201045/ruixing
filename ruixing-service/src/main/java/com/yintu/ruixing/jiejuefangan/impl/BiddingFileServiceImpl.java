@@ -391,7 +391,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     messageEntity.setTitle("文件");
                     messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
                     messageEntity.setType((short) 1);
-                    messageEntity.setSmallType((short) 1);
+                    messageEntity.setSmallType((short) 2);
                     messageEntity.setMessageType((short) 2);
                     messageEntity.setProjectId(biddingFileEntity.getBiddingId());
                     messageEntity.setFileId(biddingFileEntity.getId());
@@ -401,7 +401,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     messageService.sendMessage(messageEntity);
                     return;
                 }
-
+                now.setActivate((short) 0);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
