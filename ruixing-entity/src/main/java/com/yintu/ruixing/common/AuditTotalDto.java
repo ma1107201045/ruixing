@@ -1,4 +1,6 @@
-package com.yintu.ruixing.common.dto;
+package com.yintu.ruixing.common;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: mlf
@@ -10,7 +12,8 @@ public class AuditTotalDto {
     /**
      * 1.待处理 2.已处理 3.我发起的
      */
-    private int totalType;
+    @NotNull
+    private short bigType;
     /**
      * 搜索内容
      */
@@ -18,19 +21,24 @@ public class AuditTotalDto {
     /**
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
      */
-    private int moduleType;
+    private short moduleType;
 
     /**
      * 1.全部  2.审批完成 3.审批中 4.已撤销
      */
-    private int smallType;
+    private short smallType;
 
-    public int getTotalType() {
-        return totalType;
+    /**
+     * 当前登录人id
+     */
+    private int loginUserId;
+
+    public short getBigType() {
+        return bigType;
     }
 
-    public void setTotalType(int totalType) {
-        this.totalType = totalType;
+    public void setBigType(short bigType) {
+        this.bigType = bigType;
     }
 
     public String getSearch() {
@@ -41,19 +49,27 @@ public class AuditTotalDto {
         this.search = search;
     }
 
-    public int getModuleType() {
+    public short getModuleType() {
         return moduleType;
     }
 
-    public void setModuleType(int moduleType) {
+    public void setModuleType(short moduleType) {
         this.moduleType = moduleType;
     }
 
-    public int getSmallType() {
+    public short getSmallType() {
         return smallType;
     }
 
-    public void setSmallType(int smallType) {
+    public void setSmallType(short smallType) {
         this.smallType = smallType;
+    }
+
+    public int getLoginUserId() {
+        return loginUserId;
+    }
+
+    public void setLoginUserId(int loginUserId) {
+        this.loginUserId = loginUserId;
     }
 }

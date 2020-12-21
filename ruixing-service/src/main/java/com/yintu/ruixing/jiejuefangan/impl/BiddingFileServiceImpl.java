@@ -376,6 +376,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     biddingFileAuditorEntity.setActivate((short) 0);
                     biddingFileAuditorEntity.setIsDispose((short) 1);
                     biddingFileAuditorEntity.setAuditStatus(isPass);
+                    biddingFileAuditorEntity.setAuditFinishTime(new Date());
                     biddingFileAuditorService.edit(biddingFileAuditorEntity);
                 }
                 Integer sort = now.getSort();//取出当前人审核顺序
@@ -385,7 +386,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         throw new BaseRuntimeException("转交人id不能为空");
                     now.setActivate((short) 0);
                     now.setIsDispose((short) 1);
-                    now.setAuditStatus((short)5);
+                    now.setAuditStatus((short) 5);
                     biddingFileAuditorService.edit(now);
                     BiddingFileAuditorEntity b = new BiddingFileAuditorEntity();
                     b.setBiddingFileId(id);
@@ -415,7 +416,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 }
                 now.setActivate((short) 0);
                 now.setIsDispose((short) 1);
-                now.setAuditStatus((short)5);
+                now.setAuditStatus((short) 5);
+                now.setAuditFinishTime(new Date());
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -429,6 +431,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         biddingFileEntity.setModifiedBy(userName);
                         biddingFileEntity.setModifiedTime(new Date());
                         biddingFileEntity.setAuditStatus((short) 3);
+                        biddingFileEntity.setAuditFinishTime(new Date());
                         this.edit(biddingFileEntity);//更改文件审核状态
                         //文件日志记录
                         StringBuilder sb = new StringBuilder();
@@ -483,7 +486,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     biddingFileEntity.setModifiedBy(userName);
                     biddingFileEntity.setModifiedTime(new Date());
                     biddingFileEntity.setAuditStatus((short) 4);
-                    //biddingFileEntity.setReason(reason);
+                    biddingFileEntity.setAuditFinishTime(new Date());
                     this.edit(biddingFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();

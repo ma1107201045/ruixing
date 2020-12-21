@@ -386,6 +386,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileAuditorEntity.setActivate((short) 0);
                     designLiaisonFileAuditorEntity.setIsDispose((short) 1);
                     designLiaisonFileAuditorEntity.setAuditStatus(isPass);
+                    designLiaisonFileAuditorEntity.setAuditFinishTime(new Date());
                     designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
                 }
                 Integer sort = now.getSort();//取出当前人审核顺序
@@ -395,7 +396,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         throw new BaseRuntimeException("转交人id不能为空");
                     now.setActivate((short) 0);
                     now.setIsDispose((short) 1);
-                    now.setAuditStatus((short)5);
+                    now.setAuditStatus((short) 5);
                     designLiaisonFileAuditorService.edit(now);
 
                     DesignLiaisonFileAuditorEntity d = new DesignLiaisonFileAuditorEntity();
@@ -427,6 +428,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 now.setActivate((short) 0);
                 now.setIsDispose((short) 1);
                 now.setAuditStatus(isPass);
+                now.setAuditFinishTime(new Date());
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -440,6 +442,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         designLiaisonFileEntity.setModifiedBy(userName);
                         designLiaisonFileEntity.setModifiedTime(new Date());
                         designLiaisonFileEntity.setAuditStatus((short) 3);
+                        designLiaisonFileEntity.setAuditFinishTime(new Date());
                         this.edit(designLiaisonFileEntity);//更改文件审核状态
                         //文件日志记录
                         StringBuilder sb = new StringBuilder();
@@ -494,7 +497,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileEntity.setModifiedBy(userName);
                     designLiaisonFileEntity.setModifiedTime(new Date());
                     designLiaisonFileEntity.setAuditStatus((short) 4);
-                    // designLiaisonFileEntity.setReason(reason);
+                    designLiaisonFileEntity.setAuditFinishTime(new Date());
                     this.edit(designLiaisonFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();

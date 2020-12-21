@@ -1,4 +1,4 @@
-package com.yintu.ruixing.common.vo;
+package com.yintu.ruixing.common;
 
 /**
  * @Author: mlf

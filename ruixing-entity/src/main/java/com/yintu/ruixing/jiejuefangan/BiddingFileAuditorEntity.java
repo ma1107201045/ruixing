@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,8 @@ public class BiddingFileAuditorEntity implements Serializable {
     private Short isDispose;
 
     private Short auditStatus;
+
+    private Date auditFinishTime;
 
     private String context;
 

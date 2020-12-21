@@ -14,13 +14,13 @@
         <result column="release_status" jdbcType="SMALLINT" property="releaseStatus"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, name, path, upload_datetime,
-    type, release_status,user_id,audit_status,reason,remark, pre_sale_id
+    type, release_status,user_id,audit_status,audit_finish_time,remark, pre_sale_id
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -38,12 +38,12 @@
         insert into mro_pre_sale_file (id, create_by, create_time,
                                        modified_by, modified_time, name,
                                        path, upload_datetime, type,
-                                       release_status, user_id, audit_status, reason, remark, pre_sale_id)
+                                       release_status, user_id, audit_status, audit_finish_time, remark, pre_sale_id)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
                 #{path,jdbcType=VARCHAR}, #{uploadDatetime,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT},
                 #{releaseStatus,jdbcType=SMALLINT}, #{user_id,jdbcType=INTEGER},
-                #{audit_status,jdbcType=SMALLINT}, #{reason,jdbcType=VARCHAR},
+                #{audit_status,jdbcType=SMALLINT}, #{auditFinishTime,jdbcType=TIMESTAMP},
                 #{remark,jdbcType=VARCHAR},
                 #{preSaleId,jdbcType=INTEGER})
     </insert>
@@ -87,8 +87,8 @@
             <if test="auditStatus != null">
                 audit_status,
             </if>
-            <if test="reason != null">
-                reason,
+            <if test="auditFinishTime != null">
+                audit_finish_time,
             </if>
             <if test="remark != null">
                 remark,
@@ -134,8 +134,8 @@
             <if test="auditStatus != null">
                 #{auditStatus,jdbcType=INTEGER},
             </if>
-            <if test="reason != null">
-                #{reason,jdbcType=VARCHAR},
+            <if test="auditFinishTime != null">
+                #{auditFinishTime,jdbcType=TIMESTAMP},
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
@@ -181,8 +181,8 @@
             <if test="auditStatus != null">
                 audit_status = #{auditStatus,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                reason = #{reason,jdbcType=VARCHAR},
+            <if test="auditFinishTime != null">
+                audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
@@ -195,20 +195,20 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.jiejuefangan.PreSaleFileEntity">
         update mro_pre_sale_file
-        set create_by       = #{createBy,jdbcType=VARCHAR},
-            create_time     = #{createTime,jdbcType=TIMESTAMP},
-            modified_by     = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time   = #{modifiedTime,jdbcType=TIMESTAMP},
-            name            = #{name,jdbcType=VARCHAR},
-            path            = #{path,jdbcType=VARCHAR},
-            upload_datetime = #{uploadDatetime,jdbcType=TIMESTAMP},
-            type            = #{type,jdbcType=SMALLINT},
-            release_status  = #{releaseStatus,jdbcType=SMALLINT},
-            user_id         = #{userId,jdbcType=INTEGER},
-            audit_status    = #{auditStatus,jdbcType=INTEGER},
-            reason          = #{reason,jdbcType=VARCHAR},
-            remark          = #{remark,jdbcType=VARCHAR},
-            pre_sale_id     = #{preSaleId,jdbcType=INTEGER}
+        set create_by         = #{createBy,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
+            name              = #{name,jdbcType=VARCHAR},
+            path              = #{path,jdbcType=VARCHAR},
+            upload_datetime   = #{uploadDatetime,jdbcType=TIMESTAMP},
+            type              = #{type,jdbcType=SMALLINT},
+            release_status    = #{releaseStatus,jdbcType=SMALLINT},
+            user_id           = #{userId,jdbcType=INTEGER},
+            audit_status      = #{auditStatus,jdbcType=INTEGER},
+            audit_finish_time = #{auditFinishTime,jdbcType=VARCHAR},
+            remark            = #{remark,jdbcType=VARCHAR},
+            pre_sale_id       = #{preSaleId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -226,7 +226,7 @@
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="pre_sale_id" jdbcType="INTEGER" property="preSaleId"/>
         <association column="pre_sale_id" property="preSaleEntity">
             <id column="ps_id" jdbcType="INTEGER" property="id"/>
@@ -238,7 +238,7 @@
         </association>
     </resultMap>
     <sql id="Connect_Column_List">
-        psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.user_id,psf.audit_status,psf.reason,psf.remark, psf.pre_sale_id,
+        psf.id as psf_id,psf.create_by, psf.create_time, psf.modified_by, psf.modified_time, psf.name, psf.path, psf.upload_datetime, psf.type,psf.release_status,psf.user_id,psf.audit_status,psf.audit_finish_time,psf.remark, psf.pre_sale_id,
         ps.id as ps_id , ps.project_name, ps.project_status, ps.project_date, ps.task_status, ps.task_finish_date
     </sql>
     <sql id="Connect_condition_List">
@@ -268,4 +268,32 @@
         <include refid="Connect_condition_List"/>
     </select>
 
+
+    <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="title"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo">
+
+        </collection>
+    </resultMap>
+    <sql id="Example_Column_List">
+        psf.id,psf.name,psf.remark,psf.create_by,psf.audit_finish_time,psf.audit_status
+        u.true_name
+        psfa.id, psfa.auditor_id,  psfa.sort,  psfa.activate,  psfa.accessory_name,  psfa.accessory_path,psfa.is_dispose,  psfa.audit_status,  psfa.audit_finish_time,
+        tu.true_name
+    </sql>
+    <sql id="Example_condition_List">
+
+    </sql>
+
+    <select id="selectByExample" resultMap="ExampleResultMap">
+        select
+        <include refid="Example_Column_List"/>
+        from mro_pre_sale_file psf
+        inner join tb_user u psf.user_id = u.id
+        inner join mro_pre_sale_file_auditor psfa on psf.id = psfa.pre_sale_file_id
+        inner join tb_user tu on psfa.auditor_id=tu.id
+        <include refid="Example_condition_List"/>
+    </select>
 </mapper>

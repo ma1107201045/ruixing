@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan.impl;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
@@ -385,6 +386,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileAuditorEntity.setActivate((short) 0);
                     preSaleFileAuditorEntity.setIsDispose((short) 1);
                     preSaleFileAuditorEntity.setAuditStatus(isPass);
+                    preSaleFileAuditorEntity.setAuditFinishTime(new Date());
                     preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
                 }
                 Integer sort = now.getSort();//取出当前人审核顺序
@@ -394,7 +396,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                         throw new BaseRuntimeException("转交人id不能为空");
                     now.setActivate((short) 0);
                     now.setIsDispose((short) 1);
-                    now.setAuditStatus((short)5);
+                    now.setAuditStatus((short) 5);
                     preSaleFileAuditorService.edit(now);
                     PreSaleFileAuditorEntity p = new PreSaleFileAuditorEntity();
                     p.setPreSaleFileId(id);
@@ -426,6 +428,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 now.setActivate((short) 0);
                 now.setIsDispose((short) 1);
                 now.setAuditStatus(isPass);
+                now.setAuditFinishTime(new Date());
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -438,6 +441,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                         preSaleFileEntity.setModifiedBy(userName);
                         preSaleFileEntity.setModifiedTime(new Date());
                         preSaleFileEntity.setAuditStatus((short) 3);
+                        preSaleFileEntity.setAuditFinishTime(new Date());
                         this.edit(preSaleFileEntity);//更改文件审核状态
                         //文件日志记录
                         StringBuilder sb = new StringBuilder();
@@ -492,7 +496,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     preSaleFileEntity.setModifiedBy(userName);
                     preSaleFileEntity.setModifiedTime(new Date());
                     preSaleFileEntity.setAuditStatus((short) 4);
-                    //  preSaleFileEntity.setReason(reason);
+                    preSaleFileEntity.setAuditFinishTime(new Date());
                     this.edit(preSaleFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();
@@ -552,5 +556,10 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
 
         userEntityExample.setOrderByClause("id DESC");
         return userService.findByExample(userEntityExample);
+    }
+
+    @Override
+    public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short isDispose) {
+        return null;
     }
 }

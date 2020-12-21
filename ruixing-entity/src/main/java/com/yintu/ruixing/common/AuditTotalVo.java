@@ -1,4 +1,4 @@
-package com.yintu.ruixing.common.vo;
+package com.yintu.ruixing.common;
 
 import java.util.Date;
 import java.util.List;
@@ -10,27 +10,30 @@ import java.util.List;
  */
 public class AuditTotalVo {
 
+
+    /**
+     * 模块标识
+     * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
+     */
+    private short moduleType;
+    /**
+     * 1.项目 2.文件
+     */
+    private short type;
     /**
      * 主键
      */
     private int id;
 
     /**
-     * 模块标识
-     * <p>
-     * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
-     */
-    private int moduleType;
-
-    /**
-     * 1.项目 2.文件
-     */
-    private int type;
-
-    /**
      * 标题
      */
     private String title;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     /**
      * 发起人
@@ -66,19 +69,19 @@ public class AuditTotalVo {
         this.id = id;
     }
 
-    public int getModuleType() {
+    public short getModuleType() {
         return moduleType;
     }
 
-    public void setModuleType(int moduleType) {
+    public void setModuleType(short moduleType) {
         this.moduleType = moduleType;
     }
 
-    public int getType() {
+    public short getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(short type) {
         this.type = type;
     }
 

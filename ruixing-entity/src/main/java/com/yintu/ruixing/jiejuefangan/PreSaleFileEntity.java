@@ -40,7 +40,8 @@ public class PreSaleFileEntity implements Serializable {
 
     private Short auditStatus;
 
-    private String reason;
+    private Date auditFinishTime;
+
 
     private String remark;
 

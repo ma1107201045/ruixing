@@ -11,6 +11,7 @@
         <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
         <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
@@ -18,7 +19,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, design_liaison_file_id, auditor_id, sort, activate, accessory_name, accessory_path,
-    is_dispose, audit_status
+    is_dispose, audit_status, audit_finish_time
     </sql>
     <sql id="Blob_Column_List">
         context
@@ -40,11 +41,11 @@
         insert into mro_design_liaison_file_auditor (id, design_liaison_file_id, auditor_id,
                                                      sort, activate, accessory_name,
                                                      accessory_path, is_dispose, audit_status,
-                                                     context)
+                                                     audit_finish_time, context)
         values (#{id,jdbcType=INTEGER}, #{designLiaisonFileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
                 #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{accessoryName,jdbcType=VARCHAR},
                 #{accessoryPath,jdbcType=VARCHAR}, #{isDispose,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT},
-                #{context,jdbcType=LONGVARCHAR})
+                #{auditFinishTime,jdbcType=TIMESTAMP}, #{context,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.jiejuefangan.DesignLiaisonFileAuditorEntity">
         insert into mro_design_liaison_file_auditor
@@ -75,6 +76,9 @@
             </if>
             <if test="auditStatus != null">
                 audit_status,
+            </if>
+            <if test="auditFinishTime != null">
+                audit_finish_time,
             </if>
             <if test="context != null">
                 context,
@@ -107,6 +111,9 @@
             </if>
             <if test="auditStatus != null">
                 #{auditStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="auditFinishTime != null">
+                #{auditFinishTime,jdbcType=TIMESTAMP},
             </if>
             <if test="context != null">
                 #{context,jdbcType=LONGVARCHAR},
@@ -141,6 +148,9 @@
             <if test="auditStatus != null">
                 audit_status = #{auditStatus,jdbcType=SMALLINT},
             </if>
+            <if test="auditFinishTime != null">
+                audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="context != null">
                 context = #{context,jdbcType=LONGVARCHAR},
             </if>
@@ -158,6 +168,7 @@
             accessory_path         = #{accessoryPath,jdbcType=VARCHAR},
             is_dispose             = #{isDispose,jdbcType=SMALLINT},
             audit_status           = #{auditStatus,jdbcType=SMALLINT},
+            audit_finish_time      = #{auditFinishTime,jdbcType=TIMESTAMP},
             context                = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -170,7 +181,8 @@
             accessory_name         = #{accessoryName,jdbcType=VARCHAR},
             accessory_path         = #{accessoryPath,jdbcType=VARCHAR},
             is_dispose             = #{isDispose,jdbcType=SMALLINT},
-            audit_status           = #{auditStatus,jdbcType=SMALLINT}
+            audit_status           = #{auditStatus,jdbcType=SMALLINT},
+            audit_finish_time      = #{auditFinishTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -178,7 +190,7 @@
         insert into mro_design_liaison_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
             design_liaison_file_id,auditor_id,sort,
-            activate,accessory_name,accessory_path,context,is_dispose,auditStatus
+            activate,accessory_name,accessory_path,context,is_dispose,auditStatus,audit_finish_time
         </trim>
         values
         <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">
@@ -191,7 +203,8 @@
                 #{designLiaisonFileAuditorEntity.accessoryPath,jdbcType=SMALLINT},
                 #{designLiaisonFileAuditorEntity.context,jdbcType=LONGVARCHAR},
                 #{designLiaisonFileAuditorEntity.isDispose,jdbcType=SMALLINT},
-                #{designLiaisonFileAuditorEntity.auditStatus,jdbcType=SMALLINT}
+                #{designLiaisonFileAuditorEntity.auditStatus,jdbcType=SMALLINT},
+                #{designLiaisonFileAuditorEntity.auditFinishTime,jdbcType=SMALLINT}
             </trim>
         </foreach>
     </insert>
