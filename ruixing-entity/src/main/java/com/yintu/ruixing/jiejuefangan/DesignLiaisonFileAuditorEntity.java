@@ -26,5 +26,10 @@ public class DesignLiaisonFileAuditorEntity implements Serializable {
 
     private String accessoryPath;
 
+    private Short isDispose;
+
+    private Short auditStatus;
+
     private String context;
+
 }

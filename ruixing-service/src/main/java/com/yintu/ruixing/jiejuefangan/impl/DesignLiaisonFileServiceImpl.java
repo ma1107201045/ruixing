@@ -96,6 +96,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         } else {
                             designLiaisonFileAuditorEntity.setActivate((short) 0);
                         }
+                        designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                        designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                         designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                     }
 
@@ -114,6 +116,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                             } else {
                                 designLiaisonFileAuditorEntity.setActivate((short) 0);
                             }
+                            designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                            designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                             designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                         }
 
@@ -195,6 +199,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                             } else {
                                 designLiaisonFileAuditorEntity.setActivate((short) 0);
                             }
+                            designLiaisonFileAuditorEntity.setIsDispose((short) 0);
                             designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                         }
 
@@ -213,6 +218,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                                 } else {
                                     designLiaisonFileAuditorEntity.setActivate((short) 0);
                                 }
+                                designLiaisonFileAuditorEntity.setIsDispose((short) 0);
                                 designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                             }
 
@@ -378,18 +384,26 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
 
                 for (DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity : designLiaisonFileAuditorEntities) {//更改当前顺序的审核人群的激活状态
                     designLiaisonFileAuditorEntity.setActivate((short) 0);
+                    designLiaisonFileAuditorEntity.setIsDispose((short) 1);
+                    designLiaisonFileAuditorEntity.setAuditStatus(isPass);
                     designLiaisonFileAuditorService.edit(designLiaisonFileAuditorEntity);
                 }
-                Integer sort = designLiaisonFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
+                Integer sort = now.getSort();//取出当前人审核顺序
                 //转交时候
                 if (isPass == 5) {
                     if (passUserId == null)
                         throw new BaseRuntimeException("转交人id不能为空");
+                    now.setActivate((short) 0);
+                    now.setIsDispose((short) 1);
+                    now.setAuditStatus((short)5);
+                    designLiaisonFileAuditorService.edit(now);
+
                     DesignLiaisonFileAuditorEntity d = new DesignLiaisonFileAuditorEntity();
                     d.setDesignLiaisonFileId(id);
                     d.setAuditorId(passUserId);
                     d.setSort(sort);
                     d.setActivate((short) 1);
+                    d.setIsDispose((short) 0);
                     designLiaisonFileAuditorService.add(d);
                     //转交只给这个人发信息
                     MessageEntity messageEntity = new MessageEntity();
@@ -411,6 +425,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     return;
                 }
                 now.setActivate((short) 0);
+                now.setIsDispose((short) 1);
+                now.setAuditStatus(isPass);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -478,7 +494,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     designLiaisonFileEntity.setModifiedBy(userName);
                     designLiaisonFileEntity.setModifiedTime(new Date());
                     designLiaisonFileEntity.setAuditStatus((short) 4);
-                   // designLiaisonFileEntity.setReason(reason);
+                    // designLiaisonFileEntity.setReason(reason);
                     this.edit(designLiaisonFileEntity);//更改文件审核状态
                     //文件日志记录
                     StringBuilder sb = new StringBuilder();
@@ -535,6 +551,8 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);
+
+        userEntityExample.setOrderByClause("id DESC");
         return userService.findByExample(userEntityExample);
     }
 }

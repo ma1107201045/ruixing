@@ -22,10 +22,13 @@ public class PreSaleFileAuditorEntity implements Serializable {
 
     private Short activate;
 
-
     private String accessoryName;
 
     private String accessoryPath;
+
+    private Short isDispose;
+
+    private Short auditStatus;
 
     private String context;
 

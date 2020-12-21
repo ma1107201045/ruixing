@@ -74,7 +74,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         Short type = preSaleFileEntity.getType();//文件类型
         Short releaseStatus = preSaleFileEntity.getReleaseStatus();//发布状态
         Integer currentUserId = preSaleFileEntity.getUserId();//当前文件创建者
-        short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
+        short auditStatus;//审核状态 1.正常 2.审核中 3.已审核通过 4.已审核未通过
         if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
             auditStatus = 2;
             preSaleFileEntity.setAuditStatus(auditStatus);
@@ -96,6 +96,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                         } else {
                             preSaleFileAuditorEntity.setActivate((short) 0);
                         }
+                        preSaleFileAuditorEntity.setIsDispose((short) 0);
+                        preSaleFileAuditorEntity.setAuditStatus((short) 2);
                         preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                     }
 
@@ -114,6 +116,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                             } else {
                                 preSaleFileAuditorEntity.setActivate((short) 0);
                             }
+                            preSaleFileAuditorEntity.setIsDispose((short) 0);
+                            preSaleFileAuditorEntity.setAuditStatus((short) 2);
                             preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                         }
 
@@ -150,6 +154,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 }
 
             }
+
+
         } else {
             auditStatus = 1;
             preSaleFileEntity.setAuditStatus(auditStatus);
@@ -195,6 +201,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                             } else {
                                 preSaleFileAuditorEntity.setActivate((short) 0);
                             }
+                            preSaleFileAuditorEntity.setIsDispose((short) 0);
+                            preSaleFileAuditorEntity.setAuditStatus((short) 2);
                             preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                         }
                     }
@@ -212,6 +220,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                                 } else {
                                     preSaleFileAuditorEntity.setActivate((short) 0);
                                 }
+                                preSaleFileAuditorEntity.setIsDispose((short) 0);
+                                preSaleFileAuditorEntity.setAuditStatus((short) 2);
                                 preSaleFileAuditorEntities.add(preSaleFileAuditorEntity);
                             }
 
@@ -289,8 +299,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 PreSaleEntity preSaleEntity = preSaleService.findById(preSaleId);
                 preSaleFileEntity.setPreSaleEntity(preSaleEntity);
             }
-            List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
-            preSaleFileEntity.setPreSaleFileAuditorEntities(preSaleFileAuditorEntities);
+            preSaleFileEntity.setPreSaleFileAuditorEntities(preSaleFileAuditorService.findByExample(preSaleFileEntity.getId(), null, null, (short) 1));
         }
         return preSaleFileEntity == null ? new PreSaleFileEntity() : preSaleFileEntity;
     }
@@ -374,18 +383,26 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                 }
                 for (PreSaleFileAuditorEntity preSaleFileAuditorEntity : preSaleFileAuditorEntities) {//更改当前顺序的审核人群的激活状态
                     preSaleFileAuditorEntity.setActivate((short) 0);
+                    preSaleFileAuditorEntity.setIsDispose((short) 1);
+                    preSaleFileAuditorEntity.setAuditStatus(isPass);
                     preSaleFileAuditorService.edit(preSaleFileAuditorEntity);
                 }
-                Integer sort = preSaleFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
+                Integer sort = now.getSort();//取出当前人审核顺序
                 //转交时候
                 if (isPass == 5) {
                     if (passUserId == null)
                         throw new BaseRuntimeException("转交人id不能为空");
+                    now.setActivate((short) 0);
+                    now.setIsDispose((short) 1);
+                    now.setAuditStatus((short)5);
+                    preSaleFileAuditorService.edit(now);
                     PreSaleFileAuditorEntity p = new PreSaleFileAuditorEntity();
                     p.setPreSaleFileId(id);
                     p.setAuditorId(passUserId);
                     p.setSort(sort);
                     p.setActivate((short) 1);
+                    p.setIsDispose((short) 0);
+                    p.setAuditStatus((short) 2);
                     preSaleFileAuditorService.add(p);
                     //转交只给这个人发信息
                     MessageEntity messageEntity = new MessageEntity();
@@ -407,6 +424,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
                     return;
                 }
                 now.setActivate((short) 0);
+                now.setIsDispose((short) 1);
+                now.setAuditStatus(isPass);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -530,6 +549,8 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);
+
+        userEntityExample.setOrderByClause("id DESC");
         return userService.findByExample(userEntityExample);
     }
 }

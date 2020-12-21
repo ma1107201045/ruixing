@@ -94,6 +94,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         } else {
                             biddingFileAuditorEntity.setActivate((short) 0);
                         }
+                        biddingFileAuditorEntity.setIsDispose((short) 0);
+                        biddingFileAuditorEntity.setAuditStatus((short) 2);
                         biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                     }
 
@@ -112,6 +114,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                             } else {
                                 biddingFileAuditorEntity.setActivate((short) 0);
                             }
+                            biddingFileAuditorEntity.setIsDispose((short) 0);
+                            biddingFileAuditorEntity.setAuditStatus((short) 2);
                             biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                         }
 
@@ -200,6 +204,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                             } else {
                                 biddingFileAuditorEntity.setActivate((short) 0);
                             }
+                            biddingFileAuditorEntity.setIsDispose((short) 0);
                             biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                         }
 
@@ -218,6 +223,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                                 } else {
                                     biddingFileAuditorEntity.setActivate((short) 0);
                                 }
+                                biddingFileAuditorEntity.setIsDispose((short) 0);
                                 biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                             }
 
@@ -294,8 +300,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 BiddingEntity biddingEntity = biddingService.findById(biddingId);
                 biddingFileEntity.setBiddingEntity(biddingEntity);
             }
-            List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByExample(biddingFileEntity.getId(), null, null, (short) 1);
-            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorEntities);
+            biddingFileEntity.setBiddingFileAuditorEntities(biddingFileAuditorService.findByExample(biddingFileEntity.getId(), null, null, (short) 1));
         }
         return biddingFileEntity == null ? new BiddingFileEntity() : biddingFileEntity;
     }
@@ -369,18 +374,25 @@ public class BiddingFileServiceImpl implements BiddingFileService {
 
                 for (BiddingFileAuditorEntity biddingFileAuditorEntity : biddingFileAuditorEntities) {//更改当前顺序的审核人群的激活状态
                     biddingFileAuditorEntity.setActivate((short) 0);
+                    biddingFileAuditorEntity.setIsDispose((short) 1);
+                    biddingFileAuditorEntity.setAuditStatus(isPass);
                     biddingFileAuditorService.edit(biddingFileAuditorEntity);
                 }
-                Integer sort = biddingFileAuditorEntities.get(0).getSort();//取出里边的任意顺序，进行下一批人审批
+                Integer sort = now.getSort();//取出当前人审核顺序
                 //转交时候
                 if (isPass == 5) {
                     if (passUserId == null)
                         throw new BaseRuntimeException("转交人id不能为空");
+                    now.setActivate((short) 0);
+                    now.setIsDispose((short) 1);
+                    now.setAuditStatus((short)5);
+                    biddingFileAuditorService.edit(now);
                     BiddingFileAuditorEntity b = new BiddingFileAuditorEntity();
                     b.setBiddingFileId(id);
                     b.setAuditorId(passUserId);
                     b.setSort(sort);
                     b.setActivate((short) 1);
+                    b.setIsDispose((short) 0);
                     biddingFileAuditorService.add(b);
                     //转交只给这个人发信息
                     MessageEntity messageEntity = new MessageEntity();
@@ -402,6 +414,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     return;
                 }
                 now.setActivate((short) 0);
+                now.setIsDispose((short) 1);
+                now.setAuditStatus((short)5);
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);
                 now.setAccessoryPath(accessoryPath);
@@ -526,6 +540,8 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);
+
+        userEntityExample.setOrderByClause("id DESC");
         return userService.findByExample(userEntityExample);
     }
 }
