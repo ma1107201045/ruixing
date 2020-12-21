@@ -46,6 +46,19 @@
     createTime,updateTime,operatorName,remarks
   </sql>
 
+
+    <!--根据id  查询单个 或者批量的数据-->
+    <select id="selectByCondition" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_chanpinjiaofu_xiangmu
+        where id
+        in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+
     <!--查询消息列表的内容-->
     <select id="findXiaoXi" resultType="java.lang.String">
         SELECT

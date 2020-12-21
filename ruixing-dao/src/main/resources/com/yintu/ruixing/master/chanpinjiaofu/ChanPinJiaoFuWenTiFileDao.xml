@@ -20,7 +20,8 @@
     select
     <include refid="Base_Column_List" />
     from mro_chanpinjiaofu_wenti_file
-    where file_type = #{fileType,jdbcType=INTEGER}
+    where wtid = #{wtid,jdbcType=INTEGER}
+    and  file_type = #{fileType,jdbcType=INTEGER}
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

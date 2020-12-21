@@ -20,6 +20,7 @@
     <include refid="Base_Column_List" />
     from mro_paigongguanli_paigongdan_recordmessage
     where typeId = #{id,jdbcType=INTEGER}
+    order by id desc
   </select>
 
 

@@ -52,6 +52,8 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
             //第一级
             TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
             //treeNodeUtil.setId(trainEntity.getId().longValue());
+            Integer id = trainEntity.getId()*25685;
+            treeNodeUtil.setId(id.longValue());
             treeNodeUtil.setLabel(trainEntity.getTraintype().toString());
             List<AnZhuangTiaoShiTrainEntity> trainEntities=anZhuangTiaoShiTrainDao.findTrainBytraintype(trainEntity.getTraintype());
             List<TreeNodeUtil> treeNodeUtilss = new ArrayList<>();

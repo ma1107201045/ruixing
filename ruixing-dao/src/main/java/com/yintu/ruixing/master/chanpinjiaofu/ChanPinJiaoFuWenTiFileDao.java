@@ -17,5 +17,5 @@ public interface ChanPinJiaoFuWenTiFileDao {
 /////////////////////////////////////////////////////////////////
     int insertSelective(ChanPinJiaoFuWenTiFileEntity record);
 
-    List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer fileType);
+    List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer wtid,Integer fileType);
 }

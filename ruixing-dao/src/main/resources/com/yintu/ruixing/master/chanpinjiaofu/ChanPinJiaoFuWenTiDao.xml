@@ -70,11 +70,40 @@
         FROM
             tb_department
     </select>
+
+    <!--查询所有未解决的数据-->
+    <select id="findAllNotOverWenTi" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            mro_chanpinjiaofu_wenti
+        WHERE
+            wenti_state =1
+    </select>
+
+    <!--查询所有未解决的数据总和-->
+    <select id="wenTingDoingNumber" resultType="java.lang.String">
+        SELECT
+            SUM( wenti_state )
+        FROM
+            mro_chanpinjiaofu_wenti
+        WHERE
+            wenti_state =1
+    </select>
+
     <!--查询所有的数据-->
     <select id="findAllData" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_chanpinjiaofu_wenti
+        <where>
+            <if test="xiangMuNumber!=null">
+                xiangmuBianhao like concat('%',#{xiangMuNumber},'%')
+            </if>
+            <if test="wenTiState!=null">
+                and wenti_state=#{wenTiState}
+            </if>
+        </where>
         GROUP BY id DESC
     </select>
 
@@ -88,7 +117,6 @@
         <foreach collection="array" item="ids" open="(" separator="," close=")">
             #{ids}
         </foreach>
-
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

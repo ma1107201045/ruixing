@@ -36,6 +36,7 @@
     from mro_anzhuangtiaoshi_works_recordmessage
     where typeId = #{id,jdbcType=INTEGER}
     and typeNum=1
+    order by id desc
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

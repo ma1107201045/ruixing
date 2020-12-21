@@ -30,9 +30,9 @@ public class ChanPinJiaoFuWenTiController extends SessionController {
 
     //查询所有的数据
     @GetMapping("/findAllData")
-    public Map<String, Object> findAllData(Integer page, Integer size) {
+    public Map<String, Object> findAllData(Integer page, Integer size, String xiangMuNumber, Integer wenTiState) {
         PageHelper.startPage(page, size);
-        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities = chanPinJiaoFuWenTiService.findAllData(page, size);
+        List<ChanPinJiaoFuWenTiEntity> chanPinJiaoFuWenTiEntities = chanPinJiaoFuWenTiService.findAllData(page, size, xiangMuNumber, wenTiState);
         PageInfo<ChanPinJiaoFuWenTiEntity> pageInfo = new PageInfo<>(chanPinJiaoFuWenTiEntities);
         return ResponseDataUtil.ok("查询数据成功", pageInfo);
     }
@@ -92,7 +92,7 @@ public class ChanPinJiaoFuWenTiController extends SessionController {
         chanPinJiaoFuWenTiService.exportFile(response.getOutputStream(), ids);
     }
 
-    //新增文件
+    //新增文件 (存在问题、工作计划)
     @PostMapping("/addWenTiFile")
     public Map<String, Object> addWenTiFile(ChanPinJiaoFuWenTiFileEntity chanPinJiaoFuWenTiFileEntity) {
         String username = this.getLoginUser().getTrueName();
@@ -101,11 +101,29 @@ public class ChanPinJiaoFuWenTiController extends SessionController {
     }
 
     //查看文件
-    @GetMapping("findWenTiFileByType")
-    public Map<String,Object>findWenTiFileByType(Integer fileType){
-        List<ChanPinJiaoFuWenTiFileEntity> wenTiFileEntityList=chanPinJiaoFuWenTiService.findWenTiFileByType(fileType);
-        return ResponseDataUtil.ok("查询文件成功",wenTiFileEntityList);
+    @GetMapping("findWenTiFileByType/{wtid}")
+    public Map<String, Object> findWenTiFileByType(@PathVariable Integer wtid, Integer fileType) {
+        List<ChanPinJiaoFuWenTiFileEntity> wenTiFileEntityList = chanPinJiaoFuWenTiService.findWenTiFileByType(wtid, fileType);
+        return ResponseDataUtil.ok("查询文件成功", wenTiFileEntityList);
     }
+
+    //根据id 删除对应的文件
+    @DeleteMapping("/deleteWenTiFileByid/{id}")
+    public Map<String, Object> deleteWenTiFileByid(@PathVariable Integer id) {
+        chanPinJiaoFuWenTiService.deleteWenTiFileByid(id);
+        return ResponseDataUtil.ok("删除成功");
+    }
+
+    //查询所有未解决的问题
+    @GetMapping("/findAllNotOverWenTi")
+    public Map<String,Object>findAllNotOverWenTi(Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<ChanPinJiaoFuWenTiEntity>wenTiEntityList=chanPinJiaoFuWenTiService.findAllNotOverWenTi();
+        PageInfo<ChanPinJiaoFuWenTiEntity> wenTiEntityPageInfo=new PageInfo<>(wenTiEntityList);
+        return ResponseDataUtil.ok("查询成功",wenTiEntityPageInfo);
+    }
+
+
     /*//根据id 进行单个或者批量下载到Excel
 
     @GetMapping("/downLoadByIds/{ids}")

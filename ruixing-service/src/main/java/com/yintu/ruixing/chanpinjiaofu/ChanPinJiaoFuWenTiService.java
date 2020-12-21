@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ChanPinJiaoFuWenTiService {
 
-    List<ChanPinJiaoFuWenTiEntity> findAllData(Integer page, Integer size);
+    List<ChanPinJiaoFuWenTiEntity> findAllData(Integer page, Integer size,String xiangMuNumber,Integer wenTiState);
 
     List<DepartmentEntity> findAllDepartment();
 
@@ -35,5 +35,10 @@ public interface ChanPinJiaoFuWenTiService {
 
     void addWenTiFile(ChanPinJiaoFuWenTiFileEntity chanPinJiaoFuWenTiFileEntity,String username);
 
-    List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer fileType);
+    List<ChanPinJiaoFuWenTiFileEntity> findWenTiFileByType(Integer wtid,Integer fileType);
+
+    void deleteWenTiFileByid(Integer id);
+
+    List<ChanPinJiaoFuWenTiEntity> findAllNotOverWenTi();
+
 }
