@@ -281,22 +281,22 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="initiateTime"/>
         <result column="dlf_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="dlf_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-        <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo">
-            <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
-            <result column="sort" jdbcType="INTEGER" property="sort"/>
-            <result column="context" jdbcType="LONGVARCHAR" property="context"/>
-            <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
-            <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
-            <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
-            <result column="dlfa_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-            <result column="dlfa_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
-        </collection>
+        <collection column="id" property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"/>
+    </resultMap>
+
+    <resultMap id="map" type="com.yintu.ruixing.common.AuditTotalInfoVo">
+        <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+        <result column="dlfa_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="dlfa_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
     </resultMap>
     <sql id="Example_Column_List">
         dlf.id, dlf.name,dlf.remark,dlf.create_time,dlf.audit_finish_time,dlf.audit_status as dlf_audit_status,dlf.audit_finish_time as dlf_audit_finish_time,
-        u.true_name  u_true_name,
-        dlfa.sort,  dlfa.context,  dlfa.accessory_name,dlfa.accessory_path,dlfa.is_dispose, dlfa.audit_status as dlfa_audit_status, dlfa.audit_finish_time as dlfa_audit_finish_time,
-        tu.true_name tu_true_name
+        u.true_name  u_true_name
     </sql>
     <sql id="Example_condition_List">
         <where>
@@ -326,9 +326,21 @@
         <include refid="Example_Column_List"/>
         from mro_design_liaison_file dlf
         inner join tb_user u on dlf.user_id = u.id
-        inner join mro_design_liaison_file_auditor dlfa on dlf.id = dlfa.design_liaison_file_id
-        inner join tb_user tu on dlfa.auditor_id=tu.id
+        inner join mro_design_liaison_file_auditor dlfa on dlfa.design_liaison_file_id =dlf.id
         <include refid="Example_condition_List"/>
     </select>
-
+    <select id="selectById" resultMap="map">
+        select dlfa.sort,
+               dlfa.context,
+               dlfa.accessory_name,
+               dlfa.accessory_path,
+               dlfa.is_dispose,
+               dlfa.audit_status      as dlfa_audit_status,
+               dlfa.audit_finish_time as dlfa_audit_finish_time,
+               tu.true_name           as tu_true_name
+        from mro_design_liaison_file_auditor dlfa
+                 inner join tb_user tu
+                            on dlfa.auditor_id = tu.id
+        where dlfa.design_liaison_file_id = #{id,jdbcType=INTEGER}
+    </select>
 </mapper>

@@ -109,9 +109,9 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         List<AuditTotalVo> auditTotalVos;
         Short smallType = auditTotalDto.getSmallType();
         if (auditTotalDto.getBigType() == 1) {
-            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), null, (short) 0);
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
         } else if (auditTotalDto.getBigType() == 2) {
-            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), null, (short) 1);
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
         } else {
             auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
         }

@@ -9,6 +9,7 @@ import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyService;
 import com.yintu.ruixing.guzhangzhenduan.SkylightTimeService;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorEntity;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileAuditorService;
+import com.yintu.ruixing.jiejuefangan.PreSaleFileService;
 import com.yintu.ruixing.jiejuefangan.SolutionService;
 import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
@@ -59,6 +60,8 @@ class RuixingApplicationTests {
 
     @Autowired
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
+    @Autowired
+    private PreSaleFileService preSaleFileService;
 
     @Test
     void contextLoads() {
@@ -180,5 +183,10 @@ class RuixingApplicationTests {
     @Test
     void contextLoads15() {
         System.out.println(quDuanInfoDaoV2.selectByQidAndNV(1, "v3", "110.0", "data_applydata_11_20201212"));
+    }
+
+    @Test
+    void contextLoads16() {
+        System.out.println(preSaleFileService.findByExample(null, null, null, null, null, null));
     }
 }
