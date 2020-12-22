@@ -43,7 +43,6 @@ public class AuditTotalInfoVo {
      */
     private Date auditFinishTime;
 
-
     public String getAuditor() {
         return auditor;
     }

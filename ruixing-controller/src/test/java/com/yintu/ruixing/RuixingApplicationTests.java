@@ -3,6 +3,7 @@ package com.yintu.ruixing;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.danganguanli.CustomerService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoService;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoTypesPropertyService;
@@ -187,6 +188,6 @@ class RuixingApplicationTests {
 
     @Test
     void contextLoads16() {
-        System.out.println(preSaleFileService.findByExample(null, null, null, null, null, null));
+        System.out.println(JSONObject.toJSON(preSaleFileService.findByExample(null, null, null, null, null, null)));
     }
 }

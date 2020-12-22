@@ -281,10 +281,12 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="initiateTime"/>
         <result column="dlf_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="dlf_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-        <collection column="id" property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"/>
+        <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"/>
+        <collection column="id" property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"
+                    select="selectById"/>
     </resultMap>
 
-    <resultMap id="map" type="com.yintu.ruixing.common.AuditTotalInfoVo">
+    <resultMap id="selectByIdMap" type="com.yintu.ruixing.common.AuditTotalInfoVo">
         <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="context" jdbcType="LONGVARCHAR" property="context"/>
@@ -329,7 +331,7 @@
         inner join mro_design_liaison_file_auditor dlfa on dlfa.design_liaison_file_id =dlf.id
         <include refid="Example_condition_List"/>
     </select>
-    <select id="selectById" resultMap="map">
+    <select id="selectById" resultMap="selectByIdMap">
         select dlfa.sort,
                dlfa.context,
                dlfa.accessory_name,
