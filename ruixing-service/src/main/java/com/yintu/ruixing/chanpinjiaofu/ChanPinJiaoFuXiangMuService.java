@@ -4,6 +4,8 @@ import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 
+import javax.servlet.ServletOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -84,4 +86,6 @@ public interface ChanPinJiaoFuXiangMuService {
 
 
     long findProjectSum();
+
+    void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
 }

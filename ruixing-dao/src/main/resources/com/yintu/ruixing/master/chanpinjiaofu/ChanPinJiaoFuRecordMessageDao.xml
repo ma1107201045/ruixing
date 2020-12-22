@@ -30,6 +30,7 @@
         from mro_chanpinjiaofu_recordmessage
         where typeId = #{id,jdbcType=INTEGER}
         and typeNum=2
+        order by id desc
     </select>
 
     <!--根据项目id 查看更新历史记录-->
@@ -39,6 +40,7 @@
         from mro_chanpinjiaofu_recordmessage
         where typeId = #{id,jdbcType=INTEGER}
         and typeNum=1
+        order by id desc
     </select>
 
 

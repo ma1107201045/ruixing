@@ -19,6 +19,7 @@
     <include refid="Base_Column_List" />
     from mro_zhishiguanli_filetype_file_recordmessage
     where typeId = #{id,jdbcType=INTEGER}
+    order by id desc
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

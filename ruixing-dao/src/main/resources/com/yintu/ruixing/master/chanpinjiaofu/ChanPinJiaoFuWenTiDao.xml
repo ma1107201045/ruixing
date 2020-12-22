@@ -3,6 +3,7 @@
 <mapper namespace="com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuWenTiDao">
     <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="xiangmuBianhao" jdbcType="VARCHAR" property="xiangmuBianhao"/>
         <result column="xiangmu_name" jdbcType="VARCHAR" property="xiangmuName"/>
         <result column="wentihuanjie" jdbcType="VARCHAR" property="wentihuanjie"/>
         <result column="cunzaiwenti" jdbcType="VARCHAR" property="cunzaiwenti"/>
@@ -13,7 +14,7 @@
         <result column="wenti_state" jdbcType="INTEGER" property="wentiState"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, xiangmu_name, wentihuanjie, cunzaiwenti, peihebumen, waibudanwei, jihua, state, 
+    id, xiangmuBianhao,xiangmu_name, wentihuanjie, cunzaiwenti, peihebumen, waibudanwei, jihua, state,
     wenti_state
   </sql>
 
@@ -33,7 +34,8 @@
     <select id="findXiangMuMing" resultType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity">
         SELECT
             id ,
-            xiangmu_name as xiangmuName
+            xiangmu_name as xiangmuName,
+            xiangmu_bianhao as xiangmuBianhao
         FROM
             mro_chanpinjiaofu_xiangmu
         WHERE
@@ -68,11 +70,40 @@
         FROM
             tb_department
     </select>
+
+    <!--查询所有未解决的数据-->
+    <select id="findAllNotOverWenTi" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+            mro_chanpinjiaofu_wenti
+        WHERE
+            wenti_state =1
+    </select>
+
+    <!--查询所有未解决的数据总和-->
+    <select id="wenTingDoingNumber" resultType="java.lang.String">
+        SELECT
+            SUM( wenti_state )
+        FROM
+            mro_chanpinjiaofu_wenti
+        WHERE
+            wenti_state =1
+    </select>
+
     <!--查询所有的数据-->
     <select id="findAllData" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_chanpinjiaofu_wenti
+        <where>
+            <if test="xiangMuNumber!=null">
+                xiangmuBianhao like concat('%',#{xiangMuNumber},'%')
+            </if>
+            <if test="wenTiState!=null">
+                and wenti_state=#{wenTiState}
+            </if>
+        </where>
         GROUP BY id DESC
     </select>
 
@@ -86,7 +117,6 @@
         <foreach collection="array" item="ids" open="(" separator="," close=")">
             #{ids}
         </foreach>
-
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -105,6 +135,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
+            </if>
+            <if test="xiangmuBianhao != null">
+                xiangmuBianhao,
             </if>
             <if test="xiangmuName != null">
                 xiangmu_name,
@@ -135,6 +168,9 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
+            <if test="xiangmuBianhao != null">
+                #{xiangmuBianhao,jdbcType=VARCHAR},
+            </if>
             <if test="xiangmuName != null">
                 #{xiangmuName,jdbcType=VARCHAR},
             </if>
@@ -164,6 +200,9 @@
     <update id="editWenTiById" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity">
         update mro_chanpinjiaofu_wenti
         <set>
+            <if test="xiangmuBianhao != null">
+                xiangmuBianhao = #{xiangmuBianhao,jdbcType=VARCHAR},
+            </if>
             <if test="xiangmuName != null">
                 xiangmu_name = #{xiangmuName,jdbcType=VARCHAR},
             </if>

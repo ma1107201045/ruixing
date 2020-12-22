@@ -20,6 +20,7 @@
     from mro_anzhuangtiaoshi_wenti_recordmessage
     where typeId = #{id,jdbcType=INTEGER}
     and typeNum=2
+    order by id desc
   </select>
 
   <!--根据问题id  查看时间轴-->
@@ -29,6 +30,7 @@
     from mro_anzhuangtiaoshi_wenti_recordmessage
     where typeId = #{id,jdbcType=INTEGER}
     and typeNum=1
+    order by id desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

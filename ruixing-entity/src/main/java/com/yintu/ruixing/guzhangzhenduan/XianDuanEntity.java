@@ -43,6 +43,8 @@ public class XianDuanEntity {
 
     private String xdJson;//储存的json
 
+    private Long label;
+
     List<CheZhanEntity> cheZhanEntities;
 
     private DianWuDuanEntity dianWuDuanEntity;

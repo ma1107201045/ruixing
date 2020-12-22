@@ -125,6 +125,16 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         }
     }
 
+    //根据id 进行单个或者批量下载到Excel
+    @GetMapping("/downLoadByIds/{ids}")
+    public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
+        String fileName = "交付情况问题反馈列表" + System.currentTimeMillis() + ".xlsx";
+        response.setContentType("application/octet-stream;charset=ISO8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        chanPinJiaoFuXiangMuService.exportFile(response.getOutputStream(), ids);
+    }
 
     //根据项目id 查看更新历史记录
     @ResponseBody

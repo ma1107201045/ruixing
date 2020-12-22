@@ -31,6 +31,8 @@ public class DianWuDuanEntity {
 
     private String yuliu2;
 
+    private Long label;
+
     List<XianDuanEntity> xianDuanEntities;
 
     List<CheZhanEntity> cheZhanEntities;

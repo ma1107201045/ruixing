@@ -171,6 +171,7 @@ public class CheZhanEntity {
 
     private Integer alarmNumber;
 
+    private Long label;
 
     private List<QuDuanBaseEntity> quduanlist;
 

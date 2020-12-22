@@ -22,7 +22,7 @@ public interface ChanPinJiaoFuWenTiDao {
 
     //////////////////////////////////////////////////////////////
 
-    List<ChanPinJiaoFuWenTiEntity> findAllData();
+    List<ChanPinJiaoFuWenTiEntity> findAllData(String xiangMuNumber,Integer wenTiState);
 
     List<DepartmentEntity> findAllDepartment();
 
@@ -39,4 +39,9 @@ public interface ChanPinJiaoFuWenTiDao {
     List<ChanPinJiaoFuWenTiEntity> downLoadByIds(Integer[] ids);
 
     List<ChanPinJiaoFuWenTiEntity> selectByCondition(Integer[] ids);
+
+    List<String> wenTingDoingNumber();
+
+    List<ChanPinJiaoFuWenTiEntity> findAllNotOverWenTi();
+
 }

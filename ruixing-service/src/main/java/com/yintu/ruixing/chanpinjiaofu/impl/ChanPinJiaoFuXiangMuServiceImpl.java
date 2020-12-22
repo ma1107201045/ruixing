@@ -3,20 +3,26 @@ package com.yintu.ruixing.chanpinjiaofu.impl;
 import com.yintu.ruixing.chanpinjiaofu.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
+import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuRecordMessageDao;
+import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuWenTiDao;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuXiangMuFileDao;
 import com.yintu.ruixing.master.common.MessageDao;
 import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.ServletOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author Mr.liu
@@ -47,6 +53,9 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ChanPinJiaoFuWenTiDao chanPinJiaoFuWenTiDao;
 
     @Override
     public List<ChanPinJiaoFuXiangMuEntity> findJiaoFuQingKuangList(String choiceTing, Integer page, Integer size) {
@@ -122,6 +131,9 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         overQianShouMoney.add("overQianShouMoney");
         List<String> overYanGongMoney = chanPinJiaoFuXiangMuDao.overYanGongMoney();
         overYanGongMoney.add("overYanGongMoney");
+        List<String> wenTingDoing= chanPinJiaoFuWenTiDao.wenTingDoingNumber();
+        wenTingDoing.add("wenTingDoing");
+
 
         map.put("zhengZaiZhiXing", zhengZaiZhiXing);
         map.put("meiWanChengQianShou", meiWanChengQianShou);
@@ -134,6 +146,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
         map.put("daiYanGong", daiYanGong);
         map.put("overQianShouMoney", overQianShouMoney);
         map.put("overYanGongMoney", overYanGongMoney);
+        map.put("wenTingDoing", wenTingDoing);
         return map;
     }
 
@@ -164,6 +177,111 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
     @Override
     public ChanPinJiaoFuXiangMuFileEntity findById(Integer id) {
         return chanPinJiaoFuXiangMuFileDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException {
+        //excel标题
+        String title = "产品交付项目列表";
+        //excel表名
+        String[] headers = {"序号", "项目编号", "项目名称", "项目状态", "销售需求状态", "发货状态", "签收状态","是否验工", "验工状态", "是否需要现场服务", "创建时间"};
+        //获取数据
+        List<ChanPinJiaoFuXiangMuEntity> chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuDao.selectByCondition(ids);
+        chanPinJiaoFuXiangMuEntities = chanPinJiaoFuXiangMuEntities.stream()
+                .sorted(Comparator.comparing(ChanPinJiaoFuXiangMuEntity::getId).reversed())
+                .collect(Collectors.toList());
+        //excel元素
+        Integer j = 0;
+        String[][] content = new String[chanPinJiaoFuXiangMuEntities.size()][headers.length];
+        for (int i = 0; i < chanPinJiaoFuXiangMuEntities.size(); i++) {
+            j++;
+            ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity = chanPinJiaoFuXiangMuEntities.get(i);
+            content[i][0] = j.toString();
+            content[i][1] = chanPinJiaoFuXiangMuEntity.getXiangmuBianhao();
+            content[i][2] = chanPinJiaoFuXiangMuEntity.getXiangmuName();
+            if (chanPinJiaoFuXiangMuEntity.getXiangmuState()==1){
+                content[i][3] ="正在执行";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXiangmuState()==2){
+                content[i][3] ="仅剩尾款";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXiangmuState()==3){
+                content[i][3] ="项目关闭";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXiaoshouState()==1){
+                content[i][4] ="前续未办理";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXiaoshouState()==2){
+                content[i][4] ="全部品类/数量已下需求";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXiaoshouState()==3){
+                content[i][4] ="部分品类/数量已下需求";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getFahuoState()==1){
+                content[i][5] ="项目停滞暂不发货";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getFahuoState()==2){
+                content[i][5] ="暂未开始发货";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getFahuoState()==3){
+                content[i][5] ="陆续发货中";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getFahuoState()==4){
+                content[i][5] ="工程结束不需发货";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getFahuoState()==5){
+                content[i][5] ="当前订单完成";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getQianshouState()==1){
+                content[i][6] ="前续未办理";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getQianshouState()==2){
+                content[i][6] ="公司暂存不签收";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getQianshouState()==3){
+                content[i][6] ="已转储待签收";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getQianshouState()==4){
+                content[i][6] ="完成签收";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getIsnotYanGong()==0){
+                content[i][7] ="否";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getIsnotYanGong()==1){
+                content[i][7] ="是";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==1){
+                content[i][8] ="是否需要验工";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==2){
+                content[i][8] ="前续未办理";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==3){
+                content[i][8] ="待验工";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==4){
+                content[i][8] ="顾客要求暂缓验工";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==5){
+                content[i][8] ="完成部分验工";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getYangongState()==6){
+                content[i][8] ="完成验工";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu()==0){
+                content[i][9] ="否";
+            }
+            if (chanPinJiaoFuXiangMuEntity.getXianchangfuwu()==1){
+                content[i][9] ="是";
+            }
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            content[i][10] =sdf.format(chanPinJiaoFuXiangMuEntity.getCreateTime());
+        }
+        //创建HSSFWorkbook
+        XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
     @Override
@@ -680,7 +798,7 @@ public class ChanPinJiaoFuXiangMuServiceImpl implements ChanPinJiaoFuXiangMuServ
                 //添加一条消息到消息表
                 MessageEntity messageEntity = new MessageEntity();
                 messageEntity.setContext("“" + xiangmuName + "”项目需现场服务，请关注项目进展情况，及时安排现场服务计划！");
-                messageEntity.setType((short) 2);
+                messageEntity.setType((short) 3);
                 messageEntity.setStatus((short) 1);
                 messageEntity.setCreateBy(username);//创建人
                 messageEntity.setCreateTime(nowTime);//创建时间

@@ -24,6 +24,8 @@ public class TieLuJuEntity {
 
     private String dwdName;
 
+    private Long label;
+
     List<DianWuDuanEntity> dianWuDuanEntities;
 
 }
