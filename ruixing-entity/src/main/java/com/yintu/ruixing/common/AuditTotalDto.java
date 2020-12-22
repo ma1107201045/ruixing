@@ -24,7 +24,7 @@ public class AuditTotalDto {
     private Short moduleType;
 
     /**
-     * 1.全部  2.审批完成 3.审批中 4.已撤销
+     * 1.全部  3.审批完成 2.审批中 4.已撤销
      */
     private Short smallType;
 

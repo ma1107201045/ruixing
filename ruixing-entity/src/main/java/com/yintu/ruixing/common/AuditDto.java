@@ -30,7 +30,7 @@ public class AuditDto {
 
 
     /**
-     * 2.审批完成 3.审批中 4.已撤销
+     * 2.审批完成 3.审批中 4.已撤销 5.转交
      */
     private Short isPass;
     /**

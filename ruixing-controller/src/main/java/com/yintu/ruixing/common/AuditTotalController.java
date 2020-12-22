@@ -2,10 +2,12 @@ package com.yintu.ruixing.common;
 
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,8 +34,8 @@ public class AuditTotalController extends SessionController {
     @GetMapping("/auditors")
     public Map<String, Object> getAuditors(@Validated AuditDto auditDto) {
         auditDto.setLoginUserId(this.getLoginUserId().intValue());
-        auditTotalService.findByOtherAuditors(auditDto);
-        return ResponseDataUtil.ok("查询审核人列表信息成功");
+        List<UserEntity> userEntities = auditTotalService.findByOtherAuditors(auditDto);
+        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
     }
 
     @GetMapping
