@@ -32,7 +32,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
 
     @Override
     public List<AuditConfigurationEntity> findAudit(short i, short i1, short i2) {
-        return auditConfigurationDao.findAudit(i,i1,i2);
+        return auditConfigurationDao.findAudit(i, i1, i2);
     }
 
     @Override
@@ -141,9 +141,11 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     @Override
     public List<TreeNodeUtil> findTree() {
         List<RoleEntity> roleEntities = roleService.findAll();
+        roleEntities = roleEntities.stream().sorted(Comparator.comparing(RoleEntity::getId).reversed()).collect(Collectors.toList());
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
         for (RoleEntity roleEntity : roleEntities) {
             List<UserEntity> userEntities = roleService.findUsersByIds(roleEntity.getId());
+            userEntities = userEntities.stream().sorted(Comparator.comparing(UserEntity::getId).reversed()).collect(Collectors.toList());
             List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(roleEntity.getId());

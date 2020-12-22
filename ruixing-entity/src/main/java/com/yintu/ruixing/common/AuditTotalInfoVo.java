@@ -1,5 +1,7 @@
 package com.yintu.ruixing.common;
 
+import java.util.Date;
+
 /**
  * @Author: mlf
  * @Date: 2020/12/21 16:01
@@ -35,7 +37,12 @@ public class AuditTotalInfoVo {
     /**
      * 审批状态 2.审核中 3.通过 4.拒绝 5.转交
      */
-    private short auditStatus;
+    private Short auditStatus;
+    /**
+     * 审核完成时间
+     */
+    private Date auditFinishTime;
+
 
     public String getAuditor() {
         return auditor;
@@ -93,6 +100,14 @@ public class AuditTotalInfoVo {
         this.auditStatus = auditStatus;
     }
 
+    public Date getAuditFinishTime() {
+        return auditFinishTime;
+    }
+
+    public void setAuditFinishTime(Date auditFinishTime) {
+        this.auditFinishTime = auditFinishTime;
+    }
+
     @Override
     public String toString() {
         return "AuditTotalInfoVo{" +
@@ -103,6 +118,7 @@ public class AuditTotalInfoVo {
                 ", accessoryPath='" + accessoryPath + '\'' +
                 ", isDispose=" + isDispose +
                 ", auditStatus=" + auditStatus +
+                ", auditFinishTime=" + auditFinishTime +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.yintu.ruixing.common;
 
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.xitongguanli.UserEntity;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
