@@ -23,6 +23,6 @@ public interface PreSaleFileDao {
     List<PreSaleFileEntity> selectByCondition(Integer preSaleId, Integer[] ids, String name, Short type, Integer userId, Short releaseStatus);
 
 
-    List<AuditTotalVo> selectByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short isDispose);
+    List<AuditTotalVo> selectByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 
 }

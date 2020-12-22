@@ -95,6 +95,6 @@ public interface PreSaleFileService extends BaseService<PreSaleFileEntity, Integ
      * @param isDispose   是否处理
      * @return 审批总和视图
      */
-    List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short isDispose);
+    List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 
 }

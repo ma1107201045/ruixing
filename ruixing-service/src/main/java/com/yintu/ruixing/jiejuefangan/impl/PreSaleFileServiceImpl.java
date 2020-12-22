@@ -559,7 +559,7 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
     }
 
     @Override
-    public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short isDispose) {
-        return null;
+    public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
+        return preSaleFileDao.selectByExample(search, userId, auditStatus, auditorId, activate, isDispose);
     }
 }

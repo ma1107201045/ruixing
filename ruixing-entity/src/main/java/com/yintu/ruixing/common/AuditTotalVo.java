@@ -15,15 +15,15 @@ public class AuditTotalVo {
      * 模块标识
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
      */
-    private short moduleType;
+    private Short moduleType;
     /**
      * 1.项目 2.文件
      */
-    private short type;
+    private Short type;
     /**
      * 主键
      */
-    private int id;
+    private Integer id;
 
     /**
      * 标题
@@ -48,7 +48,7 @@ public class AuditTotalVo {
     /**
      * 完成时间
      */
-    private Date finishTime;
+    private Date auditFinishTime;
 
     /**
      * 2.审批完成 3.审批中 4.已撤销
@@ -61,28 +61,28 @@ public class AuditTotalVo {
     private List<AuditTotalInfoVo> auditTotalInfoVos;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public short getModuleType() {
+    public Short getModuleType() {
         return moduleType;
     }
 
-    public void setModuleType(short moduleType) {
+    public void setModuleType(Short moduleType) {
         this.moduleType = moduleType;
     }
 
-    public short getType() {
+    public Short getType() {
         return type;
     }
 
-    public void setType(short type) {
+    public void setType(Short type) {
         this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -91,6 +91,14 @@ public class AuditTotalVo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getInitiator() {
@@ -109,12 +117,12 @@ public class AuditTotalVo {
         this.initiateTime = initiateTime;
     }
 
-    public Date getFinishTime() {
-        return finishTime;
+    public Date getAuditFinishTime() {
+        return auditFinishTime;
     }
 
-    public void setFinishTime(Date finishTime) {
-        this.finishTime = finishTime;
+    public void setAuditFinishTime(Date auditFinishTime) {
+        this.auditFinishTime = auditFinishTime;
     }
 
     public Short getAuditStatus() {
@@ -131,5 +139,21 @@ public class AuditTotalVo {
 
     public void setAuditTotalInfoVos(List<AuditTotalInfoVo> auditTotalInfoVos) {
         this.auditTotalInfoVos = auditTotalInfoVos;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditTotalVo{" +
+                "moduleType=" + moduleType +
+                ", type=" + type +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", remark='" + remark + '\'' +
+                ", initiator='" + initiator + '\'' +
+                ", initiateTime=" + initiateTime +
+                ", auditFinishTime=" + auditFinishTime +
+                ", auditStatus=" + auditStatus +
+                ", auditTotalInfoVos=" + auditTotalInfoVos +
+                '}';
     }
 }

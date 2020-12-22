@@ -66,53 +66,100 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         return new ArrayList<>();
     }
 
+
+
     @Override
     public PageInfo<AuditTotalVo> findPage(int pageNum, int pageSize, AuditTotalDto auditTotalDto) {
-        List<AuditTotalVo> auditTotalVos = new Page<>(pageNum, pageSize);
+        List<AuditTotalVo> auditTotalVos = new ArrayList<>();
         List<AuditTotalVo> preSaleAuditTotalVos = null;
         List<AuditTotalVo> biddingAuditTotalVos = null;
         List<AuditTotalVo> designLiaisonAuditTotalVos = null;
-        switch (auditTotalDto.getModuleType()) {
-            case 1:
-                preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
-                break;
-            case 2:
-                biddingAuditTotalVos = this.findBidding(auditTotalDto);
-                break;
-            case 3:
-                designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
-                break;
-            default:
-                preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
-                biddingAuditTotalVos = this.findBidding(auditTotalDto);
-                designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
+        if (auditTotalDto.getModuleType() == null) {
+            preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
+            biddingAuditTotalVos = this.findBidding(auditTotalDto);
+            designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
+        } else {
+            switch (auditTotalDto.getModuleType()) {
+                case 1:
+                    preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
+                    break;
+                case 2:
+                    biddingAuditTotalVos = this.findBidding(auditTotalDto);
+                    break;
+                case 3:
+                    designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
+                    break;
+            }
         }
         auditTotalVos.addAll(preSaleAuditTotalVos == null ? new ArrayList<>() : preSaleAuditTotalVos);
         auditTotalVos.addAll(biddingAuditTotalVos == null ? new ArrayList<>() : biddingAuditTotalVos);
         auditTotalVos.addAll(designLiaisonAuditTotalVos == null ? new ArrayList<>() : designLiaisonAuditTotalVos);
-
         //统一按照发起时间排序（倒序）
-        auditTotalVos = auditTotalVos.stream().sorted(Comparator.comparing(AuditTotalVo::getInitiateTime).reversed()).collect(Collectors.toList());
-        Page<AuditTotalVo> page = (Page<AuditTotalVo>) auditTotalVos;
+        Page<AuditTotalVo> page = auditTotalVos.stream()
+                .sorted(Comparator.comparing(AuditTotalVo::getInitiateTime).reversed())
+                .skip(pageSize * (pageNum - 1))
+                .limit(pageSize)
+                .collect(Collectors.toCollection(() -> new Page<>(pageNum, pageSize)));
+        page.setTotal(auditTotalVos.size());
         return page.toPageInfo();
     }
 
+
+
+
+
     @Override
     public List<AuditTotalVo> findPreSale(AuditTotalDto auditTotalDto) {
+        List<AuditTotalVo> auditTotalVos;
+        Short smallType = auditTotalDto.getSmallType();
         if (auditTotalDto.getBigType() == 1) {
-
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
+        } else if (auditTotalDto.getBigType() == 2) {
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+        } else {
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
         }
-        return null;
+        auditTotalVos.forEach(preSaleAuditTotalVo -> {
+            preSaleAuditTotalVo.setModuleType((short) 1);
+            preSaleAuditTotalVo.setType((short) 2);
+        });
+        return auditTotalVos;
     }
 
     @Override
     public List<AuditTotalVo> findBidding(AuditTotalDto auditTotalDto) {
-        return null;
+        List<AuditTotalVo> auditTotalVos;
+        Short smallType = auditTotalDto.getSmallType();
+        if (auditTotalDto.getBigType() == 1) {
+            auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
+        } else if (auditTotalDto.getBigType() == 2) {
+            auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+        } else {
+            auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), null, null, null);
+        }
+        auditTotalVos.forEach(auditTotalVo -> {
+            auditTotalVo.setModuleType((short) 1);
+            auditTotalVo.setType((short) 2);
+        });
+        return auditTotalVos;
     }
 
     @Override
     public List<AuditTotalVo> findDesignLiaison(AuditTotalDto auditTotalDto) {
-        return null;
+        List<AuditTotalVo> auditTotalVos;
+        Short smallType = auditTotalDto.getSmallType();
+        if (auditTotalDto.getBigType() == 1) {
+            auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
+        } else if (auditTotalDto.getBigType() == 2) {
+            auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+        } else {
+            auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
+        }
+        auditTotalVos.forEach(auditTotalVo -> {
+            auditTotalVo.setModuleType((short) 1);
+            auditTotalVo.setType((short) 2);
+        });
+        return auditTotalVos;
     }
 
 

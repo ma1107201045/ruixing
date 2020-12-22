@@ -10,11 +10,11 @@ public class AuditTotalInfoVo {
     /**
      * 审核人（用户真实姓名）
      */
-    private int auditor;
+    private String auditor;
     /**
      * 排序字段
      */
-    private short sort;
+    private Integer sort;
     /**
      * 内容
      */
@@ -30,26 +30,26 @@ public class AuditTotalInfoVo {
     /**
      * 是否处理
      */
-    private short isDispose;
+    private Short isDispose;
 
     /**
      * 审批状态 2.审核中 3.通过 4.拒绝 5.转交
      */
     private short auditStatus;
 
-    public int getAuditor() {
+    public String getAuditor() {
         return auditor;
     }
 
-    public void setAuditor(int auditor) {
+    public void setAuditor(String auditor) {
         this.auditor = auditor;
     }
 
-    public short getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(short sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
@@ -77,19 +77,32 @@ public class AuditTotalInfoVo {
         this.accessoryPath = accessoryPath;
     }
 
-    public short getIsDispose() {
+    public Short getIsDispose() {
         return isDispose;
     }
 
-    public void setIsDispose(short isDispose) {
+    public void setIsDispose(Short isDispose) {
         this.isDispose = isDispose;
     }
 
-    public short getAuditStatus() {
+    public Short getAuditStatus() {
         return auditStatus;
     }
 
-    public void setAuditStatus(short auditStatus) {
+    public void setAuditStatus(Short auditStatus) {
         this.auditStatus = auditStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditTotalInfoVo{" +
+                "auditor='" + auditor + '\'' +
+                ", sort=" + sort +
+                ", context='" + context + '\'' +
+                ", accessoryName='" + accessoryName + '\'' +
+                ", accessoryPath='" + accessoryPath + '\'' +
+                ", isDispose=" + isDispose +
+                ", auditStatus=" + auditStatus +
+                '}';
     }
 }

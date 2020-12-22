@@ -15,24 +15,24 @@ public class AuditDto {
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
      */
     @NotNull
-    private short moduleType;
+    private Short moduleType;
     /**
      * 1.项目 2.文件
      */
     @NotNull
-    private short type;
+    private Short type;
 
     /**
      * 主键
      */
     @NotNull
-    private int id;
+    private Integer id;
 
 
     /**
      * 2.审批完成 3.审批中 4.已撤销
      */
-    private short isPass;
+    private Short isPass;
     /**
      * 内容
      */
@@ -62,35 +62,35 @@ public class AuditDto {
      */
     private String trueName;
 
-    public short getModuleType() {
+    public Short getModuleType() {
         return moduleType;
     }
 
-    public void setModuleType(short moduleType) {
+    public void setModuleType(Short moduleType) {
         this.moduleType = moduleType;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public short getType() {
+    public Short getType() {
         return type;
     }
 
-    public void setType(short type) {
+    public void setType(Short type) {
         this.type = type;
     }
 
-    public short getIsPass() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Short getIsPass() {
         return isPass;
     }
 
-    public void setIsPass(short isPass) {
+    public void setIsPass(Short isPass) {
         this.isPass = isPass;
     }
 

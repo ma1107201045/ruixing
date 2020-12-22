@@ -272,26 +272,56 @@
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="title"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="u_true_name" jdbcType="VARCHAR" property="initiator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="initiateTime"/>
+        <result column="psf_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <result column="psf_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
         <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo">
-
+            <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
+            <result column="sort" jdbcType="INTEGER" property="sort"/>
+            <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+            <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+            <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+            <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+            <result column="psfa_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+            <result column="psfa_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         </collection>
     </resultMap>
     <sql id="Example_Column_List">
-        psf.id,psf.name,psf.remark,psf.create_by,psf.audit_finish_time,psf.audit_status
-        u.true_name
-        psfa.id, psfa.auditor_id,  psfa.sort,  psfa.activate,  psfa.accessory_name,  psfa.accessory_path,psfa.is_dispose,  psfa.audit_status,  psfa.audit_finish_time,
-        tu.true_name
+        psf.id, psf.name,psf.remark,psf.create_time,psf.audit_finish_time,psf.audit_status as psf_audit_status,psf.audit_finish_time as psf_audit_finish_time,
+        u.true_name  u_true_name,
+        psfa.sort,  psfa.context,  psfa.accessory_name, psfa.accessory_path,psfa.is_dispose, psfa.audit_status as psfa_audit_status, psfa.audit_finish_time as psfa_audit_finish_time,
+        tu.true_name tu_true_name
     </sql>
     <sql id="Example_condition_List">
-
+        <where>
+            <if test="search!=null and search != ''">
+                and psf.name like concat('%',#{search,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="userId!=null">
+                and psf.user_id=#{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditStatus!=null">
+                and psf.audit_status=#{userId,jdbcType=SMALLINT}
+            </if>
+            <if test="auditorId!=null">
+                and psfa.auditor_id=#{auditorId,jdbcType=INTEGER}
+            </if>
+            <if test="activate">
+                and psfa.activate=#{activate,jdbcType=SMALLINT}
+            </if>
+            <if test="isDispose!=null">
+                and psfa.is_dispose=#{isDispose,jdbcType=SMALLINT}
+            </if>
+        </where>
     </sql>
 
     <select id="selectByExample" resultMap="ExampleResultMap">
         select
         <include refid="Example_Column_List"/>
         from mro_pre_sale_file psf
-        inner join tb_user u psf.user_id = u.id
+        inner join tb_user u on psf.user_id = u.id
         inner join mro_pre_sale_file_auditor psfa on psf.id = psfa.pre_sale_file_id
         inner join tb_user tu on psfa.auditor_id=tu.id
         <include refid="Example_condition_List"/>

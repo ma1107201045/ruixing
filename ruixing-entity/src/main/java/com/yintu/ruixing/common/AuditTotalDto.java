@@ -13,7 +13,7 @@ public class AuditTotalDto {
      * 1.待处理 2.已处理 3.我发起的
      */
     @NotNull
-    private short bigType;
+    private Short bigType;
     /**
      * 搜索内容
      */
@@ -21,23 +21,23 @@ public class AuditTotalDto {
     /**
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
      */
-    private short moduleType;
+    private Short moduleType;
 
     /**
      * 1.全部  2.审批完成 3.审批中 4.已撤销
      */
-    private short smallType;
+    private Short smallType;
 
     /**
      * 当前登录人id
      */
-    private int loginUserId;
+    private Integer loginUserId;
 
-    public short getBigType() {
+    public Short getBigType() {
         return bigType;
     }
 
-    public void setBigType(short bigType) {
+    public void setBigType(Short bigType) {
         this.bigType = bigType;
     }
 
@@ -49,27 +49,27 @@ public class AuditTotalDto {
         this.search = search;
     }
 
-    public short getModuleType() {
+    public Short getModuleType() {
         return moduleType;
     }
 
-    public void setModuleType(short moduleType) {
+    public void setModuleType(Short moduleType) {
         this.moduleType = moduleType;
     }
 
-    public short getSmallType() {
+    public Short getSmallType() {
         return smallType;
     }
 
-    public void setSmallType(short smallType) {
+    public void setSmallType(Short smallType) {
         this.smallType = smallType;
     }
 
-    public int getLoginUserId() {
+    public Integer getLoginUserId() {
         return loginUserId;
     }
 
-    public void setLoginUserId(int loginUserId) {
+    public void setLoginUserId(Integer loginUserId) {
         this.loginUserId = loginUserId;
     }
 }

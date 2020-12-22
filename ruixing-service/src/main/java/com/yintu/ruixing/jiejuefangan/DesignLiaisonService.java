@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonEntity;
@@ -90,5 +91,7 @@ public interface DesignLiaisonService extends BaseService<DesignLiaisonEntity, I
      * @return 项目集合
      */
     List<Map<String, Object>> findProjectsByProjectStatus();
+
+
 
 }
