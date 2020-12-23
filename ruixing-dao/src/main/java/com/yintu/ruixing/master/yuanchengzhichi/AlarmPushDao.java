@@ -2,6 +2,9 @@ package com.yintu.ruixing.master.yuanchengzhichi;
 
 import com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity;
 
+import java.util.Date;
+import java.util.List;
+
 public interface AlarmPushDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +19,6 @@ public interface AlarmPushDao {
     int updateByPrimaryKeyWithBLOBs(AlarmPushEntity record);
 
     int updateByPrimaryKey(AlarmPushEntity record);
+
+    List<AlarmPushEntity> selectByExample(Integer cid, Date pushDate);
 }

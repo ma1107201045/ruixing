@@ -134,4 +134,48 @@
             alarm_id      = #{alarmId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <resultMap id="selectByExampleMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="alarm_id" jdbcType="INTEGER" property="alarmId"/>
+        <association column="alarm_id" property="alarmEntity">
+            <association column="station_id" property="cheZhanEntity">
+                <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
+            </association>
+        </association>
+        <collection column="id" property="alarmPushEntities" select="selectById"/>
+    </resultMap>
+
+
+    <resultMap id="selectByIdExample" type="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        <association column="user_id" property="userEntity">
+            <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByExample" resultMap="selectByExampleMap">
+        select ap.id, ap.create_by, ap.create_time, ap.modified_by, ap.modified_time, ap.context, ap.alarm_id,c.cz_name
+        from alarm_push ap
+        inner join alarm a on ap.alarm_id = a.id
+        inner join mro_chezhan c on a.station_id = c.cz_id
+        <where>
+            <if test="cid !=null">
+                and c.cz_id=#{cid,jdbcType=INTEGER}
+            </if>
+            <if test="pushDate !=null ">
+                DATE (ap.create_time) = #{pushDate,jdbcType=DATE}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="selectByIdExample">
+        select u.true_name
+        from alarm_push_user apu
+                 inner join tb_user u on apu.user_id = u.id
+        where apu.alarm_push_id = #{id,jdbcType=INTEGER}
+    </select>
 </mapper>

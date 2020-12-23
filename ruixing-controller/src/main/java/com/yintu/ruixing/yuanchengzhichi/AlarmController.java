@@ -130,7 +130,7 @@ public class AlarmController extends SessionController {
     }
 
 
-    @PutMapping("/push")
+    @PostMapping("/push")
     public Map<String, Object> push(@Validated AlarmPushEntity alarmPushEntity, @RequestParam Integer[] userIds) {
         alarmPushEntity.setCreateBy(this.getLoginUserName());
         alarmPushEntity.setCreateTime(new Date());

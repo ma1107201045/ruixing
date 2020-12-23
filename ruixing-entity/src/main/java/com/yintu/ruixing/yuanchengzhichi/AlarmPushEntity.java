@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +27,9 @@ public class AlarmPushEntity implements Serializable {
     private Integer alarmId;
 
     private String context;
+
+    private AlarmEntity alarmEntity;
+
+    private List<AlarmPushEntity> alarmPushEntities;
 
 }

@@ -15,6 +15,7 @@ import com.yintu.ruixing.jiejuefangan.SolutionService;
 import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.slave.guzhangzhenduan.QuDuanInfoDaoV2;
 import com.yintu.ruixing.xitongguanli.*;
+import com.yintu.ruixing.yuanchengzhichi.AlarmPushService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,9 @@ class RuixingApplicationTests {
     private QuDuanInfoDaoV2 quDuanInfoDaoV2;
     @Autowired
     private PreSaleFileService preSaleFileService;
+
+    @Autowired
+    private AlarmPushService alarmPushService;
 
     @Test
     void contextLoads() {
@@ -189,5 +193,10 @@ class RuixingApplicationTests {
     @Test
     void contextLoads16() {
         System.out.println(JSONObject.toJSON(preSaleFileService.findByExample(null, null, null, null, null, null)));
+    }
+
+    @Test
+    void contextLoads17() {
+        System.out.println(JSONObject.toJSON(alarmPushService.findByExample(null, null)));
     }
 }

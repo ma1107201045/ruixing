@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @Author: mlf
  * @Date: 2020/12/23 10:51
@@ -52,5 +55,10 @@ public class AlarmPushServiceImpl implements AlarmPushService {
             alarmPushUserEntity.setUserId(userId);
             alarmPushUserService.add(alarmPushUserEntity);
         }
+    }
+
+    @Override
+    public List<AlarmPushEntity> findByExample(Integer cid, Date pushDate) {
+        return alarmPushDao.selectByExample(cid, pushDate);
     }
 }
