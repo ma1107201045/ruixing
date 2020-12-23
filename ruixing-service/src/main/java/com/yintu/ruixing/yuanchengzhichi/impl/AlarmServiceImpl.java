@@ -34,7 +34,6 @@ public class AlarmServiceImpl implements AlarmService {
     @Autowired
     private SkylightTimeService skylightTimeService;
 
-
     @Override
     public void remove(Integer[] ids) {
         for (Integer id : ids) {

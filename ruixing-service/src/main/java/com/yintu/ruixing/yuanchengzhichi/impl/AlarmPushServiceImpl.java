@@ -58,6 +58,13 @@ public class AlarmPushServiceImpl implements AlarmPushService {
     }
 
     @Override
+    public void remove(Integer[] ids) {
+        for (Integer id : ids) {
+            this.remove(id);
+        }
+    }
+
+    @Override
     public List<AlarmPushEntity> findByExample(Integer cid, Date pushDate) {
         return alarmPushDao.selectByExample(cid, pushDate);
     }

@@ -27,9 +27,9 @@ public class AlarmPushController {
     private CheZhanService cheZhanService;
 
 
-    @DeleteMapping("/{id}")
-    public Map<String, Object> findById(@PathVariable Integer id) {
-        alarmPushService.remove(id);
+    @DeleteMapping("/{ids}")
+    public Map<String, Object> findById(@PathVariable Integer[] ids) {
+        alarmPushService.remove(ids);
         return ResponseDataUtil.ok("删除报警、预警推送信息成功");
     }
 

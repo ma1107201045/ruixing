@@ -48,7 +48,7 @@ public class AlarmController extends SessionController {
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public Map<String, Object> finById(@PathVariable Integer id) {
         AlarmEntity alarmEntity = alarmService.findById(id);
         return ResponseDataUtil.ok("查询报警、预警处置意见信息成功", alarmEntity);

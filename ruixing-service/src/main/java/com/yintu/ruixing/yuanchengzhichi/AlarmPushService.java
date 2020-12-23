@@ -15,6 +15,8 @@ public interface AlarmPushService extends BaseService<AlarmPushEntity, Integer> 
 
     void add(AlarmPushEntity entity, Integer[] userIds);
 
+    void remove(Integer[] ids);
+
     List<AlarmPushEntity> findByExample(Integer cid, Date pushDate);
 
 }
