@@ -133,7 +133,7 @@
                 #{userId,jdbcType=INTEGER},
             </if>
             <if test="auditStatus != null">
-                #{auditStatus,jdbcType=INTEGER},
+                #{auditStatus,jdbcType=SMALLINT},
             </if>
             <if test="auditFinishTime != null">
                 #{auditFinishTime,jdbcType=TIMESTAMP},
@@ -206,7 +206,7 @@
             type              = #{type,jdbcType=SMALLINT},
             release_status    = #{releaseStatus,jdbcType=SMALLINT},
             user_id           = #{userId,jdbcType=INTEGER},
-            audit_status      = #{auditStatus,jdbcType=INTEGER},
+            audit_status      = #{auditStatus,jdbcType=SMALLINT},
             audit_finish_time = #{auditFinishTime,jdbcType=VARCHAR},
             remark            = #{remark,jdbcType=VARCHAR},
             design_liaison_id = #{designLiaisonId,jdbcType=INTEGER}

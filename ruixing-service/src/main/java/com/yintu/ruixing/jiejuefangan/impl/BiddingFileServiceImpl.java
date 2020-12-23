@@ -417,7 +417,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 }
                 now.setActivate((short) 0);
                 now.setIsDispose((short) 1);
-                now.setAuditStatus((short) 5);
+                now.setAuditStatus(isPass);
                 now.setAuditFinishTime(new Date());
                 now.setContext(context);
                 now.setAccessoryName(accessoryName);

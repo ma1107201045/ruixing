@@ -50,12 +50,13 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         }
         if (configAttributes.size() == 0) {
             //如果不想在数据库中的权限分配给角色则可以在此处写逻辑
-            if (antPathMatcher.match("/common/**", filterInvocation.getRequestUrl())) {
-                return SecurityConfig.createList("ROLE_ALL_PERMISSION");
-            } else if (antPathMatcher.match("/indexs/**", filterInvocation.getRequestUrl())) {
+            if (antPathMatcher.match("/common/**", requestUrl) ||
+                    antPathMatcher.match("/audit/total/**", requestUrl) ||
+                    antPathMatcher.match("/indexs/**", requestUrl)) {
                 return SecurityConfig.createList("ROLE_ALL_PERMISSION");
             } else {
                 return SecurityConfig.createList("ROLE_NOT_PERMISSION");
+
             }
         }
         return configAttributes;

@@ -92,12 +92,6 @@ public class AuditTotalServiceImpl implements AuditTotalService {
     }
 
 
-
-
-
-
-
-
     @Override
     public PageInfo<AuditTotalVo> findPage(int pageNum, int pageSize, AuditTotalDto auditTotalDto) {
         List<AuditTotalVo> auditTotalVos = new ArrayList<>();
@@ -142,7 +136,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         if (auditTotalDto.getBigType() == 1) {
             auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
         } else if (auditTotalDto.getBigType() == 2) {
-            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+            auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), null, (short) 1);
         } else {
             auditTotalVos = preSaleFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
         }
@@ -160,7 +154,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         if (auditTotalDto.getBigType() == 1) {
             auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
         } else if (auditTotalDto.getBigType() == 2) {
-            auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+            auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), auditTotalDto.getLoginUserId(), null, (short) 1);
         } else {
             auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), null, null, null);
         }
@@ -178,7 +172,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         if (auditTotalDto.getBigType() == 1) {
             auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
         } else if (auditTotalDto.getBigType() == 2) {
-            auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), (short) 1, (short) 1);
+            auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), null, (short) 1);
         } else {
             auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
         }

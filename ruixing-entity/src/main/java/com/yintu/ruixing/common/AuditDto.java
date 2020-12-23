@@ -48,11 +48,11 @@ public class AuditDto {
     /**
      * 转交人id
      */
-    private int passUserId;
+    private Integer passUserId;
     /**
      * 登录id
      */
-    private int loginUserId;
+    private Integer loginUserId;
     /**
      * 登录用户名
      */
@@ -118,19 +118,19 @@ public class AuditDto {
         this.accessoryPath = accessoryPath;
     }
 
-    public int getPassUserId() {
+    public Integer getPassUserId() {
         return passUserId;
     }
 
-    public void setPassUserId(int passUserId) {
+    public void setPassUserId(Integer passUserId) {
         this.passUserId = passUserId;
     }
 
-    public int getLoginUserId() {
+    public Integer getLoginUserId() {
         return loginUserId;
     }
 
-    public void setLoginUserId(int loginUserId) {
+    public void setLoginUserId(Integer loginUserId) {
         this.loginUserId = loginUserId;
     }
 

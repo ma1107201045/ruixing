@@ -81,17 +81,14 @@
             <if test="releaseStatus != null">
                 release_status,
             </if>
-            <if test="auditFinishTime != null">
-                audit_finish_time,
-            </if>
             <if test="userId != null">
                 user_id,
             </if>
             <if test="auditStatus != null">
                 audit_status,
             </if>
-            <if test="reason != null">
-                reason,
+            <if test="auditFinishTime != null">
+                audit_finish_time,
             </if>
             <if test="remark != null">
                 remark,
@@ -135,7 +132,7 @@
                 #{userId,jdbcType=INTEGER},
             </if>
             <if test="auditStatus != null">
-                #{auditStatus,jdbcType=INTEGER},
+                #{auditStatus,jdbcType=SMALLINT},
             </if>
             <if test="auditFinishTime != null">
                 #{auditFinishTime,jdbcType=VARCHAR},
@@ -208,7 +205,7 @@
             type              = #{type,jdbcType=SMALLINT},
             release_status    = #{releaseStatus,jdbcType=SMALLINT},
             user_id           = #{userId,jdbcType=INTEGER},
-            audit_status      = #{auditStatus,jdbcType=INTEGER},
+            audit_status      = #{auditStatus,jdbcType=SMALLINT},
             audit_finish_time = #{auditFinishTime,jdbcType=VARCHAR},
             remark            = #{remark,jdbcType=VARCHAR},
             bidding_id        = #{biddingId,jdbcType=INTEGER}

@@ -190,7 +190,7 @@
         insert into mro_design_liaison_file_auditor
         <trim prefix="(" suffix=")" suffixOverrides=",">
             design_liaison_file_id,auditor_id,sort,
-            activate,accessory_name,accessory_path,context,is_dispose,auditStatus,audit_finish_time
+            activate,accessory_name,accessory_path,context,is_dispose,audit_status,audit_finish_time
         </trim>
         values
         <foreach collection="list" item="designLiaisonFileAuditorEntity" index="index" separator=",">

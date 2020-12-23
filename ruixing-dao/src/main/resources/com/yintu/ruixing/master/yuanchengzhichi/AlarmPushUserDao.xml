@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.yuanchengzhichi.AlarmPushUserDao">
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="alarm_push_id" jdbcType="INTEGER" property="alarmPushId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, alarm_push_id, user_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from alarm_push_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from alarm_push_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        insert into alarm_push_user (id, create_by, create_time,
+                                     modified_by, modified_time, alarm_push_id,
+                                     user_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{alarmPushId,jdbcType=INTEGER},
+                #{userId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        insert into alarm_push_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="alarmPushId != null">
+                alarm_push_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="alarmPushId != null">
+                #{alarmPushId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        update alarm_push_user
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="alarmPushId != null">
+                alarm_push_id = #{alarmPushId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
+        update alarm_push_user
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            alarm_push_id = #{alarmPushId,jdbcType=INTEGER},
+            user_id       = #{userId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
