@@ -30,7 +30,7 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username,Integer uid,Integer[] auditorid,Integer[] sort);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName,Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName,Integer id,Integer uid);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findFileById(Integer id, Integer page, Integer size, String fileName);
 
@@ -54,9 +54,9 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size, String fileName , Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size, String fileName , Integer id,Integer uid);
 
-    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, String fileName, Integer id);
+    List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, String fileName, Integer id,Integer uid);
 
     List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
 
@@ -65,4 +65,12 @@ public interface ZhiShiGuanLiFileTypeService {
     List<ZhiShiGuanLiFileTypeFileRecordmessageEntity> findRecordmessageByFileid(Integer id);
 
     List<MessageEntity> findXiaoXi(Integer senderid);
+
+    void editAuditorByFileid(Integer id, Short isPass,Integer passUserId,
+                             String username, Integer receiverid,
+                             String accessoryName,String accessoryPath,String context);
+
+    ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id,Integer uid);
+
+    List<Integer> findUserIdByFileid(Integer fileid);
 }

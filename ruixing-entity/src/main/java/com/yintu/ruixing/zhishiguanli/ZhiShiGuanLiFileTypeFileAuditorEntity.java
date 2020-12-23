@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,43 +20,17 @@ public class ZhiShiGuanLiFileTypeFileAuditorEntity {
 
     private Short activate;
 
-    public Integer getId() {
-        return id;
-    }
+    private String accessoryName;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String accessoryPath;
 
-    public Integer getFileId() {
-        return fileId;
-    }
+    private Short isDispose;
 
-    public void setFileId(Integer fileId) {
-        this.fileId = fileId;
-    }
+    private Short auditStatus;
 
-    public Integer getAuditorId() {
-        return auditorId;
-    }
+    private Date auditFinishTime;
 
-    public void setAuditorId(Integer auditorId) {
-        this.auditorId = auditorId;
-    }
+    private String context;
 
-    public Integer getSort() {
-        return sort;
-    }
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public Short getActivate() {
-        return activate;
-    }
-
-    public void setActivate(Short activate) {
-        this.activate = activate;
-    }
 }

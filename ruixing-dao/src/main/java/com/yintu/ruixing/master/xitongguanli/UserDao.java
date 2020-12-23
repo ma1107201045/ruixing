@@ -43,5 +43,7 @@ public interface UserDao {
 
     Integer findid(@Param("truename") String truename);
 
+    String findTureNameById(Integer id);
+
 
 }

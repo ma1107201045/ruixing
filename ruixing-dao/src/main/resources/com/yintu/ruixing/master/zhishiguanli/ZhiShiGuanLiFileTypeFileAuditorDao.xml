@@ -7,13 +7,81 @@
     <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="activate" jdbcType="SMALLINT" property="activate" />
+    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
+    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
+    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose" />
+    <result column="audit_status" jdbcType="SMALLINT" property="auditStatus" />
+    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileAuditorEntity">
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, auditor_id, sort, activate
+    id, file_id, auditor_id, sort, activate, accessory_name, accessory_path, is_dispose,
+    audit_status, audit_finish_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+  <sql id="Blob_Column_List">
+    context
+  </sql>
+
+  <!--根据文件id   查询对应的审核人id-->
+  <select id="findUserIdByFileid"  resultType="java.lang.Integer">
+    select
+    auditor_id
+    from mro_zhishiguanli_filetype_file_auditor
+    where file_id = #{fileid,jdbcType=INTEGER}
+  </select>
+
+
+  <!--根据文件id   查询对应的审核人id-->
+  <select id="findFileAuditorDatasByFileId"  resultMap="BaseResultMap">
+    select
+    auditor_id
+    from mro_zhishiguanli_filetype_file_auditor
+    where file_id = #{id,jdbcType=INTEGER}
+    and auditor_id = #{uid,jdbcType=INTEGER}
+    and activate = 1
+  </select>
+
+  <!--根据文件id   和顺序  查询对应的数据-->
+  <select id="findAuditorDatasByFileidAndSort"  resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mro_zhishiguanli_filetype_file_auditor
+    where file_id = #{id,jdbcType=INTEGER}
+    and sort = #{i,jdbcType=SMALLINT}
+  </select>
+
+  <!--根据文件id   和审核状态  查询对应的数据-->
+  <select id="findAuditorDatasByIds"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mro_zhishiguanli_filetype_file_auditor
+    where file_id = #{id,jdbcType=INTEGER}
+    and activate = #{i,jdbcType=SMALLINT}
+  </select>
+
+  <!--根据文件id  审核人id  和审核状态  查询对应的数据-->
+  <select id="findAuditorDatas"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mro_zhishiguanli_filetype_file_auditor
+    where file_id = #{id,jdbcType=INTEGER}
+    and auditor_id = #{receiverid,jdbcType=INTEGER}
+    and activate = #{i,jdbcType=SMALLINT}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from mro_zhishiguanli_filetype_file_auditor
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -22,10 +90,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileAuditorEntity">
-    insert into mro_zhishiguanli_filetype_file_auditor (id, file_id, auditor_id, 
-      sort, activate)
-    values (#{id,jdbcType=INTEGER}, #{fileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
-      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT})
+   insert into mro_zhishiguanli_filetype_file_auditor (id, file_id, auditor_id,
+      sort, activate, accessory_name,
+      accessory_path, is_dispose, audit_status,
+      audit_finish_time, context)
+    values (#{id,jdbcType=INTEGER}, #{fileId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
+      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{accessoryName,jdbcType=VARCHAR},
+      #{accessoryPath,jdbcType=VARCHAR}, #{isDispose,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT},
+      #{auditFinishTime,jdbcType=TIMESTAMP}, #{context,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileAuditorEntity">
     insert into mro_zhishiguanli_filetype_file_auditor
@@ -45,6 +117,24 @@
       <if test="activate != null">
         activate,
       </if>
+      <if test="accessoryName != null">
+        accessory_name,
+      </if>
+      <if test="accessoryPath != null">
+        accessory_path,
+      </if>
+      <if test="isDispose != null">
+        is_dispose,
+      </if>
+      <if test="auditStatus != null">
+        audit_status,
+      </if>
+      <if test="auditFinishTime != null">
+        audit_finish_time,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -62,6 +152,24 @@
       <if test="activate != null">
         #{activate,jdbcType=SMALLINT},
       </if>
+      <if test="accessoryName != null">
+        #{accessoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="accessoryPath != null">
+        #{accessoryPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isDispose != null">
+        #{isDispose,jdbcType=SMALLINT},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="auditFinishTime != null">
+        #{auditFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileAuditorEntity">
@@ -78,6 +186,24 @@
       </if>
       <if test="activate != null">
         activate = #{activate,jdbcType=SMALLINT},
+      </if>
+      <if test="accessoryName != null">
+        accessory_name = #{accessoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="accessoryPath != null">
+        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isDispose != null">
+        is_dispose = #{isDispose,jdbcType=SMALLINT},
+      </if>
+      <if test="auditStatus != null">
+        audit_status = #{auditStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="auditFinishTime != null">
+        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

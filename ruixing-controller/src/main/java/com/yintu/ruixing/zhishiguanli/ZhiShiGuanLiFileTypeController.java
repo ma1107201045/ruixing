@@ -9,6 +9,7 @@ import com.yintu.ruixing.common.util.FileUploadUtil;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
@@ -36,34 +37,38 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
     @Autowired
     private ZhiShiGuanLiFileTypeService zhiShiGuanLiFileTypeService;
 
+    @Autowired
+    private UserService userService;
+
     //树形结构图.
     @GetMapping
-    public Map<String,Object>findShuXing(){
-        List<TreeNodeUtil> treeNodeUtils=zhiShiGuanLiFileTypeService.findShuXing(0);
+    public Map<String, Object> findShuXing() {
+        List<TreeNodeUtil> treeNodeUtils = zhiShiGuanLiFileTypeService.findShuXing(0);
         return ResponseDataUtil.ok("查询成功", treeNodeUtils);
     }
 
     //根据parentid  查询对应的文件类型.
     @GetMapping("/findFileTypeByParentid/{parentid}")
-    public Map<String,Object>findFileTypeByParentid(@PathVariable Integer parentid){
-        List<ZhiShiGuanLiFileTypeEntity> fileTypeEntityList=zhiShiGuanLiFileTypeService.findFileTypeByParentid(parentid);
-        return ResponseDataUtil.ok("查询成功",fileTypeEntityList);
+    public Map<String, Object> findFileTypeByParentid(@PathVariable Integer parentid) {
+        List<ZhiShiGuanLiFileTypeEntity> fileTypeEntityList = zhiShiGuanLiFileTypeService.findFileTypeByParentid(parentid);
+        return ResponseDataUtil.ok("查询成功", fileTypeEntityList);
     }
 
     //转移文件。
     @PutMapping("/pasteFileByParentid")
-    public Map<String,Object>pasteFileByParentid(Integer parentid,Integer[] fileid,ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity){
-        zhiShiGuanLiFileTypeService.pasteFileByParentid(parentid,fileid,zhiShiGuanLiFileTypeFileEntity);
+    public Map<String, Object> pasteFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
+        zhiShiGuanLiFileTypeService.pasteFileByParentid(parentid, fileid, zhiShiGuanLiFileTypeFileEntity);
         return ResponseDataUtil.ok("操作成功");
     }
 
     //复制文件.
     @PostMapping("/copyFileByParentid")
-    public Map<String,Object>copyFileByParentid(Integer parentid,Integer[] fileid,ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity){
+    public Map<String, Object> copyFileByParentid(Integer parentid, Integer[] fileid, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {
         String username = this.getLoginUser().getTrueName();
-        zhiShiGuanLiFileTypeService.copyFileByParentid(parentid,fileid,zhiShiGuanLiFileTypeFileEntity,username);
+        zhiShiGuanLiFileTypeService.copyFileByParentid(parentid, fileid, zhiShiGuanLiFileTypeFileEntity, username);
         return ResponseDataUtil.ok("操作成功");
     }
+
     //初始化页面  或者根据文档分类名进行模糊查询
     @GetMapping("findSomeFileType")
     public Map<String, Object> findSomeFileType(Integer page, Integer size, String fileTypeName) {
@@ -75,9 +80,9 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
 
     //新增文件类型
     @PostMapping("/addFileType")
-    public Map<String, Object> addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,Integer parentid) {
+    public Map<String, Object> addFileType(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity, Integer parentid) {
         String username = this.getLoginUser().getTrueName();
-        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity,username,parentid);
+        zhiShiGuanLiFileTypeService.addFileType(zhiShiGuanLiFileTypeEntity, username, parentid);
         return ResponseDataUtil.ok("新增文件类型成功");
     }
 
@@ -85,7 +90,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
     @PutMapping("/editFileTypeById/{id}")
     public Map<String, Object> editFileTypeById(@PathVariable Integer id, ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity) {
         String username = this.getLoginUser().getTrueName();
-        zhiShiGuanLiFileTypeService.editFileTypeById(zhiShiGuanLiFileTypeEntity,username);
+        zhiShiGuanLiFileTypeService.editFileTypeById(zhiShiGuanLiFileTypeEntity, username);
         return ResponseDataUtil.ok("编辑文件类型成功");
     }
 
@@ -96,7 +101,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
             List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findFiles(ids[i]);
             if (fileEntityList.size() == 0) {
                 zhiShiGuanLiFileTypeService.deleteFileTypeByIds(ids[i]);
-            }else {
+            } else {
                 return ResponseDataUtil.error("文件类型下面存在有文件,不能删除");
             }
         }
@@ -118,7 +123,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("上传文件成功", jo);
     }
 
-     //查询审核角色
+    //查询审核角色
     @GetMapping("/auditors")
     @ResponseBody
     public Map<String, Object> findRoles() {
@@ -131,9 +136,9 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
 
     //查询文件日志消息
     @GetMapping("/findRecordmessageByFileid/{id}")
-    public Map<String,Object>findRecordmessageByFileid(@PathVariable Integer id){
-        List<ZhiShiGuanLiFileTypeFileRecordmessageEntity> recordmessageEntityList=zhiShiGuanLiFileTypeService.findRecordmessageByFileid(id);
-        return ResponseDataUtil.ok("查询日志数据成功",recordmessageEntityList);
+    public Map<String, Object> findRecordmessageByFileid(@PathVariable Integer id) {
+        List<ZhiShiGuanLiFileTypeFileRecordmessageEntity> recordmessageEntityList = zhiShiGuanLiFileTypeService.findRecordmessageByFileid(id);
+        return ResponseDataUtil.ok("查询日志数据成功", recordmessageEntityList);
     }
 
     //查询消息
@@ -145,19 +150,50 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
     }
 
     //审核文件
+    @PutMapping("/editAuditorByFileid/{id}")
+    public Map<String, Object> editAuditorByFileid(@PathVariable Integer id, Short isPass, Integer passUserId,
+                                                   String accessoryName, String accessoryPath, String context) {
+        String username = this.getLoginUser().getTrueName();
+        Integer receiverid = this.getLoginUser().getId().intValue();
+        zhiShiGuanLiFileTypeService.editAuditorByFileid(id, isPass, passUserId, username, receiverid, accessoryName, accessoryPath, context);
+        return ResponseDataUtil.ok("审核成功");
+    }
+
+    //查询转交审核人姓名
+    @GetMapping("/findZhuanJiaoAuditorName")
+    public Map<String, Object> findAllAuditorNamre(Integer fileid) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        boolean flag;
+        String username = null;
+        List<UserEntity> userEntitiess = userService.findByTruename(username);
+        List<Integer> userid = zhiShiGuanLiFileTypeService.findUserIdByFileid(fileid);
+        for (int i = 0; i < userEntitiess.size(); i++) {
+            flag = false;
+            for (int i1 = 0; i1 < userid.size(); i1++) {
+                if (userid.get(i1) == userEntitiess.get(i).getId().intValue()) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                userEntities.add(userEntitiess.get(i));
+            }
+        }
+        return ResponseDataUtil.ok("查询姓名成功", userEntities);
+    }
 
     //新增文件
     @PostMapping("/addFile")
-    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer[] auditorid,Integer[] sort) {
+    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer[] auditorid, Integer[] sort) {
         String username = this.getLoginUser().getTrueName();//登录人名
         Integer uid = this.getLoginUser().getId().intValue();//登录人id
-        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity,username,uid,auditorid,sort);
+        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity, username, uid, auditorid, sort);
         return ResponseDataUtil.ok("新增文件成功");
     }
 
     //更新文件版本
     @PutMapping("updateFileById")
-    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer[] auditorid,Integer[] sort) {
+    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer[] auditorid, Integer[] sort) {
         ZhiShiGuanLiFileTypeFileEntity fileEntity = zhiShiGuanLiFileTypeService.findFile(id);
         String username = this.getLoginUser().getTrueName();//登录人名
         Integer uid = this.getLoginUser().getId().intValue();//登录人id
@@ -167,50 +203,59 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         Integer filesize = fileEntity.getFilesize();
         Integer id1 = fileEntity.getId();
         Integer tid = fileEntity.getTid();
-        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1,username,filesize);//新增历史文件
-        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity,id,username,uid,auditorid,sort);//添加新文件
+        zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1, username, filesize);//新增历史文件
+        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity, id, username, uid, auditorid, sort);//添加新文件
         return ResponseDataUtil.ok("更新成功");
     }
 
     //文件初始化   或者根据文件名查询文件
     @GetMapping("/findSomeFile")
-    public Map<String, Object> findSomeFile(Integer page, Integer size, String fileName,Integer id,Integer typeid) {//typeid ；1 时间  2 大小
-        if (typeid==null) {
+    public Map<String, Object> findSomeFile(Integer page, Integer size, String fileName, Integer id, Integer typeid) {//typeid ；1 时间  2 大小
+        Integer uid = this.getLoginUser().getId().intValue();//登录人id
+        if (typeid == null) {
             PageHelper.startPage(page, size);
-            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFile(page, size, fileName, id);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFile(page, size, fileName, id, uid);
             PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
             return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
         }
-        if (typeid==1){
+        if (typeid == 1) {
             PageHelper.startPage(page, size);
-            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size, fileName, id);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size, fileName, id, uid);
             PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
             return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
-        }else {
+        } else {
             PageHelper.startPage(page, size);
-            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size, fileName, id);
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size, fileName, id, uid);
             PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
             return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
         }
     }
 
-    //根据 时间 排序.
+    //根据文件id  查询对应的数据
+    @GetMapping("/findFileDatasById/{id}")
+    public Map<String, Object> findFileDatasById(@PathVariable Integer id) {
+        Integer uid = this.getLoginUser().getId().intValue();//登录人id
+        ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntities = zhiShiGuanLiFileTypeService.findFileDatasById(id, uid);
+        return ResponseDataUtil.ok("查询成功", fileTypeFileEntities);
+    }
+
+   /* //根据 时间 排序.
     @GetMapping("/findSomeFileByTime")
-    public Map<String, Object> findSomeFileByTime(Integer page, Integer size, String fileName,Integer id) {
+    public Map<String, Object> findSomeFileByTime(Integer page, Integer size, String fileName, Integer id) {
         PageHelper.startPage(page, size);
-        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size,fileName,id);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileByTime(page, size, fileName, id);
         PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
         return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
     }
 
     //根据 大小 排序.
     @GetMapping("/findSomeFileBySize")
-    public Map<String, Object> findSomeFileBySize(Integer page, Integer size, String fileName,Integer id) {
+    public Map<String, Object> findSomeFileBySize(Integer page, Integer size, String fileName, Integer id) {
         PageHelper.startPage(page, size);
-        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size,fileName,id);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findSomeFileBySize(page, size, fileName, id,);
         PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
         return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
-    }
+    }*/
 
     //根据文件id  查询其历史版本文件
     @GetMapping("/findFileById/{id}")
@@ -256,7 +301,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
             List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findFileByParentid(ids[i]);
             if (fileEntityList.size() == 0) {
                 zhiShiGuanLiFileTypeService.deleteFileByIds(ids[i]);
-            }else {
+            } else {
                 return ResponseDataUtil.error("存在历史更新文件,不能删除");
             }
         }

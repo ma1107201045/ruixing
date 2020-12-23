@@ -86,7 +86,7 @@ public class ChanPinJiaoFuXiangMuController extends SessionController {
         List<Integer> uids = new ArrayList<>();
 //        String username = this.getLoginUser().getTrueName();
 //        Integer senderid = this.getLoginUser().getId().intValue();
-        String username = "";
+        String username = "系统";
         Integer senderid = null;
         Date nowTime = new Date();
         String truename = null;

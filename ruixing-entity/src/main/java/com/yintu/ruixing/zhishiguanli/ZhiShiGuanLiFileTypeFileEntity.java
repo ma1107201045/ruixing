@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +20,8 @@ public class ZhiShiGuanLiFileTypeFileEntity {
     private Integer userid;
 
     private Integer auditstatus;
+
+    private Date auditFinishTime;
 
     private Integer filesize;
 
@@ -39,5 +43,6 @@ public class ZhiShiGuanLiFileTypeFileEntity {
     private String updateName;
     private Date updateTime;
 
+    private List<ZhiShiGuanLiFileTypeFileAuditorEntity> auditorEntityList;
 
 }

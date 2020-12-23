@@ -38,4 +38,6 @@ public interface ZhiShiGuanLiFileTypeFileDao {
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime( String fileName,Integer id);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize( String fileName,Integer id);
+
+    ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id);
 }
