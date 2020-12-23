@@ -3,6 +3,8 @@ package com.yintu.ruixing.danganguanli.impl;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationService;
+import com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity;
+import com.yintu.ruixing.danganguanli.LineBaseInformationUnitService;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 public class LineBaseInformationServiceImpl implements LineBaseInformationService {
     @Autowired
     private LineBaseInformationDao lineBaseInformationDao;
+    @Autowired
+    private LineBaseInformationUnitService lineBaseInformationUnitService;
 
     @Override
     public void add(LineBaseInformationEntity entity) {
@@ -44,6 +49,42 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
         return lineBaseInformationDao.selectByPrimaryKey(id);
     }
 
+
+    @Override
+    public void add(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds) {
+        this.add(lineBaseInformationEntity);
+        for (Integer unitId : unitIds) {
+            LineBaseInformationUnitEntity lineBaseInformationUnitEntity = new LineBaseInformationUnitEntity();
+            lineBaseInformationUnitEntity.setCreateBy(lineBaseInformationEntity.getCreateBy());
+            lineBaseInformationUnitEntity.setCreateTime(lineBaseInformationEntity.getCreateTime());
+            lineBaseInformationUnitEntity.setModifiedBy(lineBaseInformationEntity.getModifiedBy());
+            lineBaseInformationUnitEntity.setModifiedTime(lineBaseInformationEntity.getModifiedTime());
+            lineBaseInformationUnitEntity.setLineBaseInformationId(lineBaseInformationEntity.getId());
+            lineBaseInformationUnitEntity.setUnitId(unitId);
+            lineBaseInformationUnitService.add(lineBaseInformationUnitEntity);
+        }
+
+    }
+
+    @Override
+    public void edit(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds) {
+        Integer id = lineBaseInformationEntity.getId();
+        LineBaseInformationEntity source = this.findById(id);
+        if (!source.getVersion().equals(lineBaseInformationEntity.getVersion()))
+            lineBaseInformationEntity.setModifiedTime(new Date());
+        lineBaseInformationUnitService.removeByLineBaseInformationId(id);
+        for (Integer unitId : unitIds) {
+            LineBaseInformationUnitEntity lineBaseInformationUnitEntity = new LineBaseInformationUnitEntity();
+            lineBaseInformationUnitEntity.setCreateBy(lineBaseInformationEntity.getCreateBy());
+            lineBaseInformationUnitEntity.setCreateTime(lineBaseInformationEntity.getCreateTime());
+            lineBaseInformationUnitEntity.setModifiedBy(lineBaseInformationEntity.getModifiedBy());
+            lineBaseInformationUnitEntity.setModifiedTime(lineBaseInformationEntity.getModifiedTime());
+            lineBaseInformationUnitEntity.setLineBaseInformationId(lineBaseInformationEntity.getId());
+            lineBaseInformationUnitEntity.setUnitId(unitId);
+            lineBaseInformationUnitService.add(lineBaseInformationUnitEntity);
+        }
+
+    }
 
     @Override
     public List<Map<String, Object>> findRailwaysBureauTid() {
@@ -98,8 +139,17 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
     }
 
     @Override
+    public LineBaseInformationEntity findNewVersionByTid(Integer tid) {
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(null, tid);
+        LineBaseInformationEntity lineBaseInformationEntity = lineBaseInformationEntities.stream().findFirst().orElse(null);
+        if (lineBaseInformationEntity != null)
+            lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
+        return lineBaseInformationEntity;
+    }
+
+    @Override
     public List<LineBaseInformationEntity> findByExample(Integer[] ids) {
-        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(ids);
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(ids, null);
         for (LineBaseInformationEntity lineBaseInformationEntity : lineBaseInformationEntities) {
             lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
         }

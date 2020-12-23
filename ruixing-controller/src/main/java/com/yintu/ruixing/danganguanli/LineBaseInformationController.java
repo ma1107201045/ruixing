@@ -20,17 +20,17 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/line/base/information")
-public class LineBaseInformationController extends SessionController implements BaseController<LineBaseInformationEntity, Integer> {
+public class LineBaseInformationController extends SessionController {
     @Autowired
     private LineBaseInformationService lineBaseInformationService;
 
     @PostMapping
-    public Map<String, Object> add(LineBaseInformationEntity entity) {
+    public Map<String, Object> add(LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
         entity.setModifiedTime(new Date());
-        lineBaseInformationService.add(entity);
+        lineBaseInformationService.add(entity, unitIds);
         return ResponseDataUtil.ok("添加线段基本信息成功");
     }
 
@@ -41,23 +41,10 @@ public class LineBaseInformationController extends SessionController implements 
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, LineBaseInformationEntity entity) {
+    public Map<String, Object> edit(@PathVariable Integer id, LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
         entity.setModifiedBy(this.getLoginUserName());
-        entity.setModifiedTime(new Date());
-        lineBaseInformationService.remove(id);
+        lineBaseInformationService.edit(entity, unitIds);
         return ResponseDataUtil.ok("修改线段基本信息成功");
-    }
-
-    @GetMapping("/{id}")
-    public Map<String, Object> findById(@PathVariable Integer id) {
-        return ResponseDataUtil.ok("查询线段基本信息成功", lineBaseInformationService.findById(id));
-    }
-
-
-    @GetMapping("/tree")
-    public Map<String, Object> findTree() {
-        List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
-        return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
     }
 
     @GetMapping
@@ -69,5 +56,20 @@ public class LineBaseInformationController extends SessionController implements 
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
         return ResponseDataUtil.ok("查询线段基本信息列表成功", pageInfo);
     }
+
+
+    @GetMapping("/tree")
+    public Map<String, Object> findTree() {
+        List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
+        return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
+    }
+
+
+    @GetMapping("/{tid}")
+    public Map<String, Object> findNewVersionByTid(@PathVariable Integer tid) {
+        LineBaseInformationEntity lineBaseInformationEntity = lineBaseInformationService.findNewVersionByTid(tid);
+        return ResponseDataUtil.ok("查询线段基本信息成功", lineBaseInformationEntity);
+    }
+
 
 }
