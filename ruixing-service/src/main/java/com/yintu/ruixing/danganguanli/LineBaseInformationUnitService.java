@@ -1,6 +1,7 @@
 package com.yintu.ruixing.danganguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
+import org.omg.CORBA.INTERNAL;
 
 /**
  * @Author: mlf
@@ -9,5 +10,6 @@ import com.yintu.ruixing.common.util.BaseService;
  */
 public interface LineBaseInformationUnitService extends BaseService<LineBaseInformationUnitEntity, Integer> {
 
+    void removeByLineBaseInformationId(Integer lineBaseInformationId);
 
 }

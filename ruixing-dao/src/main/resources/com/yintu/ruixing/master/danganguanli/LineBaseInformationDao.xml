@@ -49,7 +49,8 @@
         from mro_line_base_information
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_line_base_information (id, create_by, create_time,
                                                modified_by, modified_time, name, short_name,
                                                length, station_num, xiangmutype_id,
@@ -67,7 +68,9 @@
                 #{manufacturerInformation,jdbcType=VARCHAR}, #{modifySituation,jdbcType=LONGVARCHAR},
                 #{version,jdbcType=VARCHAR}, #{tid,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity"
+            useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_line_base_information
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -368,12 +371,19 @@
     </sql>
     <sql id="Much_Where_List">
         <where>
+            <if test="tid!=null">
+                and lbi.tid=#{tid,jdbcType=INTEGER}
+            </if>
             <if test="ids!=null and ids.length > 0">
+                and
                 <foreach collection="array" open="(" close=")" separator="," item="id" index="index">
                     lbi.id=#{id,jdbcType=INTEGER}
                 </foreach>
             </if>
         </where>
+        <if test="tid!=null">
+            order by modified_time desc limie 1
+        </if>
     </sql>
     <select id="selectByExample" resultMap="MuchResultMap">
         select

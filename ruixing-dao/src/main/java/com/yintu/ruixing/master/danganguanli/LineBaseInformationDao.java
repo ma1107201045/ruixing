@@ -32,7 +32,7 @@ public interface LineBaseInformationDao {
     List<Map<String, Object>> selectStationById(Integer id);
 
 
-    List<LineBaseInformationEntity> selectByExample(Integer[] ids);
+    List<LineBaseInformationEntity> selectByExample(Integer[] ids, Integer tid);
 
     List<DianWuDuanEntity> selectDianWuDuanEntityById(Integer id);
 }
