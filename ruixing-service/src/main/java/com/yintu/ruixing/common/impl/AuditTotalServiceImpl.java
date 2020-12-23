@@ -37,34 +37,65 @@ public class AuditTotalServiceImpl implements AuditTotalService {
     @Override
     @Transactional
     public void audit(AuditDto auditDto) {
-        switch (auditDto.getModuleType()) {
+        switch (auditDto.getModuleType()) {//判断模块
             case 1:
-                preSaleFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
-                        auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
-                break;
+                switch (auditDto.getType()) {//判断审核类型
+                    case 1:
+                    case 2:
+                        preSaleFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
+                                auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                }
             case 2:
-                biddingFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
-                        auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
-                break;
+                switch (auditDto.getType()) {
+                    case 1:
+                    case 2:
+                        biddingFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
+                                auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                }
             case 3:
-                designLiaisonFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
-                        auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
-                break;
+                switch (auditDto.getType()) {
+                    case 1:
+                    case 2:
+                        designLiaisonFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
+                                auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                }
         }
     }
 
     @Override
     public List<UserEntity> findByOtherAuditors(AuditDto auditDto) {
-        switch (auditDto.getModuleType()) {
+        switch (auditDto.getModuleType()) {//判断模块
             case 1:
-                return preSaleFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                switch (auditDto.getType()) {//判断审核类型
+                    case 1:
+                    case 2:
+                        return preSaleFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+
+                }
             case 2:
-                return biddingFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                switch (auditDto.getType()) {
+                    case 1:
+                    case 2:
+                        return biddingFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                }
+
             case 3:
-                return designLiaisonFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                switch (auditDto.getType()) {
+                    case 1:
+                    case 2:
+                        return designLiaisonFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                }
+            default:
+                return new ArrayList<>();
         }
-        return new ArrayList<>();
+
     }
+
+
+
+
+
+
 
 
     @Override
