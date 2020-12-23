@@ -119,7 +119,7 @@ public class PreSaleFileController extends SessionController {
     public Map<String, Object> findRoles() {
         List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 1, (short) 1, (short) 1);
         if (auditConfigurationEntities.isEmpty())
-            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree());
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree(this.getLoginUserId()));
         return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
     }
 

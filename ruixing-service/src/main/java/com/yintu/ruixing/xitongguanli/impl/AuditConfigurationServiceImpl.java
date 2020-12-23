@@ -139,7 +139,7 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     }
 
     @Override
-    public List<TreeNodeUtil> findTree() {
+    public List<TreeNodeUtil> findTree(Long loginUserId) {
         List<RoleEntity> roleEntities = roleService.findAll();
         roleEntities = roleEntities.stream().sorted(Comparator.comparing(RoleEntity::getId).reversed()).collect(Collectors.toList());
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
@@ -153,18 +153,20 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
             firstTreeNodeUtils.add(firstTreeNodeUtil);
             for (UserEntity userEntity : userEntities) {
-                TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
-                secondTreeNodeUtil.setId(userEntity.getId());
-                secondTreeNodeUtil.setLabel(userEntity.getTrueName());
-                secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
-                secondTreeNodeUtils.add(secondTreeNodeUtil);
+                if (!userEntity.getId().equals(loginUserId)) {
+                    TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
+                    secondTreeNodeUtil.setId(userEntity.getId());
+                    secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                    secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
+                    secondTreeNodeUtils.add(secondTreeNodeUtil);
+                }
             }
         }
         return firstTreeNodeUtils;
     }
 
     @Override
-    public List<List<TreeNodeUtil>> findTreeById(Long id) {
+    public List<List<TreeNodeUtil>> findTreeById(Long id, Long loginUserId) {
         List<Long> sorts = auditConfigurationUserService.findDistinctFieldByExample("sort", id, null);
         List<List<TreeNodeUtil>> lists = new ArrayList<>();
         for (Long sort : sorts) {
@@ -187,13 +189,15 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
                 firstTreeNodeUtil.setChildren(secondTreeNodeUtils);
                 firstTreeNodeUtils.add(firstTreeNodeUtil);
                 for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
-                    UserEntity userEntity = userService.findById(auditConfigurationUserEntity.getUserId());
-                    TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
-                    secondTreeNodeUtil.setId(userEntity.getId());
-                    secondTreeNodeUtil.setLabel(userEntity.getTrueName());
-                    secondTreeNodeUtil.setValue(auditConfigurationUserEntity.getSort().toString());
-                    secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
-                    secondTreeNodeUtils.add(secondTreeNodeUtil);
+                    if (!auditConfigurationUserEntity.getUserId().equals(loginUserId)) {
+                        UserEntity userEntity = userService.findById(auditConfigurationUserEntity.getUserId());
+                        TreeNodeUtil secondTreeNodeUtil = new TreeNodeUtil();
+                        secondTreeNodeUtil.setId(userEntity.getId());
+                        secondTreeNodeUtil.setLabel(userEntity.getTrueName());
+                        secondTreeNodeUtil.setValue(auditConfigurationUserEntity.getSort().toString());
+                        secondTreeNodeUtil.setA_attr(BeanUtil.beanToMap(roleEntity));
+                        secondTreeNodeUtils.add(secondTreeNodeUtil);
+                    }
                 }
             }
             lists.add(firstTreeNodeUtils);

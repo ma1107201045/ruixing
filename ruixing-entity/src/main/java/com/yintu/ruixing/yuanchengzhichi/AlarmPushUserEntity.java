@@ -27,6 +27,5 @@ public class AlarmPushUserEntity implements Serializable {
 
     private Integer userId;
 
-    private UserEntity userEntity;
 
 }

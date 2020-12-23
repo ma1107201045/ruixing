@@ -147,14 +147,12 @@
                 <result column="cz_name" jdbcType="VARCHAR" property="czName"/>
             </association>
         </association>
-        <collection column="id" property="alarmPushEntities" select="selectById"/>
+        <collection column="id" property="userEntities" select="selectById"/>
     </resultMap>
 
 
-    <resultMap id="selectByIdExample" type="com.yintu.ruixing.yuanchengzhichi.AlarmPushUserEntity">
-        <association column="user_id" property="userEntity">
-            <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
-        </association>
+    <resultMap id="selectByIdExample" type="com.yintu.ruixing.xitongguanli.UserEntity">
+        <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
     </resultMap>
 
     <select id="selectByExample" resultMap="selectByExampleMap">

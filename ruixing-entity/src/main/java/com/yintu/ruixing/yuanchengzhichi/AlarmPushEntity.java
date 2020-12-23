@@ -1,5 +1,6 @@
 package com.yintu.ruixing.yuanchengzhichi;
 
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,6 @@ public class AlarmPushEntity implements Serializable {
 
     private AlarmEntity alarmEntity;
 
-    private List<AlarmPushEntity> alarmPushEntities;
+    private List<UserEntity> userEntities;
 
 }

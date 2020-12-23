@@ -24,9 +24,9 @@ public interface AuditConfigurationService extends BaseService<AuditConfiguratio
 
     List<AuditConfigurationEntity> findByExample(Short nameId, Short status, Short model);
 
-    List<TreeNodeUtil> findTree();
+    List<TreeNodeUtil> findTree(Long loginUserId);
 
-    List<List<TreeNodeUtil>> findTreeById(Long id);
+    List<List<TreeNodeUtil>> findTreeById(Long id, Long loginUserId);
 
     List<AuditConfigurationEntity> findAudit(short i, short i1, short i2);
 }
