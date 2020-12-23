@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,5 +54,12 @@ public class LineBaseInformationController implements BaseController<LineBaseInf
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
         return ResponseDataUtil.ok("查询线段基本信息列表成功", pageInfo);
     }
+
+    @GetMapping("/tree")
+    public Map<String, Object> findTree() {
+        List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
+        return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
+    }
+
 
 }

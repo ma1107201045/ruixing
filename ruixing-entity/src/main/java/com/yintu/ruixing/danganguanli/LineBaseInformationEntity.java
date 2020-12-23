@@ -26,6 +26,8 @@ public class LineBaseInformationEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private String name;
+
     private String shortName;
 
     private Double length;

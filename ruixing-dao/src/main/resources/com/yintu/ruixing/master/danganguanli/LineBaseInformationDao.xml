@@ -326,6 +326,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+
     <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         <id column="lbi_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
