@@ -46,8 +46,8 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
 
 
     @Override
-    public List<Map<String, Object>> findDistinctTid() {
-        return lineBaseInformationDao.selectDistinctTid();
+    public List<Map<String, Object>> findRailwaysBureauTid() {
+        return lineBaseInformationDao.selectRailwaysBureauTid();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
 
     @Override
     public List<TreeNodeUtil> findTree() {
-        List<Map<String, Object>> maps1 = this.findDistinctTid();
+        List<Map<String, Object>> maps1 = this.findRailwaysBureauTid();
         List<TreeNodeUtil> first = new ArrayList<>();
         for (Map<String, Object> map1 : maps1) {
             Integer tid = (Integer) map1.get("tid");
@@ -97,12 +97,6 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
         return first;
     }
 
-
-    @Override
-    public List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id) {
-        return lineBaseInformationDao.selectDianWuDuanEntityById(id);
-    }
-
     @Override
     public List<LineBaseInformationEntity> findByExample(Integer[] ids) {
         List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(ids);
@@ -110,6 +104,12 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
             lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
         }
         return lineBaseInformationEntities;
+    }
+
+
+    @Override
+    public List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id) {
+        return lineBaseInformationDao.selectDianWuDuanEntityById(id);
     }
 
 

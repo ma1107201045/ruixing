@@ -22,14 +22,15 @@ public interface LineBaseInformationDao {
 
     int updateByPrimaryKey(LineBaseInformationEntity record);
 
-    @Select("select distinct t.tid,t.tlj_name from mro_line_base_information lbi inner join mro_tieluju t on lbi.tid=t.tid order by t.tid desc")
-    List<Map<String, Object>> selectDistinctTid();
+    @Select("select t.tid,t.tlj_name from mro_tieluju t order by t.tid desc")
+    List<Map<String, Object>> selectRailwaysBureauTid();
 
     @Select("select id,name from mro_line_base_information where tid=#{tid} order by modified_time desc")
     List<Map<String, Object>> selectByTid(Integer tid);
 
     @Select("select id,name from mro_station_base_information where line_base_information_id=#{id} order by modified_time desc")
     List<Map<String, Object>> selectStationById(Integer id);
+
 
     List<LineBaseInformationEntity> selectByExample(Integer[] ids);
 

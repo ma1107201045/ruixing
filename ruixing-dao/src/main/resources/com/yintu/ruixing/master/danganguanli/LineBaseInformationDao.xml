@@ -7,6 +7,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
         <result column="length" jdbcType="DOUBLE" property="length"/>
         <result column="station_num" jdbcType="INTEGER" property="stationNum"/>
@@ -19,8 +20,7 @@
         <result column="guarantee_period_information" jdbcType="VARCHAR" property="guaranteePeriodInformation"/>
         <result column="auxiliary_product_information" jdbcType="VARCHAR" property="auxiliaryProductInformation"/>
         <result column="manufacturer_information" jdbcType="VARCHAR" property="manufacturerInformation"/>
-        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
-        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
         <result column="xiangmutype_id" jdbcType="INTEGER" property="xiangmutypeId"/>
         <result column="tid" jdbcType="INTEGER" property="tid"/>
     </resultMap>
@@ -29,10 +29,9 @@
         <result column="modify_situation" jdbcType="LONGVARCHAR" property="modifySituation"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time, short_name, length, station_num,
+        id, create_by, create_time, modified_by, modified_time,name, short_name, length, station_num,
     xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state, 
-    open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information, 
-    file_name, file_path,tid
+    open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,version, tid
     </sql>
     <sql id="Blob_Column_List">
         modify_situation
@@ -52,21 +51,21 @@
     </delete>
     <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         insert into mro_line_base_information (id, create_by, create_time,
-                                               modified_by, modified_time, short_name,
+                                               modified_by, modified_time, name, short_name,
                                                length, station_num, xiangmutype_id,
                                                quduan_num, dianmahua_num, axle_points,
                                                info_num, technology_state, open_time,
                                                guarantee_period_information, auxiliary_product_information,
-                                               manufacturer_information, file_name, file_path,
-                                               modify_situation, tid)
+                                               manufacturer_information, modify_situation, version, tid)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{shortName,jdbcType=VARCHAR},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
+                #{shortName,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR},
                 #{length,jdbcType=DOUBLE}, #{stationNum,jdbcType=INTEGER}, #{xiangmutypeId,jdbcType=INTEGER},
                 #{quduanNum,jdbcType=INTEGER}, #{dianmahuaNum,jdbcType=INTEGER}, #{axlePoints,jdbcType=INTEGER},
                 #{infoNum,jdbcType=INTEGER}, #{technologyState,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP},
                 #{guaranteePeriodInformation,jdbcType=VARCHAR}, #{auxiliaryProductInformation,jdbcType=VARCHAR},
-                #{manufacturerInformation,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR},
-                #{modifySituation,jdbcType=LONGVARCHAR}, #{tid,jdbcType=INTEGER})
+                #{manufacturerInformation,jdbcType=VARCHAR}, #{modifySituation,jdbcType=LONGVARCHAR},
+                #{version,jdbcType=VARCHAR}, #{tid,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         insert into mro_line_base_information
@@ -85,6 +84,9 @@
             </if>
             <if test="modifiedTime != null">
                 modified_time,
+            </if>
+            <if test="name!=null">
+                name,
             </if>
             <if test="shortName != null">
                 short_name,
@@ -125,14 +127,11 @@
             <if test="manufacturerInformation != null">
                 manufacturer_information,
             </if>
-            <if test="fileName != null">
-                file_name,
-            </if>
-            <if test="filePath != null">
-                file_path,
-            </if>
             <if test="modifySituation != null">
                 modify_situation,
+            </if>
+            <if test="version!=null">
+                version,
             </if>
             <if test="tid != null">
                 tid,
@@ -153,6 +152,9 @@
             </if>
             <if test="modifiedTime != null">
                 #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
             </if>
             <if test="shortName != null">
                 #{shortName,jdbcType=VARCHAR},
@@ -193,14 +195,11 @@
             <if test="manufacturerInformation != null">
                 #{manufacturerInformation,jdbcType=VARCHAR},
             </if>
-            <if test="fileName != null">
-                #{fileName,jdbcType=VARCHAR},
-            </if>
-            <if test="filePath != null">
-                #{filePath,jdbcType=VARCHAR},
-            </if>
             <if test="modifySituation != null">
                 #{modifySituation,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="version!=null">
+                #{version,jdbcType=VARCHAR},
             </if>
             <if test="tid != null">
                 #{tid,jdbcType=INTEGER},
@@ -221,6 +220,9 @@
             </if>
             <if test="modifiedTime != null">
                 modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="shortName != null">
                 short_name = #{shortName,jdbcType=VARCHAR},
@@ -261,14 +263,11 @@
             <if test="manufacturerInformation != null">
                 manufacturer_information = #{manufacturerInformation,jdbcType=VARCHAR},
             </if>
-            <if test="fileName != null">
-                file_name = #{fileName,jdbcType=VARCHAR},
-            </if>
-            <if test="filePath != null">
-                file_path = #{filePath,jdbcType=VARCHAR},
-            </if>
             <if test="modifySituation != null">
                 modify_situation = #{modifySituation,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="version!=null">
+                version=#{version,jdbcType=VARCHAR},
             </if>
             <if test="tid != null">
                 tid = #{tid,jdbcType=INTEGER},
@@ -282,6 +281,7 @@
             create_time                   = #{createTime,jdbcType=TIMESTAMP},
             modified_by                   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time                 = #{modifiedTime,jdbcType=TIMESTAMP},
+            name                          = #{name,jdbcType=VARCHAR},
             short_name                    = #{shortName,jdbcType=VARCHAR},
             length                        = #{length,jdbcType=DOUBLE},
             station_num                   = #{stationNum,jdbcType=INTEGER},
@@ -295,9 +295,8 @@
             guarantee_period_information  = #{guaranteePeriodInformation,jdbcType=VARCHAR},
             auxiliary_product_information = #{auxiliaryProductInformation,jdbcType=VARCHAR},
             manufacturer_information      = #{manufacturerInformation,jdbcType=VARCHAR},
-            file_name                     = #{fileName,jdbcType=VARCHAR},
-            file_path                     = #{filePath,jdbcType=VARCHAR},
             modify_situation              = #{modifySituation,jdbcType=LONGVARCHAR},
+            version                       = #{version,jdbcType=VARCHAR},
             tid                           = #{tid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -307,6 +306,7 @@
             create_time                   = #{createTime,jdbcType=TIMESTAMP},
             modified_by                   = #{modifiedBy,jdbcType=VARCHAR},
             modified_time                 = #{modifiedTime,jdbcType=TIMESTAMP},
+            name                          = #{name,jdbcType=VARCHAR},
             short_name                    = #{shortName,jdbcType=VARCHAR},
             length                        = #{length,jdbcType=DOUBLE},
             station_num                   = #{stationNum,jdbcType=INTEGER},
@@ -320,8 +320,7 @@
             guarantee_period_information  = #{guaranteePeriodInformation,jdbcType=VARCHAR},
             auxiliary_product_information = #{auxiliaryProductInformation,jdbcType=VARCHAR},
             manufacturer_information      = #{manufacturerInformation,jdbcType=VARCHAR},
-            file_name                     = #{fileName,jdbcType=VARCHAR},
-            file_path                     = #{filePath,jdbcType=VARCHAR},
+            version                       = #{version,jdbcType=VARCHAR},
             tid                           = #{tid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -333,6 +332,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
         <result column="length" jdbcType="DOUBLE" property="length"/>
         <result column="station_num" jdbcType="INTEGER" property="stationNum"/>
@@ -345,8 +345,6 @@
         <result column="guarantee_period_information" jdbcType="VARCHAR" property="guaranteePeriodInformation"/>
         <result column="auxiliary_product_information" jdbcType="VARCHAR" property="auxiliaryProductInformation"/>
         <result column="manufacturer_information" jdbcType="VARCHAR" property="manufacturerInformation"/>
-        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
-        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
         <result column="modify_situation" jdbcType="LONGVARCHAR" property="modifySituation"/>
         <result column="lbi_tid" jdbcType="INTEGER" property="tid"/>
         <result column="xiangmutype_id" jdbcType="INTEGER" property="xiangmutypeId"/>
@@ -360,7 +358,7 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,file_name, file_path,modify_situation,lbi.tid as lbi_tid,
+        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, name,short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,modify_situation,lbi.tid as lbi_tid,
         t.tid as t_tid,tlj_name,
         ax.id as ax_id,xiangmuleixing
     </sql>

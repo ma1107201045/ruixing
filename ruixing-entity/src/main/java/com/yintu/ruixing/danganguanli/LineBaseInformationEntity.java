@@ -52,11 +52,9 @@ public class LineBaseInformationEntity implements Serializable {
 
     private String manufacturerInformation;
 
-    private String fileName;
-
-    private String filePath;
-
     private String modifySituation;
+
+    private String version;
 
     private Integer xiangmutypeId;
 

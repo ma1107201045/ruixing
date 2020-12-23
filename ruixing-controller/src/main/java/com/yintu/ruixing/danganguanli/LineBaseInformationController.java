@@ -2,12 +2,14 @@ package com.yintu.ruixing.danganguanli;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +20,16 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/line/base/information")
-public class LineBaseInformationController implements BaseController<LineBaseInformationEntity, Integer> {
+public class LineBaseInformationController extends SessionController implements BaseController<LineBaseInformationEntity, Integer> {
     @Autowired
     private LineBaseInformationService lineBaseInformationService;
 
     @PostMapping
     public Map<String, Object> add(LineBaseInformationEntity entity) {
+        entity.setCreateBy(this.getLoginUserName());
+        entity.setCreateTime(new Date());
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         lineBaseInformationService.add(entity);
         return ResponseDataUtil.ok("添加线段基本信息成功");
     }
@@ -36,6 +42,8 @@ public class LineBaseInformationController implements BaseController<LineBaseInf
 
     @PutMapping("/{id}")
     public Map<String, Object> edit(@PathVariable Integer id, LineBaseInformationEntity entity) {
+        entity.setModifiedBy(this.getLoginUserName());
+        entity.setModifiedTime(new Date());
         lineBaseInformationService.remove(id);
         return ResponseDataUtil.ok("修改线段基本信息成功");
     }
@@ -43,6 +51,13 @@ public class LineBaseInformationController implements BaseController<LineBaseInf
     @GetMapping("/{id}")
     public Map<String, Object> findById(@PathVariable Integer id) {
         return ResponseDataUtil.ok("查询线段基本信息成功", lineBaseInformationService.findById(id));
+    }
+
+
+    @GetMapping("/tree")
+    public Map<String, Object> findTree() {
+        List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
+        return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
     }
 
     @GetMapping
@@ -54,12 +69,5 @@ public class LineBaseInformationController implements BaseController<LineBaseInf
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
         return ResponseDataUtil.ok("查询线段基本信息列表成功", pageInfo);
     }
-
-    @GetMapping("/tree")
-    public Map<String, Object> findTree() {
-        List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
-        return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
-    }
-
 
 }

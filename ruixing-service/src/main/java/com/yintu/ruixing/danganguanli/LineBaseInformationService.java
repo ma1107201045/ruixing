@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface LineBaseInformationService extends BaseService<LineBaseInformationEntity, Integer> {
 
-    List<Map<String, Object>> findDistinctTid();
+    List<Map<String, Object>> findRailwaysBureauTid();
 
     List<Map<String, Object>> findByTid(Integer tid);
 
@@ -23,9 +23,10 @@ public interface LineBaseInformationService extends BaseService<LineBaseInformat
     List<TreeNodeUtil> findTree();
 
 
-    List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id);
-
     List<LineBaseInformationEntity> findByExample(Integer[] ids);
+
+
+    List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id);
 
 
 }
