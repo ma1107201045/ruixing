@@ -9,12 +9,20 @@
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="alarm_id" jdbcType="INTEGER" property="alarmId"/>
     </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+    </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, alarm_id
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <sql id="Blob_Column_List">
+        context
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
         from alarm_push
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -23,13 +31,18 @@
         from alarm_push
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
+    <insert id="insert" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity" useGeneratedKeys="true"
+            keyProperty="id">
         insert into alarm_push (id, create_by, create_time,
-                                modified_by, modified_time, alarm_id)
+                                modified_by, modified_time, alarm_id,
+                                context)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{alarmId,jdbcType=INTEGER})
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{alarmId,jdbcType=INTEGER},
+                #{context,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity"
+            useGeneratedKeys="true"
+            keyProperty="id">
         insert into alarm_push
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -49,6 +62,9 @@
             </if>
             <if test="alarmId != null">
                 alarm_id,
+            </if>
+            <if test="context != null">
+                context,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -70,6 +86,9 @@
             <if test="alarmId != null">
                 #{alarmId,jdbcType=INTEGER},
             </if>
+            <if test="context != null">
+                #{context,jdbcType=LONGVARCHAR},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
@@ -90,7 +109,20 @@
             <if test="alarmId != null">
                 alarm_id = #{alarmId,jdbcType=INTEGER},
             </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
+            </if>
         </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">
+        update alarm_push
+        set create_by     = #{createBy,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            modified_by   = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            alarm_id      = #{alarmId,jdbcType=INTEGER},
+            context       = #{context,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.yuanchengzhichi.AlarmPushEntity">

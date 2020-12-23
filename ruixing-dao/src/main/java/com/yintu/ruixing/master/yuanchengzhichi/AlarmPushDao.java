@@ -13,5 +13,7 @@ public interface AlarmPushDao {
 
     int updateByPrimaryKeySelective(AlarmPushEntity record);
 
+    int updateByPrimaryKeyWithBLOBs(AlarmPushEntity record);
+
     int updateByPrimaryKey(AlarmPushEntity record);
 }

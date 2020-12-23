@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.*;
+import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: mlf
@@ -27,6 +30,11 @@ public class AlarmController extends SessionController {
     private AlarmTicketService alarmTicketService;
     @Autowired
     private DataStatsService dataStatsService;
+    @Autowired
+    private AlarmPushService alarmPushService;
+
+    @Autowired
+    private UserService userService;
 
     @DeleteMapping("/{ids}")
     public Map<String, Object> remove(@PathVariable Integer[] ids) {
@@ -119,6 +127,25 @@ public class AlarmController extends SessionController {
         List<AlarmEntity> alarmEntities = alarmService.findByDisposeStatus();
         PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
         return ResponseDataUtil.ok("查询报警、预警处置意见信息列表成功", pageInfo);
+    }
+
+
+    @PutMapping("/push")
+    public Map<String, Object> push(@Validated AlarmPushEntity alarmPushEntity, @RequestParam Integer[] userIds) {
+        alarmPushEntity.setCreateBy(this.getLoginUserName());
+        alarmPushEntity.setCreateTime(new Date());
+        alarmPushEntity.setModifiedBy(this.getLoginUserName());
+        alarmPushEntity.setModifiedTime(new Date());
+        alarmPushService.add(alarmPushEntity, userIds);
+        return ResponseDataUtil.ok("推送报警、预警信息成功");
+    }
+
+
+    @GetMapping("/push/users")
+    public Map<String, Object> findPushUsers() {
+        List<UserEntity> userEntities = userService.findAll();
+        userEntities = userEntities.stream().filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId())).collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询推送人员信息列表成功", userEntities);
     }
 
 }

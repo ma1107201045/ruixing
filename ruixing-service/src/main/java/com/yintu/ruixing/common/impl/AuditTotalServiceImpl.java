@@ -159,7 +159,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
             auditTotalVos = biddingFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), null, null, null);
         }
         auditTotalVos.forEach(auditTotalVo -> {
-            auditTotalVo.setModuleType((short) 1);
+            auditTotalVo.setModuleType((short) 2);
             auditTotalVo.setType((short) 2);
         });
         return auditTotalVos;
@@ -177,7 +177,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
             auditTotalVos = designLiaisonFileService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
         }
         auditTotalVos.forEach(auditTotalVo -> {
-            auditTotalVo.setModuleType((short) 1);
+            auditTotalVo.setModuleType((short) 3);
             auditTotalVo.setType((short) 2);
         });
         return auditTotalVos;
