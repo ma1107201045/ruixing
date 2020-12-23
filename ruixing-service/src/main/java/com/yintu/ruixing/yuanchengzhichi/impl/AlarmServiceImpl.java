@@ -72,13 +72,16 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public AlarmEntity findById(Integer id) {
-        return alarmDao.selectByPrimaryKey(id);
+        AlarmEntity alarmEntityQuery = new AlarmEntity();
+        alarmEntityQuery.setId(id);
+        List<AlarmEntity> alarmEntities = this.findByExample(null, null, null, null, null, alarmEntityQuery, null);
+        return alarmEntities.stream().findFirst().orElse(null);
     }
 
     @Override
     public List<AlarmEntity> findByExample(Integer tid, Integer did, Integer xid, Date beginTime, Date endTime, AlarmEntity alarmEntityQuery, String xtType) {
-        int bt = 0;
-        int dt = 0;
+        int bt;
+        int dt;
         //多条件查询
         if (beginTime == null && endTime == null) {//如果前台时间区间为空，则查询当前数据（默认）
             Date now = DateUtil.date();

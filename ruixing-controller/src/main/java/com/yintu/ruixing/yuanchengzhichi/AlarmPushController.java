@@ -6,10 +6,7 @@ import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanEntity;
 import com.yintu.ruixing.guzhangzhenduan.CheZhanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +27,12 @@ public class AlarmPushController {
     private CheZhanService cheZhanService;
 
 
+    @DeleteMapping("/{id}")
+    public Map<String, Object> findById(@PathVariable Integer id) {
+        alarmPushService.remove(id);
+        return ResponseDataUtil.ok("删除报警、预警推送信息成功");
+    }
+
     @GetMapping
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,
@@ -39,7 +42,7 @@ public class AlarmPushController {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<AlarmPushEntity> alarmPushEntities = alarmPushService.findByExample(cid, pushDate);
         PageInfo<AlarmPushEntity> pageInfo = new PageInfo<>(alarmPushEntities);
-        return ResponseDataUtil.ok("查询报警、预警处置意见信息列表成功", pageInfo);
+        return ResponseDataUtil.ok("查询报警、预警推送信息列表成功", pageInfo);
     }
 
     @GetMapping("/chezhans")

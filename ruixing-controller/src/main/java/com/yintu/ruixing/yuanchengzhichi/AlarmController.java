@@ -48,6 +48,12 @@ public class AlarmController extends SessionController {
         return ResponseDataUtil.ok("修改报警、预警处置意见信息");
     }
 
+    @GetMapping("{/id}")
+    public Map<String, Object> finById(@PathVariable Integer id) {
+        AlarmEntity alarmEntity = alarmService.findById(id);
+        return ResponseDataUtil.ok("查询报警、预警处置意见信息成功", alarmEntity);
+    }
+
     @GetMapping
     public Map<String, Object> finAll(@RequestParam("page_number") Integer pageNumber,
                                       @RequestParam("page_size") Integer pageSize,
@@ -62,7 +68,7 @@ public class AlarmController extends SessionController {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<AlarmEntity> alarmEntities = alarmService.findByExample(tid, did, xid, beginTime, endTime, alarmEntityQuery, xtType);
         PageInfo<AlarmEntity> pageInfo = new PageInfo<>(alarmEntities);
-        return ResponseDataUtil.ok("查询报警、预警处置意见信息", pageInfo);
+        return ResponseDataUtil.ok("查询报警、预警处置意见信息成功", pageInfo);
     }
 
     @GetMapping("/railways/bureau")
