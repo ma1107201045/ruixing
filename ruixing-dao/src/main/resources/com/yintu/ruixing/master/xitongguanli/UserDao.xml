@@ -81,6 +81,15 @@
         id, create_by, create_time, modified_by, modified_time, username, password, true_name,
     phone, email, auth_type, locked, enableds, is_customer
     </sql>
+
+    <!--根据id 查询对应的真实名字-->
+    <select id="findTureNameById" resultType="java.lang.String">
+        select
+        true_name
+        from tb_user
+        where id = #{id}
+    </select>
+
     <select id="selectByExample" parameterType="com.yintu.ruixing.xitongguanli.UserEntityExample"
             resultMap="BaseResultMap">
         select

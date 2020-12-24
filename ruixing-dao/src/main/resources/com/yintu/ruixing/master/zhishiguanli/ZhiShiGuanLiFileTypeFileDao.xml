@@ -18,11 +18,21 @@
     <result column="auditstatus" jdbcType="INTEGER" property="auditstatus" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, parentid, tid,filesize, file_name, file_path, createtime, fabu_type, yuliu,updateTime,createName,updateName,
-    userid, auditstatus, reason ,remark
+    userid, auditstatus, reason ,remark,audit_finish_time
   </sql>
+
+
+  <!--根据id 查询对应的文件数据-->
+  <select id="findFileDatasById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 
   <!--根据 大小 排序-->
   <select id="findSomeFileBySize"  resultMap="BaseResultMap">
@@ -183,6 +193,9 @@
       <if test="remark != null">
         remark,
       </if>
+      <if test="auditFinishTime != null">
+        audit_finish_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -232,6 +245,9 @@
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFinishTime != null">
+        #{auditFinishTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -284,6 +300,9 @@
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFinishTime != null">
+        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
