@@ -12,45 +12,53 @@
         <result column="dwd_state" jdbcType="INTEGER" property="dwdState"/>
         <result column="dwd_json" jdbcType="LONGVARCHAR" property="dwdJson"/>
     </resultMap>
-    <select id="findDianWuDuanByName" resultMap="dianwuduan" >
-        select * from mro_dianwuduan where dwd_name=#{dwdname}
+    <select id="findDianWuDuanByName" resultMap="dianwuduan">
+        select *
+        from mro_dianwuduan
+        where dwd_name = #{dwdname}
     </select>
 
     <!--根据电务段did  查询对应的json数据-->
-    <select id="findDWDJsonByDid" resultType="java.lang.String" >
-        select dwd_json from mro_dianwuduan where did=#{did}
+    <select id="findDWDJsonByDid" resultType="java.lang.String">
+        select dwd_json
+        from mro_dianwuduan
+        where did = #{did}
     </select>
 
     <!--根据电务段名  查询对应的数据-->
-    <select id="findDianWuDuanBydid" resultMap="dianwuduan" >
-        select
-        *
+    <select id="findDianWuDuanBydid" resultMap="dianwuduan">
+        select *
         from mro_dianwuduan
-        where dwd_id=#{parseLong}
-        and tlj_id =#{parseLong1}
+        where dwd_id = #{parseLong}
+          and tlj_id = #{parseLong1}
     </select>
 
     <!--根据电务段专用id  查询id-->
     <select id="dwdid" resultType="java.lang.Long">
-        select did from mro_dianwuduan where dwd_id =  #{parseLong} and tlj_id=  #{parseLong1}
+        select did
+        from mro_dianwuduan
+        where dwd_id = #{parseLong}
+          and tlj_id = #{parseLong1}
     </select>
     <!--查询所有的电务段-->
-    <select id="findDianWuDuan" resultMap="dianwuduan" >
-        select * from mro_dianwuduan
+    <select id="findDianWuDuan" resultMap="dianwuduan">
+        select *
+        from mro_dianwuduan
     </select>
 
     <!--查询电务段-->
     <select id="findDianWuDuanById" resultMap="dianwuduan" parameterType="java.lang.Long">
-        select * from mro_dianwuduan where did =  #{did}
+        select *
+        from mro_dianwuduan
+        where did = #{did}
     </select>
-    
+
     <!--新增电务段-->
     <insert id="addDianWuDuan" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity">
 
-		insert into mro_dianwuduan(dwd_name,dwd_id,tlj_id,dwd_miaoshu,tlj_dwd_id)
-		values
-		(#{dwdName},#{dwdId},#{tljId},#{dwdMiaoShu},#{tljDwdId})
-	</insert>
+        insert into mro_dianwuduan(dwd_name, dwd_id, tlj_id, dwd_miaoshu, tlj_dwd_id)
+        values (#{dwdName}, #{dwdId}, #{tljId}, #{dwdMiaoShu}, #{tljDwdId})
+    </insert>
     <!--修改电务段信息-->
     <update id="editDianWuDuan" parameterType="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity">
         update mro_dianwuduan
@@ -70,19 +78,21 @@
     </update>
     <!--删除电务段-->
     <delete id="delDianWuDuan" parameterType="long">
-		delete from mro_dianwuduan where did=#{did}
-	</delete>
+        delete
+        from mro_dianwuduan
+        where did = #{did}
+    </delete>
 
     <!--查询下级是否存在-->
     <select id="findId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT
-        xd.dwd_xd_id
-        FROM
-        mro_dianwuduan dwd,
-        mro_xianduan xd
-        where
-        dwd.did=xd.dwd_xd_id
-        and
-        did=#{did}
+        SELECT xd.dwd_xd_id
+        FROM mro_dianwuduan dwd,
+             mro_xianduan xd
+        where dwd.did = xd.dwd_xd_id
+          and did = #{did}
+    </select>
+    <select id="selectAll" resultMap="dianwuduan">
+        select did, dwd_name
+        from mro_dianwuduan
     </select>
 </mapper>

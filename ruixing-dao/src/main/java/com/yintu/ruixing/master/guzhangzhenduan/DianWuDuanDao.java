@@ -25,11 +25,13 @@ public interface DianWuDuanDao {
 
     List<DianWuDuanEntity> findDianWuDuan();
 
-    Long dwdid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
+    Long dwdid(@Param("parseLong") long parseLong, @Param("parseLong1") long parseLong1);
 
     List<DianWuDuanEntity> findDianWuDuanByName(String dwdname);
 
-    List<DianWuDuanEntity> findDianWuDuanBydid(@Param("parseLong") long parseLong,@Param("parseLong1") long parseLong1);
+    List<DianWuDuanEntity> findDianWuDuanBydid(@Param("parseLong") long parseLong, @Param("parseLong1") long parseLong1);
 
     String findDWDJsonByDid(@Param("did") Integer did);
+
+    List<DianWuDuanEntity> selectAll();
 }

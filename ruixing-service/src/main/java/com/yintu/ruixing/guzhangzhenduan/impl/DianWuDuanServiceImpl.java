@@ -20,6 +20,7 @@ public class DianWuDuanServiceImpl implements DianWuDuanService {
 
     @Autowired
     private DianWuDuanDao dianWuDuanDao;
+
     @Override
     public DianWuDuanEntity findDianWuDuanById(Long did) {
         return dianWuDuanDao.findDianWuDuanById(did);
@@ -45,5 +46,10 @@ public class DianWuDuanServiceImpl implements DianWuDuanService {
     @Override
     public List<Integer> findId(Long did) {
         return dianWuDuanDao.findId(did);
+    }
+
+    @Override
+    public List<DianWuDuanEntity> findAll() {
+        return dianWuDuanDao.selectAll();
     }
 }

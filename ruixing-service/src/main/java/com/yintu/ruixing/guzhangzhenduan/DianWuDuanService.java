@@ -1,7 +1,5 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
-import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
-
 import java.util.List;
 
 /**
@@ -19,4 +17,6 @@ public interface DianWuDuanService {
     void delDianWuDuan(Long did);
 
     List<Integer> findId(Long did);
+
+    List<DianWuDuanEntity> findAll();
 }

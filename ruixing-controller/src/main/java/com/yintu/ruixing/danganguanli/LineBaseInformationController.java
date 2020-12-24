@@ -2,10 +2,14 @@ package com.yintu.ruixing.danganguanli;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
+import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeService;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +28,10 @@ import java.util.Map;
 public class LineBaseInformationController extends SessionController {
     @Autowired
     private LineBaseInformationService lineBaseInformationService;
+    @Autowired
+    private AnZhuangTiaoShiCheZhanXiangMuTypeService anZhuangTiaoShiCheZhanXiangMuTypeService;
+    @Autowired
+    private DianWuDuanService dianWuDuanService;
 
     @PostMapping
     public Map<String, Object> add(@Validated LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
@@ -56,6 +64,18 @@ public class LineBaseInformationController extends SessionController {
         List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationService.findByExample(null);
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
         return ResponseDataUtil.ok("查询线段基本信息列表成功", pageInfo);
+    }
+
+    @GetMapping("/XiangMuTypes")
+    public Map<String, Object> findXiangMuTypes() {
+        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> anZhuangTiaoShiCheZhanXiangMuTypeEntities = anZhuangTiaoShiCheZhanXiangMuTypeService.findAll();
+        return ResponseDataUtil.ok("查询线段设备类型信息列表成功", anZhuangTiaoShiCheZhanXiangMuTypeEntities);
+    }
+
+    @GetMapping("/dianwuduans")
+    public Map<String, Object> findDianWuDuans() {
+        List<DianWuDuanEntity> dianWuDuanEntities = dianWuDuanService.findAll();
+        return ResponseDataUtil.ok("查询线段单位信息列表成功", dianWuDuanEntities);
     }
 
 

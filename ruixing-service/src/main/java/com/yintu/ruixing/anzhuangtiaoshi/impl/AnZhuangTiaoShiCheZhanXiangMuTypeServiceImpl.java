@@ -27,6 +27,11 @@ public class AnZhuangTiaoShiCheZhanXiangMuTypeServiceImpl implements AnZhuangTia
     }
 
     @Override
+    public List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAll() {
+        return this.findXiangMuTypeByName("", null, null);
+    }
+
+    @Override
     public void deletXiangMuTypeByIds(Integer[] ids) {
         anZhuangTiaoShiCheZhanXiangMuTypeDao.deletXiangMuTypeByIds(ids);
     }
@@ -37,7 +42,7 @@ public class AnZhuangTiaoShiCheZhanXiangMuTypeServiceImpl implements AnZhuangTia
     }
 
     @Override
-    public List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType(Integer page,Integer size) {
+    public List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType(Integer page, Integer size) {
         return anZhuangTiaoShiCheZhanXiangMuTypeDao.findAllXiangMuType();
     }
 

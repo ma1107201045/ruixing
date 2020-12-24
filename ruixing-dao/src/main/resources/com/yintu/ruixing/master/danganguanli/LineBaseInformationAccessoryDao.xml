@@ -1,178 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.master.danganguanli.LineBaseInformationAccessoryDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
-    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
-    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
-    <result column="line_base_information_id" jdbcType="INTEGER" property="lineBaseInformationId" />
-    <result column="technology_state_id" jdbcType="SMALLINT" property="technologyStateId" />
-    <result column="modify_situation_id" jdbcType="SMALLINT" property="modifySituationId" />
-    <result column="auxiliary_product_information_id" jdbcType="SMALLINT" property="auxiliaryProductInformationId" />
-    <result column="manufacturer_information_id" jdbcType="SMALLINT" property="manufacturerInformationId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, create_by, create_time, modified_by, modified_time, accessory_name, accessory_path, 
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="line_base_information_id" jdbcType="INTEGER" property="lineBaseInformationId"/>
+        <result column="technology_state_id" jdbcType="SMALLINT" property="technologyStateId"/>
+        <result column="modify_situation_id" jdbcType="SMALLINT" property="modifySituationId"/>
+        <result column="auxiliary_product_information_id" jdbcType="SMALLINT" property="auxiliaryProductInformationId"/>
+        <result column="manufacturer_information_id" jdbcType="SMALLINT" property="manufacturerInformationId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_by, create_time, modified_by, modified_time, accessory_name, accessory_path,
     line_base_information_id, technology_state_id, modify_situation_id, auxiliary_product_information_id, 
     manufacturer_information_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_line_base_information_accessory
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_line_base_information_accessory
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
-    insert into mro_line_base_information_accessory (id, create_by, create_time, 
-      modified_by, modified_time, accessory_name, 
-      accessory_path, line_base_information_id, technology_state_id, 
-      modify_situation_id, auxiliary_product_information_id, 
-      manufacturer_information_id)
-    values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR}, 
-      #{accessoryPath,jdbcType=VARCHAR}, #{lineBaseInformationId,jdbcType=INTEGER}, #{technologyStateId,jdbcType=SMALLINT}, 
-      #{modifySituationId,jdbcType=SMALLINT}, #{auxiliaryProductInformationId,jdbcType=SMALLINT}, 
-      #{manufacturerInformationId,jdbcType=SMALLINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
-    insert into mro_line_base_information_accessory
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifiedBy != null">
-        modified_by,
-      </if>
-      <if test="modifiedTime != null">
-        modified_time,
-      </if>
-      <if test="accessoryName != null">
-        accessory_name,
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path,
-      </if>
-      <if test="lineBaseInformationId != null">
-        line_base_information_id,
-      </if>
-      <if test="technologyStateId != null">
-        technology_state_id,
-      </if>
-      <if test="modifySituationId != null">
-        modify_situation_id,
-      </if>
-      <if test="auxiliaryProductInformationId != null">
-        auxiliary_product_information_id,
-      </if>
-      <if test="manufacturerInformationId != null">
-        manufacturer_information_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifiedBy != null">
-        #{modifiedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="modifiedTime != null">
-        #{modifiedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="lineBaseInformationId != null">
-        #{lineBaseInformationId,jdbcType=INTEGER},
-      </if>
-      <if test="technologyStateId != null">
-        #{technologyStateId,jdbcType=SMALLINT},
-      </if>
-      <if test="modifySituationId != null">
-        #{modifySituationId,jdbcType=SMALLINT},
-      </if>
-      <if test="auxiliaryProductInformationId != null">
-        #{auxiliaryProductInformationId,jdbcType=SMALLINT},
-      </if>
-      <if test="manufacturerInformationId != null">
-        #{manufacturerInformationId,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
-    update mro_line_base_information_accessory
-    <set>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifiedBy != null">
-        modified_by = #{modifiedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="modifiedTime != null">
-        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="lineBaseInformationId != null">
-        line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
-      </if>
-      <if test="technologyStateId != null">
-        technology_state_id = #{technologyStateId,jdbcType=SMALLINT},
-      </if>
-      <if test="modifySituationId != null">
-        modify_situation_id = #{modifySituationId,jdbcType=SMALLINT},
-      </if>
-      <if test="auxiliaryProductInformationId != null">
-        auxiliary_product_information_id = #{auxiliaryProductInformationId,jdbcType=SMALLINT},
-      </if>
-      <if test="manufacturerInformationId != null">
-        manufacturer_information_id = #{manufacturerInformationId,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
-    update mro_line_base_information_accessory
-    set create_by = #{createBy,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modified_by = #{modifiedBy,jdbcType=VARCHAR},
-      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
-      technology_state_id = #{technologyStateId,jdbcType=SMALLINT},
-      modify_situation_id = #{modifySituationId,jdbcType=SMALLINT},
-      auxiliary_product_information_id = #{auxiliaryProductInformationId,jdbcType=SMALLINT},
-      manufacturer_information_id = #{manufacturerInformationId,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_line_base_information_accessory
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_line_base_information_accessory
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        insert into mro_line_base_information_accessory (id, create_by, create_time,
+                                                         modified_by, modified_time, accessory_name,
+                                                         accessory_path, line_base_information_id, technology_state_id,
+                                                         modify_situation_id, auxiliary_product_information_id,
+                                                         manufacturer_information_id)
+        values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR},
+                #{accessoryPath,jdbcType=VARCHAR}, #{lineBaseInformationId,jdbcType=INTEGER},
+                #{technologyStateId,jdbcType=SMALLINT},
+                #{modifySituationId,jdbcType=SMALLINT}, #{auxiliaryProductInformationId,jdbcType=SMALLINT},
+                #{manufacturerInformationId,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        insert into mro_line_base_information_accessory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifiedBy != null">
+                modified_by,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="accessoryName != null">
+                accessory_name,
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path,
+            </if>
+            <if test="lineBaseInformationId != null">
+                line_base_information_id,
+            </if>
+            <if test="technologyStateId != null">
+                technology_state_id,
+            </if>
+            <if test="modifySituationId != null">
+                modify_situation_id,
+            </if>
+            <if test="auxiliaryProductInformationId != null">
+                auxiliary_product_information_id,
+            </if>
+            <if test="manufacturerInformationId != null">
+                manufacturer_information_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accessoryName != null">
+                #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="lineBaseInformationId != null">
+                #{lineBaseInformationId,jdbcType=INTEGER},
+            </if>
+            <if test="technologyStateId != null">
+                #{technologyStateId,jdbcType=SMALLINT},
+            </if>
+            <if test="modifySituationId != null">
+                #{modifySituationId,jdbcType=SMALLINT},
+            </if>
+            <if test="auxiliaryProductInformationId != null">
+                #{auxiliaryProductInformationId,jdbcType=SMALLINT},
+            </if>
+            <if test="manufacturerInformationId != null">
+                #{manufacturerInformationId,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        update mro_line_base_information_accessory
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accessoryName != null">
+                accessory_name = #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path = #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="lineBaseInformationId != null">
+                line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
+            </if>
+            <if test="technologyStateId != null">
+                technology_state_id = #{technologyStateId,jdbcType=SMALLINT},
+            </if>
+            <if test="modifySituationId != null">
+                modify_situation_id = #{modifySituationId,jdbcType=SMALLINT},
+            </if>
+            <if test="auxiliaryProductInformationId != null">
+                auxiliary_product_information_id = #{auxiliaryProductInformationId,jdbcType=SMALLINT},
+            </if>
+            <if test="manufacturerInformationId != null">
+                manufacturer_information_id = #{manufacturerInformationId,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        update mro_line_base_information_accessory
+        set create_by                        = #{createBy,jdbcType=VARCHAR},
+            create_time                      = #{createTime,jdbcType=TIMESTAMP},
+            modified_by                      = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time                    = #{modifiedTime,jdbcType=TIMESTAMP},
+            accessory_name                   = #{accessoryName,jdbcType=VARCHAR},
+            accessory_path                   = #{accessoryPath,jdbcType=VARCHAR},
+            line_base_information_id         = #{lineBaseInformationId,jdbcType=INTEGER},
+            technology_state_id              = #{technologyStateId,jdbcType=SMALLINT},
+            modify_situation_id              = #{modifySituationId,jdbcType=SMALLINT},
+            auxiliary_product_information_id = #{auxiliaryProductInformationId,jdbcType=SMALLINT},
+            manufacturer_information_id      = #{manufacturerInformationId,jdbcType=SMALLINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="selectByExampleMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+    </resultMap>
+
+    <select id="selectByExample" resultMap="selectByExampleMap">
+        select lbia.id,
+        lbia.create_by,
+        lbia.create_time,
+        lbia.accessory_name,
+        lbia.accessory_path
+        from mro_line_base_information_accessory lbia
+        <where>
+            <if test="lineBaseInformationId!=null">
+                and lbia.line_base_information_id=#{lineBaseInformationId,jdbcType=INTEGER}
+            </if>
+            <if test="technologyStateId!=null">
+                and lbia.technology_state_id=#{technologyStateId,jdbcType=SMALLINT}
+            </if>
+            <if test="modifySituationId!=null">
+                and lbia.modify_situation_id=#{modifySituationId,jdbcType=SMALLINT}
+            </if>
+            <if test="auxiliaryProductInformationId!=null">
+                and lbia.auxiliary_product_information_id=#{auxiliaryProductInformationId,jdbcType=SMALLINT}
+            </if>
+            <if test="manufacturerInformationId!=null">
+                and lbia.manufacturer_information_id=#{manufacturerInformationId,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
 </mapper>

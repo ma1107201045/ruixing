@@ -13,12 +13,14 @@ import java.util.List;
 public interface AnZhuangTiaoShiCheZhanXiangMuTypeService {
     void addXiangMuType(AnZhuangTiaoShiCheZhanXiangMuTypeEntity anZhuangTiaoShiCheZhanXiangMuTypeEntity);
 
-    List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType(Integer page,Integer size);
+    List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType(Integer page, Integer size);
 
     void editXiangMuTypeById(AnZhuangTiaoShiCheZhanXiangMuTypeEntity anZhuangTiaoShiCheZhanXiangMuTypeEntity);
 
     void deletXiangMuTypeByIds(Integer[] ids);
 
     List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findXiangMuTypeByName(String xmname, Integer page, Integer size);
+
+    List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAll();
 
 }

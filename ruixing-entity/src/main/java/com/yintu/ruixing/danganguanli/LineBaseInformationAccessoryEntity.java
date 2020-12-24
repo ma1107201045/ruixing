@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class LineBaseInformationAccessoryEntity implements Serializable {
     private String accessoryName;
 
     private String accessoryPath;
-
+    @NotNull
     private Integer lineBaseInformationId;
 
     private Short technologyStateId;
