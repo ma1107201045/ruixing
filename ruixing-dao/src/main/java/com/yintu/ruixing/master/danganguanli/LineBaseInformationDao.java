@@ -25,10 +25,10 @@ public interface LineBaseInformationDao {
     @Select("select t.tid,t.tlj_name from mro_tieluju t order by t.tid desc")
     List<Map<String, Object>> selectRailwaysBureauTid();
 
-    @Select("SELECT lbi.* FROM ( SELECT * FROM mro_line_base_information WHERE tid=#{tid,jdbcType=INTEGER} ORDER BY id DESC ) lbi  GROUP BY lbi.name ORDER BY lbi.create_time DESC")
+    @Select("SELECT lbi.id,lbi.name FROM ( SELECT * FROM mro_line_base_information WHERE tid=#{tid,jdbcType=INTEGER} ORDER BY id DESC ) lbi  GROUP BY lbi.name ORDER BY lbi.id DESC")
     List<Map<String, Object>> selectByTid(Integer tid);
 
-    @Select("select id,name from mro_station_base_information where line_base_information_id=#{id} order by modified_time desc")
+    @Select("SELECT lbis.id,lbis.name FROM ( SELECT * FROM mro_line_base_information_station WHERE line_base_information_id=#{lineBaseInformationId,jdbcType=INTEGER} ORDER BY id DESC ) lbis  GROUP BY lbis.name ORDER BY lbis.id DESC")
     List<Map<String, Object>> selectStationById(Integer id);
 
     List<LineBaseInformationEntity> selectNewLineByTid(Integer tid);

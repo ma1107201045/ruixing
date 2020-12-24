@@ -90,15 +90,8 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
 
     @Override
     public void edit(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds) {
-        Integer id = lineBaseInformationEntity.getId();
-        LineBaseInformationEntity source = this.findById(id);
-        if (!source.getVersion().equals(lineBaseInformationEntity.getVersion())) {
-            lineBaseInformationEntity.setModifiedTime(new Date());
-        } else {
-            lineBaseInformationEntity.setModifiedTime(source.getModifiedTime());
-        }
         this.edit(lineBaseInformationEntity);
-        lineBaseInformationUnitService.removeByLineBaseInformationId(id);
+        lineBaseInformationUnitService.removeByLineBaseInformationId(lineBaseInformationEntity.getId());
         for (Integer unitId : unitIds) {
             LineBaseInformationUnitEntity lineBaseInformationUnitEntity = new LineBaseInformationUnitEntity();
             lineBaseInformationUnitEntity.setCreateBy(lineBaseInformationEntity.getModifiedBy());

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.danganguanli.LineBaseInformationStationDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="workshop" jdbcType="VARCHAR" property="workshop" />
+    <result column="workarea" jdbcType="VARCHAR" property="workarea" />
+    <result column="quduan_num" jdbcType="INTEGER" property="quduanNum" />
+    <result column="dianmahua_num" jdbcType="INTEGER" property="dianmahuaNum" />
+    <result column="axle_points" jdbcType="INTEGER" property="axlePoints" />
+    <result column="info_num" jdbcType="INTEGER" property="infoNum" />
+    <result column="hardware_material_code" jdbcType="VARCHAR" property="hardwareMaterialCode" />
+    <result column="software_material_code" jdbcType="VARCHAR" property="softwareMaterialCode" />
+    <result column="equipment_number" jdbcType="INTEGER" property="equipmentNumber" />
+    <result column="terminal_version" jdbcType="VARCHAR" property="terminalVersion" />
+    <result column="configuration_file" jdbcType="VARCHAR" property="configurationFile" />
+    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+    <result column="length" jdbcType="DOUBLE" property="length" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="line_base_information_id" jdbcType="INTEGER" property="lineBaseInformationId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_by, create_time, modified_by, modified_time, name, workshop, workarea, 
+    quduan_num, dianmahua_num, axle_points, info_num, hardware_material_code, software_material_code, 
+    equipment_number, terminal_version, configuration_file, open_time, length, version, 
+    line_base_information_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_line_base_information_station
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_line_base_information_station
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity">
+    insert into mro_line_base_information_station (id, create_by, create_time, 
+      modified_by, modified_time, name, 
+      workshop, workarea, quduan_num, 
+      dianmahua_num, axle_points, info_num, 
+      hardware_material_code, software_material_code, 
+      equipment_number, terminal_version, configuration_file, 
+      open_time, length, version, 
+      line_base_information_id)
+    values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{workshop,jdbcType=VARCHAR}, #{workarea,jdbcType=VARCHAR}, #{quduanNum,jdbcType=INTEGER}, 
+      #{dianmahuaNum,jdbcType=INTEGER}, #{axlePoints,jdbcType=INTEGER}, #{infoNum,jdbcType=INTEGER}, 
+      #{hardwareMaterialCode,jdbcType=VARCHAR}, #{softwareMaterialCode,jdbcType=VARCHAR}, 
+      #{equipmentNumber,jdbcType=INTEGER}, #{terminalVersion,jdbcType=VARCHAR}, #{configurationFile,jdbcType=VARCHAR}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{length,jdbcType=DOUBLE}, #{version,jdbcType=VARCHAR}, 
+      #{lineBaseInformationId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity">
+    insert into mro_line_base_information_station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="workshop != null">
+        workshop,
+      </if>
+      <if test="workarea != null">
+        workarea,
+      </if>
+      <if test="quduanNum != null">
+        quduan_num,
+      </if>
+      <if test="dianmahuaNum != null">
+        dianmahua_num,
+      </if>
+      <if test="axlePoints != null">
+        axle_points,
+      </if>
+      <if test="infoNum != null">
+        info_num,
+      </if>
+      <if test="hardwareMaterialCode != null">
+        hardware_material_code,
+      </if>
+      <if test="softwareMaterialCode != null">
+        software_material_code,
+      </if>
+      <if test="equipmentNumber != null">
+        equipment_number,
+      </if>
+      <if test="terminalVersion != null">
+        terminal_version,
+      </if>
+      <if test="configurationFile != null">
+        configuration_file,
+      </if>
+      <if test="openTime != null">
+        open_time,
+      </if>
+      <if test="length != null">
+        length,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="lineBaseInformationId != null">
+        line_base_information_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="workshop != null">
+        #{workshop,jdbcType=VARCHAR},
+      </if>
+      <if test="workarea != null">
+        #{workarea,jdbcType=VARCHAR},
+      </if>
+      <if test="quduanNum != null">
+        #{quduanNum,jdbcType=INTEGER},
+      </if>
+      <if test="dianmahuaNum != null">
+        #{dianmahuaNum,jdbcType=INTEGER},
+      </if>
+      <if test="axlePoints != null">
+        #{axlePoints,jdbcType=INTEGER},
+      </if>
+      <if test="infoNum != null">
+        #{infoNum,jdbcType=INTEGER},
+      </if>
+      <if test="hardwareMaterialCode != null">
+        #{hardwareMaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="softwareMaterialCode != null">
+        #{softwareMaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentNumber != null">
+        #{equipmentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="terminalVersion != null">
+        #{terminalVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="configurationFile != null">
+        #{configurationFile,jdbcType=VARCHAR},
+      </if>
+      <if test="openTime != null">
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="length != null">
+        #{length,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="lineBaseInformationId != null">
+        #{lineBaseInformationId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity">
+    update mro_line_base_information_station
+    <set>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="workshop != null">
+        workshop = #{workshop,jdbcType=VARCHAR},
+      </if>
+      <if test="workarea != null">
+        workarea = #{workarea,jdbcType=VARCHAR},
+      </if>
+      <if test="quduanNum != null">
+        quduan_num = #{quduanNum,jdbcType=INTEGER},
+      </if>
+      <if test="dianmahuaNum != null">
+        dianmahua_num = #{dianmahuaNum,jdbcType=INTEGER},
+      </if>
+      <if test="axlePoints != null">
+        axle_points = #{axlePoints,jdbcType=INTEGER},
+      </if>
+      <if test="infoNum != null">
+        info_num = #{infoNum,jdbcType=INTEGER},
+      </if>
+      <if test="hardwareMaterialCode != null">
+        hardware_material_code = #{hardwareMaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="softwareMaterialCode != null">
+        software_material_code = #{softwareMaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentNumber != null">
+        equipment_number = #{equipmentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="terminalVersion != null">
+        terminal_version = #{terminalVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="configurationFile != null">
+        configuration_file = #{configurationFile,jdbcType=VARCHAR},
+      </if>
+      <if test="openTime != null">
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="length != null">
+        length = #{length,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="lineBaseInformationId != null">
+        line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity">
+    update mro_line_base_information_station
+    set create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      name = #{name,jdbcType=VARCHAR},
+      workshop = #{workshop,jdbcType=VARCHAR},
+      workarea = #{workarea,jdbcType=VARCHAR},
+      quduan_num = #{quduanNum,jdbcType=INTEGER},
+      dianmahua_num = #{dianmahuaNum,jdbcType=INTEGER},
+      axle_points = #{axlePoints,jdbcType=INTEGER},
+      info_num = #{infoNum,jdbcType=INTEGER},
+      hardware_material_code = #{hardwareMaterialCode,jdbcType=VARCHAR},
+      software_material_code = #{softwareMaterialCode,jdbcType=VARCHAR},
+      equipment_number = #{equipmentNumber,jdbcType=INTEGER},
+      terminal_version = #{terminalVersion,jdbcType=VARCHAR},
+      configuration_file = #{configurationFile,jdbcType=VARCHAR},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      length = #{length,jdbcType=DOUBLE},
+      version = #{version,jdbcType=VARCHAR},
+      line_base_information_id = #{lineBaseInformationId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

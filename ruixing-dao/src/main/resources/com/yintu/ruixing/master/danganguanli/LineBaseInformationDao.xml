@@ -430,8 +430,11 @@
             <if test="tid!=null">
                 and lbi.tid=#{tid,jdbcType=INTEGER}
             </if>
-            <if test="id!=null and name!=null">
-                and lbi.id!=#{id,jdbcType=INTEGER} and lbi.name=#{name,jdbcType=VARCHAR}
+            <!--            <if test="id!=null and name!=null">-->
+            <!--                and lbi.id!=#{id,jdbcType=INTEGER} and lbi.name=#{name,jdbcType=VARCHAR}-->
+            <!--            </if>-->
+            <if test="name!=null">
+                and lbi.name=#{name,jdbcType=VARCHAR}
             </if>
             <if test="ids!=null and ids.length>0">
                 and lbi.id in

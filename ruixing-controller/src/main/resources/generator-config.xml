@@ -40,19 +40,26 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="mro_line_base_information_accessory"
-               domainObjectName="LineBaseInformationAccessoryEntity"
-               mapperName="LineBaseInformationAccessoryDao"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableUpdateByExample="false"
-               enableSelectByExample="false"/>
-        <!--        <table tableName="alarm_push_user"-->
-        <!--               domainObjectName="AlarmPushUserEntity"-->
-        <!--               mapperName="AlarmPushUserDao"-->
+        <!--        <table tableName="mro_line_base_information_station"-->
+        <!--               domainObjectName="LineBaseInformationStationEntity"-->
+        <!--               mapperName="LineBaseInformationStationDao"-->
         <!--               enableCountByExample="false"-->
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
+        <!--        <table tableName="mro_line_base_information_station_unit"-->
+        <!--               domainObjectName="LineBaseInformationStationUnitEntity"-->
+        <!--               mapperName="LineBaseInformationStationUnitDao"-->
+        <!--               enableCountByExample="false"-->
+        <!--               enableDeleteByExample="false"-->
+        <!--               enableUpdateByExample="false"-->
+        <!--               enableSelectByExample="false"/>-->
+        <table tableName="mro_line_base_information_station_accessory"
+               domainObjectName="LineBaseInformationStationAccessoryEntity"
+               mapperName="LineBaseInformationStationAccessoryDao"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableUpdateByExample="false"
+               enableSelectByExample="false"/>
     </context>
 </generatorConfiguration>
