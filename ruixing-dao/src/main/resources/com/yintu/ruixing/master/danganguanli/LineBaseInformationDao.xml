@@ -349,6 +349,7 @@
         <result column="auxiliary_product_information" jdbcType="VARCHAR" property="auxiliaryProductInformation"/>
         <result column="manufacturer_information" jdbcType="VARCHAR" property="manufacturerInformation"/>
         <result column="modify_situation" jdbcType="LONGVARCHAR" property="modifySituation"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
         <result column="lbi_tid" jdbcType="INTEGER" property="tid"/>
         <result column="xiangmutype_id" jdbcType="INTEGER" property="xiangmutypeId"/>
         <association column="lbi_tid" property="tieLuJuEntity">
@@ -361,7 +362,7 @@
         </association>
     </resultMap>
     <sql id="Much_Column_List">
-        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, name,short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,modify_situation,lbi.tid as lbi_tid,
+        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, name,short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,modify_situation,version,lbi.tid as lbi_tid,
         t.tid as t_tid,tlj_name,
         ax.id as ax_id,xiangmuleixing
     </sql>
@@ -382,7 +383,7 @@
             </if>
         </where>
         <if test="tid!=null">
-            order by modified_time desc limie 1
+            order by modified_time desc limit 1
         </if>
     </sql>
     <select id="selectByExample" resultMap="MuchResultMap">

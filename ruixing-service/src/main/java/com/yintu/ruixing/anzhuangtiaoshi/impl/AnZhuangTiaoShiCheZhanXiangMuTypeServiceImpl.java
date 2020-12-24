@@ -32,6 +32,11 @@ public class AnZhuangTiaoShiCheZhanXiangMuTypeServiceImpl implements AnZhuangTia
     }
 
     @Override
+    public AnZhuangTiaoShiCheZhanXiangMuTypeEntity findById(Integer id) {
+        return anZhuangTiaoShiCheZhanXiangMuTypeDao.selectByPrimaryKey(id);
+    }
+
+    @Override
     public void deletXiangMuTypeByIds(Integer[] ids) {
         anZhuangTiaoShiCheZhanXiangMuTypeDao.deletXiangMuTypeByIds(ids);
     }
