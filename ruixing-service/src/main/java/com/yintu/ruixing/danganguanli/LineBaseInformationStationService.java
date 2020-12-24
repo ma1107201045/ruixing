@@ -11,12 +11,12 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface LineBaseInformationStationService extends BaseService<LineBaseInformationStationEntity, Integer> {
-    void add(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds);
+    void add(LineBaseInformationStationEntity lineBaseInformationStationEntity, Integer[] unitIds);
 
-    void edit(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds);
+    void edit(LineBaseInformationStationEntity lineBaseInformationStationEntity, Integer[] unitIds);
 
-    List<LineBaseInformationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids);
 
+    List<LineBaseInformationStationEntity> findHistoryByExample(Integer lineBaseInformationId, Integer id, String name, Integer[] ids);
 
     List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id);
 

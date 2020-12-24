@@ -1,8 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
-import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
-import com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity;
-import com.yintu.ruixing.danganguanli.LineBaseInformationStationService;
+import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationStationDao;
 import jdk.nashorn.internal.ir.EmptyNode;
@@ -22,6 +20,9 @@ import java.util.List;
 public class LineBaseInformationStationServiceImpl implements LineBaseInformationStationService {
     @Autowired
     private LineBaseInformationStationDao lineBaseInformationStationDao;
+
+    @Autowired
+    private LineBaseInformationStationUnitService lineBaseInformationStationUnitService;
 
     @Override
     public void add(LineBaseInformationStationEntity entity) {
@@ -44,17 +45,38 @@ public class LineBaseInformationStationServiceImpl implements LineBaseInformatio
     }
 
     @Override
-    public void add(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds) {
-
+    public void add(LineBaseInformationStationEntity lineBaseInformationStationEntity, Integer[] unitIds) {
+        this.add(lineBaseInformationStationEntity);
+        for (Integer unitId : unitIds) {
+            LineBaseInformationStationUnitEntity lineBaseInformationStationUnitEntity = new LineBaseInformationStationUnitEntity();
+            lineBaseInformationStationUnitEntity.setCreateBy(lineBaseInformationStationEntity.getCreateBy());
+            lineBaseInformationStationUnitEntity.setCreateTime(lineBaseInformationStationEntity.getCreateTime());
+            lineBaseInformationStationUnitEntity.setModifiedBy(lineBaseInformationStationEntity.getModifiedBy());
+            lineBaseInformationStationUnitEntity.setModifiedTime(lineBaseInformationStationEntity.getModifiedTime());
+            lineBaseInformationStationUnitEntity.setLineBaseInformationStationId(lineBaseInformationStationEntity.getId());
+            lineBaseInformationStationUnitEntity.setUnitId(unitId);
+            lineBaseInformationStationUnitService.add(lineBaseInformationStationUnitEntity);
+        }
     }
 
     @Override
-    public void edit(LineBaseInformationEntity lineBaseInformationEntity, Integer[] unitIds) {
-
+    public void edit(LineBaseInformationStationEntity lineBaseInformationStationEntity, Integer[] unitIds) {
+        this.edit(lineBaseInformationStationEntity);
+        lineBaseInformationStationUnitService.removeByLineBaseInformationStationId(lineBaseInformationStationEntity.getId());
+        for (Integer unitId : unitIds) {
+            LineBaseInformationStationUnitEntity lineBaseInformationStationUnitEntity = new LineBaseInformationStationUnitEntity();
+            lineBaseInformationStationUnitEntity.setCreateBy(lineBaseInformationStationEntity.getCreateBy());
+            lineBaseInformationStationUnitEntity.setCreateTime(lineBaseInformationStationEntity.getCreateTime());
+            lineBaseInformationStationUnitEntity.setModifiedBy(lineBaseInformationStationEntity.getModifiedBy());
+            lineBaseInformationStationUnitEntity.setModifiedTime(lineBaseInformationStationEntity.getModifiedTime());
+            lineBaseInformationStationUnitEntity.setLineBaseInformationStationId(lineBaseInformationStationEntity.getId());
+            lineBaseInformationStationUnitEntity.setUnitId(unitId);
+            lineBaseInformationStationUnitService.add(lineBaseInformationStationUnitEntity);
+        }
     }
 
     @Override
-    public List<LineBaseInformationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids) {
+    public List<LineBaseInformationStationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids) {
         return null;
     }
 

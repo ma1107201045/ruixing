@@ -1,6 +1,9 @@
 package com.yintu.ruixing.master.danganguanli;
 
+import com.yintu.ruixing.danganguanli.LineBaseInformationAccessoryEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationStationAccessoryEntity;
+
+import java.util.List;
 
 public interface LineBaseInformationStationAccessoryDao {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,6 @@ public interface LineBaseInformationStationAccessoryDao {
     int updateByPrimaryKeySelective(LineBaseInformationStationAccessoryEntity record);
 
     int updateByPrimaryKey(LineBaseInformationStationAccessoryEntity record);
+
+    List<LineBaseInformationStationAccessoryEntity> selectByExample(LineBaseInformationStationAccessoryEntity query);
 }

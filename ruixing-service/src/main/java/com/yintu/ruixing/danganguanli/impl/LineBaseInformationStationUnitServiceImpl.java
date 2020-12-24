@@ -37,4 +37,9 @@ public class LineBaseInformationStationUnitServiceImpl implements LineBaseInform
     public LineBaseInformationStationUnitEntity findById(Integer id) {
         return lineBaseInformationStationUnitDao.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void removeByLineBaseInformationStationId(Integer lineBaseInformationStationId) {
+        lineBaseInformationStationUnitDao.deleteByLineBaseInformationStationId(lineBaseInformationStationId);
+    }
 }

@@ -1,8 +1,18 @@
 package com.yintu.ruixing.danganguanli;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
-public class LineBaseInformationStationAccessoryEntity {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LineBaseInformationStationAccessoryEntity implements Serializable {
+    private static final long serialVersionUID = 7211271823209837608L;
     private Integer id;
 
     private String createBy;
@@ -16,7 +26,7 @@ public class LineBaseInformationStationAccessoryEntity {
     private String accessoryName;
 
     private String accessoryPath;
-
+    @NotNull
     private Integer lineBaseInformationStationId;
 
     private String hardwareMaterialCodeId;
@@ -25,91 +35,4 @@ public class LineBaseInformationStationAccessoryEntity {
 
     private String configurationFileId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy == null ? null : createBy.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy == null ? null : modifiedBy.trim();
-    }
-
-    public Date getModifiedTime() {
-        return modifiedTime;
-    }
-
-    public void setModifiedTime(Date modifiedTime) {
-        this.modifiedTime = modifiedTime;
-    }
-
-    public String getAccessoryName() {
-        return accessoryName;
-    }
-
-    public void setAccessoryName(String accessoryName) {
-        this.accessoryName = accessoryName == null ? null : accessoryName.trim();
-    }
-
-    public String getAccessoryPath() {
-        return accessoryPath;
-    }
-
-    public void setAccessoryPath(String accessoryPath) {
-        this.accessoryPath = accessoryPath == null ? null : accessoryPath.trim();
-    }
-
-    public Integer getLineBaseInformationStationId() {
-        return lineBaseInformationStationId;
-    }
-
-    public void setLineBaseInformationStationId(Integer lineBaseInformationStationId) {
-        this.lineBaseInformationStationId = lineBaseInformationStationId;
-    }
-
-    public String getHardwareMaterialCodeId() {
-        return hardwareMaterialCodeId;
-    }
-
-    public void setHardwareMaterialCodeId(String hardwareMaterialCodeId) {
-        this.hardwareMaterialCodeId = hardwareMaterialCodeId == null ? null : hardwareMaterialCodeId.trim();
-    }
-
-    public String getSoftwareMaterialCodeId() {
-        return softwareMaterialCodeId;
-    }
-
-    public void setSoftwareMaterialCodeId(String softwareMaterialCodeId) {
-        this.softwareMaterialCodeId = softwareMaterialCodeId == null ? null : softwareMaterialCodeId.trim();
-    }
-
-    public String getConfigurationFileId() {
-        return configurationFileId;
-    }
-
-    public void setConfigurationFileId(String configurationFileId) {
-        this.configurationFileId = configurationFileId == null ? null : configurationFileId.trim();
-    }
 }

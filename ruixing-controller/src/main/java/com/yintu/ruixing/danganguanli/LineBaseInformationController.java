@@ -88,7 +88,7 @@ public class LineBaseInformationController extends SessionController {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
         List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationService.findHistoryByExample(tid, id, name, null);
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
-        return ResponseDataUtil.ok("查询最新线段基本信息列表成功", pageInfo);
+        return ResponseDataUtil.ok("查询历史线段基本信息列表成功", pageInfo);
     }
 
 
