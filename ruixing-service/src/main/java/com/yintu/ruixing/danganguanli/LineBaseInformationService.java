@@ -29,9 +29,11 @@ public interface LineBaseInformationService extends BaseService<LineBaseInformat
 
     List<TreeNodeUtil> findTree();
 
-    LineBaseInformationEntity findNewVersionByTid(Integer tid);
 
-    List<LineBaseInformationEntity> findByExample(Integer[] ids);
+    List<LineBaseInformationEntity> findNewLineByTid(Integer tid);
+
+
+    List<LineBaseInformationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids);
 
 
     List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id);

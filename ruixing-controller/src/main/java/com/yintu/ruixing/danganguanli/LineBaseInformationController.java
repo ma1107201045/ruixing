@@ -64,16 +64,32 @@ public class LineBaseInformationController extends SessionController {
         return ResponseDataUtil.ok("修改线段基本信息成功");
     }
 
-    @GetMapping
+    @GetMapping("/new")
     @ResponseBody
-    public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
-                                       @RequestParam("page_size") Integer pageSize,
-                                       @RequestParam(value = "order_by", required = false, defaultValue = "lbi.id DESC") String orderBy) {
+    public Map<String, Object> findNewLineByTid(@RequestParam("page_number") Integer pageNumber,
+                                                @RequestParam("page_size") Integer pageSize,
+                                                @RequestParam(value = "order_by", required = false, defaultValue = "lbi.id DESC") String orderBy,
+                                                @RequestParam("tid") Integer tid) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationService.findByExample(null);
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationService.findNewLineByTid(tid);
         PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
-        return ResponseDataUtil.ok("查询线段基本信息列表成功", pageInfo);
+        return ResponseDataUtil.ok("查询最新线段基本信息列表成功", pageInfo);
     }
+
+    @GetMapping("/history")
+    @ResponseBody
+    public Map<String, Object> findHistoryByExample(@RequestParam("page_number") Integer pageNumber,
+                                                    @RequestParam("page_size") Integer pageSize,
+                                                    @RequestParam(value = "order_by", required = false, defaultValue = "lbi.id DESC") String orderBy,
+                                                    @RequestParam("tid") Integer tid,
+                                                    @RequestParam("id") Integer id,
+                                                    @RequestParam("name") String name) {
+        PageHelper.startPage(pageNumber, pageSize, orderBy);
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationService.findHistoryByExample(tid, id, name, null);
+        PageInfo<LineBaseInformationEntity> pageInfo = new PageInfo<>(lineBaseInformationEntities);
+        return ResponseDataUtil.ok("查询最新线段基本信息列表成功", pageInfo);
+    }
+
 
     @GetMapping("/XiangMuTypes")
     @ResponseBody
@@ -129,14 +145,6 @@ public class LineBaseInformationController extends SessionController {
     public Map<String, Object> findTree() {
         List<TreeNodeUtil> treeNodeUtils = lineBaseInformationService.findTree();
         return ResponseDataUtil.ok("查询线段基本信息列表树成功", treeNodeUtils);
-    }
-
-
-    @GetMapping("/{tid}")
-    @ResponseBody
-    public Map<String, Object> findNewVersionByTid(@PathVariable Integer tid) {
-        LineBaseInformationEntity lineBaseInformationEntity = lineBaseInformationService.findNewVersionByTid(tid);
-        return ResponseDataUtil.ok("查询线段基本信息成功", lineBaseInformationEntity);
     }
 
 

@@ -23,6 +23,5 @@ public interface AnZhuangTiaoShiCheZhanXiangMuTypeService {
 
     List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAll();
 
-    AnZhuangTiaoShiCheZhanXiangMuTypeEntity findById(Integer id);
 
 }

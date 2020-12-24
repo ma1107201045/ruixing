@@ -60,7 +60,7 @@
                                                manufacturer_information, modify_situation, version, tid)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP},
-                #{shortName,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR},
                 #{length,jdbcType=DOUBLE}, #{stationNum,jdbcType=INTEGER}, #{xiangmutypeId,jdbcType=INTEGER},
                 #{quduanNum,jdbcType=INTEGER}, #{dianmahuaNum,jdbcType=INTEGER}, #{axlePoints,jdbcType=INTEGER},
                 #{infoNum,jdbcType=INTEGER}, #{technologyState,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP},
@@ -327,9 +327,7 @@
             tid                           = #{tid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
-
-    <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
+    <resultMap id="exampleMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationEntity">
         <id column="lbi_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -361,37 +359,87 @@
             <result column="xiangmuleixing" jdbcType="VARCHAR" property="xiangmuleixing"/>
         </association>
     </resultMap>
-    <sql id="Much_Column_List">
-        lbi.id as lbi_id, create_by, create_time, modified_by, modified_time, name,short_name, length, station_num,xiangmutype_id, quduan_num, dianmahua_num, axle_points, info_num, technology_state,open_time, guarantee_period_information, auxiliary_product_information, manufacturer_information,modify_situation,version,lbi.tid as lbi_tid,
-        t.tid as t_tid,tlj_name,
-        ax.id as ax_id,xiangmuleixing
-    </sql>
-    <sql id="Much_Table_List">
-        mro_line_base_information lbi  inner join mro_tieluju t on lbi.tid = t.tid
-         inner join  mro_anzhuangtiaoshi_xiangmutype ax on lbi.xiangmutype_id = ax.id
-    </sql>
-    <sql id="Much_Where_List">
+    <select id="selectNewLineByTid" resultMap="exampleMap">
+        select lbi.id  as lbi_id,
+               create_by,
+               create_time,
+               modified_by,
+               modified_time,
+               name,
+               short_name,
+               length,
+               station_num,
+               xiangmutype_id,
+               quduan_num,
+               dianmahua_num,
+               axle_points,
+               info_num,
+               technology_state,
+               open_time,
+               guarantee_period_information,
+               auxiliary_product_information,
+               manufacturer_information,
+               modify_situation,
+               version,
+               lbi.tid as lbi_tid,
+               t.tid   as t_tid,
+               tlj_name,
+               ax.id   as ax_id,
+               xiangmuleixing
+        from (select *
+              from mro_line_base_information
+              where tid = #{tid,jdbcType=INTEGER}
+              order by id desc) lbi
+                 inner join mro_tieluju t on lbi.tid = t.tid
+                 inner join mro_anzhuangtiaoshi_xiangmutype ax on lbi.xiangmutype_id = ax.id
+        GROUP BY lbi.name
+    </select>
+
+
+    <select id="selectHistoryByExample" resultMap="exampleMap">
+        select lbi.id as lbi_id,
+        create_by,
+        create_time,
+        modified_by,
+        modified_time,
+        name,
+        short_name,
+        length,
+        station_num,
+        xiangmutype_id,
+        quduan_num,
+        dianmahua_num,
+        axle_points,
+        info_num,
+        technology_state,
+        open_time,
+        guarantee_period_information,
+        auxiliary_product_information,
+        manufacturer_information,
+        modify_situation,
+        version,
+        lbi.tid as lbi_tid,
+        t.tid as t_tid,
+        tlj_name,
+        ax.id as ax_id,
+        xiangmuleixing
+        from mro_line_base_information lbi
+        inner join mro_tieluju t on lbi.tid = t.tid
+        inner join mro_anzhuangtiaoshi_xiangmutype ax on lbi.xiangmutype_id = ax.id
         <where>
             <if test="tid!=null">
                 and lbi.tid=#{tid,jdbcType=INTEGER}
             </if>
-            <if test="ids!=null and ids.length > 0">
-                and
-                <foreach collection="array" open="(" close=")" separator="," item="id" index="index">
-                    lbi.id=#{id,jdbcType=INTEGER}
+            <if test="id!=null and name!=null">
+                and lbi.id!=#{id,jdbcType=INTEGER} and lbi.name=#{name,jdbcType=VARCHAR}
+            </if>
+            <if test="ids!=null and ids.length>0">
+                and lbi.id in
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id,jdbcType=INTEGER}
                 </foreach>
             </if>
         </where>
-        <if test="tid!=null">
-            order by modified_time desc limit 1
-        </if>
-    </sql>
-    <select id="selectByExample" resultMap="MuchResultMap">
-        select
-        <include refid="Much_Column_List"/>
-        from
-        <include refid="Much_Table_List"/>
-        <include refid="Much_Where_List"/>
     </select>
 
 

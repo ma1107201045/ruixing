@@ -1,6 +1,8 @@
 package com.yintu.ruixing.danganguanli.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeEntity;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiCheZhanXiangMuTypeService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
@@ -12,9 +14,13 @@ import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationService;
 import com.yintu.ruixing.danganguanli.LineBaseInformationUnitEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationUnitService;
+import com.yintu.ruixing.guzhangzhenduan.DataStatsService;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanService;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationDao;
 import com.yintu.ruixing.yunxingweihu.MaintenancePlanEntity;
+import com.yintu.ruixing.yunxingweihu.MaintenancePlanInfoEntity;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,7 +46,8 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
     private LineBaseInformationDao lineBaseInformationDao;
     @Autowired
     private LineBaseInformationUnitService lineBaseInformationUnitService;
-
+    @Autowired
+    private DataStatsService dataStatsService;
     @Autowired
     private AnZhuangTiaoShiCheZhanXiangMuTypeService anZhuangTiaoShiCheZhanXiangMuTypeService;
 
@@ -156,18 +164,19 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
         return first;
     }
 
+
     @Override
-    public LineBaseInformationEntity findNewVersionByTid(Integer tid) {
-        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(null, tid);
-        LineBaseInformationEntity lineBaseInformationEntity = lineBaseInformationEntities.stream().findFirst().orElse(null);
-        if (lineBaseInformationEntity != null)
+    public List<LineBaseInformationEntity> findNewLineByTid(Integer tid) {
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectNewLineByTid(tid);
+        for (LineBaseInformationEntity lineBaseInformationEntity : lineBaseInformationEntities) {
             lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
-        return lineBaseInformationEntity;
+        }
+        return lineBaseInformationEntities;
     }
 
     @Override
-    public List<LineBaseInformationEntity> findByExample(Integer[] ids) {
-        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectByExample(ids, null);
+    public List<LineBaseInformationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids) {
+        List<LineBaseInformationEntity> lineBaseInformationEntities = lineBaseInformationDao.selectHistoryByExample(tid, id, name, ids);
         for (LineBaseInformationEntity lineBaseInformationEntity : lineBaseInformationEntities) {
             lineBaseInformationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationEntity.getId()));
         }
@@ -197,7 +206,62 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
 
     @Override
     public void importDate(String[][] context, String loginUsername) {
+        for (int i = 0; i < context.length; i++) {
+            String[] row = context[i];
+            LineBaseInformationEntity lineBaseInformationEntity = new LineBaseInformationEntity();
+            lineBaseInformationEntity.setCreateBy(loginUsername);
+            lineBaseInformationEntity.setCreateTime(new Date());
+            lineBaseInformationEntity.setModifiedBy(loginUsername);
+            lineBaseInformationEntity.setModifiedTime(new Date());
+            String tName = row[1];
+            List<TieLuJuEntity> t = dataStatsService.findAllTieLuJuByName(tName);
+            if (t.isEmpty())
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "铁路局名称不存在");
+            lineBaseInformationEntity.setTid((int) t.get(0).getTid());
+            lineBaseInformationEntity.setName(row[2]);
+            lineBaseInformationEntity.setShortName(row[3]);
+            lineBaseInformationEntity.setLength(Double.parseDouble(row[4]));
+            lineBaseInformationEntity.setStationNum(Integer.parseInt(row[5]));
 
+            String unitNames = row[6];
+            String[] unitNameArr = StrUtil.split(unitNames, ",");
+            List<Integer> unitIds = new ArrayList<>();
+            for (String s : unitNameArr) {
+                List<DianWuDuanEntity> dianWuDuanEntities = dataStatsService.findDianWuDuanByName(s);
+                if (dianWuDuanEntities.isEmpty())
+                    throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "单位名称不存在");
+                unitIds.add((int) dianWuDuanEntities.get(0).getDid());
+            }
+
+            String xiangmutypeName = row[7];
+            List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> a = anZhuangTiaoShiCheZhanXiangMuTypeService.findXiangMuTypeByName(xiangmutypeName, null, null);
+            if (a.isEmpty())
+                throw new BaseRuntimeException("第" + (i + 1) + "行数据有误，原因：" + "项目类型名称不存在");
+            Integer xiangmutypeId = a.get(0).getId();
+            lineBaseInformationEntity.setXiangmutypeId(xiangmutypeId);
+            lineBaseInformationEntity.setQuduanNum(Integer.parseInt(row[8]));
+            lineBaseInformationEntity.setDianmahuaNum(Integer.parseInt(row[9]));
+            lineBaseInformationEntity.setAxlePoints(Integer.parseInt(row[10]));
+            lineBaseInformationEntity.setInfoNum(Integer.parseInt(row[11]));
+            lineBaseInformationEntity.setTechnologyState(row[12]);
+            lineBaseInformationEntity.setOpenTime(DateUtil.parseDateTime(row[13]));
+            lineBaseInformationEntity.setGuaranteePeriodInformation(row[14]);
+            lineBaseInformationEntity.setModifySituation(row[15]);
+            lineBaseInformationEntity.setAuxiliaryProductInformation(row[16]);
+            lineBaseInformationEntity.setManufacturerInformation(row[17]);
+            lineBaseInformationEntity.setVersion(row[18]);
+            this.add(lineBaseInformationEntity);
+            for (Integer unitId : unitIds) {
+                LineBaseInformationUnitEntity lineBaseInformationUnitEntity = new LineBaseInformationUnitEntity();
+                lineBaseInformationUnitEntity.setCreateBy(lineBaseInformationEntity.getCreateBy());
+                lineBaseInformationUnitEntity.setCreateTime(lineBaseInformationEntity.getCreateTime());
+                lineBaseInformationUnitEntity.setModifiedBy(lineBaseInformationEntity.getModifiedBy());
+                lineBaseInformationUnitEntity.setModifiedTime(lineBaseInformationEntity.getModifiedTime());
+                lineBaseInformationUnitEntity.setLineBaseInformationId(lineBaseInformationEntity.getId());
+                lineBaseInformationUnitEntity.setUnitId(unitId);
+                lineBaseInformationUnitService.add(lineBaseInformationUnitEntity);
+            }
+        }
     }
 
     @Override
@@ -205,7 +269,7 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
         //excel标题
         String title = "线段技术状态列表";
         //excel表名
-        String[] headers = {"序号", "线段名称", "项目简称", "长度里程", "站数", "管理单位", "设备类型", "总轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "技术状态", "开通时间", "质保期信息",
+        String[] headers = {"序号", "所属铁路局", "线段名称", "项目简称", "长度里程", "站数", "管理单位(多个单位用英文逗号分隔)", "设备类型", "总轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "技术状态", "开通时间", "质保期信息",
                 "整改情况", "配套产品信息", "相关信号厂家信息", "状态版本"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
@@ -217,12 +281,12 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
     @Override
     public void exportFile(OutputStream outputStream, Integer[] ids) throws IOException {
         //excel标题
-        String title = "维护计划列表";
+        String title = "线段技术状态列表";
         //excel表名
-        String[] headers = {"序号", "线段名称", "项目简称", "长度里程", "站数", "管理单位", "设备类型", "总轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "技术状态", "开通时间", "质保期信息",
+        String[] headers = {"序号", "所属铁路局", "线段名称", "项目简称", "长度里程", "站数", "管理单位", "设备类型", "总轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "技术状态", "开通时间", "质保期信息",
                 "整改情况", "配套产品信息", "相关信号厂家信息", "状态版本"};
         //获取数据
-        List<LineBaseInformationEntity> lineBaseInformationEntities = this.findByExample(ids);
+        List<LineBaseInformationEntity> lineBaseInformationEntities = this.findHistoryByExample(null, null, null, ids);
         lineBaseInformationEntities = lineBaseInformationEntities.stream()
                 .sorted(Comparator.comparing(LineBaseInformationEntity::getId).reversed())
                 .collect(Collectors.toList());
@@ -232,24 +296,24 @@ public class LineBaseInformationServiceImpl implements LineBaseInformationServic
             LineBaseInformationEntity lineBaseInformationEntity = lineBaseInformationEntities.get(i);
             Integer id = lineBaseInformationEntity.getId();
             content[i][0] = id.toString();
-            content[i][1] = lineBaseInformationEntity.getName();
-            content[i][2] = lineBaseInformationEntity.getShortName();
-            content[i][3] = lineBaseInformationEntity.getLength().toString();
-            content[i][4] = lineBaseInformationEntity.getStationNum().toString();
-            List<DianWuDuanEntity> dianWuDuanEntities = this.findDianWuDuanEntityById(id);
-            content[i][5] = Arrays.toString(dianWuDuanEntities.stream().map(DianWuDuanEntity::getDwdName).toArray());
-            content[i][6] = anZhuangTiaoShiCheZhanXiangMuTypeService.findById(lineBaseInformationEntity.getXiangmutypeId()).getXiangmuleixing();
-            content[i][7] = lineBaseInformationEntity.getQuduanNum().toString();
-            content[i][8] = lineBaseInformationEntity.getDianmahuaNum().toString();
-            content[i][9] = lineBaseInformationEntity.getAxlePoints().toString();
-            content[i][10] = lineBaseInformationEntity.getInfoNum().toString();
-            content[i][11] = lineBaseInformationEntity.getTechnologyState();
-            content[i][12] = DateUtil.formatDate(lineBaseInformationEntity.getOpenTime());
-            content[i][13] = lineBaseInformationEntity.getGuaranteePeriodInformation();
-            content[i][14] = lineBaseInformationEntity.getModifySituation();
-            content[i][15] = lineBaseInformationEntity.getAuxiliaryProductInformation();
-            content[i][16] = lineBaseInformationEntity.getManufacturerInformation();
-            content[i][17] = lineBaseInformationEntity.getVersion();
+            content[i][1] = lineBaseInformationEntity.getTieLuJuEntity().getTljName();
+            content[i][2] = lineBaseInformationEntity.getName();
+            content[i][3] = lineBaseInformationEntity.getShortName();
+            content[i][4] = lineBaseInformationEntity.getLength().toString();
+            content[i][5] = lineBaseInformationEntity.getStationNum().toString();
+            content[i][6] = ArrayUtil.toString(lineBaseInformationEntity.getDianWuDuanEntities().stream().map(DianWuDuanEntity::getDwdName).toArray());
+            content[i][7] = lineBaseInformationEntity.getAnZhuangTiaoShiCheZhanXiangMuTypeEntity().getXiangmuleixing();
+            content[i][8] = lineBaseInformationEntity.getQuduanNum().toString();
+            content[i][9] = lineBaseInformationEntity.getDianmahuaNum().toString();
+            content[i][10] = lineBaseInformationEntity.getAxlePoints().toString();
+            content[i][11] = lineBaseInformationEntity.getInfoNum().toString();
+            content[i][12] = lineBaseInformationEntity.getTechnologyState();
+            content[i][13] = DateUtil.formatDateTime(lineBaseInformationEntity.getOpenTime());
+            content[i][14] = lineBaseInformationEntity.getGuaranteePeriodInformation();
+            content[i][15] = lineBaseInformationEntity.getModifySituation();
+            content[i][16] = lineBaseInformationEntity.getAuxiliaryProductInformation();
+            content[i][17] = lineBaseInformationEntity.getManufacturerInformation();
+            content[i][18] = lineBaseInformationEntity.getVersion();
         }
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, content);

@@ -25,14 +25,15 @@ public interface LineBaseInformationDao {
     @Select("select t.tid,t.tlj_name from mro_tieluju t order by t.tid desc")
     List<Map<String, Object>> selectRailwaysBureauTid();
 
-    @Select("select id,name from mro_line_base_information where tid=#{tid} order by modified_time desc")
+    @Select("SELECT lbi.* FROM ( SELECT * FROM mro_line_base_information WHERE tid=#{tid,jdbcType=INTEGER} ORDER BY id DESC ) lbi  GROUP BY lbi.name ORDER BY lbi.create_time DESC")
     List<Map<String, Object>> selectByTid(Integer tid);
 
     @Select("select id,name from mro_station_base_information where line_base_information_id=#{id} order by modified_time desc")
     List<Map<String, Object>> selectStationById(Integer id);
 
+    List<LineBaseInformationEntity> selectNewLineByTid(Integer tid);
 
-    List<LineBaseInformationEntity> selectByExample(Integer[] ids, Integer tid);
+    List<LineBaseInformationEntity> selectHistoryByExample(Integer tid, Integer id, String name, Integer[] ids);
 
     List<DianWuDuanEntity> selectDianWuDuanEntityById(Integer id);
 }
