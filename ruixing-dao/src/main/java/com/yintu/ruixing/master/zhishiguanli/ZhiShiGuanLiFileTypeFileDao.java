@@ -1,5 +1,6 @@
 package com.yintu.ruixing.master.zhishiguanli;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +41,6 @@ public interface ZhiShiGuanLiFileTypeFileDao {
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize( String fileName,Integer id);
 
     ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id);
+
+    List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 }

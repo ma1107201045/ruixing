@@ -162,23 +162,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
     //查询转交审核人姓名
     @GetMapping("/findZhuanJiaoAuditorName")
     public Map<String, Object> findAllAuditorNamre(Integer fileid) {
-        List<UserEntity> userEntities = new ArrayList<>();
-        boolean flag;
-        String username = null;
-        List<UserEntity> userEntitiess = userService.findByTruename(username);
-        List<Integer> userid = zhiShiGuanLiFileTypeService.findUserIdByFileid(fileid);
-        for (int i = 0; i < userEntitiess.size(); i++) {
-            flag = false;
-            for (int i1 = 0; i1 < userid.size(); i1++) {
-                if (userid.get(i1) == userEntitiess.get(i).getId().intValue()) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) {
-                userEntities.add(userEntitiess.get(i));
-            }
-        }
+        List<UserEntity> userEntities =zhiShiGuanLiFileTypeService.findZhuanJiaoAuditorName(fileid);
         return ResponseDataUtil.ok("查询姓名成功", userEntities);
     }
 

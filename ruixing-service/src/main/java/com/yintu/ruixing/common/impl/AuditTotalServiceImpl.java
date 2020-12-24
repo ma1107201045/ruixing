@@ -10,6 +10,7 @@ import com.yintu.ruixing.jiejuefangan.BiddingFileService;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileService;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
+import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class AuditTotalServiceImpl implements AuditTotalService {
     private BiddingFileService biddingFileService;
     @Autowired
     private DesignLiaisonFileService designLiaisonFileService;
+    @Autowired
+    private ZhiShiGuanLiFileTypeService zhiShiGuanLiFileTypeService;
 
     @Override
     @Transactional
@@ -58,6 +61,13 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 2:
                         designLiaisonFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                }
+            case 4:
+                switch (auditDto.getType()) {
+                    case 2:
+                        zhiShiGuanLiFileTypeService.editAuditorByFileid(auditDto.getId(), auditDto.getIsPass(), auditDto.getPassUserId(),
+                                auditDto.getTrueName(), auditDto.getLoginUserId(),
+                                auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getContext());
                 }
         }
     }
@@ -85,6 +95,11 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 2:
                         return designLiaisonFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
                 }
+            case 4:
+                switch (auditDto.getType()) {
+                    case 2:
+                        zhiShiGuanLiFileTypeService.findZhuanJiaoAuditorName(auditDto.getId());
+                }
             default:
                 return new ArrayList<>();
         }
@@ -98,10 +113,12 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         List<AuditTotalVo> preSaleAuditTotalVos = null;
         List<AuditTotalVo> biddingAuditTotalVos = null;
         List<AuditTotalVo> designLiaisonAuditTotalVos = null;
+        List<AuditTotalVo> knowledgeManagementAuditTotalVos = null;//知识管理
         if (auditTotalDto.getModuleType() == null) {
             preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
             biddingAuditTotalVos = this.findBidding(auditTotalDto);
             designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
+            knowledgeManagementAuditTotalVos = this.findKnowledgeManagement(auditTotalDto);
         } else {
             switch (auditTotalDto.getModuleType()) {
                 case 1:
@@ -113,11 +130,15 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                 case 3:
                     designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
                     break;
+                case 4:
+                    knowledgeManagementAuditTotalVos = this.findKnowledgeManagement(auditTotalDto);
+                    break;
             }
         }
         auditTotalVos.addAll(preSaleAuditTotalVos == null ? new ArrayList<>() : preSaleAuditTotalVos);
         auditTotalVos.addAll(biddingAuditTotalVos == null ? new ArrayList<>() : biddingAuditTotalVos);
         auditTotalVos.addAll(designLiaisonAuditTotalVos == null ? new ArrayList<>() : designLiaisonAuditTotalVos);
+        auditTotalVos.addAll(knowledgeManagementAuditTotalVos == null ? new ArrayList<>() : knowledgeManagementAuditTotalVos);
         //统一按照发起时间排序（倒序）
         Page<AuditTotalVo> page = auditTotalVos.stream()
                 .sorted(Comparator.comparing(AuditTotalVo::getInitiateTime).reversed())
@@ -183,5 +204,21 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         return auditTotalVos;
     }
 
-
+    @Override
+    public List<AuditTotalVo> findKnowledgeManagement(AuditTotalDto auditTotalDto) {
+        List<AuditTotalVo> auditTotalVos;
+        Short smallType = auditTotalDto.getSmallType();
+        if (auditTotalDto.getBigType() == 1) {
+            auditTotalVos = zhiShiGuanLiFileTypeService.findByZSGLExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
+        } else if (auditTotalDto.getBigType() == 2) {
+            auditTotalVos = zhiShiGuanLiFileTypeService.findByZSGLExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), auditTotalDto.getLoginUserId(), null, (short) 1);
+        } else {
+            auditTotalVos = zhiShiGuanLiFileTypeService.findByZSGLExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : auditTotalDto.getSmallType(), null, null, null);
+        }
+        auditTotalVos.forEach(auditTotalVo -> {
+            auditTotalVo.setModuleType((short) 4);
+            auditTotalVo.setType((short) 2);
+        });
+        return auditTotalVos;
+    }
 }

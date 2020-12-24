@@ -51,4 +51,9 @@ public interface AuditTotalService {
      * @return 设计联络及后续交流的审批列表
      */
     List<AuditTotalVo> findDesignLiaison(AuditTotalDto auditTotalDto);
+
+    /**
+     * @return 知识管理的审批列表
+     */
+    List<AuditTotalVo> findKnowledgeManagement(AuditTotalDto auditTotalDto);
 }

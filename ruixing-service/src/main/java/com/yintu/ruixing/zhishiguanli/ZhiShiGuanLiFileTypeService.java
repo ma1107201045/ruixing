@@ -1,8 +1,10 @@
 package com.yintu.ruixing.zhishiguanli;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeEntity;
 import com.yintu.ruixing.zhishiguanli.ZhiShiGuanLiFileTypeFileEntity;
 
@@ -73,4 +75,8 @@ public interface ZhiShiGuanLiFileTypeService {
     ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id,Integer uid);
 
     List<Integer> findUserIdByFileid(Integer fileid);
+
+    List<UserEntity> findZhuanJiaoAuditorName(Integer fileid);
+
+    List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 }
