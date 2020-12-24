@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +27,9 @@ public class LineBaseInformationEntity implements Serializable {
     private String modifiedBy;
 
     private Date modifiedTime;
-
+    @NotBlank
     private String name;
-
+    @NotBlank
     private String shortName;
 
     private Double length;
@@ -57,7 +59,7 @@ public class LineBaseInformationEntity implements Serializable {
     private String version;
 
     private Integer xiangmutypeId;
-
+    @NotNull
     private Integer tid;
 
     private TieLuJuEntity tieLuJuEntity;

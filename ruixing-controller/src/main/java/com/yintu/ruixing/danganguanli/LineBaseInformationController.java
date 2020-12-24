@@ -7,6 +7,7 @@ import com.yintu.ruixing.common.util.BaseController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -25,7 +26,7 @@ public class LineBaseInformationController extends SessionController {
     private LineBaseInformationService lineBaseInformationService;
 
     @PostMapping
-    public Map<String, Object> add(LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
+    public Map<String, Object> add(@Validated LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
         entity.setCreateBy(this.getLoginUserName());
         entity.setCreateTime(new Date());
         entity.setModifiedBy(this.getLoginUserName());
@@ -41,7 +42,7 @@ public class LineBaseInformationController extends SessionController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> edit(@PathVariable Integer id, LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
+    public Map<String, Object> edit(@PathVariable Integer id, @Validated LineBaseInformationEntity entity, @RequestParam Integer[] unitIds) {
         entity.setModifiedBy(this.getLoginUserName());
         lineBaseInformationService.edit(entity, unitIds);
         return ResponseDataUtil.ok("修改线段基本信息成功");
