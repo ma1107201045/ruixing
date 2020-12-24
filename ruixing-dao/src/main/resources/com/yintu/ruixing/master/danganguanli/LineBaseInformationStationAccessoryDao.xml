@@ -169,6 +169,14 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <resultMap id="selectByExampleMap" type="com.yintu.ruixing.danganguanli.LineBaseInformationStationAccessoryEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+    </resultMap>
+
     <select id="selectByExample" resultMap="selectByExampleMap">
         select lbisa.id,
         lbisa.create_by,

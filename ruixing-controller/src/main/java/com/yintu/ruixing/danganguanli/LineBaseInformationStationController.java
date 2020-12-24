@@ -57,14 +57,14 @@ public class LineBaseInformationStationController extends SessionController {
 
     @GetMapping
     @ResponseBody
-    public Map<String, Object> findHistoryByExample(@RequestParam("page_number") Integer pageNumber,
-                                                    @RequestParam("page_size") Integer pageSize,
-                                                    @RequestParam(value = "order_by", required = false, defaultValue = "lbi.id DESC") String orderBy,
-                                                    @RequestParam("tid") Integer tid,
-                                                    @RequestParam("id") Integer id,
-                                                    @RequestParam("name") String name) {
+    public Map<String, Object> findByExample(@RequestParam("page_number") Integer pageNumber,
+                                             @RequestParam("page_size") Integer pageSize,
+                                             @RequestParam(value = "order_by", required = false, defaultValue = "lbi.id DESC") String orderBy,
+                                             @RequestParam("line_base_information_id") Integer lineBaseInformationId,
+                                             @RequestParam("id") Integer id,
+                                             @RequestParam("name") String name) {
         PageHelper.startPage(pageNumber, pageSize, orderBy);
-        List<LineBaseInformationStationEntity> LineBaseInformationStationEntities = lineBaseInformationStationService.findHistoryByExample(tid, id, name, null);
+        List<LineBaseInformationStationEntity> LineBaseInformationStationEntities = lineBaseInformationStationService.findHistoryByExample(lineBaseInformationId, id, name, null);
         PageInfo<LineBaseInformationStationEntity> pageInfo = new PageInfo<>(LineBaseInformationStationEntities);
         return ResponseDataUtil.ok("查询车站基本信息列表成功", pageInfo);
     }

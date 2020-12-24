@@ -3,6 +3,7 @@ package com.yintu.ruixing.danganguanli.impl;
 import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationStationDao;
+import com.yintu.ruixing.master.danganguanli.LineBaseInformationStationUnitDao;
 import jdk.nashorn.internal.ir.EmptyNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,8 +66,8 @@ public class LineBaseInformationStationServiceImpl implements LineBaseInformatio
         lineBaseInformationStationUnitService.removeByLineBaseInformationStationId(lineBaseInformationStationEntity.getId());
         for (Integer unitId : unitIds) {
             LineBaseInformationStationUnitEntity lineBaseInformationStationUnitEntity = new LineBaseInformationStationUnitEntity();
-            lineBaseInformationStationUnitEntity.setCreateBy(lineBaseInformationStationEntity.getCreateBy());
-            lineBaseInformationStationUnitEntity.setCreateTime(lineBaseInformationStationEntity.getCreateTime());
+            lineBaseInformationStationUnitEntity.setCreateBy(lineBaseInformationStationEntity.getModifiedBy());
+            lineBaseInformationStationUnitEntity.setCreateTime(lineBaseInformationStationEntity.getModifiedTime());
             lineBaseInformationStationUnitEntity.setModifiedBy(lineBaseInformationStationEntity.getModifiedBy());
             lineBaseInformationStationUnitEntity.setModifiedTime(lineBaseInformationStationEntity.getModifiedTime());
             lineBaseInformationStationUnitEntity.setLineBaseInformationStationId(lineBaseInformationStationEntity.getId());
@@ -77,11 +78,15 @@ public class LineBaseInformationStationServiceImpl implements LineBaseInformatio
 
     @Override
     public List<LineBaseInformationStationEntity> findHistoryByExample(Integer tid, Integer id, String name, Integer[] ids) {
-        return null;
+        List<LineBaseInformationStationEntity> lineBaseInformationStationEntities = lineBaseInformationStationDao.selectByExample(tid, id, name, ids);
+        for (LineBaseInformationStationEntity lineBaseInformationStationEntity : lineBaseInformationStationEntities) {
+            lineBaseInformationStationEntity.setDianWuDuanEntities(this.findDianWuDuanEntityById(lineBaseInformationStationEntity.getId()));
+        }
+        return lineBaseInformationStationEntities;
     }
 
     @Override
     public List<DianWuDuanEntity> findDianWuDuanEntityById(Integer id) {
-        return null;
+        return lineBaseInformationStationDao.selectDianWuDuanEntityById(id);
     }
 }

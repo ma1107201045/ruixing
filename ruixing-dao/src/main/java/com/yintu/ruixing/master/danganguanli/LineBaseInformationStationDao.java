@@ -1,7 +1,7 @@
 package com.yintu.ruixing.master.danganguanli;
 
-import com.yintu.ruixing.danganguanli.LineBaseInformationEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationStationEntity;
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 
 import java.util.List;
 
@@ -18,5 +18,7 @@ public interface LineBaseInformationStationDao {
 
     int updateByPrimaryKey(LineBaseInformationStationEntity record);
 
-    List<LineBaseInformationEntity> selectHistoryByExample(Integer lineBaseInformationId, Integer id, String name, Integer[] ids);
+    List<LineBaseInformationStationEntity> selectByExample(Integer lineBaseInformationId, Integer id, String name, Integer[] ids);
+
+    List<DianWuDuanEntity> selectDianWuDuanEntityById(Integer id);
 }

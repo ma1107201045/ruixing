@@ -5,6 +5,8 @@ import com.yintu.ruixing.danganguanli.LineBaseInformationStationAccessoryEntity;
 import com.yintu.ruixing.danganguanli.LineBaseInformationStationAccessoryService;
 import com.yintu.ruixing.master.danganguanli.LineBaseInformationStationAccessoryDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * @Date: 2020/12/24 18:37
  * @Version: 1.0
  */
+@Service
+@Transactional
 public class LineBaseInformationStationAccessoryServiceImpl implements LineBaseInformationStationAccessoryService {
     @Autowired
     private LineBaseInformationStationAccessoryDao lineBaseInformationStationAccessoryDao;

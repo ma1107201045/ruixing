@@ -1,11 +1,13 @@
 package com.yintu.ruixing.danganguanli;
 
+import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -53,6 +55,10 @@ public class LineBaseInformationStationEntity implements Serializable {
     private String version;
 
     private Integer lineBaseInformationId;
+
+    private LineBaseInformationEntity lineBaseInformationEntity;
+
+    private List<DianWuDuanEntity> dianWuDuanEntities;
 
 
 }
