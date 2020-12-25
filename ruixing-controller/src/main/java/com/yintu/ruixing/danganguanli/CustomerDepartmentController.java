@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/customer/departments")
-public class CustomerDepartmentController extends SessionController implements BaseController<CustomerDepartmentEntity, Integer> {
+public class CustomerDepartmentController extends SessionController {
     @Autowired
     private CustomerDepartmentService customerDepartmentService;
 
@@ -35,7 +35,7 @@ public class CustomerDepartmentController extends SessionController implements B
 
     @DeleteMapping("/{id}")
     public Map<String, Object> remove(@PathVariable Integer id) {
-        customerDepartmentService.remove(id);
+        customerDepartmentService.removeByIdAndIsFirst(id, true);
         return ResponseDataUtil.ok("删除客户部门信息成功");
     }
 

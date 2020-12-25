@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.master.danganguanli.CustomerDepartmentDao;
+import com.yintu.ruixing.xitongguanli.PermissionEntity;
+import com.yintu.ruixing.xitongguanli.PermissionEntityExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,20 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
     @Override
     public CustomerDepartmentEntity findById(Integer id) {
         return customerDepartmentDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void removeByIdAndIsFirst(Integer id, Boolean isFirst) {
+        if (isFirst) {  //第一次掉用此方法，按照id查询权限信息，删除
+            this.remove(id);
+        }
+        List<CustomerDepartmentEntity> customerDepartmentEntities = customerDepartmentDao.selectByParentIdAndTypeId(id, null);
+        if (customerDepartmentEntities.size() > 0) {
+            for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
+                this.remove(customerDepartmentEntity.getId());
+                this.removeByIdAndIsFirst(customerDepartmentEntity.getId(), false);
+            }
+        }
     }
 
     @Override
