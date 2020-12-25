@@ -305,9 +305,9 @@
         inner join mro_customer_type ct on cer.type_id=ct.id
         inner join mro_customer_duty d1  on cer.duty_id= d1.id
 
-        inner join mro_district p on cer.province_id = p.id
-        inner join mro_district c on cer.city_id = c.id
-        inner join mro_district d on cer.district_id = d.id
+        left  join mro_district p on cer.province_id = p.id
+        left  join mro_district c on cer.city_id = c.id
+        left  join mro_district d on cer.district_id = d.id
 
         inner join mro_customer_customer_department ccd on cer.id= ccd.customer_id
         inner join mro_customer_department cd on cd.id=ccd.department_id
