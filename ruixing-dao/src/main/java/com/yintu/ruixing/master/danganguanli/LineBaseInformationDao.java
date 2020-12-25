@@ -36,4 +36,5 @@ public interface LineBaseInformationDao {
     List<LineBaseInformationEntity> selectHistoryByExample(Integer tid, Integer id, String name, Integer[] ids);
 
     List<DianWuDuanEntity> selectDianWuDuanEntityById(Integer id);
+
 }
