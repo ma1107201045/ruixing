@@ -144,22 +144,14 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void removeByIdAndIsFirst(Long id, Boolean isFirst) {
-        if (isFirst) {  //第一次掉用此方法，按照id查询权限信息，删除
-            PermissionEntity permissionEntity = this.findById(id);
-            if (permissionEntity != null) {
-                this.remove(id);
-            }
-        }
+    public void removeById(Long id) {
+        this.remove(id);
         PermissionEntityExample permissionEntityExample = new PermissionEntityExample();
         PermissionEntityExample.Criteria criteria = permissionEntityExample.createCriteria();
         criteria.andParentIdEqualTo(id);
         List<PermissionEntity> permissionEntities = this.findByExample(permissionEntityExample);
-        if (permissionEntities.size() > 0) {
-            for (PermissionEntity permissionEntity : permissionEntities) {
-                this.remove(permissionEntity.getId());
-                this.removeByIdAndIsFirst(permissionEntity.getId(), false);
-            }
+        for (PermissionEntity permissionEntity : permissionEntities) {
+            this.removeById(permissionEntity.getId());
         }
     }
 

@@ -34,7 +34,7 @@ public class PermissionController extends SessionController {
 
     @DeleteMapping("/{id}")
     public Map<String, Object> remove(@PathVariable Long id) {
-        permissionService.removeByIdAndIsFirst(id, true);
+        permissionService.remove(id);
         return ResponseDataUtil.ok("删除权限成功");
     }
 

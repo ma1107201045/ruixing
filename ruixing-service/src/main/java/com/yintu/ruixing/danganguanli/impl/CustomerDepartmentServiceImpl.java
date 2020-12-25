@@ -49,16 +49,11 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
     }
 
     @Override
-    public void removeByIdAndIsFirst(Integer id, Boolean isFirst) {
-        if (isFirst) {  //第一次掉用此方法，按照id查询权限信息，删除
-            this.remove(id);
-        }
+    public void removeById(Integer id) {
+        this.remove(id);
         List<CustomerDepartmentEntity> customerDepartmentEntities = customerDepartmentDao.selectByParentIdAndTypeId(id, null);
-        if (customerDepartmentEntities.size() > 0) {
-            for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
-                this.remove(customerDepartmentEntity.getId());
-                this.removeByIdAndIsFirst(customerDepartmentEntity.getId(), false);
-            }
+        for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
+            this.removeById(customerDepartmentEntity.getId());
         }
     }
 

@@ -15,10 +15,9 @@ public interface CustomerDepartmentService extends BaseService<CustomerDepartmen
     /**
      * 指定删除id，以及次节点父节点
      *
-     * @param id      部门id
-     * @param isFirst 是否第一次
+     * @param id 部门id
      */
-    void removeByIdAndIsFirst(Integer id, Boolean isFirst);
+    void removeById(Integer id);
 
     List<TreeNodeUtil> findByParentIdAndTypeId(Integer parentId, Short type);
 

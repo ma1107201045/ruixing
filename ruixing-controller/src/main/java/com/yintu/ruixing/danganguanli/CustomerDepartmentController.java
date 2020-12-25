@@ -35,7 +35,7 @@ public class CustomerDepartmentController extends SessionController {
 
     @DeleteMapping("/{id}")
     public Map<String, Object> remove(@PathVariable Integer id) {
-        customerDepartmentService.removeByIdAndIsFirst(id, true);
+        customerDepartmentService.removeById(id);
         return ResponseDataUtil.ok("删除客户部门信息成功");
     }
 

@@ -19,6 +19,10 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
      */
     void removeByExample(PermissionEntityExample permissionEntityExample);
 
+    /**
+     * @param id 节点id
+     */
+    void removeById(Long id);
 
     /**
      * @param permissionEntityExample 多条件查询权限列表
@@ -36,16 +40,6 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
 
 
     /**
-     * 指定删除id，以及次节点父节点
-     *
-     * @param id      权限id
-     * @param isFirst 是否第一次
-     */
-    void removeByIdAndIsFirst(Long id, Boolean isFirst);
-
-
-
-    /**
      * @param roleId 角色id
      * @return 权限集
      */
@@ -57,9 +51,6 @@ public interface PermissionService extends BaseService<PermissionEntity, Long> {
      * @return 权限集
      */
     List<PermissionEntity> findByIds(List<Long> ids, Long parentId);
-
-
-
 
 
     /**
