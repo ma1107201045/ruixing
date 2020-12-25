@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.xitongguanli.RoleDao;
@@ -163,15 +164,7 @@ public class RoleServiceImpl implements RoleService {
             treeNodeUtil.setLabel(permissionEntity.getName());
             treeNodeUtil.setIcon(permissionEntity.getIconCls());
             treeNodeUtil.setChildren(this.findPermissionsTreeById(id, permissionEntity.getId()));
-            Map<String, Object> map = new HashMap<>();
-            map.put("parentId", permissionEntity.getParentId());
-            map.put("url", permissionEntity.getUrl());
-            map.put("method", permissionEntity.getMethod());
-            map.put("isMenu", permissionEntity.getIsMenu());
-            map.put("path", permissionEntity.getPath());
-            map.put("description", permissionEntity.getDescription());
-            map.put("roleEntities", permissionEntity.getRoleEntities());
-            treeNodeUtil.setA_attr(map);
+            treeNodeUtil.setA_attr(BeanUtil.beanToMap(permissionEntity));
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;
@@ -190,15 +183,7 @@ public class RoleServiceImpl implements RoleService {
                 treeNodeUtil.setId(permissionEntity.getId());
                 treeNodeUtil.setLabel(permissionEntity.getName());
                 treeNodeUtil.setIcon(permissionEntity.getIconCls());
-                Map<String, Object> map = new HashMap<>();
-                map.put("parentId", permissionEntity.getParentId());
-                map.put("url", permissionEntity.getUrl());
-                map.put("method", permissionEntity.getMethod());
-                map.put("isMenu", permissionEntity.getIsMenu());
-                map.put("path", permissionEntity.getPath());
-                map.put("description", permissionEntity.getDescription());
-                map.put("roleEntities", permissionEntity.getRoleEntities());
-                treeNodeUtil.setA_attr(map);
+                treeNodeUtil.setA_attr(BeanUtil.beanToMap(permissionEntity));
                 treeNodeUtils.add(treeNodeUtil);
             }
         }

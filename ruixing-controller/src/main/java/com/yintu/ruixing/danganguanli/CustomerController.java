@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.RequestWrapper;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -132,6 +129,15 @@ public class CustomerController extends SessionController {
         List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findByParentIdAndTypeId(-1, typeId);
         return ResponseDataUtil.ok("查询顾客部门信息列表成功", treeNodeUtils);
     }
+
+    @GetMapping("/customer/{id}/departments")
+    @ResponseBody
+    public Map<String, Object> findDepartments(@PathVariable Integer id, @RequestParam Short typeId) {
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        customerDepartmentService.findByParentIdAndCustomerIdAndTypeId(-1, id, typeId, treeNodeUtils);
+        return ResponseDataUtil.ok("查询顾客部门信息列表成功", treeNodeUtils);
+    }
+
 
     @GetMapping("/customer/duties")
     @ResponseBody

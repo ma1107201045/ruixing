@@ -1,5 +1,6 @@
 package com.yintu.ruixing.xitongguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.master.xitongguanli.PermissionDao;
@@ -135,15 +136,7 @@ public class PermissionServiceImpl implements PermissionService {
             treeNodeUtil.setId(permissionEntity.getId());
             treeNodeUtil.setLabel(permissionEntity.getName());
             treeNodeUtil.setIcon(permissionEntity.getIconCls());
-            Map<String, Object> map = new HashMap<>();
-            map.put("parentId", permissionEntity.getParentId());
-            map.put("url", permissionEntity.getUrl());
-            map.put("method", permissionEntity.getMethod());
-            map.put("isMenu", permissionEntity.getIsMenu());
-            map.put("path", permissionEntity.getPath());
-            map.put("description", permissionEntity.getDescription());
-            map.put("roleEntities", permissionEntity.getRoleEntities());
-            treeNodeUtil.setA_attr(map);
+            treeNodeUtil.setA_attr(BeanUtil.beanToMap(permissionEntity));
             treeNodeUtil.setChildren(this.findPermissionTree(permissionEntity.getId()));
             treeNodeUtils.add(treeNodeUtil);
         }

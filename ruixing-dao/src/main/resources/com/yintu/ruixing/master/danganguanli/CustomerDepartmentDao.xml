@@ -140,4 +140,21 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByParentIdAndCustomerIdAndTypeId" resultMap="BaseResultMap">
+        select cd.id, cd.create_by,cd. create_time,cd.modified_by, cd.modified_time, cd.name, cd.parent_id, cd.type_id
+        from mro_customer_department cd inner join mro_customer_customer_department ccd
+        on cd.id=ccd.department_id
+        <where>
+            <if test="parentId!=null">
+                and cd.parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="customerId!=null">
+                and ccd.customer_id = #{customerId,jdbcType=INTEGER}
+            </if>
+            <if test="typeId!=null">
+                and cd.type_id = #{typeId,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
 </mapper>

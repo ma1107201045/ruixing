@@ -1,5 +1,6 @@
 package com.yintu.ruixing.danganguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.*;
 import com.yintu.ruixing.master.danganguanli.CustomerDepartmentDao;
@@ -54,20 +55,47 @@ public class CustomerDepartmentServiceImpl implements CustomerDepartmentService 
             treeNodeUtil.setId(customerDepartmentEntity.getId().longValue());
             treeNodeUtil.setLabel(customerDepartmentEntity.getName());
             treeNodeUtil.setValue(customerDepartmentEntity.getId().toString());
-            Map<String, Object> map = new HashMap<>();
-            map.put("parentId", customerDepartmentEntity.getParentId());
-            map.put("createBy", customerDepartmentEntity.getCreateBy());
-            map.put("createTime", customerDepartmentEntity.getCreateTime());
-            map.put("modifiedBy", customerDepartmentEntity.getModifiedBy());
-            map.put("modifiedTime", customerDepartmentEntity.getModifiedTime());
-            map.put("isFirst", false);
-            map.put("typeId", type);
-            treeNodeUtil.setA_attr(map);
+            treeNodeUtil.setA_attr(BeanUtil.beanToMap(customerDepartmentEntity));
             treeNodeUtil.setChildren(this.findByParentIdAndTypeId(customerDepartmentEntity.getId(), customerDepartmentEntity.getTypeId()));
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;
     }
+
+    @Override
+    public List<TreeNodeUtil> findByParentIdAndCustomerIdAndTypeId(Integer parentId, Integer customerId, Short type) {
+        List<CustomerDepartmentEntity> customerDepartmentEntities = customerDepartmentDao.selectByParentIdAndCustomerIdAndTypeId(parentId, customerId, type);
+        List<TreeNodeUtil> treeNodeUtils = new ArrayList<>();
+        for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
+            TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+            treeNodeUtil.setId(customerDepartmentEntity.getId().longValue());
+            treeNodeUtil.setLabel(customerDepartmentEntity.getName());
+            treeNodeUtil.setValue(customerDepartmentEntity.getId().toString());
+            treeNodeUtil.setA_attr(BeanUtil.beanToMap(customerDepartmentEntity));
+            treeNodeUtils.add(treeNodeUtil);
+        }
+        return treeNodeUtils;
+    }
+
+    @Override
+    public List<TreeNodeUtil> findByParentIdAndCustomerIdAndTypeId(Integer parentId, Integer customerId, Short type, List<TreeNodeUtil> treeNodeUtils) {
+        List<CustomerDepartmentEntity> customerDepartmentEntities = customerDepartmentDao.selectByParentIdAndCustomerIdAndTypeId(parentId, customerId, type);
+        for (CustomerDepartmentEntity customerDepartmentEntity : customerDepartmentEntities) {
+            List<CustomerDepartmentEntity> customerDepartments = customerDepartmentDao.selectByParentIdAndCustomerIdAndTypeId(customerDepartmentEntity.getId(), customerId, type);
+            if (customerDepartments.size() > 0) {
+                findByParentIdAndCustomerIdAndTypeId(customerDepartmentEntity.getId(), customerId, type, treeNodeUtils);
+            } else {
+                TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
+                treeNodeUtil.setId(customerDepartmentEntity.getId().longValue());
+                treeNodeUtil.setLabel(customerDepartmentEntity.getName());
+                treeNodeUtil.setValue(customerDepartmentEntity.getId().toString());
+                treeNodeUtil.setA_attr(BeanUtil.beanToMap(customerDepartmentEntity));
+                treeNodeUtils.add(treeNodeUtil);
+            }
+        }
+        return treeNodeUtils;
+    }
+
 
     @Override
     public List<TreeNodeUtil> findCustomerTypeAndCustomerDepartmentTree() {

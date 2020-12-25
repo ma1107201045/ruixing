@@ -178,7 +178,7 @@ public class LineBaseInformationStationServiceImpl implements LineBaseInformatio
         //excel标题
         String title = "车站基本信息列表";
         //excel表名
-        String[] headers = {"序号", "站名", "电务段", "车间", "工区", "轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "设备硬件物料编码", "软件物料编码", "设备数量", "维护终端/诊断主机版本", "配置文件",
+        String[] headers = {"序号", "站名", "电务段", "车间", "工区", "轨道区段数", "电码化套数", "计轴点数", "安全信息套数", "设备硬件物料编码", "软件物料编码", "设备数量", "维护终端/诊断主机版本", "配置文件",
                 "开通时间", "长度里程", "版本"};
         //创建HSSFWorkbook
         XSSFWorkbook wb = ExportExcelUtil.getXSSFWorkbook(title, headers, new String[0][0]);
@@ -192,7 +192,7 @@ public class LineBaseInformationStationServiceImpl implements LineBaseInformatio
         //excel标题
         String title = "车站基本信息列表";
         //excel表名
-        String[] headers = {"序号", "所属线段", "站名", "电务段", "车间", "工区", "轨道区段数", "电码化套数", "技轴点数", "安全信息套数", "设备硬件物料编码", "软件物料编码", "设备数量", "维护终端/诊断主机版本", "配置文件",
+        String[] headers = {"序号", "所属线段", "站名", "电务段", "车间", "工区", "轨道区段数", "电码化套数", "计轴点数", "安全信息套数", "设备硬件物料编码", "软件物料编码", "设备数量", "维护终端/诊断主机版本", "配置文件",
                 "开通时间", "长度里程", "版本"};
         //获取数据
         List<LineBaseInformationStationEntity> lineBaseInformationStationEntities = this.findByExample(null, null, null, ids);

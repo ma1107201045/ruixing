@@ -1,5 +1,6 @@
 package com.yintu.ruixing.master.danganguanli;
 
+import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.danganguanli.CustomerDepartmentEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,6 @@ public interface CustomerDepartmentDao {
     int updateByPrimaryKey(CustomerDepartmentEntity record);
 
     List<CustomerDepartmentEntity> selectByParentIdAndTypeId(Integer parentId, Short typeId);
+
+    List<CustomerDepartmentEntity> selectByParentIdAndCustomerIdAndTypeId(Integer parentId, Integer customerId, Short typeId);
 }

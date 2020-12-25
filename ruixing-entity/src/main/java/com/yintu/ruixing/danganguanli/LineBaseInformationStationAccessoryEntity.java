@@ -29,10 +29,10 @@ public class LineBaseInformationStationAccessoryEntity implements Serializable {
     @NotNull
     private Integer lineBaseInformationStationId;
 
-    private String hardwareMaterialCodeId;
+    private Short hardwareMaterialCodeId;
 
-    private String softwareMaterialCodeId;
+    private Short softwareMaterialCodeId;
 
-    private String configurationFileId;
+    private Short configurationFileId;
 
 }

@@ -14,5 +14,9 @@ public interface CustomerDepartmentService extends BaseService<CustomerDepartmen
 
     List<TreeNodeUtil> findByParentIdAndTypeId(Integer parentId, Short type);
 
+    List<TreeNodeUtil> findByParentIdAndCustomerIdAndTypeId(Integer parentId, Integer customerId, Short type);
+
+    List<TreeNodeUtil> findByParentIdAndCustomerIdAndTypeId(Integer parentId, Integer customerId, Short type, List<TreeNodeUtil> treeNodeUtils);
+
     List<TreeNodeUtil> findCustomerTypeAndCustomerDepartmentTree();
 }

@@ -201,6 +201,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                                 designLiaisonFileAuditorEntity.setActivate((short) 0);
                             }
                             designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                            designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                             designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                         }
 
@@ -220,6 +221,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                                     designLiaisonFileAuditorEntity.setActivate((short) 0);
                                 }
                                 designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                                designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                                 designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                             }
 
@@ -406,6 +408,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     d.setSort(sort);
                     d.setActivate((short) 1);
                     d.setIsDispose((short) 0);
+                    d.setAuditStatus((short) 2);
                     designLiaisonFileAuditorService.add(d);
                     //转交只给这个人发信息
                     MessageEntity messageEntity = new MessageEntity();

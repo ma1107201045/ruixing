@@ -10,9 +10,9 @@
         <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
         <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
         <result column="line_base_information_station_id" jdbcType="INTEGER" property="lineBaseInformationStationId"/>
-        <result column="hardware_material_code_id" jdbcType="VARCHAR" property="hardwareMaterialCodeId"/>
-        <result column="software_material_code_id" jdbcType="VARCHAR" property="softwareMaterialCodeId"/>
-        <result column="configuration_file_id" jdbcType="VARCHAR" property="configurationFileId"/>
+        <result column="hardware_material_code_id" jdbcType="SMALLINT" property="hardwareMaterialCodeId"/>
+        <result column="software_material_code_id" jdbcType="SMALLINT" property="softwareMaterialCodeId"/>
+        <result column="configuration_file_id" jdbcType="SMALLINT" property="configurationFileId"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, accessory_name, accessory_path,
@@ -39,8 +39,8 @@
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR},
                 #{accessoryPath,jdbcType=VARCHAR}, #{lineBaseInformationStationId,jdbcType=INTEGER},
-                #{hardwareMaterialCodeId,jdbcType=VARCHAR}, #{softwareMaterialCodeId,jdbcType=VARCHAR},
-                #{configurationFileId,jdbcType=VARCHAR})
+                #{hardwareMaterialCodeId,jdbcType=SMALLINT}, #{softwareMaterialCodeId,jdbcType=SMALLINT},
+                #{configurationFileId,jdbcType=SMALLINT})
     </insert>
     <insert id="insertSelective"
             parameterType="com.yintu.ruixing.danganguanli.LineBaseInformationStationAccessoryEntity">
@@ -106,13 +106,13 @@
                 #{lineBaseInformationStationId,jdbcType=INTEGER},
             </if>
             <if test="hardwareMaterialCodeId != null">
-                #{hardwareMaterialCodeId,jdbcType=VARCHAR},
+                #{hardwareMaterialCodeId,jdbcType=SMALLINT},
             </if>
             <if test="softwareMaterialCodeId != null">
-                #{softwareMaterialCodeId,jdbcType=VARCHAR},
+                #{softwareMaterialCodeId,jdbcType=SMALLINT},
             </if>
             <if test="configurationFileId != null">
-                #{configurationFileId,jdbcType=VARCHAR},
+                #{configurationFileId,jdbcType=SMALLINT},
             </if>
         </trim>
     </insert>
@@ -142,13 +142,13 @@
                 line_base_information_station_id = #{lineBaseInformationStationId,jdbcType=INTEGER},
             </if>
             <if test="hardwareMaterialCodeId != null">
-                hardware_material_code_id = #{hardwareMaterialCodeId,jdbcType=VARCHAR},
+                hardware_material_code_id = #{hardwareMaterialCodeId,jdbcType=SMALLINT},
             </if>
             <if test="softwareMaterialCodeId != null">
-                software_material_code_id = #{softwareMaterialCodeId,jdbcType=VARCHAR},
+                software_material_code_id = #{softwareMaterialCodeId,jdbcType=SMALLINT},
             </if>
             <if test="configurationFileId != null">
-                configuration_file_id = #{configurationFileId,jdbcType=VARCHAR},
+                configuration_file_id = #{configurationFileId,jdbcType=SMALLINT},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -163,9 +163,9 @@
             accessory_name                   = #{accessoryName,jdbcType=VARCHAR},
             accessory_path                   = #{accessoryPath,jdbcType=VARCHAR},
             line_base_information_station_id = #{lineBaseInformationStationId,jdbcType=INTEGER},
-            hardware_material_code_id        = #{hardwareMaterialCodeId,jdbcType=VARCHAR},
-            software_material_code_id        = #{softwareMaterialCodeId,jdbcType=VARCHAR},
-            configuration_file_id            = #{configurationFileId,jdbcType=VARCHAR}
+            hardware_material_code_id        = #{hardwareMaterialCodeId,jdbcType=SMALLINT},
+            software_material_code_id        = #{softwareMaterialCodeId,jdbcType=SMALLINT},
+            configuration_file_id            = #{configurationFileId,jdbcType=SMALLINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -189,13 +189,13 @@
                 and lbisa.line_base_information_station_id=#{lineBaseInformationStationId,jdbcType=INTEGER}
             </if>
             <if test="hardwareMaterialCodeId!=null">
-                and lbia.hardware_material_code_id=#{hardwareMaterialCodeId,jdbcType=SMALLINT}
+                and lbisa.hardware_material_code_id=#{hardwareMaterialCodeId,jdbcType=SMALLINT}
             </if>
             <if test="softwareMaterialCodeId!=null">
-                and lbia.software_material_code_id=#{softwareMaterialCodeId,jdbcType=SMALLINT}
+                and lbisa.software_material_code_id=#{softwareMaterialCodeId,jdbcType=SMALLINT}
             </if>
             <if test="configurationFileId!=null">
-                and lbia.configuration_file_id=#{configurationFileId,jdbcType=SMALLINT}
+                and lbisa.configuration_file_id=#{configurationFileId,jdbcType=SMALLINT}
             </if>
         </where>
     </select>

@@ -228,9 +228,7 @@ public class UserServiceImpl implements UserService {
             treeNodeUtil.setId(departmentEntity.getId());
             treeNodeUtil.setLabel(departmentEntity.getName());
             treeNodeUtil.setChildren(this.findDepartmentsTreeById(id, departmentEntity.getId()));
-            Map<String, Object> map = new HashMap<>();
-            map.put("parentId", departmentEntity.getParentId());
-            treeNodeUtil.setA_attr(map);
+            treeNodeUtil.setA_attr(BeanUtil.beanToMap(departmentEntity));
             treeNodeUtils.add(treeNodeUtil);
         }
         return treeNodeUtils;
@@ -247,10 +245,7 @@ public class UserServiceImpl implements UserService {
                 TreeNodeUtil treeNodeUtil = new TreeNodeUtil();
                 treeNodeUtil.setId(departmentEntity.getId());
                 treeNodeUtil.setLabel(departmentEntity.getName());
-                treeNodeUtil.setChildren(this.findDepartmentsTreeById(id, departmentEntity.getId()));
-                Map<String, Object> map = new HashMap<>();
-                map.put("parentId", departmentEntity.getParentId());
-                treeNodeUtil.setA_attr(map);
+                treeNodeUtil.setA_attr(BeanUtil.beanToMap(departmentEntity));
                 treeNodeUtils.add(treeNodeUtil);
             }
         }

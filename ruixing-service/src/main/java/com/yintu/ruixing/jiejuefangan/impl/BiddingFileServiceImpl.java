@@ -199,13 +199,14 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                             biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
                             biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
                             Integer sort = auditConfigurationUserEntity.getSort();
-                            auditConfigurationUserEntity.setSort(sort);
+                            biddingFileAuditorEntity.setSort(sort);
                             if (sort == 1) {
                                 biddingFileAuditorEntity.setActivate((short) 1);
                             } else {
                                 biddingFileAuditorEntity.setActivate((short) 0);
                             }
                             biddingFileAuditorEntity.setIsDispose((short) 0);
+                            biddingFileAuditorEntity.setAuditStatus((short) 2);
                             biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                         }
 
@@ -225,6 +226,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                                     biddingFileAuditorEntity.setActivate((short) 0);
                                 }
                                 biddingFileAuditorEntity.setIsDispose((short) 0);
+                                biddingFileAuditorEntity.setAuditStatus((short) 2);
                                 biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                             }
 
@@ -395,6 +397,7 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     b.setSort(sort);
                     b.setActivate((short) 1);
                     b.setIsDispose((short) 0);
+                    b.setAuditStatus((short) 2);
                     biddingFileAuditorService.add(b);
                     //转交只给这个人发信息
                     MessageEntity messageEntity = new MessageEntity();
