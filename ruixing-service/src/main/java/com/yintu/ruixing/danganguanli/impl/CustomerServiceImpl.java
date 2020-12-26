@@ -2,12 +2,12 @@ package com.yintu.ruixing.danganguanli.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.danganguanli.*;
-import com.yintu.ruixing.jiejuefangan.*;
 import com.yintu.ruixing.master.danganguanli.CustomerDao;
 import com.yintu.ruixing.xitongguanli.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -138,13 +138,12 @@ public class CustomerServiceImpl implements CustomerService {
                 throw new BaseRuntimeException("此档案信息已在审批，无需重复审批");
             cSource.setAuditStatus((short) 2);//审核状态 1.正常 2.审核中 3.已审核通过 4.已审核未通过
             this.edit(cSource);
-            Integer currentUserId = cSource.getUserId();
             CustomerAuditRecordEntity customerAuditRecordEntity = new CustomerAuditRecordEntity();
             BeanUtil.copyProperties(customerEntity, customerAuditRecordEntity, "id");
             customerAuditRecordEntity.setOperator(trueName);
             customerAuditRecordEntity.setCreateBy(customerAuditRecordEntity.getModifiedBy());
             customerAuditRecordEntity.setCreateTime(customerAuditRecordEntity.getModifiedTime());
-            customerAuditRecordEntity.setUserId(currentUserId);
+            customerAuditRecordEntity.setUserId(customerEntity.getUserId());
             customerAuditRecordEntity.setCustomerId(cSource.getId());
             customerAuditRecordEntity.setAuditStatus((short) 2);
             customerAuditRecordService.add(customerAuditRecordEntity);
@@ -472,5 +471,10 @@ public class CustomerServiceImpl implements CustomerService {
         criteria.andIdNotIn(auditorIds);
         userEntityExample.setOrderByClause("id DESC");
         return userService.findByExample(userEntityExample);
+    }
+
+    @Override
+    public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
+        return null;
     }
 }

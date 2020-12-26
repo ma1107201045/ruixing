@@ -1,7 +1,7 @@
-package com.yintu.ruixing.jiejuefangan.impl;
+package com.yintu.ruixing.danganguanli.impl;
 
 import com.yintu.ruixing.danganguanli.CustomerAuditRecordAuditorEntity;
-import com.yintu.ruixing.jiejuefangan.CustomerAuditRecordAuditorService;
+import com.yintu.ruixing.danganguanli.CustomerAuditRecordAuditorService;
 import com.yintu.ruixing.master.danganguanli.CustomerAuditRecordAuditorDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

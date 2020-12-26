@@ -51,7 +51,6 @@ public class CustomerController extends SessionController {
         customerEntity.setCreateTime(new Date());
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
-        customerEntity.setUserId(this.getLoginUserId().intValue());
         customerService.add(customerEntity, customerDepartmentIds);
         return ResponseDataUtil.ok("添加顾客信息成功");
     }
@@ -71,6 +70,7 @@ public class CustomerController extends SessionController {
                                     @RequestParam("sortIds") Integer[] sorts) {
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
+        customerEntity.setUserId(this.getLoginUserId().intValue());
         customerService.addCustomerAuditRecord(customerEntity, customerDepartmentIds, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改顾客信息成功");
     }

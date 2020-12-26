@@ -38,17 +38,17 @@ public interface AuditTotalService {
     PageInfo<AuditTotalVo> findPage(int pageNum, int pageSize, AuditTotalDto auditTotalDto);
 
     /**
-     * @return 解决方案的审批列表
+     * @return 解决方案-售前技术支持的审批列表
      */
     List<AuditTotalVo> findPreSale(AuditTotalDto auditTotalDto);
 
     /**
-     * @return 投标招标技术支持的审批列表
+     * @return 解决方案-投标招标技术支持的审批列表
      */
     List<AuditTotalVo> findBidding(AuditTotalDto auditTotalDto);
 
     /**
-     * @return 设计联络及后续交流的审批列表
+     * @return 解决方案-设计联络及后续交流的审批列表
      */
     List<AuditTotalVo> findDesignLiaison(AuditTotalDto auditTotalDto);
 
@@ -56,4 +56,9 @@ public interface AuditTotalService {
      * @return 知识管理的审批列表
      */
     List<AuditTotalVo> findKnowledgeManagement(AuditTotalDto auditTotalDto);
+
+    /**
+     * @return 档案管理-顾客档案管理信息修改
+     */
+    List<AuditTotalVo> findCustomer(AuditTotalDto auditTotalDto);
 }

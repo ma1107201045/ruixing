@@ -1,4 +1,4 @@
-package com.yintu.ruixing.jiejuefangan;
+package com.yintu.ruixing.danganguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.danganguanli.CustomerAuditRecordAuditorEntity;

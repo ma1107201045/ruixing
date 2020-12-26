@@ -306,7 +306,7 @@
                 and dlf.name like concat('%',#{search,jdbcType=VARCHAR},'%')
             </if>
             <if test="userId!=null">
-                and dlf.user_id=#{userId,jdbcType=VARCHAR}
+                and dlf.user_id=#{userId,jdbcType=INTEGER}
             </if>
             <if test="auditStatus!=null">
                 and dlf.audit_status=#{auditStatus,jdbcType=SMALLINT}

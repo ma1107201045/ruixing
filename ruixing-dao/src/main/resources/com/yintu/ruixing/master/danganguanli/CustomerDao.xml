@@ -352,4 +352,80 @@
         <include refid="Much_Table_List"/>
         <include refid="Much_Where_List"/>
     </select>
+
+
+    <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="title"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="u_true_name" jdbcType="VARCHAR" property="initiator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="initiateTime"/>
+        <result column="car_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <result column="car_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"/>
+        <collection column="id" property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"
+                    select="selectById"/>
+    </resultMap>
+    <resultMap id="selectByIdMap" type="com.yintu.ruixing.common.AuditTotalInfoVo">
+        <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+        <result column="cara_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="cara_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+    </resultMap>
+    <sql id="Example_Column_List">
+        car.id, c.name,car.remark,car.create_time,car.audit_finish_time,car.audit_status as car_audit_status,car.audit_finish_time as car_audit_finish_time,
+        u.true_name  u_true_name
+    </sql>
+    <sql id="Example_condition_List">
+        <where>
+            <if test="search!=null and search != ''">
+                and c.name like concat('%',#{search,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="userId!=null">
+                and car.user_id=#{userId,jdbcType=INTEGER}
+            </if>
+            <if test="auditStatus!=null">
+                and car.audit_status=#{auditStatus,jdbcType=SMALLINT}
+            </if>
+            <if test="auditorId!=null">
+                and cara.auditor_id=#{auditorId,jdbcType=INTEGER}
+            </if>
+            <if test="activate">
+                and cara.activate=#{activate,jdbcType=SMALLINT}
+            </if>
+            <if test="isDispose!=null">
+                and cara.is_dispose=#{isDispose,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAuditRecordByExample" resultMap="ExampleResultMap">
+        select
+        <include refid="Example_Column_List"/>
+        from mro_customer c
+        inner join mro_customer_audit_record car on car.customer_id = c.id
+        inner join tb_user u on car.user_id = u.id
+        inner join mro_customer_audit_record_auditor cara on cara.customer_audit_record_id =car.id
+        <include refid="Example_condition_List"/>
+    </select>
+
+    <select id="selectById" resultMap="selectByIdMap">
+        select cara.sort,
+               cara.context,
+               cara.accessory_name,
+               cara.accessory_path,
+               cara.is_dispose,
+               cara.audit_status      as cara_audit_status,
+               cara.audit_finish_time as cara_audit_finish_time,
+               tu.true_name          as tu_true_name
+        from mro_customer_audit_record_auditor cara
+                 inner join tb_user tu on cara.auditor_id = tu.id
+        where cara.customer_audit_record_id = #{id,jdbcType=INTEGER}
+    </select>
+
+
 </mapper>

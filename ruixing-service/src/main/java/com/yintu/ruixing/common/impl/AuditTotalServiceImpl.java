@@ -6,6 +6,7 @@ import com.yintu.ruixing.common.AuditDto;
 import com.yintu.ruixing.common.AuditTotalDto;
 import com.yintu.ruixing.common.AuditTotalService;
 import com.yintu.ruixing.common.AuditTotalVo;
+import com.yintu.ruixing.danganguanli.CustomerService;
 import com.yintu.ruixing.jiejuefangan.BiddingFileService;
 import com.yintu.ruixing.jiejuefangan.DesignLiaisonFileService;
 import com.yintu.ruixing.jiejuefangan.PreSaleFileService;
@@ -36,6 +37,8 @@ public class AuditTotalServiceImpl implements AuditTotalService {
     private DesignLiaisonFileService designLiaisonFileService;
     @Autowired
     private ZhiShiGuanLiFileTypeService zhiShiGuanLiFileTypeService;
+    @Autowired
+    private CustomerService customerService;
 
     @Override
     @Transactional
@@ -44,23 +47,35 @@ public class AuditTotalServiceImpl implements AuditTotalService {
             case 1:
                 switch (auditDto.getType()) {//判断审核类型
                     case 1:
+                        break;
                     case 2:
                         preSaleFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                        break;
+                    case 3:
+                        break;
                 }
             case 2:
                 switch (auditDto.getType()) {
                     case 1:
+                        break;
                     case 2:
                         biddingFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                        break;
+                    case 3:
+                        break;
                 }
             case 3:
                 switch (auditDto.getType()) {
                     case 1:
+                        break;
                     case 2:
                         designLiaisonFileService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                        break;
+                    case 3:
+                        break;
                 }
             case 4:
                 switch (auditDto.getType()) {
@@ -68,6 +83,18 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                         zhiShiGuanLiFileTypeService.editAuditorByFileid(auditDto.getId(), auditDto.getIsPass(), auditDto.getPassUserId(),
                                 auditDto.getTrueName(), auditDto.getLoginUserId(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getContext());
+                }
+            case 7:
+                switch (auditDto.getType()) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        customerService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
+                                auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
+                        break;
+
                 }
         }
     }
@@ -80,6 +107,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 1:
                     case 2:
                         return preSaleFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                    case 3:
 
                 }
             case 2:
@@ -87,6 +115,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 1:
                     case 2:
                         return biddingFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                    case 3:
                 }
 
             case 3:
@@ -94,11 +123,19 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 1:
                     case 2:
                         return designLiaisonFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                    case 3:
                 }
             case 4:
                 switch (auditDto.getType()) {
                     case 2:
                         zhiShiGuanLiFileTypeService.findZhuanJiaoAuditorName(auditDto.getId());
+                }
+            case 7:
+                switch (auditDto.getType()) {
+                    case 1:
+                    case 2:
+                    case 3:
+                        return customerService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
                 }
             default:
                 return new ArrayList<>();
@@ -114,11 +151,13 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         List<AuditTotalVo> biddingAuditTotalVos = null;
         List<AuditTotalVo> designLiaisonAuditTotalVos = null;
         List<AuditTotalVo> knowledgeManagementAuditTotalVos = null;//知识管理
+        List<AuditTotalVo> customerTotalVos = null;
         if (auditTotalDto.getModuleType() == null) {
             preSaleAuditTotalVos = this.findPreSale(auditTotalDto);
             biddingAuditTotalVos = this.findBidding(auditTotalDto);
             designLiaisonAuditTotalVos = this.findDesignLiaison(auditTotalDto);
             knowledgeManagementAuditTotalVos = this.findKnowledgeManagement(auditTotalDto);
+            customerTotalVos = this.findCustomer(auditTotalDto);
         } else {
             switch (auditTotalDto.getModuleType()) {
                 case 1:
@@ -133,16 +172,19 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                 case 4:
                     knowledgeManagementAuditTotalVos = this.findKnowledgeManagement(auditTotalDto);
                     break;
+                case 7:
+                    customerTotalVos = this.findCustomer(auditTotalDto);
             }
         }
         auditTotalVos.addAll(preSaleAuditTotalVos == null ? new ArrayList<>() : preSaleAuditTotalVos);
         auditTotalVos.addAll(biddingAuditTotalVos == null ? new ArrayList<>() : biddingAuditTotalVos);
         auditTotalVos.addAll(designLiaisonAuditTotalVos == null ? new ArrayList<>() : designLiaisonAuditTotalVos);
         auditTotalVos.addAll(knowledgeManagementAuditTotalVos == null ? new ArrayList<>() : knowledgeManagementAuditTotalVos);
+        auditTotalVos.addAll(customerTotalVos == null ? new ArrayList<>() : customerTotalVos);
         //统一按照发起时间排序（倒序）
         Page<AuditTotalVo> page = auditTotalVos.stream()
                 .sorted(Comparator.comparing(AuditTotalVo::getInitiateTime).reversed())
-                .skip(pageSize * (pageNum - 1))
+                .skip((long) pageSize * (pageNum - 1))
                 .limit(pageSize)
                 .collect(Collectors.toCollection(() -> new Page<>(pageNum, pageSize)));
         page.setTotal(auditTotalVos.size());
@@ -218,6 +260,24 @@ public class AuditTotalServiceImpl implements AuditTotalService {
         auditTotalVos.forEach(auditTotalVo -> {
             auditTotalVo.setModuleType((short) 4);
             auditTotalVo.setType((short) 2);
+        });
+        return auditTotalVos;
+    }
+
+    @Override
+    public List<AuditTotalVo> findCustomer(AuditTotalDto auditTotalDto) {
+        List<AuditTotalVo> auditTotalVos;
+        Short smallType = auditTotalDto.getSmallType();
+        if (auditTotalDto.getBigType() == 1) {
+            auditTotalVos = customerService.findByExample(auditTotalDto.getSearch(), null, null, auditTotalDto.getLoginUserId(), (short) 1, (short) 0);
+        } else if (auditTotalDto.getBigType() == 2) {
+            auditTotalVos = customerService.findByExample(auditTotalDto.getSearch(), null, smallType == null || smallType == 1 ? null : smallType, auditTotalDto.getLoginUserId(), null, (short) 1);
+        } else {
+            auditTotalVos = customerService.findByExample(auditTotalDto.getSearch(), auditTotalDto.getLoginUserId(), smallType == null || smallType == 1 ? null : smallType, null, null, null);
+        }
+        auditTotalVos.forEach(auditTotalVo -> {
+            auditTotalVo.setModuleType((short) 7);
+            auditTotalVo.setType((short) 3);
         });
         return auditTotalVos;
     }

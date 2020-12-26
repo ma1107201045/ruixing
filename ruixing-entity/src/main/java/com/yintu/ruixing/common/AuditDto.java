@@ -13,12 +13,12 @@ public class AuditDto {
     /**
      * 模块标识
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
-     * 4.知识管理-文件审核
+     * 4.知识管理-文件审核 7.档案管理-顾客档案管理信息修改
      */
     @NotNull
     private Short moduleType;
     /**
-     * 1.项目 2.文件
+     * 1.项目 2.文件 3.资料修改
      */
     @NotNull
     private Short type;

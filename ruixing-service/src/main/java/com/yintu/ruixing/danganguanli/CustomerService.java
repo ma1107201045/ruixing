@@ -1,5 +1,6 @@
 package com.yintu.ruixing.danganguanli;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.util.BaseService;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 
@@ -49,6 +50,18 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
      * @return 审核人列表
      */
     List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId);
+
+    /**
+     * 按照不同条件查询
+     *
+     * @param search      文件名称
+     * @param userId      创建文件的用户id
+     * @param auditStatus 文件审批状态
+     * @param auditorId   文件审批人id
+     * @param isDispose   是否处理
+     * @return 审批总和视图
+     */
+    List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 
 
 }
