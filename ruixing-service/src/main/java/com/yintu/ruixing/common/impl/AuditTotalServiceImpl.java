@@ -105,20 +105,6 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
                         break;
                 }
-        }
-    }
-
-    @Override
-    public List<UserEntity> findByOtherAuditors(AuditDto auditDto) {
-        switch (auditDto.getModuleType()) {//判断模块
-            case 1:
-                switch (auditDto.getType()) {//判断审核类型
-                    case 1:
-                    case 2:
-                        return preSaleFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
-                    case 3:
-
-                }
             case 5:
                 switch (auditDto.getType()) {
                     case 1:
@@ -135,6 +121,21 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getContext());
                         break;
                 }
+        }
+    }
+
+    @Override
+    public List<UserEntity> findByOtherAuditors(AuditDto auditDto) {
+        switch (auditDto.getModuleType()) {//判断模块
+            case 1:
+                switch (auditDto.getType()) {//判断审核类型
+                    case 1:
+                    case 2:
+                        return preSaleFileService.findByOtherAuditors(auditDto.getId(), (long) auditDto.getLoginUserId());
+                    case 3:
+
+                }
+
             case 2:
                 switch (auditDto.getType()) {
                     case 1:
