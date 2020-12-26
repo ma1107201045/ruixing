@@ -26,6 +26,8 @@
   </sql>
 
 
+
+  <!--查询文件-->
   <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="file_name" jdbcType="VARCHAR" property="title"/>
@@ -78,7 +80,31 @@
     INNER JOIN mro_zhishiguanli_filetype_file_auditor zffa ON zffa.file_id = zff.id
     <include refid="Example_condition_List"/>
   </select>
-
+  <resultMap id="selectByIdMap" type="com.yintu.ruixing.common.AuditTotalInfoVo">
+    <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
+    <result column="sort" jdbcType="INTEGER" property="sort"/>
+    <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+    <result column="psfa_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+    <result column="psfa_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+  </resultMap>
+  <select id="selectById" resultMap="selectByIdMap">
+        select psfa.id,
+               psfa.sort,
+               psfa.context,
+               psfa.accessory_name,
+               psfa.accessory_path,
+               psfa.is_dispose,
+               psfa.audit_status      as psfa_audit_status,
+               psfa.audit_finish_time as psfa_audit_finish_time,
+               tu.true_name           as tu_true_name
+        from mro_zhishiguanli_filetype_file_auditor psfa
+                 inner join tb_user tu on psfa.auditor_id = tu.id
+        where psfa.file_id = #{id,jdbcType=INTEGER}
+    </select>
+<!--查询文件-->
 
 
 

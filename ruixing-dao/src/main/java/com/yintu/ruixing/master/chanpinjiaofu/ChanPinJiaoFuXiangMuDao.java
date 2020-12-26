@@ -4,6 +4,7 @@ import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuWenTiEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.MessageEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -108,4 +109,6 @@ public interface ChanPinJiaoFuXiangMuDao {
     long selectProjectSum();
 
     List<ChanPinJiaoFuXiangMuEntity> selectByCondition(Integer[] ids);
+
+    List<AuditTotalVo> findByCPJFXiangMuExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 }

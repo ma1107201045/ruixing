@@ -18,15 +18,141 @@ import java.util.Date;
 public class ChanPinJiaoFuFileAuditorEntity {
     private Integer id;
 
-    private Integer chanPinJiaoFuFileId;//文件id
+    private Integer objectId;
 
-    private Integer auditorId;//审核人id
+    private Integer auditorId;
 
-    private Integer isPass;//是否通过 0.未通过 1.已通过
-    private Integer objectType;//对象类型  1：项目 2：文件',
-    private String reason;//未通过原因
-    private String doName;//操作人
-    private Date doTime;//操作时间
+    private Integer objecttype;
 
+    private String doname;
 
+    private Date dotime;
+
+    private Integer sort;
+
+    private Short activate;
+
+    private Short auditStatus;
+
+    private Date auditFinishTime;
+
+    private String accessoryName;
+
+    private String accessoryPath;
+
+    private Short isDispose;
+
+    private String context;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(Integer objectId) {
+        this.objectId = objectId;
+    }
+
+    public Integer getAuditorId() {
+        return auditorId;
+    }
+
+    public void setAuditorId(Integer auditorId) {
+        this.auditorId = auditorId;
+    }
+
+    public Integer getObjecttype() {
+        return objecttype;
+    }
+
+    public void setObjecttype(Integer objecttype) {
+        this.objecttype = objecttype;
+    }
+
+    public String getDoname() {
+        return doname;
+    }
+
+    public void setDoname(String doname) {
+        this.doname = doname == null ? null : doname.trim();
+    }
+
+    public Date getDotime() {
+        return dotime;
+    }
+
+    public void setDotime(Date dotime) {
+        this.dotime = dotime;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Short getActivate() {
+        return activate;
+    }
+
+    public void setActivate(Short activate) {
+        this.activate = activate;
+    }
+
+    public Short getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Short auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public Date getAuditFinishTime() {
+        return auditFinishTime;
+    }
+
+    public void setAuditFinishTime(Date auditFinishTime) {
+        this.auditFinishTime = auditFinishTime;
+    }
+
+    public String getAccessoryName() {
+        return accessoryName;
+    }
+
+    public void setAccessoryName(String accessoryName) {
+        this.accessoryName = accessoryName == null ? null : accessoryName.trim();
+    }
+
+    public String getAccessoryPath() {
+        return accessoryPath;
+    }
+
+    public void setAccessoryPath(String accessoryPath) {
+        this.accessoryPath = accessoryPath == null ? null : accessoryPath.trim();
+    }
+
+    public Short getIsDispose() {
+        return isDispose;
+    }
+
+    public void setIsDispose(Short isDispose) {
+        this.isDispose = isDispose;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context == null ? null : context.trim();
+    }
 }

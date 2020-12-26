@@ -237,7 +237,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     public void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer id, String username, Integer uid, Integer[] auditorid, Integer[] sort) {
         zhiShiGuanLiFileTypeFileEntity.setCreatetime(new Date());
         zhiShiGuanLiFileTypeFileEntity.setCreateName(username);
-        zhiShiGuanLiFileTypeFileEntity.setAuditstatus(1);
+        zhiShiGuanLiFileTypeFileEntity.setAuditstatus(2);
         zhiShiGuanLiFileTypeFileEntity.setUserid(uid);
         zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeFileEntity);
         String fileName = zhiShiGuanLiFileTypeFileEntity.getFileName();
@@ -250,6 +250,8 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                     fileAuditorEntity.setFileId(id);
                     fileAuditorEntity.setAuditorId(userEntity.getUserId().intValue());
                     fileAuditorEntity.setSort(userEntity.getSort());
+                    fileAuditorEntity.setIsDispose((short)0);
+                    fileAuditorEntity.setAuditStatus((short)2);
                     if (userEntity.getSort() == 1) {
                         fileAuditorEntity.setActivate((short) 1);
                         //给第一批审核人 发消息
@@ -278,6 +280,8 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                         fileAuditorEntity.setFileId(id);
                         fileAuditorEntity.setAuditorId(auditorid[i]);
                         fileAuditorEntity.setSort(sort[i]);
+                        fileAuditorEntity.setIsDispose((short)0);
+                        fileAuditorEntity.setAuditStatus((short)2);
                         if (sort[i] == 1) {
                             fileAuditorEntity.setActivate((short) 1);
                         } else {
@@ -376,6 +380,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                 throw new BaseRuntimeException("你无权审核此文件或已被其他人审批");
             }
             ZhiShiGuanLiFileTypeFileAuditorEntity auditorEntity = fileAuditorEntities.get(0);//获取当前人的数据
+            Integer id1 = auditorEntity.getId();//审核数据的id
             List<ZhiShiGuanLiFileTypeFileAuditorEntity> fileTypeFileAuditorEntities = zhiShiGuanLiFileTypeFileAuditorDao.findAuditorDatasByIds(fileEntity.getId(), (short) 1);
             if (fileTypeFileAuditorEntities.isEmpty()) {
                 throw new BaseRuntimeException("此文件已审核，无需重复审核");
@@ -383,7 +388,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
             for (ZhiShiGuanLiFileTypeFileAuditorEntity fileTypeFileAuditorEntity : fileTypeFileAuditorEntities) {
                 //更改此批人的审核状态
                 fileTypeFileAuditorEntity.setActivate((short) 0);
-               // fileTypeFileAuditorEntity.setAuditFinishTime(new Date());
+                fileTypeFileAuditorEntity.setAuditFinishTime(new Date());
                // fileTypeFileAuditorEntity.setIsDispose((short)1);
                 zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(fileTypeFileAuditorEntity);
             }
@@ -392,11 +397,12 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
             auditorEntity.setContext(context);
             auditorEntity.setAccessoryName(accessoryName);
             auditorEntity.setAccessoryPath(accessoryPath);
-            zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKey(auditorEntity);
+            zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(auditorEntity);
             if (isPass == 5) {//转交别人审核
                 if (passUserId == null) {
                     throw new BaseRuntimeException("转交人id不能为空");
                 }
+                //新增审批数据
                 ZhiShiGuanLiFileTypeFileAuditorEntity auditorEntity1 = new ZhiShiGuanLiFileTypeFileAuditorEntity();
                 auditorEntity1.setFileId(id);
                 auditorEntity1.setAuditorId(passUserId);
@@ -405,6 +411,14 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                 auditorEntity1.setIsDispose((short)0);
                 auditorEntity1.setAuditStatus((short)2);
                 zhiShiGuanLiFileTypeFileAuditorDao.insertSelective(auditorEntity1);
+                //更改此审核数据的状态
+                ZhiShiGuanLiFileTypeFileAuditorEntity auditorEntityy=new ZhiShiGuanLiFileTypeFileAuditorEntity();
+                auditorEntityy.setAuditStatus((short)5);
+                auditorEntityy.setActivate((short)0);
+                auditorEntityy.setIsDispose((short)1);
+                auditorEntityy.setAuditFinishTime(new Date());
+                auditorEntityy.setId(id1);
+                zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(auditorEntityy);
                 //给转交人发消息
                 MessageEntity messageEntity = new MessageEntity();
                 messageEntity.setCreateBy(username);
@@ -436,7 +450,17 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                     fileTypeFileEntity.setAuditFinishTime(new Date());
                     fileTypeFileEntity.setUpdateName(username);
                     fileTypeFileEntity.setUpdateTime(new Date());
+                    fileTypeFileEntity.setId(id);
                     zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(fileTypeFileEntity);
+                    //更改此审核数据的状态
+                    ZhiShiGuanLiFileTypeFileAuditorEntity auditorEntity1=new ZhiShiGuanLiFileTypeFileAuditorEntity();
+                    auditorEntity1.setAuditStatus((short)3);
+                    auditorEntity1.setActivate((short)0);
+                    auditorEntity1.setIsDispose((short)1);
+                    auditorEntity1.setAuditFinishTime(new Date());
+                    auditorEntity1.setId(id1);
+                    zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(auditorEntity1);
+
                     //给发起人 发送消息
                     MessageEntity messageEntity = new MessageEntity();
                     messageEntity.setCreateBy(username);
@@ -462,6 +486,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                     for (ZhiShiGuanLiFileTypeFileAuditorEntity zhiShiGuanLiFileTypeFileAuditorEntity : fileTypeFileAuditorEntities2) {
                         zhiShiGuanLiFileTypeFileAuditorEntity.setActivate((short)0);
                         zhiShiGuanLiFileTypeFileAuditorEntity.setIsDispose((short)1);
+                        zhiShiGuanLiFileTypeFileAuditorEntity.setAuditStatus((short)3);
                         zhiShiGuanLiFileTypeFileAuditorEntity.setAuditFinishTime(new Date());
                         zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeFileAuditorEntity);
                     }
@@ -493,12 +518,21 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                 fileTypeFileEntity.setAuditFinishTime(new Date());
                 fileTypeFileEntity.setUpdateName(username);
                 fileTypeFileEntity.setUpdateTime(new Date());
+                fileTypeFileEntity.setId(id);
                 zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(fileTypeFileEntity);
+                //更改此审核数据的状态
+                ZhiShiGuanLiFileTypeFileAuditorEntity auditorEntity1=new ZhiShiGuanLiFileTypeFileAuditorEntity();
+                auditorEntity1.setAuditStatus((short)4);
+                auditorEntity1.setActivate((short)0);
+                auditorEntity1.setIsDispose((short)1);
+                auditorEntity1.setAuditFinishTime(new Date());
+                auditorEntity1.setId(id1);
+                zhiShiGuanLiFileTypeFileAuditorDao.updateByPrimaryKeySelective(auditorEntity1);
                 //给发起人 发送消息
                 MessageEntity messageEntity = new MessageEntity();
                 messageEntity.setCreateBy(username);
                 messageEntity.setCreateTime(new Date());
-                messageEntity.setContext(fileName + "文件已通未过审核,请您查看！");
+                messageEntity.setContext(fileName + "文件未通过审核,请您查看！");
                 messageEntity.setType((short) 6);
                 messageEntity.setMessageType((short) 2);
                 messageEntity.setFileId(id);
@@ -511,7 +545,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                 recordmessageEntity.setTypeid(id);
                 recordmessageEntity.setOperatorname(username);
                 recordmessageEntity.setOperatortime(new Date());
-                recordmessageEntity.setContext(fileName + "文件审核未通过！");
+                recordmessageEntity.setContext(fileName + "文件未通过审核！");
                 recordmessageEntity.setTypenum(2);
                 zhiShiGuanLiFileTypeFileRecordmessageDao.insertSelective(recordmessageEntity);
             }
@@ -522,13 +556,13 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     public void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, String username, Integer uid, Integer[] auditorid, Integer[] sort) {
         zhiShiGuanLiFileTypeFileEntity.setParentid(0);
         zhiShiGuanLiFileTypeFileEntity.setUserid(uid);
-        zhiShiGuanLiFileTypeFileEntity.setAuditstatus(1);
+        zhiShiGuanLiFileTypeFileEntity.setAuditstatus(2);
         zhiShiGuanLiFileTypeFileEntity.setCreatetime(new Date());
         zhiShiGuanLiFileTypeFileEntity.setCreateName(username);
         zhiShiGuanLiFileTypeFileDao.insertSelective(zhiShiGuanLiFileTypeFileEntity);
         Integer tid = zhiShiGuanLiFileTypeFileEntity.getTid();//文件类型id
         Integer fileid = zhiShiGuanLiFileTypeFileEntity.getId();//新增文件的id
-        String fileName = zhiShiGuanLiFileTypeFileEntity.getFileName();
+        String fileName = zhiShiGuanLiFileTypeFileEntity.getFileName();//文件名字
         if (auditorid.length == 0 && sort.length == 0) {//使用审批流 来进行审批
             List<AuditConfigurationEntity> audit = auditConfigurationService.findAudit((short) 4, (short) 1, (short) 1);//查询审批流程
             List<AuditConfigurationUserEntity> userEntities = auditConfigurationUserService.findByauditConfigurationId(audit.get(0).getId());//查询审批流的人员

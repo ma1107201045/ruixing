@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 产品交付的项目实体类
@@ -43,12 +44,14 @@ public class ChanPinJiaoFuXiangMuEntity {
 
     private String sbName;//设备名
 
-    private Integer auditorid;//审核人id
+    private Integer userid;//审核人id
     private Integer auditorstate;//审核状态 1：待审核 ，2：已审核，3：审核未通过'
+    private Date auditFinishTime;//审核结束时间
     private Date createTime;
     private Date updateTime;
     private String operatorName;
     private String remarks;
+    private List<ChanPinJiaoFuFileAuditorEntity> auditorEntityList;
 
     //private ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity;
 }

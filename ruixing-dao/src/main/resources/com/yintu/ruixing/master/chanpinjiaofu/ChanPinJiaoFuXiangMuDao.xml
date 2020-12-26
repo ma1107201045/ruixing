@@ -34,18 +34,97 @@
         <result column="xiangmu_money" property="xiangMuMoney"/>
         <result column="shebei_money" property="sheBeiMoney"/>
         <result column="auditor_state" jdbcType="INTEGER" property="auditorstate"/>
+        <result column="auditFinishTime" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorid"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, xiangmu_state, xiangmu_bianhao, xiangmu_name, xiaoshou_state, fahuo_state, qianshou_state,
-    yangong_state, xianchangfuwu,isnotYanGong, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,
-    createTime,updateTime,operatorName,remarks
+    yangong_state, xianchangfuwu,isnotYanGong, fahuo_tixing_time, xiangmu_money, shebei_money,auditor_state,auditFinishTime,
+    createTime,updateTime,operatorName,remarks,userid
   </sql>
 
+    <!--查询项目  审批页面-->
+    <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="xiangmu_name" jdbcType="VARCHAR" property="title"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remark"/>
+        <result column="u_true_name" jdbcType="VARCHAR" property="initiator"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="initiateTime"/>
+        <result column="auditFinishTime" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <result column="auditor_state" jdbcType="SMALLINT" property="auditStatus"/>
+        <collection property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"/>
+        <collection column="id" property="auditTotalInfoVos" ofType="com.yintu.ruixing.common.AuditTotalInfoVo"
+                    select="selectById"/>
+    </resultMap>
+    <sql id="Example_Column_List">
+        zff.id,
+        zff.xiangmu_name,
+        zff.remarks,
+        zff.createtime,
+        zff.auditFinishTime,
+        zff.auditor_state,
+        u.true_name u_true_name
+    </sql>
+    <sql id="Example_condition_List">
+        <where>
+            <if test="search!=null and search != ''">
+                and zff.xiangmu_name like concat('%',#{search,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="userId!=null">
+                and zff.userid=#{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="auditStatus!=null">
+                and zff.auditor_state=#{auditStatus,jdbcType=SMALLINT}
+            </if>
+            <if test="auditorId!=null">
+                and zffa.auditor_id=#{auditorId,jdbcType=INTEGER}
+            </if>
+            <if test="activate">
+                and zffa.activate=#{activate,jdbcType=SMALLINT}
+            </if>
+            <if test="isDispose!=null">
+                and zffa.is_dispose=#{isDispose,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </sql>
+    <select id="findByCPJFXiangMuExample" resultMap="ExampleResultMap">
+        select
+        <include refid="Example_Column_List"/>
+        FROM
+        mro_chanpinjiaofu_xiangmu zff
+        INNER JOIN tb_user u ON zff.userid = u.id
+        INNER JOIN mro_chanpinjiaofu_file_auditor zffa ON (zffa.object_id = zff.id and zffa.objectType=1)
+        <include refid="Example_condition_List"/>
+    </select>
+    <resultMap id="selectByIdMap" type="com.yintu.ruixing.common.AuditTotalInfoVo">
+        <result column="tu_true_name" jdbcType="VARCHAR" property="auditor"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+        <result column="psfa_audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="psfa_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+    </resultMap>
+    <select id="selectById" resultMap="selectByIdMap">
+        select psfa.id,
+               psfa.sort,
+               psfa.context,
+               psfa.accessory_name,
+               psfa.accessory_path,
+               psfa.is_dispose,
+               psfa.audit_status      as psfa_audit_status,
+               psfa.audit_finish_time as psfa_audit_finish_time,
+               tu.true_name           as tu_true_name
+        from mro_chanpinjiaofu_file_auditor psfa
+                 inner join tb_user tu on psfa.auditor_id = tu.id
+        where psfa.object_id = #{id,jdbcType=INTEGER} and objectType=1
+    </select>
+    <!--查询项目  审批页面-->
 
     <!--根据id  查询单个 或者批量的数据-->
     <select id="selectByCondition" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -81,7 +160,7 @@
 
     <!--根据id  删除中间表的审查人的id-->
     <delete id="deletAuditor" parameterType="java.lang.Integer">
-        delete from mro_chanpinjiaofu_file_auditor where chanpinjiaofu_file_id =#{id}
+        delete from mro_chanpinjiaofu_file_auditor where object_id =#{id} and objectType=2
     </delete>
 
 
@@ -333,7 +412,7 @@
     <!--项目交付状态管理-->
     <!--根据项目名 和项目编号 进行模糊查询-->
     <select id="findXiangMuData" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT
+        <!--SELECT
         cx.<include refid="Base_Column_List"/>,
         cfa.auditor_id
         FROM
@@ -347,7 +426,20 @@
             <if test="xiangMuBianHao !=null">
                 and xiangmu_bianhao like concat('%',#{xiangMuBianHao},'%')
             </if>
+        </where>-->
+        SELECT
+        cx.<include refid="Base_Column_List"/>
+        FROM
+        mro_chanpinjiaofu_xiangmu cx
+        <where>
+            <if test="xiangMuName !=null">
+                xiangmu_name like concat('%',#{xiangMuName},'%')
+            </if>
+            <if test="xiangMuBianHao !=null">
+                and xiangmu_bianhao like concat('%',#{xiangMuBianHao},'%')
+            </if>
         </where>
+        GROUP BY cx.id DESC
     </select>
     <!--根据文件多个id  批量删除对应的文件-->
     <delete id="deletXiangMuFileByIds" parameterType="java.util.List">
@@ -404,24 +496,35 @@
   </insert>
     <!--查询所有的数据-->
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT
+        <!--SELECT
         cx.<include refid="Base_Column_List"/>,
         cfa.auditor_id
         FROM
         mro_chanpinjiaofu_xiangmu cx
         LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
         AND cfa.objectType = 1
+        GROUP BY cx.id DESC-->
+        SELECT
+        cx.<include refid="Base_Column_List"/>
+        FROM
+        mro_chanpinjiaofu_xiangmu cx
         GROUP BY cx.id DESC
     </select>
     <!--根据树形的数据  查对应的数据-->
     <select id="findXiangMuByIds" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        SELECT
+        <!--SELECT
         cx.<include refid="Base_Column_List"/>,
         cfa.auditor_id
         FROM
         mro_chanpinjiaofu_xiangmu cx
         LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
         AND cfa.objectType = 1
+        where xiangmu_state = #{stateid}
+        GROUP BY cx.id DESC-->
+        SELECT
+        cx.<include refid="Base_Column_List"/>
+        FROM
+        mro_chanpinjiaofu_xiangmu cx
         where xiangmu_state = #{stateid}
         GROUP BY cx.id DESC
     </select>
@@ -440,8 +543,9 @@
         <result column="xiangmu_money" property="xiangMuMoney"/>
         <result column="shebei_money" property="sheBeiMoney"/>
         <result column="sb_name" jdbcType="TIMESTAMP" property="sbName"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorid"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
         <result column="auditor_state" jdbcType="INTEGER" property="auditorstate"/>
+        <result column="auditFinishTime" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
@@ -497,13 +601,20 @@
 
     <!--根据项目的id  查询对应的数据-->
     <select id="findXiangMuById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
+        <!--select
         cx.<include refid="Base_Column_List"/>,
         cfa.auditor_id
         FROM
         mro_chanpinjiaofu_xiangmu cx
         LEFT JOIN mro_chanpinjiaofu_file_auditor cfa ON cx.id = cfa.chanpinjiaofu_file_id
         AND cfa.objectType = 1
+        WHERE
+        cx.id = #{id,jdbcType=INTEGER}-->
+
+        select
+        cx.<include refid="Base_Column_List"/>
+        FROM
+        mro_chanpinjiaofu_xiangmu cx
         WHERE
         cx.id = #{id,jdbcType=INTEGER}
     </select>
@@ -562,6 +673,9 @@
             <if test="auditorstate != null">
                 auditor_state,
             </if>
+            <if test="auditFinishTime != null">
+                auditFinishTime,
+            </if>
             <if test="createTime != null">
                 createTime,
             </if>
@@ -573,6 +687,9 @@
             </if>
             <if test="remarks != null">
                 remarks,
+            </if>
+            <if test="userid != null">
+                userid,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -612,6 +729,9 @@
             <if test="auditorstate != null">
                 #{auditorstate,jdbcType=INTEGER},
             </if>
+            <if test="auditFinishTime != null">
+                #{auditFinishTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -623,6 +743,9 @@
             </if>
             <if test="remarks != null">
                 #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -666,6 +789,9 @@
             <if test="auditorstate != null">
                 auditor_state = #{auditorstate,jdbcType=INTEGER},
             </if>
+            <if test="auditFinishTime != null">
+                auditFinishTime = #{auditFinishTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="createTime != null">
                 createTime = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -674,6 +800,9 @@
             </if>
             <if test="remarks != null">
                 remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="userid != null">
+                userid = #{userid,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

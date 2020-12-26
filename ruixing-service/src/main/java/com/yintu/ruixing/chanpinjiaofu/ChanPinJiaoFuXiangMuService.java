@@ -1,7 +1,9 @@
 package com.yintu.ruixing.chanpinjiaofu;
 
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
 import com.yintu.ruixing.common.MessageEntity;
+import com.yintu.ruixing.xitongguanli.AuditConfigurationEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 
 import javax.servlet.ServletOutputStream;
@@ -20,15 +22,15 @@ public interface ChanPinJiaoFuXiangMuService {
 
     void addXiangMu(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer senderid);
 
-    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id, Integer[] uids, Integer senderid);
+    void editXiangMuById(ChanPinJiaoFuXiangMuEntity chanPinJiaoFuXiangMuEntity, String username, Integer id,  Integer senderid, Integer[] auditorid, Integer[] sort);
 
     void deletXiagMuById(Integer id);
 
-    List<ChanPinJiaoFuXiangMuEntity> findAll(Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuEntity> findAll(Integer page, Integer size, Integer uid);
 
-    void addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer[] uids, String username, Integer uid);
+    void addXiangMuFile(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity,  String username, Integer uid, Integer[] auditorid, Integer[] sort);
 
-    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id, Integer[] uids, Integer uid, String username);
+    void editXiangMuFileById(ChanPinJiaoFuXiangMuFileEntity chanPinJiaoFuXiangMuFileEntity, Integer id,  Integer uid, String username, Integer[] auditorid, Integer[] sort);
 
     ChanPinJiaoFuXiangMuFileEntity findById(Integer id);
 
@@ -36,9 +38,9 @@ public interface ChanPinJiaoFuXiangMuService {
 
     void deletXiangMuFileByIds(Integer[] ids);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuData(String xiangMuBianHao, String xiangMuName, Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuData(String xiangMuBianHao, String xiangMuName, Integer page, Integer size,Integer uid);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(Integer stateid, Integer page, Integer size);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuByIds(Integer stateid, Integer page, Integer size,Integer uid);
 
     Map<String, Object> findJiaoFuQingKuangNumberAll();
 
@@ -74,13 +76,17 @@ public interface ChanPinJiaoFuXiangMuService {
 
     List<ChanPinJiaoFuRecordMessageEntity> findFileReordById(Integer id);
 
-    List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id);
+    List<ChanPinJiaoFuXiangMuEntity> findXiangMuById(Integer id,Integer uid);
 
-    List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
+    List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id,Integer uid);
 
-    void editAuditorByXMId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
+    void editAuditorByXMId(Integer id, Short isPass,Integer passUserId,
+                           String username, Integer receiverid,
+                           String accessoryName,String accessoryPath,String context);
 
-    void editAuditorByWJId(ChanPinJiaoFuFileAuditorEntity chanPinJiaoFuFileAuditorEntity, Integer id, String username, Integer receiverid, Integer senderId);
+    void editAuditorByWJId(Integer id, Short isPass, Integer passUserId,
+                           String username, Integer receiverid,
+                           String accessoryName, String accessoryPath, String context);
 
     List<ChanPinJiaoFuFileAuditorEntity> findXMByXmid(Integer xmid);
 
@@ -88,4 +94,18 @@ public interface ChanPinJiaoFuXiangMuService {
     long findProjectSum();
 
     void exportFile(ServletOutputStream outputStream, Integer[] ids)throws IOException;
+
+    List<ChanPinJiaoFuFileAuditorEntity>findAuditorDatas(Integer objectid,Integer objectType,Integer auditorid,Integer sort,Short activate);
+
+    List<UserEntity> findZhuanJiaoAuditorName(Integer objectid, Integer objectType);
+
+    List<AuditConfigurationEntity> findXMAudit(short i, short i1, short i2);
+
+    List<TreeNodeUtil> findTree();
+
+    List<AuditConfigurationEntity> findFileAudit(short i, short i1, short i2);
+
+    List<AuditTotalVo> findByCPJFXiangMuExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
+
+    List<AuditTotalVo> findByCPJFFileExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 }

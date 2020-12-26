@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.chanpinjiaofu;
 
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
+import com.yintu.ruixing.common.AuditTotalVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,4 +40,6 @@ public interface ChanPinJiaoFuXiangMuFileDao {
     List<ChanPinJiaoFuXiangMuFileEntity> findFile(Integer id);
 
     List<ChanPinJiaoFuXiangMuFileEntity> findFileById(Integer id);
+
+    List<AuditTotalVo> findByCPJFFileExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 }
