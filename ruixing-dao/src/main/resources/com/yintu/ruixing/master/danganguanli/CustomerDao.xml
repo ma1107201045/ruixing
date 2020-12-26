@@ -324,6 +324,7 @@
 
         inner join mro_customer_customer_department ccd on cer.id= ccd.customer_id
         inner join mro_customer_department cd on cd.id=ccd.department_id
+
     </sql>
     <sql id="Much_Where_List">
         <where>

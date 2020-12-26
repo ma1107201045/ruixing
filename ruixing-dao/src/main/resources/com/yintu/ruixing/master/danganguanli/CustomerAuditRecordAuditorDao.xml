@@ -229,7 +229,7 @@
         <include refid="Blob_Column_List"/>
         from mro_customer_audit_record_auditor
         <where>
-            <if test="biddingFileId!=null">
+            <if test="customerAuditRecordId!=null">
                 and customer_audit_record_id = #{customerAuditRecordId,jdbcType=INTEGER}
             </if>
             <if test="auditorId!=null">

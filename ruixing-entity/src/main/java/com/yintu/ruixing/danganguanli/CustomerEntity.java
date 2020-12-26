@@ -65,5 +65,7 @@ public class CustomerEntity implements Serializable {
 
     private DistrictEntity districtEntity;
 
+    private List<CustomerAuditRecordAuditorEntity> customerAuditRecordAuditorEntities;
+
 
 }

@@ -32,7 +32,7 @@ public class CustomerAuditRecordServiceImpl implements CustomerAuditRecordServic
 
     @Override
     public void edit(CustomerAuditRecordEntity entity) {
-        customerAuditRecordDao.updateByPrimaryKeyWithBLOBs(entity);
+        customerAuditRecordDao.updateByPrimaryKeySelective(entity);
     }
 
     @Override

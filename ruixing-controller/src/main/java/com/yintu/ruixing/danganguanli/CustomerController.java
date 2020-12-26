@@ -41,8 +41,6 @@ public class CustomerController extends SessionController {
     @Autowired
     private CustomerDutyService customerDutyService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private AuditConfigurationService auditConfigurationService;
 
 

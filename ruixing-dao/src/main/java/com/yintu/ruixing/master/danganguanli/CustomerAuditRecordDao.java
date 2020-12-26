@@ -17,8 +17,6 @@ public interface CustomerAuditRecordDao {
 
     int updateByPrimaryKeySelective(CustomerAuditRecordEntity record);
 
-    int updateByPrimaryKeyWithBLOBs(CustomerAuditRecordEntity record);
-
     int updateByPrimaryKey(CustomerAuditRecordEntity record);
 
     List<CustomerAuditRecordEntity> selectByExample(Integer[] ids, Integer customerId);
