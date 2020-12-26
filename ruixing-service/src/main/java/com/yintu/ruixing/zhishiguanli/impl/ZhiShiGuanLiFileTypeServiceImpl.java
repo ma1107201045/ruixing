@@ -1,6 +1,7 @@
 package com.yintu.ruixing.zhishiguanli.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.yintu.ruixing.common.AuditTotalVo;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -60,6 +61,11 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     @Autowired
     private UserDao userDao;
 
+
+    @Override
+    public List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
+        return zhiShiGuanLiFileTypeFileDao.findByZSGLExample(search,userId,auditStatus,auditorId,activate,isDispose);
+    }
 
     @Override
     public List<AuditConfigurationEntity> findAudit(short i, short i1, short i2) {
@@ -312,6 +318,28 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     public List<MessageEntity> findXiaoXi(Integer senderid) {
         Integer type = 6;
         return messageDao.findXiaoXi(senderid, type);
+    }
+
+    @Override
+    public List<UserEntity> findZhuanJiaoAuditorName(Integer fileid) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        boolean flag;
+        String username = null;
+        List<UserEntity> userEntitiess = userService.findByTruename(username);
+        List<Integer> userid = this.findUserIdByFileid(fileid);
+        for (int i = 0; i < userEntitiess.size(); i++) {
+            flag = false;
+            for (int i1 = 0; i1 < userid.size(); i1++) {
+                if (userid.get(i1) == userEntitiess.get(i).getId().intValue()) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                userEntities.add(userEntitiess.get(i));
+            }
+        }
+        return userEntities;
     }
 
     @Override

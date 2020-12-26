@@ -20,6 +20,7 @@ public class AuditTotalDto {
     private String search;
     /**
      * 1.解决方案-售前技术支持 2.解决方案-招标投标技术支持 3.解决方案-设计联络及后续技术交流
+     * 4.知识管理
      */
     private Short moduleType;
 
