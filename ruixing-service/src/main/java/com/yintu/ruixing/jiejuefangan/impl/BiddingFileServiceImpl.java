@@ -519,10 +519,13 @@ public class BiddingFileServiceImpl implements BiddingFileService {
 
     @Override
     public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
+        BiddingFileEntity biddingFileEntity = this.findById(id);
+        if (biddingFileEntity == null)
+            throw new BaseRuntimeException("审批内容不存在");
         List<BiddingFileAuditorEntity> biddingFileAuditorEntities = biddingFileAuditorService.findByBiddingFileIdId(id);
         List<Long> auditorIds = biddingFileAuditorEntities.stream().map(biddingFileAuditorEntity -> Long.valueOf(biddingFileAuditorEntity.getAuditorId())).collect(Collectors.toList());
         auditorIds.add(loginUserId);
-
+        auditorIds.add(biddingFileEntity.getUserId().longValue());
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);

@@ -531,10 +531,13 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
 
     @Override
     public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
+        DesignLiaisonFileEntity designLiaisonFileEntity = this.findById(id);
+        if (designLiaisonFileEntity == null)
+            throw new BaseRuntimeException("审核内容不存在");
         List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = designLiaisonFileAuditorService.findByDesignLiaisonFileId(id);
         List<Long> auditorIds = designLiaisonFileAuditorEntities.stream().map(designLiaisonFileAuditorEntity -> Long.valueOf(designLiaisonFileAuditorEntity.getAuditorId())).collect(Collectors.toList());
         auditorIds.add(loginUserId);
-
+        auditorIds.add(designLiaisonFileEntity.getUserId().longValue());
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);

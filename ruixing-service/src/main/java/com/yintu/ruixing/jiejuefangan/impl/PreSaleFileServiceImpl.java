@@ -524,10 +524,13 @@ public class PreSaleFileServiceImpl implements PreSaleFileService {
 
     @Override
     public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
+        PreSaleFileEntity preSaleFileEntity = this.findById(id);
+        if (preSaleFileEntity == null)
+            throw new BaseRuntimeException("审核内容不存在");
         List<PreSaleFileAuditorEntity> preSaleFileAuditorEntities = preSaleFileAuditorService.findByPreSaleFileId(id);
         List<Long> auditorIds = preSaleFileAuditorEntities.stream().map(preSaleFileAuditorEntity -> Long.valueOf(preSaleFileAuditorEntity.getAuditorId())).collect(Collectors.toList());
         auditorIds.add(loginUserId);
-
+        auditorIds.add(preSaleFileEntity.getUserId().longValue());
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);

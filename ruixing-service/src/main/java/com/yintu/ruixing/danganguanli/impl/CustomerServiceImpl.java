@@ -462,10 +462,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId) {
         CustomerEntity customerEntity = this.findById(id);
+        if (customerEntity == null)
+            throw new BaseRuntimeException("审批内容不存在");
         List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByCustomerIdAndAuditStatus(customerEntity.getId(), (short) 2);
-        List<CustomerAuditRecordAuditorEntity> customerAuditRecordAuditorEntities = customerAuditRecordAuditorService.findByCustomerAuditRecordId(customerAuditRecordEntities.get(0).getId());
+        CustomerAuditRecordEntity c = customerAuditRecordEntities.get(0);
+        List<CustomerAuditRecordAuditorEntity> customerAuditRecordAuditorEntities = customerAuditRecordAuditorService.findByCustomerAuditRecordId(c.getId());
         List<Long> auditorIds = customerAuditRecordAuditorEntities.stream().map(customerAuditRecordAuditorEntity -> Long.valueOf(customerAuditRecordAuditorEntity.getAuditorId())).collect(Collectors.toList());
         auditorIds.add(loginUserId);
+        auditorIds.add(c.getUserId().longValue());
         UserEntityExample userEntityExample = new UserEntityExample();
         UserEntityExample.Criteria criteria = userEntityExample.createCriteria();
         criteria.andIdNotIn(auditorIds);

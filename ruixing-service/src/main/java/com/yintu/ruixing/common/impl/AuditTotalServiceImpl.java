@@ -55,6 +55,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 3:
                         break;
                 }
+                break;
             case 2:
                 switch (auditDto.getType()) {
                     case 1:
@@ -66,6 +67,7 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 3:
                         break;
                 }
+                break;
             case 3:
                 switch (auditDto.getType()) {
                     case 1:
@@ -77,13 +79,17 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                     case 3:
                         break;
                 }
+                break;
             case 4:
                 switch (auditDto.getType()) {
+                    case 1:
+                        break;
                     case 2:
                         zhiShiGuanLiFileTypeService.editAuditorByFileid(auditDto.getId(), auditDto.getIsPass(), auditDto.getPassUserId(),
                                 auditDto.getTrueName(), auditDto.getLoginUserId(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getContext());
                 }
+                break;
             case 7:
                 switch (auditDto.getType()) {
                     case 1:
@@ -94,7 +100,6 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                         customerService.audit(auditDto.getId(), auditDto.getIsPass(), auditDto.getContext(),
                                 auditDto.getAccessoryName(), auditDto.getAccessoryPath(), auditDto.getPassUserId(), auditDto.getLoginUserId(), auditDto.getUserName(), auditDto.getTrueName());
                         break;
-
                 }
         }
     }
@@ -127,8 +132,9 @@ public class AuditTotalServiceImpl implements AuditTotalService {
                 }
             case 4:
                 switch (auditDto.getType()) {
+                    case 1:
                     case 2:
-                        zhiShiGuanLiFileTypeService.findZhuanJiaoAuditorName(auditDto.getId());
+                        return zhiShiGuanLiFileTypeService.findZhuanJiaoAuditorName(auditDto.getId());
                 }
             case 7:
                 switch (auditDto.getType()) {
