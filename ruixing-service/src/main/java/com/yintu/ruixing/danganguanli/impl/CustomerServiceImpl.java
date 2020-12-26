@@ -70,6 +70,10 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerEntity> customerEntities = customerDao.selectByExample(ids, typeId, departmentId, name);
         for (CustomerEntity customerEntity : customerEntities) {
             List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByCustomerIdAndAuditStatus(customerEntity.getId(), (short) 2);
+            if (customerAuditRecordEntities.isEmpty()) {
+                customerEntity.setCustomerAuditRecordAuditorEntities(new ArrayList<>());
+                continue;
+            }
             List<CustomerAuditRecordAuditorEntity> customerAuditRecordAuditorEntities = customerAuditRecordAuditorService.findByCustomerAuditRecordId(customerAuditRecordEntities.get(0).getId());
             customerEntity.setCustomerAuditRecordAuditorEntities(customerAuditRecordAuditorEntities);
         }
