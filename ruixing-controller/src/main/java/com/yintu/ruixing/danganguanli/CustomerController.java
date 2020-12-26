@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
+import com.yintu.ruixing.jiejuefangan.BiddingFileEntity;
 import com.yintu.ruixing.xitongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +53,7 @@ public class CustomerController extends SessionController {
         customerEntity.setCreateTime(new Date());
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
+        customerEntity.setUserId(this.getLoginUserId().intValue());
         customerService.add(customerEntity, customerDepartmentIds);
         return ResponseDataUtil.ok("添加顾客信息成功");
     }
@@ -66,18 +68,13 @@ public class CustomerController extends SessionController {
     @PutMapping("/{id}")
     @ResponseBody
     public Map<String, Object> edit(@PathVariable Integer id, @Validated CustomerEntity customerEntity,
-                                    @RequestParam("departmentIds") Integer[] customerDepartmentIds) {
+                                    @RequestParam("departmentIds") Integer[] customerDepartmentIds,
+                                    @RequestParam("auditorIds") Long[] auditorIds,
+                                    @RequestParam("sortIds") Integer[] sorts) {
         customerEntity.setModifiedBy(this.getLoginUserName());
         customerEntity.setModifiedTime(new Date());
-        customerService.addCustomerAuditRecord(customerEntity, customerDepartmentIds, this.getLoginTrueName());
+        customerService.addCustomerAuditRecord(customerEntity, customerDepartmentIds, auditorIds, sorts, this.getLoginTrueName());
         return ResponseDataUtil.ok("修改顾客信息成功");
-    }
-
-    @PutMapping("/{id}/audit")
-    @ResponseBody
-    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("auditStatus") Short auditStatus, String reason) {
-        customerService.audit(id, auditStatus, reason, this.getLoginUserId().intValue(), this.getLoginUserName());
-        return ResponseDataUtil.ok("审核顾客信息成功");
     }
 
     @GetMapping("/{id}")
@@ -87,15 +84,6 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询顾客信息成功", customerEntity);
     }
 
-    @GetMapping("/{id}/audit/records")
-    @ResponseBody
-    public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
-        List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByExample(null, id);
-        customerAuditRecordEntities = customerAuditRecordEntities.stream().
-                sorted(Comparator.comparing(CustomerAuditRecordEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询顾客审核记录信息成功", customerAuditRecordEntities);
-    }
 
     @GetMapping
     @ResponseBody
@@ -114,6 +102,16 @@ public class CustomerController extends SessionController {
             pageInfo.setTotal(customerService.countByExample(typeId, name));
         }
         return ResponseDataUtil.ok("查询顾客信息列表成功", pageInfo);
+    }
+
+    @GetMapping("/{id}/audit/records")
+    @ResponseBody
+    public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
+        List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByExample(null, id);
+        customerAuditRecordEntities = customerAuditRecordEntities.stream().
+                sorted(Comparator.comparing(CustomerAuditRecordEntity::getId).reversed())
+                .collect(Collectors.toList());
+        return ResponseDataUtil.ok("查询顾客审核记录信息成功", customerAuditRecordEntities);
     }
 
     @GetMapping("/customer/types")
@@ -149,34 +147,6 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询顾客职位信息列表成功", customerDutyEntities);
     }
 
-    @GetMapping("/auditors")
-    @ResponseBody
-    public Map<String, Object> findUserEntities(@RequestParam(value = "true_name", required = false, defaultValue = "") String trueName) {
-        List<UserEntity> userEntities = userService.findByTruename(trueName);
-        userEntities = userEntities
-                .stream()
-                .filter(userEntity -> !userEntity.getId().equals(this.getLoginUserId()))
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询审核人列表信息成功", userEntities);
-    }
-
-    /**
-     * 查询配置的用户
-     *
-     * @return 用户列表
-     */
-    @GetMapping("/audit/configurations")
-    @ResponseBody
-    public Map<String, Object> findAuditConfigurations() {
-        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample(null, (short) 1, null);
-//        auditConfigurationEntities.forEach(auditConfigurationEntity -> auditConfigurationEntity.setRoleEntities(auditConfigurationEntity.getRoleEntities().stream()
-//                .filter(roleEntity -> !roleEntity.getId().equals(this.getLoginUserId()))
-//                .sorted(Comparator.comparing(RoleEntity::getId).reversed())
-//                .collect(Collectors.toList()))
-//        );
-        return ResponseDataUtil.ok("查询审批流配置信息列表成功", auditConfigurationEntities);
-    }
-
 
     @GetMapping("/export/{ids}")
     public void exportFile(@PathVariable Integer[] ids, HttpServletResponse response) throws IOException {
@@ -188,5 +158,24 @@ public class CustomerController extends SessionController {
         customerService.exportFile(response.getOutputStream(), ids);
     }
 
+    /**
+     * 查询审核角色
+     *
+     * @return 角色集合
+     */
+    @GetMapping("/auditors")
+    @ResponseBody
+    public Map<String, Object> findRoles() {
+        List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 7, (short) 1, (short) 1);
+        if (auditConfigurationEntities.isEmpty())
+            return ResponseDataUtil.ok("查询审核角色成功", auditConfigurationService.findTree(this.getLoginUserId()));
+        return ResponseDataUtil.ok("查询审核角色成功", new ArrayList<>());
+    }
 
+    @PutMapping("/audit/{id}")
+    @ResponseBody
+    public Map<String, Object> audit(@PathVariable Integer id, @RequestParam("isPass") Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId) {
+        customerService.audit(id, isPass, context, accessoryName, accessoryPath, passUserId, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
+        return ResponseDataUtil.ok("审核顾客信息成功");
+    }
 }

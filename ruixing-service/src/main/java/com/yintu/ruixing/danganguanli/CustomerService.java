@@ -26,9 +26,9 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
     List<CustomerEntity> findByExample(Integer[] ids, Integer typeId, Integer departmentId, String name);
 
 
-    void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, String trueName);
+    void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Long[] auditorIds, Integer[] sorts, String trueName);
 
-    void audit(Integer id, Short auditStatus, String reason, Integer loginUserId, String userName);
+    void audit(Integer id, Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId, Integer loginUserId, String userName, String trueName);
 
     /**
      * 批量导出excel数据

@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerAuditRecordEntity implements Serializable {
-    private static final long serialVersionUID = 8087861336680459153L;
+    private static final long serialVersionUID = 7302291123391423481L;
     private Integer id;
 
     private String createBy;
@@ -26,6 +26,8 @@ public class CustomerAuditRecordEntity implements Serializable {
     private Date modifiedTime;
 
     private String operator;
+
+    private Integer userId;
 
     private Integer typeId;
 
@@ -49,11 +51,10 @@ public class CustomerAuditRecordEntity implements Serializable {
 
     private Integer customerId;
 
-    private Integer auditorId;
-
     private Short auditStatus;
 
-    private String reason;
+    private Date auditFinishTime;
+
 
     private CustomerTypeEntity customerTypeEntity;
 

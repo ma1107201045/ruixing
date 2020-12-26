@@ -27,6 +27,8 @@ public class CustomerEntity implements Serializable {
 
     private Date modifiedTime;
 
+    private Integer userId;
+
     private Integer typeId;
     @NotNull
     private Integer dutyId;
@@ -47,9 +49,9 @@ public class CustomerEntity implements Serializable {
 
     private String detailedAddress;
 
-    private Short status;
+    private Short auditStatus;
 
-    private Integer auditorId;
+    private Date auditFinishTime;
 
     private CustomerTypeEntity customerTypeEntity;
 
@@ -63,6 +65,5 @@ public class CustomerEntity implements Serializable {
 
     private DistrictEntity districtEntity;
 
-    private UserEntity userEntity;
 
 }

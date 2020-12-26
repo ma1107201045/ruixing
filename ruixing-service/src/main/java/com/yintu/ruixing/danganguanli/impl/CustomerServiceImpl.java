@@ -1,14 +1,17 @@
 package com.yintu.ruixing.danganguanli.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.ExportExcelUtil;
 import com.yintu.ruixing.danganguanli.*;
+import com.yintu.ruixing.jiejuefangan.BiddingEntity;
+import com.yintu.ruixing.jiejuefangan.BiddingFileAuditorEntity;
+import com.yintu.ruixing.jiejuefangan.CustomerAuditRecordAuditorService;
 import com.yintu.ruixing.master.danganguanli.CustomerDao;
-import com.yintu.ruixing.xitongguanli.UserEntity;
-import com.yintu.ruixing.xitongguanli.UserService;
+import com.yintu.ruixing.xitongguanli.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +37,17 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerAuditRecordService customerAuditRecordService;
     @Autowired
+    private CustomerAuditRecordAuditorService customerAuditRecordAuditorService;
+    @Autowired
     private MessageService messageService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuditConfigurationService auditConfigurationService;
 
     @Override
     public void add(CustomerEntity entity) {
-        entity.setStatus((short) 1);
+        entity.setAuditStatus((short) 1);
         customerDao.insertSelective(entity);
     }
 
@@ -72,6 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void add(CustomerEntity customerEntity, Integer[] customerDepartmentIds) {
+        customerEntity.setAuditStatus((short) 1);
         this.add(customerEntity);
         this.addOrEditCustomerCustomerDepartment(customerEntity, customerDepartmentIds);
     }
@@ -115,39 +123,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, String trueName) {
-        CustomerEntity source = this.findById(customerEntity.getId());
-        if (source != null) {
-            if (source.getStatus() == 2)
+    public void addCustomerAuditRecord(CustomerEntity customerEntity, Integer[] customerDepartmentIds, Long[] auditorIds, Integer[] sorts, String trueName) {
+        CustomerEntity cSource = this.findById(customerEntity.getId());
+        if (cSource != null) {
+            if (cSource.getAuditStatus() != 1)
                 throw new BaseRuntimeException("此档案信息已在审批，无需重复审批");
-            String sourceName = source.getName();
-            source = new CustomerEntity();
-            source.setModifiedBy(customerEntity.getModifiedBy());
-            source.setModifiedTime(customerEntity.getModifiedTime());
-            source.setId(customerEntity.getId());
-            source.setAuditorId(customerEntity.getAuditorId());
-            source.setStatus((short) 2);//改为待审批状态
-            this.edit(source);
+            customerEntity.setAuditStatus((short) 2);//审核状态 1.正常 2.审核中 3.已审核通过 4.已审核未通过
+            this.edit(customerEntity);
+            Integer currentUserId = cSource.getUserId();
+
             CustomerAuditRecordEntity customerAuditRecordEntity = new CustomerAuditRecordEntity();
-            customerAuditRecordEntity.setCreateBy(customerEntity.getModifiedBy());
-            customerAuditRecordEntity.setCreateTime(customerEntity.getModifiedTime());
-            customerAuditRecordEntity.setModifiedBy(customerEntity.getModifiedBy());
-            customerAuditRecordEntity.setModifiedTime(customerEntity.getModifiedTime());
+            BeanUtil.copyProperties(customerEntity, customerAuditRecordEntity, "id");
             customerAuditRecordEntity.setOperator(trueName);
-            customerAuditRecordEntity.setTypeId(customerEntity.getTypeId());
-            customerAuditRecordEntity.setDutyId(customerEntity.getDutyId());
-            customerAuditRecordEntity.setName(customerEntity.getName());
-            customerAuditRecordEntity.setPhone(customerEntity.getPhone());
-            customerAuditRecordEntity.setSpecialPlane(customerEntity.getSpecialPlane());
-            customerAuditRecordEntity.setEmail(customerEntity.getEmail());
-            customerAuditRecordEntity.setProvinceId(customerEntity.getProvinceId());
-            customerAuditRecordEntity.setCityId(customerEntity.getCityId());
-            customerAuditRecordEntity.setDistrictId(customerEntity.getDistrictId());
-            customerAuditRecordEntity.setDetailedAddress(customerEntity.getDetailedAddress());
-            customerAuditRecordEntity.setCustomerId(customerEntity.getId());
-            customerAuditRecordEntity.setAuditorId(customerEntity.getAuditorId());
-            customerAuditRecordEntity.setAuditStatus((short) 1);
-            customerAuditRecordService.add(customerAuditRecordEntity);//添加审核记录
+            customerAuditRecordEntity.setCreateBy(customerAuditRecordEntity.getModifiedBy());
+            customerAuditRecordEntity.setCreateTime(customerAuditRecordEntity.getModifiedTime());
+            customerAuditRecordEntity.setCustomerId(cSource.getId());
+            customerAuditRecordService.add(customerAuditRecordEntity);
+            Integer customerAuditRecordId = customerAuditRecordEntity.getId();
             //去重
             Set<Integer> set = new HashSet<>(Arrays.asList(customerDepartmentIds));
             for (Integer customerDepartmentId : set) {
@@ -156,55 +148,110 @@ public class CustomerServiceImpl implements CustomerService {
                 customerCustomerDepartmentEntity.setCreateTime(customerEntity.getModifiedTime());
                 customerCustomerDepartmentEntity.setModifiedBy(customerEntity.getModifiedBy());
                 customerCustomerDepartmentEntity.setModifiedTime(customerEntity.getModifiedTime());
-                customerCustomerDepartmentEntity.setCustomerAuditRecordId(customerAuditRecordEntity.getId());
+                customerCustomerDepartmentEntity.setCustomerAuditRecordId(customerAuditRecordId);
                 customerCustomerDepartmentEntity.setCustomerAuditRecordDepartmentId(customerDepartmentId);
                 customerCustomerDepartmentService.add(customerCustomerDepartmentEntity);//审核记录中部门信息
             }
-            MessageEntity messageEntity = new MessageEntity();
-            messageEntity.setCreateBy(customerEntity.getModifiedBy());
-            messageEntity.setCreateTime(customerEntity.getModifiedTime());
-            messageEntity.setModifiedBy(customerEntity.getModifiedBy());
-            messageEntity.setModifiedTime(customerEntity.getModifiedTime());
-            messageEntity.setTitle("档案管理");
-            messageEntity.setContext("顾客“" + sourceName + "”的档案信息已修改，需要您审核！");
-            messageEntity.setType((short) 7);
-            messageEntity.setSmallType((short) 2);
-            messageEntity.setMessageType((short) 3);
-            messageEntity.setProjectId(customerEntity.getId());
-            messageEntity.setFileId(null);
-            messageEntity.setSenderId(null);
-            messageEntity.setReceiverId(customerEntity.getAuditorId());
-            messageEntity.setStatus((short) 1);
-            messageService.sendMessage(messageEntity);
+            List<CustomerAuditRecordAuditorEntity> customerAuditRecordAuditorEntities = new ArrayList<>();
+            if (auditorIds == null || auditorIds.length == 0) {//此审核流程已提前配置好，需要查询配置信息 同步到 当前文件的审核流程
+                List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 7, (short) 1, (short) 1);//查询已经配置好的审核人集
+                List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationEntities.get(0).getAuditConfigurationUserEntities();
+                for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
+                    if (!currentUserId.equals(auditConfigurationUserEntity.getUserId().intValue())) {//排除当前创建文件用户
+                        CustomerAuditRecordAuditorEntity customerAuditRecordAuditorEntity = new CustomerAuditRecordAuditorEntity();
+                        customerAuditRecordAuditorEntity.setCustomerAuditRecordId(customerAuditRecordId);
+                        customerAuditRecordAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
+                        Integer sort = auditConfigurationUserEntity.getSort();
+                        customerAuditRecordAuditorEntity.setSort(sort);
+                        if (sort == 1) {
+                            customerAuditRecordAuditorEntity.setActivate((short) 1);
+                        } else {
+                            customerAuditRecordAuditorEntity.setActivate((short) 0);
+                        }
+                        customerAuditRecordAuditorEntity.setIsDispose((short) 0);
+                        customerAuditRecordAuditorEntity.setAuditStatus((short) 2);
+                        customerAuditRecordAuditorEntities.add(customerAuditRecordAuditorEntity);
+                    }
+
+                }
+            } else { //没有提前配置好需要按照前台配好的审批流走
+                if (sorts != null && auditorIds.length == sorts.length) {
+                    for (int i = 0; i < auditorIds.length; i++) {
+                        if (!currentUserId.equals(auditorIds[i].intValue())) {//排除当前创建文件用户
+                            CustomerAuditRecordAuditorEntity customerAuditRecordAuditorEntity = new CustomerAuditRecordAuditorEntity();
+                            customerAuditRecordAuditorEntity.setCustomerAuditRecordId(customerAuditRecordId);
+                            customerAuditRecordAuditorEntity.setAuditorId(auditorIds[i].intValue());
+                            Integer sort = sorts[i];
+                            customerAuditRecordAuditorEntity.setSort(sort);
+                            if (sort == 1) {
+                                customerAuditRecordAuditorEntity.setActivate((short) 1);
+                            } else {
+                                customerAuditRecordAuditorEntity.setActivate((short) 0);
+                            }
+                            customerAuditRecordAuditorEntity.setIsDispose((short) 0);
+                            customerAuditRecordAuditorEntity.setAuditStatus((short) 2);
+                            customerAuditRecordAuditorEntities.add(customerAuditRecordAuditorEntity);
+                        }
+
+                    }
+                }
+            }
+            if (!customerAuditRecordAuditorEntities.isEmpty()) {
+                customerAuditRecordAuditorService.addMuch(customerAuditRecordAuditorEntities);
+                for (CustomerAuditRecordAuditorEntity customerAuditRecordAuditorEntity : customerAuditRecordAuditorEntities) {
+                    if (!currentUserId.equals(customerAuditRecordAuditorEntity.getAuditorId())) {//排除当前创建文件用户
+                        if (customerAuditRecordAuditorEntity.getSort() == 1) {//从第一批人开始发消息
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity.setCreateBy(customerAuditRecordEntity.getModifiedBy());
+                            messageEntity.setCreateTime(customerAuditRecordEntity.getModifiedTime());
+                            messageEntity.setModifiedBy(customerAuditRecordEntity.getModifiedBy());
+                            messageEntity.setModifiedTime(customerAuditRecordEntity.getModifiedTime());
+                            messageEntity.setTitle("档案管理");
+                            messageEntity.setContext("顾客“" + cSource.getName() + "”的档案信息已修改，需要您审核！");
+                            messageEntity.setType((short) 7);
+                            messageEntity.setSmallType((short) 2);
+                            messageEntity.setMessageType((short) 3);
+                            messageEntity.setProjectId(null);
+                            messageEntity.setFileId(null);
+                            messageEntity.setSenderId(null);
+                            messageEntity.setReceiverId(customerAuditRecordAuditorEntity.getAuditorId());
+                            messageEntity.setStatus((short) 1);
+                            messageService.sendMessage(messageEntity);
+                        }
+                    }
+                }
+            }
         }
     }
 
+
     @Override
-    public void audit(Integer id, Short auditStatus, String reason, Integer loginUserId, String userName) {
+    public void audit(Integer id, Short isPass, String context, String accessoryName, String accessoryPath, Integer passUserId, Integer loginUserId, String userName, String trueName) {
+
+
         CustomerEntity customerEntity = this.findById(id);
         if (customerEntity != null) {
-            if (!customerEntity.getAuditorId().equals(loginUserId)) {
+            if (!customerEntity.getAuditStatus().equals(loginUserId)) {
                 throw new BaseRuntimeException("您无权审批此档案信息");
             }
             List<CustomerAuditRecordEntity> customerAuditRecordEntities = customerAuditRecordService.findByCustomerIdAndAuditStatus(id, (short) 1);
             if (customerAuditRecordEntities.isEmpty()) {
                 throw new BaseRuntimeException("此档案信息已审批，无需重复审核");
             }
-            if (auditStatus == null)
+            if (isPass == null)
                 throw new BaseRuntimeException("审批状态不能为空");
-            if (auditStatus != 2 && auditStatus != 3) {
+            if (isPass != 2 && isPass != 3) {
                 throw new BaseRuntimeException("此文件审批状态有误");
             }
 
             CustomerAuditRecordEntity customerAuditRecordEntity = customerAuditRecordEntities.get(0);
             customerAuditRecordEntity.setModifiedBy(customerEntity.getModifiedBy());
             customerAuditRecordEntity.setModifiedTime(customerEntity.getModifiedTime());
-            customerAuditRecordEntity.setAuditStatus(auditStatus);
-            customerAuditRecordEntity.setReason(auditStatus == 3 ? reason : null);
+            customerAuditRecordEntity.setAuditStatus(isPass);
             customerAuditRecordService.edit(customerAuditRecordEntity);//更改档案审核记录信息
 
-            customerEntity.setStatus((short) 1);//审核通过或者未通过都需要改变状态，意味着此次审核周期结束。
-            if (auditStatus == 2) {//只有审核通过才能同步顾客档案信息
+            customerEntity.setAuditStatus((short) 1);//审核通过或者未通过都需要改变状态，意味着此次审核周期结束。
+            if (isPass == 2) {//只有审核通过才能同步顾客档案信息
                 customerEntity.setModifiedBy(userName);
                 customerEntity.setModifiedTime(new Date());
                 customerEntity.setTypeId(customerAuditRecordEntity.getTypeId());
@@ -217,7 +264,6 @@ public class CustomerServiceImpl implements CustomerService {
                 customerEntity.setCityId(customerAuditRecordEntity.getCityId());
                 customerEntity.setDistrictId(customerAuditRecordEntity.getDistrictId());
                 customerEntity.setDetailedAddress(customerAuditRecordEntity.getDetailedAddress());
-                customerEntity.setAuditorId(null);
                 List<CustomerCustomerDepartmentEntity> customerCustomerDepartmentEntities = customerCustomerDepartmentService.findByExample(null, customerAuditRecordEntity.getId());
                 Integer[] customerDepartmentIds = new Integer[customerCustomerDepartmentEntities.size()];
                 for (int i = 0; i < customerCustomerDepartmentEntities.size(); i++) {
@@ -241,7 +287,7 @@ public class CustomerServiceImpl implements CustomerService {
             messageEntity1.setProjectId(customerEntity.getId());
             messageEntity1.setFileId(null);
             messageEntity1.setSenderId(null);
-            messageEntity1.setReceiverId(customerAuditRecordEntity.getAuditorId());
+            messageEntity1.setReceiverId(customerAuditRecordEntity.getUserId());
             messageEntity1.setStatus((short) 1);
             messageService.sendMessage(messageEntity1);
             //给被审批人发消息
@@ -296,7 +342,7 @@ public class CustomerServiceImpl implements CustomerService {
             content[i][7] = customerEntity.getEmail();
             content[i][8] = customerEntity.getDetailedAddress();
             content[i][9] = DateUtil.formatDateTime(customerEntity.getCreateTime());
-            content[i][10] = customerEntity.getStatus() == 1 ? "正常" : "审批中";
+            content[i][10] = customerEntity.getAuditStatus() == 1 ? "正常" : customerEntity.getAuditStatus() == 2 ? "审核中" : customerEntity.getAuditStatus() == 3 ? ".审批完成 " : "已撤销";
         }
 
         //创建HSSFWorkbook

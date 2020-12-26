@@ -8,6 +8,7 @@
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
         <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -19,26 +20,17 @@
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
         <result column="customer_id" jdbcType="INTEGER" property="customerId"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-    </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
-        <result column="reason" jdbcType="LONGVARCHAR" property="reason"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, create_by, create_time, modified_by, modified_time,operator, type_id, duty_id, name, phone,
-    special_plane, email, province_id, city_id, district_id, detailed_address, customer_id, 
-    auditor_id, audit_status
+        id, create_by, create_time, modified_by, modified_time, operator, user_id, type_id,
+    duty_id, name, phone, special_plane, email, province_id, city_id, district_id, detailed_address, 
+    customer_id, audit_status, audit_finish_time
     </sql>
-    <sql id="Blob_Column_List">
-        reason
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
         from mro_customer_audit_record
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -50,23 +42,23 @@
     <insert id="insert" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity" useGeneratedKeys="true"
             keyProperty="id">
         insert into mro_customer_audit_record (id, create_by, create_time,
-                                               modified_by, modified_time, operator, type_id,
-                                               duty_id, name, phone,
-                                               special_plane, email, province_id,
-                                               city_id, district_id, detailed_address,
-                                               customer_id, auditor_id, audit_status,
-                                               reason)
+                                               modified_by, modified_time, operator,
+                                               user_id, type_id, duty_id,
+                                               name, phone, special_plane,
+                                               email, province_id, city_id,
+                                               district_id, detailed_address, customer_id,
+                                               audit_status, audit_finish_time)
         values (#{id,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
-                #{typeId,jdbcType=INTEGER}, #{dutyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-                #{phone,jdbcType=VARCHAR},
-                #{specialPlane,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER},
-                #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR},
-                #{customerId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, #{auditStatus,jdbcType=SMALLINT},
-                #{reason,jdbcType=LONGVARCHAR})
+                #{userId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, #{dutyId,jdbcType=INTEGER},
+                #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{specialPlane,jdbcType=VARCHAR},
+                #{email,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER},
+                #{districtId,jdbcType=INTEGER}, #{detailedAddress,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER},
+                #{auditStatus,jdbcType=SMALLINT}, #{auditFinishTime,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity"
-            useGeneratedKeys="true" keyProperty="id">
+            useGeneratedKeys="true"
+            keyProperty="id">
         insert into mro_customer_audit_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -86,6 +78,9 @@
             </if>
             <if test="operator != null">
                 operator,
+            </if>
+            <if test="userId != null">
+                user_id,
             </if>
             <if test="typeId != null">
                 type_id,
@@ -120,14 +115,11 @@
             <if test="customerId != null">
                 customer_id,
             </if>
-            <if test="auditorId != null">
-                auditor_id,
-            </if>
             <if test="auditStatus != null">
                 audit_status,
             </if>
-            <if test="reason != null">
-                reason,
+            <if test="auditFinishTime != null">
+                audit_finish_time,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -148,6 +140,9 @@
             </if>
             <if test="operator != null">
                 #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
             </if>
             <if test="typeId != null">
                 #{typeId,jdbcType=INTEGER},
@@ -182,14 +177,11 @@
             <if test="customerId != null">
                 #{customerId,jdbcType=INTEGER},
             </if>
-            <if test="auditorId != null">
-                #{auditorId,jdbcType=INTEGER},
-            </if>
             <if test="auditStatus != null">
                 #{auditStatus,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                #{reason,jdbcType=LONGVARCHAR},
+            <if test="auditFinishTime != null">
+                #{auditFinishTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -210,6 +202,9 @@
             </if>
             <if test="operator != null">
                 operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
             </if>
             <if test="typeId != null">
                 type_id = #{typeId,jdbcType=INTEGER},
@@ -244,69 +239,46 @@
             <if test="customerId != null">
                 customer_id = #{customerId,jdbcType=INTEGER},
             </if>
-            <if test="auditorId != null">
-                auditor_id = #{auditorId,jdbcType=INTEGER},
-            </if>
             <if test="auditStatus != null">
                 audit_status = #{auditStatus,jdbcType=SMALLINT},
             </if>
-            <if test="reason != null">
-                reason = #{reason,jdbcType=LONGVARCHAR},
+            <if test="auditFinishTime != null">
+                audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
-        update mro_customer_audit_record
-        set create_by        = #{createBy,jdbcType=VARCHAR},
-            create_time      = #{createTime,jdbcType=TIMESTAMP},
-            modified_by      = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
-            operator         = #{operator,jdbcType=VARCHAR},
-            type_id          = #{typeId,jdbcType=INTEGER},
-            duty_id          = #{dutyId,jdbcType=INTEGER},
-            name             = #{name,jdbcType=VARCHAR},
-            phone            = #{phone,jdbcType=VARCHAR},
-            special_plane    = #{specialPlane,jdbcType=VARCHAR},
-            email            = #{email,jdbcType=VARCHAR},
-            province_id      = #{provinceId,jdbcType=INTEGER},
-            city_id          = #{cityId,jdbcType=INTEGER},
-            district_id      = #{districtId,jdbcType=INTEGER},
-            detailed_address = #{detailedAddress,jdbcType=VARCHAR},
-            customer_id      = #{customerId,jdbcType=INTEGER},
-            auditor_id       = #{auditorId,jdbcType=INTEGER},
-            audit_status     = #{auditStatus,jdbcType=SMALLINT},
-            reason           = #{reason,jdbcType=LONGVARCHAR}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
     <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
         update mro_customer_audit_record
-        set create_by        = #{createBy,jdbcType=VARCHAR},
-            create_time      = #{createTime,jdbcType=TIMESTAMP},
-            modified_by      = #{modifiedBy,jdbcType=VARCHAR},
-            modified_time    = #{modifiedTime,jdbcType=TIMESTAMP},
-            operator         = #{operator,jdbcType=VARCHAR},
-            type_id          = #{typeId,jdbcType=INTEGER},
-            duty_id          = #{dutyId,jdbcType=INTEGER},
-            name             = #{name,jdbcType=VARCHAR},
-            phone            = #{phone,jdbcType=VARCHAR},
-            special_plane    = #{specialPlane,jdbcType=VARCHAR},
-            email            = #{email,jdbcType=VARCHAR},
-            province_id      = #{provinceId,jdbcType=INTEGER},
-            city_id          = #{cityId,jdbcType=INTEGER},
-            district_id      = #{districtId,jdbcType=INTEGER},
-            detailed_address = #{detailedAddress,jdbcType=VARCHAR},
-            customer_id      = #{customerId,jdbcType=INTEGER},
-            auditor_id       = #{auditorId,jdbcType=INTEGER},
-            audit_status     = #{auditStatus,jdbcType=SMALLINT}
+        set create_by         = #{createBy,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            modified_by       = #{modifiedBy,jdbcType=VARCHAR},
+            modified_time     = #{modifiedTime,jdbcType=TIMESTAMP},
+            operator          = #{operator,jdbcType=VARCHAR},
+            user_id           = #{userId,jdbcType=INTEGER},
+            type_id           = #{typeId,jdbcType=INTEGER},
+            duty_id           = #{dutyId,jdbcType=INTEGER},
+            name              = #{name,jdbcType=VARCHAR},
+            phone             = #{phone,jdbcType=VARCHAR},
+            special_plane     = #{specialPlane,jdbcType=VARCHAR},
+            email             = #{email,jdbcType=VARCHAR},
+            province_id       = #{provinceId,jdbcType=INTEGER},
+            city_id           = #{cityId,jdbcType=INTEGER},
+            district_id       = #{districtId,jdbcType=INTEGER},
+            detailed_address  = #{detailedAddress,jdbcType=VARCHAR},
+            customer_id       = #{customerId,jdbcType=INTEGER},
+            audit_status      = #{auditStatus,jdbcType=SMALLINT},
+            audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <resultMap id="MuchResultMap" type="com.yintu.ruixing.danganguanli.CustomerAuditRecordEntity">
         <id column="car_id" jdbcType="INTEGER" property="id"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy"/>
         <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="operator" jdbcType="VARCHAR" property="operator"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="duty_id" jdbcType="INTEGER" property="dutyId"/>
@@ -319,9 +291,8 @@
         <result column="district_id" jdbcType="INTEGER" property="districtId"/>
         <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress"/>
         <result column="customer_id" jdbcType="INTEGER" property="customerId"/>
-        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
         <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
-        <result column="reason" jdbcType="LONGVARCHAR" property="reason"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
         <association column="type_id" property="customerTypeEntity">
             <id column="ct_id" jdbcType="INTEGER" property="id"/>
             <result column="ct_name" jdbcType="VARCHAR" property="name"/>
@@ -355,14 +326,13 @@
         </collection>
     </resultMap>
     <sql id="Much_Column_List">
-        car.id as car_id, car.create_by , car.create_time, car.modified_by, car.modified_time, car.operator, car.type_id, car.duty_id, car.name as cer_name, car.phone,car.special_plane, car.email,car.province_id, car.city_id, car.district_id, car.detailed_address,car.customer_id,car.auditor_id,car.audit_status,car.reason,
+        car.id as car_id, car.create_by , car.create_time, car.modified_by, car.modified_time,car.user_id, car.operator, car.type_id, car.duty_id, car.name as cer_name, car.phone,car.special_plane, car.email,car.province_id, car.city_id, car.district_id, car.detailed_address,car.customer_id,car.audit_status,car.audit_finish_time,
         ct.id as ct_id,ct.name as ct_name,
         d1.id as d1_id,d1.name as d1_name,
 
         p.id as p_id,p.name as p_name,
         c.id as c_id,c.name as c_name,
         d.id as d_id,d.name as d_name,
-        u.id as u_id,u.true_name as u_true_name,u.enableds as u_enableds,u.locked as u_locked,
 
         cd.id as cd_id,cd.name as cd_name
     </sql>
@@ -371,10 +341,9 @@
         inner join mro_customer_type ct on car.type_id=ct.id
         inner join mro_customer_duty d1  on car.duty_id= d1.id
 
-        inner join mro_district p on car.province_id = p.id
-        inner join mro_district c on car.city_id = c.id
-        inner join mro_district d on car.district_id = d.id
-        inner join tb_user u on car.auditor_id=u.id
+        left  join mro_district p on car.province_id = p.id
+        left  join mro_district c on car.city_id = c.id
+        left  join mro_district d on car.district_id = d.id
 
         inner join mro_customer_customer_department ccd on car.id= ccd.customer_audit_record_id
         inner join mro_customer_department cd on cd.id=ccd.customer_audit_record_department_id
