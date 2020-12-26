@@ -72,23 +72,37 @@ public class BiddingFileServiceImpl implements BiddingFileService {
     public void add(BiddingFileEntity biddingFileEntity, Long[] auditorIds, Integer[] sorts, String trueName) {
         Short type = biddingFileEntity.getType();//文件类型
         Short releaseStatus = biddingFileEntity.getReleaseStatus();//发布状态
-        Integer currentUserId = biddingFileEntity.getUserId();//当前文件创建者
         short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
         if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
             auditStatus = 2;
             biddingFileEntity.setAuditStatus(auditStatus);
             this.add(biddingFileEntity);
-
             List<BiddingFileAuditorEntity> biddingFileAuditorEntities = new ArrayList<>();
             if (auditorIds == null || auditorIds.length == 0) {//此审核流程已提前配置好，需要查询配置信息 同步到 当前文件的审核流程
                 List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 2, (short) 1, (short) 1);//查询已经配置好的审核人集
                 List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationEntities.get(0).getAuditConfigurationUserEntities();
                 for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
-                    if (!currentUserId.equals(auditConfigurationUserEntity.getUserId().intValue())) {//排除当前创建文件用户
+                    BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
+                    biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
+                    biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
+                    Integer sort = auditConfigurationUserEntity.getSort();
+                    biddingFileAuditorEntity.setSort(sort);
+                    if (sort == 1) {
+                        biddingFileAuditorEntity.setActivate((short) 1);
+                    } else {
+                        biddingFileAuditorEntity.setActivate((short) 0);
+                    }
+                    biddingFileAuditorEntity.setIsDispose((short) 0);
+                    biddingFileAuditorEntity.setAuditStatus((short) 2);
+                    biddingFileAuditorEntities.add(biddingFileAuditorEntity);
+                }
+            } else { //没有提前配置好需要按照前台配好的审批流走
+                if (sorts != null && auditorIds.length == sorts.length) {
+                    for (int i = 0; i < auditorIds.length; i++) {
                         BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
                         biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
-                        biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
-                        Integer sort = auditConfigurationUserEntity.getSort();
+                        biddingFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
+                        Integer sort = sorts[i];
                         biddingFileAuditorEntity.setSort(sort);
                         if (sort == 1) {
                             biddingFileAuditorEntity.setActivate((short) 1);
@@ -99,28 +113,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                         biddingFileAuditorEntity.setAuditStatus((short) 2);
                         biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                     }
-
-                }
-            } else { //没有提前配置好需要按照前台配好的审批流走
-                if (sorts != null && auditorIds.length == sorts.length) {
-                    for (int i = 0; i < auditorIds.length; i++) {
-                        if (!currentUserId.equals(auditorIds[i].intValue())) {//排除当前创建文件用户
-                            BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
-                            biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
-                            biddingFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
-                            Integer sort = sorts[i];
-                            biddingFileAuditorEntity.setSort(sort);
-                            if (sort == 1) {
-                                biddingFileAuditorEntity.setActivate((short) 1);
-                            } else {
-                                biddingFileAuditorEntity.setActivate((short) 0);
-                            }
-                            biddingFileAuditorEntity.setIsDispose((short) 0);
-                            biddingFileAuditorEntity.setAuditStatus((short) 2);
-                            biddingFileAuditorEntities.add(biddingFileAuditorEntity);
-                        }
-
-                    }
                 }
             }
             if (!biddingFileAuditorEntities.isEmpty()) {
@@ -129,29 +121,26 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                 BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());//查询文件所在项目
                 if (biddingEntity != null) {
                     for (BiddingFileAuditorEntity biddingFileAuditorEntity : biddingFileAuditorEntities) {
-                        if (!currentUserId.equals(biddingFileAuditorEntity.getAuditorId())) {//排除当前创建文件用户
-                            if (biddingFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
-                                MessageEntity messageEntity = new MessageEntity();
-                                messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
-                                messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
-                                messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
-                                messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
-                                messageEntity.setTitle("文件");
-                                messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
-                                messageEntity.setType((short) 1);
-                                messageEntity.setSmallType((short) 2);
-                                messageEntity.setMessageType((short) 2);
-                                messageEntity.setProjectId(biddingFileEntity.getBiddingId());
-                                messageEntity.setFileId(biddingFileEntity.getId());
-                                messageEntity.setSenderId(null);
-                                messageEntity.setReceiverId(biddingFileAuditorEntity.getAuditorId());
-                                messageEntity.setStatus((short) 1);
-                                messageService.sendMessage(messageEntity);
-                            }
+                        if (biddingFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
+                            messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
+                            messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
+                            messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
+                            messageEntity.setTitle("文件");
+                            messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
+                            messageEntity.setType((short) 1);
+                            messageEntity.setSmallType((short) 2);
+                            messageEntity.setMessageType((short) 2);
+                            messageEntity.setProjectId(biddingFileEntity.getBiddingId());
+                            messageEntity.setFileId(biddingFileEntity.getId());
+                            messageEntity.setSenderId(null);
+                            messageEntity.setReceiverId(biddingFileAuditorEntity.getAuditorId());
+                            messageEntity.setStatus((short) 1);
+                            messageService.sendMessage(messageEntity);
                         }
                     }
                 }
-
             }
         } else {
             auditStatus = 1;
@@ -182,7 +171,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
         if (bfSource.getReleaseStatus() != 2) {//发布状态不能修改数据
             Short type = biddingFileEntity.getType();//文件类型
             Short releaseStatus = biddingFileEntity.getReleaseStatus();//发布状态
-            Integer currentUserId = bfSource.getUserId();//当前文件创建者
             short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
             if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
                 auditStatus = 2;
@@ -194,11 +182,27 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 2, (short) 1, (short) 1);//查询已经配置好的审核人集
                     List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationEntities.get(0).getAuditConfigurationUserEntities();
                     for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
-                        if (!currentUserId.equals(auditConfigurationUserEntity.getUserId().intValue())) {//排除当前创建文件用户
+                        BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
+                        biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
+                        biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
+                        Integer sort = auditConfigurationUserEntity.getSort();
+                        biddingFileAuditorEntity.setSort(sort);
+                        if (sort == 1) {
+                            biddingFileAuditorEntity.setActivate((short) 1);
+                        } else {
+                            biddingFileAuditorEntity.setActivate((short) 0);
+                        }
+                        biddingFileAuditorEntity.setIsDispose((short) 0);
+                        biddingFileAuditorEntity.setAuditStatus((short) 2);
+                        biddingFileAuditorEntities.add(biddingFileAuditorEntity);
+                    }
+                } else { //没有提前配置好需要按照前台配好的审批流走
+                    if (sorts != null && auditorIds.length == sorts.length) {
+                        for (int i = 0; i < auditorIds.length; i++) {
                             BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
                             biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
-                            biddingFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
-                            Integer sort = auditConfigurationUserEntity.getSort();
+                            biddingFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
+                            Integer sort = sorts[i];
                             biddingFileAuditorEntity.setSort(sort);
                             if (sort == 1) {
                                 biddingFileAuditorEntity.setActivate((short) 1);
@@ -209,28 +213,6 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                             biddingFileAuditorEntity.setAuditStatus((short) 2);
                             biddingFileAuditorEntities.add(biddingFileAuditorEntity);
                         }
-
-                    }
-                } else { //没有提前配置好需要按照前台配好的审批流走
-                    if (sorts != null && auditorIds.length == sorts.length) {
-                        for (int i = 0; i < auditorIds.length; i++) {
-                            if (!currentUserId.equals(auditorIds[i].intValue())) {//排除当前创建文件用户
-                                BiddingFileAuditorEntity biddingFileAuditorEntity = new BiddingFileAuditorEntity();
-                                biddingFileAuditorEntity.setBiddingFileId(biddingFileEntity.getId());
-                                biddingFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
-                                Integer sort = sorts[i];
-                                biddingFileAuditorEntity.setSort(sort);
-                                if (sort == 1) {
-                                    biddingFileAuditorEntity.setActivate((short) 1);
-                                } else {
-                                    biddingFileAuditorEntity.setActivate((short) 0);
-                                }
-                                biddingFileAuditorEntity.setIsDispose((short) 0);
-                                biddingFileAuditorEntity.setAuditStatus((short) 2);
-                                biddingFileAuditorEntities.add(biddingFileAuditorEntity);
-                            }
-
-                        }
                     }
                 }
                 if (!biddingFileAuditorEntities.isEmpty()) {
@@ -239,29 +221,26 @@ public class BiddingFileServiceImpl implements BiddingFileService {
                     BiddingEntity biddingEntity = biddingService.findById(biddingFileEntity.getBiddingId());//查询文件所在项目
                     if (biddingEntity != null) {
                         for (BiddingFileAuditorEntity biddingFileAuditorEntity : biddingFileAuditorEntities) {
-                            if (!currentUserId.equals(biddingFileAuditorEntity.getAuditorId())) {//排除当前创建文件用户
-                                if (biddingFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
-                                    MessageEntity messageEntity = new MessageEntity();
-                                    messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
-                                    messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
-                                    messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
-                                    messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
-                                    messageEntity.setTitle("文件");
-                                    messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
-                                    messageEntity.setType((short) 1);
-                                    messageEntity.setSmallType((short) 2);
-                                    messageEntity.setMessageType((short) 2);
-                                    messageEntity.setProjectId(biddingFileEntity.getBiddingId());
-                                    messageEntity.setFileId(biddingFileEntity.getId());
-                                    messageEntity.setSenderId(null);
-                                    messageEntity.setReceiverId(biddingFileAuditorEntity.getAuditorId());
-                                    messageEntity.setStatus((short) 1);
-                                    messageService.sendMessage(messageEntity);
-                                }
+                            if (biddingFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
+                                MessageEntity messageEntity = new MessageEntity();
+                                messageEntity.setCreateBy(biddingFileEntity.getModifiedBy());
+                                messageEntity.setCreateTime(biddingFileEntity.getModifiedTime());
+                                messageEntity.setModifiedBy(biddingFileEntity.getModifiedBy());
+                                messageEntity.setModifiedTime(biddingFileEntity.getModifiedTime());
+                                messageEntity.setTitle("文件");
+                                messageEntity.setContext("“" + biddingEntity.getProjectName() + "”项目中，“" + biddingFileEntity.getName() + "”文件需要您审核！");
+                                messageEntity.setType((short) 1);
+                                messageEntity.setSmallType((short) 2);
+                                messageEntity.setMessageType((short) 2);
+                                messageEntity.setProjectId(biddingFileEntity.getBiddingId());
+                                messageEntity.setFileId(biddingFileEntity.getId());
+                                messageEntity.setSenderId(null);
+                                messageEntity.setReceiverId(biddingFileAuditorEntity.getAuditorId());
+                                messageEntity.setStatus((short) 1);
+                                messageService.sendMessage(messageEntity);
                             }
                         }
                     }
-
                 }
             } else {
                 auditStatus = 1;

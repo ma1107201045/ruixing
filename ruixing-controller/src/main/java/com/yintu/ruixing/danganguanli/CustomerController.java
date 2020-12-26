@@ -176,4 +176,16 @@ public class CustomerController extends SessionController {
         customerService.audit(id, isPass, context, accessoryName, accessoryPath, passUserId, this.getLoginUserId().intValue(), this.getLoginUserName(), this.getLoginTrueName());
         return ResponseDataUtil.ok("审核顾客信息成功");
     }
+
+    /**
+     * 转交审核列表列表
+     *
+     * @param id 文件id
+     */
+    @GetMapping("/audit/{id}/auditors")
+    @ResponseBody
+    public Map<String, Object> auditors(@PathVariable Integer id) {
+        List<UserEntity> userEntities = customerService.findByOtherAuditors(id, this.getLoginUserId());
+        return ResponseDataUtil.ok("查询转交审核人列表成功", userEntities);
+    }
 }

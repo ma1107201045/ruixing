@@ -1,6 +1,7 @@
 package com.yintu.ruixing.danganguanli;
 
 import com.yintu.ruixing.common.util.BaseService;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,5 +39,16 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
      * @throws IOException io异常
      */
     void exportFile(OutputStream outputStream, Integer[] ids) throws IOException;
+
+
+    /**
+     * 查询转交人列表（排除当前审核文件人列表以及当前登录人）
+     *
+     * @param id          文件id
+     * @param loginUserId 当前登录用户id
+     * @return 审核人列表
+     */
+    List<UserEntity> findByOtherAuditors(Integer id, Long loginUserId);
+
 
 }

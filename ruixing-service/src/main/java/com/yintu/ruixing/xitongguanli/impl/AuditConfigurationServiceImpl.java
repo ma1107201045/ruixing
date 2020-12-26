@@ -133,7 +133,10 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
             criteria.andModelEqualTo(model);
         List<AuditConfigurationEntity> auditConfigurationEntities = this.findByExample(auditConfigurationEntityExample);
         for (AuditConfigurationEntity auditConfigurationEntity : auditConfigurationEntities) {
-            auditConfigurationEntity.setAuditConfigurationUserEntities(auditConfigurationUserService.findByExample(new AuditConfigurationUserEntityExample()));
+            AuditConfigurationUserEntityExample auditConfigurationUserEntityExample = new AuditConfigurationUserEntityExample();
+            AuditConfigurationUserEntityExample.Criteria criteria1 = auditConfigurationUserEntityExample.createCriteria();
+            criteria1.andAuditConfigurationIdEqualTo(auditConfigurationEntity.getId());
+            auditConfigurationEntity.setAuditConfigurationUserEntities(auditConfigurationUserService.findByExample(auditConfigurationUserEntityExample));
         }
         return auditConfigurationEntities;
     }

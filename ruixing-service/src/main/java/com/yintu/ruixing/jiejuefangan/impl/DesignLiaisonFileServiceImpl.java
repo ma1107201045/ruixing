@@ -74,23 +74,37 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
     public void add(DesignLiaisonFileEntity designLiaisonFileEntity, Long[] auditorIds, Integer[] sorts, String trueName) {
         Short type = designLiaisonFileEntity.getType();//文件类型
         Short releaseStatus = designLiaisonFileEntity.getReleaseStatus();//发布状态
-        Integer currentUserId = designLiaisonFileEntity.getUserId();//当前文件创建者
         short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
         if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
             auditStatus = 2;
             designLiaisonFileEntity.setAuditStatus(auditStatus);
             this.add(designLiaisonFileEntity);
-
             List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = new ArrayList<>();
             if (auditorIds == null || auditorIds.length == 0) {//此审核流程已提前配置好，需要查询配置信息 同步到 当前文件的审核流程
                 List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 3, (short) 1, (short) 1);//查询已经配置好的审核人集
                 List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationEntities.get(0).getAuditConfigurationUserEntities();
                 for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
-                    if (!currentUserId.equals(auditConfigurationUserEntity.getUserId().intValue())) {//排除当前创建文件用户
+                    DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
+                    designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
+                    designLiaisonFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
+                    Integer sort = auditConfigurationUserEntity.getSort();
+                    designLiaisonFileAuditorEntity.setSort(sort);
+                    if (sort == 1) {
+                        designLiaisonFileAuditorEntity.setActivate((short) 1);
+                    } else {
+                        designLiaisonFileAuditorEntity.setActivate((short) 0);
+                    }
+                    designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                    designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
+                    designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
+                }
+            } else { //没有提前配置好需要按照前台配好的审批流走
+                if (sorts != null && auditorIds.length == sorts.length) {
+                    for (int i = 0; i < auditorIds.length; i++) {
                         DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
                         designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
-                        designLiaisonFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
-                        Integer sort = auditConfigurationUserEntity.getSort();
+                        designLiaisonFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
+                        Integer sort = sorts[i];
                         designLiaisonFileAuditorEntity.setSort(sort);
                         if (sort == 1) {
                             designLiaisonFileAuditorEntity.setActivate((short) 1);
@@ -101,28 +115,6 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                         designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                         designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                     }
-
-                }
-            } else { //没有提前配置好需要按照前台配好的审批流走
-                if (sorts != null && auditorIds.length == sorts.length) {
-                    for (int i = 0; i < auditorIds.length; i++) {
-                        if (!currentUserId.equals(auditorIds[i].intValue())) {//排除当前创建文件用户
-                            DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
-                            designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
-                            designLiaisonFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
-                            Integer sort = sorts[i];
-                            designLiaisonFileAuditorEntity.setSort(sort);
-                            if (sort == 1) {
-                                designLiaisonFileAuditorEntity.setActivate((short) 1);
-                            } else {
-                                designLiaisonFileAuditorEntity.setActivate((short) 0);
-                            }
-                            designLiaisonFileAuditorEntity.setIsDispose((short) 0);
-                            designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
-                            designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
-                        }
-
-                    }
                 }
             }
             if (!designLiaisonFileAuditorEntities.isEmpty()) {
@@ -131,29 +123,26 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                 DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());//查询文件所在项目
                 if (designLiaisonEntity != null) {
                     for (DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity : designLiaisonFileAuditorEntities) {
-                        if (!currentUserId.equals(designLiaisonFileAuditorEntity.getAuditorId())) {//排除当前创建文件用户
-                            if (designLiaisonFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
-                                MessageEntity messageEntity = new MessageEntity();
-                                messageEntity.setCreateBy(designLiaisonFileEntity.getModifiedBy());
-                                messageEntity.setCreateTime(designLiaisonFileEntity.getModifiedTime());
-                                messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
-                                messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
-                                messageEntity.setTitle("文件");
-                                messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
-                                messageEntity.setType((short) 1);
-                                messageEntity.setSmallType((short) 3);
-                                messageEntity.setMessageType((short) 2);
-                                messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
-                                messageEntity.setFileId(designLiaisonFileEntity.getId());
-                                messageEntity.setSenderId(null);
-                                messageEntity.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
-                                messageEntity.setStatus((short) 1);
-                                messageService.sendMessage(messageEntity);
-                            }
+                        if (designLiaisonFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
+                            MessageEntity messageEntity = new MessageEntity();
+                            messageEntity.setCreateBy(designLiaisonFileEntity.getModifiedBy());
+                            messageEntity.setCreateTime(designLiaisonFileEntity.getModifiedTime());
+                            messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                            messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                            messageEntity.setTitle("文件");
+                            messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
+                            messageEntity.setType((short) 1);
+                            messageEntity.setSmallType((short) 3);
+                            messageEntity.setMessageType((short) 2);
+                            messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                            messageEntity.setFileId(designLiaisonFileEntity.getId());
+                            messageEntity.setSenderId(null);
+                            messageEntity.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
+                            messageEntity.setStatus((short) 1);
+                            messageService.sendMessage(messageEntity);
                         }
                     }
                 }
-
             }
         } else {
             auditStatus = 1;
@@ -177,23 +166,37 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
         if (dlfSource.getReleaseStatus() != 2) {//发布状态不能修改数据
             Short type = designLiaisonFileEntity.getType();//文件类型
             Short releaseStatus = designLiaisonFileEntity.getReleaseStatus();//发布状态
-            Integer currentUserId = dlfSource.getUserId();//当前文件创建者
             short auditStatus;//审核状态 1.待审核 2.审核中 3.已审核通过 4.已审核未通过
             if (type == 2 && releaseStatus == 2) {  //输出发布状态情况下
                 auditStatus = 2;
                 designLiaisonFileEntity.setAuditStatus(auditStatus);
                 this.edit(designLiaisonFileEntity);
-
                 List<DesignLiaisonFileAuditorEntity> designLiaisonFileAuditorEntities = new ArrayList<>();
                 if (auditorIds == null || auditorIds.length == 0) {//此审核流程已提前配置好，需要查询配置信息 同步到 当前文件的审核流程
                     List<AuditConfigurationEntity> auditConfigurationEntities = auditConfigurationService.findByExample((short) 3, (short) 1, (short) 1);//查询已经配置好的审核人集
                     List<AuditConfigurationUserEntity> auditConfigurationUserEntities = auditConfigurationEntities.get(0).getAuditConfigurationUserEntities();
                     for (AuditConfigurationUserEntity auditConfigurationUserEntity : auditConfigurationUserEntities) {
-                        if (!currentUserId.equals(auditConfigurationUserEntity.getUserId().intValue())) {//排除当前创建文件用户
+                        DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
+                        designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
+                        designLiaisonFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
+                        Integer sort = auditConfigurationUserEntity.getSort();
+                        designLiaisonFileAuditorEntity.setSort(sort);
+                        if (sort == 1) {
+                            designLiaisonFileAuditorEntity.setActivate((short) 1);
+                        } else {
+                            designLiaisonFileAuditorEntity.setActivate((short) 0);
+                        }
+                        designLiaisonFileAuditorEntity.setIsDispose((short) 0);
+                        designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
+                        designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
+                    }
+                } else { //没有提前配置好需要按照前台配好的审批流走
+                    if (sorts != null && auditorIds.length == sorts.length) {
+                        for (int i = 0; i < auditorIds.length; i++) {
                             DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
                             designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
-                            designLiaisonFileAuditorEntity.setAuditorId(auditConfigurationUserEntity.getUserId().intValue());
-                            Integer sort = auditConfigurationUserEntity.getSort();
+                            designLiaisonFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
+                            Integer sort = sorts[i];
                             designLiaisonFileAuditorEntity.setSort(sort);
                             if (sort == 1) {
                                 designLiaisonFileAuditorEntity.setActivate((short) 1);
@@ -204,28 +207,6 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                             designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
                             designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
                         }
-
-                    }
-                } else { //没有提前配置好需要按照前台配好的审批流走
-                    if (sorts != null && auditorIds.length == sorts.length) {
-                        for (int i = 0; i < auditorIds.length; i++) {
-                            if (!currentUserId.equals(auditorIds[i].intValue())) {//排除当前创建文件用户
-                                DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity = new DesignLiaisonFileAuditorEntity();
-                                designLiaisonFileAuditorEntity.setDesignLiaisonFileId(designLiaisonFileEntity.getId());
-                                designLiaisonFileAuditorEntity.setAuditorId(auditorIds[i].intValue());
-                                Integer sort = sorts[i];
-                                designLiaisonFileAuditorEntity.setSort(sort);
-                                if (sort == 1) {
-                                    designLiaisonFileAuditorEntity.setActivate((short) 1);
-                                } else {
-                                    designLiaisonFileAuditorEntity.setActivate((short) 0);
-                                }
-                                designLiaisonFileAuditorEntity.setIsDispose((short) 0);
-                                designLiaisonFileAuditorEntity.setAuditStatus((short) 2);
-                                designLiaisonFileAuditorEntities.add(designLiaisonFileAuditorEntity);
-                            }
-
-                        }
                     }
                 }
                 if (!designLiaisonFileAuditorEntities.isEmpty()) {
@@ -234,25 +215,23 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
                     DesignLiaisonEntity designLiaisonEntity = designLiaisonService.findById(designLiaisonFileEntity.getDesignLiaisonId());//查询文件所在项目
                     if (designLiaisonEntity != null) {
                         for (DesignLiaisonFileAuditorEntity designLiaisonFileAuditorEntity : designLiaisonFileAuditorEntities) {
-                            if (!currentUserId.equals(designLiaisonFileAuditorEntity.getAuditorId())) {//排除当前创建文件用户
-                                if (designLiaisonFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
-                                    MessageEntity messageEntity = new MessageEntity();
-                                    messageEntity.setCreateBy(designLiaisonFileEntity.getModifiedBy());
-                                    messageEntity.setCreateTime(designLiaisonFileEntity.getModifiedTime());
-                                    messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
-                                    messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
-                                    messageEntity.setTitle("文件");
-                                    messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
-                                    messageEntity.setType((short) 1);
-                                    messageEntity.setSmallType((short) 3);
-                                    messageEntity.setMessageType((short) 2);
-                                    messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
-                                    messageEntity.setFileId(designLiaisonFileEntity.getId());
-                                    messageEntity.setSenderId(null);
-                                    messageEntity.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
-                                    messageEntity.setStatus((short) 1);
-                                    messageService.sendMessage(messageEntity);
-                                }
+                            if (designLiaisonFileAuditorEntity.getSort() == 1) {//从第一批人开始发消息
+                                MessageEntity messageEntity = new MessageEntity();
+                                messageEntity.setCreateBy(designLiaisonFileEntity.getModifiedBy());
+                                messageEntity.setCreateTime(designLiaisonFileEntity.getModifiedTime());
+                                messageEntity.setModifiedBy(designLiaisonFileEntity.getModifiedBy());
+                                messageEntity.setModifiedTime(designLiaisonFileEntity.getModifiedTime());
+                                messageEntity.setTitle("文件");
+                                messageEntity.setContext("“" + designLiaisonEntity.getProjectName() + "”项目中，“" + designLiaisonFileEntity.getName() + "”文件需要您审核！");
+                                messageEntity.setType((short) 1);
+                                messageEntity.setSmallType((short) 3);
+                                messageEntity.setMessageType((short) 2);
+                                messageEntity.setProjectId(designLiaisonFileEntity.getDesignLiaisonId());
+                                messageEntity.setFileId(designLiaisonFileEntity.getId());
+                                messageEntity.setSenderId(null);
+                                messageEntity.setReceiverId(designLiaisonFileAuditorEntity.getAuditorId());
+                                messageEntity.setStatus((short) 1);
+                                messageService.sendMessage(messageEntity);
                             }
                         }
                     }
@@ -288,6 +267,7 @@ public class DesignLiaisonFileServiceImpl implements DesignLiaisonFileService {
             }
 
         }
+
     }
 
     @Override
