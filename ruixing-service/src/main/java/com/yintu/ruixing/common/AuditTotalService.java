@@ -58,11 +58,6 @@ public interface AuditTotalService {
     List<AuditTotalVo> findKnowledgeManagement(AuditTotalDto auditTotalDto);
 
     /**
-     * @return 档案管理-顾客档案管理信息修改
-     */
-    List<AuditTotalVo> findCustomer(AuditTotalDto auditTotalDto);
-
-    /**
      * @return 产品交付-项目交付状态管理-项目状态变更
      */
     List<AuditTotalVo> findCPJFXiangMu(AuditTotalDto auditTotalDto);
@@ -71,5 +66,11 @@ public interface AuditTotalService {
      * @return 产品交付-项目交付状态管理-输出文件发布
      */
     List<AuditTotalVo> findCPJFFile(AuditTotalDto auditTotalDto);
+
+    /**
+     * @return 档案管理-顾客档案管理信息修改
+     */
+    List<AuditTotalVo> findCustomer(AuditTotalDto auditTotalDto);
+
 
 }

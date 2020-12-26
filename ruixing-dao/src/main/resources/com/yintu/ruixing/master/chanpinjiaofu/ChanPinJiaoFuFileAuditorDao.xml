@@ -1,915 +1,265 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuFileAuditorDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="object_id" jdbcType="INTEGER" property="objectId" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
-    <result column="objectType" jdbcType="INTEGER" property="objecttype" />
-    <result column="doName" jdbcType="VARCHAR" property="doname" />
-    <result column="doTime" jdbcType="TIMESTAMP" property="dotime" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="activate" jdbcType="SMALLINT" property="activate" />
-    <result column="audit_status" jdbcType="SMALLINT" property="auditStatus" />
-    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
-    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
-    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
-    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <result column="context" jdbcType="LONGVARCHAR" property="context" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, object_id, auditor_id, objectType, doName, doTime, sort, activate, audit_status, 
+    <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="object_id" jdbcType="INTEGER" property="objectId"/>
+        <result column="auditor_id" jdbcType="INTEGER" property="auditorId"/>
+        <result column="objectType" jdbcType="INTEGER" property="objecttype"/>
+        <result column="doName" jdbcType="VARCHAR" property="doname"/>
+        <result column="doTime" jdbcType="TIMESTAMP" property="dotime"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="activate" jdbcType="SMALLINT" property="activate"/>
+        <result column="audit_status" jdbcType="SMALLINT" property="auditStatus"/>
+        <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
+        <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName"/>
+        <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath"/>
+        <result column="is_dispose" jdbcType="SMALLINT" property="isDispose"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        <result column="context" jdbcType="LONGVARCHAR" property="context"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, object_id, auditor_id, objectType, doName, doTime, sort, activate, audit_status,
     audit_finish_time, accessory_name, accessory_path, is_dispose
-  </sql>
-  <sql id="Blob_Column_List">
-    context
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor (id, object_id, auditor_id, 
-      objectType, doName, doTime, 
-      sort, activate, audit_status, 
-      audit_finish_time, accessory_name, accessory_path, 
-      is_dispose, context)
-    values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
-      #{objecttype,jdbcType=INTEGER}, #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP}, 
-      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT}, 
-      #{auditFinishTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR}, #{accessoryPath,jdbcType=VARCHAR}, 
-      #{isDispose,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="objectId != null">
-        object_id,
-      </if>
-      <if test="auditorId != null">
-        auditor_id,
-      </if>
-      <if test="objecttype != null">
-        objectType,
-      </if>
-      <if test="doname != null">
-        doName,
-      </if>
-      <if test="dotime != null">
-        doTime,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="activate != null">
-        activate,
-      </if>
-      <if test="auditStatus != null">
-        audit_status,
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time,
-      </if>
-      <if test="accessoryName != null">
-        accessory_name,
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path,
-      </if>
-      <if test="isDispose != null">
-        is_dispose,
-      </if>
-      <if test="context != null">
-        context,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="objectId != null">
-        #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    <set>
-      <if test="objectId != null">
-        object_id = #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        objectType = #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        doName = #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        doTime = #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        activate = #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        audit_status = #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        is_dispose = #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        context = #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT},
-      context = #{context,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="object_id" jdbcType="INTEGER" property="objectId" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
-    <result column="objectType" jdbcType="INTEGER" property="objecttype" />
-    <result column="doName" jdbcType="VARCHAR" property="doname" />
-    <result column="doTime" jdbcType="TIMESTAMP" property="dotime" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="activate" jdbcType="SMALLINT" property="activate" />
-    <result column="audit_status" jdbcType="SMALLINT" property="auditStatus" />
-    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
-    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
-    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
-    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <result column="context" jdbcType="LONGVARCHAR" property="context" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, object_id, auditor_id, objectType, doName, doTime, sort, activate, audit_status, 
-    audit_finish_time, accessory_name, accessory_path, is_dispose
-  </sql>
-  <sql id="Blob_Column_List">
-    context
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor (id, object_id, auditor_id, 
-      objectType, doName, doTime, 
-      sort, activate, audit_status, 
-      audit_finish_time, accessory_name, accessory_path, 
-      is_dispose, context)
-    values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
-      #{objecttype,jdbcType=INTEGER}, #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP}, 
-      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT}, 
-      #{auditFinishTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR}, #{accessoryPath,jdbcType=VARCHAR}, 
-      #{isDispose,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="objectId != null">
-        object_id,
-      </if>
-      <if test="auditorId != null">
-        auditor_id,
-      </if>
-      <if test="objecttype != null">
-        objectType,
-      </if>
-      <if test="doname != null">
-        doName,
-      </if>
-      <if test="dotime != null">
-        doTime,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="activate != null">
-        activate,
-      </if>
-      <if test="auditStatus != null">
-        audit_status,
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time,
-      </if>
-      <if test="accessoryName != null">
-        accessory_name,
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path,
-      </if>
-      <if test="isDispose != null">
-        is_dispose,
-      </if>
-      <if test="context != null">
-        context,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="objectId != null">
-        #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    <set>
-      <if test="objectId != null">
-        object_id = #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        objectType = #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        doName = #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        doTime = #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        activate = #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        audit_status = #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        is_dispose = #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        context = #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT},
-      context = #{context,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="object_id" jdbcType="INTEGER" property="objectId" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
-    <result column="objectType" jdbcType="INTEGER" property="objecttype" />
-    <result column="doName" jdbcType="VARCHAR" property="doname" />
-    <result column="doTime" jdbcType="TIMESTAMP" property="dotime" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="activate" jdbcType="SMALLINT" property="activate" />
-    <result column="audit_status" jdbcType="SMALLINT" property="auditStatus" />
-    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
-    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
-    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
-    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <result column="context" jdbcType="LONGVARCHAR" property="context" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, object_id, auditor_id, objectType, doName, doTime, sort, activate, audit_status, 
-    audit_finish_time, accessory_name, accessory_path, is_dispose
-  </sql>
-  <sql id="Blob_Column_List">
-    context
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor (id, object_id, auditor_id, 
-      objectType, doName, doTime, 
-      sort, activate, audit_status, 
-      audit_finish_time, accessory_name, accessory_path, 
-      is_dispose, context)
-    values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
-      #{objecttype,jdbcType=INTEGER}, #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP}, 
-      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT}, 
-      #{auditFinishTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR}, #{accessoryPath,jdbcType=VARCHAR}, 
-      #{isDispose,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="objectId != null">
-        object_id,
-      </if>
-      <if test="auditorId != null">
-        auditor_id,
-      </if>
-      <if test="objecttype != null">
-        objectType,
-      </if>
-      <if test="doname != null">
-        doName,
-      </if>
-      <if test="dotime != null">
-        doTime,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="activate != null">
-        activate,
-      </if>
-      <if test="auditStatus != null">
-        audit_status,
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time,
-      </if>
-      <if test="accessoryName != null">
-        accessory_name,
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path,
-      </if>
-      <if test="isDispose != null">
-        is_dispose,
-      </if>
-      <if test="context != null">
-        context,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="objectId != null">
-        #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    <set>
-      <if test="objectId != null">
-        object_id = #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        objectType = #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        doName = #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        doTime = #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        activate = #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        audit_status = #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        is_dispose = #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        context = #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT},
-      context = #{context,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="object_id" jdbcType="INTEGER" property="objectId" />
-    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
-    <result column="objectType" jdbcType="INTEGER" property="objecttype" />
-    <result column="doName" jdbcType="VARCHAR" property="doname" />
-    <result column="doTime" jdbcType="TIMESTAMP" property="dotime" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="activate" jdbcType="SMALLINT" property="activate" />
-    <result column="audit_status" jdbcType="SMALLINT" property="auditStatus" />
-    <result column="audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime" />
-    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
-    <result column="accessory_path" jdbcType="VARCHAR" property="accessoryPath" />
-    <result column="is_dispose" jdbcType="SMALLINT" property="isDispose" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    <result column="context" jdbcType="LONGVARCHAR" property="context" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, object_id, auditor_id, objectType, doName, doTime, sort, activate, audit_status, 
-    audit_finish_time, accessory_name, accessory_path, is_dispose
-  </sql>
-  <sql id="Blob_Column_List">
-    context
-  </sql>
+    </sql>
+    <sql id="Blob_Column_List">
+        context
+    </sql>
 
 
-  <!--根据对象id 和对象类型id  查询对应的审核人id-->
-  <select id="findUserIdByids" resultType="java.lang.Integer">
-    select
-    auditor_id
-    from mro_chanpinjiaofu_file_auditor
-    where object_id = #{objectid,jdbcType=INTEGER}
-    and objectType = #{objectType,jdbcType=INTEGER}
-  </select>
+    <!--根据对象id 和对象类型id  查询对应的审核人id-->
+    <select id="findUserIdByids" resultType="java.lang.Integer">
+        select auditor_id
+        from mro_chanpinjiaofu_file_auditor
+        where object_id = #{objectid,jdbcType=INTEGER}
+          and objectType = #{objectType,jdbcType=INTEGER}
+    </select>
 
 
-  <!--根据不同数据  查询对应的数据-->
-  <select id="findAuditorDatas" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from mro_chanpinjiaofu_file_auditor
-    <where>
-      <if test="objectid!=null">
-        object_id = #{objectid,jdbcType=INTEGER}
-      </if>
-      <if test="objectType!=null">
-       and  objectType = #{objectType,jdbcType=INTEGER}
-      </if>
-      <if test="auditorid!=null">
-       and  auditor_id = #{auditorid,jdbcType=INTEGER}
-      </if>
-      <if test="sort!=null">
-       and  sort = #{sort,jdbcType=INTEGER}
-      </if>
-      <if test="activate!=null">
-       and  activate = #{activate,jdbcType=SMALLINT}
-      </if>
-    </where>
-  </select>
+    <!--根据不同数据  查询对应的数据-->
+    <select id="findAuditorDatas" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_chanpinjiaofu_file_auditor
+        <where>
+            <if test="objectid!=null">
+                object_id = #{objectid,jdbcType=INTEGER}
+            </if>
+            <if test="objectType!=null">
+                and objectType = #{objectType,jdbcType=INTEGER}
+            </if>
+            <if test="auditorid!=null">
+                and auditor_id = #{auditorid,jdbcType=INTEGER}
+            </if>
+            <if test="sort!=null">
+                and sort = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test="activate!=null">
+                and activate = #{activate,jdbcType=SMALLINT}
+            </if>
+        </where>
+    </select>
 
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_chanpinjiaofu_file_auditor
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor (id, object_id, auditor_id, 
-      objectType, doName, doTime, 
-      sort, activate, audit_status, 
-      audit_finish_time, accessory_name, accessory_path, 
-      is_dispose, context)
-    values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER}, 
-      #{objecttype,jdbcType=INTEGER}, #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP}, 
-      #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT}, 
-      #{auditFinishTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR}, #{accessoryPath,jdbcType=VARCHAR}, 
-      #{isDispose,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    insert into mro_chanpinjiaofu_file_auditor
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="objectId != null">
-        object_id,
-      </if>
-      <if test="auditorId != null">
-        auditor_id,
-      </if>
-      <if test="objecttype != null">
-        objectType,
-      </if>
-      <if test="doname != null">
-        doName,
-      </if>
-      <if test="dotime != null">
-        doTime,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="activate != null">
-        activate,
-      </if>
-      <if test="auditStatus != null">
-        audit_status,
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time,
-      </if>
-      <if test="accessoryName != null">
-        accessory_name,
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path,
-      </if>
-      <if test="isDispose != null">
-        is_dispose,
-      </if>
-      <if test="context != null">
-        context,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="objectId != null">
-        #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    <set>
-      <if test="objectId != null">
-        object_id = #{objectId,jdbcType=INTEGER},
-      </if>
-      <if test="auditorId != null">
-        auditor_id = #{auditorId,jdbcType=INTEGER},
-      </if>
-      <if test="objecttype != null">
-        objectType = #{objecttype,jdbcType=INTEGER},
-      </if>
-      <if test="doname != null">
-        doName = #{doname,jdbcType=VARCHAR},
-      </if>
-      <if test="dotime != null">
-        doTime = #{dotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="activate != null">
-        activate = #{activate,jdbcType=SMALLINT},
-      </if>
-      <if test="auditStatus != null">
-        audit_status = #{auditStatus,jdbcType=SMALLINT},
-      </if>
-      <if test="auditFinishTime != null">
-        audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="accessoryName != null">
-        accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      </if>
-      <if test="accessoryPath != null">
-        accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      </if>
-      <if test="isDispose != null">
-        is_dispose = #{isDispose,jdbcType=SMALLINT},
-      </if>
-      <if test="context != null">
-        context = #{context,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT},
-      context = #{context,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
-    update mro_chanpinjiaofu_file_auditor
-    set object_id = #{objectId,jdbcType=INTEGER},
-      auditor_id = #{auditorId,jdbcType=INTEGER},
-      objectType = #{objecttype,jdbcType=INTEGER},
-      doName = #{doname,jdbcType=VARCHAR},
-      doTime = #{dotime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER},
-      activate = #{activate,jdbcType=SMALLINT},
-      audit_status = #{auditStatus,jdbcType=SMALLINT},
-      audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
-      accessory_name = #{accessoryName,jdbcType=VARCHAR},
-      accessory_path = #{accessoryPath,jdbcType=VARCHAR},
-      is_dispose = #{isDispose,jdbcType=SMALLINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from mro_chanpinjiaofu_file_auditor
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from mro_chanpinjiaofu_file_auditor
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        insert into mro_chanpinjiaofu_file_auditor (id, object_id, auditor_id,
+                                                    objectType, doName, doTime,
+                                                    sort, activate, audit_status,
+                                                    audit_finish_time, accessory_name, accessory_path,
+                                                    is_dispose, context)
+        values (#{id,jdbcType=INTEGER}, #{objectId,jdbcType=INTEGER}, #{auditorId,jdbcType=INTEGER},
+                #{objecttype,jdbcType=INTEGER}, #{doname,jdbcType=VARCHAR}, #{dotime,jdbcType=TIMESTAMP},
+                #{sort,jdbcType=INTEGER}, #{activate,jdbcType=SMALLINT}, #{auditStatus,jdbcType=SMALLINT},
+                #{auditFinishTime,jdbcType=TIMESTAMP}, #{accessoryName,jdbcType=VARCHAR},
+                #{accessoryPath,jdbcType=VARCHAR},
+                #{isDispose,jdbcType=SMALLINT}, #{context,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        insert into mro_chanpinjiaofu_file_auditor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="objectId != null">
+                object_id,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="objecttype != null">
+                objectType,
+            </if>
+            <if test="doname != null">
+                doName,
+            </if>
+            <if test="dotime != null">
+                doTime,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="activate != null">
+                activate,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+            <if test="auditFinishTime != null">
+                audit_finish_time,
+            </if>
+            <if test="accessoryName != null">
+                accessory_name,
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path,
+            </if>
+            <if test="isDispose != null">
+                is_dispose,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="objectId != null">
+                #{objectId,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=INTEGER},
+            </if>
+            <if test="objecttype != null">
+                #{objecttype,jdbcType=INTEGER},
+            </if>
+            <if test="doname != null">
+                #{doname,jdbcType=VARCHAR},
+            </if>
+            <if test="dotime != null">
+                #{dotime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="activate != null">
+                #{activate,jdbcType=SMALLINT},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="auditFinishTime != null">
+                #{auditFinishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accessoryName != null">
+                #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="isDispose != null">
+                #{isDispose,jdbcType=SMALLINT},
+            </if>
+            <if test="context != null">
+                #{context,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        update mro_chanpinjiaofu_file_auditor
+        <set>
+            <if test="objectId != null">
+                object_id = #{objectId,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=INTEGER},
+            </if>
+            <if test="objecttype != null">
+                objectType = #{objecttype,jdbcType=INTEGER},
+            </if>
+            <if test="doname != null">
+                doName = #{doname,jdbcType=VARCHAR},
+            </if>
+            <if test="dotime != null">
+                doTime = #{dotime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="activate != null">
+                activate = #{activate,jdbcType=SMALLINT},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="auditFinishTime != null">
+                audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accessoryName != null">
+                accessory_name = #{accessoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessoryPath != null">
+                accessory_path = #{accessoryPath,jdbcType=VARCHAR},
+            </if>
+            <if test="isDispose != null">
+                is_dispose = #{isDispose,jdbcType=SMALLINT},
+            </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        update mro_chanpinjiaofu_file_auditor
+        set object_id         = #{objectId,jdbcType=INTEGER},
+            auditor_id        = #{auditorId,jdbcType=INTEGER},
+            objectType        = #{objecttype,jdbcType=INTEGER},
+            doName            = #{doname,jdbcType=VARCHAR},
+            doTime            = #{dotime,jdbcType=TIMESTAMP},
+            sort              = #{sort,jdbcType=INTEGER},
+            activate          = #{activate,jdbcType=SMALLINT},
+            audit_status      = #{auditStatus,jdbcType=SMALLINT},
+            audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
+            accessory_name    = #{accessoryName,jdbcType=VARCHAR},
+            accessory_path    = #{accessoryPath,jdbcType=VARCHAR},
+            is_dispose        = #{isDispose,jdbcType=SMALLINT},
+            context           = #{context,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuFileAuditorEntity">
+        update mro_chanpinjiaofu_file_auditor
+        set object_id         = #{objectId,jdbcType=INTEGER},
+            auditor_id        = #{auditorId,jdbcType=INTEGER},
+            objectType        = #{objecttype,jdbcType=INTEGER},
+            doName            = #{doname,jdbcType=VARCHAR},
+            doTime            = #{dotime,jdbcType=TIMESTAMP},
+            sort              = #{sort,jdbcType=INTEGER},
+            activate          = #{activate,jdbcType=SMALLINT},
+            audit_status      = #{auditStatus,jdbcType=SMALLINT},
+            audit_finish_time = #{auditFinishTime,jdbcType=TIMESTAMP},
+            accessory_name    = #{accessoryName,jdbcType=VARCHAR},
+            accessory_path    = #{accessoryPath,jdbcType=VARCHAR},
+            is_dispose        = #{isDispose,jdbcType=SMALLINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
