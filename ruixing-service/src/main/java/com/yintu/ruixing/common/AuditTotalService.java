@@ -53,7 +53,7 @@ public interface AuditTotalService {
     List<AuditTotalVo> findDesignLiaison(AuditTotalDto auditTotalDto);
 
     /**
-     * @return 知识管理的审批列表
+     * @return 知识管理-文档管理-文档上传
      */
     List<AuditTotalVo> findKnowledgeManagement(AuditTotalDto auditTotalDto);
 

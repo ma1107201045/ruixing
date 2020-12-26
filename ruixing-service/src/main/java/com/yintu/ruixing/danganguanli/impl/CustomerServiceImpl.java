@@ -475,6 +475,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
-        return null;
+        return customerDao.selectAuditRecordByExample(search, userId, auditStatus, auditorId, activate, isDispose);
     }
 }

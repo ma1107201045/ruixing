@@ -18,7 +18,7 @@ public class AuditDto {
     @NotNull
     private Short moduleType;
     /**
-     * 1.项目 2.文件 3.资料修改
+     * 1.项目 2.文件 3.顾客档案
      */
     @NotNull
     private Short type;

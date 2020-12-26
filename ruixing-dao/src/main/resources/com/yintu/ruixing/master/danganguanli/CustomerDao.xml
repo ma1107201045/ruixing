@@ -356,8 +356,8 @@
 
     <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="title"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="c_name" jdbcType="VARCHAR" property="title"/>
+        <result column="car_name" jdbcType="VARCHAR" property="remark"/>
         <result column="u_true_name" jdbcType="VARCHAR" property="initiator"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="initiateTime"/>
         <result column="car_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
@@ -377,7 +377,7 @@
         <result column="cara_audit_finish_time" jdbcType="TIMESTAMP" property="auditFinishTime"/>
     </resultMap>
     <sql id="Example_Column_List">
-        car.id, c.name,car.remark,car.create_time,car.audit_finish_time,car.audit_status as car_audit_status,car.audit_finish_time as car_audit_finish_time,
+        car.id, c.name as c_name,car.name as car_name,car.create_time,car.audit_finish_time,car.audit_status as car_audit_status,car.audit_finish_time as car_audit_finish_time,
         u.true_name  u_true_name
     </sql>
     <sql id="Example_condition_List">
