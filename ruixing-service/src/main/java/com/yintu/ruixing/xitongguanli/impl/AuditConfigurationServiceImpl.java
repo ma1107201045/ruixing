@@ -144,11 +144,9 @@ public class AuditConfigurationServiceImpl implements AuditConfigurationService 
     @Override
     public List<TreeNodeUtil> findTree(Long loginUserId) {
         List<RoleEntity> roleEntities = roleService.findAll();
-        roleEntities = roleEntities.stream().sorted(Comparator.comparing(RoleEntity::getId).reversed()).collect(Collectors.toList());
         List<TreeNodeUtil> firstTreeNodeUtils = new ArrayList<>();
         for (RoleEntity roleEntity : roleEntities) {
             List<UserEntity> userEntities = roleService.findUsersByIds(roleEntity.getId());
-            userEntities = userEntities.stream().sorted(Comparator.comparing(UserEntity::getId).reversed()).collect(Collectors.toList());
             List<TreeNodeUtil> secondTreeNodeUtils = new ArrayList<>();
             TreeNodeUtil firstTreeNodeUtil = new TreeNodeUtil();
             firstTreeNodeUtil.setId(roleEntity.getId());
