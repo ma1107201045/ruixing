@@ -1,20 +1,7 @@
 package com.yintu.ruixing.chanpinjiaofu;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 
-/**
- * @Author Mr.liu
- * @Date 2020/7/7 16:12
- * @Version 1.0
- * 需求:产品交付项目文件和审核人的中间表
- */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChanPinJiaoFuFileAuditorEntity {
     private Integer id;
 
