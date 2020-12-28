@@ -102,6 +102,7 @@ public class CustomerController extends SessionController {
         return ResponseDataUtil.ok("查询顾客信息列表成功", pageInfo);
     }
 
+
     @GetMapping("/{id}/audit/records")
     @ResponseBody
     public Map<String, Object> findAuditRecordById(@PathVariable Integer id) {
@@ -118,6 +119,15 @@ public class CustomerController extends SessionController {
         List<CustomerTypeEntity> customerTypeEntities = customerTypeService.findAll();
         return ResponseDataUtil.ok("查询顾客类型信息列表成功", customerTypeEntities);
     }
+
+
+    @GetMapping("/departments")
+    @ResponseBody
+    public Map<String, Object> findCustomerTypeAndCustomerDepartmentTree() {
+        List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findCustomerTypeAndCustomerDepartmentTree();
+        return ResponseDataUtil.ok("查询客户类型以及部门树信息成功", treeNodeUtils);
+    }
+
 
     @GetMapping("/customer/departments")
     @ResponseBody

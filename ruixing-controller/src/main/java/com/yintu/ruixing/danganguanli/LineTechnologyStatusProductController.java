@@ -78,27 +78,5 @@ public class LineTechnologyStatusProductController extends SessionController imp
         return ResponseDataUtil.ok("查询线段技术状态产品信息列表成功", pageInfo);
     }
 
-    @GetMapping("/model/numbers")
-    public Map<String, Object> findProductModelNumber() {
-        List<LineTechnologyStatusProductModelNumberEntity> lineTechnologyStatusProductModelNumberEntities = lineTechnologyStatusProductModelNumberService.findAll();
-        lineTechnologyStatusProductModelNumberEntities = lineTechnologyStatusProductModelNumberEntities
-                .stream()
-                .sorted(Comparator.comparing(LineTechnologyStatusProductModelNumberEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询线段技术状态产品型号信息列表成功", lineTechnologyStatusProductModelNumberEntities);
-
-    }
-
-    @GetMapping("/specifications")
-    public Map<String, Object> findProductSpecification() {
-        List<LineTechnologyStatusProductSpecificationEntity> lineTechnologyStatusProductModelNumberEntities = lineTechnologyStatusProductSpecificationService.findAll();
-        lineTechnologyStatusProductModelNumberEntities = lineTechnologyStatusProductModelNumberEntities
-                .stream()
-                .sorted(Comparator.comparing(LineTechnologyStatusProductSpecificationEntity::getId).reversed())
-                .collect(Collectors.toList());
-        return ResponseDataUtil.ok("查询线段技术状态产品规格信息列表成功", lineTechnologyStatusProductModelNumberEntities);
-
-    }
-
 
 }

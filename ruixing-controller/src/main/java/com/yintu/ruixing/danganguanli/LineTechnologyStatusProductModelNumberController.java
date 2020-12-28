@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @date 2020/9/24 18:20
  */
 @RestController
-@RequestMapping("/line/technology/status/product/model/numbers")
+@RequestMapping("/line/technology/status/products/model/numbers")
 public class LineTechnologyStatusProductModelNumberController extends SessionController implements BaseController<LineTechnologyStatusProductModelNumberEntity, Integer> {
     @Autowired
     private LineTechnologyStatusProductModelNumberService lineTechnologyStatusProductModelNumberService;

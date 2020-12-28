@@ -53,9 +53,5 @@ public class CustomerDepartmentController extends SessionController {
         return ResponseDataUtil.ok("查询客户部门信息成功", customerDepartmentEntity);
     }
 
-    @GetMapping
-    public Map<String, Object> findCustomerTypeAndCustomerDepartmentTree() {
-        List<TreeNodeUtil> treeNodeUtils = customerDepartmentService.findCustomerTypeAndCustomerDepartmentTree();
-        return ResponseDataUtil.ok("查询客户类型以及部门树信息成功", treeNodeUtils);
-    }
+
 }

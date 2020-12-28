@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @date 2020/9/24 18:17
  */
 @RestController
-@RequestMapping("/line/technology/status/product/specifications")
+@RequestMapping("/line/technology/status/products/specifications")
 public class LineTechnologyStatusProductSpecificationController extends SessionController implements BaseController<LineTechnologyStatusProductSpecificationEntity, Integer> {
     @Autowired
     private LineTechnologyStatusProductSpecificationService lineTechnologyStatusProductSpecificationService;
