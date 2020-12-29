@@ -2856,15 +2856,15 @@ public class QuXianController {
     }
 
 
-    public static void main(String[] args) {
-        for (int a = 0; a < 100; a++) {
-            for (int b = 0; b < 100; b++) {
-                if (a * 189.8 + 139.4 * b == 15159) {
-                    System.out.println(a);
-                    System.out.println(b);
-                }
-            }
-        }
+    public static void main(String[] args) throws Exception{
+        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
+        String time2 = format1.format(new Date());
+        System.out.println("shijian="+time2);
+        int date = format1.parse(time2).getDate();
+        System.out.println("aaaaa"+date);
+        int seconds = format1.parse(time2).getSeconds();
+        System.out.println("bbbbb"+seconds);
+
     }
   /*  public static void main(String[] args) {
 
