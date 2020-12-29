@@ -93,16 +93,18 @@ public class QuXianController {
                 return ss;
             } else {
                 if (times == -1) {
+                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
                     List<Long> timelist = new ArrayList<>();
+                    String time2 = format1.format(new Date());
+                    int seconds = format1.parse(time2).getSeconds();
                     long endtime = today.getTime() / 1000;
-                    long statrtime = endtime - 1800;
+                    long statrtime = endtime - seconds;
                     System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                    for (int i = 0; i <= 1800; i++) {
+                    for (int i = 0; i <= seconds; i++) {
                         long onetime = statrtime + i;
                         long value = onetime * 1000L;
-                        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                        String time2 = format1.format(new Date(value));
-                        list.add(time2);
+                        String time23 = format1.format(new Date(value));
+                        list.add(time23);
                         timelist.add(onetime);
                     }
                     Integer k = 0;
@@ -1470,16 +1472,18 @@ public class QuXianController {
                 return ss;
             } else {
                 if (times == -1) {
+                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
                     List<Long> timelist = new ArrayList<>();
+                    String time2 = format1.format(new Date());
+                    int seconds = format1.parse(time2).getSeconds();
                     long endtime = today.getTime() / 1000;
-                    long statrtime = endtime - 1800;
+                    long statrtime = endtime - seconds;
                     System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                    for (int i = 0; i <= 1800; i++) {
+                    for (int i = 0; i <= seconds; i++) {
                         long onetime = statrtime + i;
                         long value = onetime * 1000L;
-                        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                        String time2 = format1.format(new Date(value));
-                        list.add(time2);
+                        String time23 = format1.format(new Date(value));
+                        list.add(time23);
                         timelist.add(onetime);
                     }
                     Integer k = 0;
