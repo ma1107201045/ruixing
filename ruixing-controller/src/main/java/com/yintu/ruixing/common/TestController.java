@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -146,7 +147,7 @@ public class TestController {
         InputStream is = request.getInputStream();
         byte[] b = new byte[1024];
         int len;
-        while (( len = is.read(b)) != -1) {
+        while ((len = is.read(b)) != -1) {
             System.out.println(Arrays.toString(b));
         }
         return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
@@ -161,6 +162,13 @@ public class TestController {
         while ((len = is.read(b, 0, b.length)) != -1) {
             System.out.println(Arrays.toString(b));
         }
+        return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
+    }
+
+    @GetMapping("/test10/{id}")
+    @ResponseBody
+    public Map<String, Object> test10(Integer id, UserEntity userEntity) {
+        System.out.println("null");
         return ResponseDataUtil.ok("上传售前技术支持文件信息成功");
     }
 }

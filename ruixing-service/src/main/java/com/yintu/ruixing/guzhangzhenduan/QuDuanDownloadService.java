@@ -1,7 +1,6 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
 import com.yintu.ruixing.common.util.BaseService;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanDownloadEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -13,17 +12,17 @@ import java.util.List;
 public interface QuDuanDownloadService extends BaseService<QuDuanDownloadEntity, Integer> {
 
 
-    Integer add(Integer czId, Short type, Date startDateTime, Date endDateTime);
+    void add(Integer czId, Short type, Date startDateTime, Date endDateTime);
 
 
     List<QuDuanDownloadEntity> findByDateTime(Integer czId, Date startDateTime, Date endDateTime);
 
 
-    QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId);
-
-    Integer changeDataStatus(Integer czId, Integer userId, Short dataStatus);
-
-    Integer changeSwitchStatus(Integer czId, Integer userId, Short switchStatus);
-
-    Short changeUpdateTime(Integer czId, Integer userId);
+//    QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId);
+//
+//    Integer changeDataStatus(Integer czId, Integer userId, Short dataStatus);
+//
+//    void changeSwitchStatus(Integer czId, Integer userId, Short switchStatus);
+//
+//    Short changeUpdateTime(Integer czId, Integer userId);
 }

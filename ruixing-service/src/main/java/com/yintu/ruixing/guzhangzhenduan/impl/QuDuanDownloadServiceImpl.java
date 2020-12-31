@@ -50,75 +50,73 @@ public class QuDuanDownloadServiceImpl implements QuDuanDownloadService {
 
 
     @Override
-    public Integer add(Integer czId, Short type, Date startDateTime, Date endDateTime) {
+    public void add(Integer czId, Short type, Date startDateTime, Date endDateTime) {
         QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
+        quDuanDownloadEntity.setCreateTime(new Date());
         quDuanDownloadEntity.setCid(czId);
         quDuanDownloadEntity.setStartTime(startDateTime);
         quDuanDownloadEntity.setEndTime(endDateTime);
-        quDuanDownloadEntity.setStatus((short) 0);
         quDuanDownloadEntity.setType(type);
-        quDuanDownloadEntity.setDataType((short) 1);
-        quDuanDownloadEntity.setCreateTime(new Date());
+        quDuanDownloadEntity.setProcess(100);
+        quDuanDownloadEntity.setStatus((short) 1);
         this.add(quDuanDownloadEntity);
-        return quDuanDownloadEntity.getId();
     }
 
 
-    //**************************数据接收或者关闭******************************
-
-    public QuDuanDownloadEntity insertData(Integer czId, Integer userId) {
-        QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
-        quDuanDownloadEntity.setCreateTime(new Date());
-        quDuanDownloadEntity.setCid(czId);
-        quDuanDownloadEntity.setUserId(userId);
-        quDuanDownloadEntity.setDataType((short) 2);
-
-        quDuanDownloadEntity.setDataStatus((short) 0);
-        quDuanDownloadEntity.setSwitchStatus((short) 1);
-
-        quDuanDownloadEntity.setUpdateTime(new Date());
-        this.add(quDuanDownloadEntity);
-        return quDuanDownloadEntity;
-    }
-
-    @Override
-    public Integer changeDataStatus(Integer czId, Integer userId, Short dataStatus) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
-        quDuanDownloadEntity.setDataStatus(dataStatus);
-        if (dataStatus.equals((short) 1)) {
-            quDuanDownloadEntity.setCreateTime(new Date());
-        } else {
-            if (quDuanDownloadEntity.getSwitchStatus().equals((short) 0)) {
-                quDuanDownloadEntity.setSwitchStatus((short) 1);
-            }
-        }
-        this.edit(quDuanDownloadEntity);
-        return quDuanDownloadEntity.getId();
-    }
-
-    @Override
-    public Integer changeSwitchStatus(Integer czId, Integer userId, Short switchStatus) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
-        quDuanDownloadEntity.setSwitchStatus(switchStatus);
-        this.edit(quDuanDownloadEntity);
-        return quDuanDownloadEntity.getId();
-    }
-
-    @Override
-    public Short changeUpdateTime(Integer czId, Integer userId) {
-        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
-        quDuanDownloadEntity.setUpdateTime(new Date());
-        this.edit(quDuanDownloadEntity);
-        return quDuanDownloadEntity.getSwitchStatus();
-    }
-
-    @Override
-    public QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId) {
-        QuDuanDownloadEntity quDuanDownloadEntity = quDuanDownloadDao.selectByCidAndDataType(czId, userId, (short) 2);
-        if (quDuanDownloadEntity == null)
-            quDuanDownloadEntity = insertData(czId, userId);
-        return quDuanDownloadEntity;
-    }
+//    //**************************数据接收或者关闭******************************
+//
+//    public QuDuanDownloadEntity insertData(Integer czId, Integer userId) {
+//        QuDuanDownloadEntity quDuanDownloadEntity = new QuDuanDownloadEntity();
+//        quDuanDownloadEntity.setCreateTime(new Date());
+//        quDuanDownloadEntity.setCid(czId);
+//        quDuanDownloadEntity.setUserId(userId);
+//        quDuanDownloadEntity.setDataType((short) 2);
+//
+//        quDuanDownloadEntity.setDataStatus((short) 0);
+//        quDuanDownloadEntity.setSwitchStatus((short) 1);
+//
+//        quDuanDownloadEntity.setUpdateTime(new Date());
+//        this.add(quDuanDownloadEntity);
+//        return quDuanDownloadEntity;
+//    }
+//
+//    @Override
+//    public Integer changeDataStatus(Integer czId, Integer userId, Short dataStatus) {
+//        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
+//        quDuanDownloadEntity.setDataStatus(dataStatus);
+//        if (dataStatus.equals((short) 1)) {
+//            quDuanDownloadEntity.setCreateTime(new Date());
+//        } else {
+//            if (quDuanDownloadEntity.getSwitchStatus().equals((short) 0)) {
+//                quDuanDownloadEntity.setSwitchStatus((short) 1);
+//            }
+//        }
+//        this.edit(quDuanDownloadEntity);
+//        return quDuanDownloadEntity.getId();
+//    }
+//
+//    @Override
+//    public void changeSwitchStatus(Integer czId, Integer userId, Short switchStatus) {
+//        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
+//        quDuanDownloadEntity.setSwitchStatus(switchStatus);
+//        this.edit(quDuanDownloadEntity);
+//    }
+//
+//    @Override
+//    public Short changeUpdateTime(Integer czId, Integer userId) {
+//        QuDuanDownloadEntity quDuanDownloadEntity = this.findByCzIdAndUserId(czId, userId);
+//        quDuanDownloadEntity.setUpdateTime(new Date());
+//        this.edit(quDuanDownloadEntity);
+//        return quDuanDownloadEntity.getSwitchStatus();
+//    }
+//
+//    @Override
+//    public QuDuanDownloadEntity findByCzIdAndUserId(Integer czId, Integer userId) {
+//        QuDuanDownloadEntity quDuanDownloadEntity = quDuanDownloadDao.selectByCidAndDataType(czId, userId, (short) 2);
+//        if (quDuanDownloadEntity == null)
+//            quDuanDownloadEntity = insertData(czId, userId);
+//        return quDuanDownloadEntity;
+//    }
 
 }
 

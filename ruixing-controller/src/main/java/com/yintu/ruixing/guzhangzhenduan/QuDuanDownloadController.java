@@ -23,8 +23,8 @@ import java.util.Map;
 public class QuDuanDownloadController extends SessionController {
     @Autowired
     private QuDuanDownloadService quDuanDownloadService;
-    @Autowired
-    private WebSocketServer webSocketServer;
+//    @Autowired
+//    private WebSocketServer webSocketServer;
 
     @PostMapping
     public Map<String, Object> add(
@@ -36,8 +36,8 @@ public class QuDuanDownloadController extends SessionController {
         time.setTime(startDateTime);
         time.add(Calendar.MINUTE, minute);
         Date endDateTime = time.getTime();
-        Integer id = quDuanDownloadService.add(czId, type, startDateTime, endDateTime);
-        webSocketServer.sendMessage(czId, id);
+        quDuanDownloadService.add(czId, type, startDateTime, endDateTime);
+//        webSocketServer.sendMessage(czId, id);
         return ResponseDataUtil.ok("添加下载记录成功");
     }
 
