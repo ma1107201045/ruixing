@@ -112,6 +112,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!--word 转PDF-->
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.17</version>
+        </dependency>
+
     </dependencies>
     <build>
 <!--        <finalName>ruixing-1.1.0</finalName>-->
