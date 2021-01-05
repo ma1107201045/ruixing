@@ -5,12 +5,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +24,25 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/solutions")
+@Slf4j
 public class SolutionController extends SessionController {
     @Autowired
     private SolutionService solutionService;
 
 
     @GetMapping("/work/completion")
-    public Map<String, Object> workCompletion(@RequestParam("date") Date date) {
+    public Map<String, Object> workCompletion(HttpServletRequest request, @RequestParam("date") Date date) {
+        log.error("getRemoteHost:" + request.getRemoteHost());
+        log.error("getRemotePort:" + request.getRemotePort());
+        log.error("getRemoteAddr:" + request.getRemoteAddr());
+        log.error("getRemoteUser:" + request.getRemoteUser());
+        log.error("-------------------------------------");
+        log.error("getScheme:" + request.getScheme());
+        log.error("getServerName:" + request.getServerName());
+        log.error("getServerPort:" + request.getServerPort());
+        log.error("getRequestURL:" + request.getRequestURL());
+        log.error("getRequestURI:" + request.getRequestURI());
+        log.error("isSecure:" + request.isSecure());
         JSONArray ja = solutionService.workCompletion(date);
         return ResponseDataUtil.ok("查询工作完成进度成功", ja);
     }

@@ -162,7 +162,9 @@ public class CommonController extends SessionController {
      */
     @PostMapping("/upload/file")
     public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile[] multipartFiles, HttpServletRequest request) throws IOException {
-        String prefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/files" + "/";
+        int port = request.getServerPort();
+        String portStr = port == 80 || port == 443 ? "" : ":" + port;
+        String prefix = request.getScheme() + "://" + request.getServerName() + portStr + request.getContextPath() + "/files" + "/";
         JSONArray ja = new JSONArray();
         for (MultipartFile multipartFile : multipartFiles) {
             if (multipartFile.getSize() == 0)
@@ -189,7 +191,9 @@ public class CommonController extends SessionController {
      */
     @PostMapping("/upload/photo")
     public Map<String, Object> uploadPhotoFile(@RequestParam("photo") MultipartFile[] multipartFiles, HttpServletRequest request) throws IOException {
-        String prefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/files" + "/";
+        int port = request.getServerPort();
+        String portStr = port == 80 || port == 443 ? "" : ":" + port;
+        String prefix = request.getScheme() + "://" + request.getServerName() + portStr + request.getContextPath() + "/files" + "/";
         JSONArray ja = new JSONArray();
         for (MultipartFile multipartFile : multipartFiles) {
             if (multipartFile.getSize() == 0)

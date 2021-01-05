@@ -112,20 +112,15 @@
             <scope>test</scope>
         </dependency>
 
-        <!--word 转PDF-->
-        <dependency>
-            <groupId>com.jacob</groupId>
-            <artifactId>jacob</artifactId>
-            <version>1.17</version>
-        </dependency>
-
     </dependencies>
     <build>
-<!--        <finalName>ruixing-1.1.0</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
