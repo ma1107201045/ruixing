@@ -77,7 +77,9 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
 
     @Override
     public void backup(HttpServletRequest request, String loginUserName) {
-        String prefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/backups" + "/";
+        int port = request.getServerPort();
+        String portStr = port == 80 || port == 443 ? "" : ":" + port;
+        String prefix = request.getScheme() + "://" + request.getServerName() + portStr + request.getContextPath() + "/backups" + "/";
         String strArr = StrUtil.subBetween(jdbcURL, "/", "?");
         String[] arr = strArr.split("/");
         String host = arr[1];
