@@ -20,6 +20,6 @@ public class quduanEntity {
 
     private Integer createtime;
 
-    private BigDecimal name;
+    private BigDecimal numValue;
 
 }

@@ -43,13 +43,13 @@ public interface QuXianService {
     List<String> findDMHQuDuanById(Integer id);
 
 
-    List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName,long Timee);
+    List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName );
 
     List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
 
 
-    List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName,long Timee);
+    List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName );
 
     List<quduanEntity> findDMHQuDuanData(long starttime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName);
 
@@ -67,4 +67,5 @@ public interface QuXianService {
     String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer type);
 
     String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer type);
+
 }

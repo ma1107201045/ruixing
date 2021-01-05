@@ -233,68 +233,68 @@
     </select>
 
     <resultMap id="quduanResultMap" type="com.yintu.ruixing.guzhangzhenduan.quduanEntity">
-        <result column="createtime" jdbcType="INTEGER" property="createtime"/>
-        <result column="v3" jdbcType="DECIMAL" property="name"/>
-        <result column="v4" jdbcType="DECIMAL" property="name"/>
-        <result column="v5" jdbcType="DECIMAL" property="name"/>
-        <result column="v6" jdbcType="DECIMAL" property="name"/>
-        <result column="v7" jdbcType="DECIMAL" property="name"/>
-        <result column="v8" jdbcType="DECIMAL" property="name"/>
-        <result column="v9" jdbcType="DECIMAL" property="name"/>
-        <result column="v10" jdbcType="DECIMAL" property="name"/>
-        <result column="v11" jdbcType="DECIMAL" property="name"/>
-        <result column="v12" jdbcType="DECIMAL" property="name"/>
-        <result column="v13" jdbcType="DECIMAL" property="name"/>
-        <result column="v14" jdbcType="DECIMAL" property="name"/>
-        <result column="v15" jdbcType="DECIMAL" property="name"/>
-        <result column="v16" jdbcType="DECIMAL" property="name"/>
-        <result column="v17" jdbcType="DECIMAL" property="name"/>
-        <result column="v18" jdbcType="DECIMAL" property="name"/>
-        <result column="v19" jdbcType="DECIMAL" property="name"/>
-        <result column="v20" jdbcType="DECIMAL" property="name"/>
-        <result column="v21" jdbcType="DECIMAL" property="name"/>
-        <result column="v22" jdbcType="DECIMAL" property="name"/>
-        <result column="v23" jdbcType="DECIMAL" property="name"/>
-        <result column="v24" jdbcType="DECIMAL" property="name"/>
-        <result column="v25" jdbcType="DECIMAL" property="name"/>
-        <result column="v26" jdbcType="DECIMAL" property="name"/>
-        <result column="v27" jdbcType="DECIMAL" property="name"/>
-        <result column="v28" jdbcType="DECIMAL" property="name"/>
-        <result column="v29" jdbcType="DECIMAL" property="name"/>
-        <result column="v30" jdbcType="DECIMAL" property="name"/>
-        <result column="v42" jdbcType="DECIMAL" property="name"/>
-        <result column="v43" jdbcType="DECIMAL" property="name"/>
-        <result column="v44" jdbcType="DECIMAL" property="name"/>
-        <result column="v45" jdbcType="DECIMAL" property="name"/>
-        <result column="v46" jdbcType="DECIMAL" property="name"/>
-        <result column="v52" jdbcType="DECIMAL" property="name"/>
-        <result column="v54" jdbcType="DECIMAL" property="name"/>
-        <result column="v55" jdbcType="DECIMAL" property="name"/>
-        <result column="v56" jdbcType="DECIMAL" property="name"/>
-        <result column="v57" jdbcType="DECIMAL" property="name"/>
-        <result column="v58" jdbcType="DECIMAL" property="name"/>
-        <result column="v59" jdbcType="DECIMAL" property="name"/>
-        <result column="v60" jdbcType="DECIMAL" property="name"/>
-        <result column="v61" jdbcType="DECIMAL" property="name"/>
-        <result column="v62" jdbcType="DECIMAL" property="name"/>
-        <result column="v63" jdbcType="DECIMAL" property="name"/>
-        <result column="v64" jdbcType="DECIMAL" property="name"/>
-        <result column="v65" jdbcType="DECIMAL" property="name"/>
-        <result column="v66" jdbcType="DECIMAL" property="name"/>
-        <result column="v67" jdbcType="DECIMAL" property="name"/>
-        <result column="v68" jdbcType="DECIMAL" property="name"/>
-        <result column="v69" jdbcType="DECIMAL" property="name"/>
-        <result column="v47" jdbcType="DECIMAL" property="name"/>
-        <result column="v48" jdbcType="DECIMAL" property="name"/>
-        <result column="v49" jdbcType="DECIMAL" property="name"/>
-        <result column="v50" jdbcType="DECIMAL" property="name"/>
-        <result column="v51" jdbcType="DECIMAL" property="name"/>
-        <result column="v53" jdbcType="DECIMAL" property="name"/>
-        <result column="v39_sc4" jdbcType="DECIMAL" property="name"/>
-        <result column="v39_sc3" jdbcType="DECIMAL" property="name"/>
-        <result column="v39_sc2" jdbcType="DECIMAL" property="name"/>
-        <result column="v40" jdbcType="DECIMAL" property="name"/>
-        <result column="v41" jdbcType="DECIMAL" property="name"/>
+        <result column="createtime"  property="createtime"/>
+        <result column="v3" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v4" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v5" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v6" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v7" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v8" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v9" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v10" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v11" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v12" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v13" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v14" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v15" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v16" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v17" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v18" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v19" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v20" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v21" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v22" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v23" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v24" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v25" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v26" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v27" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v28" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v29" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v30" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v42" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v43" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v44" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v45" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v46" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v52" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v54" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v55" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v56" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v57" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v58" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v59" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v60" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v61" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v62" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v63" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v64" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v65" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v66" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v67" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v68" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v69" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v47" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v48" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v49" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v50" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v51" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v53" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v39_sc4" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v39_sc3" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v39_sc2" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v40" jdbcType="DECIMAL" property="numValue"/>
+        <result column="v41" jdbcType="DECIMAL" property="numValue"/>
     </resultMap>
 
     <select id="findDianMaHuaDatasByCZids" resultMap="quduanBaseResultMap">
@@ -374,55 +374,45 @@
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findOneQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime
-        from ${tableName} qi,
-             mro_quduan_base qb
-        where qi.v1 = qb.qdid
-          and qb.quDuanYunYing_name = "${quduanname}"
-          and qi.v1 = "${qdid}"
+        from ${tableName} qi
+        where  qi.v1 = ${qdid}
           and qi.createtime
             BETWEEN
-            "${statrtime}"
+            ${statrtime}
             AND
-            "${endtime}"
+            ${endtime}
+            order by qi.createtime
     </select>
 
 
     <!--实时曲线   -->
     <select id="findQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime from ${tableName} qi
-        where qi.v1 in
-        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
-            ${qid}
-        </foreach>
-        and qi.v1 = "${qdid}"
-        and qi.createtime=${Timee}
+        where  qi.v1 = ${qdid}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
     </select>
-
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanDayData" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime from ${tableName} qi
-        where qi.v1 in
-        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
-            ${qid}
-        </foreach>
-        and qi.v1 = "${qdid}"
+        where qi.v1 =${qdid}
         and qi.createtime
         BETWEEN
-        "${statrtime}"
+        ${statrtime}
         AND
-        "${endtime}"
+        ${endtime}
+        order by qi.createtime
     </select>
 
     <!--电码化实时曲线   -->
     <select id="findDMHQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime from ${tableName} qi
-        where qi.v1 in
-        <foreach collection="qdIds" open="(" close=")" index="index" item="qid" separator=",">
-            ${qid}
-        </foreach>
-        and qi.v1 = "${qdid}"
-        and qi.createtime=${Timee}
+        where  qi.v1 = ${qdid}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
     </select>
 
 

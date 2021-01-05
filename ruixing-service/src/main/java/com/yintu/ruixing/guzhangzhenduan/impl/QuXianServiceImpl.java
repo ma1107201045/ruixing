@@ -35,7 +35,6 @@ public class QuXianServiceImpl implements QuXianService {
     private MenXianService menXianService;
 
 
-
     /* @Override
          public List<SheBeiEntity> findSheBeiByCid(Integer id) {
              return quXianDao.findSheBeiByCid(id);
@@ -48,68 +47,68 @@ public class QuXianServiceImpl implements QuXianService {
 
     @Override
     public String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMaxNumberK(czid,qdid,mid,typee);
+        return menXianService.findMaxNumberK(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMaxNumberZ(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMaxNumberZ(czid,qdid,mid,typee);
+        return menXianService.findMaxNumberZ(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumberK(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMinNumberK(czid,qdid,mid,typee);
+        return menXianService.findMinNumberK(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMinNumberZ(czid,qdid,mid,typee);
+        return menXianService.findMinNumberZ(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMinNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMinNumber(czid,qdid,mid,typee);
+        return menXianService.findMinNumber(czid, qdid, mid, typee);
     }
 
     @Override
     public String findMaxNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
-        Integer typee=0;
-        if (type==0){
-            typee=1;
-        }else {
-            typee=2;
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
         }
-        return menXianService.findMaxNumber(czid,qdid,mid,typee);
+        return menXianService.findMaxNumber(czid, qdid, mid, typee);
     }
 
     /* @Override
@@ -190,34 +189,33 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
 
-
-
     @Override
-    public List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName,long Timee) {
+    public List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
-            return quDuanInfoDaoV2.findQuDuanShiShiData(shuxingname, qdIds, qdid, tableName,Timee);
+            //Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findQuDuanShiShiData(shuxingname, qdid, tableName);
         } else {
             throw new BaseRuntimeException("暂无数据");
         }
     }
 
+
     @Override
     public List<quduanEntity> findQuDuanDayData(long statrtime, long endtime, String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
-            return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, qdIds, qdid, tableName);
+            // Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findQuDuanDayData(statrtime, endtime, shuxingname, qdid, tableName);
         } else {
-             throw new BaseRuntimeException("暂无数据");
+            throw new BaseRuntimeException("暂无数据");
         }
     }
 
 
     @Override
-    public List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName,long Timee) {
+    public List<quduanEntity> findDMHQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {
         if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
-            Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
-            return quDuanInfoDaoV2.findDMHQuDuanShiShiData(shuxingname, qdIds, qdid, tableName,Timee);
+          //  Integer[] qdIds = quDuanBaseService.findByQdIdAndQuDuanYunYingName(quduanname).stream().map(QuDuanBaseEntity::getQdid).toArray(Integer[]::new);
+            return quDuanInfoDaoV2.findDMHQuDuanShiShiData(shuxingname, qdid, tableName);
         } else {
             return new ArrayList<>();
         }

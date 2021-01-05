@@ -73,15 +73,6 @@ public class QuXianController {
         if (shuxingId.length == 0 || quduanName.length == 0) {
             return ResponseDataUtil.error("请选择正确的数据");
         } else {
-            List<String> list = new ArrayList<>();
-            List<BigDecimal> listt1 = new ArrayList<>();
-            List<BigDecimal> listt2 = new ArrayList<>();
-            List<BigDecimal> listt3 = new ArrayList<>();
-            List<BigDecimal> listt4 = new ArrayList<>();
-            List<BigDecimal> listt5 = new ArrayList<>();
-            List<BigDecimal> listt6 = new ArrayList<>();
-            List<BigDecimal> listt7 = new ArrayList<>();
-            List<BigDecimal> listt8 = new ArrayList<>();
             JSONObject js = new JSONObject();
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
@@ -92,759 +83,229 @@ public class QuXianController {
                 ss.put("data", aa);
                 return ss;
             } else {
-                if (times == -1) {
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    List<Long> timelist = new ArrayList<>();
-                    String time2 = format1.format(new Date());
-                    int seconds = format1.parse(time2).getSeconds();
-                    long endtime = today.getTime() / 1000;
-                    long statrtime = endtime - seconds;
-                    System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                    for (int i = 0; i <= seconds; i++) {
-                        long onetime = statrtime + i;
-                        long value = onetime * 1000L;
-                        String time23 = format1.format(new Date(value));
-                        list.add(time23);
-                        timelist.add(onetime);
+                Integer k = 0;
+                for (int i = 0; i < sqlname.size(); i++) {
+                    List<Object> listt1 = new ArrayList<>();
+                    k++;
+                    System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
+                    String shuxingname = sqlname.get(i);
+                    System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
+                    String quduanname = quduanName[i];
+                    Integer qdid = quXianService.findQDid(quduanname, czid);
+                    Integer type = types[i];//区段类型
+                    Integer mid = mids[i];//本区段对应的最大值和最小值id
+                    String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
+                    System.out.println("maxNumbers=" + maxNumbers);
+                    String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
+                    System.out.println("maxNumbers_k=" + maxNumbers_k);
+                    String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
+                    System.out.println("maxNumbers_z=" + maxNumbers_z);
+                    String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
+                    System.out.println("minNumbers=" + minNumbers);
+                    String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
+                    System.out.println("minNumbers_k=" + minNumbers_k);
+                    String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
+                    System.out.println("minNumbers_z=" + minNumbers_z);
+                    List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
+                    for (quduanEntity quduanEntity : date) {
+                        List<Object> list1 = new ArrayList();
+                        Integer createtime = quduanEntity.getCreatetime();
+                        BigDecimal numValue = quduanEntity.getNumValue();
+                        list1.add(createtime * 1000L);
+                        list1.add(numValue);
+                        listt1.add(list1);
                     }
-                    Integer k = 0;
-                    for (int i = 0; i < sqlname.size(); i++) {
-                        k++;
-
-                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                        String shuxingname = sqlname.get(i);
-                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                        String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname, czid);
-                        Integer type = types[i];//区段类型
-                        Integer mid = mids[i];//本区段对应的最大值和最小值id
-                        String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
-                        String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
-                        String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
-                        String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
-                        String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
-                        String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-
-                        List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                        System.out.println("1234" + date);
-                        if (date.size() == timelist.size()) {
-                            for (int i1 = 0; i1 < date.size(); i1++) {
-                                if (k == 1) {
-                                    listt1.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 2) {
-                                    listt2.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 3) {
-                                    listt3.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 4) {
-                                    listt4.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 5) {
-                                    listt5.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 6) {
-                                    listt6.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 7) {
-                                    listt7.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 8) {
-                                    listt8.add(i1, date.get(i1).getName());
-                                }
+                    if (k == 1) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
                             }
-                        } else {
-                            Integer l = 0;
-                            for (int i1 = 0; i1 < timelist.size(); i1++) {
-                                Integer p = 0;
-                                for (int i2 = 0; i2 < date.size(); i2++) {
-                                    if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                        l = 0;
-                                        p++;
-                                    } else {
-                                        l = 1;
-                                        break;
-                                    }
-                                }
-                                if (k == 1) {
-                                    if (l == 0) {
-                                        listt1.add(i1, null);
-                                    } else {
-                                        listt1.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 2) {
-                                    if (l == 0) {
-                                        listt2.add(i1, null);
-                                    } else {
-                                        listt2.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 3) {
-                                    if (l == 0) {
-                                        listt3.add(i1, null);
-                                    } else {
-                                        listt3.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 4) {
-                                    if (l == 0) {
-                                        listt4.add(i1, null);
-                                    } else {
-                                        listt4.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 5) {
-                                    if (l == 0) {
-                                        listt5.add(i1, null);
-                                    } else {
-                                        listt5.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 6) {
-                                    if (l == 0) {
-                                        listt6.add(i1, null);
-                                    } else {
-                                        listt6.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 7) {
-                                    if (l == 0) {
-                                        listt7.add(i1, null);
-                                    } else {
-                                        listt7.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 8) {
-                                    if (l == 0) {
-                                        listt8.add(i1, null);
-                                    } else {
-                                        listt8.add(i1, date.get(p).getName());
-                                    }
-                                }
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
                             }
-                        }
-                        js.put("shijian", list);
-                        System.out.println("~~~~~~~~~~~~~~~=" + list);
-                        if (k == 1) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
                             }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt1);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
                             }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
                             }
-                        }
-                        if (k == 2) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt2);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 3) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt3);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt3);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 4) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt4);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 5) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt5);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 6) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt6);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 7) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt7);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 8) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt8);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
                             }
                         }
                     }
-                } else if (times != -1) {
-                    Integer k = 0;
-                    for (int i = 0; i < sqlname.size(); i++) {
-                        long Timee = today.getTime() / 1000;
-                        k++;
-                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                        String shuxingname = sqlname.get(i);
-                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                        String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname, czid);
-                        Integer type = types[i];//区段类型
-                        Integer mid = mids[i];//本区段对应的最大值和最小值id
-                        String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
-                        System.out.println("maxNumbers=" + maxNumbers);
-                        String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
-                        System.out.println("maxNumbers_k=" + maxNumbers_k);
-                        String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
-                        System.out.println("maxNumbers_z=" + maxNumbers_z);
-                        String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
-                        System.out.println("minNumbers=" + minNumbers);
-                        String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
-                        System.out.println("minNumbers_k=" + minNumbers_k);
-                        String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-                        System.out.println("minNumbers_z=" + minNumbers_z);
+                    if (k == 2) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
+                            }
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
+                            }
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
+                            }
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
+                            }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
+                            }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
+                            }
+                        }
+                    }
+                    if (k == 3) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
+                            }
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
+                            }
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
+                            }
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
+                            }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
+                            }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
+                            }
+                        }
+                    }
+                    if (k == 4) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
+                            }
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
+                            }
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
+                            }
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
+                            }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
+                            }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
+                            }
+                        }
+                    }
+                    if (k == 5) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
+                            }
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
+                            }
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
+                            }
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
+                            }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
+                            }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
+                            }
+                        }
+                    }
+                    if (k == 6) {
 
-                        List<quduanEntity> date = quXianService.findDMHQuDuanShiShiData(shuxingname, quduanname, qdid, tableName,Timee);
-                        if (date.size() != 0 || date != null) {
-                            for (quduanEntity quduanEntity : date) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
 
-                               /* long createtime = quduanEntity.getCreatetime();
-                                long value = createtime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);
-                                */
-                                System.out.println("1234" + date);
-                                if (k == 1) {
-                                    listt1.add(quduanEntity.getName());
-                                }
-                                if (k == 2) {
-                                    listt2.add(quduanEntity.getName());
-                                }
-                                if (k == 3) {
-                                    listt3.add(quduanEntity.getName());
-                                }
-                                if (k == 4) {
-                                    listt4.add(quduanEntity.getName());
-                                }
-                                if (k == 5) {
-                                    listt5.add(quduanEntity.getName());
-                                }
-                                if (k == 6) {
-                                    listt6.add(quduanEntity.getName());
-                                }
-                                if (k == 7) {
-                                    listt7.add(quduanEntity.getName());
-                                }
-                                if (k == 8) {
-                                    listt8.add(quduanEntity.getName());
-                                }
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
                             }
-                        }else {
-                            if (k == 1) {
-                                listt1.add(null);
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
                             }
-                            if (k == 2) {
-                                listt2.add(null);
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
                             }
-                            if (k == 3) {
-                                listt3.add(null);
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
                             }
-                            if (k == 4) {
-                                listt4.add(null);
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
                             }
-                            if (k == 5) {
-                                listt5.add(null);
-                            }
-                            if (k == 6) {
-                                listt6.add(null);
-                            }
-                            if (k == 7) {
-                                listt7.add(null);
-                            }
-                            if (k == 8) {
-                                listt8.add(null);
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
                             }
                         }
-                        if (times == 0) {
-                            for (int j = 1; j <= 300; j++) {
-                                long starttime = Timee + j;
-                                long value = starttime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);
+                    }
+                    if (k == 7) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
                             }
-                        }else if (times%300==0){
-                            for (int j = 1; j <= 300; j++) {
-                                long starttime = Timee + j;
-                                long value = starttime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
                             }
-                        }
-
-                        js.put("shijian", list);
-                        System.out.println("~~~~~~~~~~~~~~~=" + list);
-                        if (k == 1) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
                             }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt1);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
                             }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
+                            }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
                             }
                         }
-                        if (k == 2) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                    }
+                    if (k == 8) {
+                        js.put("shuju" + k.toString(), listt1);
+                        js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
+                        if (type == 0 || type == 1) {
+                            if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
+                                js.put("max" + k.toString(), maxNumbers);
                             }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt2);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
+                            if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
+                                js.put("max_k" + k.toString(), maxNumbers_k);
                             }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
+                            if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
+                                js.put("max_z" + k.toString(), maxNumbers_z);
                             }
-                        }
-                        if (k == 3) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt3);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                            if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
+                                js.put("min" + k.toString(), minNumbers);
                             }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt3);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
+                            if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
+                                js.put("min_k" + k.toString(), minNumbers_k);
                             }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 4) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt4);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 5) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt5);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 6) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt6);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 7) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt7);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 8) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt8);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
+                            if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
+                                js.put("min_z" + k.toString(), minNumbers_z);
                             }
                         }
                     }
@@ -867,16 +328,6 @@ public class QuXianController {
         if (shuxingId.length == 0 || quduanName.length == 0 || dayTime == null) {
             return ResponseDataUtil.error("请选择正确的数据");
         } else {
-            List<String> list = new ArrayList<>();//48个时间集合
-            List<BigDecimal> listt1 = new ArrayList<>();
-            List<BigDecimal> listt2 = new ArrayList<>();
-            List<BigDecimal> listt3 = new ArrayList<>();
-            List<BigDecimal> listt4 = new ArrayList<>();
-            List<BigDecimal> listt5 = new ArrayList<>();
-            List<BigDecimal> listt6 = new ArrayList<>();
-            List<BigDecimal> listt7 = new ArrayList<>();
-            List<BigDecimal> listt8 = new ArrayList<>();
-            List<Long> timelist = new ArrayList<>();
             JSONObject js = new JSONObject();
             Long endtime = null;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
@@ -884,40 +335,17 @@ public class QuXianController {
             Date nowday = simpleDateFormat.parse(simpleDateFormat.format(today));//当前的年月日
             long todaytime = today.getTime() / 1000;//当前时间转换为秒
             long nowdaytime = nowday.getTime() / 1000;//当前年月日转化为秒
-
             long statrtime = dayTime.getTime() / 1000;
             if (nowdaytime != statrtime) {
                 endtime = statrtime + 86399;
-                System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                for (int i = 0; i <= 86399; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
             } else {
-                long times = todaytime - statrtime;
                 endtime = todaytime;
-                for (int i = 0; i <= times; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
             }
-            js.put("shijian", list);
-            System.out.println("");
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
             Integer k = 0;
-            Integer kk = 0;
             for (int i = 0; i < sqlname.size(); i++) {
-                List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                List<String> MINNumber = new ArrayList<>();//区段属性的最小值
+                List<Object> listt1 = new ArrayList<>();
                 k++;
                 System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                 String shuxingname = sqlname.get(i);
@@ -925,9 +353,6 @@ public class QuXianController {
                 String quduanname = quduanName[i];
                 Integer qdid = quXianService.findQDid(quduanname, czid);
                 Integer type = types[i];//区段类型
-                if (type == 2) {
-                    kk++;
-                }
                 Integer mid = mids[i];//本区段对应的最大值和最小值id
                 String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
                 String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
@@ -935,118 +360,19 @@ public class QuXianController {
                 String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
                 String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                 String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-
                 List<quduanEntity> date = quXianService.findOneQuDuanDatas(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                System.out.println("1234" + date);
-                if (date.size() == timelist.size()) {
-                    for (int i1 = 0; i1 < date.size(); i1++) {
-                        if (k == 1) {
-                            listt1.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 2) {
-                            listt2.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 3) {
-                            listt3.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 4) {
-                            listt4.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 5) {
-                            listt5.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 6) {
-                            listt6.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 7) {
-                            listt7.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 8) {
-                            listt8.add(i1, date.get(i1).getName());
-                        }
-                    }
-                } else {
-                    Integer l = 0;
-                    for (int i1 = 0; i1 < timelist.size(); i1++) {
-                        Integer p = 0;
-                        for (int i2 = 0; i2 < date.size(); i2++) {
-                            if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                l = 0;
-                                p++;
-                            } else {
-                                l = 1;
-                                break;
-                            }
-                        }
-                        if (k == 1) {
-                            if (l == 0) {
-                                listt1.add(i1, null);
-                            } else {
-                                listt1.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 2) {
-                            if (l == 0) {
-                                listt2.add(i1, null);
-                            } else {
-                                listt2.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 3) {
-                            if (l == 0) {
-                                listt3.add(i1, null);
-                            } else {
-                                listt3.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 4) {
-                            if (l == 0) {
-                                listt4.add(i1, null);
-                            } else {
-                                listt4.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 5) {
-                            if (l == 0) {
-                                listt5.add(i1, null);
-                            } else {
-                                listt5.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 6) {
-                            if (l == 0) {
-                                listt6.add(i1, null);
-                            } else {
-                                listt6.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 7) {
-                            if (l == 0) {
-                                listt7.add(i1, null);
-                            } else {
-                                listt7.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 8) {
-                            if (l == 0) {
-                                listt8.add(i1, null);
-                            } else {
-                                listt8.add(i1, date.get(p).getName());
-                            }
-                        }
-                    }
+                // System.out.println("1234" + date);
+                for (quduanEntity quduanEntity : date) {
+                    List<Object> list1 = new ArrayList();
+                    Integer createtime = quduanEntity.getCreatetime();
+                    BigDecimal numValue = quduanEntity.getNumValue();
+                    list1.add(createtime * 1000L);
+                    list1.add(numValue);
+                    listt1.add(list1);
                 }
                 if (k == 1) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        //  js.put("kaiguanliang" + kk.toString(), listt1);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1069,16 +395,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 2) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt2);
-                        //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1101,16 +419,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 3) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        //  js.put("kaiguanliang" + kk.toString(), listt3);
-                        //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1133,16 +443,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 4) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt4);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1165,16 +467,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 5) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt5);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1197,16 +491,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 6) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt6);
-                        js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt6);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt6);
-                        js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1229,16 +515,10 @@ public class QuXianController {
                     }
                 }
                 if (k == 7) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt7);
-                        js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt7);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt7);
-                        js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                    }
+
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
+
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1261,16 +541,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 8) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt8);
-                        js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt8);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt8);
-                        js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -1292,14 +564,14 @@ public class QuXianController {
                         }
                     }
                 }
+
             }
             return ResponseDataUtil.ok("查询数据成功", js);
         }
     }
-
     //电码化的辅助曲线
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
-    @GetMapping("/findDMHQuDuanData")
+   /* @GetMapping("/findDMHQuDuanData")
     public Map<String, Object> findDMHQuDuanData(@RequestParam("startTime") Date startTime,
                                                  @RequestParam("endTime") Date endTime,
                                                  @RequestParam("shuxingId") Integer[] shuxingId,
@@ -1438,7 +710,7 @@ public class QuXianController {
             return ResponseDataUtil.ok("查询数据成功", js);
         }
     }
-
+*/
 
     //区段实时曲线
     @GetMapping("/findQuDuanShiShiData")
@@ -1452,15 +724,6 @@ public class QuXianController {
         if (shuxingId.length == 0 || quduanName.length == 0) {
             return ResponseDataUtil.error("请选择正确的数据");
         } else {
-            List<String> list = new ArrayList<>();
-            List<BigDecimal> listt1 = new ArrayList<>();
-            List<BigDecimal> listt2 = new ArrayList<>();
-            List<BigDecimal> listt3 = new ArrayList<>();
-            List<BigDecimal> listt4 = new ArrayList<>();
-            List<BigDecimal> listt5 = new ArrayList<>();
-            List<BigDecimal> listt6 = new ArrayList<>();
-            List<BigDecimal> listt7 = new ArrayList<>();
-            List<BigDecimal> listt8 = new ArrayList<>();
             JSONObject js = new JSONObject();
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
@@ -1471,25 +734,9 @@ public class QuXianController {
                 ss.put("data", aa);
                 return ss;
             } else {
-                if (times == -1) {
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    List<Long> timelist = new ArrayList<>();
-                    String time2 = format1.format(new Date());
-                    int seconds = format1.parse(time2).getSeconds();
-                    long endtime = today.getTime() / 1000;
-                    long statrtime = endtime - seconds;
-                    System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                    for (int i = 0; i <= seconds; i++) {
-                        long onetime = statrtime + i;
-                        long value = onetime * 1000L;
-                        String time23 = format1.format(new Date(value));
-                        list.add(time23);
-                        timelist.add(onetime);
-                    }
                     Integer k = 0;
                     for (int i = 0; i < sqlname.size(); i++) {
-                        List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                        List<String> MINNumber = new ArrayList<>();//区段属性的最小值
+                        List<Object> listt1 = new ArrayList<>();
                         k++;
                         System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                         String shuxingname = sqlname.get(i);
@@ -1504,120 +751,18 @@ public class QuXianController {
                         String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
                         String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                         String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-
-                        List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                        System.out.println("1234" + date);
-                        if (date.size() == timelist.size()) {
-                            for (int i1 = 0; i1 < date.size(); i1++) {
-                                if (k == 1) {
-                                    listt1.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 2) {
-                                    listt2.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 3) {
-                                    listt3.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 4) {
-                                    listt4.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 5) {
-                                    listt5.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 6) {
-                                    listt6.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 7) {
-                                    listt7.add(i1, date.get(i1).getName());
-                                }
-                                if (k == 8) {
-                                    listt8.add(i1, date.get(i1).getName());
-                                }
-                            }
-                        } else {
-                            Integer l = 0;
-                            for (int i1 = 0; i1 < timelist.size(); i1++) {
-                                Integer p = 0;
-                                for (int i2 = 0; i2 < date.size(); i2++) {
-                                    if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                        l = 0;
-                                        p++;
-                                    } else {
-                                        l = 1;
-                                        break;
-                                    }
-                                }
-                                if (k == 1) {
-                                    if (l == 0) {
-                                        listt1.add(i1, null);
-                                    } else {
-                                        listt1.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 2) {
-                                    if (l == 0) {
-                                        listt2.add(i1, null);
-                                    } else {
-                                        listt2.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 3) {
-                                    if (l == 0) {
-                                        listt3.add(i1, null);
-                                    } else {
-                                        listt3.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 4) {
-                                    if (l == 0) {
-                                        listt4.add(i1, null);
-                                    } else {
-                                        listt4.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 5) {
-                                    if (l == 0) {
-                                        listt5.add(i1, null);
-                                    } else {
-                                        listt5.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 6) {
-                                    if (l == 0) {
-                                        listt6.add(i1, null);
-                                    } else {
-                                        listt6.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 7) {
-                                    if (l == 0) {
-                                        listt7.add(i1, null);
-                                    } else {
-                                        listt7.add(i1, date.get(p).getName());
-                                    }
-                                }
-                                if (k == 8) {
-                                    if (l == 0) {
-                                        listt8.add(i1, null);
-                                    } else {
-                                        listt8.add(i1, date.get(p).getName());
-                                    }
-                                }
-                            }
+                        List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName);
+                        for (quduanEntity quduanEntity : date) {
+                            List<Object> list1 = new ArrayList();
+                            Integer createtime = quduanEntity.getCreatetime();
+                            BigDecimal numValue = quduanEntity.getNumValue();
+                            list1.add(createtime * 1000L);
+                            list1.add(numValue);
+                            listt1.add(list1);
                         }
-                        js.put("shijian", list);
-                        System.out.println("~~~~~~~~~~~~~~~=" + list);
                         if (k == 1) {
-                            if (type != 2) {
                                 js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt1);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1640,16 +785,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 2) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt2);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt2);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1672,16 +809,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 3) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt3);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt3);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1704,16 +833,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 4) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt4);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt4);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1736,16 +857,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 5) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt5);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt5);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1768,16 +881,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 6) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt6);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt6);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1800,16 +905,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 7) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt7);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt7);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1832,16 +929,8 @@ public class QuXianController {
                             }
                         }
                         if (k == 8) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt8);
+                                js.put("shuju" + k.toString(), listt1);
                                 js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt8);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
                             if (type == 0 || type == 1) {
                                 if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                     js.put("max" + k.toString(), maxNumbers);
@@ -1864,372 +953,10 @@ public class QuXianController {
                             }
                         }
                     }
-                } else if (times != -1) {
-                    long Timee = today.getTime() / 1000;
-                    Integer k = 0;
-                    for (int i = 0; i < sqlname.size(); i++) {
-                        k++;
-                        System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
-                        String shuxingname = sqlname.get(i);
-                        System.out.println("1231111=" + quduanName[i]);//获得每一个区段名
-                        String quduanname = quduanName[i];
-                        Integer qdid = quXianService.findQDid(quduanname, czid);
-                        Integer type = types[i];//区段类型
-                        Integer mid = mids[i];//本区段对应的最大值和最小值id
-
-                        String maxNumbers = quXianService.findMaxNumber(czid, qdid, mid, type);
-                        String maxNumbers_k = quXianService.findMaxNumberK(czid, qdid, mid, type);
-                        String maxNumbers_z = quXianService.findMaxNumberZ(czid, qdid, mid, type);
-                        String minNumbers = quXianService.findMinNumber(czid, qdid, mid, type);
-                        String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
-                        String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
-
-                        List<quduanEntity> date = quXianService.findQuDuanShiShiData(shuxingname, quduanname, qdid, tableName, Timee);
-                        if (date.size() != 0 || date != null) {
-                            for (quduanEntity quduanEntity : date) {
-
-                               /* long createtime = quduanEntity.getCreatetime();
-                                long value = createtime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);*/
-
-                                System.out.println("1234" + date);
-                                if (k == 1) {
-                                    listt1.add(quduanEntity.getName());
-                                }
-                                if (k == 2) {
-                                    listt2.add(quduanEntity.getName());
-                                }
-                                if (k == 3) {
-                                    listt3.add(quduanEntity.getName());
-                                }
-                                if (k == 4) {
-                                    listt4.add(quduanEntity.getName());
-                                }
-                                if (k == 5) {
-                                    listt5.add(quduanEntity.getName());
-                                }
-                                if (k == 6) {
-                                    listt6.add(quduanEntity.getName());
-                                }
-                                if (k == 7) {
-                                    listt7.add(quduanEntity.getName());
-                                }
-                                if (k == 8) {
-                                    listt8.add(quduanEntity.getName());
-                                }
-                            }
-                        } else {
-                            if (k == 1) {
-                                listt1.add(null);
-                            }
-                            if (k == 2) {
-                                listt2.add(null);
-                            }
-                            if (k == 3) {
-                                listt3.add(null);
-                            }
-                            if (k == 4) {
-                                listt4.add(null);
-                            }
-                            if (k == 5) {
-                                listt5.add(null);
-                            }
-                            if (k == 6) {
-                                listt6.add(null);
-                            }
-                            if (k == 7) {
-                                listt7.add(null);
-                            }
-                            if (k == 8) {
-                                listt8.add(null);
-                            }
-                        }
-                        if (times == 0) {
-                            for (int j = 1; j <= 300; j++) {
-                                long starttime = Timee + j;
-                                long value = starttime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);
-                            }
-                        }else if (times%300==0){
-                            for (int j = 1; j <= 300; j++) {
-                                long starttime = Timee + j;
-                                long value = starttime * 1000L;
-                                SimpleDateFormat format12 = new SimpleDateFormat("HH:mm:ss");
-                                String time = format12.format(new Date(value));
-                                list.add(time);
-                            }
-                        }
-
-                        js.put("shijian", list);
-                        System.out.println("~~~~~~~~~~~~~~~=" + list);
-                        if (k == 1) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt1);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt1);
-                                js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 2) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt2);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 3) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt3);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                //  js.put("kaiguanliang" + kk.toString(), listt3);
-                                //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt2);
-                                js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 4) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt4);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt4);
-                                js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 5) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt5);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt5);
-                                js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 6) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt6);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt6);
-                                js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 7) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt7);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt7);
-                                js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                        if (k == 8) {
-                            if (type != 2) {
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 2) {
-                                // js.put("kaiguanliang" + kk.toString(), listt8);
-                                // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                                js.put("shuju" + k.toString(), listt8);
-                                js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                            }
-                            if (type == 0 || type == 1) {
-                                if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
-                                    js.put("max" + k.toString(), maxNumbers);
-                                }
-                                if (maxNumbers_k != null && !("——").equals(maxNumbers_k) && !("0").equals(maxNumbers_k)) {
-                                    js.put("max_k" + k.toString(), maxNumbers_k);
-                                }
-                                if (maxNumbers_z != null && !("——").equals(maxNumbers_z) && !("0").equals(maxNumbers_z)) {
-                                    js.put("max_z" + k.toString(), maxNumbers_z);
-                                }
-                                if (minNumbers != null && !("——").equals(minNumbers) && !("0").equals(minNumbers)) {
-                                    js.put("min" + k.toString(), minNumbers);
-                                }
-                                if (minNumbers_k != null && !("——").equals(minNumbers_k) && !("0").equals(minNumbers_k)) {
-                                    js.put("min_k" + k.toString(), minNumbers_k);
-                                }
-                                if (minNumbers_z != null && !("——").equals(minNumbers_z) && !("0").equals(minNumbers_z)) {
-                                    js.put("min_z" + k.toString(), minNumbers_z);
-                                }
-                            }
-                        }
-                    }
-                }
-                System.out.println("jsssssssssssssss" + js);
                 return ResponseDataUtil.ok("查询数据成功", js);
             }
         }
     }
-
 
     //区段日曲线
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
@@ -2244,16 +971,7 @@ public class QuXianController {
         if (shuxingId.length == 0 || quduanName.length == 0 || dayTime == null) {
             return ResponseDataUtil.error("请选择正确的数据");
         } else {
-            List<String> list = new ArrayList<>();//48个时间集合
-            List<BigDecimal> listt1 = new ArrayList<>();
-            List<BigDecimal> listt2 = new ArrayList<>();
-            List<BigDecimal> listt3 = new ArrayList<>();
-            List<BigDecimal> listt4 = new ArrayList<>();
-            List<BigDecimal> listt5 = new ArrayList<>();
-            List<BigDecimal> listt6 = new ArrayList<>();
-            List<BigDecimal> listt7 = new ArrayList<>();
-            List<BigDecimal> listt8 = new ArrayList<>();
-            List<Long> timelist = new ArrayList<>();
+
             JSONObject js = new JSONObject();
             Long endtime = null;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
@@ -2261,43 +979,17 @@ public class QuXianController {
             Date nowday = simpleDateFormat.parse(simpleDateFormat.format(today));//当前的年月日
             long todaytime = today.getTime() / 1000;//当前时间转换为秒
             long nowdaytime = nowday.getTime() / 1000;//当前年月日转化为秒
-            //1607321162  1607270400
-            //1607270400  1607270400
-
             long statrtime = dayTime.getTime() / 1000;
             if (nowdaytime != statrtime) {
-                endtime = statrtime + 86399;//86399
-                System.out.println("statrtimerrrrrrrrrrr" + statrtime);
-                for (int i = 0; i <= 86399; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
+                endtime = statrtime + 86399;
             } else {
-                long times = todaytime - statrtime;
                 endtime = todaytime;
-                //  for (int i = 0; i <= times; i++) {
-                for (int i = 0; i <= times; i++) {
-                    long onetime = statrtime + i;
-                    long value = onetime * 1000L;
-                    SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
-                    String time2 = format1.format(new Date(value));
-                    list.add(time2);
-                    timelist.add(onetime);
-                }
             }
-            js.put("shijian", list);
-            System.out.println("");
             List<String> sqlname = quXianService.findShuXingName(shuxingId);//获取区段属性的英文名
             List<String> name = quXianService.findShuXingHanZiName(shuxingId);//获取区段属性的中文名
             Integer k = 0;
-            Integer kk = 0;
             for (int i = 0; i < sqlname.size(); i++) {
-                List<String> MAXNumber = new ArrayList<>();//区段属性的最大值
-                List<String> MINNumber = new ArrayList<>();//区段属性的最小值
+                List<Object> listt1 = new ArrayList<>();
                 k++;
                 System.out.println("22222211111" + sqlname.get(i));//获得每一个属性名
                 String shuxingname = sqlname.get(i);
@@ -2319,139 +1011,20 @@ public class QuXianController {
                 System.out.println("minNumbers_k=" + minNumbers_k);
                 String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
                 System.out.println("minNumbers_z=" + minNumbers_z);
-                if (type == 2) {
-                    kk++;
-                }
-                /*if (maxNumbers != null) {
-                    String[] maxNumber = maxNumbers.split("/");
-                    if (maxNumber != null && maxNumber.length != 0) {
-                        for (int ii = 0; ii < maxNumber.length; ii++) {
-                            String number = maxNumber[i];
-                            MAXNumber.add(number);
-                        }
-                    }
-                }
-                String minNumbers = quXianService.findMinNumber(czid, qdid, mid);
-                if (minNumbers != null) {
-                    String[] minNumber = minNumbers.split("/");
-                    if (minNumber != null && minNumber.length != 0) {
-                        for (int ii = 0; ii < minNumber.length; ii++) {
-                            String number = minNumber[i];
-                            MINNumber.add(number);
-                        }
-                    }
-                }*/
                 List<quduanEntity> date = quXianService.findQuDuanDayData(statrtime, endtime, shuxingname, quduanname, qdid, tableName);
-                System.out.println("1234" + date);
-                if (date.size() == timelist.size()) {
-                    for (int i1 = 0; i1 < date.size(); i1++) {
-                        if (k == 1) {
-                            listt1.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 2) {
-                            listt2.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 3) {
-                            listt3.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 4) {
-                            listt4.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 5) {
-                            listt5.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 6) {
-                            listt6.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 7) {
-                            listt7.add(i1, date.get(i1).getName());
-                        }
-                        if (k == 8) {
-                            listt8.add(i1, date.get(i1).getName());
-                        }
-                    }
-                } else {
-                    Integer l = 0;
-                    for (int i1 = 0; i1 < timelist.size(); i1++) {
-                        Integer p = 0;
-                        for (int i2 = 0; i2 < date.size(); i2++) {
-                            if (timelist.get(i1) != (long) date.get(i2).getCreatetime()) {
-                                l = 0;
-                                p++;
-                            } else {
-                                l = 1;
-                                break;
-                            }
-                        }
-                        if (k == 1) {
-                            if (l == 0) {
-                                listt1.add(i1, null);
-                            } else {
-                                listt1.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 2) {
-                            if (l == 0) {
-                                listt2.add(i1, null);
-                            } else {
-                                listt2.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 3) {
-                            if (l == 0) {
-                                listt3.add(i1, null);
-                            } else {
-                                listt3.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 4) {
-                            if (l == 0) {
-                                listt4.add(i1, null);
-                            } else {
-                                listt4.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 5) {
-                            if (l == 0) {
-                                listt5.add(i1, null);
-                            } else {
-                                listt5.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 6) {
-                            if (l == 0) {
-                                listt6.add(i1, null);
-                            } else {
-                                listt6.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 7) {
-                            if (l == 0) {
-                                listt7.add(i1, null);
-                            } else {
-                                listt7.add(i1, date.get(p).getName());
-                            }
-                        }
-                        if (k == 8) {
-                            if (l == 0) {
-                                listt8.add(i1, null);
-                            } else {
-                                listt8.add(i1, date.get(p).getName());
-                            }
-                        }
-                    }
+               // System.out.println("1234" + date);
+
+                for (quduanEntity quduanEntity : date) {
+                    List<Object> list1 = new ArrayList();
+                    Integer createtime = quduanEntity.getCreatetime();
+                    BigDecimal numValue = quduanEntity.getNumValue();
+                    list1.add(createtime * 1000L);
+                    list1.add(numValue);
+                    listt1.add(list1);
                 }
                 if (k == 1) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        //  js.put("kaiguanliang" + kk.toString(), listt1);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt1);
-                        js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2474,16 +1047,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 2) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt2);
-                        //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2506,16 +1071,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 3) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt3);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        //  js.put("kaiguanliang" + kk.toString(), listt3);
-                        //  js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt2);
-                        js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2538,16 +1095,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 4) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt4);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt4);
-                        js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2570,16 +1119,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 5) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt5);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt5);
-                        js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2602,16 +1143,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 6) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt6);
-                        js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt6);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt6);
-                        js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2634,16 +1167,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 7) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt7);
-                        js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt7);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt7);
-                        js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2666,16 +1191,8 @@ public class QuXianController {
                     }
                 }
                 if (k == 8) {
-                    if (type != 2) {
-                        js.put("shuju" + k.toString(), listt8);
-                        js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                    }
-                    if (type == 2) {
-                        // js.put("kaiguanliang" + kk.toString(), listt8);
-                        // js.put("name" + kk.toString(), quduanName[0] + "—" + name.get(i));
-                        js.put("shuju" + k.toString(), listt8);
-                        js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
-                    }
+                    js.put("shuju" + k.toString(), listt1);
+                    js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
@@ -2697,7 +1214,6 @@ public class QuXianController {
                         }
                     }
                 }
-
             }
             //System.out.println("jsssssssssssssss" + js);
             return ResponseDataUtil.ok("查询数据成功", js);
@@ -2707,7 +1223,7 @@ public class QuXianController {
 
     //区段辅助曲线
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
-    @GetMapping("/findQuDuanData")
+   /* @GetMapping("/findQuDuanData")
     public Map<String, Object> findQuDuanData(@RequestParam("startTime") Date startTime,
                                               @RequestParam("endTime") Date endTime,
                                               @RequestParam("shuxingId") Integer[] shuxingId,
@@ -2846,37 +1362,46 @@ public class QuXianController {
             return ResponseDataUtil.ok("查询数据成功", js);
         }
     }
-
+*/
 
     //查看门限参数
     @GetMapping("/findMenXianDatas")
-    public Map<String, Object> findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName,Integer[] types,Integer[] mids) {
-        JSONObject jo = menXianService.findMenXianDatas(czid, shuxingId, quduanName,types,mids);
+    public Map<String, Object> findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName, Integer[] types, Integer[] mids) {
+        JSONObject jo = menXianService.findMenXianDatas(czid, shuxingId, quduanName, types, mids);
         return ResponseDataUtil.ok("查询门限列表成功", jo);
     }
 
 
-    public static void main(String[] args) throws Exception{
-        SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
+    /* public static void main(String[] args) throws Exception{
+     *//*SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
         String time2 = format1.format(new Date());
         System.out.println("shijian="+time2);
         int date = format1.parse(time2).getDate();
         System.out.println("aaaaa"+date);
         int seconds = format1.parse(time2).getSeconds();
-        System.out.println("bbbbb"+seconds);
+        System.out.println("bbbbb"+seconds);*//*
 
-    }
-  /*  public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        List<String>list=new ArrayList<>();
+        List<Long>timelist=new ArrayList<>();
+        for (int i = 0; i <= 86399; i++) {
+            long onetime = 1609516800 + i;
+            long value = onetime * 1000L;
+            SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
+            String time2 = format1.format(new Date(value));
+            list.add(time2);
+            timelist.add(onetime);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("用时：" + (end - start) + "ms.");
+    }*/
+    public static void main(String[] args) {
 
         Date nowDay = new Date();
         long time2 = nowDay.getTime() / 1000;
 
-        // System.out.println(time2);
-        // 1599235200 2020-09-05 00:00:00      1599321600 2020-09-06 00:00:00    1599321599  12020-09-05 23:59:59
-        // 1601169272  2020-09-27 09:14:32    1601169349  2020-09-27 09:15:49
-        // 1601105466
-        //1596509890 2020-08-04 10:58:10    1596519568  2020-08-04 13:39:28
-        long value = (1601169349) * 1000L;//1595303879  2020-07-21 11:57:59     1595304033  2020-07-21 12:00:33
+        // 1609573237  1609573237 21-01-02 15:40:37
+        long value = (1609597117) * 1000L;//1595303879  2020-07-21 11:57:59     1595304033  2020-07-21 12:00:33
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = format.format(new Date(value));
         System.out.println("1" + time);
@@ -2896,7 +1421,13 @@ public class QuXianController {
         System.out.println("6" + d.getTime() + 1000);
         System.out.println("7" + format.format(new Date(d.getTime() + 1000)));
 
-    }*/
+
+        int num = 86399;
+        String[] countArr = new String[num];
+        System.out.println("1233333232" + countArr);
+
+
+    }
 
 
 

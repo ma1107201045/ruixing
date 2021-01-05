@@ -113,12 +113,7 @@
                 <version>${springfox-swagger-ui.version}</version>
             </dependency>
 
-            <!--word 转PDF-->
-            <dependency>
-                <groupId>com.jacob</groupId>
-                <artifactId>jacob</artifactId>
-                <version>1.17</version>
-            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
