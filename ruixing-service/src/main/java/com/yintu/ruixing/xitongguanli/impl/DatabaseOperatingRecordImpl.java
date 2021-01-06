@@ -95,7 +95,7 @@ public class DatabaseOperatingRecordImpl implements DatabaseOperatingRecordServi
         if (!file.exists())
             if (!file.mkdirs())
                 throw new BaseRuntimeException("创建文件有误");
-        String backupName = uuidStr + File.separator + databaseName + "-" + DateUtil.format(new Date(), "yyyy-MM-dd") + ".sql";
+        String backupName = uuidStr + File.separator + databaseName + "-" + DateUtil.format(new Date(), "yyyy-MM-dd") + ".txt";
         String backupPath = basePath + backupName;//物理路径
         String requestPath = prefix + backupName;//请求路径
         String mysqlFormatCommand = "mysqldump --single-transaction -h %s -u %s -p%s --databases %s %s > %s";
