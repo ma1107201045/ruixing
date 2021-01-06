@@ -92,14 +92,14 @@
     </springProfile>
     <springProfile name="test">
         <logger name="com.yintu.ruixing" level="DEBUG" />
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="allFile"/>
             <appender-ref ref="errorFile"/>
         </root>
     </springProfile>
     <springProfile name="prod">
         <logger name="com.yintu.ruixing" level="DEBUG" />
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="allFile"/>
             <appender-ref ref="errorFile"/>
         </root>
