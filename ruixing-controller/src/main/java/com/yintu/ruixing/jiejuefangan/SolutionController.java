@@ -43,8 +43,44 @@ public class SolutionController extends SessionController {
         log.error("getRequestURL:" + request.getRequestURL());
         log.error("getRequestURI:" + request.getRequestURI());
         log.error("isSecure:" + request.isSecure());
+        log.error("-------------------------------------");
+        log.error("getIpAddress:" + getIpAddress(request));
         JSONArray ja = solutionService.workCompletion(date);
         return ResponseDataUtil.ok("查询工作完成进度成功", ja);
+    }
+
+    public String getIpAddress(HttpServletRequest request) {
+        if (request == null)
+            return "";
+        String ip = request.getHeader("X-Requested-For");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("X-Forwarded-For---------------------");
+            ip = request.getHeader("X-Forwarded-For");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("Proxy-Client-IP---------------------");
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("WL-Proxy-Client-IP---------------------");
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("HTTP_CLIENT_IP---------------------");
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("HTTP_X_FORWARDED_FOR---------------------");
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            log.error("request.getRemoteAddr()---------------------");
+            ip = request.getRemoteAddr();
+        }
+//        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+//            ip = "127.0.0.1";
+//        }
+        return ip;
     }
 
     @GetMapping("/bidding/project")
