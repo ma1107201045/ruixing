@@ -14,10 +14,10 @@ public interface QuDuanInfoDaoV2 {
 
     int isTableExist(String tableName);
 
-    QuDuanInfoEntityV2 selectFirstByCzId1(Integer czId, Integer qid, String tableName);
+    QuDuanInfoEntityV2 selectFirstByCzId1(Integer qid, String tableName);
 
     //实时报表
-    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer czId, Integer[] qids, Integer startTime, Integer endTime, String tableName);
+    List<QuDuanInfoEntityV2> selectByCzIdAndTime1(Integer[] qids, Integer startTime, Integer endTime, String tableName);
 
 
     //日报表

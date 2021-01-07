@@ -54,7 +54,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
     @Override
     public QuDuanInfoEntityV2 findFirstByCzId1(Integer czId, Integer qid) {
         String tableName = StringUtil.getTableName(czId, new Date());
-        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectFirstByCzId1(czId, qid, tableName) : null;
+        return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectFirstByCzId1(qid, tableName) : null;
     }
 
     @Override
@@ -63,16 +63,16 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
             throw new BaseRuntimeException("开始时间不能大于结束时间");
         if (DateUtil.month(startTime) == DateUtil.month(endTime)) {
             String tableName = StringUtil.getTableName(czId, startTime);
-            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (startTime.getTime() / 1000), (int) (endTime.getTime() / 1000), tableName) : new ArrayList<>();
+            return this.isTableExist(tableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(qids, (int) (startTime.getTime() / 1000), (int) (endTime.getTime() / 1000), tableName) : new ArrayList<>();
         } else {
             String firstTableName = StringUtil.getTableName(czId, startTime);
             List<QuDuanInfoEntityV2> firstQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (startTime.getTime() / 1000), (int) (DateUtil.endOfDay(startTime).getTime() / 1000), firstTableName) :
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(qids, (int) (startTime.getTime() / 1000), (int) (DateUtil.endOfDay(startTime).getTime() / 1000), firstTableName) :
                             new ArrayList<>();
 
             String lastTableName = StringUtil.getTableName(czId, endTime);
             List<QuDuanInfoEntityV2> lastQuDuanInfoEntityV2s =
-                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(czId, qids, (int) (DateUtil.beginOfDay(endTime).getTime() / 1000), (int) (endTime.getTime() / 1000), lastTableName) : new ArrayList<>();
+                    this.isTableExist(firstTableName) ? quDuanInfoDaoV2.selectByCzIdAndTime1(qids, (int) (DateUtil.beginOfDay(endTime).getTime() / 1000), (int) (endTime.getTime() / 1000), lastTableName) : new ArrayList<>();
             firstQuDuanInfoEntityV2s.addAll(lastQuDuanInfoEntityV2s);
             return firstQuDuanInfoEntityV2s;
         }

@@ -233,7 +233,7 @@
     </select>
 
     <resultMap id="quduanResultMap" type="com.yintu.ruixing.guzhangzhenduan.quduanEntity">
-        <result column="createtime"  property="createtime"/>
+        <result column="createtime" property="createtime"/>
         <result column="v3" jdbcType="DECIMAL" property="numValue"/>
         <result column="v4" jdbcType="DECIMAL" property="numValue"/>
         <result column="v5" jdbcType="DECIMAL" property="numValue"/>
@@ -375,43 +375,44 @@
     <select id="findOneQuDuanDatas" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime
         from ${tableName} qi
-        where  qi.v1 = ${qdid}
+        where qi.v1 = ${qdid}
           and qi.createtime
             BETWEEN
             ${statrtime}
             AND
             ${endtime}
-            order by qi.createtime
+        order by qi.createtime
     </select>
 
 
     <!--实时曲线   -->
     <select id="findQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime from ${tableName} qi
-        where  qi.v1 = ${qdid}
-        ORDER BY
-        qi.createtime DESC
+        select ${shuxingname}, qi.createtime
+        from ${tableName} qi
+        where qi.v1 = ${qdid}
+        ORDER BY qi.createtime DESC
         LIMIT 1
     </select>
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
     <select id="findQuDuanDayData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime from ${tableName} qi
-        where qi.v1 =${qdid}
-        and qi.createtime
-        BETWEEN
-        ${statrtime}
-        AND
-        ${endtime}
+        select ${shuxingname}, qi.createtime
+        from ${tableName} qi
+        where qi.v1 = ${qdid}
+          and qi.createtime
+            BETWEEN
+            ${statrtime}
+            AND
+            ${endtime}
         order by qi.createtime
     </select>
 
     <!--电码化实时曲线   -->
     <select id="findDMHQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
-        select ${shuxingname}, qi.createtime from ${tableName} qi
-        where  qi.v1 = ${qdid}
-        ORDER BY
-        qi.createtime DESC
+        select ${shuxingname}, qi.createtime
+        from ${tableName} qi
+        where qi.v1 = ${qdid}
+        ORDER BY qi.createtime DESC
         LIMIT 1
     </select>
 
@@ -674,15 +675,7 @@
         select
         <include refid="Base_Column_List1"/>
         from ${tableName} qi
-        <where>
-            <if test="czId!=null">
-                qi.station_id=#{czId,jdbcType=INTEGER}
-            </if>
-            <if test="qid!=null">
-                and qi.v1 =#{qid,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by qi.createtime DESC limit 1
+        where qi.v1 =#{qid,jdbcType=INTEGER} order by qi.createtime DESC limit 1
     </select>
     <!--查询车站指定时间所有区段数据详情-->
     <select id="selectByCzIdAndTime1" resultMap="BaseResultMap1">
@@ -690,9 +683,6 @@
         <include refid="Base_Column_List1"/>
         from ${tableName} qi
         <where>
-            <if test="czId!=null">
-                qi.station_id=#{czId,jdbcType=INTEGER}
-            </if>
             <if test="qids!=null and qids.length>0">
                 and qi.v1 in
                 <foreach collection="qids" open="(" close=")" index="index" item="qid" separator=",">
@@ -705,7 +695,6 @@
             </if>
         </where>
     </select>
-
 
 
     <!--日报表-->
@@ -939,6 +928,7 @@
                v2
         from ${tableName}
         where v1 = ${qid}
-          and ${n} = ${v} limit 1
+          and ${n} = ${v}
+        limit 1
     </select>
 </mapper>

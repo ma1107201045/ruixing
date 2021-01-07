@@ -1,5 +1,6 @@
 package com.yintu.ruixing.jiejuefangan;
 
+import cn.hutool.core.util.ZipUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,6 +33,7 @@ public class SolutionController extends SessionController {
 
     @GetMapping("/work/completion")
     public Map<String, Object> workCompletion(HttpServletRequest request, @RequestParam("date") Date date) {
+
         log.error("getRemoteHost:" + request.getRemoteHost());
         log.error("getRemotePort:" + request.getRemotePort());
         log.error("getRemoteAddr:" + request.getRemoteAddr());
