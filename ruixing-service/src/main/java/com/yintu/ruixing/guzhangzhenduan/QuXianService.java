@@ -1,13 +1,11 @@
 package com.yintu.ruixing.guzhangzhenduan;
 
-import com.alibaba.fastjson.JSONObject;
-import com.yintu.ruixing.guzhangzhenduan.QuDuanBaseEntity;
 import com.yintu.ruixing.guzhangzhenduan.QuDuanShuXingEntity;
-import com.yintu.ruixing.guzhangzhenduan.quduanEntity;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author:lcy
@@ -68,4 +66,11 @@ public interface QuXianService {
 
     String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer type);
 
+    LinkedHashMap findQuDuanShiShiDataa(StringBuilder sb, Integer qdid, String tableName);
+
+    List<LinkedHashMap> findQuDuanDayDataa(StringBuilder sb, long statrtime, Long endtime, Integer qdiddd, String tableName);
+
+    List<LinkedHashMap> findDMHDayData(StringBuilder sbb, long statrtime, Long endtime, Integer qdidd, String tableName);
+
+    LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName);
 }

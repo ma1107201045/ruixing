@@ -1,6 +1,5 @@
 package com.yintu.ruixing.guzhangzhenduan.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.guzhangzhenduan.*;
 import com.yintu.ruixing.guzhangzhenduan.QuXianService;
@@ -11,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author:lcy
@@ -188,6 +185,42 @@ public class QuXianServiceImpl implements QuXianService {
         }
     }
 
+
+    @Override
+    public LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findDMHShiShiData(sb, qdiddd, tableName);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
+
+    @Override
+    public List<LinkedHashMap> findDMHDayData(StringBuilder sbb, long statrtime, Long endtime, Integer qdidd, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findDMHDayData(sbb, statrtime,endtime,qdidd, tableName);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
+
+    @Override
+    public  List<LinkedHashMap> findQuDuanDayDataa(StringBuilder sb, long statrtime, Long endtime, Integer qdid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findQuDuanDayDataa(sb, statrtime,endtime,qdid, tableName);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
+
+    @Override
+    public LinkedHashMap findQuDuanShiShiDataa(StringBuilder sb, Integer qdid, String tableName) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findQuDuanShiShiDataa(sb, qdid, tableName);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
 
     @Override
     public List<quduanEntity> findQuDuanShiShiData(String shuxingname, String quduanname, Integer qdid, String tableName) {

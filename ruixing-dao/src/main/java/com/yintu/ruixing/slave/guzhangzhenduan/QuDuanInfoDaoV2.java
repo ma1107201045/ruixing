@@ -1,10 +1,12 @@
 package com.yintu.ruixing.slave.guzhangzhenduan;
 
 import com.yintu.ruixing.guzhangzhenduan.QuDuanInfoEntityV2;
+import com.yintu.ruixing.guzhangzhenduan.quDuanSXEntity;
 import com.yintu.ruixing.guzhangzhenduan.quduanEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,4 +68,11 @@ public interface QuDuanInfoDaoV2 {
                                          @Param("shuxingname") String shuxingname, @Param("qdIds") Integer[] qdIds,
                                          @Param("qdid") Integer qdid, @Param("tableName") String tableName);
 
+    LinkedHashMap findQuDuanShiShiDataa(StringBuilder sb, Integer qdid, String tableName);
+
+    List<LinkedHashMap> findQuDuanDayDataa(StringBuilder sb, long statrtime, Long endtime, Integer qdid, String tableName);
+
+    List<LinkedHashMap> findDMHDayData(StringBuilder sbb, long statrtime, Long endtime, Integer qdidd, String tableName);
+
+    LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName);
 }
