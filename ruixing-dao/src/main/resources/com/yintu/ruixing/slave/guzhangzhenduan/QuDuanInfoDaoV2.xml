@@ -297,6 +297,71 @@
         <result column="v41" jdbcType="DECIMAL" property="numValue"/>
     </resultMap>
 
+    <resultMap id="quduanResultMappp" type="com.yintu.ruixing.guzhangzhenduan.quDuanSXEntity">
+        <result column="createtime"  property="createtime"/>
+        <result column="v3" jdbcType="DECIMAL" property="v3"/>
+        <result column="v4" jdbcType="DECIMAL" property="v4"/>
+        <result column="v5" jdbcType="DECIMAL" property="v5"/>
+        <result column="v6" jdbcType="DECIMAL" property="v6"/>
+        <result column="v7" jdbcType="DECIMAL" property="v7"/>
+        <result column="v8" jdbcType="DECIMAL" property="v8"/>
+        <result column="v9" jdbcType="DECIMAL" property="v9"/>
+        <result column="v10" jdbcType="DECIMAL" property="v10"/>
+        <result column="v11" jdbcType="DECIMAL" property="v11"/>
+        <result column="v12" jdbcType="DECIMAL" property="v12"/>
+        <result column="v13" jdbcType="DECIMAL" property="v13"/>
+        <result column="v14" jdbcType="DECIMAL" property="v14"/>
+        <result column="v15" jdbcType="DECIMAL" property="v15"/>
+        <result column="v16" jdbcType="DECIMAL" property="v16"/>
+        <result column="v17" jdbcType="DECIMAL" property="v17"/>
+        <result column="v18" jdbcType="DECIMAL" property="v18"/>
+        <result column="v19" jdbcType="DECIMAL" property="v19"/>
+        <result column="v20" jdbcType="DECIMAL" property="v20"/>
+        <result column="v21" jdbcType="DECIMAL" property="v21"/>
+        <result column="v22" jdbcType="DECIMAL" property="v22"/>
+        <result column="v23" jdbcType="DECIMAL" property="v23"/>
+        <result column="v24" jdbcType="DECIMAL" property="v24"/>
+        <result column="v25" jdbcType="DECIMAL" property="v25"/>
+        <result column="v26" jdbcType="DECIMAL" property="v26"/>
+        <result column="v27" jdbcType="DECIMAL" property="v27"/>
+        <result column="v28" jdbcType="DECIMAL" property="v28"/>
+        <result column="v29" jdbcType="DECIMAL" property="v29"/>
+        <result column="v30" jdbcType="DECIMAL" property="v30"/>
+        <result column="v42" jdbcType="DECIMAL" property="v42"/>
+        <result column="v43" jdbcType="DECIMAL" property="v43"/>
+        <result column="v44" jdbcType="DECIMAL" property="v44"/>
+        <result column="v45" jdbcType="DECIMAL" property="v45"/>
+        <result column="v46" jdbcType="DECIMAL" property="v46"/>
+        <result column="v52" jdbcType="DECIMAL" property="v52"/>
+        <result column="v54" jdbcType="DECIMAL" property="v54"/>
+        <result column="v55" jdbcType="DECIMAL" property="v55"/>
+        <result column="v56" jdbcType="DECIMAL" property="v56"/>
+        <result column="v57" jdbcType="DECIMAL" property="v57"/>
+        <result column="v58" jdbcType="DECIMAL" property="v58"/>
+        <result column="v59" jdbcType="DECIMAL" property="v59"/>
+        <result column="v60" jdbcType="DECIMAL" property="v60"/>
+        <result column="v61" jdbcType="DECIMAL" property="v61"/>
+        <result column="v62" jdbcType="DECIMAL" property="v62"/>
+        <result column="v63" jdbcType="DECIMAL" property="v63"/>
+        <result column="v64" jdbcType="DECIMAL" property="v64"/>
+        <result column="v65" jdbcType="DECIMAL" property="v65"/>
+        <result column="v66" jdbcType="DECIMAL" property="v66"/>
+        <result column="v67" jdbcType="DECIMAL" property="v67"/>
+        <result column="v68" jdbcType="DECIMAL" property="v68"/>
+        <result column="v69" jdbcType="DECIMAL" property="v69"/>
+        <result column="v47" jdbcType="DECIMAL" property="v47"/>
+        <result column="v48" jdbcType="DECIMAL" property="v48"/>
+        <result column="v49" jdbcType="DECIMAL" property="v49"/>
+        <result column="v50" jdbcType="DECIMAL" property="v50"/>
+        <result column="v51" jdbcType="DECIMAL" property="v51"/>
+        <result column="v53" jdbcType="DECIMAL" property="v53"/>
+        <result column="v39_sc4" jdbcType="DECIMAL" property="v39sc4"/>
+        <result column="v39_sc3" jdbcType="DECIMAL" property="v39sc3"/>
+        <result column="v39_sc2" jdbcType="DECIMAL" property="v39sc2"/>
+        <result column="v40" jdbcType="DECIMAL" property="v40"/>
+        <result column="v41" jdbcType="DECIMAL" property="v41"/>
+    </resultMap>
+
     <select id="findDianMaHuaDatasByCZids" resultMap="quduanBaseResultMap">
         SELECT da.createtime time,
         da.type,
@@ -385,6 +450,26 @@
     </select>
 
 
+
+    <!--区段实时曲线   -->
+    <select id="findQuDuanShiShiDataa" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sb} qi.createtime from ${tableName} qi
+        where  qi.v1 = ${qdid}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
+    </select>
+
+    <!--电码化实时曲线   -->
+    <select id="findDMHShiShiData" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sb} qi.createtime from ${tableName} qi
+        where  qi.v1 = ${qdiddd}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
+    </select>
+
+
     <!--实时曲线   -->
     <select id="findQuDuanShiShiData" resultMap="quduanResultMap" statementType="STATEMENT">
         select ${shuxingname}, qi.createtime
@@ -392,6 +477,30 @@
         where qi.v1 = ${qdid}
         ORDER BY qi.createtime DESC
         LIMIT 1
+    </select>
+
+    <!-- 电码化日曲线    根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
+    <select id="findDMHDayData" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sbb} qi.createtime from ${tableName} qi
+        where qi.v1 =${qdidd}
+        and qi.createtime
+        BETWEEN
+        ${statrtime}
+        AND
+        ${endtime}
+        order by qi.createtime
+    </select>
+
+    <!-- 区段日曲线     根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
+    <select id="findQuDuanDayDataa" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sb} qi.createtime from ${tableName} qi
+        where qi.v1 =${qdid}
+        and qi.createtime
+        BETWEEN
+        ${statrtime}
+        AND
+        ${endtime}
+        order by qi.createtime
     </select>
 
     <!--根据传来的时间段和区段名和属性名 按秒来 查询对应的数据   -->
