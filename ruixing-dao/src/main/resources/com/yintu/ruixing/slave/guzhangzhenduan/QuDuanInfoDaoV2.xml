@@ -1020,7 +1020,7 @@
                 v53_min AS b43,
             </if>
         </foreach>
-        v1
+        v1,v2
         FROM data_applydata_report
         <where>
             <if test="czId!=null">

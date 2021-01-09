@@ -62,7 +62,7 @@ public class ReportController extends SessionController {
      * @return
      */
     @GetMapping("/dayreport/v2")
-    public Map<String, Object> dayReport(@RequestParam("cz_id") Integer czId, @RequestParam("time") Date time, @RequestParam("properties") Integer[] properties, @RequestParam("q_name") String qName, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
+    public Map<String, Object> dayReport(@RequestParam("cz_id") Integer czId, @RequestParam("time") Date time, @RequestParam("properties") Integer[] properties, @RequestParam(value = "q_name",required = false) String qName, @RequestParam("is_dian_ma_hua") Boolean isDianMaHua) {
         JSONObject jo = quDuanInfoService.dayReport(czId, time, properties, qName, isDianMaHua);
         return ResponseDataUtil.ok("查询实时报表成功", jo);
     }

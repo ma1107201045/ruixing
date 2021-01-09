@@ -1947,7 +1947,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
 
     public boolean idIsInArr(int i) {
-        int[] ids = new int[]{9, 10, 20, 21, 22, 23};
+        int[] ids = new int[]{2, 9, 10, 20, 21, 22, 23};
         for (int id : ids) {
             if (id == i)
                 return true;
@@ -1972,6 +1972,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         }
 
         List<TreeNodeUtil> treeNodeUtils = this.findByTypess(types);
+        treeNodeUtils = treeNodeUtils.stream().filter(treeNodeUtil -> !treeNodeUtil.getId().equals(1000L)).collect(Collectors.toList());
         for (TreeNodeUtil treeNodeUtil : treeNodeUtils) {
             List<QuDuanInfoPropertyEntity> quDuanInfoPropertyEntities1 = quDuanInfoPropertyService.findByType(treeNodeUtil.getId().shortValue());
             List<TreeNodeUtil> trees = new ArrayList<>();
@@ -2179,11 +2180,10 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
         jo.put("title", first);
 
         //表头对应数据数组
-
         List<Map<String, Object>> mapss = new ArrayList<>();
         String tableName = StringUtil.getTableName(czId, time);
         List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
-        List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) time.getTime() / 1000);
+        List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) (time.getTime() / 1000));
         for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
             for (Map<String, Object> map : finalMaps) {
                 Integer qid = (Integer) map.get("v1");
