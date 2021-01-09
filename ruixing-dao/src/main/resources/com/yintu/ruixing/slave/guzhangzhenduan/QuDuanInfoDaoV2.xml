@@ -706,34 +706,34 @@
             <!--                MIN(qi.v39_sc1) AS b3,-->
             <!--            </if>-->
             <if test="property==4">
-                MAX(qi.v3) AS a4,
-                MIN(qi.v3) AS b4,
-                MAX(qi.v9) AS c4,
-                MIN(qi.v9) AS d4,
+                v3_max AS a4,
+                v3_min AS b4,
+                v9_max AS c4,
+                v9_min AS d4,
             </if>
             <if test="property==5">
-                MAX(qi.v4) AS a5,
-                MIN(qi.v4) AS b5,
-                MAX(qi.v10) AS c5,
-                MIN(qi.v10) AS d5,
+                v4_max AS a5,
+                v4_min AS b5,
+                v10_max AS c5,
+                v10_min AS d5,
             </if>
             <if test="property==6">
-                MAX(qi.v5) AS a6,
-                MIN(qi.v5) AS b6,
-                MAX(qi.v11) AS c6,
-                MIN(qi.v11) AS d6,
+                v5_max AS a6,
+                v5_min AS b6,
+                v11_max AS c6,
+                v11_min AS d6,
             </if>
             <if test="property==7">
-                MAX(qi.v6) AS a7,
-                MIN(qi.v6) AS b7,
-                MAX(qi.v12) AS c7,
-                MIN(qi.v12) AS d7,
+                v6_max AS a7,
+                v6_min AS b7,
+                v12_max AS c7,
+                v12_min AS d7,
             </if>
             <if test="property==8">
-                MAX(qi.v7) AS a8,
-                MIN(qi.v7) AS b8,
-                MAX(qi.v13) AS c8,
-                MIN(qi.v13) AS d8,
+                v7_max AS a8,
+                v7_min AS b8,
+                v13_max AS c8,
+                v13_min AS d8,
             </if>
             <!--            <if test="property==9">-->
             <!--                MAX(qi.v39_sc3) AS a9,-->
@@ -749,177 +749,178 @@
             <!--            </if>-->
 
             <if test="property==11">
-                MAX(qi.v15) AS a11,
-                MIN(qi.v15) AS b11,
+                v15_max AS a11,
+                v15_min AS b11,
             </if>
             <if test="property==12">
-                MAX(qi.v16) AS a12,
-                MIN(qi.v16) AS b12,
+                v16_max AS a12,
+                v16_min AS b12,
             </if>
             <if test="property==13">
-                MAX(qi.v17) AS a13,
-                MIN(qi.v17) AS b13,
+                v17_max AS a13,
+                v17_min AS b13,
             </if>
             <if test="property==14">
-                MAX(qi.v18) AS a14,
-                MIN(qi.v18) AS b14,
+                v18_max AS a14,
+                v18_min AS b14,
             </if>
             <if test="property==15">
-                MAX(qi.v19) AS a15,
-                MIN(qi.v19) AS b15,
+                v19_max AS a15,
+                v19_min AS b15,
             </if>
             <if test="property==16">
-                MAX(qi.v20) AS a16,
-                MIN(qi.v20) AS b16,
+                v20_max AS a16,
+                v20_min AS b16,
             </if>
             <if test="property==17">
-                MAX(qi.v21) AS a17,
-                MIN(qi.v21) AS b17,
-                MAX(qi.v26) AS c17,
-                MIN(qi.v26) AS d17,
+                v21_max AS a17,
+                v21_min AS b17,
+                v26_max AS c17,
+                v26_min AS d17,
             </if>
             <if test="property==18">
-                MAX(qi.v22) AS a18,
-                MIN(qi.v22) AS b18,
-                MAX(qi.v27) AS c18,
-                MIN(qi.v27) AS d18,
+                v22_max AS a18,
+                v22_min AS b18,
+                v27_max AS c18,
+                v27_min AS d18,
             </if>
             <if test="property==19">
-                MAX(qi.v23) AS a19,
-                MIN(qi.v23) AS b19,
-                MAX(qi.v28) AS c19,
-                MIN(qi.v28) AS d19,
+                v23_max AS a19,
+                v23_min AS b19,
+                v28_max AS c19,
+                v28_min AS d19,
             </if>
             <if test="property==20">
-                MAX(qi.v24) AS a20,
-                MIN(qi.v24) AS b20,
-                MAX(qi.v29) AS c20,
-                MIN(qi.v29) AS d20,
+                v24_max AS a20,
+                v24_min AS b20,
+                v29_max AS c20,
+                v29_min AS d20,
             </if>
             <!--            <if test="property==21">-->
-            MAX(qi.v39_sc4) AS a21,
-            MIN(qi.v39_sc4) AS b21,
+            v39_sc4_max AS a21,
+            v39_sc4_min AS b21,
             <!--            </if>-->
             <!--            <if test="property==22">-->
-            MAX(qi.v24) AS a22,
-            MIN(qi.v24) AS b22,
-            MAX(qi.v29) AS c22,
-            MIN(qi.v29) AS d22,
+            v24_max AS a22,
+            v24_min AS b22,
+            v29_max AS c22,
+            v29_min AS d22,
             <!--            </if>-->
             <if test="property==23">
-                MAX(qi.v25) AS a23,
-                MIN(qi.v25) AS b23,
-                MAX(qi.v30) AS c23,
-                MIN(qi.v30) AS d23,
+                v25_max AS a23,
+                v25_min AS b23,
+                v30_max AS c23,
+                v30_min AS d23,
             </if>
 
 
             <if test="property==24">
-                MAX(qi.v42) AS a24,
-                MIN(qi.v42) AS b24,
+                v42_max AS a24,
+                v42_min AS b24,
             </if>
             <if test="property==25">
-                MAX(qi.v43) AS a25,
-                MIN(qi.v43) AS b25,
+                v43_max AS a25,
+                v43_min AS b25,
             </if>
             <if test="property==26">
-                MAX(qi.v44) AS a26,
-                MIN(qi.v44) AS b26,
+                v44_max AS a26,
+                v44_min AS b26,
             </if>
             <if test="property==27">
-                MAX(qi.v45) AS a27,
-                MIN(qi.v45) AS b27,
+                v45_max AS a27,
+                v45_min AS b27,
             </if>
             <if test="property==28">
-                MAX(qi.v46) AS a28,
-                MIN(qi.v46) AS b28,
+                v46_max AS a28,
+                v46_min AS b28,
             </if>
             <if test="property==29">
-                MAX(qi.v52) AS a29,
-                MIN(qi.v52) AS b29,
+                v52_max AS a29,
+                v52_min AS b29,
             </if>
             <if test="property==30">
-                MAX(qi.v54) AS a30,
-                MIN(qi.v54) AS b30,
-                MAX(qi.v58) AS c30,
-                MIN(qi.v58) AS d30,
+                v54_max AS a30,
+                v54_min AS b30,
+                v58_max AS c30,
+                v58_min AS d30,
             </if>
             <if test="property==31">
-                MAX(qi.v55) AS a31,
-                MIN(qi.v55) AS b31,
-                MAX(qi.v59) AS c31,
-                MIN(qi.v59) AS d31,
+                v55_max AS a31,
+                v55_min AS b31,
+                v59_max AS c31,
+                v59_min AS d31,
             </if>
             <if test="property==32">
-                MAX(qi.v56) AS a32,
-                MIN(qi.v56) AS b32,
-                MAX(qi.v60) AS c32,
-                MIN(qi.v60) AS d32,
+                v56_max AS a32,
+                v56_min AS b32,
+                v60_max AS c32,
+                v60_min AS d32,
             </if>
             <if test="property==33">
-                MAX(qi.v57) AS a33,
-                MIN(qi.v57) AS b33,
-                MAX(qi.v61) AS c33,
-                MIN(qi.v61) AS d33,
+                v57_max AS a33,
+                v57_min AS b33,
+                v61_max AS c33,
+                v61_min AS d33,
             </if>
             <if test="property==34">
-                MAX(qi.v62) AS a34,
-                MIN(qi.v62) AS b34,
-                MAX(qi.v66) AS c34,
-                MIN(qi.v66) AS d34,
+                v62_max AS a34,
+                v62_min AS b34,
+                v66_max AS c34,
+                v66_min AS d34,
             </if>
             <if test="property==35">
-                MAX(qi.v63) AS a35,
-                MIN(qi.v63) AS b35,
-                MAX(qi.v67) AS c35,
-                MIN(qi.v67) AS d35,
+                v63_max AS a35,
+                v63_min AS b35,
+                v67_max AS c35,
+                v67_min AS d35,
             </if>
             <if test="property==36">
-                MAX(qi.v64) AS a36,
-                MIN(qi.v64) AS b36,
-                MAX(qi.v68) AS c36,
-                MIN(qi.v68) AS d36,
+                v64_max AS a36,
+                v64_min AS b36,
+                v68_max AS c36,
+                v68_min AS d36,
             </if>
             <if test="property==37">
-                MAX(qi.v65) AS a37,
-                MIN(qi.v65) AS b37,
-                MAX(qi.v69) AS c37,
-                MIN(qi.v69) AS d37,
+                v65_max AS a37,
+                v65_min AS b37,
+                v69_max AS c37,
+                v69_min AS d37,
             </if>
             <if test="property==38">
-                MAX(qi.v47) AS a38,
-                MIN(qi.v47) AS b38,
+                v47_max AS a38,
+                v47_max AS b38,
             </if>
             <if test="property==39">
-                MAX(qi.v48) AS a39,
-                MIN(qi.v48) AS b39,
+                v48_max AS a39,
+                v48_min AS b39,
             </if>
             <if test="property==40">
-                MAX(qi.v49) AS a40,
-                MIN(qi.v49) AS b40,
+                v49_max AS a40,
+                v49_min AS b40,
             </if>
             <if test="property==41">
-                MAX(qi.v50) AS a41,
-                MIN(qi.v50) AS b41,
+                v50_max AS a41,
+                v50_min AS b41,
             </if>
             <if test="property==42">
-                MAX(qi.v51) AS a42,
-                MIN(qi.v51) AS b42,
+                v51_max AS a42,
+                v51_min AS b42,
             </if>
             <if test="property==43">
-                MAX(qi.v53) AS a43,
-                MIN(qi.v53) AS b43,
+                v53_max AS a43,
+                v53_min AS b43,
             </if>
         </foreach>
-        qi.v1
-        FROM ${tableName} qi
+        v1
+        FROM data_applydata_report
         <where>
-            <if test="s !=null and e!=null ">
-                and qi.createtime between #{s,jdbcType=INTEGER} and #{e,jdbcType=INTEGER}
+            <if test="czId!=null">
+                and station_id=#{czId,jdbcType=INTEGER}
+            </if>
+            <if test="createtime!=null">
+                and createtime=#{createtime,jdbcType=INTEGER}
             </if>
         </where>
-        GROUP BY
-        qi.v1
     </select>
 
 

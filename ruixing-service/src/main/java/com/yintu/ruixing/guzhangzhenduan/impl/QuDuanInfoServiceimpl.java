@@ -2182,2239 +2182,2238 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
 
         List<Map<String, Object>> mapss = new ArrayList<>();
         String tableName = StringUtil.getTableName(czId, time);
-        if (this.isTableExist(tableName)) {
-            List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
-            List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) (DateUtil.beginOfDay(time).getTime() / 1000), (int) (DateUtil.endOfDay(time).getTime() / 1000), tableName);
-            for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
-                for (Map<String, Object> map : finalMaps) {
-                    Integer qid = (Integer) map.get("v1");
-                    if (quDuanBaseEntity.getQdid().equals(qid)) {
-                        Map<String, Object> maps = new HashMap<>();
-                        for (String s : map.keySet()) {
-                            if (!"v1".equals(s)) {
-                                List<MenXianEntity> menXianEntities = menXianService.findByCzIdAndQuduanIdAndPropertyId(czId, qid, Integer.valueOf(s.substring(1)));
-                                MenXianEntity m1 = null;
-                                MenXianEntity m2 = null;
-                                if (menXianEntities.size() == 1)
-                                    m1 = menXianEntities.get(0);
-                                if (menXianEntities.size() == 2) {
-                                    m1 = menXianEntities.get(0);
-                                    m2 = menXianEntities.get(1);
-                                }
-                                String value = map.get(s).toString();
-                                switch (s) {
-                                    case "a4":
-                                        Map<String, Object> ta4 = this.findByQidAndNV(qid, "v3", value, tableName);
-                                        JSONObject a4 = new JSONObject();
-                                        a4.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a4.put("text", ja);
+        List<QuDuanBaseEntity> quDuanBaseEntities = quDuanBaseService.findByCzIdAndQdId(czId, null, qName, isDianMaHua);
+        List<Map<String, Object>> finalMaps = quDuanInfoDaoV2.selectStatisticsByCzIdAndTime(czId, properties, (int) time.getTime() / 1000);
+        for (QuDuanBaseEntity quDuanBaseEntity : quDuanBaseEntities) {
+            for (Map<String, Object> map : finalMaps) {
+                Integer qid = (Integer) map.get("v1");
+                if (quDuanBaseEntity.getQdid().equals(qid)) {
+                    Map<String, Object> maps = new HashMap<>();
+                    for (String s : map.keySet()) {
+                        if (!"v1".equals(s)) {
+                            List<MenXianEntity> menXianEntities = menXianService.findByCzIdAndQuduanIdAndPropertyId(czId, qid, Integer.valueOf(s.substring(1)));
+                            MenXianEntity m1 = null;
+                            MenXianEntity m2 = null;
+                            if (menXianEntities.size() == 1)
+                                m1 = menXianEntities.get(0);
+                            if (menXianEntities.size() == 2) {
+                                m1 = menXianEntities.get(0);
+                                m2 = menXianEntities.get(1);
+                            }
+                            String value = map.get(s).toString();
+                            switch (s) {
+                                case "a4":
+                                    Map<String, Object> ta4 = this.findByQidAndNV(qid, "v3", value, tableName);
+                                    JSONObject a4 = new JSONObject();
+                                    a4.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        a4.put("time", ta4.get("createtime"));
-                                        maps.put("a4", a4);
-                                        break;
-                                    case "b4":
-                                        Map<String, Object> tb4 = this.findByQidAndNV(qid, "v3", value, tableName);
-                                        JSONObject b4 = new JSONObject();
-                                        b4.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b4.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a4.put("text", ja);
+                                    }
+                                    a4.put("time", ta4.get("createtime"));
+                                    maps.put("a4", a4);
+                                    break;
+                                case "b4":
+                                    Map<String, Object> tb4 = this.findByQidAndNV(qid, "v3", value, tableName);
+                                    JSONObject b4 = new JSONObject();
+                                    b4.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b4.put("text", ja);
 
+                                    }
+                                    b4.put("time", tb4.get("createtime"));
+                                    maps.put("b4", b4);
+                                    break;
+                                case "c4":
+                                    Map<String, Object> tc4 = this.findByQidAndNV(qid, "v9", value, tableName);
+                                    JSONObject c4 = new JSONObject();
+                                    c4.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            c4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b4.put("time", tb4.get("createtime"));
-                                        maps.put("b4", b4);
-                                        break;
-                                    case "c4":
-                                        Map<String, Object> tc4 = this.findByQidAndNV(qid, "v9", value, tableName);
-                                        JSONObject c4 = new JSONObject();
-                                        c4.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                c4.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            c4.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        c4.put("text", ja);
 
+                                    }
+                                    c4.put("time", tc4.get("createtime"));
+                                    maps.put("c4", c4);
+                                    break;
+                                case "d4":
+                                    Map<String, Object> td4 = this.findByQidAndNV(qid, "v9", value, tableName);
+                                    JSONObject d4 = new JSONObject();
+                                    d4.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
                                         }
-                                        c4.put("time", tc4.get("createtime"));
-                                        maps.put("c4", c4);
-                                        break;
-                                    case "d4":
-                                        Map<String, Object> td4 = this.findByQidAndNV(qid, "v9", value, tableName);
-                                        JSONObject d4 = new JSONObject();
-                                        d4.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d4.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            d4.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        d4.put("text", ja);
 
+                                    }
+                                    d4.put("time", td4.get("createtime"));
+                                    maps.put("d4", d4);
+                                    break;
+                                case "a5":
+                                    Map<String, Object> ta5 = this.findByQidAndNV(qid, "v4", value, tableName);
+                                    JSONObject a5 = new JSONObject();
+                                    a5.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            a5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        d4.put("time", td4.get("createtime"));
-                                        maps.put("d4", d4);
-                                        break;
-                                    case "a5":
-                                        Map<String, Object> ta5 = this.findByQidAndNV(qid, "v4", value, tableName);
-                                        JSONObject a5 = new JSONObject();
-                                        a5.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                a5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a5.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a5.put("text", ja);
 
+                                    }
+                                    a5.put("time", ta5.get("createtime"));
+                                    maps.put("a5", a5);
+                                    break;
+                                case "b5":
+                                    Map<String, Object> tb5 = this.findByQidAndNV(qid, "v4", value, tableName);
+                                    JSONObject b5 = new JSONObject();
+                                    b5.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a5.put("time", ta5.get("createtime"));
-                                        maps.put("a5", a5);
-                                        break;
-                                    case "b5":
-                                        Map<String, Object> tb5 = this.findByQidAndNV(qid, "v4", value, tableName);
-                                        JSONObject b5 = new JSONObject();
-                                        b5.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b5.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b5.put("text", ja);
 
+                                    }
+                                    b5.put("time", tb5.get("createtime"));
+                                    maps.put("b5", b5);
+                                    break;
+                                case "c5":
+                                    Map<String, Object> tc5 = this.findByQidAndNV(qid, "v10", value, tableName);
+                                    JSONObject c5 = new JSONObject();
+                                    c5.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            c5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b5.put("time", tb5.get("createtime"));
-                                        maps.put("b5", b5);
-                                        break;
-                                    case "c5":
-                                        Map<String, Object> tc5 = this.findByQidAndNV(qid, "v10", value, tableName);
-                                        JSONObject c5 = new JSONObject();
-                                        c5.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                c5.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c5.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c5.put("text", ja);
 
+                                    }
+                                    c5.put("time", tc5.get("createtime"));
+                                    maps.put("c5", c5);
+                                    break;
+                                case "d5":
+                                    Map<String, Object> td5 = this.findByQidAndNV(qid, "v10", value, tableName);
+                                    JSONObject d5 = new JSONObject();
+                                    d5.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
                                         }
-                                        c5.put("time", tc5.get("createtime"));
-                                        maps.put("c5", c5);
-                                        break;
-                                    case "d5":
-                                        Map<String, Object> td5 = this.findByQidAndNV(qid, "v10", value, tableName);
-                                        JSONObject d5 = new JSONObject();
-                                        d5.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d5.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d5.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d5.put("text", ja);
+                                    }
+                                    d5.put("time", td5.get("createtime"));
+                                    maps.put("d5", d5);
+                                    break;
+                                case "a6":
+                                    Map<String, Object> ta6 = this.findByQidAndNV(qid, "v5", value, tableName);
+                                    JSONObject a6 = new JSONObject();
+                                    a6.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            a6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        d5.put("time", td5.get("createtime"));
-                                        maps.put("d5", d5);
-                                        break;
-                                    case "a6":
-                                        Map<String, Object> ta6 = this.findByQidAndNV(qid, "v5", value, tableName);
-                                        JSONObject a6 = new JSONObject();
-                                        a6.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                a6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a6.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a6.put("text", ja);
+                                    }
+                                    a6.put("time", ta6.get("createtime"));
+                                    maps.put("a6", a6);
+                                    break;
+                                case "b6":
+                                    Map<String, Object> tb6 = this.findByQidAndNV(qid, "v5", value, tableName);
+                                    JSONObject b6 = new JSONObject();
+                                    b6.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a6.put("time", ta6.get("createtime"));
-                                        maps.put("a6", a6);
-                                        break;
-                                    case "b6":
-                                        Map<String, Object> tb6 = this.findByQidAndNV(qid, "v5", value, tableName);
-                                        JSONObject b6 = new JSONObject();
-                                        b6.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b6.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b6.put("text", ja);
+                                    }
+                                    b6.put("time", tb6.get("createtime"));
+                                    maps.put("b6", b6);
+                                    break;
+                                case "c6":
+                                    Map<String, Object> tc6 = this.findByQidAndNV(qid, "v11", value, tableName);
+                                    JSONObject c6 = new JSONObject();
+                                    c6.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b6.put("time", tb6.get("createtime"));
-                                        maps.put("b6", b6);
-                                        break;
-                                    case "c6":
-                                        Map<String, Object> tc6 = this.findByQidAndNV(qid, "v11", value, tableName);
-                                        JSONObject c6 = new JSONObject();
-                                        c6.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c6.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c6.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c6.put("text", ja);
 
+                                    }
+                                    c6.put("time", tc6.get("createtime"));
+                                    maps.put("c6", c6);
+                                    break;
+                                case "d6":
+                                    Map<String, Object> td6 = this.findByQidAndNV(qid, "v11", value, tableName);
+                                    JSONObject d6 = new JSONObject();
+                                    d6.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
                                         }
-                                        c6.put("time", tc6.get("createtime"));
-                                        maps.put("c6", c6);
-                                        break;
-                                    case "d6":
-                                        Map<String, Object> td6 = this.findByQidAndNV(qid, "v11", value, tableName);
-                                        JSONObject d6 = new JSONObject();
-                                        d6.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d6.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d6.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d6.put("text", ja);
 
+                                    }
+                                    d6.put("time", td6.get("createtime"));
+                                    maps.put("d6", d6);
+                                    break;
+                                case "a7":
+                                    Map<String, Object> ta7 = this.findByQidAndNV(qid, "v6", value, tableName);
+                                    JSONObject a7 = new JSONObject();
+                                    a7.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        d6.put("time", td6.get("createtime"));
-                                        maps.put("d6", d6);
-                                        break;
-                                    case "a7":
-                                        Map<String, Object> ta7 = this.findByQidAndNV(qid, "v6", value, tableName);
-                                        JSONObject a7 = new JSONObject();
-                                        a7.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a7.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a7.put("text", ja);
 
+                                    }
+                                    a7.put("time", ta7.get("createtime"));
+                                    maps.put("a7", a7);
+                                    break;
+                                case "b7":
+                                    Map<String, Object> tb7 = this.findByQidAndNV(qid, "v6", value, tableName);
+                                    JSONObject b7 = new JSONObject();
+                                    b7.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a7.put("time", ta7.get("createtime"));
-                                        maps.put("a7", a7);
-                                        break;
-                                    case "b7":
-                                        Map<String, Object> tb7 = this.findByQidAndNV(qid, "v6", value, tableName);
-                                        JSONObject b7 = new JSONObject();
-                                        b7.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b7.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b7.put("text", ja);
 
+                                    }
+                                    b7.put("time", tb7.get("createtime"));
+                                    maps.put("b7", b7);
+                                    break;
+                                case "c7":
+                                    Map<String, Object> tc7 = this.findByQidAndNV(qid, "v12", value, tableName);
+                                    JSONObject c7 = new JSONObject();
+                                    c7.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b7.put("time", tb7.get("createtime"));
-                                        maps.put("b7", b7);
-                                        break;
-                                    case "c7":
-                                        Map<String, Object> tc7 = this.findByQidAndNV(qid, "v12", value, tableName);
-                                        JSONObject c7 = new JSONObject();
-                                        c7.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c7.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            c7.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        c7.put("text", ja);
 
+                                    }
+                                    c7.put("time", tc7.get("createtime"));
+                                    maps.put("c7", c7);
+                                    break;
+                                case "d7":
+                                    Map<String, Object> td7 = this.findByQidAndNV(qid, "v12", value, tableName);
+                                    JSONObject d7 = new JSONObject();
+                                    d7.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
                                         }
-                                        c7.put("time", tc7.get("createtime"));
-                                        maps.put("c7", c7);
-                                        break;
-                                    case "d7":
-                                        Map<String, Object> td7 = this.findByQidAndNV(qid, "v12", value, tableName);
-                                        JSONObject d7 = new JSONObject();
-                                        d7.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d7.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            d7.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        d7.put("text", ja);
 
+                                    }
+                                    d7.put("time", td7.get("createtime"));
+                                    maps.put("d7", d7);
+                                    break;
+                                case "a8":
+                                    Map<String, Object> ta8 = this.findByQidAndNV(qid, "v7", value, tableName);
+                                    JSONObject a8 = new JSONObject();
+                                    a8.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        d7.put("time", td7.get("createtime"));
-                                        maps.put("d7", d7);
-                                        break;
-                                    case "a8":
-                                        Map<String, Object> ta8 = this.findByQidAndNV(qid, "v7", value, tableName);
-                                        JSONObject a8 = new JSONObject();
-                                        a8.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a8.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a8.put("text", ja);
+                                    }
+                                    a8.put("time", ta8.get("createtime"));
+                                    maps.put("a8", a8);
+                                    break;
+                                case "b8":
+                                    Map<String, Object> tb8 = this.findByQidAndNV(qid, "v7", value, tableName);
+                                    JSONObject b8 = new JSONObject();
+                                    b8.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a8.put("time", ta8.get("createtime"));
-                                        maps.put("a8", a8);
-                                        break;
-                                    case "b8":
-                                        Map<String, Object> tb8 = this.findByQidAndNV(qid, "v7", value, tableName);
-                                        JSONObject b8 = new JSONObject();
-                                        b8.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b8.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b8.put("text", ja);
 
+                                    }
+                                    b8.put("time", tb8.get("createtime"));
+                                    maps.put("b8", b8);
+                                    break;
+                                case "c8":
+                                    Map<String, Object> tc8 = this.findByQidAndNV(qid, "v13", value, tableName);
+                                    JSONObject c8 = new JSONObject();
+                                    c8.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b8.put("time", tb8.get("createtime"));
-                                        maps.put("b8", b8);
-                                        break;
-                                    case "c8":
-                                        Map<String, Object> tc8 = this.findByQidAndNV(qid, "v13", value, tableName);
-                                        JSONObject c8 = new JSONObject();
-                                        c8.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            c8.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        c8.put("text", ja);
+                                    }
+                                    c8.put("time", tc8.get("createtime"));
+                                    maps.put("c8", c8);
+                                    break;
+                                case "d8":
+                                    Map<String, Object> td8 = this.findByQidAndNV(qid, "v13", value, tableName);
+                                    JSONObject d8 = new JSONObject();
+                                    d8.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            d8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmLower()));
                                         }
-                                        c8.put("time", tc8.get("createtime"));
-                                        maps.put("c8", c8);
-                                        break;
-                                    case "d8":
-                                        Map<String, Object> td8 = this.findByQidAndNV(qid, "v13", value, tableName);
-                                        JSONObject d8 = new JSONObject();
-                                        d8.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                d8.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            d8.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        d8.put("text", ja);
 
+                                    }
+                                    d8.put("time", td8.get("createtime"));
+                                    maps.put("d8", d8);
+                                    break;
+
+                                case "a11":
+                                    Map<String, Object> ta11 = this.findByQidAndNV(qid, "v15", value, tableName);
+                                    JSONObject a11 = new JSONObject();
+                                    a11.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        d8.put("time", td8.get("createtime"));
-                                        maps.put("d8", d8);
-                                        break;
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a11.put("text", ja);
 
-                                    case "a11":
-                                        Map<String, Object> ta11 = this.findByQidAndNV(qid, "v15", value, tableName);
-                                        JSONObject a11 = new JSONObject();
-                                        a11.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a11.put("text", ja);
-
+                                    }
+                                    a11.put("time", ta11.get("createtime"));
+                                    maps.put("a11", a11);
+                                    break;
+                                case "b11":
+                                    Map<String, Object> tb11 = this.findByQidAndNV(qid, "v15", value, tableName);
+                                    JSONObject b11 = new JSONObject();
+                                    b11.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a11.put("time", ta11.get("createtime"));
-                                        maps.put("a11", a11);
-                                        break;
-                                    case "b11":
-                                        Map<String, Object> tb11 = this.findByQidAndNV(qid, "v15", value, tableName);
-                                        JSONObject b11 = new JSONObject();
-                                        b11.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b11.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b11.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b11.put("text", ja);
 
+                                    }
+                                    b11.put("time", tb11.get("createtime"));
+                                    maps.put("b11", b11);
+                                    break;
+                                case "a12":
+                                    Map<String, Object> ta12 = this.findByQidAndNV(qid, "v16", value, tableName);
+                                    JSONObject a12 = new JSONObject();
+                                    a12.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b11.put("time", tb11.get("createtime"));
-                                        maps.put("b11", b11);
-                                        break;
-                                    case "a12":
-                                        Map<String, Object> ta12 = this.findByQidAndNV(qid, "v16", value, tableName);
-                                        JSONObject a12 = new JSONObject();
-                                        a12.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a12.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a12.put("text", ja);
 
+                                    }
+                                    a12.put("time", ta12.get("createtime"));
+                                    maps.put("a12", a12);
+                                    break;
+                                case "b12":
+                                    Map<String, Object> tb12 = this.findByQidAndNV(qid, "v16", value, tableName);
+                                    JSONObject b12 = new JSONObject();
+                                    b12.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a12.put("time", ta12.get("createtime"));
-                                        maps.put("a12", a12);
-                                        break;
-                                    case "b12":
-                                        Map<String, Object> tb12 = this.findByQidAndNV(qid, "v16", value, tableName);
-                                        JSONObject b12 = new JSONObject();
-                                        b12.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b12.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            tb12.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        tb12.put("text", ja);
 
+                                    }
+                                    b12.put("time", tb12.get("createtime"));
+                                    maps.put("b12", b12);
+                                    break;
+                                case "a13":
+                                    Map<String, Object> ta13 = this.findByQidAndNV(qid, "v17", value, tableName);
+                                    JSONObject a13 = new JSONObject();
+                                    a13.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a13.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b12.put("time", tb12.get("createtime"));
-                                        maps.put("b12", b12);
-                                        break;
-                                    case "a13":
-                                        Map<String, Object> ta13 = this.findByQidAndNV(qid, "v17", value, tableName);
-                                        JSONObject a13 = new JSONObject();
-                                        a13.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a13.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a13.put("text", ja);
+
+                                    }
+                                    a13.put("time", ta13.get("createtime"));
+                                    maps.put("a11", a13);
+                                    break;
+                                case "b13":
+                                    Map<String, Object> tb13 = this.findByQidAndNV(qid, "v17", value, tableName);
+                                    Integer status13 = (Integer) tb13.get("v2");
+                                    JSONObject b13 = new JSONObject();
+                                    b13.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status13 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a13.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
-                                        }
-                                        a13.put("time", ta13.get("createtime"));
-                                        maps.put("a11", a13);
-                                        break;
-                                    case "b13":
-                                        Map<String, Object> tb13 = this.findByQidAndNV(qid, "v17", value, tableName);
-                                        Integer status13 = (Integer) tb13.get("v2");
-                                        JSONObject b13 = new JSONObject();
-                                        b13.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status13 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            } else if (status13 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
+                                        } else if (status13 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b13.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            ja.add(text);
-                                            b13.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        b13.put("time", tb13.get("createtime"));
-                                        maps.put("b13", b13);
-                                        break;
-                                    case "a14":
-                                        Map<String, Object> ta14 = this.findByQidAndNV(qid, "v18", value, tableName);
-                                        JSONObject a14 = new JSONObject();
-                                        a14.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a14.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        ja.add(text);
+                                        b13.put("text", ja);
+
+                                    }
+                                    b13.put("time", tb13.get("createtime"));
+                                    maps.put("b13", b13);
+                                    break;
+                                case "a14":
+                                    Map<String, Object> ta14 = this.findByQidAndNV(qid, "v18", value, tableName);
+                                    JSONObject a14 = new JSONObject();
+                                    a14.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a14.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a14.put("text", ja);
+
+                                    }
+                                    a14.put("time", ta14.get("createtime"));
+                                    maps.put("a14", a14);
+                                    break;
+                                case "b14":
+                                    Map<String, Object> tb14 = this.findByQidAndNV(qid, "v18", value, tableName);
+                                    Integer status14 = (Integer) tb14.get("v2");
+                                    JSONObject b14 = new JSONObject();
+                                    b14.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status14 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a14.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
+
+                                        } else if (status14 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
+                                            }
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        a14.put("time", ta14.get("createtime"));
-                                        maps.put("a14", a14);
-                                        break;
-                                    case "b14":
-                                        Map<String, Object> tb14 = this.findByQidAndNV(qid, "v18", value, tableName);
-                                        Integer status14 = (Integer) tb14.get("v2");
-                                        JSONObject b14 = new JSONObject();
-                                        b14.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status14 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
+                                        ja.add(text);
+                                        b14.put("text", ja);
 
-                                            } else if (status14 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b14.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
+                                    }
+                                    b14.put("time", tb14.get("createtime"));
+                                    maps.put("b14", b14);
+                                    break;
+                                case "a15":
+                                    Map<String, Object> ta15 = this.findByQidAndNV(qid, "v19", value, tableName);
+                                    JSONObject a15 = new JSONObject();
+                                    a15.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a15.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a15.put("text", ja);
 
+                                    }
+                                    a15.put("time", ta15.get("createtime"));
+                                    maps.put("a15", a15);
+                                    break;
+                                case "b15":
+                                    Map<String, Object> tb15 = this.findByQidAndNV(qid, "v19", value, tableName);
+                                    Integer status15 = (Integer) tb15.get("v2");
+                                    JSONObject b15 = new JSONObject();
+                                    b15.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status15 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            ja.add(text);
-                                            b14.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
+
+                                        } else if (status15 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
+                                            }
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        b14.put("time", tb14.get("createtime"));
-                                        maps.put("b14", b14);
-                                        break;
-                                    case "a15":
-                                        Map<String, Object> ta15 = this.findByQidAndNV(qid, "v19", value, tableName);
-                                        JSONObject a15 = new JSONObject();
-                                        a15.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a15.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a15.put("text", ja);
+                                        ja.add(text);
+                                        b15.put("text", ja);
 
+                                    }
+                                    b15.put("time", b15.get("createtime"));
+                                    maps.put("b15", b15);
+                                    break;
+
+
+                                case "a16":
+                                    Map<String, Object> ta16 = this.findByQidAndNV(qid, "v20", value, tableName);
+                                    JSONObject a16 = new JSONObject();
+                                    a16.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a16.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        a15.put("time", ta15.get("createtime"));
-                                        maps.put("a15", a15);
-                                        break;
-                                    case "b15":
-                                        Map<String, Object> tb15 = this.findByQidAndNV(qid, "v19", value, tableName);
-                                        Integer status15 = (Integer) tb15.get("v2");
-                                        JSONObject b15 = new JSONObject();
-                                        b15.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status15 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a16.put("text", ja);
 
-                                            } else if (status15 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b15.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
+                                    }
+                                    a16.put("time", ta16.get("createtime"));
+                                    maps.put("a16", a16);
+                                    break;
+                                case "b16":
+                                    Map<String, Object> tb16 = this.findByQidAndNV(qid, "v20", value, tableName);
+                                    Integer status16 = (Integer) tb16.get("v2");
+                                    JSONObject b16 = new JSONObject();
+                                    b16.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status16 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            ja.add(text);
-                                            b15.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
+                                        } else if (status16 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
+                                            }
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerK());
                                         }
-                                        b15.put("time", b15.get("createtime"));
-                                        maps.put("b15", b15);
-                                        break;
+                                        ja.add(text);
+                                        b16.put("text", ja);
 
-
-                                    case "a16":
-                                        Map<String, Object> ta16 = this.findByQidAndNV(qid, "v20", value, tableName);
-                                        JSONObject a16 = new JSONObject();
-                                        a16.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a16.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a16.put("text", ja);
-
-                                        }
-                                        a16.put("time", ta16.get("createtime"));
-                                        maps.put("a16", a16);
-                                        break;
-                                    case "b16":
-                                        Map<String, Object> tb16 = this.findByQidAndNV(qid, "v20", value, tableName);
-                                        Integer status16 = (Integer) tb16.get("v2");
-                                        JSONObject b16 = new JSONObject();
-                                        b16.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status16 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            } else if (status16 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b16.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerK());
-                                            }
-                                            ja.add(text);
-                                            b16.put("text", ja);
-
-                                        }
-                                        b16.put("time", tb16.get("createtime"));
-                                        maps.put("b16", b16);
-                                        break;
-                                    case "a17":
-                                        Map<String, Object> ta17 = this.findByQidAndNV(qid, "v21", value, tableName);
-                                        Integer status171 = (Integer) ta17.get("v2");
-                                        JSONObject a17 = new JSONObject();
-                                        a17.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status171 == 1) {
-                                                if (!"——".equals(m1.getAlarmSuperiorK())) {
-                                                    a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
-                                                }
-                                                text.put("label", "报警上限(空闲)");
-                                                text.put("value", m1.getAlarmSuperiorK());
-
-                                            } else if (status171 == 2) {
-                                                if (!"——".equals(m1.getAlarmSuperiorZ())) {
-                                                    a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorZ()));
-                                                }
-                                                text.put("label", "报警上限(占用)");
-                                                text.put("value", m1.getAlarmSuperiorZ());
-
-                                            }
-                                            ja.add(text);
-                                            a17.put("text", ja);
-                                        }
-                                        a17.put("time", ta17.get("createtime"));
-                                        maps.put("a17", a17);
-                                        break;
-                                    case "b17":
-                                        Map<String, Object> tb17 = this.findByQidAndNV(qid, "v21", value, tableName);
-                                        JSONObject b17 = new JSONObject();
-                                        b17.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b17.put("text", ja);
-
-                                        }
-                                        b17.put("time", tb17.get("createtime"));
-                                        maps.put("b17", b17);
-                                        break;
-                                    case "c17":
-                                        Map<String, Object> tc17 = this.findByQidAndNV(qid, "v26", value, tableName);
-                                        Integer status172 = (Integer) tc17.get("v2");
-                                        JSONObject c17 = new JSONObject();
-                                        c17.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status172 == 1) {
-                                                if (!"——".equals(m2.getAlarmSuperiorK())) {
-                                                    c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
-                                                }
-                                                text.put("label", "报警上限(空闲)");
-                                                text.put("value", m2.getAlarmSuperiorK());
-
-                                            } else if (status172 == 2) {
-                                                if (!"——".equals(m2.getAlarmSuperiorZ())) {
-                                                    c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorZ()));
-                                                }
-                                                text.put("label", "报警上限(占用)");
-                                                text.put("value", m2.getAlarmSuperiorZ());
-
-                                            }
-                                            ja.add(text);
-                                            c17.put("text", ja);
-                                        }
-                                        c17.put("time", tc17.get("createtime"));
-                                        maps.put("c17", c17);
-                                        break;
-                                    case "d17":
-                                        Map<String, Object> td17 = this.findByQidAndNV(qid, "v26", value, tableName);
-                                        JSONObject d17 = new JSONObject();
-                                        d17.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d17.put("text", ja);
-
-                                        }
-                                        d17.put("time", td17.get("createtime"));
-                                        maps.put("d17", d17);
-                                        break;
-                                    case "a18":
-                                        Map<String, Object> ta18 = this.findByQidAndNV(qid, "v22", value, tableName);
-                                        Integer status181 = (Integer) ta18.get("v2");
-                                        JSONObject a18 = new JSONObject();
-                                        a18.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status181 == 1) {
-                                                if (!"——".equals(m1.getAlarmSuperiorK())) {
-                                                    a18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
-                                                }
-                                                text.put("label", "报警上限(空闲)");
-                                                text.put("value", m1.getAlarmSuperiorK());
-
-                                            }
-                                            ja.add(text);
-                                            a18.put("text", ja);
-                                        }
-                                        a18.put("time", ta18.get("createtime"));
-                                        maps.put("a18", a18);
-                                        break;
-                                    case "b18":
-                                        Map<String, Object> tb18 = this.findByQidAndNV(qid, "v22", value, tableName);
-                                        Integer status182 = (Integer) tb18.get("v2");
-                                        JSONObject b18 = new JSONObject();
-                                        b18.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status182 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status182 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b18.put("text", ja);
-                                        }
-                                        b18.put("time", tb18.get("createtime"));
-                                        maps.put("b18", b18);
-                                        break;
-                                    case "c18":
-                                        Map<String, Object> tc18 = this.findByQidAndNV(qid, "v27", value, tableName);
-                                        Integer status183 = (Integer) tc18.get("v2");
-                                        JSONObject c18 = new JSONObject();
-                                        c18.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status183 == 1) {
-                                                if (!"——".equals(m2.getAlarmSuperiorK())) {
-                                                    c18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
-                                                }
-                                                text.put("label", "报警上限(空闲)");
-                                                text.put("value", m2.getAlarmSuperiorK());
-
-                                            }
-                                            ja.add(text);
-                                            c18.put("text", ja);
-                                        }
-                                        c18.put("time", tc18.get("createtime"));
-                                        maps.put("c18", c18);
-                                        break;
-                                    case "d18":
-                                        Map<String, Object> td18 = this.findByQidAndNV(qid, "v27", value, tableName);
-                                        Integer status184 = (Integer) td18.get("v2");
-                                        JSONObject d18 = new JSONObject();
-                                        d18.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status184 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status184 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d18.put("text", ja);
-                                        }
-                                        d18.put("time", td18.get("createtime"));
-                                        maps.put("d18", d18);
-                                        break;
-                                    case "a19":
-                                        Map<String, Object> ta19 = this.findByQidAndNV(qid, "v23", value, tableName);
-                                        JSONObject a19 = new JSONObject();
-                                        a19.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a19.put("text", ja);
-
-                                        }
-                                        a19.put("time", ta19.get("createtime"));
-                                        maps.put("a18", a19);
-                                        break;
-                                    case "b19":
-                                        Map<String, Object> tb19 = this.findByQidAndNV(qid, "v23", value, tableName);
-                                        JSONObject b19 = new JSONObject();
-                                        Integer status192 = (Integer) tb19.get("v2");
-                                        b19.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status192 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status192 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b19.put("text", ja);
-                                        }
-                                        b19.put("time", tb19.get("createtime"));
-                                        maps.put("b19", b19);
-                                        break;
-                                    case "c19":
-                                        Map<String, Object> tc19 = this.findByQidAndNV(qid, "v28", value, tableName);
-                                        JSONObject c19 = new JSONObject();
-                                        c19.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c19.put("text", ja);
-
-                                        }
-                                        c19.put("time", tc19.get("createtime"));
-                                        maps.put("a18", c19);
-                                        break;
-                                    case "d19":
-                                        Map<String, Object> td19 = this.findByQidAndNV(qid, "v28", value, tableName);
-                                        JSONObject d19 = new JSONObject();
-                                        Integer status194 = (Integer) td19.get("v2");
-                                        d19.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status194 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmLowerK());
-
-                                            }
-                                            if (status194 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d19.put("text", ja);
-                                        }
-                                        d19.put("time", td19.get("createtime"));
-                                        maps.put("d19", d19);
-                                        break;
-
-                                    case "a24":
-                                        Map<String, Object> ta24 = this.findByQidAndNV(qid, "v42", value, tableName);
-                                        JSONObject a24 = new JSONObject();
-                                        a24.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
+                                    }
+                                    b16.put("time", tb16.get("createtime"));
+                                    maps.put("b16", b16);
+                                    break;
+                                case "a17":
+                                    Map<String, Object> ta17 = this.findByQidAndNV(qid, "v21", value, tableName);
+                                    Integer status171 = (Integer) ta17.get("v2");
+                                    JSONObject a17 = new JSONObject();
+                                    a17.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status171 == 1) {
                                             if (!"——".equals(m1.getAlarmSuperiorK())) {
-                                                a24.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                                a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
                                             }
-                                            text.put("label", "报警上限");
+                                            text.put("label", "报警上限(空闲)");
                                             text.put("value", m1.getAlarmSuperiorK());
-                                            ja.add(text);
-                                            a24.put("text", ja);
+
+                                        } else if (status171 == 2) {
+                                            if (!"——".equals(m1.getAlarmSuperiorZ())) {
+                                                a17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorZ()));
+                                            }
+                                            text.put("label", "报警上限(占用)");
+                                            text.put("value", m1.getAlarmSuperiorZ());
 
                                         }
-                                        a24.put("time", ta24.get("createtime"));
-                                        maps.put("a24", a24);
-                                        break;
-                                    case "b24":
-                                        Map<String, Object> td24 = this.findByQidAndNV(qid, "v42", value, tableName);
-                                        JSONObject b24 = new JSONObject();
-                                        Integer status242 = (Integer) td24.get("v2");
-                                        b24.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status242 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    b24.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmSuperiorK());
-
-                                            }
-                                            ja.add(text);
-                                            b24.put("text", ja);
+                                        ja.add(text);
+                                        a17.put("text", ja);
+                                    }
+                                    a17.put("time", ta17.get("createtime"));
+                                    maps.put("a17", a17);
+                                    break;
+                                case "b17":
+                                    Map<String, Object> tb17 = this.findByQidAndNV(qid, "v21", value, tableName);
+                                    JSONObject b17 = new JSONObject();
+                                    b17.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        b24.put("time", td24.get("createtime"));
-                                        maps.put("b24", b24);
-                                        break;
-                                    case "a25":
-                                        Map<String, Object> ta25 = this.findByQidAndNV(qid, "v43", value, tableName);
-                                        JSONObject a25 = new JSONObject();
-                                        a25.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a25.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a25.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b17.put("text", ja);
 
-                                        }
-                                        a25.put("time", ta25.get("createtime"));
-                                        maps.put("a25", a25);
-                                        break;
-                                    case "b25":
-                                        Map<String, Object> tb25 = this.findByQidAndNV(qid, "v43", value, tableName);
-                                        JSONObject b25 = new JSONObject();
-                                        b25.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b25.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                    }
+                                    b17.put("time", tb17.get("createtime"));
+                                    maps.put("b17", b17);
+                                    break;
+                                case "c17":
+                                    Map<String, Object> tc17 = this.findByQidAndNV(qid, "v26", value, tableName);
+                                    Integer status172 = (Integer) tc17.get("v2");
+                                    JSONObject c17 = new JSONObject();
+                                    c17.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status172 == 1) {
+                                            if (!"——".equals(m2.getAlarmSuperiorK())) {
+                                                c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b25.put("text", ja);
+                                            text.put("label", "报警上限(空闲)");
+                                            text.put("value", m2.getAlarmSuperiorK());
+
+                                        } else if (status172 == 2) {
+                                            if (!"——".equals(m2.getAlarmSuperiorZ())) {
+                                                c17.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorZ()));
+                                            }
+                                            text.put("label", "报警上限(占用)");
+                                            text.put("value", m2.getAlarmSuperiorZ());
 
                                         }
-                                        b25.put("time", tb25.get("createtime"));
-                                        maps.put("b25", b25);
-                                        break;
-                                    case "a26":
-                                        Map<String, Object> ta26 = this.findByQidAndNV(qid, "v44", value, tableName);
-                                        JSONObject a26 = new JSONObject();
-                                        a26.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a26.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        ja.add(text);
+                                        c17.put("text", ja);
+                                    }
+                                    c17.put("time", tc17.get("createtime"));
+                                    maps.put("c17", c17);
+                                    break;
+                                case "d17":
+                                    Map<String, Object> td17 = this.findByQidAndNV(qid, "v26", value, tableName);
+                                    JSONObject d17 = new JSONObject();
+                                    d17.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d17.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d17.put("text", ja);
+
+                                    }
+                                    d17.put("time", td17.get("createtime"));
+                                    maps.put("d17", d17);
+                                    break;
+                                case "a18":
+                                    Map<String, Object> ta18 = this.findByQidAndNV(qid, "v22", value, tableName);
+                                    Integer status181 = (Integer) ta18.get("v2");
+                                    JSONObject a18 = new JSONObject();
+                                    a18.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status181 == 1) {
+                                            if (!"——".equals(m1.getAlarmSuperiorK())) {
+                                                a18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a26.put("text", ja);
+                                            text.put("label", "报警上限(空闲)");
+                                            text.put("value", m1.getAlarmSuperiorK());
 
                                         }
-                                        a26.put("time", ta26.get("createtime"));
-                                        maps.put("a26", a26);
-                                        break;
-                                    case "b26":
-                                        Map<String, Object> tb26 = this.findByQidAndNV(qid, "v44", value, tableName);
-                                        JSONObject b26 = new JSONObject();
-                                        b26.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b26.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        ja.add(text);
+                                        a18.put("text", ja);
+                                    }
+                                    a18.put("time", ta18.get("createtime"));
+                                    maps.put("a18", a18);
+                                    break;
+                                case "b18":
+                                    Map<String, Object> tb18 = this.findByQidAndNV(qid, "v22", value, tableName);
+                                    Integer status182 = (Integer) tb18.get("v2");
+                                    JSONObject b18 = new JSONObject();
+                                    b18.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status182 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b26.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        b26.put("time", tb26.get("createtime"));
-                                        maps.put("b26", b26);
-                                        break;
-                                    case "a27":
-                                        Map<String, Object> ta27 = this.findByQidAndNV(qid, "v45", value, tableName);
-                                        JSONObject a27 = new JSONObject();
-                                        a27.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a27.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        if (status182 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a27.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a27.put("time", ta27.get("createtime"));
-                                        maps.put("a27", a27);
-                                        break;
-                                    case "b27":
-                                        Map<String, Object> tb27 = this.findByQidAndNV(qid, "v45", value, tableName);
-                                        JSONObject b27 = new JSONObject();
-                                        b27.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b27.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        ja.add(text);
+                                        b18.put("text", ja);
+                                    }
+                                    b18.put("time", tb18.get("createtime"));
+                                    maps.put("b18", b18);
+                                    break;
+                                case "c18":
+                                    Map<String, Object> tc18 = this.findByQidAndNV(qid, "v27", value, tableName);
+                                    Integer status183 = (Integer) tc18.get("v2");
+                                    JSONObject c18 = new JSONObject();
+                                    c18.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status183 == 1) {
+                                            if (!"——".equals(m2.getAlarmSuperiorK())) {
+                                                c18.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperiorK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b27.put("text", ja);
+                                            text.put("label", "报警上限(空闲)");
+                                            text.put("value", m2.getAlarmSuperiorK());
 
                                         }
-                                        b27.put("time", tb27.get("createtime"));
-                                        maps.put("b27", b27);
-                                        break;
-                                    case "a28":
-                                        Map<String, Object> ta28 = this.findByQidAndNV(qid, "v46", value, tableName);
-                                        JSONObject a28 = new JSONObject();
-                                        a28.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a28.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        ja.add(text);
+                                        c18.put("text", ja);
+                                    }
+                                    c18.put("time", tc18.get("createtime"));
+                                    maps.put("c18", c18);
+                                    break;
+                                case "d18":
+                                    Map<String, Object> td18 = this.findByQidAndNV(qid, "v27", value, tableName);
+                                    Integer status184 = (Integer) td18.get("v2");
+                                    JSONObject d18 = new JSONObject();
+                                    d18.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status184 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a28.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        a28.put("time", ta28.get("createtime"));
-                                        maps.put("a28", a28);
-                                        break;
-                                    case "b28":
-                                        Map<String, Object> tb28 = this.findByQidAndNV(qid, "v46", value, tableName);
-                                        JSONObject b28 = new JSONObject();
-                                        b28.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b28.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        if (status184 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d18.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b28.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        b28.put("time", tb28.get("createtime"));
-                                        maps.put("b28", b28);
-                                        break;
-                                    case "a29":
-                                        Map<String, Object> ta29 = this.findByQidAndNV(qid, "v52", value, tableName);
-                                        JSONObject a29 = new JSONObject();
-                                        a29.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a29.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        ja.add(text);
+                                        d18.put("text", ja);
+                                    }
+                                    d18.put("time", td18.get("createtime"));
+                                    maps.put("d18", d18);
+                                    break;
+                                case "a19":
+                                    Map<String, Object> ta19 = this.findByQidAndNV(qid, "v23", value, tableName);
+                                    JSONObject a19 = new JSONObject();
+                                    a19.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a19.put("text", ja);
+
+                                    }
+                                    a19.put("time", ta19.get("createtime"));
+                                    maps.put("a18", a19);
+                                    break;
+                                case "b19":
+                                    Map<String, Object> tb19 = this.findByQidAndNV(qid, "v23", value, tableName);
+                                    JSONObject b19 = new JSONObject();
+                                    Integer status192 = (Integer) tb19.get("v2");
+                                    b19.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status192 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a29.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        a29.put("time", ta29.get("createtime"));
-                                        maps.put("a29", a29);
-                                        break;
-                                    case "b29":
-                                        Map<String, Object> tb29 = this.findByQidAndNV(qid, "v52", value, tableName);
-                                        JSONObject b29 = new JSONObject();
-                                        b29.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b29.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        if (status192 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b29.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        b29.put("time", tb29.get("createtime"));
-                                        maps.put("b29", b29);
-                                        break;
-                                    case "a30":
-                                        Map<String, Object> ta30 = this.findByQidAndNV(qid, "v54", value, tableName);
-                                        JSONObject a30 = new JSONObject();
-                                        a30.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        ja.add(text);
+                                        b19.put("text", ja);
+                                    }
+                                    b19.put("time", tb19.get("createtime"));
+                                    maps.put("b19", b19);
+                                    break;
+                                case "c19":
+                                    Map<String, Object> tc19 = this.findByQidAndNV(qid, "v28", value, tableName);
+                                    JSONObject c19 = new JSONObject();
+                                    c19.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c19.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c19.put("text", ja);
+
+                                    }
+                                    c19.put("time", tc19.get("createtime"));
+                                    maps.put("a18", c19);
+                                    break;
+                                case "d19":
+                                    Map<String, Object> td19 = this.findByQidAndNV(qid, "v28", value, tableName);
+                                    JSONObject d19 = new JSONObject();
+                                    Integer status194 = (Integer) td19.get("v2");
+                                    d19.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status194 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a30.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmLowerK());
 
                                         }
-                                        a30.put("time", ta30.get("createtime"));
-                                        maps.put("a30", a30);
-                                        break;
-                                    case "b30":
-                                        Map<String, Object> tb30 = this.findByQidAndNV(qid, "v54", value, tableName);
-                                        JSONObject b30 = new JSONObject();
-                                        b30.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        if (status194 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d19.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b30.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        b30.put("time", tb30.get("createtime"));
-                                        maps.put("b30", b30);
-                                        break;
-                                    case "c30":
-                                        Map<String, Object> tc30 = this.findByQidAndNV(qid, "v58", value, tableName);
-                                        JSONObject c30 = new JSONObject();
-                                        c30.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        ja.add(text);
+                                        d19.put("text", ja);
+                                    }
+                                    d19.put("time", td19.get("createtime"));
+                                    maps.put("d19", d19);
+                                    break;
+
+                                case "a24":
+                                    Map<String, Object> ta24 = this.findByQidAndNV(qid, "v42", value, tableName);
+                                    JSONObject a24 = new JSONObject();
+                                    a24.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (!"——".equals(m1.getAlarmSuperiorK())) {
+                                            a24.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperiorK()));
+                                        }
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperiorK());
+                                        ja.add(text);
+                                        a24.put("text", ja);
+
+                                    }
+                                    a24.put("time", ta24.get("createtime"));
+                                    maps.put("a24", a24);
+                                    break;
+                                case "b24":
+                                    Map<String, Object> td24 = this.findByQidAndNV(qid, "v42", value, tableName);
+                                    JSONObject b24 = new JSONObject();
+                                    Integer status242 = (Integer) td24.get("v2");
+                                    b24.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status242 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                b24.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c30.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmSuperiorK());
 
                                         }
-                                        c30.put("time", tc30.get("createtime"));
-                                        maps.put("c30", c30);
-                                        break;
-                                    case "d30":
-                                        Map<String, Object> td30 = this.findByQidAndNV(qid, "v58", value, tableName);
-                                        JSONObject d30 = new JSONObject();
-                                        d30.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        ja.add(text);
+                                        b24.put("text", ja);
+                                    }
+                                    b24.put("time", td24.get("createtime"));
+                                    maps.put("b24", b24);
+                                    break;
+                                case "a25":
+                                    Map<String, Object> ta25 = this.findByQidAndNV(qid, "v43", value, tableName);
+                                    JSONObject a25 = new JSONObject();
+                                    a25.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a25.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a25.put("text", ja);
+
+                                    }
+                                    a25.put("time", ta25.get("createtime"));
+                                    maps.put("a25", a25);
+                                    break;
+                                case "b25":
+                                    Map<String, Object> tb25 = this.findByQidAndNV(qid, "v43", value, tableName);
+                                    JSONObject b25 = new JSONObject();
+                                    b25.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b25.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b25.put("text", ja);
+
+                                    }
+                                    b25.put("time", tb25.get("createtime"));
+                                    maps.put("b25", b25);
+                                    break;
+                                case "a26":
+                                    Map<String, Object> ta26 = this.findByQidAndNV(qid, "v44", value, tableName);
+                                    JSONObject a26 = new JSONObject();
+                                    a26.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a26.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a26.put("text", ja);
+
+                                    }
+                                    a26.put("time", ta26.get("createtime"));
+                                    maps.put("a26", a26);
+                                    break;
+                                case "b26":
+                                    Map<String, Object> tb26 = this.findByQidAndNV(qid, "v44", value, tableName);
+                                    JSONObject b26 = new JSONObject();
+                                    b26.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b26.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b26.put("text", ja);
+
+                                    }
+                                    b26.put("time", tb26.get("createtime"));
+                                    maps.put("b26", b26);
+                                    break;
+                                case "a27":
+                                    Map<String, Object> ta27 = this.findByQidAndNV(qid, "v45", value, tableName);
+                                    JSONObject a27 = new JSONObject();
+                                    a27.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a27.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a27.put("text", ja);
+
+                                    }
+                                    a27.put("time", ta27.get("createtime"));
+                                    maps.put("a27", a27);
+                                    break;
+                                case "b27":
+                                    Map<String, Object> tb27 = this.findByQidAndNV(qid, "v45", value, tableName);
+                                    JSONObject b27 = new JSONObject();
+                                    b27.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b27.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b27.put("text", ja);
+
+                                    }
+                                    b27.put("time", tb27.get("createtime"));
+                                    maps.put("b27", b27);
+                                    break;
+                                case "a28":
+                                    Map<String, Object> ta28 = this.findByQidAndNV(qid, "v46", value, tableName);
+                                    JSONObject a28 = new JSONObject();
+                                    a28.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a28.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a28.put("text", ja);
+
+                                    }
+                                    a28.put("time", ta28.get("createtime"));
+                                    maps.put("a28", a28);
+                                    break;
+                                case "b28":
+                                    Map<String, Object> tb28 = this.findByQidAndNV(qid, "v46", value, tableName);
+                                    JSONObject b28 = new JSONObject();
+                                    b28.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b28.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b28.put("text", ja);
+
+                                    }
+                                    b28.put("time", tb28.get("createtime"));
+                                    maps.put("b28", b28);
+                                    break;
+                                case "a29":
+                                    Map<String, Object> ta29 = this.findByQidAndNV(qid, "v52", value, tableName);
+                                    JSONObject a29 = new JSONObject();
+                                    a29.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a29.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a29.put("text", ja);
+
+                                    }
+                                    a29.put("time", ta29.get("createtime"));
+                                    maps.put("a29", a29);
+                                    break;
+                                case "b29":
+                                    Map<String, Object> tb29 = this.findByQidAndNV(qid, "v52", value, tableName);
+                                    JSONObject b29 = new JSONObject();
+                                    b29.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b29.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b29.put("text", ja);
+
+                                    }
+                                    b29.put("time", tb29.get("createtime"));
+                                    maps.put("b29", b29);
+                                    break;
+                                case "a30":
+                                    Map<String, Object> ta30 = this.findByQidAndNV(qid, "v54", value, tableName);
+                                    JSONObject a30 = new JSONObject();
+                                    a30.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a30.put("text", ja);
+
+                                    }
+                                    a30.put("time", ta30.get("createtime"));
+                                    maps.put("a30", a30);
+                                    break;
+                                case "b30":
+                                    Map<String, Object> tb30 = this.findByQidAndNV(qid, "v54", value, tableName);
+                                    JSONObject b30 = new JSONObject();
+                                    b30.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b30.put("text", ja);
+
+                                    }
+                                    b30.put("time", tb30.get("createtime"));
+                                    maps.put("b30", b30);
+                                    break;
+                                case "c30":
+                                    Map<String, Object> tc30 = this.findByQidAndNV(qid, "v58", value, tableName);
+                                    JSONObject c30 = new JSONObject();
+                                    c30.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c30.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c30.put("text", ja);
+
+                                    }
+                                    c30.put("time", tc30.get("createtime"));
+                                    maps.put("c30", c30);
+                                    break;
+                                case "d30":
+                                    Map<String, Object> td30 = this.findByQidAndNV(qid, "v58", value, tableName);
+                                    JSONObject d30 = new JSONObject();
+                                    d30.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d30.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d30.put("text", ja);
+
+                                    }
+                                    d30.put("time", td30.get("createtime"));
+                                    maps.put("d30", d30);
+                                    break;
+                                case "a31":
+                                    Map<String, Object> ta31 = this.findByQidAndNV(qid, "v55", value, tableName);
+                                    JSONObject a31 = new JSONObject();
+                                    a31.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a31.put("text", ja);
+
+                                    }
+                                    a31.put("time", ta31.get("createtime"));
+                                    maps.put("a31", a31);
+                                    break;
+                                case "b31":
+                                    Map<String, Object> tb31 = this.findByQidAndNV(qid, "v55", value, tableName);
+                                    JSONObject b31 = new JSONObject();
+                                    b31.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b31.put("text", ja);
+
+                                    }
+                                    b31.put("time", tb31.get("createtime"));
+                                    maps.put("b31", b31);
+                                    break;
+                                case "c31":
+                                    Map<String, Object> tc31 = this.findByQidAndNV(qid, "v59", value, tableName);
+                                    JSONObject c31 = new JSONObject();
+                                    c31.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c31.put("text", ja);
+
+                                    }
+                                    c31.put("time", tc31.get("createtime"));
+                                    maps.put("c31", c31);
+                                    break;
+                                case "d31":
+                                    Map<String, Object> td31 = this.findByQidAndNV(qid, "v59", value, tableName);
+                                    JSONObject d31 = new JSONObject();
+                                    d31.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d31.put("text", ja);
+
+                                    }
+                                    d31.put("time", td31.get("createtime"));
+                                    maps.put("d31", d31);
+                                    break;
+                                case "a32":
+                                    Map<String, Object> ta32 = this.findByQidAndNV(qid, "v56", value, tableName);
+                                    JSONObject a32 = new JSONObject();
+                                    a32.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a32.put("text", ja);
+
+                                    }
+                                    a32.put("time", ta32.get("createtime"));
+                                    maps.put("a32", a32);
+                                    break;
+                                case "b32":
+                                    Map<String, Object> tb32 = this.findByQidAndNV(qid, "v56", value, tableName);
+                                    JSONObject b32 = new JSONObject();
+                                    b32.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b32.put("text", ja);
+
+                                    }
+                                    b32.put("time", tb32.get("createtime"));
+                                    maps.put("b32", b32);
+                                    break;
+                                case "c32":
+                                    Map<String, Object> tc32 = this.findByQidAndNV(qid, "v60", value, tableName);
+                                    JSONObject c32 = new JSONObject();
+                                    c32.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c32.put("text", ja);
+
+                                    }
+                                    c32.put("time", tc32.get("createtime"));
+                                    maps.put("c32", c32);
+                                    break;
+                                case "d32":
+                                    Map<String, Object> td32 = this.findByQidAndNV(qid, "v60", value, tableName);
+                                    JSONObject d32 = new JSONObject();
+                                    d32.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d32.put("text", ja);
+
+                                    }
+                                    d32.put("time", td32.get("createtime"));
+                                    maps.put("d32", d32);
+                                    break;
+                                case "a33":
+                                    Map<String, Object> ta33 = this.findByQidAndNV(qid, "v57", value, tableName);
+                                    JSONObject a33 = new JSONObject();
+                                    a33.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a33.put("text", ja);
+
+                                    }
+                                    a33.put("time", ta33.get("createtime"));
+                                    maps.put("a33", a33);
+                                    break;
+                                case "b33":
+                                    Map<String, Object> tb33 = this.findByQidAndNV(qid, "v57", value, tableName);
+                                    JSONObject b33 = new JSONObject();
+                                    b33.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b33.put("text", ja);
+
+                                    }
+                                    b33.put("time", tb33.get("createtime"));
+                                    maps.put("b33", b33);
+                                    break;
+                                case "c33":
+                                    Map<String, Object> tc33 = this.findByQidAndNV(qid, "v61", value, tableName);
+                                    JSONObject c33 = new JSONObject();
+                                    c33.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c33.put("text", ja);
+
+                                    }
+                                    c33.put("time", tc33.get("createtime"));
+                                    maps.put("c33", c33);
+                                    break;
+                                case "d33":
+                                    Map<String, Object> td33 = this.findByQidAndNV(qid, "v61", value, tableName);
+                                    JSONObject d33 = new JSONObject();
+                                    d33.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmLower())) {
+                                            d33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m2.getAlarmLower());
+                                        ja.add(text);
+                                        d33.put("text", ja);
+
+                                    }
+                                    d33.put("time", td33.get("createtime"));
+                                    maps.put("d33", d33);
+                                    break;
+                                case "a34":
+                                    Map<String, Object> ta34 = this.findByQidAndNV(qid, "v62", value, tableName);
+                                    JSONObject a34 = new JSONObject();
+                                    a34.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a34.put("text", ja);
+
+                                    }
+                                    a34.put("time", ta34.get("createtime"));
+                                    maps.put("a34", a34);
+                                    break;
+                                case "b34":
+                                    Map<String, Object> tb34 = this.findByQidAndNV(qid, "v62", value, tableName);
+                                    JSONObject b34 = new JSONObject();
+                                    Integer status342 = (Integer) tb34.get("v2");
+                                    b34.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status342 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d30.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        d30.put("time", td30.get("createtime"));
-                                        maps.put("d30", d30);
-                                        break;
-                                    case "a31":
-                                        Map<String, Object> ta31 = this.findByQidAndNV(qid, "v55", value, tableName);
-                                        JSONObject a31 = new JSONObject();
-                                        a31.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        if (status342 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a31.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a31.put("time", ta31.get("createtime"));
-                                        maps.put("a31", a31);
-                                        break;
-                                    case "b31":
-                                        Map<String, Object> tb31 = this.findByQidAndNV(qid, "v55", value, tableName);
-                                        JSONObject b31 = new JSONObject();
-                                        b31.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        ja.add(text);
+                                        b34.put("text", ja);
+                                    }
+                                    b34.put("time", tb34.get("createtime"));
+                                    maps.put("b19", b34);
+                                    break;
+                                case "c34":
+                                    Map<String, Object> tc34 = this.findByQidAndNV(qid, "v66", value, tableName);
+                                    JSONObject c34 = new JSONObject();
+                                    c34.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c34.put("text", ja);
+
+                                    }
+                                    c34.put("time", tc34.get("createtime"));
+                                    maps.put("c34", c34);
+                                    break;
+                                case "d34":
+                                    Map<String, Object> td34 = this.findByQidAndNV(qid, "v66", value, tableName);
+                                    JSONObject d34 = new JSONObject();
+                                    Integer status344 = (Integer) td34.get("v2");
+                                    d34.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status344 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b31.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmLowerK());
 
                                         }
-                                        b31.put("time", tb31.get("createtime"));
-                                        maps.put("b31", b31);
-                                        break;
-                                    case "c31":
-                                        Map<String, Object> tc31 = this.findByQidAndNV(qid, "v59", value, tableName);
-                                        JSONObject c31 = new JSONObject();
-                                        c31.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c31.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        if (status344 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c31.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        c31.put("time", tc31.get("createtime"));
-                                        maps.put("c31", c31);
-                                        break;
-                                    case "d31":
-                                        Map<String, Object> td31 = this.findByQidAndNV(qid, "v59", value, tableName);
-                                        JSONObject d31 = new JSONObject();
-                                        d31.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d31.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        ja.add(text);
+                                        d34.put("text", ja);
+                                    }
+                                    d34.put("time", td34.get("createtime"));
+                                    maps.put("d34", d34);
+                                    break;
+                                case "a35":
+                                    Map<String, Object> ta35 = this.findByQidAndNV(qid, "v63", value, tableName);
+                                    JSONObject a35 = new JSONObject();
+                                    a35.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a35.put("text", ja);
+
+                                    }
+                                    a35.put("time", ta35.get("createtime"));
+                                    maps.put("a34", a35);
+                                    break;
+                                case "b35":
+                                    Map<String, Object> tb35 = this.findByQidAndNV(qid, "v63", value, tableName);
+                                    JSONObject b35 = new JSONObject();
+                                    Integer status352 = (Integer) tb35.get("v2");
+                                    b35.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status352 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d31.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        d31.put("time", td31.get("createtime"));
-                                        maps.put("d31", d31);
-                                        break;
-                                    case "a32":
-                                        Map<String, Object> ta32 = this.findByQidAndNV(qid, "v56", value, tableName);
-                                        JSONObject a32 = new JSONObject();
-                                        a32.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        if (status352 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a32.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a32.put("time", ta32.get("createtime"));
-                                        maps.put("a32", a32);
-                                        break;
-                                    case "b32":
-                                        Map<String, Object> tb32 = this.findByQidAndNV(qid, "v56", value, tableName);
-                                        JSONObject b32 = new JSONObject();
-                                        b32.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        ja.add(text);
+                                        b35.put("text", ja);
+                                    }
+                                    b35.put("time", tb35.get("createtime"));
+                                    maps.put("b35", b35);
+                                    break;
+                                case "c35":
+                                    Map<String, Object> tc35 = this.findByQidAndNV(qid, "v67", value, tableName);
+                                    JSONObject c35 = new JSONObject();
+                                    c35.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c35.put("text", ja);
+
+                                    }
+                                    c35.put("time", tc35.get("createtime"));
+                                    maps.put("c35", c35);
+                                    break;
+                                case "d35":
+                                    Map<String, Object> td35 = this.findByQidAndNV(qid, "v67", value, tableName);
+                                    JSONObject d35 = new JSONObject();
+                                    Integer status354 = (Integer) td35.get("v2");
+                                    d35.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status354 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b32.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmLowerK());
 
                                         }
-                                        b32.put("time", tb32.get("createtime"));
-                                        maps.put("b32", b32);
-                                        break;
-                                    case "c32":
-                                        Map<String, Object> tc32 = this.findByQidAndNV(qid, "v60", value, tableName);
-                                        JSONObject c32 = new JSONObject();
-                                        c32.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c32.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        if (status354 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c32.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        c32.put("time", tc32.get("createtime"));
-                                        maps.put("c32", c32);
-                                        break;
-                                    case "d32":
-                                        Map<String, Object> td32 = this.findByQidAndNV(qid, "v60", value, tableName);
-                                        JSONObject d32 = new JSONObject();
-                                        d32.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d32.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        ja.add(text);
+                                        d35.put("text", ja);
+                                    }
+                                    d35.put("time", td35.get("createtime"));
+                                    maps.put("d35", d35);
+                                    break;
+                                case "a36":
+                                    Map<String, Object> ta36 = this.findByQidAndNV(qid, "v64", value, tableName);
+                                    JSONObject a36 = new JSONObject();
+                                    a36.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a36.put("text", ja);
+
+                                    }
+                                    a36.put("time", ta36.get("createtime"));
+                                    maps.put("a36", a36);
+                                    break;
+                                case "b36":
+                                    Map<String, Object> tb36 = this.findByQidAndNV(qid, "v64", value, tableName);
+                                    JSONObject b36 = new JSONObject();
+                                    Integer status362 = (Integer) tb36.get("v2");
+                                    b36.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status362 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d32.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        d32.put("time", td32.get("createtime"));
-                                        maps.put("d32", d32);
-                                        break;
-                                    case "a33":
-                                        Map<String, Object> ta33 = this.findByQidAndNV(qid, "v57", value, tableName);
-                                        JSONObject a33 = new JSONObject();
-                                        a33.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        if (status362 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a33.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a33.put("time", ta33.get("createtime"));
-                                        maps.put("a33", a33);
-                                        break;
-                                    case "b33":
-                                        Map<String, Object> tb33 = this.findByQidAndNV(qid, "v57", value, tableName);
-                                        JSONObject b33 = new JSONObject();
-                                        b33.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
+                                        ja.add(text);
+                                        b36.put("text", ja);
+                                    }
+                                    b36.put("time", tb36.get("createtime"));
+                                    maps.put("b36", b36);
+                                    break;
+                                case "c36":
+                                    Map<String, Object> tc36 = this.findByQidAndNV(qid, "v68", value, tableName);
+                                    JSONObject c36 = new JSONObject();
+                                    c36.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c36.put("text", ja);
+
+                                    }
+                                    c36.put("time", tc36.get("createtime"));
+                                    maps.put("c36", c36);
+                                    break;
+                                case "d36":
+                                    Map<String, Object> td36 = this.findByQidAndNV(qid, "v68", value, tableName);
+                                    JSONObject d36 = new JSONObject();
+                                    Integer status364 = (Integer) td36.get("v2");
+                                    d36.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status364 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b33.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmLowerK());
 
                                         }
-                                        b33.put("time", tb33.get("createtime"));
-                                        maps.put("b33", b33);
-                                        break;
-                                    case "c33":
-                                        Map<String, Object> tc33 = this.findByQidAndNV(qid, "v61", value, tableName);
-                                        JSONObject c33 = new JSONObject();
-                                        c33.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c33.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        if (status364 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c33.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        c33.put("time", tc33.get("createtime"));
-                                        maps.put("c33", c33);
-                                        break;
-                                    case "d33":
-                                        Map<String, Object> td33 = this.findByQidAndNV(qid, "v61", value, tableName);
-                                        JSONObject d33 = new JSONObject();
-                                        d33.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmLower())) {
-                                                d33.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLower()));
+                                        ja.add(text);
+                                        d36.put("text", ja);
+                                    }
+                                    d36.put("time", td36.get("createtime"));
+                                    maps.put("d36", d36);
+                                    break;
+                                case "a37":
+                                    Map<String, Object> ta37 = this.findByQidAndNV(qid, "v65", value, tableName);
+                                    JSONObject a37 = new JSONObject();
+                                    a37.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        }
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a37.put("text", ja);
+
+                                    }
+                                    a37.put("time", ta37.get("createtime"));
+                                    maps.put("a37", a37);
+                                    break;
+                                case "b37":
+                                    Map<String, Object> tb37 = this.findByQidAndNV(qid, "v65", value, tableName);
+                                    JSONObject b37 = new JSONObject();
+                                    Integer status372 = (Integer) tb37.get("v2");
+                                    b37.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status372 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m2.getAlarmLower());
-                                            ja.add(text);
-                                            d33.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        d33.put("time", td33.get("createtime"));
-                                        maps.put("d33", d33);
-                                        break;
-                                    case "a34":
-                                        Map<String, Object> ta34 = this.findByQidAndNV(qid, "v62", value, tableName);
-                                        JSONObject a34 = new JSONObject();
-                                        a34.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        if (status372 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a34.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a34.put("time", ta34.get("createtime"));
-                                        maps.put("a34", a34);
-                                        break;
-                                    case "b34":
-                                        Map<String, Object> tb34 = this.findByQidAndNV(qid, "v62", value, tableName);
-                                        JSONObject b34 = new JSONObject();
-                                        Integer status342 = (Integer) tb34.get("v2");
-                                        b34.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status342 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status342 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b34.put("text", ja);
+                                        ja.add(text);
+                                        b37.put("text", ja);
+                                    }
+                                    b37.put("time", tb37.get("createtime"));
+                                    maps.put("b37", b37);
+                                    break;
+                                case "c37":
+                                    Map<String, Object> tc37 = this.findByQidAndNV(qid, "v68", value, tableName);
+                                    JSONObject c37 = new JSONObject();
+                                    c37.put("value", value);
+                                    if (m2 != null) {
+                                        if (!"——".equals(m2.getAlarmSuperior())) {
+                                            c37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
                                         }
-                                        b34.put("time", tb34.get("createtime"));
-                                        maps.put("b19", b34);
-                                        break;
-                                    case "c34":
-                                        Map<String, Object> tc34 = this.findByQidAndNV(qid, "v66", value, tableName);
-                                        JSONObject c34 = new JSONObject();
-                                        c34.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c34.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m2.getAlarmSuperior());
+                                        ja.add(text);
+                                        c37.put("text", ja);
+
+                                    }
+                                    c37.put("time", tc37.get("createtime"));
+                                    maps.put("c37", c37);
+                                    break;
+                                case "d37":
+                                    Map<String, Object> td37 = this.findByQidAndNV(qid, "v65", value, tableName);
+                                    JSONObject d37 = new JSONObject();
+                                    Integer status374 = (Integer) td37.get("v2");
+                                    d37.put("value", value);
+                                    if (m2 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status374 == 1) {
+                                            if (!"——".equals(m2.getAlarmLowerK())) {
+                                                d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c34.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m2.getAlarmLowerK());
 
                                         }
-                                        c34.put("time", tc34.get("createtime"));
-                                        maps.put("c34", c34);
-                                        break;
-                                    case "d34":
-                                        Map<String, Object> td34 = this.findByQidAndNV(qid, "v66", value, tableName);
-                                        JSONObject d34 = new JSONObject();
-                                        Integer status344 = (Integer) td34.get("v2");
-                                        d34.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status344 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmLowerK());
-
+                                        if (status374 == 2) {
+                                            if (!"——".equals(m2.getAlarmLowerZ())) {
+                                                d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
                                             }
-                                            if (status344 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d34.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d34.put("text", ja);
-                                        }
-                                        d34.put("time", td34.get("createtime"));
-                                        maps.put("d34", d34);
-                                        break;
-                                    case "a35":
-                                        Map<String, Object> ta35 = this.findByQidAndNV(qid, "v63", value, tableName);
-                                        JSONObject a35 = new JSONObject();
-                                        a35.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a35.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m2.getAlarmLowerZ());
 
                                         }
-                                        a35.put("time", ta35.get("createtime"));
-                                        maps.put("a34", a35);
-                                        break;
-                                    case "b35":
-                                        Map<String, Object> tb35 = this.findByQidAndNV(qid, "v63", value, tableName);
-                                        JSONObject b35 = new JSONObject();
-                                        Integer status352 = (Integer) tb35.get("v2");
-                                        b35.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status352 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status352 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b35.put("text", ja);
+                                        ja.add(text);
+                                        d37.put("text", ja);
+                                    }
+                                    d37.put("time", td37.get("createtime"));
+                                    maps.put("d37", d37);
+                                    break;
+                                case "a38":
+                                    Map<String, Object> ta38 = this.findByQidAndNV(qid, "v47", value, tableName);
+                                    JSONObject a38 = new JSONObject();
+                                    a38.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a38.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b35.put("time", tb35.get("createtime"));
-                                        maps.put("b35", b35);
-                                        break;
-                                    case "c35":
-                                        Map<String, Object> tc35 = this.findByQidAndNV(qid, "v67", value, tableName);
-                                        JSONObject c35 = new JSONObject();
-                                        c35.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c35.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a38.put("text", ja);
+
+                                    }
+                                    a38.put("time", ta38.get("createtime"));
+                                    maps.put("a37", a38);
+                                    break;
+                                case "b38":
+                                    Map<String, Object> tb38 = this.findByQidAndNV(qid, "v47", value, tableName);
+                                    JSONObject b38 = new JSONObject();
+                                    Integer status382 = (Integer) tb38.get("v2");
+                                    b38.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status382 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c35.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        c35.put("time", tc35.get("createtime"));
-                                        maps.put("c35", c35);
-                                        break;
-                                    case "d35":
-                                        Map<String, Object> td35 = this.findByQidAndNV(qid, "v67", value, tableName);
-                                        JSONObject d35 = new JSONObject();
-                                        Integer status354 = (Integer) td35.get("v2");
-                                        d35.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status354 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmLowerK());
-
+                                        if (status382 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            if (status354 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d35.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d35.put("text", ja);
-                                        }
-                                        d35.put("time", td35.get("createtime"));
-                                        maps.put("d35", d35);
-                                        break;
-                                    case "a36":
-                                        Map<String, Object> ta36 = this.findByQidAndNV(qid, "v64", value, tableName);
-                                        JSONObject a36 = new JSONObject();
-                                        a36.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a36.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a36.put("time", ta36.get("createtime"));
-                                        maps.put("a36", a36);
-                                        break;
-                                    case "b36":
-                                        Map<String, Object> tb36 = this.findByQidAndNV(qid, "v64", value, tableName);
-                                        JSONObject b36 = new JSONObject();
-                                        Integer status362 = (Integer) tb36.get("v2");
-                                        b36.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status362 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status362 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b36.put("text", ja);
+                                        ja.add(text);
+                                        b38.put("text", ja);
+                                    }
+                                    b38.put("time", tb38.get("createtime"));
+                                    maps.put("b38", b38);
+                                    break;
+                                case "a39":
+                                    Map<String, Object> ta39 = this.findByQidAndNV(qid, "v48", value, tableName);
+                                    JSONObject a39 = new JSONObject();
+                                    a39.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a39.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b36.put("time", tb36.get("createtime"));
-                                        maps.put("b36", b36);
-                                        break;
-                                    case "c36":
-                                        Map<String, Object> tc36 = this.findByQidAndNV(qid, "v68", value, tableName);
-                                        JSONObject c36 = new JSONObject();
-                                        c36.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c36.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a39.put("text", ja);
+
+                                    }
+                                    a39.put("time", ta39.get("createtime"));
+                                    maps.put("a37", a39);
+                                    break;
+                                case "b39":
+                                    Map<String, Object> tb39 = this.findByQidAndNV(qid, "v48", value, tableName);
+                                    JSONObject b39 = new JSONObject();
+                                    Integer status392 = (Integer) tb39.get("v2");
+                                    b39.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status392 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c36.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        c36.put("time", tc36.get("createtime"));
-                                        maps.put("c36", c36);
-                                        break;
-                                    case "d36":
-                                        Map<String, Object> td36 = this.findByQidAndNV(qid, "v68", value, tableName);
-                                        JSONObject d36 = new JSONObject();
-                                        Integer status364 = (Integer) td36.get("v2");
-                                        d36.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status364 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmLowerK());
-
+                                        if (status392 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            if (status364 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d36.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d36.put("text", ja);
-                                        }
-                                        d36.put("time", td36.get("createtime"));
-                                        maps.put("d36", d36);
-                                        break;
-                                    case "a37":
-                                        Map<String, Object> ta37 = this.findByQidAndNV(qid, "v65", value, tableName);
-                                        JSONObject a37 = new JSONObject();
-                                        a37.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a37.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a37.put("time", ta37.get("createtime"));
-                                        maps.put("a37", a37);
-                                        break;
-                                    case "b37":
-                                        Map<String, Object> tb37 = this.findByQidAndNV(qid, "v65", value, tableName);
-                                        JSONObject b37 = new JSONObject();
-                                        Integer status372 = (Integer) tb37.get("v2");
-                                        b37.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status372 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status372 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b37.put("text", ja);
+                                        ja.add(text);
+                                        b39.put("text", ja);
+                                    }
+                                    b39.put("time", tb39.get("createtime"));
+                                    maps.put("b39", b39);
+                                    break;
+                                case "a40":
+                                    Map<String, Object> ta40 = this.findByQidAndNV(qid, "v49", value, tableName);
+                                    JSONObject a40 = new JSONObject();
+                                    a40.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a40.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b37.put("time", tb37.get("createtime"));
-                                        maps.put("b37", b37);
-                                        break;
-                                    case "c37":
-                                        Map<String, Object> tc37 = this.findByQidAndNV(qid, "v68", value, tableName);
-                                        JSONObject c37 = new JSONObject();
-                                        c37.put("value", value);
-                                        if (m2 != null) {
-                                            if (!"——".equals(m2.getAlarmSuperior())) {
-                                                c37.put("isOver", Double.parseDouble(value) > Double.parseDouble(m2.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m2.getAlarmSuperior());
-                                            ja.add(text);
-                                            c37.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a40.put("text", ja);
 
+                                    }
+                                    a40.put("time", ta40.get("createtime"));
+                                    maps.put("a37", a40);
+                                    break;
+                                case "b40":
+                                    Map<String, Object> tb40 = this.findByQidAndNV(qid, "v49", value, tableName);
+                                    JSONObject b40 = new JSONObject();
+                                    Integer status402 = (Integer) tb40.get("v2");
+                                    b40.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status402 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
+                                            }
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
                                         }
-                                        c37.put("time", tc37.get("createtime"));
-                                        maps.put("c37", c37);
-                                        break;
-                                    case "d37":
-                                        Map<String, Object> td37 = this.findByQidAndNV(qid, "v65", value, tableName);
-                                        JSONObject d37 = new JSONObject();
-                                        Integer status374 = (Integer) td37.get("v2");
-                                        d37.put("value", value);
-                                        if (m2 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status374 == 1) {
-                                                if (!"——".equals(m2.getAlarmLowerK())) {
-                                                    d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m2.getAlarmLowerK());
 
+                                        if (status402 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            if (status374 == 2) {
-                                                if (!"——".equals(m2.getAlarmLowerZ())) {
-                                                    d37.put("isOver", Double.parseDouble(value) < Double.parseDouble(m2.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m2.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            d37.put("text", ja);
-                                        }
-                                        d37.put("time", td37.get("createtime"));
-                                        maps.put("d37", d37);
-                                        break;
-                                    case "a38":
-                                        Map<String, Object> ta38 = this.findByQidAndNV(qid, "v47", value, tableName);
-                                        JSONObject a38 = new JSONObject();
-                                        a38.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a38.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a38.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a38.put("time", ta38.get("createtime"));
-                                        maps.put("a37", a38);
-                                        break;
-                                    case "b38":
-                                        Map<String, Object> tb38 = this.findByQidAndNV(qid, "v47", value, tableName);
-                                        JSONObject b38 = new JSONObject();
-                                        Integer status382 = (Integer) tb38.get("v2");
-                                        b38.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status382 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status382 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b38.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b38.put("text", ja);
+                                        ja.add(text);
+                                        b40.put("text", ja);
+                                    }
+                                    b40.put("time", tb40.get("createtime"));
+                                    maps.put("b40", b40);
+                                    break;
+                                case "a41":
+                                    Map<String, Object> ta41 = this.findByQidAndNV(qid, "v50", value, tableName);
+                                    JSONObject a41 = new JSONObject();
+                                    a41.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a41.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b38.put("time", tb38.get("createtime"));
-                                        maps.put("b38", b38);
-                                        break;
-                                    case "a39":
-                                        Map<String, Object> ta39 = this.findByQidAndNV(qid, "v48", value, tableName);
-                                        JSONObject a39 = new JSONObject();
-                                        a39.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a39.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a41.put("text", ja);
+
+                                    }
+                                    a41.put("time", ta41.get("createtime"));
+                                    maps.put("a41", a41);
+                                    break;
+                                case "b41":
+                                    Map<String, Object> tb41 = this.findByQidAndNV(qid, "v50", value, tableName);
+                                    JSONObject b41 = new JSONObject();
+                                    Integer status412 = (Integer) tb41.get("v2");
+                                    b41.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status412 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a39.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        a39.put("time", ta39.get("createtime"));
-                                        maps.put("a37", a39);
-                                        break;
-                                    case "b39":
-                                        Map<String, Object> tb39 = this.findByQidAndNV(qid, "v48", value, tableName);
-                                        JSONObject b39 = new JSONObject();
-                                        Integer status392 = (Integer) tb39.get("v2");
-                                        b39.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status392 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
+                                        if (status412 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            if (status392 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b39.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b39.put("text", ja);
-                                        }
-                                        b39.put("time", tb39.get("createtime"));
-                                        maps.put("b39", b39);
-                                        break;
-                                    case "a40":
-                                        Map<String, Object> ta40 = this.findByQidAndNV(qid, "v49", value, tableName);
-                                        JSONObject a40 = new JSONObject();
-                                        a40.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a40.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a40.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a40.put("time", ta40.get("createtime"));
-                                        maps.put("a37", a40);
-                                        break;
-                                    case "b40":
-                                        Map<String, Object> tb40 = this.findByQidAndNV(qid, "v49", value, tableName);
-                                        JSONObject b40 = new JSONObject();
-                                        Integer status402 = (Integer) tb40.get("v2");
-                                        b40.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status402 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-                                            }
-
-                                            if (status402 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b40.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b40.put("text", ja);
+                                        ja.add(text);
+                                        b41.put("text", ja);
+                                    }
+                                    b41.put("time", tb41.get("createtime"));
+                                    maps.put("b41", b41);
+                                    break;
+                                case "a42":
+                                    Map<String, Object> ta42 = this.findByQidAndNV(qid, "v51", value, tableName);
+                                    JSONObject a42 = new JSONObject();
+                                    a42.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a42.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b40.put("time", tb40.get("createtime"));
-                                        maps.put("b40", b40);
-                                        break;
-                                    case "a41":
-                                        Map<String, Object> ta41 = this.findByQidAndNV(qid, "v50", value, tableName);
-                                        JSONObject a41 = new JSONObject();
-                                        a41.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a41.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a42.put("text", ja);
+
+                                    }
+                                    a42.put("time", ta42.get("createtime"));
+                                    maps.put("a42", a42);
+                                    break;
+                                case "b42":
+                                    Map<String, Object> tb42 = this.findByQidAndNV(qid, "v51", value, tableName);
+                                    JSONObject b42 = new JSONObject();
+                                    Integer status422 = (Integer) tb42.get("v2");
+                                    b42.put("value", value);
+                                    if (m1 != null) {
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        if (status422 == 1) {
+                                            if (!"——".equals(m1.getAlarmLowerK())) {
+                                                b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
                                             }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a41.put("text", ja);
+                                            text.put("label", "报警下限(空闲)");
+                                            text.put("value", m1.getAlarmLowerK());
 
                                         }
-                                        a41.put("time", ta41.get("createtime"));
-                                        maps.put("a41", a41);
-                                        break;
-                                    case "b41":
-                                        Map<String, Object> tb41 = this.findByQidAndNV(qid, "v50", value, tableName);
-                                        JSONObject b41 = new JSONObject();
-                                        Integer status412 = (Integer) tb41.get("v2");
-                                        b41.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status412 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
+                                        if (status422 == 2) {
+                                            if (!"——".equals(m1.getAlarmLowerZ())) {
+                                                b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
                                             }
-                                            if (status412 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b41.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b41.put("text", ja);
-                                        }
-                                        b41.put("time", tb41.get("createtime"));
-                                        maps.put("b41", b41);
-                                        break;
-                                    case "a42":
-                                        Map<String, Object> ta42 = this.findByQidAndNV(qid, "v51", value, tableName);
-                                        JSONObject a42 = new JSONObject();
-                                        a42.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a42.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a42.put("text", ja);
+                                            text.put("label", "报警下限(占用)");
+                                            text.put("value", m1.getAlarmLowerZ());
 
                                         }
-                                        a42.put("time", ta42.get("createtime"));
-                                        maps.put("a42", a42);
-                                        break;
-                                    case "b42":
-                                        Map<String, Object> tb42 = this.findByQidAndNV(qid, "v51", value, tableName);
-                                        JSONObject b42 = new JSONObject();
-                                        Integer status422 = (Integer) tb42.get("v2");
-                                        b42.put("value", value);
-                                        if (m1 != null) {
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            if (status422 == 1) {
-                                                if (!"——".equals(m1.getAlarmLowerK())) {
-                                                    b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerK()));
-                                                }
-                                                text.put("label", "报警下限(空闲)");
-                                                text.put("value", m1.getAlarmLowerK());
-
-                                            }
-                                            if (status422 == 2) {
-                                                if (!"——".equals(m1.getAlarmLowerZ())) {
-                                                    b42.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLowerZ()));
-                                                }
-                                                text.put("label", "报警下限(占用)");
-                                                text.put("value", m1.getAlarmLowerZ());
-
-                                            }
-                                            ja.add(text);
-                                            b42.put("text", ja);
+                                        ja.add(text);
+                                        b42.put("text", ja);
+                                    }
+                                    b42.put("time", tb42.get("createtime"));
+                                    maps.put("b42", b42);
+                                    break;
+                                case "a43":
+                                    Map<String, Object> ta43 = this.findByQidAndNV(qid, "v53", value, tableName);
+                                    JSONObject a43 = new JSONObject();
+                                    a43.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmSuperior())) {
+                                            a43.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
                                         }
-                                        b42.put("time", tb42.get("createtime"));
-                                        maps.put("b42", b42);
-                                        break;
-                                    case "a43":
-                                        Map<String, Object> ta43 = this.findByQidAndNV(qid, "v53", value, tableName);
-                                        JSONObject a43 = new JSONObject();
-                                        a43.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmSuperior())) {
-                                                a43.put("isOver", Double.parseDouble(value) > Double.parseDouble(m1.getAlarmSuperior()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警上限");
-                                            text.put("value", m1.getAlarmSuperior());
-                                            ja.add(text);
-                                            a43.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警上限");
+                                        text.put("value", m1.getAlarmSuperior());
+                                        ja.add(text);
+                                        a43.put("text", ja);
 
+                                    }
+                                    a43.put("time", ta43.get("createtime"));
+                                    maps.put("a43", a43);
+                                    break;
+                                case "b43":
+                                    Map<String, Object> tb43 = this.findByQidAndNV(qid, "v53", value, tableName);
+                                    JSONObject b43 = new JSONObject();
+                                    b43.put("value", value);
+                                    if (m1 != null) {
+                                        if (!"——".equals(m1.getAlarmLower())) {
+                                            b43.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
                                         }
-                                        a43.put("time", ta43.get("createtime"));
-                                        maps.put("a43", a43);
-                                        break;
-                                    case "b43":
-                                        Map<String, Object> tb43 = this.findByQidAndNV(qid, "v53", value, tableName);
-                                        JSONObject b43 = new JSONObject();
-                                        b43.put("value", value);
-                                        if (m1 != null) {
-                                            if (!"——".equals(m1.getAlarmLower())) {
-                                                b43.put("isOver", Double.parseDouble(value) < Double.parseDouble(m1.getAlarmLower()));
-                                            }
-                                            JSONArray ja = new JSONArray();
-                                            JSONObject text = new JSONObject();
-                                            text.put("label", "报警下限");
-                                            text.put("value", m1.getAlarmLower());
-                                            ja.add(text);
-                                            b43.put("text", ja);
+                                        JSONArray ja = new JSONArray();
+                                        JSONObject text = new JSONObject();
+                                        text.put("label", "报警下限");
+                                        text.put("value", m1.getAlarmLower());
+                                        ja.add(text);
+                                        b43.put("text", ja);
 
-                                        }
-                                        b43.put("time", tb43.get("createtime"));
-                                        maps.put("b43", b43);
-                                        break;
-                                }
+                                    }
+                                    b43.put("time", tb43.get("createtime"));
+                                    maps.put("b43", b43);
+                                    break;
                             }
                         }
-
-                        //GJ采集 落下状态
-                        Integer a21 = (Integer) map.get("a21");
-                        if (a21 == 2) {
-                            map.put("a13", "");//受端电缆侧主电压V
-                            map.put("b13", "");
-                            map.put("a15", "");//受端电缆侧电流mA
-                            map.put("b15", "");
-                            map.put("a16", ""); //轨入电压V
-                            map.put("b16", "");
-                            map.put("a17", "");//主接入电压mV
-                            map.put("b17", "");
-                            map.put("c17", "");
-                            map.put("d17", "");
-
-                            map.put("a38", "");//JBP电缆电流mA
-                            map.put("b38", "");
-                            map.put("a39", "");//JBP长内电流A
-                            map.put("b39", "");
-                            map.put("a40", "");//JBP长外电流A
-                            map.put("b40", "");
-                            map.put("a41", "");//JBP短内电流A
-                            map.put("b41", "");
-                            map.put("a42", "");//JBP短外电流A
-                            map.put("b42", "");
-                            map.put("a43", "");//JBP温度°C
-                            map.put("b43", "");
-                        }
-                        //后方GJ采集 落下状态
-                        Integer a22 = (Integer) map.get("a22");//主
-                        Integer c22 = (Integer) map.get("c22");//并
-                        if (a22 == 2 || c22 == 2) {
-                            map.put("a14", "");//受端电缆侧调电压V
-                            map.put("b14", "");
-                            map.put("a18", "");//调接入电压mV
-                            map.put("b18", "");
-
-                            map.put("c34", "");//JBA长内电流A(调信号)
-                            map.put("d34", "");
-                            map.put("c35", "");//JBA长外电流A(调信号)
-                            map.put("d35", "");
-                            map.put("c36", "");//JBA短内电流A(调信号)
-                            map.put("d36", "");
-                            map.put("c37", "");//JBA短外电流A(调信号)
-                            map.put("d37", "");
-                        }
-                        maps.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
-                        mapss.add(maps);
                     }
+
+                    //GJ采集 落下状态
+                    Integer a21 = (Integer) map.get("a21");
+                    if (a21 == 2) {
+                        map.put("a13", "");//受端电缆侧主电压V
+                        map.put("b13", "");
+                        map.put("a15", "");//受端电缆侧电流mA
+                        map.put("b15", "");
+                        map.put("a16", ""); //轨入电压V
+                        map.put("b16", "");
+                        map.put("a17", "");//主接入电压mV
+                        map.put("b17", "");
+                        map.put("c17", "");
+                        map.put("d17", "");
+
+                        map.put("a38", "");//JBP电缆电流mA
+                        map.put("b38", "");
+                        map.put("a39", "");//JBP长内电流A
+                        map.put("b39", "");
+                        map.put("a40", "");//JBP长外电流A
+                        map.put("b40", "");
+                        map.put("a41", "");//JBP短内电流A
+                        map.put("b41", "");
+                        map.put("a42", "");//JBP短外电流A
+                        map.put("b42", "");
+                        map.put("a43", "");//JBP温度°C
+                        map.put("b43", "");
+                    }
+                    //后方GJ采集 落下状态
+                    Integer a22 = (Integer) map.get("a22");//主
+                    Integer c22 = (Integer) map.get("c22");//并
+                    if (a22 == 2 || c22 == 2) {
+                        map.put("a14", "");//受端电缆侧调电压V
+                        map.put("b14", "");
+                        map.put("a18", "");//调接入电压mV
+                        map.put("b18", "");
+
+                        map.put("c34", "");//JBA长内电流A(调信号)
+                        map.put("d34", "");
+                        map.put("c35", "");//JBA长外电流A(调信号)
+                        map.put("d35", "");
+                        map.put("c36", "");//JBA短内电流A(调信号)
+                        map.put("d36", "");
+                        map.put("c37", "");//JBA短外电流A(调信号)
+                        map.put("d37", "");
+                    }
+                    maps.put("quDuanYunYingName", quDuanBaseEntity.getQuduanyunyingName());
+                    mapss.add(maps);
                 }
             }
         }
+
         jo.put("data", mapss);
         return jo;
     }

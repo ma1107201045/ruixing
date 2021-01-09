@@ -21,7 +21,7 @@ public interface QuDuanInfoDaoV2 {
 
 
     //日报表
-    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer[] properties, Integer s, Integer e, String tableName);
+    List<Map<String, Object>> selectStatisticsByCzIdAndTime(Integer czId, Integer[] properties, Integer createtime);
 
 
     Map<String, Object> selectByQidAndNV(Integer qid, String n, String v, String tableName);
