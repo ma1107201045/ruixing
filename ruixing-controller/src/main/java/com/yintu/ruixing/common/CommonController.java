@@ -99,21 +99,7 @@ public class CommonController extends SessionController {
      */
     @PutMapping("/edit/password")
     public Map<String, Object> editPasswordById(@RequestParam("old_password") String oldPassword, @RequestParam("new_password") String newPassword) {
-        if (oldPassword.isEmpty() || newPassword.isEmpty()) {
-            throw new BaseRuntimeException("原始密码或新密码不能为空");
-        }
-        if (oldPassword.equals(newPassword)) {
-            throw new BaseRuntimeException("原始密码和新密码相同");
-        }
-        UserEntity userEntity = userService.findById(this.getLoginUserId());
-        if (userEntity != null) {
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (!passwordEncoder.matches(oldPassword, userEntity.getPassword())) {
-                throw new BaseRuntimeException("原始密码错误");
-            }
-            userEntity.setPassword(newPassword);
-            userService.edit(userEntity);
-        }
+        userService.editPassword(this.getLoginUserId(), oldPassword, newPassword, this.getLoginUserName());
         return ResponseDataUtil.ok("修改密码成功,请重新登录");
     }
 

@@ -3,7 +3,6 @@ package com.yintu.ruixing.guzhangzhenduan.impl;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.inject.internal.util.StackTraceElements;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.common.util.StringUtil;
 import com.yintu.ruixing.common.util.TreeNodeUtil;
@@ -1183,7 +1182,7 @@ public class QuDuanInfoServiceimpl implements QuDuanInfoService {
                                 s.put("value", m2.getAlarmSuperiorK());
                             }
                         } else {
-                            jo118.put("value", mvInDiaoBing);
+                            jo218.put("value", mvInDiaoBing);
                         }
                         ja.add(x);
                         ja.add(s);
