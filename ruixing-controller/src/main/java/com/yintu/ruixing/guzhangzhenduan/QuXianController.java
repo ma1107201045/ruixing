@@ -63,7 +63,7 @@ public class QuXianController {
     }
 
 
-    //电码化实时曲线
+    //电码化实时曲线  没用
     @GetMapping("/findDMHQuDuanShiShiData")
     public Map<String, Object> findDMHQuDuanShiShiData(@RequestParam("shuxingId") Integer[] shuxingId,
                                                        @RequestParam("quduanName") String[] quduanName,
@@ -317,7 +317,7 @@ public class QuXianController {
         }
     }
 
-    //电码化日曲线
+    //电码化日曲线  没用
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
     @GetMapping("/findDMHQuDuanDayData")
     public Map<String, Object> findDMHQuDuanDayData(@RequestParam("dayTime") Date dayTime,
@@ -572,7 +572,7 @@ public class QuXianController {
         }
     }
 
-    //区段实时曲线
+    //区段实时曲线  没用
     @GetMapping("/findQuDuanShiShiData")
     public Map<String, Object> findQuDuanShiShiData(@RequestParam("shuxingId") Integer[] shuxingId,
                                                     @RequestParam("quduanName") String[] quduanName,
@@ -818,7 +818,7 @@ public class QuXianController {
         }
     }
 
-    //区段日曲线
+    //区段日曲线  没用
     //根据传进来的区段id 和本区段所选择的属性id  包括传进来的日期获取对应的数据
     @GetMapping("/findQuDuanDayData")
     public Map<String, Object> findQuDuanDayData(@RequestParam("dayTime") Date dayTime,
@@ -1192,9 +1192,16 @@ public class QuXianController {
                     String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                     String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
                     if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1216,9 +1223,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 2) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1240,9 +1254,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 3) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1264,9 +1285,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 4) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1288,9 +1316,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 5) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1312,9 +1347,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 6) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1336,9 +1378,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 7) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -1360,9 +1409,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 8) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -2190,9 +2246,16 @@ public class QuXianController {
                 String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                 String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
                 if (k == 1) {
-                    js.put("shuju" + k.toString(), datelist1);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist1.size(); i4++) {
+                            List oneList =(List) datelist1.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist1);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist1);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2214,9 +2277,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 2) {
-                    js.put("shuju" + k.toString(), datelist2);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist2.size(); i4++) {
+                            List oneList =(List) datelist2.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist2);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist2);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2238,9 +2308,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 3) {
-                    js.put("shuju" + k.toString(), datelist3);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist3.size(); i4++) {
+                            List oneList =(List) datelist3.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist3);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist3);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2262,9 +2339,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 4) {
-                    js.put("shuju" + k.toString(), datelist4);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist4.size(); i4++) {
+                            List oneList =(List) datelist4.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist4);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist4);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2286,9 +2370,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 5) {
-                    js.put("shuju" + k.toString(), datelist5);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist5.size(); i4++) {
+                            List oneList =(List) datelist5.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist5);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist5);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2310,9 +2401,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 6) {
-                    js.put("shuju" + k.toString(), datelist6);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist6.size(); i4++) {
+                            List oneList =(List) datelist6.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist6);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist6);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2334,9 +2432,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 7) {
-                    js.put("shuju" + k.toString(), datelist7);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist7.size(); i4++) {
+                            List oneList =(List) datelist7.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist7);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist7);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2358,9 +2463,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 8) {
-                    js.put("shuju" + k.toString(), datelist8);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist8.size(); i4++) {
+                            List oneList =(List) datelist8.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist8);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist8);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -2449,6 +2561,7 @@ public class QuXianController {
             System.out.println("sbsbsb" + sb);
             Integer qdiddd = qdids[i1 - 1];
             List<LinkedHashMap> datee = quXianService.findQuDuanDayDataa(sb, statrtime, endtime, qdiddd, tableName);
+          //  System.out.println("asddadada0"+datee);
             for (LinkedHashMap linkedHashMap : datee) {
                 for (Object o : linkedHashMap.keySet()) {
                     for (String s : sqlname) {
@@ -2466,6 +2579,7 @@ public class QuXianController {
             // quDuanSXEntityList.addAll(datee);
             if (length > 1) {
                 i2 = collect.get(objects[1]).intValue();
+                System.out.println("i2i2i22i2i2i="+i2);
                 StringBuilder sbb = new StringBuilder();
                 int num = i1;
                 for (int i = 0; i < i2; i++) {
@@ -2491,6 +2605,7 @@ public class QuXianController {
             }
             if (length > 2) {
                 i3 = collect.get(objects[2]).intValue();
+                System.out.println("i3i3i3i33i3i="+i3);
                 StringBuilder sbb = new StringBuilder();
                 int num = i1 + i2;
                 for (int i = 0; i < i3; i++) {
@@ -3187,9 +3302,16 @@ public class QuXianController {
                 String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                 String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
                 if (k == 1) {
-                    js.put("shuju" + k.toString(), datelist1);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist1.size(); i4++) {
+                            List oneList =(List) datelist1.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist1);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist1);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3211,9 +3333,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 2) {
-                    js.put("shuju" + k.toString(), datelist2);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist2.size(); i4++) {
+                            List oneList =(List) datelist2.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist2);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist2);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3235,9 +3364,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 3) {
-                    js.put("shuju" + k.toString(), datelist3);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist3.size(); i4++) {
+                            List oneList =(List) datelist3.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist3);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist3);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3259,9 +3395,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 4) {
-                    js.put("shuju" + k.toString(), datelist4);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist4.size(); i4++) {
+                            List oneList =(List) datelist4.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist4);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist4);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3283,9 +3426,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 5) {
-                    js.put("shuju" + k.toString(), datelist5);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist5.size(); i4++) {
+                            List oneList =(List) datelist5.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist5);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist5);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3307,9 +3457,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 6) {
-                    js.put("shuju" + k.toString(), datelist6);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist6.size(); i4++) {
+                            List oneList =(List) datelist6.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist6);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist6);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3331,9 +3488,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 7) {
-                    js.put("shuju" + k.toString(), datelist7);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist7.size(); i4++) {
+                            List oneList =(List) datelist7.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist7);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist7);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3355,9 +3519,16 @@ public class QuXianController {
                     }
                 }
                 if (k == 8) {
-                    js.put("shuju" + k.toString(), datelist8);
+                    if (type==2){
+                        for (int i4 = 0; i4 < datelist8.size(); i4++) {
+                            List oneList =(List) datelist8.get(i4);
+                            oneList.add(1,2);
+                        }
+                        js.put("shuju" + k.toString(), datelist8);
+                    }
                     js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                     if (type == 0 || type == 1) {
+                        js.put("shuju" + k.toString(), datelist8);
                         if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                             js.put("max" + k.toString(), maxNumbers);
                         }
@@ -3379,7 +3550,7 @@ public class QuXianController {
                     }
                 }
             }
-            // return ResponseDataUtil.ok("查询数据成功", js);
+           //  return ResponseDataUtil.ok("查询数据成功", js);
             return ResponseDataUtil.ok("查询数据成功", ZipUtil.gzip(js.toJSONString(), "utf-8"));
         }
     }
@@ -3488,9 +3659,16 @@ public class QuXianController {
                     String minNumbers_k = quXianService.findMinNumberK(czid, qdid, mid, type);
                     String minNumbers_z = quXianService.findMinNumberZ(czid, qdid, mid, type);
                     if (k == 1) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[0] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3512,9 +3690,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 2) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[1] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3536,9 +3721,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 3) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[2] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3560,9 +3752,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 4) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[3] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3584,9 +3783,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 5) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[4] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3608,9 +3814,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 6) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[5] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3632,9 +3845,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 7) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[6] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
@@ -3656,9 +3876,16 @@ public class QuXianController {
                         }
                     }
                     if (k == 8) {
-                        js.put("shuju" + k.toString(), listt1);
+                        if (type==2){
+                            for (int i4 = 0; i4 < listt1.size(); i4++) {
+                                List oneList =(List) listt1.get(i4);
+                                oneList.add(1,2);
+                            }
+                            js.put("shuju" + k.toString(), listt1);
+                        }
                         js.put("mingzi" + k.toString(), quduanName[7] + "—" + name.get(i));
                         if (type == 0 || type == 1) {
+                            js.put("shuju" + k.toString(), listt1);
                             if (maxNumbers != null && !("——").equals(maxNumbers) && !("0").equals(maxNumbers)) {
                                 js.put("max" + k.toString(), maxNumbers);
                             }
