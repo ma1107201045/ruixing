@@ -23,6 +23,7 @@
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <result column="xd_name" jdbcType="VARCHAR" property="xdname"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
         <!--<association property="anZhuangTiaoShiXiangMuEntity" javaType="AnZhuangTiaoShiXiangMuEntity">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="worksid" jdbcType="INTEGER" property="worksid"/>
@@ -53,8 +54,18 @@
     <sql id="Base_Column_List">
         id, xdid, serid, choid, czid, chezhanName, typeTime, isNot,isNotFinish, plan_start_time, plan_end_time,
     actual_start_time, actual_end_time, plan_open_time, actual_open_time, createTime, xd_name,
-    createName, updateTime, updateName
+    createName, updateTime, updateName,remarks
     </sql>
+
+    <select id="findRemarksByCZid"  resultType="java.lang.String">
+        SELECT
+           remarks
+        FROM
+            mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE
+         czid = #{czId,jdbcType=INTEGER}
+         GROUP BY remarks
+    </select>
 
     <!--查询未来一个月 将要完成的项目和车站-->
     <select id="findNextMonthXiangMu"  resultMap="BaseResultMap">
@@ -350,6 +361,9 @@
             <if test="updatename != null">
                 updateName,
             </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -408,6 +422,9 @@
             </if>
             <if test="updatename != null">
                 #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -468,6 +485,9 @@
             </if>
             <if test="updatename != null">
                 updateName = #{updatename,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

@@ -13,10 +13,11 @@
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
         <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="xiangMuTypeId" jdbcType="INTEGER" property="xiangMuTypeId"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, workname, yuliu1, yuliu2,
-    createTime, createName, updateTime, updateName,auditorState,userid
+    createTime, createName, updateTime, updateName,auditorState,userid,xiangMuTypeId
   </sql>
 
 
@@ -30,21 +31,18 @@
 
     <!--根据id  查询对应的作业项 -->
     <select id="findOneWorkNameByid" resultMap="BaseResultMap">
-        select
-        aw.id,
-        workname,
-        auditorState,
-        userid,
-         awa.auditor_id
+        SELECT
+            aw.id,
+            workname,
+            auditorState,
+            userid
         FROM
-        mro_anzhuangtiaoshi_worknamelibrary aw,
-        mro_anzhuangtiaoshi_works_auditor awa
+            mro_anzhuangtiaoshi_worknamelibrary aw
         WHERE
-        aw.id = awa.object_id
-        AND objectType =2
-        and aw.id=#{id}
-        AND awa.auditor_id=#{receiverid}
-        GROUP BY aw.id
+            aw.id=#{id}
+            AND userid = #{receiverid}
+        GROUP BY
+            aw.id
     </select>
 
 
@@ -71,6 +69,14 @@
   </select>
 
 
+    <!--根据项目类型id  查询对应的作业项-->
+    <select id="findWorkNameByXMId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_worknamelibrary
+        where xiangMuTypeId=#{xiangMuId}
+    </select>
+
     <!--查询所有的作业项-->
     <select id="findAllWorkName" resultMap="BaseResultMap">
         select
@@ -85,15 +91,11 @@
         workname,
         auditorState,
         userid,
-        awa.auditor_id
+        xiangMuTypeId
         from
-        mro_anzhuangtiaoshi_worknamelibrary aw,
-        mro_anzhuangtiaoshi_works_auditor awa
+        mro_anzhuangtiaoshi_worknamelibrary aw
         <where>
-            aw.id = awa.object_id
-            AND objectType =2
             <if test="workname !=null">
-                and
                 workname like concat ('%',#{workname},'%')
             </if>
         </where>
@@ -145,6 +147,9 @@
             <if test="userid != null">
                 userid,
             </if>
+            <if test="xiangMuTypeId != null">
+                xiangMuTypeId,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -176,6 +181,9 @@
             </if>
             <if test="userid != null">
                 #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="xiangMuTypeId != null">
+                #{xiangMuTypeId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -211,6 +219,9 @@
             </if>
             <if test="userid != null">
                 userid = #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="xiangMuTypeId != null">
+                xiangMuTypeId = #{xiangMuTypeId,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

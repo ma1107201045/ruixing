@@ -9,19 +9,10 @@
         <result property="tljMiaoShu" column="tlj_miaoshu"/>
     </resultMap>
     <select id="selectTieLuJuList" resultMap="tieluju">
-        SELECT
-            tlj.*
-        FROM
-            mro_tieluju tlj,
-            mro_dianwuduan dwd,
-            mro_xianduan xd,
-            mro_chezhan cz
-        WHERE
-            tlj.tlj_id = dwd.tlj_id
-            AND dwd.dwd_id = xd.dwd_id
-            AND xd.xd_id = cz.xd_id
-        GROUP BY
-            tlj.tlj_id
+       SELECT
+        tlj.*
+    FROM
+        mro_tieluju tlj
     </select>
 
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" id="dianwuduan">
@@ -64,9 +55,7 @@
                mro_dianwuduan.dwd_state
         FROM `mro_dianwuduan`
         WHERE mro_dianwuduan.tlj_dwd_id = #{tljId}
-    </select>-->
 
-    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
         SELECT
             dwd.did,
             dwd.dwd_id,
@@ -87,6 +76,23 @@
             AND dwd.tlj_dwd_id = #{tljId}
         GROUP BY
             dwd.dwd_id
+
+
+    </select>-->
+
+    <select id="selectDwdListBytId" parameterType="long" resultMap="dianwuduan">
+        SELECT
+            dwd.did,
+            dwd.dwd_id,
+            dwd.tlj_id,
+            dwd.tlj_dwd_id,
+            dwd.dwd_name,
+            dwd.dwd_miaoshu,
+            dwd.dwd_state
+        FROM
+            mro_dianwuduan dwd
+        WHERE
+            dwd.tlj_dwd_id = #{tljId}
     </select>
 
     <select id="selectDwdListByDwdId" resultMap="dianwuduan">

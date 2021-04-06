@@ -25,7 +25,7 @@ public interface AnZhuangTiaoShiTrainDao {
 
     List<AnZhuangTiaoShiTrainEntity> findReJiShu();
 
-    List<AnZhuangTiaoShiTrainEntity> findTrainBytraintype(@Param("traintype") Integer traintype);
+    List<AnZhuangTiaoShiTrainEntity> findTrainBytraintype(@Param("xdName") String xdName);
 
     List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id);
 }

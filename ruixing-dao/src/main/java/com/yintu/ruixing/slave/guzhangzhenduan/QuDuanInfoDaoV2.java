@@ -75,4 +75,8 @@ public interface QuDuanInfoDaoV2 {
     List<LinkedHashMap> findDMHDayData(StringBuilder sbb, long statrtime, Long endtime, Integer qdidd, String tableName);
 
     LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName);
+
+	LinkedHashMap findQuDuanShiShiDataaTime(StringBuilder sb, Integer qdiddd, String tableName, Integer time);
+
+	LinkedHashMap findDMHShiShiDataTime(StringBuilder sb, Integer qdiddd, String tableName, Integer creatTime);
 }

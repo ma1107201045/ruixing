@@ -18,13 +18,13 @@ public interface AnZhuangTiaoShiMaterialService {
 
     void editMaterialById(AnZhuangTiaoShiMaterialEntity anZhuangTiaoShiMaterialEntity);
 
-    List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(Integer page, Integer size, String materialNumber);
+    List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige);
 
     Integer totalNumber(Integer id);
 
     void deleteMaterialByIds(Integer id);
 
-    List<AnZhuangTiaoShiMaterialOutInEntity> findAllOutMaterial(Integer page, Integer size, String materialNumber);
+    List<AnZhuangTiaoShiMaterialOutInEntity> findAllOutMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige);
 
     void addOutMaterial(AnZhuangTiaoShiMaterialOutInEntity anZhuangTiaoShiMaterialOutInEntity);
 
@@ -32,9 +32,11 @@ public interface AnZhuangTiaoShiMaterialService {
 
     void addInMaterial(AnZhuangTiaoShiMaterialOutInEntity anZhuangTiaoShiMaterialOutInEntity);
 
-    List<AnZhuangTiaoShiMaterialOutInEntity> findAllInMaterial(Integer page, Integer size, String materialNumber);
+    List<AnZhuangTiaoShiMaterialOutInEntity> findAllInMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige);
 
     List<AnZhuangTiaoShiMaterialEntity> findAllMaterials();
 
     void editMaterial(AnZhuangTiaoShiMaterialEntity anZhuangTiaoShiMaterialEntity,Integer id);
+
+    void deleteByIds(Integer[] ids);
 }

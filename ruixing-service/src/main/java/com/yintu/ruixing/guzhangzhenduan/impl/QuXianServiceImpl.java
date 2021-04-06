@@ -43,6 +43,28 @@ public class QuXianServiceImpl implements QuXianService {
     }
 
     @Override
+    public String findLowLimitNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
+        }
+        return menXianService.findLowLimitNumber(czid,qdid,mid,typee);
+    }
+
+    @Override
+    public String findUpLimitNumber(Integer czid, Integer qdid, Integer mid, Integer type) {
+        Integer typee = 0;
+        if (type == 0) {
+            typee = 1;
+        } else {
+            typee = 2;
+        }
+        return menXianService.findUpLimitNumber(czid,qdid,mid,typee);
+    }
+
+    @Override
     public String findMaxNumberK(Integer czid, Integer qdid, Integer mid, Integer type) {
         Integer typee = 0;
         if (type == 0) {
@@ -185,6 +207,24 @@ public class QuXianServiceImpl implements QuXianService {
         }
     }
 
+
+    @Override
+    public LinkedHashMap findQuDuanShiShiDataaTime(StringBuilder sb, Integer qdiddd, String tableName, Integer time) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findQuDuanShiShiDataaTime(sb, qdiddd, tableName,time);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
+
+    @Override
+    public LinkedHashMap findDMHShiShiDataTime(StringBuilder sb, Integer qdiddd, String tableName, Integer creatTime) {
+        if (quDuanInfoDaoV2.isTableExist(tableName) == 1) {
+            return quDuanInfoDaoV2.findDMHShiShiDataTime(sb, qdiddd, tableName,creatTime);
+        } else {
+            throw new BaseRuntimeException("暂无数据");
+        }
+    }
 
     @Override
     public LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName) {

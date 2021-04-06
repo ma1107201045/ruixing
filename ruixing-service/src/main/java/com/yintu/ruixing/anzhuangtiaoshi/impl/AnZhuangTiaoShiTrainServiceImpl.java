@@ -40,8 +40,8 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
     }
 
     @Override
-    public List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(Integer typeId, Integer page, Integer size) {
-        return anZhuangTiaoShiTrainDao.findTrainBytraintype(typeId);
+    public List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(String xdName, Integer page, Integer size) {
+        return anZhuangTiaoShiTrainDao.findTrainBytraintype(xdName);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
             //treeNodeUtil.setId(trainEntity.getId().longValue());
             Integer id = trainEntity.getId()*25685;
             treeNodeUtil.setId(id.longValue());
-            treeNodeUtil.setLabel(trainEntity.getTraintype().toString());
-            List<AnZhuangTiaoShiTrainEntity> trainEntities=anZhuangTiaoShiTrainDao.findTrainBytraintype(trainEntity.getTraintype());
+            treeNodeUtil.setLabel(trainEntity.getXdName());
+           /* List<AnZhuangTiaoShiTrainEntity> trainEntities=anZhuangTiaoShiTrainDao.findTrainBytraintype(trainEntity.getTraintype());
             List<TreeNodeUtil> treeNodeUtilss = new ArrayList<>();
             for (AnZhuangTiaoShiTrainEntity shiTrainEntity : trainEntities) {
                 //第二级
@@ -64,10 +64,10 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
                 treeNodeUtil1.setLabel(shiTrainEntity.getCustomer());
                 treeNodeUtilss.add(treeNodeUtil1);
                 treeNodeUtil.setChildren(treeNodeUtilss);
-            }
+            }*/
             treeNodeUtils.add(treeNodeUtil);
         }
-        Integer a = 0;
+       /* Integer a = 0;
         Integer b = 0;
         Integer c = 0;
         Integer d = 0;
@@ -105,7 +105,7 @@ public class AnZhuangTiaoShiTrainServiceImpl implements AnZhuangTiaoShiTrainServ
             TreeNodeUtil treeNodeUtil4 = new TreeNodeUtil();
             treeNodeUtil4.setLabel("其他单位");
             treeNodeUtils.add(3, treeNodeUtil4);
-        }
+        }*/
         return treeNodeUtils;
     }
 

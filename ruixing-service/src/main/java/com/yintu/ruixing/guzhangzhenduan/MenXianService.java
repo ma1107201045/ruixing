@@ -113,4 +113,8 @@ public interface MenXianService {
     String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee);
 
     JSONObject findMenXianDatas(Integer czid, Integer[] shuxingId, String[] quduanName,Integer[] types,Integer[] mids);
+
+    String findUpLimitNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findLowLimitNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
 }

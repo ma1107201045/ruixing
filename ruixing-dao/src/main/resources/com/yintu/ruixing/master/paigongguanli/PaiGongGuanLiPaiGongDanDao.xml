@@ -28,7 +28,7 @@
         <result column="provinceId" jdbcType="VARCHAR" property="provinceId"/>
         <result column="cityId" jdbcType="VARCHAR" property="cityId"/>
         <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
-        <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+        <result column="name" jdbcType="VARCHAR" property="truename"/>
         <result column="state" jdbcType="INTEGER" property="state"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -51,10 +51,10 @@
     <select id="findPaiGongDan" resultMap="BaseResultMap">
         select
         pp.<include refid="Base_Column_List"/>,
-        USER.true_name
+        USER.name
         FROM
         mro_paigongguanli_paigongdan pp,
-        tb_user USER
+        mro_paigongguanli_user USER
         <where>
             pp.paiGongPeople = USER.id
             <if test="paiGongNumber != null">
@@ -97,10 +97,10 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         pp.<include refid="Base_Column_List"/>,
-        USER.true_name
+        USER.name
         FROM
         mro_paigongguanli_paigongdan pp,
-        tb_user USER
+        mro_paigongguanli_user USER
         where
         pp.paiGongPeople = USER.id
         and pp.id = #{id,jdbcType=INTEGER}

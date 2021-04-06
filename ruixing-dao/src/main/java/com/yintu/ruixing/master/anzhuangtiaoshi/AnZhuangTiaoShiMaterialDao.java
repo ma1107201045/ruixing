@@ -25,7 +25,7 @@ public interface AnZhuangTiaoShiMaterialDao {
 
     List<AnZhuangTiaoShiMaterialEntity> findAllMaterial(String materialName);
 
-    List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(String materialNumber);
+    List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(String materialNumber,String materialsname,String materialsguige);
 
     Integer totalNumber(Integer id);
 

@@ -30,4 +30,5 @@ public interface TieLuJuDao {
 
     TieLuJuEntity selectByTljId(Long tljId);
 
+	List<TieLuJuEntity> findTLJlist(long tljId);
 }

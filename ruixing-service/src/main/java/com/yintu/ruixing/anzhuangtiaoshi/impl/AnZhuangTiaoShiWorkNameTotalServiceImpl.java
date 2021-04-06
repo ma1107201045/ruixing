@@ -40,6 +40,15 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
 
     @Autowired
     private AnZhuangTiaoShiWorkNameLibraryDao anZhuangTiaoShiWorkNameLibraryDao;
+    @Autowired
+    private AnZhuangTiaoShiCheZhanXiangMuTypeDao anZhuangTiaoShiCheZhanXiangMuTypeDao;
+
+
+
+    @Override
+    public List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkNameByXMId(Integer xiangMuId) {
+        return anZhuangTiaoShiWorkNameLibraryDao.findWorkNameByXMId(xiangMuId);
+    }
 
     @Override
     public AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid, Integer wnlid, Integer receiverid) {
@@ -305,11 +314,16 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
 
     @Override
     public List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameById(Integer id, Integer page, Integer size) {
-        return anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameById(id);
+        List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> totalEntityList=anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkNameById(id);
+        for (AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity TotalEntity : totalEntityList) {
+            String xiangmuleixing = anZhuangTiaoShiCheZhanXiangMuTypeDao.selectByPrimaryKey(TotalEntity.getXiangMuTypeId()).getXiangmuleixing();
+            TotalEntity.setXiangMuType(xiangmuleixing);
+        }
+        return totalEntityList;
     }
 
     @Override
-    public void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, String username, Integer receiverid, Integer[] uids) {
+    public void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, String username, Integer receiverid) {//, Integer[] uids
         for (int i = 0; i < wnlids.length; i++) {
             Date nowTime = new Date();
             anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.setCreatetime(nowTime);
@@ -323,7 +337,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             String Worknamesall = anZhuangTiaoShiWorkNameTotalDao.findWorkNameTotalById(wntid);
             String Workname = anZhuangTiaoShiWorkNameLibraryDao.findWorkNameById(wnlids[i]);
             Integer id = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity.getId();
-            for (Integer uid : uids) {
+          /*  for (Integer uid : uids) {
                 AnZhuangTiaoShiWorksAuditorEntity worksAuditorEntity = new AnZhuangTiaoShiWorksAuditorEntity();
                 worksAuditorEntity.setObjectId(id);
                 worksAuditorEntity.setAuditorId(uid);
@@ -345,7 +359,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
                 messageEntity.setStatus((short) 1);
                 messageEntity.setSmallType((short) 6);
                 messageService.sendMessage(messageEntity);
-            }
+            }*/
             AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
             recordMessageEntity.setTypeid(id);
             recordMessageEntity.setOperatorname(username);
@@ -410,11 +424,11 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
     }
 
     @Override
-    public void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, Integer[] uids, String username, Integer receiverid) {
+    public void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity,  String username, Integer receiverid) {
         Date nowTime = new Date();
         anZhuangTiaoShiWorkNameTotalEntity.setCreatename(username);
         anZhuangTiaoShiWorkNameTotalEntity.setCreatetime(nowTime);
-        anZhuangTiaoShiWorkNameTotalEntity.setAuditorState(1);
+        anZhuangTiaoShiWorkNameTotalEntity.setAuditorState(2);
         Date starttime = anZhuangTiaoShiWorkNameTotalEntity.getStarttime();
         System.out.println("66666" + starttime);
         Date endtime = anZhuangTiaoShiWorkNameTotalEntity.getEndtime();
@@ -440,7 +454,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
 
         anZhuangTiaoShiWorkNameTotalDao.insertSelective(anZhuangTiaoShiWorkNameTotalEntity);
         Integer wid = anZhuangTiaoShiWorkNameTotalEntity.getId();
-        for (Integer uid : uids) {
+        /*for (Integer uid : uids) {
             AnZhuangTiaoShiWorksAuditorEntity worksAuditorEntity = new AnZhuangTiaoShiWorksAuditorEntity();
             worksAuditorEntity.setObjectId(wid);
             worksAuditorEntity.setAuditorId(uid);
@@ -462,7 +476,7 @@ public class AnZhuangTiaoShiWorkNameTotalServiceImpl implements AnZhuangTiaoShiW
             messageEntity.setStatus((short) 1);
             messageEntity.setSmallType((short) 5);
             messageService.sendMessage(messageEntity);
-        }
+        }*/
         AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
         recordMessageEntity.setTypeid(wid);
         recordMessageEntity.setOperatorname(username);

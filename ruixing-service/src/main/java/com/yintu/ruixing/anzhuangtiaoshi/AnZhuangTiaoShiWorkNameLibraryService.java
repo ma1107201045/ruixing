@@ -15,7 +15,7 @@ public interface AnZhuangTiaoShiWorkNameLibraryService {
 
     List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkName(Integer page, Integer size, String workname);
 
-    void editWorkNameById(Integer id,AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, String username, Integer receiverid, Integer[] uids);
+    void editWorkNameById(Integer id,AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, String username, Integer receiverid);
 
     void deleteWorkNameByIds(Integer[] ids);
 
@@ -30,4 +30,6 @@ public interface AnZhuangTiaoShiWorkNameLibraryService {
     void editAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
 
     List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorkNameLibraryRecordMessageById(Integer id);
+
+    List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType();
 }

@@ -12,6 +12,16 @@
         <result column="dwd_state" jdbcType="INTEGER" property="dwdState"/>
         <result column="dwd_json" jdbcType="LONGVARCHAR" property="dwdJson"/>
     </resultMap>
+
+
+    <!--根据电务段id 和铁路局id  查询对应的数据-->
+    <select id="finddwdByIds" resultMap="dianwuduan">
+        select *
+        from mro_dianwuduan
+        where dwd_id = #{did}
+          and tlj_id = #{tid}
+    </select>
+
     <select id="findDianWuDuanByName" resultMap="dianwuduan">
         select *
         from mro_dianwuduan

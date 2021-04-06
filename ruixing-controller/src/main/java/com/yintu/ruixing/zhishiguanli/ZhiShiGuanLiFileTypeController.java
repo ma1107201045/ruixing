@@ -168,16 +168,16 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
 
     //新增文件
     @PostMapping("/addFile")
-    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer[] auditorid, Integer[] sort) {
+    public Map<String, Object> addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {//, Integer[] auditorid, Integer[] sort
         String username = this.getLoginUser().getTrueName();//登录人名
         Integer uid = this.getLoginUser().getId().intValue();//登录人id
-        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity, username, uid, auditorid, sort);
+        zhiShiGuanLiFileTypeService.addFile(zhiShiGuanLiFileTypeFileEntity, username, uid);
         return ResponseDataUtil.ok("新增文件成功");
     }
 
     //更新文件版本
     @PutMapping("updateFileById")
-    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer[] auditorid, Integer[] sort) {
+    public Map<String, Object> updateFileById(Integer id, ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity) {//, Integer[] auditorid, Integer[] sort
         ZhiShiGuanLiFileTypeFileEntity fileEntity = zhiShiGuanLiFileTypeService.findFile(id);
         String username = this.getLoginUser().getTrueName();//登录人名
         Integer uid = this.getLoginUser().getId().intValue();//登录人id
@@ -188,7 +188,7 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         Integer id1 = fileEntity.getId();
         Integer tid = fileEntity.getTid();
         zhiShiGuanLiFileTypeService.addOneFile(fileName, createtime, filePath, id1, username, filesize);//新增历史文件
-        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity, id, username, uid, auditorid, sort);//添加新文件
+        zhiShiGuanLiFileTypeService.updateFileById(zhiShiGuanLiFileTypeFileEntity, id, username, uid);//添加新文件
         return ResponseDataUtil.ok("更新成功");
     }
 

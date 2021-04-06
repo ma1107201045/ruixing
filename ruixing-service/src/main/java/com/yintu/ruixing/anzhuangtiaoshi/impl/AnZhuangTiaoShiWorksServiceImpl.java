@@ -197,6 +197,7 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
             worksDingTitleDataEntityList.add(a,dingTitleDataEntity);
         }
         js.put("tableData",worksDingTitleDataEntityList);
+        System.out.println("worksDingTitleDataEntityList"+worksDingTitleDataEntityList);
         return js;
     }
 

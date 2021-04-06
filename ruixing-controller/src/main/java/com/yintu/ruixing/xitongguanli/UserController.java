@@ -44,6 +44,7 @@ public class UserController extends SessionController {
         userEntity.setCreateTime(new Date());
         userEntity.setModifiedBy(this.getLoginUserName());
         userEntity.setModifiedTime(new Date());
+        userEntity.setPaiGongGuanLiState(0);
         userService.add(userEntity, roleIds, departmentIds, tids, dids, xids, cids);
         return ResponseDataUtil.ok("添加用户成功");
     }

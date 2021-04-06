@@ -24,13 +24,15 @@ import java.util.Map;
 public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiWorkNameTotalService anZhuangTiaoShiWorkNameTotalService;
+    @Autowired
+    private AnZhuangTiaoShiWorkNameLibraryService anZhuangTiaoShiWorkNameLibraryService;
 
     //新增作业项配置版本
     @PostMapping("/addWorkNameTotal")
-    public Map<String, Object> addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, Integer[] uids) {
+    public Map<String, Object> addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
-        anZhuangTiaoShiWorkNameTotalService.addWorkNameTotal(anZhuangTiaoShiWorkNameTotalEntity, uids, username, receiverid);
+        anZhuangTiaoShiWorkNameTotalService.addWorkNameTotal(anZhuangTiaoShiWorkNameTotalEntity,  username, receiverid);
         return ResponseDataUtil.ok("新增作业项配置版本成功");
     }
 
@@ -110,12 +112,26 @@ public class AnZhuangTiaoShiWorkNameTotalController extends SessionController {
         return ResponseDataUtil.ok("查询数据成功", totalEntity);
     }
 
+    //查询所有的项目类型
+    @GetMapping("/findAllXiangMuType")
+    public Map<String, Object> findAllXiangMuType() {
+        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> xiangMuTypeEntities = anZhuangTiaoShiWorkNameLibraryService.findAllXiangMuType();
+        return ResponseDataUtil.ok("查询所有项目类型成功", xiangMuTypeEntities);
+    }
+    //根据项目类型id  查询对应的作业项
+    @GetMapping("/findWorkNameByXMId")
+    public Map<String,Object>findWorkNameByXMId( Integer xiangMuId){
+        List<AnZhuangTiaoShiWorkNameLibraryEntity> workNameLibraryEntityList=anZhuangTiaoShiWorkNameTotalService.findWorkNameByXMId(xiangMuId);
+        return ResponseDataUtil.ok("查询作业项成功",workNameLibraryEntityList);
+    }
+
+
     // 在对应的作业项配置版本下  添加作业项
     @PostMapping("/addWorkNameEdition")
-    public Map<String, Object> addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, Integer[] uids) {
+    public Map<String, Object> addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids) {//, Integer[] uids
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
-        anZhuangTiaoShiWorkNameTotalService.addWorkNameEdition(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, wnlids, username, receiverid, uids);
+        anZhuangTiaoShiWorkNameTotalService.addWorkNameEdition(anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, wnlids, username, receiverid);
         return ResponseDataUtil.ok("添加成功");
     }
 

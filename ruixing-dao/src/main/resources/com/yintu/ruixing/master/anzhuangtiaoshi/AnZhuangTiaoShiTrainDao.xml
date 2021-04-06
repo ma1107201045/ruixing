@@ -30,11 +30,11 @@
     </select>
 
     <!--查询所有的数据-->
-    <select id="findTrainBytraintype" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="findTrainBytraintype"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mro_anzhuangtiaoshi_train
-        where trainType=#{traintype}
+        where xd_name=#{xdName}
     </select>
 
     <!--查询所有的数据的分类-->
@@ -42,7 +42,7 @@
         select
         <include refid="Base_Column_List"/>
         from mro_anzhuangtiaoshi_train
-        group by trainType
+        group by xd_name
     </select>
 
     <!--根据线段名  或者顾客名进行模糊查询 也是初始化页面-->

@@ -118,6 +118,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
             String xdFenlei = (String) label.get("xdFenlei");
             String guanlianxiangmu = (String) label.get("guanlianxiangmu");
             String xdType = (String) label.get("xdType");
+            String remarks = (String) label.get("remarks");
             Date xianduantime = new Date(xianduanTime);
             List<AnZhuangTiaoShiXiangMuEntity> anZhuangTiaoShiXiangMuEntities = anZhuangTiaoShiXiangMuDao.findByXdId(xdid);
             if (anZhuangTiaoShiXiangMuEntities.isEmpty()) {//如果线段不存在添加数据，否侧无需重复添加线段数据
@@ -171,6 +172,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setCreatetime(today);
                     xiangMuServiceChooseEntity.setUpdatename(username);
                     xiangMuServiceChooseEntity.setUpdatetime(today);
+                    xiangMuServiceChooseEntity.setRemarks(remarks);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
                 if (serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == 1) {//有状态标识  没有计划和实际开始结束时间
@@ -186,6 +188,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setCreatetime(today);
                     xiangMuServiceChooseEntity.setUpdatename(username);
                     xiangMuServiceChooseEntity.setUpdatetime(today);
+                    xiangMuServiceChooseEntity.setRemarks(remarks);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
 
                 }
@@ -208,6 +211,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                     xiangMuServiceChooseEntity.setCreatetime(today);
                     xiangMuServiceChooseEntity.setUpdatename(username);
                     xiangMuServiceChooseEntity.setUpdatetime(today);
+                    xiangMuServiceChooseEntity.setRemarks(remarks);
                     anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                 }
                 if (!serviceStatusEntity.getChoose().equals("是否") && serviceStatusEntity.getTimetype() == null) {
@@ -228,6 +232,7 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
                         xiangMuServiceChooseEntity.setCreatetime(today);
                         xiangMuServiceChooseEntity.setUpdatename(username);
                         xiangMuServiceChooseEntity.setUpdatetime(today);
+                        xiangMuServiceChooseEntity.setRemarks(remarks);
                         anZhuangTiaoShiXiangMuServiceChooseService.addXiangMuServiceChooseEntity(xiangMuServiceChooseEntity);
                     }
                 }
@@ -313,12 +318,15 @@ public class AnZhuangTiaoShiXiangMuServiceChooseServiceImpl implements AnZhuangT
 
         Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "axsc.id DESC");
         List<Integer> czIds = anZhuangTiaoShiXiangMuServiceChooseDao.findCZidByXDid(xdId, czName);
+
         JSONArray ja = new JSONArray();
         for (Integer czId : czIds) {
+            String remarks = anZhuangTiaoShiXiangMuServiceChooseDao.findRemarksByCZid(czId);
             JSONObject jo = new JSONObject(true);
             jo.put("xdId", xdId);
             jo.put("czId", czId);
             jo.put("czName", cheZhanService.findByCheZhanId(czId.longValue()).getCzName());
+            jo.put("remarks", remarks);
             jo.put("xdType", anZhuangTiaoShiXiangMuEntity.getXdType());
             for (AnZhuangTiaoShiXiangMuServiceStatusEntity anZhuangTiaoShiXiangMuServiceStatusEntity : anZhuangTiaoShiXiangMuServiceStatusEntities) {
                 Integer serid = anZhuangTiaoShiXiangMuServiceStatusEntity.getId();

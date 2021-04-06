@@ -11,6 +11,8 @@ import java.util.Date;
 public class AnZhuangTiaoShiWorkNameTotalEntity {
     private Integer id;
 
+    private String xiangMuType;
+
     private String worknamesall;
 
     private Date starttime;

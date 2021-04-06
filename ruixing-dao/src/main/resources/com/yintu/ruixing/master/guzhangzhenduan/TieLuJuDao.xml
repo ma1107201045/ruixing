@@ -9,6 +9,13 @@
         <result property="tljMiaoShu" column="tlj_miaoshu"/>
     </resultMap>
 
+    <!--根据铁路局专用id  查询对应的数据-->
+    <select id="findTLJlist" resultMap="tieluju">
+        select *
+        from mro_tieluju
+        where tlj_id = #{tljId}
+    </select>
+
     <!--根据铁路局名字  查询对应的数据-->
     <select id="findAllTieLuJuByName" resultMap="tieluju">
         select *

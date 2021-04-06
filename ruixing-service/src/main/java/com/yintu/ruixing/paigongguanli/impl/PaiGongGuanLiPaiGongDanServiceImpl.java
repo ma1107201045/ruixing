@@ -275,6 +275,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             minTaskshuxingNum = 60;
         }
         if (paiGongGuanLiPaiGongDanEntity.getPaigongmode() == 1) { //手动派工
+            paiGongGuanLiPaiGongDanEntity.setChuchaicity(paiGongGuanLiPaiGongDanEntity.getCityId());
             paiGongGuanLiPaiGongDanEntity.setPaigongstate(1);
             paiGongGuanLiPaiGongDanEntity.setOperatorid(senderid);
             paiGongGuanLiPaiGongDanEntity.setState(1);

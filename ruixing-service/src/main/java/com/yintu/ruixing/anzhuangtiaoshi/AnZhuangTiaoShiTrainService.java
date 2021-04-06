@@ -36,7 +36,7 @@ public interface AnZhuangTiaoShiTrainService {
 
     List<TreeNodeUtil> findReJiShu();
 
-    List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(Integer typeId, Integer page, Integer size);
+    List<AnZhuangTiaoShiTrainEntity> findAllTrainByType(String xdName, Integer page, Integer size);
 
     List<AnZhuangTiaoShiTrainEntity> findTrainByid(Integer id);
 }

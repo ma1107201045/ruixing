@@ -29,8 +29,15 @@ public class DianWuDuanController {
     //新增电务段
     @PostMapping("/addDianWuDuan")
     public Map<String,Object> addDianWuDuan(DianWuDuanEntity dianWuDuanEntity){
-        dianWuDuanService.addDianWuDuan(dianWuDuanEntity);
-        return ResponseDataUtil.ok("新增电务段成功");
+        long tid = dianWuDuanEntity.getTljId();
+        long did = dianWuDuanEntity.getDwdId();
+        List<DianWuDuanEntity> dianWuDuanEntityList=dianWuDuanService.finddwdByIds(tid,did);
+        if (dianWuDuanEntityList.size()==0) {
+            dianWuDuanService.addDianWuDuan(dianWuDuanEntity);
+            return ResponseDataUtil.ok("新增电务段成功");
+        }else {
+            return ResponseDataUtil.error("不可以添加已有电务段");
+        }
     }
 
     //修改电务段

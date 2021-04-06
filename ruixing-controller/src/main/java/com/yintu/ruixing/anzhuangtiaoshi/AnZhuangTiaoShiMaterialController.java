@@ -63,9 +63,9 @@ public class AnZhuangTiaoShiMaterialController extends SessionController {
 
     //初始化类别数据  或者根据物料编号模糊查询类别
     @GetMapping("/findAllMaterialDatas")
-    public Map<String, Object> findAllMaterialDatas(Integer page, Integer size, String materialNumber) {
+    public Map<String, Object> findAllMaterialDatas(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiMaterialEntity> materialEntityList = anZhuangTiaoShiMaterialService.findAllMaterialDatas(page, size, materialNumber);
+        List<AnZhuangTiaoShiMaterialEntity> materialEntityList = anZhuangTiaoShiMaterialService.findAllMaterialDatas(page, size, materialNumber,materialsname,materialsguige);
         PageInfo<AnZhuangTiaoShiMaterialEntity> materialEntityPageInfo = new PageInfo<>(materialEntityList);
         return ResponseDataUtil.ok("查询物料数据成功", materialEntityPageInfo);
     }
@@ -91,18 +91,18 @@ public class AnZhuangTiaoShiMaterialController extends SessionController {
 
     //物料出库 初始化  或者根据物料编码查询数据
     @GetMapping("/findAllOutMaterial")
-    public Map<String, Object> findAllOutMaterial(Integer page, Integer size, String materialNumber) {
+    public Map<String, Object> findAllOutMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityList = anZhuangTiaoShiMaterialService.findAllOutMaterial(page, size, materialNumber);
+        List<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityList = anZhuangTiaoShiMaterialService.findAllOutMaterial(page, size, materialNumber,materialsname,materialsguige);
         PageInfo<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityPageInfo = new PageInfo<>(materialOutInEntityList);
         return ResponseDataUtil.ok("查询物料出库数据成功", materialOutInEntityPageInfo);
     }
 
     //物料入库 初始化  或者根据物料编码查询数据
     @GetMapping("/findAllInMaterial")
-    public Map<String, Object> findAllInMaterial(Integer page, Integer size, String materialNumber) {
+    public Map<String, Object> findAllInMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityList = anZhuangTiaoShiMaterialService.findAllInMaterial(page, size, materialNumber);
+        List<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityList = anZhuangTiaoShiMaterialService.findAllInMaterial(page, size, materialNumber,materialsname,materialsguige);
         PageInfo<AnZhuangTiaoShiMaterialOutInEntity> materialOutInEntityPageInfo = new PageInfo<>(materialOutInEntityList);
         return ResponseDataUtil.ok("查询物料出库数据成功", materialOutInEntityPageInfo);
     }
@@ -120,12 +120,13 @@ public class AnZhuangTiaoShiMaterialController extends SessionController {
         String username = this.getLoginUser().getTrueName();
         AnZhuangTiaoShiMaterialEntity materialEntityList = anZhuangTiaoShiMaterialService.fiandMaterial(mid);
         Integer totalnumber = materialEntityList.getTotalnumber();
-        if (totalnumber > anZhuangTiaoShiMaterialOutInEntity.getMaterialsoutnumber()) {
+        if (totalnumber >= anZhuangTiaoShiMaterialOutInEntity.getMaterialsoutnumber()) {
             anZhuangTiaoShiMaterialService.addOutMaterial(anZhuangTiaoShiMaterialOutInEntity);
             Integer total = totalnumber - anZhuangTiaoShiMaterialOutInEntity.getMaterialsoutnumber();
             anZhuangTiaoShiMaterialEntity.setTotalnumber(total);
             anZhuangTiaoShiMaterialService.editMaterial(anZhuangTiaoShiMaterialEntity, mid);
             String materialsname = anZhuangTiaoShiMaterialEntity.getMaterialsname();
+            String materialsguige = anZhuangTiaoShiMaterialEntity.getMaterialsguige();
             List<Integer> uids = new ArrayList<>();
             if (yujingnumber >= total) {
                 //获取所有的人员id  发消息给所有人
@@ -139,7 +140,7 @@ public class AnZhuangTiaoShiMaterialController extends SessionController {
                     MessageEntity messageEntity = new MessageEntity();
                     messageEntity.setCreateBy(username);//创建人
                     messageEntity.setCreateTime(new Date());//创建时间
-                    messageEntity.setContext("“" + materialsname + "”物料数量低于预警线，请及时申请采购！");
+                    messageEntity.setContext("“物料名:" + materialsname +"规格:"+materialsguige+ "”的物料数量低于预警线，请及时申请采购！");
                     messageEntity.setType((short) 3);
                     messageEntity.setMessageType((short) 1);
                     messageEntity.setProjectId(mid);
@@ -165,5 +166,12 @@ public class AnZhuangTiaoShiMaterialController extends SessionController {
         anZhuangTiaoShiMaterialEntity.setTotalnumber(total);
         anZhuangTiaoShiMaterialService.editMaterial(anZhuangTiaoShiMaterialEntity, mid);
         return ResponseDataUtil.ok("新增物料入库数据成功");
+    }
+
+    //根据id 是删除对应的出入库数据
+    @DeleteMapping("/deleteByIds/{ids}")
+    public Map<String,Object>deleteByIds(@PathVariable Integer[] ids){
+        anZhuangTiaoShiMaterialService.deleteByIds(ids);
+        return ResponseDataUtil.ok("删除数据成功");
     }
 }

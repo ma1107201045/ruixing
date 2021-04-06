@@ -19,4 +19,6 @@ public interface DianWuDuanService {
     List<Integer> findId(Long did);
 
     List<DianWuDuanEntity> findAll();
+
+	List<DianWuDuanEntity> finddwdByIds(long tid, long did);
 }

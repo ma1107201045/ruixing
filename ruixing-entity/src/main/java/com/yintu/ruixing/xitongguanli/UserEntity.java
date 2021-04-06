@@ -52,6 +52,8 @@ public class UserEntity implements UserDetails {
 
     private Short isCustomer;
 
+    private Integer paiGongGuanLiState;
+
     private List<DepartmentEntity> departmentEntities;
 
     private List<RoleEntity> roleEntities;

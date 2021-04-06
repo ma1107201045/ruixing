@@ -14,13 +14,13 @@ public interface AnZhuangTiaoShiCheZhanXiangMuTypeDao {
 
     int insertSelective(AnZhuangTiaoShiCheZhanXiangMuTypeEntity record);
 
-    AnZhuangTiaoShiCheZhanXiangMuTypeEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKeySelective(AnZhuangTiaoShiCheZhanXiangMuTypeEntity record);
 
     int updateByPrimaryKey(AnZhuangTiaoShiCheZhanXiangMuTypeEntity record);
 
+
     /////////////////////////////////////////////////
+    AnZhuangTiaoShiCheZhanXiangMuTypeEntity selectByPrimaryKey(Integer id);
 
     void addXiangMuType(AnZhuangTiaoShiCheZhanXiangMuTypeEntity anZhuangTiaoShiCheZhanXiangMuTypeEntity);
 

@@ -35,23 +35,19 @@
         SELECT
         ptu.id,
         ptu.tid,
-        u.true_name,
         pt.taskTotalName,
         ptu.score
         FROM
         mro_paigongguanli_task_user ptu,
-        tb_user u,
         mro_paigongguanli_task pt
         <where>
-            ptu.uid = u.id
-            AND ptu.tid = pt.id
+                ptu.tid = pt.id
             and ptu.uid=#{id}
             <if test="taskTotalName !=null">
                 and
                 pt.taskTotalName like concat('%',#{taskTotalName},'%')
             </if>
         </where>
-        group by ptu.id desc
     </select>
 
 
@@ -93,10 +89,16 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <!--根据uid  删除对应的数据-->
+    <delete id="deleteByuid" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_task_user
+    where uid = #{userid,jdbcType=INTEGER}
+    </delete>
+
     <!--根据tid  删除对应的数据-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_paigongguanli_task_user
-    where id = #{id,jdbcType=INTEGER}
+    where tid = #{id,jdbcType=INTEGER}
     </delete>
 
     <!--新增类型的时候  给每个人员新增类型-->
