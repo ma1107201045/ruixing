@@ -3,6 +3,7 @@ package com.yintu.ruixing.paigongguanli.impl;
 import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBusinessTypeDao;
 import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiTaskDao;
 import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiTaskUserDao;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiUserDao;
 import com.yintu.ruixing.paigongguanli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,12 @@ import java.util.List;
 public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
     @Autowired
     private PaiGongGuanLiTaskDao paiGongGuanLiTaskDao;
-
     @Autowired
     private PaiGongGuanLiTaskUserDao paiGongGuanLiTaskUserDao;
-
     @Autowired
     private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
+    @Autowired
+    private PaiGongGuanLiUserDao paiGongGuanLiUserDao;
 
     @Override
     public void deleteUserTaskByIds(Integer[] ids) {
@@ -112,7 +113,7 @@ public class PaiGongGuanLiTaskServiceImpl implements PaiGongGuanLiTaskService {
         paiGongGuanLiTaskEntity.setTasktotalname(taskName);
         paiGongGuanLiTaskDao.insertSelective(paiGongGuanLiTaskEntity);
         Integer id = paiGongGuanLiTaskEntity.getId();
-        List<Integer> Uid = paiGongGuanLiTaskUserDao.findUid();
+        List<Integer> Uid = paiGongGuanLiUserDao.findUid();
         if (Uid.size() != 0) {
             for (Integer uid : Uid) {
                 paiGongGuanLiTaskUserDao.addTask(uid, id);

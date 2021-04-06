@@ -12,6 +12,14 @@
   </sql>
 
   <!--查询所有的项目类型-->
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_xiangmutype
+    where id=#{id}
+  </select>
+
+  <!--查询所有的项目类型-->
   <select id="findAllXiangMuType"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

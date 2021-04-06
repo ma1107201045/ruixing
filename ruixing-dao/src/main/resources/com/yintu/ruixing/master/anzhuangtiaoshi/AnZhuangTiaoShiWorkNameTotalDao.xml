@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameTotalEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall" />
+    <result column="xiangMuType" jdbcType="VARCHAR" property="xiangMuType" />
     <result column="starttime" jdbcType="TIMESTAMP" property="starttime" />
     <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
     <result column="yuliu1" jdbcType="VARCHAR" property="yuliu1" />
@@ -18,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, worknamesall, starttime, endtime, yuliu1, yuliu2,
-     createTime, createName, updateTime, updateName,auditorState,userid
+     createTime, createName, updateTime, updateName,auditorState,userid,xiangMuType
   </sql>
 
 
@@ -53,6 +54,7 @@
     select
     aw.id,
     worknamesall,
+    xiangMuType,
     starttime,
     endtime,
     auditorState,
@@ -80,19 +82,15 @@
     select
     aw.id,
     worknamesall,
+    xiangMuType,
     starttime,
     endtime,
     auditorState,
-    userid,
-    awa.auditor_id
+    userid
     from
-    mro_anzhuangtiaoshi_worknametotal aw,
-    mro_anzhuangtiaoshi_works_auditor awa
+    mro_anzhuangtiaoshi_worknametotal aw
     <where>
-      aw.id = awa.object_id
-      AND objectType = 1
       <if test="workname !=null">
-        and
         worknamesall like concat ('%',#{workname},'%')
       </if>
     </where>
@@ -150,6 +148,9 @@
       <if test="userid != null">
         userid,
       </if>
+      <if test="xiangMuType != null">
+        xiangMuType,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -187,6 +188,9 @@
       </if>
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="xiangMuType != null">
+        #{xiangMuType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -227,6 +231,9 @@
       </if>
       <if test="userid != null">
         userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="xiangMuType != null">
+        xiangMuType = #{xiangMuType,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

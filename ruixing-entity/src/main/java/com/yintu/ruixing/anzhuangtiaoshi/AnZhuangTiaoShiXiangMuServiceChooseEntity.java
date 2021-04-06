@@ -51,6 +51,8 @@ public class AnZhuangTiaoShiXiangMuServiceChooseEntity {
 
     private String updatename;
 
+    private String remarks;
+
     private String servicename;
     private String chroosname;
     private Integer PlanToalTime;

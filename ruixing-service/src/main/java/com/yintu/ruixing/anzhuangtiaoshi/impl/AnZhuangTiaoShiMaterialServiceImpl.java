@@ -28,6 +28,13 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     private AnZhuangTiaoShiMaterialOutInDao anZhuangTiaoShiMaterialOutInDao;
 
     @Override
+    public void deleteByIds(Integer[] ids) {
+        for (Integer id : ids) {
+            anZhuangTiaoShiMaterialOutInDao.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
     public void editMaterial(AnZhuangTiaoShiMaterialEntity anZhuangTiaoShiMaterialEntity,Integer id) {
         anZhuangTiaoShiMaterialDao.editMaterial(anZhuangTiaoShiMaterialEntity.getTotalnumber(),id);
     }
@@ -38,8 +45,8 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     }
 
     @Override
-    public List<AnZhuangTiaoShiMaterialOutInEntity> findAllInMaterial(Integer page, Integer size, String materialNumber) {
-        return anZhuangTiaoShiMaterialOutInDao.findAllInMaterial(materialNumber);
+    public List<AnZhuangTiaoShiMaterialOutInEntity> findAllInMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
+        return anZhuangTiaoShiMaterialOutInDao.findAllInMaterial(materialNumber,materialsname,materialsguige);
     }
 
     @Override
@@ -62,8 +69,8 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     }
 
     @Override
-    public List<AnZhuangTiaoShiMaterialOutInEntity> findAllOutMaterial(Integer page, Integer size, String materialNumber) {
-        return anZhuangTiaoShiMaterialOutInDao.findAllOutMaterial(materialNumber);
+    public List<AnZhuangTiaoShiMaterialOutInEntity> findAllOutMaterial(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
+        return anZhuangTiaoShiMaterialOutInDao.findAllOutMaterial(materialNumber,materialsname,materialsguige);
     }
 
     @Override
@@ -77,8 +84,8 @@ public class AnZhuangTiaoShiMaterialServiceImpl implements AnZhuangTiaoShiMateri
     }
 
     @Override
-    public List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(Integer page, Integer size, String materialNumber) {
-        return anZhuangTiaoShiMaterialDao.findAllMaterialDatas(materialNumber);
+    public List<AnZhuangTiaoShiMaterialEntity> findAllMaterialDatas(Integer page, Integer size, String materialNumber,String materialsname,String materialsguige) {
+        return anZhuangTiaoShiMaterialDao.findAllMaterialDatas(materialNumber,materialsname,materialsguige);
     }
 
     @Override

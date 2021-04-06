@@ -27,9 +27,14 @@ public class TieLuJuController {
     //新增铁路局
     @PostMapping("/addTieLuJU")
     public Map<String,Object> addTieLuJU(TieLuJuEntity tieLuJuEntity){
-
-        tieLuJuService.addTieLuJU(tieLuJuEntity);
-        return ResponseDataUtil.ok("添加铁路局成功");
+        long tljId = tieLuJuEntity.getTljId();
+        List<TieLuJuEntity> tieLuJuEntityList=tieLuJuService.findTLJlist(tljId);
+        if (tieLuJuEntityList.size()==0) {
+            tieLuJuService.addTieLuJU(tieLuJuEntity);
+            return ResponseDataUtil.ok("添加铁路局成功");
+        }else {
+            return ResponseDataUtil.error("不可以添加已有铁路局");
+        }
     }
     //修改铁路局信息
     @PutMapping("/editTieLuJu/{tid}")

@@ -211,7 +211,7 @@
         WHERE tlj.tid = dwd.tlj_dwd_id
           AND dwd.did = xd.dwd_xd_id
           AND xd.xid = cz.xd_cz_id
-        ORDER BY tlj.tlj_name
+        ORDER BY cz.cz_id
     </select>
     <!--根据铁路局id 查询铁路局下的所有车站-->
     <select id="findTieLuJuById" parameterType="java.lang.Long" resultMap="dataStatEntities">
@@ -680,6 +680,8 @@
         SELECT tlj.tid,
                tlj.tlj_name
         FROM mro_tieluju tlj
+        GROUP BY
+	        tlj_id
     </select>
 
     <resultMap type="com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity" id="dianwuduan">

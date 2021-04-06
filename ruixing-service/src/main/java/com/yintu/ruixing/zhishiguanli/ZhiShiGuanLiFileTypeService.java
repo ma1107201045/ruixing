@@ -24,13 +24,13 @@ public interface ZhiShiGuanLiFileTypeService {
 
     void editFileTypeById(ZhiShiGuanLiFileTypeEntity zhiShiGuanLiFileTypeEntity,String username);
 
-    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username,Integer uid,Integer[] auditorid,Integer[] sort);
+    void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,String username,Integer uid);
 
     ZhiShiGuanLiFileTypeFileEntity findFile(Integer id);
 
     void addOneFile(String fileName, Date createtime, String filePath, Integer id1,String username,Integer filesize);
 
-    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username,Integer uid,Integer[] auditorid,Integer[] sort);
+    void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity,Integer id,String username,Integer uid);
 
     List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName,Integer id,Integer uid);
 

@@ -22,6 +22,16 @@
     alarm_superior_k, alarm_lower, alarm_lower_z, alarm_lower_k, level, yuliu1
     </sql>
 
+
+    <!--根据 czid  查询对应的数据-->
+    <select id="findManXianByCzid"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+    </select>
+
+
     <!--根据 czid 属性id 和level  查询对应的数据-->
     <select id="findDatasBySomethings"  resultMap="BaseResultMap">
         select
@@ -227,6 +237,30 @@
             </if>
         </where>
     </select>
+
+    <!--根据车站id 区段id 和属性id  查询量程上限-->
+    <select id="findLowLimitNumber" resultType="java.lang.String">
+        select lc_lower
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据车站id 区段id 和属性id  查询量程上限-->
+    <select id="findUpLimitNumber" resultType="java.lang.String">
+        select lc_superior
+        from mro_menxian
+        where cz_id = #{czid,jdbcType=INTEGER}
+          and quduan_id = #{qdid,jdbcType=INTEGER}
+          and property_id = #{mid,jdbcType=INTEGER}
+          and level=#{typee,jdbcType=INTEGER}
+    </select>
+
+
+
     <!--根据车站id 区段id 和属性id  查询最小值(占用)-->
     <select id="findMinNumberZ" resultType="java.lang.String">
         select alarm_lower_z

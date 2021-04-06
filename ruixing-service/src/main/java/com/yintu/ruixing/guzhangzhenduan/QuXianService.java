@@ -73,4 +73,12 @@ public interface QuXianService {
     List<LinkedHashMap> findDMHDayData(StringBuilder sbb, long statrtime, Long endtime, Integer qdidd, String tableName);
 
     LinkedHashMap findDMHShiShiData(StringBuilder sb, Integer qdiddd, String tableName);
+
+    LinkedHashMap findQuDuanShiShiDataaTime(StringBuilder sb, Integer qdiddd, String tableName, Integer time);
+
+    String findUpLimitNumber(Integer czid, Integer qdid, Integer mid, Integer type);
+
+    String findLowLimitNumber(Integer czid, Integer qdid, Integer mid, Integer type);
+
+	LinkedHashMap findDMHShiShiDataTime(StringBuilder sb, Integer qdiddd, String tableName, Integer creatTime);
 }

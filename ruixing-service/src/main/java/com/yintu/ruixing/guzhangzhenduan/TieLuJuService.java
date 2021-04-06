@@ -24,4 +24,6 @@ public interface TieLuJuService {
     List<TieLuJuEntity> findAllTieLuJu();
 
     TieLuJuEntity findByTljId(Long tljId);
+
+	List<TieLuJuEntity> findTLJlist(long tljId);
 }

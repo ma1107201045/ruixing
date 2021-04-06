@@ -12,7 +12,7 @@ import java.util.List;
  * 需求:
  */
 public interface AnZhuangTiaoShiWorkNameTotalService {
-    void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity, Integer[] uids, String username, Integer receiverid);
+    void addWorkNameTotal(AnZhuangTiaoShiWorkNameTotalEntity anZhuangTiaoShiWorkNameTotalEntity,  String username, Integer receiverid);
 
     List<AnZhuangTiaoShiWorkNameTotalEntity> findWorkNameTotal(Integer page, Integer size, String workname);
 
@@ -20,7 +20,7 @@ public interface AnZhuangTiaoShiWorkNameTotalService {
 
     void deleteWorkNameTotalByIds(Integer[] ids);
 
-    void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, String username, Integer receiverid, Integer[] uids);
+    void addWorkNameEdition(AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity, Integer[] wnlids, String username, Integer receiverid);
 
     List<AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity> findWorkNameById(Integer id, Integer page, Integer size);
 
@@ -41,4 +41,6 @@ public interface AnZhuangTiaoShiWorkNameTotalService {
     void editWorksAuditorByWId(Integer id, AnZhuangTiaoShiWorksAuditorEntity anZhuangTiaoShiWorksAuditorEntity, String username, Integer receiverid, Integer senderId);
 
     AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity findOneWorkNameById(Integer wntid,Integer wnlid,Integer receiverid);
+
+    List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkNameByXMId(Integer xiangMuId);
 }

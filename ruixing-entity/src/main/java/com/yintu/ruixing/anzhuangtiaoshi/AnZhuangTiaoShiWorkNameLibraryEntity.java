@@ -12,11 +12,15 @@ import java.util.Date;
 public class AnZhuangTiaoShiWorkNameLibraryEntity {
     private Integer id;
 
+    private Integer xiangMuTypeId;
+
     private String workname;
 
     private String yuliu1;
 
     private String yuliu2;
+
+    private String xiangMuType;
 
 
 

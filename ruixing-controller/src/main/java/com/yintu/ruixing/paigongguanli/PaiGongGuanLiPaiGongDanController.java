@@ -24,6 +24,9 @@ import java.util.Map;
 public class PaiGongGuanLiPaiGongDanController extends SessionController {
     @Autowired
     private PaiGongGuanLiPaiGongDanService paiGongGuanLiPaiGongDanService;
+    @Autowired
+    private PaiGongGuanLiUserService paiGongGuanLiUserService;
+
 
     //自动创建派工单编号
     @GetMapping("/findPaiGongDanNum")
@@ -48,7 +51,13 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         }
     }
 
-
+    //查询所有派工的人员姓名
+    @GetMapping("/findAllPaiGongUser")
+    public Map<String,Object>findAllPaiGongUser(){
+        String name=null;
+        List<PaiGongGuanLiUserEntity>userEntityList=paiGongGuanLiUserService.findAllUser(name);
+        return ResponseDataUtil.ok("查询派工人员姓名成功",userEntityList);
+    }
     //新增派工单
     @PostMapping("/addPaiGongDan")
     public Map<String, Object> addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {

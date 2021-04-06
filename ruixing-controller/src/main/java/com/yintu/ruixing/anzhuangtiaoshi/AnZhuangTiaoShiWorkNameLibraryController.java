@@ -48,6 +48,14 @@ public class AnZhuangTiaoShiWorkNameLibraryController extends SessionController 
         return ResponseDataUtil.ok("问题审核成功");
     }
 
+    //查询所有的项目类型
+    @GetMapping("/findAllXiangMuType")
+    public Map<String, Object> findAllXiangMuType() {
+        List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> xiangMuTypeEntities = anZhuangTiaoShiWorkNameLibraryService.findAllXiangMuType();
+        return ResponseDataUtil.ok("查询所有项目类型成功", xiangMuTypeEntities);
+    }
+
+
     //新增作业项名称
     @PostMapping("/addWorkName")
     public Map<String, Object> addWorkName(AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, Integer[] uids) {
@@ -68,10 +76,10 @@ public class AnZhuangTiaoShiWorkNameLibraryController extends SessionController 
 
     //根据id  编辑对应的作业项名称
     @PutMapping("/editWorkNameById/{id}")
-    public Map<String, Object> editWorkNameById(@PathVariable Integer id, AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, Integer[] uids) {
+    public Map<String, Object> editWorkNameById(@PathVariable Integer id, AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer receiverid = this.getLoginUser().getId().intValue();
-        anZhuangTiaoShiWorkNameLibraryService.editWorkNameById(id, anZhuangTiaoShiWorkNameLibraryEntity, username, receiverid, uids);
+        anZhuangTiaoShiWorkNameLibraryService.editWorkNameById(id, anZhuangTiaoShiWorkNameLibraryEntity, username, receiverid);
         return ResponseDataUtil.ok("编辑作业项成功");
     }
 

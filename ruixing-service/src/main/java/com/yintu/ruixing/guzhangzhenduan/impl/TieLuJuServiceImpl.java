@@ -53,6 +53,11 @@ public class TieLuJuServiceImpl implements TieLuJuService {
     }
 
     @Override
+    public List<TieLuJuEntity> findTLJlist(long tljId) {
+        return tieLuJuDao.findTLJlist(tljId);
+    }
+
+    @Override
     public TieLuJuEntity findByTljId(Long tljId) {
         return tieLuJuDao.selectByTljId(tljId);
     }

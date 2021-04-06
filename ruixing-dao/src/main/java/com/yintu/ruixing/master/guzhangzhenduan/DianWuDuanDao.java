@@ -34,4 +34,6 @@ public interface DianWuDuanDao {
     String findDWDJsonByDid(@Param("did") Integer did);
 
     List<DianWuDuanEntity> selectAll();
+
+	List<DianWuDuanEntity> finddwdByIds(long tid, long did);
 }

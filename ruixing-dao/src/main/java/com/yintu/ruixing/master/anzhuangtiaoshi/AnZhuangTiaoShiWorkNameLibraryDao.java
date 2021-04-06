@@ -36,4 +36,5 @@ public interface AnZhuangTiaoShiWorkNameLibraryDao {
 
     String findWorkNameById(@Param("wnlid") Integer wnlid);
 
+    List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkNameByXMId(Integer xiangMuId);
 }

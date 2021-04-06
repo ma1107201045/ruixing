@@ -3,10 +3,7 @@ package com.yintu.ruixing.anzhuangtiaoshi.impl;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorksAuditorDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWorksRecordMessageDao;
+import com.yintu.ruixing.master.anzhuangtiaoshi.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,18 +23,17 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
 
     @Autowired
     private AnZhuangTiaoShiWorkNameLibraryDao anZhuangTiaoShiWorkNameLibraryDao;
-
     @Autowired
     private AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao;
-
     @Autowired
     private AnZhuangTiaoShiWorksAuditorDao anZhuangTiaoShiWorksAuditorDao;
-
     @Autowired
     private MessageService messageService;
-
     @Autowired
     private AnZhuangTiaoShiWorksRecordMessageDao anZhuangTiaoShiWorksRecordMessageDao;
+    @Autowired
+    private AnZhuangTiaoShiCheZhanXiangMuTypeDao anZhuangTiaoShiCheZhanXiangMuTypeDao;
+
 
     @Override
     public List<AnZhuangTiaoShiWorksRecordMessageEntity> findWorkNameLibraryRecordMessageById(Integer id) {
@@ -151,13 +147,13 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
     }
 
     @Override
-    public void editWorkNameById(Integer id, AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, String username, Integer receiverid, Integer[] uids) {
+    public void editWorkNameById(Integer id, AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity, String username, Integer receiverid) {
         Date nowTime = new Date();
         StringBuilder sb = new StringBuilder();
         AnZhuangTiaoShiWorkNameLibraryEntity workNameLibraryEntity = anZhuangTiaoShiWorkNameLibraryDao.findOneWorkNameByid(id, receiverid);
         anZhuangTiaoShiWorkNameLibraryEntity.setUpdatename(username);
         anZhuangTiaoShiWorkNameLibraryEntity.setUpdatetime(nowTime);
-        anZhuangTiaoShiWorkNameLibraryEntity.setAuditorState(1);
+        anZhuangTiaoShiWorkNameLibraryEntity.setAuditorState(2);
         anZhuangTiaoShiWorkNameLibraryDao.updateByPrimaryKeySelective(anZhuangTiaoShiWorkNameLibraryEntity);
         if (!workNameLibraryEntity.getWorkname().equals(anZhuangTiaoShiWorkNameLibraryEntity.getWorkname())) {
             sb.append(" 作业项名改为" + anZhuangTiaoShiWorkNameLibraryEntity.getWorkname() + ",");
@@ -171,7 +167,7 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
         recordMessageEntity.setContext(sb.toString());
         recordMessageEntity.setTypenum(3);
         anZhuangTiaoShiWorksRecordMessageDao.insertSelective(recordMessageEntity);
-        for (Integer uid : uids) {
+        /*for (Integer uid : uids) {
             AnZhuangTiaoShiWorksAuditorEntity worksAuditorEntity = new AnZhuangTiaoShiWorksAuditorEntity();
             worksAuditorEntity.setObjectId(id);
             worksAuditorEntity.setAuditorId(uid);
@@ -193,12 +189,23 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
             messageEntity.setStatus((short) 1);
             messageEntity.setSmallType((short) 7);
             messageService.sendMessage(messageEntity);
-        }
+        }*/
     }
 
     @Override
     public List<AnZhuangTiaoShiWorkNameLibraryEntity> findWorkName(Integer page, Integer size, String workname) {
-        return anZhuangTiaoShiWorkNameLibraryDao.findWorkName(workname);
+        List<AnZhuangTiaoShiWorkNameLibraryEntity> libraryEntityList=anZhuangTiaoShiWorkNameLibraryDao.findWorkName(workname);
+        for (AnZhuangTiaoShiWorkNameLibraryEntity anZhuangTiaoShiWorkNameLibraryEntity : libraryEntityList) {
+            Integer xiangMuTypeId = anZhuangTiaoShiWorkNameLibraryEntity.getXiangMuTypeId();
+            String xiangmuleixing = anZhuangTiaoShiCheZhanXiangMuTypeDao.selectByPrimaryKey(xiangMuTypeId).getXiangmuleixing();
+            anZhuangTiaoShiWorkNameLibraryEntity.setXiangMuType(xiangmuleixing);
+        }
+        return libraryEntityList;
+    }
+
+    @Override
+    public List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType() {
+        return anZhuangTiaoShiCheZhanXiangMuTypeDao.findAllXiangMuType();
     }
 
     @Override
@@ -206,11 +213,11 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
         Date nowTime = new Date();
         anZhuangTiaoShiWorkNameLibraryEntity.setCreatename(username);
         anZhuangTiaoShiWorkNameLibraryEntity.setCreatetime(nowTime);
-        anZhuangTiaoShiWorkNameLibraryEntity.setAuditorState(1);
+        anZhuangTiaoShiWorkNameLibraryEntity.setAuditorState(2);//1.待审核 2.已审核已通过 3.已审核未通过
         anZhuangTiaoShiWorkNameLibraryEntity.setUserid(receiverid);
         anZhuangTiaoShiWorkNameLibraryDao.insertSelective(anZhuangTiaoShiWorkNameLibraryEntity);
         Integer id = anZhuangTiaoShiWorkNameLibraryEntity.getId();
-        for (Integer uid : uids) {
+       /* for (Integer uid : uids) {
             AnZhuangTiaoShiWorksAuditorEntity worksAuditorEntity = new AnZhuangTiaoShiWorksAuditorEntity();
             worksAuditorEntity.setObjectId(id);
             worksAuditorEntity.setAuditorId(uid);
@@ -232,7 +239,7 @@ public class AnZhuangTiaoShiWorkNameLibraryServiceImpl implements AnZhuangTiaoSh
             messageEntity.setStatus((short) 1);
             messageEntity.setSmallType((short) 7);
             messageService.sendMessage(messageEntity);
-        }
+        }*/
         AnZhuangTiaoShiWorksRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWorksRecordMessageEntity();
         recordMessageEntity.setTypeid(id);
         recordMessageEntity.setOperatorname(username);

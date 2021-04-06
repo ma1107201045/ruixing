@@ -449,7 +449,15 @@
         order by qi.createtime
     </select>
 
-
+    <!--区段实时曲线   -->
+    <select id="findQuDuanShiShiDataaTime" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sb} qi.createtime from ${tableName} qi
+        where  qi.v1 = ${qdiddd}
+        and qi.createtime=${time}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
+    </select>
 
     <!--区段实时曲线   -->
     <select id="findQuDuanShiShiDataa" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
@@ -459,6 +467,17 @@
         qi.createtime DESC
         LIMIT 1
     </select>
+
+    <!--根据时间查询 电码化实时曲线   -->
+    <select id="findDMHShiShiDataTime" resultType="java.util.LinkedHashMap" statementType="STATEMENT">
+        select ${sb} qi.createtime from ${tableName} qi
+        where  qi.v1 = ${qdiddd}
+        and qi.createtime=${creatTime}
+        ORDER BY
+        qi.createtime DESC
+        LIMIT 1
+    </select>
+
 
     <!--电码化实时曲线   -->
     <select id="findDMHShiShiData" resultType="java.util.LinkedHashMap" statementType="STATEMENT">

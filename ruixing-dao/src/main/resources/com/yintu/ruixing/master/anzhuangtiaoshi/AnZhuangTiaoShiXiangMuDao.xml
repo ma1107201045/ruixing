@@ -44,6 +44,7 @@
     <select id="findXianDuan" resultMap="BaseResultMap">
         SELECT xd_name
         FROM mro_anzhuangtiaoshi_xiangmu
+        GROUP BY xd_name
     </select>
 
     <!--根据项目id  查询对应的数据-->

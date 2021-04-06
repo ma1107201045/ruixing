@@ -40,11 +40,11 @@ public class AnZhuangTiaoShiTrainController extends SessionController {
         return ResponseDataUtil.ok("查询成功", treeNodeUtils);
     }
 
-    //根据单位类型  查询对应的数据
-    @GetMapping("/findAllTrainByType/{typeId}")
-    public Map<String,Object>findAllTrainByType(@PathVariable Integer typeId,Integer page,Integer size){
+    //根据线段类型  查询对应的数据
+    @GetMapping("/findAllTrainByType")
+    public Map<String,Object>findAllTrainByType(String xdName,Integer page,Integer size){
         PageHelper.startPage(page,size);
-        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findAllTrainByType(typeId,page,size);
+        List<AnZhuangTiaoShiTrainEntity> trainEntityList=anZhuangTiaoShiTrainService.findAllTrainByType(xdName,page,size);
         PageInfo<AnZhuangTiaoShiTrainEntity> trainEntityPageInfo=new PageInfo<>(trainEntityList);
         return ResponseDataUtil.ok("查询培训内容成功",trainEntityPageInfo);
     }

@@ -98,26 +98,26 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     @Override
     public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileBySize(Integer page, Integer size, String fileName, Integer id,Integer uid) {
         List<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntities= zhiShiGuanLiFileTypeFileDao.findSomeFileBySize(fileName, id);
-        if (!fileTypeFileEntities.isEmpty()){
+        /*if (!fileTypeFileEntities.isEmpty()){
             for (ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity : fileTypeFileEntities) {
                 Integer id1 = fileTypeFileEntity.getId();
                 List<ZhiShiGuanLiFileTypeFileAuditorEntity>auditorEntityList=zhiShiGuanLiFileTypeFileAuditorDao.findFileAuditorDatasByFileId(id1,uid);
                 fileTypeFileEntity.setAuditorEntityList(auditorEntityList);
             }
-        }
+        }*/
         return fileTypeFileEntities;
     }
 
     @Override
     public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFileByTime(Integer page, Integer size, String fileName, Integer id,Integer uid) {
         List<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntities=zhiShiGuanLiFileTypeFileDao.findSomeFileByTime(fileName, id);
-        if (!fileTypeFileEntities.isEmpty()){
+        /*if (!fileTypeFileEntities.isEmpty()){
             for (ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity : fileTypeFileEntities) {
                 Integer id1 = fileTypeFileEntity.getId();
                 List<ZhiShiGuanLiFileTypeFileAuditorEntity>auditorEntityList=zhiShiGuanLiFileTypeFileAuditorDao.findFileAuditorDatasByFileId(id1,uid);
                 fileTypeFileEntity.setAuditorEntityList(auditorEntityList);
             }
-        }
+        }*/
         return fileTypeFileEntities;
     }
 
@@ -223,25 +223,25 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     @Override
     public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName, Integer id,Integer uid) {
         List<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntities= zhiShiGuanLiFileTypeFileDao.findSomeFile(fileName, id);
-        if (!fileTypeFileEntities.isEmpty()){
+        /*if (!fileTypeFileEntities.isEmpty()){
             for (ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity : fileTypeFileEntities) {
                 Integer id1 = fileTypeFileEntity.getId();
                 List<ZhiShiGuanLiFileTypeFileAuditorEntity>auditorEntityList=zhiShiGuanLiFileTypeFileAuditorDao.findFileAuditorDatasByFileId(id1,uid);
                 fileTypeFileEntity.setAuditorEntityList(auditorEntityList);
             }
-        }
+        }*/
         return fileTypeFileEntities;
     }
 
     @Override
-    public void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer id, String username, Integer uid, Integer[] auditorid, Integer[] sort) {
+    public void updateFileById(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, Integer id, String username, Integer uid) {//, Integer[] auditorid, Integer[] sort
         zhiShiGuanLiFileTypeFileEntity.setCreatetime(new Date());
         zhiShiGuanLiFileTypeFileEntity.setCreateName(username);
         zhiShiGuanLiFileTypeFileEntity.setAuditstatus(2);
         zhiShiGuanLiFileTypeFileEntity.setUserid(uid);
         zhiShiGuanLiFileTypeFileDao.updateByPrimaryKeySelective(zhiShiGuanLiFileTypeFileEntity);
         String fileName = zhiShiGuanLiFileTypeFileEntity.getFileName();
-        if (auditorid.length == 0 && sort.length == 0) {//使用审批流 来进行审批
+       /* if (auditorid.length == 0 && sort.length == 0) {//使用审批流 来进行审批
             List<AuditConfigurationEntity> audit = auditConfigurationService.findAudit((short) 4, (short) 1, (short) 1);//查询审批流程
             List<AuditConfigurationUserEntity> userEntities = auditConfigurationUserService.findByauditConfigurationId(audit.get(0).getId());//查询审批流的人员
             for (AuditConfigurationUserEntity userEntity : userEntities) {
@@ -291,7 +291,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                     }
                 }
             }
-        }
+        }*/
         //添加日志记录
         ZhiShiGuanLiFileTypeFileRecordmessageEntity recordmessageEntity = new ZhiShiGuanLiFileTypeFileRecordmessageEntity();
         recordmessageEntity.setTypeid(id);
@@ -354,12 +354,12 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     @Override
     public ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id,Integer uid) {
         ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntities= zhiShiGuanLiFileTypeFileDao.findFileDatasById(id);
-       if (fileTypeFileEntities!=null){
+      /* if (fileTypeFileEntities!=null){
             List<ZhiShiGuanLiFileTypeFileAuditorEntity> auditorEntityList=zhiShiGuanLiFileTypeFileAuditorDao.findFileAuditorDatasByFileId(id,uid);
             if (!auditorEntityList.isEmpty()){
                 fileTypeFileEntities.setAuditorEntityList(auditorEntityList);
             }
-       }
+       }*/
         return fileTypeFileEntities;
     }
 
@@ -553,7 +553,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
     }
 
     @Override
-    public void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, String username, Integer uid, Integer[] auditorid, Integer[] sort) {
+    public void addFile(ZhiShiGuanLiFileTypeFileEntity zhiShiGuanLiFileTypeFileEntity, String username, Integer uid) {//, Integer[] auditorid, Integer[] sort
         zhiShiGuanLiFileTypeFileEntity.setParentid(0);
         zhiShiGuanLiFileTypeFileEntity.setUserid(uid);
         zhiShiGuanLiFileTypeFileEntity.setAuditstatus(2);
@@ -563,7 +563,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
         Integer tid = zhiShiGuanLiFileTypeFileEntity.getTid();//文件类型id
         Integer fileid = zhiShiGuanLiFileTypeFileEntity.getId();//新增文件的id
         String fileName = zhiShiGuanLiFileTypeFileEntity.getFileName();//文件名字
-        if (auditorid.length == 0 && sort.length == 0) {//使用审批流 来进行审批
+  /*      if (auditorid.length == 0 && sort.length == 0) {//使用审批流 来进行审批
             List<AuditConfigurationEntity> audit = auditConfigurationService.findAudit((short) 4, (short) 1, (short) 1);//查询审批流程
             List<AuditConfigurationUserEntity> userEntities = auditConfigurationUserService.findByauditConfigurationId(audit.get(0).getId());//查询审批流的人员
             for (AuditConfigurationUserEntity userEntity : userEntities) {
@@ -627,7 +627,7 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
                     }
                 }
             }
-        }
+        }*/
         //添加日志记录
         ZhiShiGuanLiFileTypeFileRecordmessageEntity recordmessageEntity = new ZhiShiGuanLiFileTypeFileRecordmessageEntity();
         recordmessageEntity.setTypeid(fileid);

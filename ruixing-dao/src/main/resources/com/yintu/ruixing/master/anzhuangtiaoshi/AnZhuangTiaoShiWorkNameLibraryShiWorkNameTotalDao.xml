@@ -16,6 +16,7 @@
         <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
         <result column="auditorState" jdbcType="INTEGER" property="auditorState"/>
         <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="xiangMuTypeId" jdbcType="INTEGER" property="xiangMuTypeId"/>
         <association property="anZhuangTiaoShiWorkNameTotalEntity" javaType="AnZhuangTiaoShiWorkNameTotalEntity">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="worknamesall" jdbcType="VARCHAR" property="worknamesall"/>
@@ -85,16 +86,13 @@
                awt.worknamesall,
                awl.workname,
                awl.id lid,
-               aww.work_state,
-               awa.auditor_id
+               aww.work_state
         FROM mro_anzhuangtiaoshi_worknametotal awt,
              mro_anzhuangtiaoshi_worknamelibrary awl,
-             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
-             mro_anzhuangtiaoshi_works_auditor awa
-        WHERE awa.object_id = aww.id
-          and awt.id = aww.wntid
+             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww
+        WHERE
+           awt.id = aww.wntid
           AND awl.id = aww.wnlid
-
           AND awt.id = #{awtId}
           AND awl.workname LIKE concat('%', #{workname}, '%')
         GROUP BY aww.id DESC
@@ -149,13 +147,12 @@
                awl.workname,
                awl.id lid,
                aww.work_state,
-               awa.auditor_id
+	           awl.xiangMuTypeId
         FROM mro_anzhuangtiaoshi_worknametotal awt,
              mro_anzhuangtiaoshi_worknamelibrary awl,
-             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww,
-             mro_anzhuangtiaoshi_works_auditor awa
-        WHERE awa.object_id = aww.id
-          and awt.id = aww.wntid
+             mro_anzhuangtiaoshi_worknamelibrary_worknametotal aww
+        WHERE
+              awt.id = aww.wntid
           AND awl.id = aww.wnlid
           AND awt.id = #{id}
         GROUP BY aww.id DESC

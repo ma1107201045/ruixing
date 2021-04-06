@@ -16,6 +16,7 @@
         <result column="locked" jdbcType="SMALLINT" property="locked"/>
         <result column="enableds" jdbcType="SMALLINT" property="enableds"/>
         <result column="is_customer" jdbcType="SMALLINT" property="isCustomer"/>
+        <result column="paiGongGuanLiState" jdbcType="INTEGER" property="paiGongGuanLiState"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -79,7 +80,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, create_by, create_time, modified_by, modified_time, username, password, true_name,
-    phone, email, auth_type, locked, enableds, is_customer
+    phone, email, auth_type, locked, enableds, is_customer,paiGongGuanLiState
     </sql>
 
     <!--根据id 查询对应的真实名字-->
@@ -181,6 +182,9 @@
             <if test="isCustomer != null">
                 is_customer,
             </if>
+            <if test="paiGongGuanLiState != null">
+                paiGongGuanLiState,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -224,6 +228,9 @@
             </if>
             <if test="isCustomer != null">
                 #{isCustomer,jdbcType=SMALLINT},
+            </if>
+            <if test="paiGongGuanLiState != null">
+                #{paiGongGuanLiState},
             </if>
         </trim>
     </insert>
@@ -345,6 +352,9 @@
             </if>
             <if test="isCustomer != null">
                 is_customer = #{isCustomer,jdbcType=SMALLINT},
+            </if>
+            <if test="paiGongGuanLiState != null">
+                paiGongGuanLiState = #{paiGongGuanLiState},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

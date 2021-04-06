@@ -46,6 +46,14 @@
       <if test="materialNumber!=null">
         MaterialsNumber like concat('%',#{materialNumber},'%')
       </if>
+      <if test="materialNumber!=null">
+      and
+        MaterialsName like concat('%',#{materialsname},'%')
+      </if>
+      <if test="materialNumber!=null">
+      and
+        MaterialsGuiGe like concat('%',#{materialsguige},'%')
+      </if>
     </where>
     ORDER BY id desc
   </select>

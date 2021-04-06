@@ -9,6 +9,7 @@ import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +21,17 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/TaskAll")
-public class PaiGongGuanLiTaskController {
+public class PaiGongGuanLiTaskController extends SessionController{
     @Autowired
     private PaiGongGuanLiTaskService paiGongGuanLiTaskService;
-
+    @Autowired
+    private PaiGongGuanLiUserService paiGongGuanLiUserService;
     @Autowired
     private UserService userService;
+
+
+
+
 
     //查询所有的业务类别
     @GetMapping("/findAllBusinessType")
@@ -73,6 +79,42 @@ public class PaiGongGuanLiTaskController {
 
 
     /////////////////////人员能力配置////////////////////////////
+
+
+    //选择派工人员配置
+    @PostMapping("/addPGGLuser")
+    public Map<String,Object>addPGGLuser(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiUserEntity.setCreateBy(username);
+        paiGongGuanLiUserEntity.setCreateTime(new Date());
+        paiGongGuanLiUserEntity.setModifiedBy(username);
+        paiGongGuanLiUserEntity.setModifiedTime(new Date());
+        paiGongGuanLiUserEntity.setIsdelete(1);
+        paiGongGuanLiUserService.addPGGLuser(paiGongGuanLiUserEntity);
+        return ResponseDataUtil.ok("添加派工人员成功");
+    }
+
+    //删除派工人员配置
+    @PutMapping("/deleteById/{id}")
+    public Map<String,Object>deleteById(@PathVariable Integer id,PaiGongGuanLiUserEntity paiGongGuanLiUserEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiUserEntity.setModifiedBy(username);
+        paiGongGuanLiUserEntity.setModifiedTime(new Date());
+        paiGongGuanLiUserEntity.setIsdelete(0);
+        paiGongGuanLiUserService.deleteById(paiGongGuanLiUserEntity);
+        return ResponseDataUtil.ok("删除人员成功");
+    }
+
+    //查询所有的派工人员
+    @GetMapping("/findAllUser")
+    public Map<String,Object>findAllUser(String name,Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiUserEntity>paiGongGuanLiUserEntityList=paiGongGuanLiUserService.findAllUser(name);
+        PageInfo<PaiGongGuanLiUserEntity>userEntityPageInfo=new PageInfo<>(paiGongGuanLiUserEntityList);
+        return ResponseDataUtil.ok("查询人员成功",userEntityPageInfo);
+    }
+
+
 
 
     //查询所有人员姓名

@@ -37,4 +37,10 @@ public interface MenXianDao {
     String findMinNumberZ(Integer czid, Integer qdid, Integer mid, Integer typee);
 
     List<MenXianEntity> findDatasBySomethings(Integer czid, Integer mid, Integer type,Integer qdid);
+
+    List<MenXianEntity> findManXianByCzid(Integer czid);
+
+    String findUpLimitNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
+
+    String findLowLimitNumber(Integer czid, Integer qdid, Integer mid, Integer typee);
 }

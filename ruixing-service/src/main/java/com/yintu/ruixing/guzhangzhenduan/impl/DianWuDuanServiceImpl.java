@@ -49,6 +49,11 @@ public class DianWuDuanServiceImpl implements DianWuDuanService {
     }
 
     @Override
+    public List<DianWuDuanEntity> finddwdByIds(long tid, long did) {
+        return dianWuDuanDao.finddwdByIds(tid,did);
+    }
+
+    @Override
     public List<DianWuDuanEntity> findAll() {
         return dianWuDuanDao.selectAll();
     }

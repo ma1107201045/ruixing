@@ -34,5 +34,5 @@ public interface PaiGongGuanLiTaskUserDao {
     List<PaiGongGuanLiTaskUserEntity> findUser(@Param("tid") Integer tid,@Param("maxTaskshuxingNum") Integer maxTaskshuxingNum,@Param("minTaskshuxingNum") Integer minTaskshuxingNum);
 
 
-
+    void deleteByuid(Integer userid);
 }

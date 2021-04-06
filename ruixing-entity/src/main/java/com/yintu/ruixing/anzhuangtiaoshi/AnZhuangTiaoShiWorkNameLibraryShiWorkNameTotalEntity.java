@@ -29,6 +29,8 @@ public class AnZhuangTiaoShiWorkNameLibraryShiWorkNameTotalEntity {
     private Integer userid;
     private Integer auditorId;
     private Integer auditorState;
+    private Integer xiangMuTypeId;
+    private String xiangMuType;
 
     private Date createtime;
 
