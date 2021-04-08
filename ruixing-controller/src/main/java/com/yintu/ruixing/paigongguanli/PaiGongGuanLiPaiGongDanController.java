@@ -28,6 +28,7 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     private PaiGongGuanLiUserService paiGongGuanLiUserService;
 
 
+
     //自动创建派工单编号
     @GetMapping("/findPaiGongDanNum")
     public Map<String, Object> findPaiGongDanNum(String suoxie) {
@@ -63,6 +64,10 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     public Map<String, Object> addPaiGongDan(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanEntity.setCreatename(username);
+        paiGongGuanLiPaiGongDanEntity.setCreatetime(new Date());
+        paiGongGuanLiPaiGongDanEntity.setUpdatename(username);
+        paiGongGuanLiPaiGongDanEntity.setUpdatetime(new Date());
         paiGongGuanLiPaiGongDanService.addPaiGongDan(paiGongGuanLiPaiGongDanEntity, username, senderid);
         return ResponseDataUtil.ok("新增派工单成功");
     }
@@ -89,6 +94,8 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     public Map<String, Object> editPaiGongDanById(@PathVariable Integer id, Integer uid, PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity) {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanEntity.setUpdatetime(new Date());
+        paiGongGuanLiPaiGongDanEntity.setUpdatename(username);
         paiGongGuanLiPaiGongDanService.editPaiGongDanById(id, senderid, uid, paiGongGuanLiPaiGongDanEntity, username);
         return ResponseDataUtil.ok("编辑成功");
     }

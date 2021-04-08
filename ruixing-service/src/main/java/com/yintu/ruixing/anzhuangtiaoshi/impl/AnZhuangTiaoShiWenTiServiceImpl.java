@@ -117,6 +117,11 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     }
 
     @Override
+    public AnZhuangTiaoShiWenTiEntity findWenTiXiangQingById(Integer id) {
+        return anZhuangTiaoShiWenTiDao.findWenTiXiangQingById(id);
+    }
+
+    @Override
     public AnZhuangTiaoShiWenTiEntity findWenTiById(Integer id, Integer receiverid) {
         return anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id,receiverid);
     }
@@ -327,8 +332,9 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     }
 
     @Override
-    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu,Integer receiverid ) {
-        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, wenTiMiaoShu,receiverid);
+    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, Integer receiverid ,String startTime, String endTime,String wenTiType,
+                                                          String fankuiMode, String shouliDanwei,Integer isNotOver) {
+        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, receiverid,startTime,endTime,wenTiType,fankuiMode,shouliDanwei,isNotOver);
     }
 
     @Override

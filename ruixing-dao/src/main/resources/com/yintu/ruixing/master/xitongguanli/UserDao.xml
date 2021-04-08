@@ -83,6 +83,19 @@
     phone, email, auth_type, locked, enableds, is_customer,paiGongGuanLiState
     </sql>
 
+
+    <select id="findTruename"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        <where>
+            <if test="truename!=null">
+                true_name like concat('%',#{truename},'%')
+            </if>
+            order by id desc
+        </where>
+    </select>
+
     <!--根据id 查询对应的真实名字-->
     <select id="findTureNameById" resultType="java.lang.String">
         select

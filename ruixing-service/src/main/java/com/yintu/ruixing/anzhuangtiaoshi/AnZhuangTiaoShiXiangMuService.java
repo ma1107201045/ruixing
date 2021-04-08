@@ -44,7 +44,7 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     void exportFile(ServletOutputStream outputStream, Integer[] ids) throws IOException;
 
-    List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay);
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findLastMonthXiangMu(String today, String lastMothDay,Integer page, Integer size);
 
     List<MessageEntity> findXiaoXi(Integer senderid);
 

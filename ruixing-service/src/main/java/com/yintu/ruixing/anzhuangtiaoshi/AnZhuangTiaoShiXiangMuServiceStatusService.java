@@ -18,4 +18,7 @@ public interface AnZhuangTiaoShiXiangMuServiceStatusService {
     List<AnZhuangTiaoShiXiangMuServiceStatusEntity> findAllServiceStatus();
 
     void deleteServiceStatusByIds(Integer[] ids);
+
+    Integer findSerid();
+
 }

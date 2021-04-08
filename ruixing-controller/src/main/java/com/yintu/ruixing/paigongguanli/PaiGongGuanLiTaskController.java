@@ -90,7 +90,7 @@ public class PaiGongGuanLiTaskController extends SessionController{
         paiGongGuanLiUserEntity.setModifiedBy(username);
         paiGongGuanLiUserEntity.setModifiedTime(new Date());
         paiGongGuanLiUserEntity.setIsdelete(1);
-        paiGongGuanLiUserService.addPGGLuser(paiGongGuanLiUserEntity);
+        paiGongGuanLiUserService.addPGGLuser(paiGongGuanLiUserEntity,username);
         return ResponseDataUtil.ok("添加派工人员成功");
     }
 
@@ -178,6 +178,7 @@ public class PaiGongGuanLiTaskController extends SessionController{
         return ResponseDataUtil.ok("删除成功");
     }
 
+    //查询注册的所有人员
     @GetMapping("/users")
     public Map<String, Object> findAll(@RequestParam("page_number") Integer pageNumber,
                                        @RequestParam("page_size") Integer pageSize,

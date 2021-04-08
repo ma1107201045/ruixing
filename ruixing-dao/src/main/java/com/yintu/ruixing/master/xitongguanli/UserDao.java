@@ -46,4 +46,5 @@ public interface UserDao {
     String findTureNameById(Integer id);
 
 
+    List<UserEntity> findTruename(String truename);
 }

@@ -68,7 +68,13 @@ public class PaiGongGuanLiPaiGongDanEntity {
     private String districtId;
     private Integer state;
 
+    private Date createtime;
 
+    private String createname;
+
+    private Date updatetime;
+
+    private String updatename;
 
 
 

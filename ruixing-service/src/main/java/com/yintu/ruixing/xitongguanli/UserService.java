@@ -242,4 +242,5 @@ public interface UserService extends UserDetailsService, BaseService<UserEntity,
     long findUserSum();
 
 
+    List<UserEntity> findTruename(String truename);
 }

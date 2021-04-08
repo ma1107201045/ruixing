@@ -23,9 +23,9 @@ import java.util.Map;
 public class PaiGongGuanLiRiQinController extends SessionController {
     @Autowired
     private PaiGongGuanLiRiQinService paiGongGuanLiRiQinService;
-
     @Autowired
     private UserService userService;
+
 
     //查询员工姓名  等信息
     @GetMapping("/findAllUserName")
@@ -88,6 +88,11 @@ public class PaiGongGuanLiRiQinController extends SessionController {
     }
 
 
+   /* //展示所有人的日勤数据
+    @GetMapping("/findAllPeopleRiQinDatas")
+    public Map<String,Object>findAllPeopleRiQinDatas(){
+
+    }*/
 
 
 

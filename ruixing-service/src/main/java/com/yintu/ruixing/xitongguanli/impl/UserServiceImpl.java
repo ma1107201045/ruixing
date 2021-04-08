@@ -150,6 +150,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserEntity> findTruename(String truename) {
+        return userDao.findTruename(truename);
+    }
+
+    @Override
     public List<UserEntity> findByTruename(String truename) {
         truename = truename == null ? "" : truename;
         UserEntityExample userEntityExample = new UserEntityExample();

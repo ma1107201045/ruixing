@@ -30,12 +30,16 @@
         <result column="districtId" jdbcType="VARCHAR" property="districtId"/>
         <result column="name" jdbcType="VARCHAR" property="truename"/>
         <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="createName" jdbcType="VARCHAR" property="createname"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="updateName" jdbcType="VARCHAR" property="updatename"/>
     </resultMap>
     <sql id="Base_Column_List">
         id,operatorid, paiGongNumber, yeWuType, tljName, dwdName, xdName, czName, xiangMuType, chuChaiType,
     workContent, taskShuXing, contacts, contactsPhoneNum, chuChaiCity, xiangXiAdress, 
     chuChaiStartTime, chuChaiEndTime, teShuAsk, guanLianDanJu, paiGongPeople, gaiPaiPeople, 
-    paiGongState,provinceId,cityId,districtId,state
+    paiGongState,provinceId,cityId,districtId,state, createTime, createName, updateTime, updateName
     </sql>
 
 
@@ -56,11 +60,12 @@
         mro_paigongguanli_paigongdan pp,
         mro_paigongguanli_user USER
         <where>
-            pp.paiGongPeople = USER.id
+            pp.paiGongPeople = USER.userid
             <if test="paiGongNumber != null">
                 AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
             </if>
         </where>
+        GROUP BY pp.id
         ORDER BY pp.id DESC
     </select>
 
@@ -102,7 +107,7 @@
         mro_paigongguanli_paigongdan pp,
         mro_paigongguanli_user USER
         where
-        pp.paiGongPeople = USER.id
+        pp.paiGongPeople = USER.userid
         and pp.id = #{id,jdbcType=INTEGER}
     </select>
 
@@ -200,6 +205,18 @@
             <if test="state != null">
                 state,
             </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="createname != null">
+                createName,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="updatename != null">
+                updateName,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -282,6 +299,18 @@
             </if>
             <if test="state != null">
                 #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                #{updatename,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -368,6 +397,18 @@
             </if>
             <if test="state != null">
                 state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createname != null">
+                createName = #{createname,jdbcType=VARCHAR},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatename != null">
+                updateName = #{updatename,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

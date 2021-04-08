@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="typeName" jdbcType="VARCHAR" property="typename" />
+    <result column="miaoshu" jdbcType="VARCHAR" property="miaoshu" />
+    <result column="typeID" jdbcType="INTEGER" property="typeid" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, typeName, miaoshu, typeID, create_by, create_time, modified_by, modified_time
+  </sql>
+
+  <!--根据typeid 查询对应的问题类型-->
+  <select id="findAllType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_type
+    where
+      typeID=#{typeId}
+    order by id desc
+  </select>
+
+
+  <!--初始化查询  或者根据问题名模糊查询-->
+  <select id="findWenTiType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_type
+    <where>
+      typeID=#{typeId}
+      <if test="wenTiName!=null">
+      and
+        typeName like concat('%',#{wenTiName},'%')
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id 删除对应的数据-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_anzhuangtiaoshi_wenti_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeEntity">
+    insert into mro_anzhuangtiaoshi_wenti_type (id, typeName, miaoshu, 
+      typeID, create_by, create_time, 
+      modified_by, modified_time)
+    values (#{id,jdbcType=INTEGER}, #{typename,jdbcType=VARCHAR}, #{miaoshu,jdbcType=VARCHAR}, 
+      #{typeid,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <!--新增问题配置-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeEntity">
+    insert into mro_anzhuangtiaoshi_wenti_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="typename != null">
+        typeName,
+      </if>
+      <if test="miaoshu != null">
+        miaoshu,
+      </if>
+      <if test="typeid != null">
+        typeID,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typename != null">
+        #{typename,jdbcType=VARCHAR},
+      </if>
+      <if test="miaoshu != null">
+        #{miaoshu,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id 编辑对应的数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeEntity">
+    update mro_anzhuangtiaoshi_wenti_type
+    <set>
+      <if test="typename != null">
+        typeName = #{typename,jdbcType=VARCHAR},
+      </if>
+      <if test="miaoshu != null">
+        miaoshu = #{miaoshu,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        typeID = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiTypeEntity">
+    update mro_anzhuangtiaoshi_wenti_type
+    set typeName = #{typename,jdbcType=VARCHAR},
+      miaoshu = #{miaoshu,jdbcType=VARCHAR},
+      typeID = #{typeid,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

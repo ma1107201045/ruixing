@@ -103,8 +103,8 @@
 
     <!--新增类型的时候  给每个人员新增类型-->
     <insert id="addTask" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiTaskUserEntity">
-    insert into mro_paigongguanli_task_user ( uid, tid)
-    values ( #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER})
+    insert into mro_paigongguanli_task_user ( uid, tid,score)
+    values ( #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},-1)
   </insert>
 
 

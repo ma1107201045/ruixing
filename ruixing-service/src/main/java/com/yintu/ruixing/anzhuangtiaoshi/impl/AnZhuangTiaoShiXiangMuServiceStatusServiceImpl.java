@@ -23,9 +23,13 @@ import java.util.List;
 public class AnZhuangTiaoShiXiangMuServiceStatusServiceImpl implements AnZhuangTiaoShiXiangMuServiceStatusService {
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
-
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
+
+    @Override
+    public Integer findSerid() {
+        return anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
+    }
 
     @Override
     public void deleteServiceStatusByIds(Integer[] ids) {

@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 public interface PaiGongGuanLiUserService {
-	void addPGGLuser(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity);
+	void addPGGLuser(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity,String username);
 
 	void deleteById(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity);
 

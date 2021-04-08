@@ -57,4 +57,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(@Param("serid")Integer serid,@Param("today") String today,@Param("nextMothDay") String nextMothDay);
 
     String findRemarksByCZid(Integer czId);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findLastMonthXiangMu(String today, String lastMothDay, Integer serid);
 }

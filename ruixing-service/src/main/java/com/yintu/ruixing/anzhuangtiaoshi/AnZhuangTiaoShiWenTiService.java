@@ -6,6 +6,7 @@ import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWorksFileEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
 import com.yintu.ruixing.xitongguanli.DepartmentEntityExample;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +20,8 @@ public interface AnZhuangTiaoShiWenTiService {
 
     void editWenTiById(AnZhuangTiaoShiWenTiEntity anZhuangTiaoShiWenTiEntity, Integer id, Integer senderid, String username);
 
-    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu, Integer receiverid);
+    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, Integer receiverid,String startTime, String endTime, String wenTiType,
+                                                   String fankuiMode, String shouliDanwei, Integer isNotOver);
 
     void deleteWenTiByIds(Integer[] ids);
 
@@ -53,4 +55,5 @@ public interface AnZhuangTiaoShiWenTiService {
 
     List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id);
 
+    AnZhuangTiaoShiWenTiEntity findWenTiXiangQingById(Integer id);
 }

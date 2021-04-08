@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
 import com.yintu.ruixing.master.anzhuangtiaoshi.*;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
@@ -73,16 +74,26 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
 
     @Override
     public List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size) {
-        Integer serid=anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
-        PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList=anZhuangTiaoShiXiangMuServiceChooseDao.findNextMonthXiangMu(serid,today,nextMothDay);
-        return xiangMuEntityList;
+        Integer serid = anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
+        if (serid != null) {
+            PageHelper.startPage(page, size);
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuServiceChooseDao.findNextMonthXiangMu(serid, today, nextMothDay);
+            return xiangMuEntityList;
+        }else {
+            throw new BaseRuntimeException("请先添加“是否开通”服务状态标识");
+        }
     }
 
-
     @Override
-    public List<AnZhuangTiaoShiXiangMuEntity> findLastMonthXiangMu(String today, String lastMothDay) {
-        return anZhuangTiaoShiXiangMuDao.findLastMonthXiangMu(today, lastMothDay);
+    public List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findLastMonthXiangMu(String today, String lastMothDay,Integer page, Integer size) {
+        Integer serid = anZhuangTiaoShiXiangMuServiceStatusDao.findSerid();
+        if (serid != null) {
+        PageHelper.startPage(page, size);
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity>serviceChooseEntityList=anZhuangTiaoShiXiangMuServiceChooseDao.findLastMonthXiangMu(today,lastMothDay,serid);
+        return serviceChooseEntityList;
+        }else {
+            throw new BaseRuntimeException("请先添加“是否开通”服务状态标识");
+        }
     }
 
     @Override

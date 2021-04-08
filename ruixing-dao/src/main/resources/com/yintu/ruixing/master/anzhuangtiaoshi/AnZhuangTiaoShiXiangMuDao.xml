@@ -23,6 +23,16 @@
      guanlianxiangmu,worksid, createTime, createName, updateTime, updateName
     </sql>
 
+    <!--根据线段id 查询对应的线段名称-->
+    <select id="findXianDuanByXDid" resultType="java.lang.String">
+        select
+        xd_name
+        FROM
+        mro_anzhuangtiaoshi_xiangmu
+        WHERE xd_id=#{xdid}
+        GROUP BY xd_name
+    </select>
+
     <!--根据项目id  查询对应的项目-->
     <select id="findXiangMuById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select

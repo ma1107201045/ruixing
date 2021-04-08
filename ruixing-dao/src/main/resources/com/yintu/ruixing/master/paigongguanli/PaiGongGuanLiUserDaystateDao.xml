@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiUserDaystateDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="riqi" jdbcType="VARCHAR" property="riqi" />
+    <result column="dayState" jdbcType="INTEGER" property="daystate" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userid, username, riqi, dayState, createTime, createName, updateTime, updateName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_user_daystate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_user_daystate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    insert into mro_paigongguanli_user_daystate (id, userid, username, 
+      riqi, dayState, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+      #{riqi,jdbcType=VARCHAR}, #{daystate,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    insert into mro_paigongguanli_user_daystate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="riqi != null">
+        riqi,
+      </if>
+      <if test="daystate != null">
+        dayState,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="riqi != null">
+        #{riqi,jdbcType=VARCHAR},
+      </if>
+      <if test="daystate != null">
+        #{daystate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    update mro_paigongguanli_user_daystate
+    <set>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="riqi != null">
+        riqi = #{riqi,jdbcType=VARCHAR},
+      </if>
+      <if test="daystate != null">
+        dayState = #{daystate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    update mro_paigongguanli_user_daystate
+    set userid = #{userid,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      riqi = #{riqi,jdbcType=VARCHAR},
+      dayState = #{daystate,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -67,11 +67,29 @@
          GROUP BY remarks
     </select>
 
+    <!--查询近一个月 已经开通的项目和车站-->
+    <select id="findLastMonthXiangMu"  resultMap="BaseResultMap">
+        SELECT
+            xd_name,
+            chezhanName,
+            actual_open_time
+        FROM
+            mro_anzhuangtiaoshi_Xiangmu_Service_Choose xsc,
+            mro_xianduan xd
+        WHERE
+            xsc.xdid = xd.xid
+            AND serid = #{serid,jdbcType=INTEGER}
+            AND actual_open_time BETWEEN #{lastMothDay} AND #{today}
+        order by actual_open_time
+    </select>
+
+
     <!--查询未来一个月 将要完成的项目和车站-->
     <select id="findNextMonthXiangMu"  resultMap="BaseResultMap">
         SELECT
             xd_name,
-            chezhanName
+            chezhanName,
+            plan_open_time
         FROM
             mro_anzhuangtiaoshi_Xiangmu_Service_Choose xsc,
             mro_xianduan xd
@@ -79,6 +97,7 @@
             xsc.xdid = xd.xid
             AND serid = #{serid,jdbcType=INTEGER}
             AND plan_open_time BETWEEN #{today} AND #{nextMothDay}
+        order by plan_open_time
     </select>
 
     <select id="findAllByXDid" parameterType="java.lang.Integer" resultMap="BaseResultMap">

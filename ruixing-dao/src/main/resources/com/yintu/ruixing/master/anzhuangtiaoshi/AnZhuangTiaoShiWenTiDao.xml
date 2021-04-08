@@ -31,6 +31,15 @@
     yuliu, createTime, createName, updateTime, updateName,wentiType,auditorState,userid
   </sql>
 
+
+    <!--主页面跳转  根据id 显示为未完成的问题-->
+    <select id="findWenTiXiangQingById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_wenti
+        where id=#{id}
+    </select>
+
     <!--主页面显示  显示为未完成的问题-->
     <select id="findAllNotDoWellWenTi" resultMap="BaseResultMap">
         select
@@ -59,22 +68,41 @@
         wenTiState,
         wentiType,
         auditorState,
-        wa.auditor_id
+        wa.auditor_id,
+        wt.createTime
         FROM
-        mro_anzhuangtiaoshi_wenti wt
-        LEFT JOIN mro_anzhuangtiaoshi_wenti_auditor wa ON wt.id = wa.object_id
-        and
-        objectType = 1
-        and auditor_id=#{receiverid}
-        <if test="xdname!=null">
+        mro_anzhuangtiaoshi_wenti wt,
+         mro_anzhuangtiaoshi_wenti_auditor wa
+        <where>
+            wt.id = wa.object_id
             and
-            xd_name like concat('%',#{xdname},'%')
-        </if>
-        <if test="wenTiMiaoShu!=null">
-            and
-            wenti_miaoshu like concat('%',#{wenTiMiaoShu},'%')
-        </if>
-        ORDER BY wt.id desc
+            objectType = 1
+            <if test="xdname!=null and xdname!=''">
+                and
+                xd_name like concat('%',#{xdname},'%')
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and
+                createTime between #{startTime} and #{endTime}
+            </if>
+            <if test="wenTiType!=null and wenTiType!=''">
+                and
+                wentiType like concat('%',#{wenTiType},'%')
+            </if>
+            <if test="fankuiMode!=null and fankuiMode!=''">
+                and
+                fankui_mode like concat('%',#{fankuiMode},'%')
+            </if>
+            <if test="shouliDanwei!=null and shouliDanwei!=''">
+                and
+                shouLiDanWei like concat('%',#{shouliDanwei},'%')
+            </if>
+            <if test="isNotOver!=null">
+                and
+                wenTiIsOver =#{isNotOver}
+            </if>
+            ORDER BY wt.id desc
+        </where>
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

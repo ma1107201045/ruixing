@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
         return ResponseDataUtil.ok("问题审核成功");
     }
 
-    //根据问题id  查询对应的数据
+    //根据问题id  查询对应的数据(审核)
     @GetMapping("/findWenTiById/{id}")
     public Map<String, Object> findWenTiById(@PathVariable Integer id) {
         Integer receiverid = this.getLoginUser().getId().intValue();
@@ -83,13 +84,23 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
         return ResponseDataUtil.ok("查询问题数据成功", wenTiEntity);
     }
 
+    //根据问题id  查询对应的数据(首页跳转)
+    @GetMapping("/findWenTiXiangQingById/{id}")
+    public Map<String, Object> findWenTiXiangQingById(@PathVariable Integer id) {
+        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiService.findWenTiXiangQingById(id);
+        return ResponseDataUtil.ok("查询问题详情数据成功", wenTiEntity);
+    }
 
-    //初始化页面   或者根据线段名 或问题描述查询数据
+
+    //初始化页面   或者根据线段名 或时间段，类别，反馈方式，受理单位，问题是否关闭 查询数据
     @GetMapping("/findSomeWenTi")
-    public Map<String, Object> findSomeWenTi(Integer page, Integer size, String xdname, String wenTiMiaoShu) {
+    public Map<String, Object> findSomeWenTi(Integer page, Integer size, String xdname,
+                                             String startTime, String endTime,String wenTiType,
+                                             String fankuiMode, String shouliDanwei,Integer isNotOver) {
         Integer receiverid = this.getLoginUser().getId().intValue();
         PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiWenTiEntity> wenTiEntityList = anZhuangTiaoShiWenTiService.findSomeWenTi(page, size, xdname, wenTiMiaoShu,receiverid);
+        List<AnZhuangTiaoShiWenTiEntity> wenTiEntityList = anZhuangTiaoShiWenTiService.findSomeWenTi(page, size, xdname,receiverid,
+                                                                        startTime,endTime,wenTiType,fankuiMode,shouliDanwei,isNotOver);
         PageInfo<AnZhuangTiaoShiWenTiEntity> wenTiEntityPageInfo = new PageInfo<>(wenTiEntityList);
         return ResponseDataUtil.ok("查询成功", wenTiEntityPageInfo);
     }

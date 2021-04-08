@@ -4,6 +4,7 @@ import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AnZhuangTiaoShiWenTiDao {
@@ -21,11 +22,13 @@ public interface AnZhuangTiaoShiWenTiDao {
 
     int insertSelective(AnZhuangTiaoShiWenTiEntity record);
 
-    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(@Param("xdname") String xdname,
-                                                   @Param("wenTiMiaoShu") String wenTiMiaoShu,
-                                                   @Param("receiverid") Integer receiverid );
+    List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi( String xdname,
+                                                    Integer receiverid, String startTime, String endTime, String wenTiType,
+                                                   String fankuiMode, String shouliDanwei, Integer isNotOver );
 
     List<AnZhuangTiaoShiWenTiEntity> findAllNotDoWellWenTi();
 
     AnZhuangTiaoShiWenTiEntity findOneWentById(Integer id);
+
+    AnZhuangTiaoShiWenTiEntity findWenTiXiangQingById(Integer id);
 }

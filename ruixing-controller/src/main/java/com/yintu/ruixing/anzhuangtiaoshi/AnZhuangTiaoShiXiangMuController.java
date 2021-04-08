@@ -32,6 +32,8 @@ import java.util.Map;
 public class AnZhuangTiaoShiXiangMuController extends SessionController {
     @Autowired
     private AnZhuangTiaoShiXiangMuService anZhuangTiaoShiXiangMuService;
+    @Autowired
+    private AnZhuangTiaoShiXiangMuServiceStatusService anZhuangTiaoShiXiangMuServiceStatusService;
 
     //安装调试的三级树
     @RequestMapping
@@ -146,9 +148,8 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         c.add(Calendar.MONTH, -1);
         Date start = c.getTime();
         String lastMothDay = format.format(start);//前一月
-        PageHelper.startPage(page, size);
-        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findLastMonthXiangMu(today, lastMothDay);
-        PageInfo<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findLastMonthXiangMu(today, lastMothDay, page, size);
+        PageInfo<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
         return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
     }
 
@@ -160,10 +161,10 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
         c.setTime(new Date());
         Date end = c.getTime();
         String today = format.format(end);//当前日期
-        c.add(Calendar.MONTH, 1);
+        c.add(Calendar.MONTH, 2);
         Date start = c.getTime();
         String NextMothDay = format.format(start);//前一月
-        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findNextMonthXiangMu(today, NextMothDay,page,size);
+        List<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityList = anZhuangTiaoShiXiangMuService.findNextMonthXiangMu(today, NextMothDay, page, size);
         PageInfo<AnZhuangTiaoShiXiangMuServiceChooseEntity> xiangMuEntityPageInfo = new PageInfo<>(xiangMuEntityList);
         return ResponseDataUtil.ok("查询成功", xiangMuEntityPageInfo);
     }

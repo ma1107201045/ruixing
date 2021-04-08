@@ -26,6 +26,8 @@ public class AnZhuangTiaoShiXiangMuEntity {
 
     private String xdName;//线段名
 
+    private String czName;//车站名
+
     private String xdType;//项目类型
 
     private Integer xdFenlei;//线段状态 1：正在进行 ，2：已完成，3：长期停滞
@@ -40,6 +42,7 @@ public class AnZhuangTiaoShiXiangMuEntity {
 
     private String updatename;
 
+    private Date opentime;//开通时间
 
     private Integer cheZhanTotal;//车站总数
     private Integer jiGuiTotal;//机柜总数

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
-    <classPathEntry location="E:\java\maven_repository\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
+    <classPathEntry location="D:\java\repository_maven\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
     <context id="context" targetRuntime="MyBatis3">
         <!--定义生成的java类的编码格式-->
         <property name="javaFileEncoding" value="UTF-8"/>
@@ -15,9 +15,9 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost/ruixing?serverTimezone=Asia/Shanghai"
-                        userId="root"
-                        password="root">
+                        connectionURL="jdbc:mysql://121.89.223.9/ruixing?serverTimezone=Asia/Shanghai"
+                        userId="ruixing"
+                        password="FahdTPbPKR6GWGEC">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -54,9 +54,9 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
-        <table tableName="mro_paigongguanli_user"
-               domainObjectName="PaiGongGuanLiUserEntity"
-               mapperName="PaiGongGuanLiUserDao"
+        <table tableName="mro_paigongguanli_user_daystate"
+               domainObjectName="PaiGongGuanLiUserDaystateEntity"
+               mapperName="PaiGongGuanLiUserDaystateDao"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
