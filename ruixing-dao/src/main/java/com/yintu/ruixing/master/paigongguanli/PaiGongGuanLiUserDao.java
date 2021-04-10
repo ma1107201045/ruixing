@@ -27,4 +27,6 @@ public interface PaiGongGuanLiUserDao {
 
     void updateByUid(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity);
 
+    List<PaiGongGuanLiUserEntity> finaAlreadyPaiGongPeople();
+
 }

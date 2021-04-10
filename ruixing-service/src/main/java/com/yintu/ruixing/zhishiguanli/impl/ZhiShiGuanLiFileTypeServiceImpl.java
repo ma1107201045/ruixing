@@ -63,6 +63,23 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
 
 
     @Override
+    public List<ZhiShiGuanLiFileTypeFileEntity> findFileByTypeid(Integer id) {
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList=new ArrayList<>();
+        String pids="pid="+id.toString()+",";
+        List<Integer>fileTypids=zhiShiGuanLiFileTypeDao.findFileByTypeid(pids);
+        if (fileTypids.size()!=0){
+            for (Integer fileTypid : fileTypids) {
+                List<ZhiShiGuanLiFileTypeFileEntity> fileEntity=zhiShiGuanLiFileTypeFileDao.findFileBytid(fileTypid);
+                fileEntityList.addAll(fileEntity);
+            }
+        }else {
+            List<ZhiShiGuanLiFileTypeFileEntity> fileEntity=zhiShiGuanLiFileTypeFileDao.findFileBytid(id);
+            fileEntityList.addAll(fileEntity);
+        }
+        return fileEntityList;
+    }
+
+    @Override
     public List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
         return zhiShiGuanLiFileTypeFileDao.findByZSGLExample(search,userId,auditStatus,auditorId,activate,isDispose);
     }
@@ -222,7 +239,8 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
 
     @Override
     public List<ZhiShiGuanLiFileTypeFileEntity> findSomeFile(Integer page, Integer size, String fileName, Integer id,Integer uid) {
-        List<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntities= zhiShiGuanLiFileTypeFileDao.findSomeFile(fileName, id);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntities = zhiShiGuanLiFileTypeFileDao.findSomeFile(fileName, id);
+
         /*if (!fileTypeFileEntities.isEmpty()){
             for (ZhiShiGuanLiFileTypeFileEntity fileTypeFileEntity : fileTypeFileEntities) {
                 Integer id1 = fileTypeFileEntity.getId();
@@ -650,6 +668,21 @@ public class ZhiShiGuanLiFileTypeServiceImpl implements ZhiShiGuanLiFileTypeServ
         zhiShiGuanLiFileTypeEntity.setCreateTime(new Date());
         zhiShiGuanLiFileTypeEntity.setCreateName(username);
         zhiShiGuanLiFileTypeEntity.setParentid(parentid);
+        if (zhiShiGuanLiFileTypeEntity.getParentid()==0){
+            zhiShiGuanLiFileTypeEntity.setParentids("pid=0,");
+        }else {
+            StringBuilder sb=new StringBuilder();
+            sb.append("pid="+parentid+",");
+            Integer pid=zhiShiGuanLiFileTypeDao.findParentid(parentid);
+            sb.append("pid="+pid+",");
+            for (int i = 0; i < 30; i++) {
+                if (pid!=0){
+                    pid=zhiShiGuanLiFileTypeDao.findParentid(pid);
+                    sb.append("pid="+pid+",");
+                }
+            }
+            zhiShiGuanLiFileTypeEntity.setParentids(sb.toString());
+        }
         zhiShiGuanLiFileTypeDao.insertSelective(zhiShiGuanLiFileTypeEntity);
     }
 

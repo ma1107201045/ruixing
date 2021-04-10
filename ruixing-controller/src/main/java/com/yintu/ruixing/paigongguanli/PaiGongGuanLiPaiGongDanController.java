@@ -74,9 +74,12 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
 
     //初始化页面  或者根据编号模糊查询
     @GetMapping("/findPaiGongDan")
-    public Map<String, Object> findPaiGongDan(Integer page, Integer size, String paiGongNumber) {
+    public Map<String, Object> findPaiGongDan(Integer page, Integer size, String paiGongNumber,
+                                              String startTime,String endTime,String xdName,
+                                              String czName,String renWuShuXing,Integer peopeleId,Integer paiGongState) {
         PageHelper.startPage(page, size);
-        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList = paiGongGuanLiPaiGongDanService.findPaiGongDan(page, size, paiGongNumber);
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList =
+                paiGongGuanLiPaiGongDanService.findPaiGongDan(page, size, paiGongNumber,startTime,endTime,xdName,czName,renWuShuXing,peopeleId,paiGongState);
         PageInfo<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityPageInfo = new PageInfo<>(paiGongDanEntityList);
         return ResponseDataUtil.ok("查询成功", paiGongDanEntityPageInfo);
     }
@@ -172,7 +175,12 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         return ResponseDataUtil.ok("查询成功",paiGongDanEntity);
     }
 
-
+    //查询所有的已派工人员
+    @GetMapping("/finaAlreadyPaiGongPeople")
+    public Map<String,Object>finaAlreadyPaiGongPeople(){
+        List<PaiGongGuanLiUserEntity> userEntityList=paiGongGuanLiUserService.finaAlreadyPaiGongPeople();
+        return ResponseDataUtil.ok("查询派工人员成功",userEntityList);
+    }
 
 
 

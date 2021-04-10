@@ -10,4 +10,7 @@ public interface PaiGongGuanLiUserService {
 	void deleteById(PaiGongGuanLiUserEntity paiGongGuanLiUserEntity);
 
 	List<PaiGongGuanLiUserEntity> findAllUser(String name);
+
+    List<PaiGongGuanLiUserEntity> finaAlreadyPaiGongPeople();
+
 }

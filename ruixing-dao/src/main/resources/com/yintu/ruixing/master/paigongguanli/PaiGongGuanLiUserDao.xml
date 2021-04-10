@@ -16,6 +16,17 @@
     id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete
   </sql>
 
+  <!--查詢所有已派工人員-->
+  <select id="finaAlreadyPaiGongPeople" resultMap="BaseResultMap">
+    SELECT
+        userid,name
+    FROM
+        mro_paigongguanli_paigongdan mpp,
+        mro_paigongguanli_user mpu
+    WHERE
+        mpp.paiGongPeople = mpu.userid
+        GROUP BY userid
+  </select>
 
   <!--根据id  编辑数据-->
   <update id="updateByUid" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserEntity">

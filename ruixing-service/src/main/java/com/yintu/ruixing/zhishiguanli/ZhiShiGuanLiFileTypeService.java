@@ -79,4 +79,6 @@ public interface ZhiShiGuanLiFileTypeService {
     List<UserEntity> findZhuanJiaoAuditorName(Integer fileid);
 
     List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
+
+    List<ZhiShiGuanLiFileTypeFileEntity> findFileByTypeid(Integer id);
 }

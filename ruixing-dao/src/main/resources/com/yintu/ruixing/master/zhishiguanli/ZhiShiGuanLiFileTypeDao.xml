@@ -11,10 +11,29 @@
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="yuliu" jdbcType="VARCHAR" property="yuliu" />
+    <result column="parentids" jdbcType="VARCHAR" property="parentids" />
   </resultMap>
   <sql id="Base_Column_List">
-    id,parentid, fileType, fileMiaoShu, yuliu,createName,updateName,createTime,updateTime
+    id,parentid, fileType, fileMiaoShu, yuliu,createName,updateName,createTime,updateTime,parentids
   </sql>
+
+  <!--根据parentids 查询对应的id-->
+  <select id="findFileByTypeid"  resultType="java.lang.Integer">
+    select
+    id
+    from mro_zhishiguanli_filetype
+    where parentids like concat('%',#{pids},'%')
+  </select>
+
+
+  <!--根据id 查询对应的parentid-->
+  <select id="findParentid"  resultType="java.lang.Integer">
+    select
+    parentid
+    from mro_zhishiguanli_filetype
+    where id =#{parentid,jdbcType=INTEGER}
+  </select>
+
 
   <!--根据parentid 查询对应的文件类型-->
   <select id="findFileTypeByParentid"  resultMap="BaseResultMap">
@@ -91,6 +110,9 @@
       <if test="updateName != null">
         updateName,
       </if>
+      <if test="parentids != null">
+        parentids,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -119,6 +141,9 @@
       </if>
       <if test="updateName != null">
         #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentids != null">
+        #{parentids,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,6 +175,9 @@
       </if>
       <if test="updateName != null">
         updateName = #{updateName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentids != null">
+        parentids = #{parentids,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

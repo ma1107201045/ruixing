@@ -192,6 +192,15 @@ public class ZhiShiGuanLiFileTypeController extends SessionController {
         return ResponseDataUtil.ok("更新成功");
     }
 
+    //根据文件目录查询 本目录下所有的文件
+    @GetMapping("/findFileByTypeid")
+    public Map<String,Object>findFileByTypeid(Integer page, Integer size, Integer id){
+        PageHelper.startPage(page, size);
+        List<ZhiShiGuanLiFileTypeFileEntity> fileEntityList = zhiShiGuanLiFileTypeService.findFileByTypeid(id);
+        PageInfo<ZhiShiGuanLiFileTypeFileEntity> fileTypeFileEntityPageInfo = new PageInfo<>(fileEntityList);
+        return ResponseDataUtil.ok("查询文件成功", fileTypeFileEntityPageInfo);
+    }
+
     //文件初始化   或者根据文件名查询文件
     @GetMapping("/findSomeFile")
     public Map<String, Object> findSomeFile(Integer page, Integer size, String fileName, Integer id, Integer typeid) {//typeid ；1 时间  2 大小

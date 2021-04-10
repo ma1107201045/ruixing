@@ -43,4 +43,6 @@ public interface ZhiShiGuanLiFileTypeFileDao {
     ZhiShiGuanLiFileTypeFileEntity findFileDatasById(Integer id);
 
     List<AuditTotalVo> findByZSGLExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
+
+    List<ZhiShiGuanLiFileTypeFileEntity> findFileBytid(Integer fileTypid);
 }

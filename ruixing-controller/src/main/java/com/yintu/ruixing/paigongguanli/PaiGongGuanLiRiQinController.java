@@ -1,5 +1,6 @@
 package com.yintu.ruixing.paigongguanli;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
@@ -9,6 +10,9 @@ import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -88,12 +92,49 @@ public class PaiGongGuanLiRiQinController extends SessionController {
     }
 
 
-   /* //展示所有人的日勤数据
+    //展示所有人的日勤数据
     @GetMapping("/findAllPeopleRiQinDatas")
     public Map<String,Object>findAllPeopleRiQinDatas(){
+        JSONObject js =paiGongGuanLiRiQinService.findAllPeopleRiQinDatas();
+        return ResponseDataUtil.ok("查询成功",js);
+    }
 
-    }*/
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int actualMaximum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        System.out.println("ssss="+actualMaximum);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        //获取前月的第一天
+        Calendar cal_1=Calendar.getInstance();//获取当前日期
+        cal_1.add(Calendar.MONTH, 0);
+        cal_1.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        String firstDay = format.format(cal_1.getTime());
+        System.out.println("ffffff="+firstDay);
+
+        Calendar cale = Calendar.getInstance();
+        cale.set(Calendar.DAY_OF_MONTH,2);//设置为1号,当前日期既为本月第一天
+        String lastDay = format.format(cale.getTime());
+        System.out.println("llll="+lastDay);
 
 
+//获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天
+        String monthfirst = format.format(c.getTime());
+        System.out.println("===============nowfirst:" + monthfirst);
+
+//获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String monthlast = format.format(ca.getTime());
+        System.out.println("===============last:" + monthlast);
+
+
+
+
+    }
 
 }

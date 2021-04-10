@@ -15,6 +15,8 @@ public class ZhiShiGuanLiFileTypeEntity {
 
     private Integer parentid;
 
+    private String parentids;
+
     private String filetype;
 
     private String filemiaoshu;

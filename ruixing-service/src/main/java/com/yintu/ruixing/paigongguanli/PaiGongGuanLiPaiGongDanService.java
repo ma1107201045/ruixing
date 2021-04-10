@@ -2,6 +2,7 @@ package com.yintu.ruixing.paigongguanli;
 
 import com.yintu.ruixing.common.MessageEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +27,9 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     void doSomeThingg(Integer receiverid, Integer senderid, Integer id, Integer isNotRefuse, String reason, String username);
 
-    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber);
+    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber,
+                                                       String startTime, String endTime, String xdName,
+                                                       String czName, String renWuShuXing, Integer peopeleId, Integer paiGongState);
 
     List<PaiGongGuanLiBusinessTypeEntity> findAllBuiness();
 

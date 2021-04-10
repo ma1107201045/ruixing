@@ -1,5 +1,7 @@
 package com.yintu.ruixing.paigongguanli;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 /**
@@ -20,4 +22,7 @@ public interface PaiGongGuanLiRiQinService {
     List<PaiGongGuanLiRiQinEntity> findAllRiQinByUid(Integer uid);
 
     List<PaiGongGuanLiRiQinEntity> findAllRiQinDatas(Integer page, Integer size);
+
+    JSONObject findAllPeopleRiQinDatas();
+
 }

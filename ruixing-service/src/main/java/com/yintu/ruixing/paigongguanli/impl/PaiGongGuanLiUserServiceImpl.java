@@ -36,6 +36,11 @@ public class PaiGongGuanLiUserServiceImpl implements PaiGongGuanLiUserService {
 	private PaiGongGuanLiUserDaystateDao paiGongGuanLiUserDaystateDao;
 
 	@Override
+	public List<PaiGongGuanLiUserEntity> finaAlreadyPaiGongPeople() {
+		return paiGongGuanLiUserDao.finaAlreadyPaiGongPeople();
+	}
+
+	@Override
 	public List<PaiGongGuanLiUserEntity> findAllUser(String name) {
 		return paiGongGuanLiUserDao.findAllUser(name);
 	}

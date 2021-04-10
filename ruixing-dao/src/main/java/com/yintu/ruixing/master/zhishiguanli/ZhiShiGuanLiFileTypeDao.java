@@ -29,4 +29,8 @@ public interface ZhiShiGuanLiFileTypeDao {
     List<ZhiShiGuanLiFileTypeEntity> findFileType(Integer id);
 
     List<ZhiShiGuanLiFileTypeEntity> findFileTypeByParentid(Integer parentid);
+
+    Integer findParentid(Integer parentid);
+
+    List<Integer> findFileByTypeid(String pids);
 }

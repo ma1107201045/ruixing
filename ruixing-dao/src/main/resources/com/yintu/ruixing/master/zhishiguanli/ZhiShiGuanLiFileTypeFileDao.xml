@@ -26,6 +26,13 @@
   </sql>
 
 
+  <!--根据tid 查询对应的文件数据-->
+  <select id="findFileBytid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_zhishiguanli_filetype_file
+    where tid = #{fileTypid,jdbcType=INTEGER}
+  </select>
 
   <!--查询文件-->
   <resultMap id="ExampleResultMap" type="com.yintu.ruixing.common.AuditTotalVo">

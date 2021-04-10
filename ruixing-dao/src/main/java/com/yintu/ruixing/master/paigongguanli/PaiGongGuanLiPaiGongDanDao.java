@@ -4,6 +4,7 @@ import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,7 +31,9 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     List<PaiGongGuanLiPaiGongDanEntity> findUserByUserid(Integer userid);
 
-    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(String paiGongNumber);
+    List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(String paiGongNumber,
+                                                       String startTime, String endTime, String xdName,
+                                                       String czName, String renWuShuXing, Integer peopeleId, Integer paiGongState);
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongDan();
 

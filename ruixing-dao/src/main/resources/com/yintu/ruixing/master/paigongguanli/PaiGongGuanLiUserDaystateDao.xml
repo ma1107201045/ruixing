@@ -15,6 +15,42 @@
   <sql id="Base_Column_List">
     id, userid, username, riqi, dayState, createTime, createName, updateTime, updateName
   </sql>
+
+
+  <!--根据派工日期  修改对应的日勤状态-->
+  <update id="updateUserDayState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET dayState = 3
+    WHERE
+    userid = #{paigongpeopleid}
+    AND riqi &gt;= #{chuChaStart}
+    AND riqi &lt;= #{chuChaEnd}
+  </update>
+
+  <!--根据员工id ，本月的第一天和最后一天查询对应的人员数据-->
+  <select id="findOneUser"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_user_daystate
+    where
+    userid=#{userid}
+    and
+    riqi BETWEEN #{monthfirst} AND #{monthlast}
+  </select>
+
+
+  <!--根据本月的第一天和最后一天查询所有人员数据-->
+  <select id="findAllUser"  resultMap="BaseResultMap">
+    select
+    userid,
+	username
+    from mro_paigongguanli_user_daystate
+    where
+    riqi BETWEEN #{monthfirst} AND #{monthlast}
+    GROUP BY userid
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -35,6 +71,8 @@
       #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
       )
   </insert>
+
+  <!--添加员工日期状态-->
   <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
     insert into mro_paigongguanli_user_daystate
     <trim prefix="(" suffix=")" suffixOverrides=",">

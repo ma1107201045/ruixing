@@ -2,6 +2,8 @@ package com.yintu.ruixing.master.paigongguanli;
 
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity;
 
+import java.util.List;
+
 public interface PaiGongGuanLiUserDaystateDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,10 @@ public interface PaiGongGuanLiUserDaystateDao {
 /////////////////////////////////////////////////////////////////////////
 
     int insertSelective(PaiGongGuanLiUserDaystateEntity record);
+
+    List<PaiGongGuanLiUserDaystateEntity> findAllUser(String monthfirst, String monthlast);
+
+    List<PaiGongGuanLiUserDaystateEntity> findOneUser(Integer userid, String monthfirst, String monthlast);
+
+    void updateUserDayState(Integer paigongpeopleid, String chuChaStart, String chuChaEnd);
 }

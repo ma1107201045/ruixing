@@ -1,7 +1,15 @@
 package com.yintu.ruixing.paigongguanli;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaiGongGuanLiUserDaystateEntity {
     private Integer id;
 
@@ -20,6 +28,9 @@ public class PaiGongGuanLiUserDaystateEntity {
     private Date updatetime;
 
     private String updatename;
+
+    private List<PaiGongGuanLiUserDaystateEntity> userlist;
+
 
     public Integer getId() {
         return id;

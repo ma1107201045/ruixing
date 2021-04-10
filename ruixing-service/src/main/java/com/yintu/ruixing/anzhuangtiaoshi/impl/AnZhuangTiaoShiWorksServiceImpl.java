@@ -121,7 +121,7 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
         List<WorksDingTitleEntity> worksDingTitleEntityList = new ArrayList<>();
         List<Integer> wnlId = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findAllwnlidByWorksid(worksid);
         Integer k = 0;
-        if (wnlId.size() > 1) {
+        if (wnlId.size() > 0) {
             for (Integer wnlid : wnlId) {
                 k++;
                 String workname = anZhuangTiaoShiWorkNameLibraryDao.findWorkNameByid(wnlid);
@@ -129,8 +129,8 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
                 worksDingTitleEntity.setId(k);
                 worksDingTitleEntity.setAworkName(workname);
                 worksDingTitleEntity.setBworkDoerAndTime("作业人及标记时间");
-                worksDingTitleEntity.setCworkBiaoShi("作业项标识");
-                worksDingTitleEntity.setDworkState("作业项状态");
+                //worksDingTitleEntity.setCworkBiaoShi("作业项标识");
+                //worksDingTitleEntity.setDworkState("作业项状态");
                 worksDingTitleEntityList.add(worksDingTitleEntity);
             }
         }
@@ -147,7 +147,7 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
             String chezhanname = xiangMuServiceChooseEntity.getChezhanname();
             Integer czid = xiangMuServiceChooseEntity.getCzid();
             Integer j = 0;
-            if (wnlId.size() > 1) {
+            if (wnlId.size() > 0) {
                 for (Integer wnlid : wnlId) {
                     List dataList = new ArrayList<>();
                     j++;
@@ -156,23 +156,23 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
                     Date workTime = null;
                     String workStatee = null;
                     Integer workState1 = null;
-                    Integer workState = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkStateByIDS(worksid, wnlid);
-                    if (workState == 1) {
+                   Integer workState = anZhuangTiaoShiWorkNameLibraryShiWorkNameTotalDao.findWorkStateByIDS(worksid, wnlid);
+                    /*if (workState == 1) {
                         workstate = "手动";
                     }
                     if (workState == 2) {
                         workstate = "自动";
-                    }
+                    }*/
                     AnZhuangTiaoShiWorksDingEntity worksDingEntity = anZhuangTiaoShiWorksDingDao.findDataByIDS(czid, worksid, wnlid);
                     if (worksDingEntity != null) {
                         workerName = worksDingEntity.getWorkerName();
                         workState1 = worksDingEntity.getWorkState();
-                        if (workState1 == 1) {
+                       /* if (workState1 == 1) {
                             workStatee = "已完成";
                         }
                         if (workState1 == 2) {
                             workStatee = "未完成";
-                        }
+                        }*/
                         workTime = worksDingEntity.getWorkTime();
                         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
                         String format = sdf.format(workTime);
@@ -182,12 +182,12 @@ public class AnZhuangTiaoShiWorksServiceImpl implements AnZhuangTiaoShiWorksServ
                         dataList.add(workstate);
                         dataList.add(workStatee);
                     }
-                    if (worksDingEntity == null) {
+                    /*if (worksDingEntity == null) {
                         dataList.add(2);
                         dataList.add("");
                         dataList.add(workstate);
                         dataList.add("未完成");
-                    }
+                    }*/
                     jss.put(j.toString(),dataList);
                     dingTitleDataEntity.setCzName(chezhanname);
                     dingTitleDataEntity.setCzid(czid);

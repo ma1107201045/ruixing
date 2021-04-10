@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,30 +24,25 @@ import java.util.*;
 public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongDanService {
     @Autowired
     private PaiGongGuanLiPaiGongDanDao paiGongGuanLiPaiGongDanDao;
-
     @Autowired
     private PaiGongGuanLiTaskDao paiGongGuanLiTaskDao;
-
     @Autowired
     private PaiGongGuanLiTaskUserDao paiGongGuanLiTaskUserDao;
-
     @Autowired
     private UserDao userDao;
-
     @Autowired
     private PaiGongGuanLiRiQinDao paiGongGuanLiRiQinDao;
-
     @Autowired
     private PaiGongGuanLiPaiGongDanRecordMessageDao paiGongGuanLiPaiGongDanRecordMessageDao;
-
     @Autowired
     private MessageService messageService;
-
     @Autowired
     private PaiGongGuanLiBusinessTypeDao paiGongGuanLiBusinessTypeDao;
-
     @Autowired
     private MessageDao messageDao;
+    @Autowired
+    private PaiGongGuanLiUserDaystateDao paiGongGuanLiUserDaystateDao;
+
 
 
     @Override
@@ -82,8 +78,10 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     }
 
     @Override
-    public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber) {
-        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber);
+    public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber,
+                                                              String startTime,String endTime,String xdName,
+                                                              String czName,String renWuShuXing,Integer peopeleId,Integer paiGongState) {
+        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber,startTime,endTime,xdName,czName,renWuShuXing,peopeleId,paiGongState);
     }
 
     @Override
@@ -163,6 +161,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
             paiGongDanEntity.setId(id);
             paiGongDanEntity.setState(0);
+            paiGongDanEntity.setPaigongstate(2);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
         }
         if (isNotRefuse == 1) {//接受派遣
@@ -301,6 +300,15 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
             messageEntity.setStatus((short) 1);
             messageService.sendMessage(messageEntity);
+
+            //更改派工人员的日勤状态
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            Integer paigongpeopleid = paiGongGuanLiPaiGongDanEntity.getPaigongpeople();//派工人员id
+            Date chuchaistarttime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime();//出差开始时间
+            Date chuchaiendtime = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime();//出差结束时间
+            String chuChaStart = sdf.format(chuchaistarttime);
+            String chuChaEnd = sdf.format(chuchaiendtime);
+            paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid,chuChaStart,chuChaEnd);
 
         } else { //自动派工
             Integer paigongpeoplenumber = paiGongGuanLiPaiGongDanEntity.getPaigongpeoplenumber();//自动派工人数

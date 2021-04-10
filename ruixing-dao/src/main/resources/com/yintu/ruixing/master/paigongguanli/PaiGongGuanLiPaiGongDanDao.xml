@@ -22,7 +22,7 @@
         <result column="chuChaiEndTime" jdbcType="TIMESTAMP" property="chuchaiendtime"/>
         <result column="teShuAsk" jdbcType="VARCHAR" property="teshuask"/>
         <result column="guanLianDanJu" jdbcType="VARCHAR" property="guanliandanju"/>
-        <result column="paiGongPeople" jdbcType="VARCHAR" property="paigongpeople"/>
+        <result column="paiGongPeople" jdbcType="INTEGER" property="paigongpeople"/>
         <result column="gaiPaiPeople" jdbcType="VARCHAR" property="gaipaipeople"/>
         <result column="paiGongState" jdbcType="INTEGER" property="paigongstate"/>
         <result column="provinceId" jdbcType="VARCHAR" property="provinceId"/>
@@ -61,8 +61,26 @@
         mro_paigongguanli_user USER
         <where>
             pp.paiGongPeople = USER.userid
-            <if test="paiGongNumber != null">
+            <if test="paiGongNumber != null and paiGongNumber !=''">
                 AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
+            </if>
+            <if test="startTime != null and startTime !=''">
+                AND pp.createTime between #{startTime} and #{endTime}
+            </if>
+            <if test="xdName != null and xdName !=''">
+                AND pp.xdName LIKE concat('%',#{xdName},'%')
+            </if>
+            <if test="czName != null and czName !=''">
+                AND pp.czName LIKE concat('%',#{czName},'%')
+            </if>
+            <if test="renWuShuXing != null and renWuShuXing !=''">
+                AND pp.taskShuXing LIKE concat('%',#{renWuShuXing},'%')
+            </if>
+            <if test="peopeleId != null and peopeleId !=''">
+                AND pp.paiGongPeople =#{peopeleId}
+            </if>
+            <if test="paiGongState != null and paiGongState !=''">
+                AND pp.paiGongState =#{paiGongState}
             </if>
         </where>
         GROUP BY pp.id
