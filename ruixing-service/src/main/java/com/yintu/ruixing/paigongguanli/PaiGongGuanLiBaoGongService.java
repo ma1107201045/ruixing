@@ -1,5 +1,8 @@
 package com.yintu.ruixing.paigongguanli;
 
+import com.alibaba.fastjson.JSONArray;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * 需求:
  */
 public interface PaiGongGuanLiBaoGongService {
-    void addBaoGong(PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity, String username, Integer senderid);
+    void addBaoGong(List<PaiGongGuanLiBaoGongEntity> paiGongGuanLiBaoGongEntity, String username, Integer senderid);
 
     List<PaiGongGuanLiBaoGongEntity> findAllBaoGongByUid(Integer page, Integer size, Integer senderid, Date datetime);
 
@@ -21,4 +24,14 @@ public interface PaiGongGuanLiBaoGongService {
     List<PaiGongGuanLiRiQinEntity> findPropleAddress(Integer page, Integer size);
 
     List<PaiGongGuanLiRiQinEntity> findPeopleAddressOnMap( );
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllNotOverPaiGong(Integer userid);
+
+    List<XianDuanEntity> findAllXianDuan();
+
+    void addBaoGongDan(JSONArray baoGongDatas, String username, Integer senderid);
+
+    void addFile(PaiGongGuanLiBaoGongFileEntity paiGongGuanLiBaoGongFileEntity);
+
+    void deleteFileByIds(Integer[] ids);
 }

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanShenQingDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pg_id" jdbcType="INTEGER" property="pgId" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="acceptUserid" jdbcType="INTEGER" property="acceptuserid" />
+    <result column="shenqing_state" jdbcType="INTEGER" property="shenqingState" />
+    <result column="shenqing_type" jdbcType="INTEGER" property="shenqingType" />
+    <result column="userreason" jdbcType="VARCHAR" property="userreason" />
+    <result column="acceptreason" jdbcType="VARCHAR" property="acceptreason" />
+    <result column="isnotHandle" jdbcType="INTEGER" property="isnothandle" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pg_id, userid, acceptUserid, shenqing_state, shenqing_type, userreason, acceptreason,isnotHandle,
+    createTime, createName, updateTime, updateName
+  </sql>
+
+  <!--查询派工申请-->
+  <select id="findShenQing" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan_shenqing
+    where pg_id = #{paiGongId,jdbcType=INTEGER}
+    and acceptUserid=#{userid,jdbcType=INTEGER}
+    and isnotHandle=0
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_paigongdan_shenqing
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_paigongdan_shenqing
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity">
+    insert into mro_paigongguanli_paigongdan_shenqing (id, pg_id, userid, 
+      acceptUserid, shenqing_state, shenqing_type, 
+      reason, isnotHandle, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{pgId,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{acceptuserid,jdbcType=INTEGER}, #{shenqingState,jdbcType=INTEGER}, #{shenqingType,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR}, #{isnothandle,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--新增派工申请-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity"
+          keyProperty="id" useGeneratedKeys="true">
+    insert into mro_paigongguanli_paigongdan_shenqing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pgId != null">
+        pg_id,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="acceptuserid != null">
+        acceptUserid,
+      </if>
+      <if test="shenqingState != null">
+        shenqing_state,
+      </if>
+      <if test="shenqingType != null">
+        shenqing_type,
+      </if>
+      <if test="userreason != null">
+        userreason,
+      </if>
+      <if test="acceptreason != null">
+        acceptreason,
+      </if>
+      <if test="isnothandle != null">
+        isnotHandle,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pgId != null">
+        #{pgId,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptuserid != null">
+        #{acceptuserid,jdbcType=INTEGER},
+      </if>
+      <if test="shenqingState != null">
+        #{shenqingState,jdbcType=INTEGER},
+      </if>
+      <if test="shenqingType != null">
+        #{shenqingType,jdbcType=INTEGER},
+      </if>
+      <if test="userreason != null">
+        #{userreason,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptreason != null">
+        #{acceptreason,jdbcType=VARCHAR},
+      </if>
+      <if test="isnothandle != null">
+        #{isnothandle,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity">
+    update mro_paigongguanli_paigongdan_shenqing
+    <set>
+      <if test="pgId != null">
+        pg_id = #{pgId,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptuserid != null">
+        acceptUserid = #{acceptuserid,jdbcType=INTEGER},
+      </if>
+      <if test="shenqingState != null">
+        shenqing_state = #{shenqingState,jdbcType=INTEGER},
+      </if>
+      <if test="shenqingType != null">
+        shenqing_type = #{shenqingType,jdbcType=INTEGER},
+      </if>
+      <if test="userreason != null">
+        userreason = #{userreason,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptreason != null">
+        acceptreason = #{acceptreason,jdbcType=VARCHAR},
+      </if>
+      <if test="isnothandle != null">
+        isnotHandle = #{isnothandle,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity">
+    update mro_paigongguanli_paigongdan_shenqing
+    set pg_id = #{pgId,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      acceptUserid = #{acceptuserid,jdbcType=INTEGER},
+      shenqing_state = #{shenqingState,jdbcType=INTEGER},
+      shenqing_type = #{shenqingType,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR},
+      isnotHandle = #{isnothandle,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -14,6 +14,17 @@
   </sql>
 
 
+    <!--根据tid  和最大分值和最小分值 查询对应的人员id-->
+    <select id="findUidByTidAndScores" resultType="java.lang.Integer">
+        SELECT
+        uid
+        FROM
+        mro_paigongguanli_task_user ptu
+        WHERE
+        ptu.tid = #{taskId}
+        AND ptu.score BETWEEN #{minTaskshuxingNum}
+        AND #{maxTaskshuxingNum}
+    </select>
 
 
     <!--根据tid  和最大分值和最小分值 查询对应的人员-->

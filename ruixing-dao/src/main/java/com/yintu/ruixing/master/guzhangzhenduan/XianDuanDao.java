@@ -36,4 +36,7 @@ public interface XianDuanDao {
     List<XianDuanEntity> findAllJsonByDid(Integer did);
 
     List<String> findXDJsonByDid(Integer did);
+
+    List<XianDuanEntity> findAllXD();
+
 }

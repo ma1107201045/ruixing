@@ -16,6 +16,30 @@
     id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete
   </sql>
 
+
+  <!--查詢对应的派工人員-->
+  <select id="findUser" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+        mro_paigongguanli_user
+    WHERE
+        id=#{uidSet}
+  </select>
+
+
+  <!--查詢所有已派工人員-->
+  <select id="findUserName" resultType="java.lang.String">
+    SELECT
+        name
+    FROM
+        mro_paigongguanli_user
+    WHERE
+        userid=#{userid}
+        GROUP BY name
+  </select>
+
+
   <!--查詢所有已派工人員-->
   <select id="finaAlreadyPaiGongPeople" resultMap="BaseResultMap">
     SELECT

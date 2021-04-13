@@ -29,4 +29,8 @@ public interface PaiGongGuanLiUserDao {
 
     List<PaiGongGuanLiUserEntity> finaAlreadyPaiGongPeople();
 
+    String findUserName(Integer userid);
+
+
+    List<PaiGongGuanLiUserEntity> findUser(Integer uidSet);
 }

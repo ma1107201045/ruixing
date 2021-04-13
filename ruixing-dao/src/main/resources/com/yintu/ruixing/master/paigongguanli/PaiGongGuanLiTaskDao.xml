@@ -26,6 +26,8 @@
     id
     from mro_paigongguanli_task
     where taskTotalName=#{renwu}
+    GROUP BY
+	taskTotalName
   </select>
 
   <!--查询id-->

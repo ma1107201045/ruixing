@@ -44,4 +44,10 @@ public interface PaiGongGuanLiPaiGongDanService {
     PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id);
 
     long findWorkOrderSum();
+
+    void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity,String username);
+
+    void editGaiPiaUserById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid);
+
+    List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType);
 }

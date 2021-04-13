@@ -54,9 +54,9 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
-        <table tableName="mro_paigongguanli_user_daystate"
-               domainObjectName="PaiGongGuanLiUserDaystateEntity"
-               mapperName="PaiGongGuanLiUserDaystateDao"
+        <table tableName="mro_paigongguanli_baogong_secondary"
+               domainObjectName="PaiGongGuanLiBaoGongSecondaryEntity"
+               mapperName="PaiGongGuanLiBaoGongSecondaryDao"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

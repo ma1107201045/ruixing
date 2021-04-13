@@ -40,4 +40,6 @@ public interface PaiGongGuanLiPaiGongDanDao {
     String findAdressByUid(@Param("uid") Integer uid);
 
     long selectWorkOrderSum();
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllNotOverPaiGong(Integer userid);
 }

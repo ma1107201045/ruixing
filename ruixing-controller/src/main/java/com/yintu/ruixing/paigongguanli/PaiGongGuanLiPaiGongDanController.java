@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanShenQingDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,8 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     private PaiGongGuanLiPaiGongDanService paiGongGuanLiPaiGongDanService;
     @Autowired
     private PaiGongGuanLiUserService paiGongGuanLiUserService;
+    @Autowired
+    private PaiGongGuanLiPaiGongDanShenQingService paiGongGuanLiPaiGongDanShenQingService;
 
 
 
@@ -182,8 +185,64 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         return ResponseDataUtil.ok("查询派工人员成功",userEntityList);
     }
 
+    //任务标记
+    @PutMapping("/editTaskSignById/{id}")
+    public Map<String,Object>editTaskSignById(@PathVariable Integer id,PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiPaiGongDanEntity.setUpdatename(username);
+        paiGongGuanLiPaiGongDanEntity.setUpdatetime(new Date());
+        paiGongGuanLiPaiGongDanService.editTaskSignById(paiGongGuanLiPaiGongDanEntity,username);
+        return ResponseDataUtil.ok("变更派工任务标记成功");
+    }
+
+    //改派
+    @PutMapping("/editGaiPiaUserById/{id}")
+    public Map<String,Object>editGaiPiaUserById(@PathVariable Integer id,PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
+        Integer senderid = this.getLoginUser().getId().intValue();
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiPaiGongDanEntity.setUpdatename(username);
+        paiGongGuanLiPaiGongDanEntity.setUpdatetime(new Date());
+        paiGongGuanLiPaiGongDanService.editGaiPiaUserById(paiGongGuanLiPaiGongDanEntity,username,senderid);
+        return ResponseDataUtil.ok("改派人员成功");
+    }
+
+    //添加申请
+    @PostMapping("/addShenQind")
+    public Map<String,Object>addShenQind(PaiGongGuanLiPaiGongDanShenQingEntity paiGongGuanLiPaiGongDanShenQingEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiPaiGongDanShenQingEntity.setCreatename(username);
+        paiGongGuanLiPaiGongDanShenQingEntity.setCreatetime(new Date());
+        paiGongGuanLiPaiGongDanShenQingEntity.setUpdatename(username);
+        paiGongGuanLiPaiGongDanShenQingEntity.setUpdatetime(new Date());
+        paiGongGuanLiPaiGongDanShenQingService.addShenQind(paiGongGuanLiPaiGongDanShenQingEntity,username);
+        return ResponseDataUtil.ok("添加申请成功");
+    }
+
+    //查看申请
+    @GetMapping("/findShenQing")
+    public Map<String,Object>findShenQing(Integer paiGongId){
+        Integer userid = this.getLoginUser().getId().intValue();
+        List<PaiGongGuanLiPaiGongDanShenQingEntity>shenQingEntityList=paiGongGuanLiPaiGongDanShenQingService.findShenQing(paiGongId,userid);
+        return ResponseDataUtil.ok("查询申请成功",shenQingEntityList);
+    }
+
+    //审批申请
+    @PutMapping("/editShenQingById/{id}")
+    public Map<String,Object>editShenQingById(@PathVariable Integer id,PaiGongGuanLiPaiGongDanShenQingEntity paiGongGuanLiPaiGongDanShenQingEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiPaiGongDanShenQingEntity.setUpdatename(username);
+        paiGongGuanLiPaiGongDanShenQingEntity.setUpdatetime(new Date());
+        paiGongGuanLiPaiGongDanShenQingService.editShenQingById(paiGongGuanLiPaiGongDanShenQingEntity,username);
+        return ResponseDataUtil.ok("审批申请成功");
+    }
 
 
+    //根据项目类型  任务属性  筛选符合条件的人员
+    @GetMapping("/findUserBySomething")
+    public Map<String,Object>findUserBySomething(String xiangMuType,String reWuShuXing,String chuChaiType,String yeWuType){
+        List<PaiGongGuanLiUserEntity> userEntityList=paiGongGuanLiPaiGongDanService.findUserBySomething(xiangMuType,reWuShuXing,chuChaiType,yeWuType);
+        return ResponseDataUtil.ok("查询符合条件的人员成功",userEntityList);
+    }
 
 
 

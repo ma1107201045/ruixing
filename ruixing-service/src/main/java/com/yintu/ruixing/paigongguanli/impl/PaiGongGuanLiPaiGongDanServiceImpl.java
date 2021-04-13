@@ -42,8 +42,119 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     private MessageDao messageDao;
     @Autowired
     private PaiGongGuanLiUserDaystateDao paiGongGuanLiUserDaystateDao;
+    @Autowired
+    private PaiGongGuanLiUserDao paiGongGuanLiUserDao;
 
 
+
+    @Override
+    public List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType) {
+        List<PaiGongGuanLiUserEntity> userEntityList=new ArrayList<>();
+        Integer maxTaskshuxingNum = null;
+        Integer minTaskshuxingNum = null;
+        if ("重要且紧急".equals(reWuShuXing) || "重要不紧急".equals(reWuShuXing)) {
+            maxTaskshuxingNum = 90;
+            minTaskshuxingNum = 80;
+        }
+        if ("紧急不重要".equals(reWuShuXing) || "不重要不紧急".equals(reWuShuXing)) {
+            maxTaskshuxingNum = 70;
+            minTaskshuxingNum = 60;
+        }
+        List<Integer> uids=new ArrayList<>();
+        String[] xmType = xiangMuType.split(",");
+        for (int i = 0; i < xmType.length; i++) {
+            String oneXMType = xmType[i];
+            String taskTotalName=oneXMType+yeWuType+"——"+chuChaiType;
+            Integer taskId=paiGongGuanLiTaskDao.findTid(taskTotalName);
+            if (taskId!=null) {
+                List<Integer> uid = paiGongGuanLiTaskUserDao.findUidByTidAndScores(taskId, maxTaskshuxingNum, minTaskshuxingNum);
+                uids.addAll(uid);
+            }
+        }
+        if (uids.size()!=0) {
+            Set<Integer> set = new HashSet<>();
+            for (Integer uid : uids) {
+                set.add(uid);
+            }
+            for (Integer uidSet : set) {
+                List<PaiGongGuanLiUserEntity> userEntities = paiGongGuanLiUserDao.findUser(uidSet);
+                userEntityList.addAll(userEntities);
+            }
+        }
+        return userEntityList;
+    }
+
+    @Override
+    public void editGaiPiaUserById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid) {
+        paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity=paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(paiGongGuanLiPaiGongDanEntity.getId());
+
+        //添加消息
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setCreateBy(username);//创建人
+        messageEntity.setCreateTime(new Date());//创建时间
+        messageEntity.setContext("有派单任务需要您处理,请查看！");
+        messageEntity.setType((short) 5);
+        messageEntity.setProjectId(paiGongGuanLiPaiGongDanEntity.getId());
+        messageEntity.setMessageType((short) 3);
+        messageEntity.setSenderId(senderid);
+        messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
+        messageEntity.setStatus((short) 1);
+        messageService.sendMessage(messageEntity);
+
+        //更改派工人员的日勤状态
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Integer paigongpeopleid = paiGongGuanLiPaiGongDanEntity.getPaigongpeople();//派工人员id
+        Date chuchaistarttime = paiGongDanEntity.getChuchaistarttime();//出差开始时间
+        Date chuchaiendtime = paiGongDanEntity.getChuchaiendtime();//出差结束时间
+        String chuChaStart = sdf.format(chuchaistarttime);
+        String chuChaEnd = sdf.format(chuchaiendtime);
+        paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid, chuChaStart, chuChaEnd);
+
+
+        //添加记录
+        PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+        recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+        recordMessageEntity.setOperatorname(username);
+        recordMessageEntity.setOperatortime(new Date());
+        recordMessageEntity.setContext(username + "改派了人员");
+        recordMessageEntity.setTypenum(1);
+        paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+
+    }
+
+    @Override
+    public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username) {
+        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
+            paiGongGuanLiPaiGongDanEntity.setChuchaistarttime(new Date());
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
+            paiGongGuanLiPaiGongDanEntity.setChuchaiendtime(new Date());
+        }
+        paiGongGuanLiPaiGongDanEntity.setState(3);
+        paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+
+        //添加记录
+        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(new Date());
+            recordMessageEntity.setContext(username + "开始了此派工任务");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(new Date());
+            recordMessageEntity.setContext(username + "结束了此派工任务");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+        }
+
+    }
 
     @Override
     public PaiGongGuanLiPaiGongDanEntity findPaiGongDanByid(Integer id) {
@@ -79,9 +190,9 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
 
     @Override
     public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber,
-                                                              String startTime,String endTime,String xdName,
-                                                              String czName,String renWuShuXing,Integer peopeleId,Integer paiGongState) {
-        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber,startTime,endTime,xdName,czName,renWuShuXing,peopeleId,paiGongState);
+                                                              String startTime, String endTime, String xdName,
+                                                              String czName, String renWuShuXing, Integer peopeleId, Integer paiGongState) {
+        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber, startTime, endTime, xdName, czName, renWuShuXing, peopeleId, paiGongState);
     }
 
     @Override
@@ -160,7 +271,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             //更改派工单状态
             PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
             paiGongDanEntity.setId(id);
-            paiGongDanEntity.setState(0);
+            paiGongDanEntity.setState(1);
             paiGongDanEntity.setPaigongstate(2);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
         }
@@ -177,7 +288,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = new PaiGongGuanLiPaiGongDanEntity();
             paiGongDanEntity.setId(id);
             paiGongDanEntity.setPaigongstate(3);
-            paiGongDanEntity.setState(0);
+            paiGongDanEntity.setState(2);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
         }
     }
@@ -277,7 +388,8 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             paiGongGuanLiPaiGongDanEntity.setChuchaicity(paiGongGuanLiPaiGongDanEntity.getCityId());
             paiGongGuanLiPaiGongDanEntity.setPaigongstate(1);
             paiGongGuanLiPaiGongDanEntity.setOperatorid(senderid);
-            paiGongGuanLiPaiGongDanEntity.setState(1);
+            paiGongGuanLiPaiGongDanEntity.setState(0);
+            paiGongGuanLiPaiGongDanEntity.setTaskSign(0);
             paiGongGuanLiPaiGongDanDao.insertSelective(paiGongGuanLiPaiGongDanEntity);
             Integer pgid = paiGongGuanLiPaiGongDanEntity.getId();
             PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
@@ -302,13 +414,13 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             messageService.sendMessage(messageEntity);
 
             //更改派工人员的日勤状态
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Integer paigongpeopleid = paiGongGuanLiPaiGongDanEntity.getPaigongpeople();//派工人员id
             Date chuchaistarttime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime();//出差开始时间
             Date chuchaiendtime = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime();//出差结束时间
             String chuChaStart = sdf.format(chuchaistarttime);
             String chuChaEnd = sdf.format(chuchaiendtime);
-            paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid,chuChaStart,chuChaEnd);
+            paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid, chuChaStart, chuChaEnd);
 
         } else { //自动派工
             Integer paigongpeoplenumber = paiGongGuanLiPaiGongDanEntity.getPaigongpeoplenumber();//自动派工人数
@@ -405,7 +517,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
                     paiGongGuanLiPaiGongDanEntity.setPaigongpeople(usernameeid);
                     paiGongGuanLiPaiGongDanEntity.setPaigongstate(1);
                     paiGongGuanLiPaiGongDanEntity.setOperatorid(senderid);
-                    paiGongGuanLiPaiGongDanEntity.setState(1);
+                    paiGongGuanLiPaiGongDanEntity.setState(0);
                     paiGongGuanLiPaiGongDanDao.insertSelective(paiGongGuanLiPaiGongDanEntity);
                     Integer pgid = paiGongGuanLiPaiGongDanEntity.getId();
                     PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();

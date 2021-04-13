@@ -76,6 +76,7 @@ public class PaiGongGuanLiPaiGongDanEntity {
 
     private String updatename;
 
+    private Integer taskSign;//'任务标记 0：暂未开始 1：开始 2：结束',
 
 
 }

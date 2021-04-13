@@ -35,4 +35,6 @@ public interface PaiGongGuanLiTaskUserDao {
 
 
     void deleteByuid(Integer userid);
+
+    List<Integer> findUidByTidAndScores(Integer taskId, Integer maxTaskshuxingNum, Integer minTaskshuxingNum);
 }

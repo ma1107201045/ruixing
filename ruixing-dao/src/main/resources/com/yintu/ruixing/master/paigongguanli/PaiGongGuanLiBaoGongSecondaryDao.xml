@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiBaoGongSecondaryDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongSecondaryEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bid" jdbcType="INTEGER" property="bid" />
+    <result column="xianduan" jdbcType="VARCHAR" property="xianduan" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="baoGongType" jdbcType="INTEGER" property="baogongtype" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bid, xianduan, content, baoGongType, createName, createTime, updateName, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogong_secondary
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_baogong_secondary
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongSecondaryEntity">
+    insert into mro_paigongguanli_baogong_secondary (id, bid, xianduan, 
+      content, baoGongType, createName, 
+      createTime, updateName, updateTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, #{xianduan,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{baogongtype,jdbcType=INTEGER}, #{createname,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <!--新增报工-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongSecondaryEntity">
+    insert into mro_paigongguanli_baogong_secondary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bid != null">
+        bid,
+      </if>
+      <if test="xianduan != null">
+        xianduan,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="baogongtype != null">
+        baoGongType,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null">
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="xianduan != null">
+        #{xianduan,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="baogongtype != null">
+        #{baogongtype,jdbcType=INTEGER},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongSecondaryEntity">
+    update mro_paigongguanli_baogong_secondary
+    <set>
+      <if test="bid != null">
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="xianduan != null">
+        xianduan = #{xianduan,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="baogongtype != null">
+        baoGongType = #{baogongtype,jdbcType=INTEGER},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongSecondaryEntity">
+    update mro_paigongguanli_baogong_secondary
+    set bid = #{bid,jdbcType=INTEGER},
+      xianduan = #{xianduan,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      baoGongType = #{baogongtype,jdbcType=INTEGER},
+      createName = #{createname,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

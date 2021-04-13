@@ -23,9 +23,9 @@ public class PaiGongGuanLiBaoGongEntity {
 
     private String address;
 
-    private Float longitude;
+    private Double longitude;
 
-    private Float latitude;
+    private Double latitude;
 
     private Integer qita;
 
@@ -42,5 +42,10 @@ public class PaiGongGuanLiBaoGongEntity {
     private Date updatetime;
 
     private String truename;
+
+    private String xianduan;
+    private String department;
+    private Integer coordinationuserid;
+    private Integer isnotover;
 
 }

@@ -1,9 +1,11 @@
 package com.yintu.ruixing.paigongguanli;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +22,32 @@ import java.util.Map;
 @RestController
 @RequestMapping("/baoGongAll")
 public class PaiGongGuanLiBaoGongController extends SessionController {
-
     @Autowired
     private PaiGongGuanLiBaoGongService paiGongGuanLiBaoGongService;
 
 
+    //根据当前用户查询对应的未完成报工单
+    @GetMapping("/findAllNotOverPaiGong")
+    public Map<String,Object>findAllNotOverPaiGong(){
+        Integer userid = this.getLoginUser().getId().intValue();
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList=paiGongGuanLiBaoGongService.findAllNotOverPaiGong(userid);
+        return ResponseDataUtil.ok("查询未完成的派工单成功",paiGongDanEntityList);
+    }
+
+    //查询所有的线段
+    @GetMapping("/findAllXianDuan")
+    public Map<String,Object>findAllXianDuan(){
+        List<XianDuanEntity>xianDuanEntityList=paiGongGuanLiBaoGongService.findAllXianDuan();
+        return ResponseDataUtil.ok("查询线段成功",xianDuanEntityList);
+    }
+
 
     //新增报工
     @PostMapping("/addBaoGong")
-    public Map<String,Object>addBaoGong(PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity){
+    public Map<String,Object>addBaoGong(@RequestBody JSONArray baoGongDatas){
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
-        paiGongGuanLiBaoGongService.addBaoGong(paiGongGuanLiBaoGongEntity,username,senderid);
+        paiGongGuanLiBaoGongService.addBaoGongDan(baoGongDatas,username,senderid);
         return ResponseDataUtil.ok("新增成功");
     }
 
@@ -60,6 +76,30 @@ public class PaiGongGuanLiBaoGongController extends SessionController {
         paiGongGuanLiBaoGongService.deleteBaoGongByIds(ids);
         return ResponseDataUtil.ok("删除成功");
     }
+
+    //关闭报工单
+   // @PutMapping
+
+
+    ////////////////////////文件上传/////////////////////////////////
+    @PostMapping("/addFile")
+    public Map<String,Object>addFile(PaiGongGuanLiBaoGongFileEntity paiGongGuanLiBaoGongFileEntity){
+        String username = this.getLoginUser().getTrueName();
+        paiGongGuanLiBaoGongFileEntity.setCreatetime(new Date());
+        paiGongGuanLiBaoGongFileEntity.setCreatename(username);
+        paiGongGuanLiBaoGongFileEntity.setUpdatetime(new Date());
+        paiGongGuanLiBaoGongFileEntity.setUpdatename(username);
+        paiGongGuanLiBaoGongService.addFile(paiGongGuanLiBaoGongFileEntity);
+        return ResponseDataUtil.ok("新增文件成功");
+    }
+
+
+    @DeleteMapping("/deleteFileByIds/{ids}")
+    public Map<String,Object>deleteFileByIds(@PathVariable Integer[] ids){
+        paiGongGuanLiBaoGongService.deleteFileByIds(ids);
+        return ResponseDataUtil.ok("删除文件成功");
+    }
+
 
     //////////////////////首页展示/////////////////////////
 
