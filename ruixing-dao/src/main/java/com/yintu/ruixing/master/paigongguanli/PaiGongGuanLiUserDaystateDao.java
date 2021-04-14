@@ -24,4 +24,10 @@ public interface PaiGongGuanLiUserDaystateDao {
     List<PaiGongGuanLiUserDaystateEntity> findOneUser(Integer userid, String monthfirst, String monthlast);
 
     void updateUserDayState(Integer paigongpeopleid, String chuChaStart, String chuChaEnd);
+
+    void editUserDayState(Integer userid, String dayTime, Integer dayState);
+
+    void editUserotherState(Integer userid, String today, Integer otherState);
+
+    void editUserBaoGongState(Integer daiUserid, String today, Integer baoGongState);
 }

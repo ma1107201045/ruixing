@@ -19,6 +19,15 @@
   </sql>
 
   <!--根据报工id  查询对应的评论-->
+  <select id="findCommentByBid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogong_comment
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+
+
+  <!--根据报工id 和类型id 查询对应的评论-->
   <select id="findComment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

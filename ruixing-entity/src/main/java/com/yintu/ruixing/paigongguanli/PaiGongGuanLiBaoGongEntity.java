@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -45,7 +46,12 @@ public class PaiGongGuanLiBaoGongEntity {
 
     private String xianduan;
     private String department;
+    private String coordinationuser;
     private Integer coordinationuserid;
     private Integer isnotover;
+    private String signId;
+
+    List<PaiGongGuanLiBaoGongSecondaryEntity> Children;
+    List<PaiGongGuanLiBaoGongCommentEntity> commentEntityList;
 
 }

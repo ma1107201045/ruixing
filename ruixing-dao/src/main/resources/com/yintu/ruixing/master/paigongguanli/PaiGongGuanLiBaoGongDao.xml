@@ -17,7 +17,7 @@
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
-    <result column="true_name" jdbcType="VARCHAR" property="truename"/>
+    <result column="name" jdbcType="VARCHAR" property="truename"/>
     <result column="xianduan" jdbcType="VARCHAR" property="xianduan"/>
     <result column="department" jdbcType="VARCHAR" property="department"/>
     <result column="coordinationuserid" jdbcType="INTEGER" property="coordinationuserid"/>
@@ -27,6 +27,143 @@
     id, uid, userid, datetime, workContent, address, longitude, latitude, qita, fileName, 
     filePath, createName, createTime, updateName, updateTime,xianduan,department,coordinationuserid,isnotover
   </sql>
+
+
+  <!--根据条件查询报工列表-->
+  <select id="findAllChuChaiPeopele"   resultMap="BaseResultMap">
+    SELECT
+        mpb.userid,
+        address,
+        longitude,
+        latitude
+    FROM
+        mro_paigongguanli_baogong mpb,
+        mro_paigongguanli_paigongdan mpp
+    WHERE
+        mpb.userid = mpp.paiGongPeople
+        and mpp.paiGongState=3
+        and (mpb.datetime between #{lastDateTime} and #{nowDateTime})
+        GROUP BY mpb.userid
+  </select>
+
+
+
+  <!--根据条件查询报工列表-->
+  <select id="findAllBaoGongAndAllComment"   resultMap="BaseResultMap">
+    select
+    bg.id,
+    uid,
+    bg.userid,
+    datetime,
+    workContent,
+    us.name
+    from
+    mro_paigongguanli_baogong bg,
+    mro_paigongguanli_user us
+    where
+      bg.userid = us.userid
+      AND us.isdelete = 1
+      AND  bg.datetime = #{riqi}
+      AND  bg.userid=#{userid}
+    order by bg.id desc
+  </select>
+
+
+  <!--根据条件查询报工列表-->
+  <select id="findBaoGongBySomethings"   resultMap="BaseResultMap">
+    select
+    bg.id,
+    uid,
+    bg.userid,
+    datetime,
+    workContent,
+    address,
+    longitude,
+    latitude,
+    qita,
+    fileName,
+    filePath,
+    bg.createName,
+    bg.createTime,
+    bg.updateName,
+    bg.updateTime,
+    xianduan,
+    bg.department,
+    coordinationuserid,
+    isnotover,
+    us.name
+    from
+    mro_paigongguanli_baogong bg,
+    mro_paigongguanli_user us
+    <where>
+      bg.userid = us.userid
+      AND us.isdelete = 1
+      AND ( bg.datetime BETWEEN #{startTime} AND #{endTime} )
+      <if test="userid!=null and userid!=''">
+        AND  bg.userid=#{userid}
+      </if>
+      <if test="xianDuan!=null and xianDuan!=''">
+        AND xianduan like concat('%',#{xianDuan},'%')
+      </if>
+      <if test="isNotClose!=null and isNotClose!=''">
+        AND isnotover=#{isNotClose}
+      </if>
+      <if test="baoGongType==1">
+        AND ( bg.qita = 1 OR bg.qita = 2 )
+      </if>
+      <if test="baoGongType==3">
+        AND ( bg.qita = 3 OR bg.qita = 4 )
+      </if>
+      <if test="baoGongType==5">
+        AND ( bg.qita = 5 OR bg.qita = 6 )
+      </if>
+    </where>
+    order by bg.id desc
+  </select>
+
+
+  <!--初始化查询报工列表-->
+  <select id="findAllBaoGong"   resultMap="BaseResultMap">
+    select
+    bg.id,
+    uid,
+    bg.userid,
+    datetime,
+    workContent,
+    address,
+    longitude,
+    latitude,
+    qita,
+    fileName,
+    filePath,
+    bg.createName,
+    bg.createTime,
+    bg.updateName,
+    bg.updateTime,
+    xianduan,
+    bg.department,
+    coordinationuserid,
+    isnotover,
+    us.name
+    from
+    mro_paigongguanli_baogong bg,
+    mro_paigongguanli_user us
+    <where>
+      bg.userid = us.userid
+      AND us.isdelete = 1
+      AND ( bg.isnotover = 1 OR bg.datetime BETWEEN #{yesterdayDate} AND #{tommorowDate} )
+      <if test="baoGongType==1">
+        AND ( bg.qita = 1 OR bg.qita = 2 )
+      </if>
+      <if test="baoGongType==3">
+        AND ( bg.qita = 3 OR bg.qita = 4 )
+      </if>
+      <if test="baoGongType==5">
+        AND ( bg.qita = 5 OR bg.qita = 6 )
+      </if>
+    </where>
+    order by bg.id desc
+  </select>
 
 
   <!--根据uid 查询对应的经纬度-->

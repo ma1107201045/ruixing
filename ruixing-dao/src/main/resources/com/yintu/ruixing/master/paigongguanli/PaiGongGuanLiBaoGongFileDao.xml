@@ -18,6 +18,18 @@
     id, bid, file_name, file_path, remark, filesize, baoGongType, createtime, createName, updateTime,
     updateName
   </sql>
+
+
+  <!--根据报工id  和类型  查询对应的文件-->
+  <select id="findFileByBid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogong_file
+    where bid = #{bid,jdbcType=INTEGER}
+    and baoGongType = #{baoGongType,jdbcType=INTEGER}
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

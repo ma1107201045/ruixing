@@ -7,14 +7,44 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="riqi" jdbcType="VARCHAR" property="riqi" />
     <result column="dayState" jdbcType="INTEGER" property="daystate" />
+    <result column="otherState" jdbcType="INTEGER" property="otherState" />
+    <result column="baogongState" jdbcType="INTEGER" property="baogongState" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="createName" jdbcType="VARCHAR" property="createname" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userid, username, riqi, dayState, createTime, createName, updateTime, updateName
+    id, userid, username, riqi, dayState, createTime, createName, updateTime, updateName,otherState,baogongState
   </sql>
+
+  <!--根据派工日期 人员id  修改对应的baogongState状态-->
+  <update id="editUserBaoGongState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET otherState = #{baoGongState}
+    WHERE
+    userid = #{daiUserid}
+    AND riqi = #{today}
+  </update>
+
+
+  <!--根据派工日期 人员id  修改对应的ortherState状态-->
+  <update id="editUserotherState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET otherState = #{otherState}
+    WHERE
+    userid = #{userid}
+    AND riqi = #{today}
+  </update>
+
+  <!--根据派工日期 人员id  修改对应的日勤状态-->
+  <update id="editUserDayState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET dayState = #{dayState}
+    WHERE
+    userid = #{userid}
+    AND riqi = #{dayTime}
+  </update>
 
 
   <!--根据派工日期  修改对应的日勤状态-->
@@ -103,6 +133,12 @@
       <if test="updatename != null">
         updateName,
       </if>
+      <if test="otherState != null">
+        otherState,
+      </if>
+      <if test="baogongState != null">
+        baogongState,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +168,12 @@
       <if test="updatename != null">
         #{updatename,jdbcType=VARCHAR},
       </if>
+      <if test="otherState != null">
+        #{otherState,jdbcType=INTEGER},
+      </if>
+      <if test="baogongState != null">
+        #{baogongState,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
@@ -160,6 +202,12 @@
       </if>
       <if test="updatename != null">
         updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="otherState != null">
+        otherState = #{otherState,jdbcType=INTEGER},
+      </if>
+      <if test="baogongState != null">
+        baogongState = #{baogongState,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

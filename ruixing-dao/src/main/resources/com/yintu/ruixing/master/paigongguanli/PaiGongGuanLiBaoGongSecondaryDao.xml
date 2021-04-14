@@ -15,6 +15,16 @@
   <sql id="Base_Column_List">
     id, bid, xianduan, content, baoGongType, createName, createTime, updateName, updateTime
   </sql>
+
+  <!--根据bid 查询对应的数据-->
+  <select id="findBaoGongByBid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_paigongguanli_baogong_secondary
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

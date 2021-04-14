@@ -94,6 +94,8 @@ public class PaiGongGuanLiUserServiceImpl implements PaiGongGuanLiUserService {
 			daystateEntity.setUsername(name);
 			daystateEntity.setRiqi(s);
 			daystateEntity.setDaystate(dayState);
+			daystateEntity.setOtherState(0);
+			daystateEntity.setBaogongState(0);
 			daystateEntity.setCreatename(username);
 			daystateEntity.setCreatetime(new Date());
 			daystateEntity.setUpdatename(username);

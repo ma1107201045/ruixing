@@ -46,6 +46,10 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     private PaiGongGuanLiUserDao paiGongGuanLiUserDao;
 
 
+    @Override
+    public List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome(Integer page, Integer size) {
+        return paiGongGuanLiPaiGongDanDao.findAllPaiGongOnHome();
+    }
 
     @Override
     public List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType) {
@@ -124,9 +128,12 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     }
 
     @Override
-    public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username) {
+    public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username,Integer userid) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String today = sdf.format(new Date());
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
             paiGongGuanLiPaiGongDanEntity.setChuchaistarttime(new Date());
+            paiGongGuanLiUserDaystateDao.editUserotherState(userid,today,1);//改变出差状态
         }
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
             paiGongGuanLiPaiGongDanEntity.setChuchaiendtime(new Date());

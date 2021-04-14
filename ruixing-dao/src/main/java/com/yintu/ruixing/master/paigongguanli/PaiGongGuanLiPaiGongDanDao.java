@@ -42,4 +42,7 @@ public interface PaiGongGuanLiPaiGongDanDao {
     long selectWorkOrderSum();
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllNotOverPaiGong(Integer userid);
+
+    List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome();
+
 }

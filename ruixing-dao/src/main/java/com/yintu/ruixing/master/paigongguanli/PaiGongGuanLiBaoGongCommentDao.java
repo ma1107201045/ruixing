@@ -18,4 +18,6 @@ public interface PaiGongGuanLiBaoGongCommentDao {
     int insertSelective(PaiGongGuanLiBaoGongCommentEntity record);
 
     List<PaiGongGuanLiBaoGongCommentEntity> findComment(Integer baoGongId,Integer baogongtype);
+
+    List<PaiGongGuanLiBaoGongCommentEntity> findCommentByBid(Integer bid);
 }

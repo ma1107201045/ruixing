@@ -43,6 +43,18 @@
     paiGongState,provinceId,cityId,districtId,state, createTime, createName, updateTime, updateName,taskSign
     </sql>
 
+
+    <!-- 查询所有的派工单数据  首页展示-->
+    <select id="findAllPaiGongOnHome" resultMap="BaseResultMap">
+        select
+        paiGongNumber,yeWuType,xdName,czName,workContent,paiGongState,chuChaiStartTime,chuChaiEndTime
+        from mro_paigongguanli_paigongdan
+        where
+        paiGongState=3
+        order by id desc
+    </select>
+
+
     <!-- 查询所有的派工单数据-->
     <select id="findAllNotOverPaiGong" resultMap="BaseResultMap">
         select

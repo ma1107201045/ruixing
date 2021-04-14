@@ -189,9 +189,10 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
     @PutMapping("/editTaskSignById/{id}")
     public Map<String,Object>editTaskSignById(@PathVariable Integer id,PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
         String username = this.getLoginUser().getTrueName();
+        Integer userid = this.getLoginUser().getId().intValue();
         paiGongGuanLiPaiGongDanEntity.setUpdatename(username);
         paiGongGuanLiPaiGongDanEntity.setUpdatetime(new Date());
-        paiGongGuanLiPaiGongDanService.editTaskSignById(paiGongGuanLiPaiGongDanEntity,username);
+        paiGongGuanLiPaiGongDanService.editTaskSignById(paiGongGuanLiPaiGongDanEntity,username,userid);
         return ResponseDataUtil.ok("变更派工任务标记成功");
     }
 
@@ -244,6 +245,15 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         return ResponseDataUtil.ok("查询符合条件的人员成功",userEntityList);
     }
 
+
+    //////////////////模块首页展示//////////////////////////
+    @GetMapping("/findAllPaiGongOnHome")
+    public Map<String,Object>findAllPaiGongOnHome(Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList = paiGongGuanLiPaiGongDanService.findAllPaiGongOnHome(page, size);
+        PageInfo<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityPageInfo = new PageInfo<>(paiGongDanEntityList);
+        return ResponseDataUtil.ok("查询成功", paiGongDanEntityPageInfo);
+    }
 
 
 

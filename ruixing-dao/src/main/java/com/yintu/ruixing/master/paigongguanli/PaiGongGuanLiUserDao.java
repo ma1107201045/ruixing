@@ -33,4 +33,10 @@ public interface PaiGongGuanLiUserDao {
 
 
     List<PaiGongGuanLiUserEntity> findUser(Integer uidSet);
+
+    String findUserNameById(Integer coordinationuserid);
+
+    List<PaiGongGuanLiUserEntity> findBaoGongUser(Integer baoGongType);
+
+    Integer findUseridByid(Integer coordinationuserid);
 }

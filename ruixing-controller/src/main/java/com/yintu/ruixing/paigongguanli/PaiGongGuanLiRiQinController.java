@@ -99,6 +99,21 @@ public class PaiGongGuanLiRiQinController extends SessionController {
         return ResponseDataUtil.ok("查询成功",js);
     }
 
+    //更改人员日勤状态
+    @PutMapping("/editUserDayState")
+    public Map<String,Object>editUserDayState(Integer userid,String dayTime,Integer dayState){
+        paiGongGuanLiRiQinService.editUserDayState(userid,dayTime,dayState);
+        return ResponseDataUtil.ok("修改状态成功");
+    }
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());

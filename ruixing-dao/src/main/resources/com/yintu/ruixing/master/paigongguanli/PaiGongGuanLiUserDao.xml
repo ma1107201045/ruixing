@@ -17,6 +17,51 @@
   </sql>
 
 
+  <!--根据id  查询userID-->
+  <select id="findUseridByid" resultType="java.lang.Integer">
+    SELECT
+        userid
+    FROM
+        mro_paigongguanli_user
+    WHERE
+        id=#{coordinationuserid}
+  </select>
+
+  <!--查詢报工人員-->
+  <select id="findBaoGongUser" resultMap="BaseResultMap">
+    SELECT
+        us.userid,
+        us.NAME
+    FROM
+        mro_paigongguanli_baogong bg,
+        mro_paigongguanli_user us
+    <where>
+      bg.userid = us.userid
+      <if test="baoGongType==1">
+        AND ( bg.qita = 1 OR bg.qita = 2 )
+      </if>
+      <if test="baoGongType==3">
+        AND ( bg.qita = 3 OR bg.qita = 4 )
+      </if>
+      <if test="baoGongType==5">
+        AND ( bg.qita = 5 OR bg.qita = 6 )
+      </if>
+    </where>
+    GROUP BY us.userid
+  </select>
+
+
+  <!--查詢所有已派工人員-->
+  <select id="findUserNameById" resultType="java.lang.String">
+    SELECT
+        name
+    FROM
+        mro_paigongguanli_user
+    WHERE
+        id=#{coordinationuserid}
+        GROUP BY name
+  </select>
+
   <!--查詢对应的派工人員-->
   <select id="findUser" resultMap="BaseResultMap">
     SELECT

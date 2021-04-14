@@ -33,6 +33,11 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     private PaiGongGuanLiUserDaystateDao paiGongGuanLiUserDaystateDao;
 
     @Override
+    public void editUserDayState(Integer userid, String dayTime, Integer dayState) {
+        paiGongGuanLiUserDaystateDao.editUserDayState(userid,dayTime,dayState);
+    }
+
+    @Override
     public JSONObject findAllPeopleRiQinDatas() {
         JSONObject js = new JSONObject();
         //表头数据
@@ -78,7 +83,11 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
                     for (PaiGongGuanLiUserDaystateEntity userDaystateEntity : oneUserDayState) {
                         PaiGongGuanLiUserDaystateEntity paiGongGuanLiUserDaystateEntity=new PaiGongGuanLiUserDaystateEntity();
                         Integer daystate = userDaystateEntity.getDaystate();
+                        Integer otherState = userDaystateEntity.getOtherState();
+                        Integer baogongState = userDaystateEntity.getBaogongState();
+                        paiGongGuanLiUserDaystateEntity.setBaogongState(baogongState);
                         paiGongGuanLiUserDaystateEntity.setDaystate(daystate);
+                        paiGongGuanLiUserDaystateEntity.setOtherState(otherState);
                         paiGongGuanLiUserDaystateEntity.setId(idd++);
                         oneuserList.add(paiGongGuanLiUserDaystateEntity);
                     }

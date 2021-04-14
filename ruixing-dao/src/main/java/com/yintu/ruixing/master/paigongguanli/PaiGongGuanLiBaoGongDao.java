@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.paigongguanli;
 
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongEntity;
+import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,12 @@ public interface PaiGongGuanLiBaoGongDao {
     PaiGongGuanLiBaoGongEntity findJingWeiDuByUid(@Param("uid") Integer uid);
 
     String findAdressByUid(@Param("uid") Integer uid);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllBaoGong(String yesterdayDate, String tommorowDate, Integer baoGongType);
+
+    List<PaiGongGuanLiBaoGongEntity> findBaoGongBySomethings(String startTime, String endTime, Integer userid, String xianDuan, Integer isNotClose, Integer baoGongType);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllBaoGongAndAllComment(Integer userid, String riqi);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllChuChaiPeopele(String lastDateTime, String nowDateTime);
 }

@@ -34,4 +34,16 @@ public interface PaiGongGuanLiBaoGongService {
     void addFile(PaiGongGuanLiBaoGongFileEntity paiGongGuanLiBaoGongFileEntity);
 
     void deleteFileByIds(Integer[] ids);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllBaoGong(Integer baoGongType);
+
+    List<PaiGongGuanLiBaoGongEntity> findBaoGongBySomethings(String startTime, String endTime, Integer userid, String xianDuan, Integer isNotClose,Integer baoGongType);
+
+    List<PaiGongGuanLiUserEntity> findBaoGongUser(Integer baoGongType);
+
+    List<PaiGongGuanLiBaoGongFileEntity> findFileByBid(Integer bid, Integer baoGongType);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllBaoGongAndAllComment(Integer userid, String riqi);
+
+    List<PaiGongGuanLiBaoGongEntity> findAllChuChaiPeopele(String lastDateTime, String nowDateTime);
 }
