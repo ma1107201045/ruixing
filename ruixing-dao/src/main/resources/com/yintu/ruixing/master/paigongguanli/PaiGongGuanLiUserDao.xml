@@ -11,11 +11,23 @@
     <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
     <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
     <result column="isdelete" jdbcType="INTEGER" property="isdelete" />
+    <result column="chuChaiStatrTime" jdbcType="TIMESTAMP" property="chuChaiStatrTime" />
+    <result column="chuChaiEndTime" jdbcType="TIMESTAMP" property="chuChaiEndTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete
+    id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete,chuChaiStatrTime,chuChaiEndTime
   </sql>
 
+
+  <!--根据userid  编辑数据-->
+  <update id="updateUserChuChaiTime" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserEntity">
+    update mro_paigongguanli_user
+    set
+    chuChaiStatrTime = #{chuChaiStatrTime},
+    chuChaiEndTime =#{chuChaiEndTime}
+    where
+    userid = #{userid}
+  </update>
 
   <!--根据id  查询userID-->
   <select id="findUseridByid" resultType="java.lang.Integer">
@@ -63,6 +75,17 @@
   </select>
 
   <!--查詢对应的派工人員-->
+  <select id="findUserByChuChaiTime" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    mro_paigongguanli_user
+    WHERE
+    id=#{uidSet}
+    AND (chuChaiStatrTime &gt; #{endTime} OR chuChaiEndTime &lt; #{startTime})
+  </select>
+
+  <!--查詢对应的派工人員-->
   <select id="findUser" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
@@ -70,6 +93,7 @@
         mro_paigongguanli_user
     WHERE
         id=#{uidSet}
+    AND (chuChaiStatrTime IS NULL OR chuChaiEndTime IS NULL)
   </select>
 
 
@@ -175,6 +199,12 @@
       <if test="isdelete != null">
         isdelete,
       </if>
+      <if test="chuChaiStatrTime != null">
+        chuChaiStatrTime,
+      </if>
+      <if test="chuChaiEndTime != null">
+        chuChaiEndTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -203,6 +233,12 @@
       </if>
       <if test="isdelete != null">
         #{isdelete},
+      </if>
+      <if test="chuChaiStatrTime != null">
+        #{chuChaiStatrTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chuChaiEndTime != null">
+        #{chuChaiEndTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -234,6 +270,12 @@
       </if>
       <if test="isdelete != null">
         isdelete = #{isdelete},
+      </if>
+      <if test="chuChaiStatrTime != null">
+        chuChaiStatrTime = #{chuChaiStatrTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chuChaiEndTime != null">
+        chuChaiEndTime = #{chuChaiEndTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

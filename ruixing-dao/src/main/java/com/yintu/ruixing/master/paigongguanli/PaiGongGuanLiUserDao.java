@@ -39,4 +39,8 @@ public interface PaiGongGuanLiUserDao {
     List<PaiGongGuanLiUserEntity> findBaoGongUser(Integer baoGongType);
 
     Integer findUseridByid(Integer coordinationuserid);
+
+    void updateUserChuChaiTime(PaiGongGuanLiUserEntity userEntity);
+
+    List<PaiGongGuanLiUserEntity> findUserByChuChaiTime(Integer uidSet, String startTime, String endTime);
 }

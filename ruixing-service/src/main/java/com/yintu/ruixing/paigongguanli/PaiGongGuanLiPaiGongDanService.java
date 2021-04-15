@@ -49,7 +49,7 @@ public interface PaiGongGuanLiPaiGongDanService {
 
     void editGaiPiaUserById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid);
 
-    List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType);
+    List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType,String startTime,String endTime);
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome(Integer page, Integer size);
 }

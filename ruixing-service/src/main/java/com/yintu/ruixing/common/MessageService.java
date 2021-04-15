@@ -40,4 +40,6 @@ public interface MessageService extends BaseService<MessageEntity, Integer> {
      */
     void sendMessage(MessageEntity messageEntity);
 
+    void updateMessage(MessageEntity messageEntity);
+
 }

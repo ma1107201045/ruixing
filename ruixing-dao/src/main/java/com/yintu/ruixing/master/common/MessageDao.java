@@ -29,4 +29,5 @@ public interface MessageDao {
     List<MessageEntity> findXiaoXi(@Param("senderid") Integer senderid,@Param("type") Integer type);
 
 
+    void updateMessage(MessageEntity messageEntity);
 }

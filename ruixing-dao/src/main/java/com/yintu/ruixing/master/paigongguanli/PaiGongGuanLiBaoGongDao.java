@@ -34,7 +34,9 @@ public interface PaiGongGuanLiBaoGongDao {
 
     List<PaiGongGuanLiBaoGongEntity> findBaoGongBySomethings(String startTime, String endTime, Integer userid, String xianDuan, Integer isNotClose, Integer baoGongType);
 
-    List<PaiGongGuanLiBaoGongEntity> findAllBaoGongAndAllComment(Integer userid, String riqi);
+    List<PaiGongGuanLiBaoGongEntity> findAllBaoGongAndAllComment(Integer userid, String startTime,String endTime);
 
     List<PaiGongGuanLiBaoGongEntity> findAllChuChaiPeopele(String lastDateTime, String nowDateTime);
+
+    List<PaiGongGuanLiBaoGongEntity> findBaoGongByUserid(Integer userid, String startTime, String endTime);
 }

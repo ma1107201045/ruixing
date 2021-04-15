@@ -50,6 +50,8 @@ public class PaiGongGuanLiBaoGongEntity {
     private Integer coordinationuserid;
     private Integer isnotover;
     private String signId;
+    private Integer isNeedAnyone;
+    private String workNumber;
 
     List<PaiGongGuanLiBaoGongSecondaryEntity> Children;
     List<PaiGongGuanLiBaoGongCommentEntity> commentEntityList;

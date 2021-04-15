@@ -240,8 +240,8 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
 
     //根据项目类型  任务属性  筛选符合条件的人员
     @GetMapping("/findUserBySomething")
-    public Map<String,Object>findUserBySomething(String xiangMuType,String reWuShuXing,String chuChaiType,String yeWuType){
-        List<PaiGongGuanLiUserEntity> userEntityList=paiGongGuanLiPaiGongDanService.findUserBySomething(xiangMuType,reWuShuXing,chuChaiType,yeWuType);
+    public Map<String,Object>findUserBySomething(String xiangMuType,String reWuShuXing,String chuChaiType,String yeWuType,String startTime,String endTime){
+        List<PaiGongGuanLiUserEntity> userEntityList=paiGongGuanLiPaiGongDanService.findUserBySomething(xiangMuType,reWuShuXing,chuChaiType,yeWuType,startTime,endTime);
         return ResponseDataUtil.ok("查询符合条件的人员成功",userEntityList);
     }
 

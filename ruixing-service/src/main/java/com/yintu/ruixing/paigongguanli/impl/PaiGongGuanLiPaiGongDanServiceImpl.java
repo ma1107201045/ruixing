@@ -52,8 +52,8 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     }
 
     @Override
-    public List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType) {
-        List<PaiGongGuanLiUserEntity> userEntityList=new ArrayList<>();
+    public List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing, String chuChaiType, String yeWuType, String startTime, String endTime) {
+        List<PaiGongGuanLiUserEntity> userEntityList = new ArrayList<>();
         Integer maxTaskshuxingNum = null;
         Integer minTaskshuxingNum = null;
         if ("重要且紧急".equals(reWuShuXing) || "重要不紧急".equals(reWuShuXing)) {
@@ -64,25 +64,29 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             maxTaskshuxingNum = 70;
             minTaskshuxingNum = 60;
         }
-        List<Integer> uids=new ArrayList<>();
+        List<Integer> uids = new ArrayList<>();
         String[] xmType = xiangMuType.split(",");
         for (int i = 0; i < xmType.length; i++) {
             String oneXMType = xmType[i];
-            String taskTotalName=oneXMType+yeWuType+"——"+chuChaiType;
-            Integer taskId=paiGongGuanLiTaskDao.findTid(taskTotalName);
-            if (taskId!=null) {
+            String taskTotalName = oneXMType + yeWuType + "——" + chuChaiType;
+            Integer taskId = paiGongGuanLiTaskDao.findTid(taskTotalName);
+            if (taskId != null) {
                 List<Integer> uid = paiGongGuanLiTaskUserDao.findUidByTidAndScores(taskId, maxTaskshuxingNum, minTaskshuxingNum);
                 uids.addAll(uid);
             }
         }
-        if (uids.size()!=0) {
+        if (uids.size() != 0) {
             Set<Integer> set = new HashSet<>();
             for (Integer uid : uids) {
                 set.add(uid);
             }
             for (Integer uidSet : set) {
                 List<PaiGongGuanLiUserEntity> userEntities = paiGongGuanLiUserDao.findUser(uidSet);
-                userEntityList.addAll(userEntities);
+                if (userEntities.size() != 0)
+                    userEntityList.addAll(userEntities);
+                List<PaiGongGuanLiUserEntity> userEntityList1 = paiGongGuanLiUserDao.findUserByChuChaiTime(uidSet, startTime, endTime);
+                if (userEntityList1.size() != 0)
+                    userEntityList.addAll(userEntityList1);
             }
         }
         return userEntityList;
@@ -91,7 +95,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     @Override
     public void editGaiPiaUserById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer senderid) {
         paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
-        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity=paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(paiGongGuanLiPaiGongDanEntity.getId());
+        PaiGongGuanLiPaiGongDanEntity paiGongDanEntity = paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(paiGongGuanLiPaiGongDanEntity.getId());
 
         //添加消息
         MessageEntity messageEntity = new MessageEntity();
@@ -128,12 +132,12 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     }
 
     @Override
-    public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username,Integer userid) {
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer userid) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
             paiGongGuanLiPaiGongDanEntity.setChuchaistarttime(new Date());
-            paiGongGuanLiUserDaystateDao.editUserotherState(userid,today,1);//改变出差状态
+            paiGongGuanLiUserDaystateDao.editUserotherState(userid, today, 1);//改变出差状态
         }
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
             paiGongGuanLiPaiGongDanEntity.setChuchaiendtime(new Date());
@@ -150,6 +154,8 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             recordMessageEntity.setContext(username + "开始了此派工任务");
             recordMessageEntity.setTypenum(1);
             paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+
+
         }
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
             PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
@@ -281,6 +287,8 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             paiGongDanEntity.setState(1);
             paiGongDanEntity.setPaigongstate(2);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+
+
         }
         if (isNotRefuse == 1) {//接受派遣
             //添加记录
@@ -297,6 +305,14 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             paiGongDanEntity.setPaigongstate(3);
             paiGongDanEntity.setState(2);
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+
+            //添加派工人的派工时间
+            PaiGongGuanLiPaiGongDanEntity guanLiPaiGongDanEntity = paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
+            PaiGongGuanLiUserEntity userEntity = new PaiGongGuanLiUserEntity();
+            userEntity.setChuChaiStatrTime(guanLiPaiGongDanEntity.getChuchaistarttime());
+            userEntity.setChuChaiEndTime(guanLiPaiGongDanEntity.getChuchaiendtime());
+            userEntity.setUserid(guanLiPaiGongDanEntity.getPaigongpeople());
+            paiGongGuanLiUserDao.updateUserChuChaiTime(userEntity);
         }
     }
 
@@ -428,6 +444,7 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             String chuChaStart = sdf.format(chuchaistarttime);
             String chuChaEnd = sdf.format(chuchaiendtime);
             paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid, chuChaStart, chuChaEnd);
+
 
         } else { //自动派工
             Integer paigongpeoplenumber = paiGongGuanLiPaiGongDanEntity.getPaigongpeoplenumber();//自动派工人数

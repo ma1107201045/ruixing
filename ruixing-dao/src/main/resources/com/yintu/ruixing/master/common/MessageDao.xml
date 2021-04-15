@@ -27,6 +27,51 @@
     <sql id="Blob_Column_List">
         context
     </sql>
+
+    <update id="updateMessage" parameterType="com.yintu.ruixing.common.MessageEntity">
+        update mro_message
+        <set>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedBy != null">
+                modified_by = #{modifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="smallType != null">
+                small_type = #{smallType,jdbcType=SMALLINT},
+            </if>
+            <if test="fileId != null">
+                file_id = #{fileId,jdbcType=INTEGER},
+            </if>
+            <if test="senderId != null">
+                sender_id = #{senderId,jdbcType=INTEGER},
+            </if>
+            <if test="receiverId != null">
+                receiver_id = #{receiverId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="context != null">
+                context = #{context,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where type = #{type,jdbcType=INTEGER}
+            and message_type = #{messageType,jdbcType=INTEGER}
+            and project_id = #{projectId,jdbcType=INTEGER}
+    </update>
+
+
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>

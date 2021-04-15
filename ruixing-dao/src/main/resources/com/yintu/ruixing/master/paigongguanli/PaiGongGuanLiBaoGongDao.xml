@@ -22,11 +22,26 @@
     <result column="department" jdbcType="VARCHAR" property="department"/>
     <result column="coordinationuserid" jdbcType="INTEGER" property="coordinationuserid"/>
     <result column="isnotover" jdbcType="INTEGER" property="isnotover"/>
+    <result column="isNeedAnyone" jdbcType="INTEGER" property="isNeedAnyone"/>
+    <result column="workNumber" jdbcType="VARCHAR" property="workNumber"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, uid, userid, datetime, workContent, address, longitude, latitude, qita, fileName, 
-    filePath, createName, createTime, updateName, updateTime,xianduan,department,coordinationuserid,isnotover
+    filePath, createName, createTime, updateName, updateTime,xianduan,department,
+    coordinationuserid,isnotover,isNeedAnyone,workNumber
   </sql>
+
+
+  <!--根据条件查询报工列表-->
+  <select id="findBaoGongByUserid"   resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+        mro_paigongguanli_baogong
+    WHERE
+        userid=#{userid}
+        and (datetime between #{startTime} and #{endTime})
+  </select>
 
 
   <!--根据条件查询报工列表-->
@@ -53,6 +68,7 @@
     select
     bg.id,
     uid,
+    qita,
     bg.userid,
     datetime,
     workContent,
@@ -63,7 +79,7 @@
     where
       bg.userid = us.userid
       AND us.isdelete = 1
-      AND  bg.datetime = #{riqi}
+      AND  (bg.datetime between #{startTime} and #{endTime} )
       AND  bg.userid=#{userid}
     order by bg.id desc
   </select>
@@ -91,6 +107,8 @@
     bg.department,
     coordinationuserid,
     isnotover,
+    isNeedAnyone,
+    workNumber,
     us.name
     from
     mro_paigongguanli_baogong bg,
@@ -144,6 +162,8 @@
     bg.department,
     coordinationuserid,
     isnotover,
+    isNeedAnyone,
+    workNumber,
     us.name
     from
     mro_paigongguanli_baogong bg,
@@ -204,6 +224,7 @@
    order by bg.id desc
   </select>
 
+  <!--根据id 查询对应的报工-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -277,6 +298,12 @@
       <if test="isnotover != null">
         isnotover,
       </if>
+      <if test="isNeedAnyone != null">
+        isNeedAnyone,
+      </if>
+      <if test="workNumber != null">
+        workNumber,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -336,6 +363,12 @@
       <if test="isnotover != null">
         #{isnotover,jdbcType=INTEGER},
       </if>
+      <if test="isNeedAnyone != null">
+        #{isNeedAnyone,jdbcType=INTEGER},
+      </if>
+      <if test="workNumber != null">
+        #{workNumber,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiBaoGongEntity">
@@ -394,6 +427,12 @@
       </if>
       <if test="isnotover != null">
         isnotover = #{isnotover,jdbcType=INTEGER},
+      </if>
+      <if test="isNeedAnyone != null">
+        isNeedAnyone = #{isNeedAnyone,jdbcType=INTEGER},
+      </if>
+      <if test="workNumber != null">
+        workNumber = #{workNumber,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -67,6 +67,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public void updateMessage(MessageEntity messageEntity) {
+        messageDao.updateMessage(messageEntity);
+    }
+
+    @Override
     public void sendMessage(MessageEntity messageEntity) {
         executorService.submit(new MessageRunnable(this, messageEntity));
     }
