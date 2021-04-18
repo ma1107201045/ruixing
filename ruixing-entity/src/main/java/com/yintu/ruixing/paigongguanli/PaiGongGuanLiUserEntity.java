@@ -28,8 +28,8 @@ public class PaiGongGuanLiUserEntity {
     private Date modifiedTime;
 
 
-    private Date chuChaiStatrTime;
-    private Date chuChaiEndTime;
+    private Date ccStatrTime;
+    private Date ccEndTime;
 
 
 }

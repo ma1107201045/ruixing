@@ -24,7 +24,7 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     void editSanJiShu(AnZhuangTiaoShiXiangMuEntity anZhuangTiaoShiXiangMuEntity);
 
-    void deletSanJiShuById(Integer id);
+    void deletSanJiShuById(Integer[] ids);
 
     List<AnZhuangTiaoShiCheZhanXiangMuTypeEntity> findAllXiangMuType();
 
@@ -54,4 +54,5 @@ public interface AnZhuangTiaoShiXiangMuService {
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findNextMonthXiangMu(String today, String nextMothDay,Integer page, Integer size);
 
+    List<AnZhuangTiaoShiXiangMuEntity> findOneCheZhanByXianDuanId(Integer xianDuanId);
 }

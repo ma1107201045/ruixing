@@ -59,4 +59,6 @@ public interface AnZhuangTiaoShiXiangMuServiceChooseDao {
     String findRemarksByCZid(Integer czId);
 
     List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findLastMonthXiangMu(String today, String lastMothDay, Integer serid);
+
+    List<AnZhuangTiaoShiXiangMuServiceChooseEntity> findServiceChooseByCZid(Integer xdId);
 }

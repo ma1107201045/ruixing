@@ -3,10 +3,11 @@ package com.yintu.ruixing.paigongguanli;
 import java.util.Date;
 
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
@@ -44,8 +45,12 @@ public class PaiGongGuanLiPaiGongDanEntity {
 
     private String xiangxiadress;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date chuchaistarttime;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date chuchaiendtime;
 
     private String teshuask;
@@ -68,10 +73,14 @@ public class PaiGongGuanLiPaiGongDanEntity {
     private String districtId;
     private Integer state;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private String createname;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     private String updatename;

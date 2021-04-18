@@ -35,4 +35,5 @@ public interface PaiGongGuanLiTaskService {
     List<PaiGongGuanLiTaskEntity> findAllTasks();
 
     void deleteUserTaskByIds(Integer[] ids);
+
 }

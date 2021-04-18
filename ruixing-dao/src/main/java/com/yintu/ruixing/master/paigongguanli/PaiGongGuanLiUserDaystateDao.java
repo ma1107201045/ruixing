@@ -30,4 +30,10 @@ public interface PaiGongGuanLiUserDaystateDao {
     void editUserotherState(Integer userid, String today, Integer otherState);
 
     void editUserBaoGongState(Integer daiUserid, String today, Integer baoGongState);
+
+    void updateUserDayStateRiQin(Integer userid, String dayTime, Integer dayState);
+
+    void editUserotherStateOverChuChai(Integer paigongpeople, String chuchaiKaiShiTime, String today);
+
+    void deleteByUserid(Integer userid);
 }

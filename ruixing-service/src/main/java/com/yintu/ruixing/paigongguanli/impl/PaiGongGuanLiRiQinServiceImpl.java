@@ -9,6 +9,7 @@ import com.yintu.ruixing.master.xitongguanli.UserDao;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserRiQinEntity;
 import com.yintu.ruixing.xitongguanli.UserEntity;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,68 @@ public class PaiGongGuanLiRiQinServiceImpl implements PaiGongGuanLiRiQinService 
     @Override
     public void editUserDayState(Integer userid, String dayTime, Integer dayState) {
         paiGongGuanLiUserDaystateDao.editUserDayState(userid,dayTime,dayState);
+    }
+
+    @SneakyThrows
+    @Override
+    public JSONObject findAllPeopleHistoryRiQinDatas(String riqi) {
+        JSONObject js = new JSONObject();
+        //表头数据
+
+        //根据日期 获取此月的最后一天
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date RiQi = format.parse(riqi);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(RiQi);
+        Integer last = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        cal.set(Calendar.DAY_OF_MONTH, last);
+        String monthlast = format.format(cal.getTime());//此月的最后一天
+        String monthfirst = riqi;//本月第一天
+        //获取当月的天数
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(RiQi);
+        int actualMaximum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        List<PaiGongGuanLiUserRiQinEntity> UserRiQin=new ArrayList<>();
+        for (int i = 1; i <= actualMaximum; i++) {
+            PaiGongGuanLiUserRiQinEntity userRiQinEntity=new PaiGongGuanLiUserRiQinEntity();
+            userRiQinEntity.setId(i);
+            userRiQinEntity.setRiqi(i+"日");
+            UserRiQin.add(userRiQinEntity);
+        }
+        js.put("title",UserRiQin);
+        System.out.println("title"+js);
+        //获取数据
+        List<PaiGongGuanLiUserDaystateEntity> AllUserDaystateEntityList=new ArrayList<>();
+        List<PaiGongGuanLiUserDaystateEntity>userDaystateEntityList=paiGongGuanLiUserDaystateDao.findAllUser(monthfirst,monthlast);
+        if (userDaystateEntityList.size()!=0){
+            for (PaiGongGuanLiUserDaystateEntity daystateEntity : userDaystateEntityList) {
+                PaiGongGuanLiUserDaystateEntity allpaiGongGuanLiUserDaystateEntity=new PaiGongGuanLiUserDaystateEntity();
+                Integer userid = daystateEntity.getUserid();//员工id
+                String username = daystateEntity.getUsername();//员工姓名
+                List<PaiGongGuanLiUserDaystateEntity> oneUserDayState = paiGongGuanLiUserDaystateDao.findOneUser(userid, monthfirst, monthlast);
+                List<PaiGongGuanLiUserDaystateEntity> oneuserList=new ArrayList<>();
+                if (oneUserDayState.size()!=0){
+                    Integer idd=1;
+                    for (PaiGongGuanLiUserDaystateEntity userDaystateEntity : oneUserDayState) {
+                        PaiGongGuanLiUserDaystateEntity paiGongGuanLiUserDaystateEntity=new PaiGongGuanLiUserDaystateEntity();
+                        Integer daystate = userDaystateEntity.getDaystate();
+                        Integer otherState = userDaystateEntity.getOtherState();
+                        Integer baogongState = userDaystateEntity.getBaogongState();
+                        paiGongGuanLiUserDaystateEntity.setBaogongState(baogongState);
+                        paiGongGuanLiUserDaystateEntity.setDaystate(daystate);
+                        paiGongGuanLiUserDaystateEntity.setOtherState(otherState);
+                        paiGongGuanLiUserDaystateEntity.setId(idd++);
+                        oneuserList.add(paiGongGuanLiUserDaystateEntity);
+                    }
+                }
+                allpaiGongGuanLiUserDaystateEntity.setUserid(userid);
+                allpaiGongGuanLiUserDaystateEntity.setUsername(username);
+                allpaiGongGuanLiUserDaystateEntity.setUserlist(oneuserList);
+                AllUserDaystateEntityList.add(allpaiGongGuanLiUserDaystateEntity);
+            }
+        }
+        js.put("data",AllUserDaystateEntityList);
+        return js;
     }
 
     @Override

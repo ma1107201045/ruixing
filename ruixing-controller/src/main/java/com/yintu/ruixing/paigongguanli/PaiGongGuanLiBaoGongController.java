@@ -94,10 +94,10 @@ public class PaiGongGuanLiBaoGongController extends SessionController {
 
     //根据id  编辑对应的报工
     @PutMapping("/editBaoGongById/{id}")
-    public Map<String,Object>editBaoGongById(@PathVariable Integer id,PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity){
+    public Map<String,Object>editBaoGongById(@PathVariable Integer id,PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity,String buChongTime){
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
-        paiGongGuanLiBaoGongService.editBaoGongById(username,senderid,paiGongGuanLiBaoGongEntity);
+        paiGongGuanLiBaoGongService.editBaoGongById(username,senderid,paiGongGuanLiBaoGongEntity,buChongTime);
         return ResponseDataUtil.ok("编辑成功");
     }
 
@@ -114,7 +114,7 @@ public class PaiGongGuanLiBaoGongController extends SessionController {
         String username = this.getLoginUser().getTrueName();
         Integer senderid = this.getLoginUser().getId().intValue();
         paiGongGuanLiBaoGongEntity.setIsnotover(0);
-        paiGongGuanLiBaoGongService.editBaoGongById(username,senderid,paiGongGuanLiBaoGongEntity);
+        paiGongGuanLiBaoGongService.closeBaoGongById(username,senderid,paiGongGuanLiBaoGongEntity);
         return ResponseDataUtil.ok("关闭报工成功");
     }
 

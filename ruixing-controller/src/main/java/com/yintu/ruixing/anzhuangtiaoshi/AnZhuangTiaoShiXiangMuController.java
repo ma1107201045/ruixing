@@ -57,17 +57,19 @@ public class AnZhuangTiaoShiXiangMuController extends SessionController {
     }
 
     //根据id   删除三级树的项目
-    @DeleteMapping("/deletSanJiShuById/{id}")
-    public Map<String, Object> deletSanJiShuById(@PathVariable Integer id) {
-        Integer chezhantotal = anZhuangTiaoShiXiangMuService.findCheZhanTotal(id);
-        if (chezhantotal == 0) {
-            anZhuangTiaoShiXiangMuService.deletSanJiShuById(id);
-            return ResponseDataUtil.ok("删除项目成功");
-        } else {
-            return ResponseDataUtil.error("此线段下有车站,不能删除");
-        }
+    @DeleteMapping("/deletSanJiShuById/{ids}")
+    public Map<String, Object> deletSanJiShuById(@PathVariable Integer[] ids) {
+        anZhuangTiaoShiXiangMuService.deletSanJiShuById(ids);
+        return ResponseDataUtil.ok("删除项目成功");
     }
 
+
+    //根据项目id  获取此项目下的第一个车站信息 (项目内增加车站)
+    @GetMapping("/findOneCheZhanByXianDuanId")
+    public Map<String,Object>findOneCheZhanByXianDuanId(Integer XianDuanId){
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList=anZhuangTiaoShiXiangMuService.findOneCheZhanByXianDuanId(XianDuanId);
+        return ResponseDataUtil.ok("查询车站信息成功",xiangMuEntityList);
+    }
 
     //查询消息提醒
     @GetMapping("/findXiaoXi")

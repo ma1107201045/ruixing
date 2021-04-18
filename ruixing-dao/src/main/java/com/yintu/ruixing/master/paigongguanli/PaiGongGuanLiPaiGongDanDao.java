@@ -45,4 +45,6 @@ public interface PaiGongGuanLiPaiGongDanDao {
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome();
 
+    List<Integer> findChuChaiPeopleing();
+
 }

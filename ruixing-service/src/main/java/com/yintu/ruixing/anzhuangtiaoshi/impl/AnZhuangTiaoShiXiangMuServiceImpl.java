@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.master.anzhuangtiaoshi.*;
 import com.yintu.ruixing.master.chanpinjiaofu.ChanPinJiaoFuXiangMuDao;
 import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuFileEntity;
@@ -37,34 +38,47 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMuService {
-
-
     @Autowired
     private AnZhuangTiaoShiXiangMuDao anZhuangTiaoShiXiangMuDao;
-
     @Autowired
     private AnZhuangTiaoShiCheZhanXiangMuTypeDao anZhuangTiaoShiCheZhanXiangMuTypeDao;
-
     @Autowired
     private ChanPinJiaoFuXiangMuDao chanPinJiaoFuXiangMuDao;
-
     @Autowired
     private AnZhuangTiaoShiFileDao anZhuangTiaoShiFileDao;
-
     @Autowired
     private AnZhuangTiaoShiCheZhanDao anZhuangTiaoShiCheZhanDao;
-
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceChooseDao anZhuangTiaoShiXiangMuServiceChooseDao;
-
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusDao anZhuangTiaoShiXiangMuServiceStatusDao;
-
     @Autowired
     private AnZhuangTiaoShiXiangMuServiceStatusChooseDao anZhuangTiaoShiXiangMuServiceStatusChooseDao;
-
     @Autowired
     private MessageDao messageDao;
+    @Autowired
+    private AnZhuangTiaoShiWorkNameTotalDao anZhuangTiaoShiWorkNameTotalDao;
+
+
+    @Override
+    public List<AnZhuangTiaoShiXiangMuEntity> findOneCheZhanByXianDuanId(Integer xianDuanId) {
+        List<AnZhuangTiaoShiXiangMuEntity> xiangMuEntityList=anZhuangTiaoShiXiangMuDao.findXiangMU(xianDuanId);
+        for (AnZhuangTiaoShiXiangMuEntity xiangMuEntity : xiangMuEntityList) {
+            Integer xdId = xiangMuEntity.getXdId();
+            List<AnZhuangTiaoShiXiangMuServiceChooseEntity> serviceChooseEntityList=anZhuangTiaoShiXiangMuServiceChooseDao.findServiceChooseByCZid(xdId);
+            if (serviceChooseEntityList.size()!=0){
+                for (AnZhuangTiaoShiXiangMuServiceChooseEntity serviceChooseEntity : serviceChooseEntityList) {
+                    String chezhanname = serviceChooseEntity.getChezhanname();
+                    xiangMuEntity.setCzName(chezhanname);
+                }
+            }
+            Integer worksid = xiangMuEntity.getWorksid();
+            AnZhuangTiaoShiWorkNameTotalEntity nameTotalEntity=anZhuangTiaoShiWorkNameTotalDao.selectByPrimaryKey(worksid);
+            String worknamesall = nameTotalEntity.getWorknamesall();
+            xiangMuEntity.setWorksName(worknamesall);
+        }
+        return xiangMuEntityList;
+    }
 
     @Override
     public List<MessageEntity> findXiaoXi(Integer senderid) {
@@ -399,8 +413,15 @@ public class AnZhuangTiaoShiXiangMuServiceImpl implements AnZhuangTiaoShiXiangMu
     }
 
     @Override
-    public void deletSanJiShuById(Integer id) {
-        anZhuangTiaoShiXiangMuDao.deletSanJiShuById(id);
+    public void deletSanJiShuById(Integer[] ids) {
+        for (Integer id : ids) {
+            Integer chezhantotal = anZhuangTiaoShiCheZhanDao.findCheZhanTotal(id);
+            if (chezhantotal == 0) {
+                anZhuangTiaoShiXiangMuDao.deletSanJiShuById(id);
+            } else {
+                throw new BaseRuntimeException("此线段下有车站,不能删除");
+            }
+        }
     }
 
     @Override

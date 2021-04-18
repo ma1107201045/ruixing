@@ -18,10 +18,36 @@
     id, userid, username, riqi, dayState, createTime, createName, updateTime, updateName,otherState,baogongState
   </sql>
 
+  <delete id="deleteByUserid" parameterType="java.lang.Integer">
+    delete from mro_paigongguanli_user_daystate
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+
+  <!--根据派工开始日期 和结束日期 ， 人员id  修改对应的otherState状态-->
+  <update id="editUserotherStateOverChuChai" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET otherState = 3,
+        updateTime=now()
+    WHERE
+    userid = #{paigongpeople}
+    AND riqi &gt;= #{chuchaiKaiShiTime}
+    AND riqi &lt;= #{today}
+  </update>
+
+  <!--根据派工日期 人员id  修改对应的dayState状态-->
+  <update id="updateUserDayStateRiQin" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
+    UPDATE mro_paigongguanli_user_daystate
+    SET dayState = #{dayState}
+    WHERE
+    userid = #{userid}
+    AND riqi = #{dayTime}
+  </update>
+
+
   <!--根据派工日期 人员id  修改对应的baogongState状态-->
   <update id="editUserBaoGongState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
     UPDATE mro_paigongguanli_user_daystate
-    SET otherState = #{baoGongState}
+    SET baogongState = #{baoGongState}
     WHERE
     userid = #{daiUserid}
     AND riqi = #{today}
@@ -50,7 +76,8 @@
   <!--根据派工日期  修改对应的日勤状态-->
   <update id="updateUserDayState" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity">
     UPDATE mro_paigongguanli_user_daystate
-    SET dayState = 3
+    SET dayState = 3,
+        otherState=1
     WHERE
     userid = #{paigongpeopleid}
     AND riqi &gt;= #{chuChaStart}
@@ -66,6 +93,7 @@
     userid=#{userid}
     and
     riqi BETWEEN #{monthfirst} AND #{monthlast}
+    GROUP BY riqi
   </select>
 
 

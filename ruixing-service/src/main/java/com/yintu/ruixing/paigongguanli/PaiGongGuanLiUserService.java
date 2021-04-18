@@ -13,4 +13,5 @@ public interface PaiGongGuanLiUserService {
 
     List<PaiGongGuanLiUserEntity> finaAlreadyPaiGongPeople();
 
+	void autoAddPeopleState();
 }

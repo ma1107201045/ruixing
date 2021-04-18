@@ -7,8 +7,10 @@ import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.xitongguanli.UserEntity;
 import com.yintu.ruixing.xitongguanli.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +116,13 @@ public class PaiGongGuanLiTaskController extends SessionController{
         return ResponseDataUtil.ok("查询人员成功",userEntityPageInfo);
     }
 
-
+    //定时添加配置人员的每年状态（每年的12月1号）
+    @Scheduled(cron = "0 0 02 * * ?")
+    @ResponseBody
+    @GetMapping("/autoAddPeopleState")
+    public void autoAddPeopleState(){
+        paiGongGuanLiUserService.autoAddPeopleState();
+    }
 
 
     //查询所有人员姓名

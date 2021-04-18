@@ -44,6 +44,14 @@
     </sql>
 
 
+    <!--查询所有正在出差的人员id-->
+    <select id="findChuChaiPeopleing" resultType="java.lang.Integer">
+        select paiGongPeople
+        from mro_paigongguanli_paigongdan
+        where paiGongState =3
+        GROUP BY paiGongPeople
+    </select>
+
     <!-- 查询所有的派工单数据  首页展示-->
     <select id="findAllPaiGongOnHome" resultMap="BaseResultMap">
         select
@@ -76,15 +84,12 @@
     <!--初始化页面  或者根据编号模糊查询-->
     <select id="findPaiGongDan" resultMap="BaseResultMap">
         select
-        pp.<include refid="Base_Column_List"/>,
-        USER.name
+        pp.<include refid="Base_Column_List"/>
         FROM
-        mro_paigongguanli_paigongdan pp,
-        mro_paigongguanli_user USER
+        mro_paigongguanli_paigongdan pp
         <where>
-            pp.paiGongPeople = USER.userid
             <if test="paiGongNumber != null and paiGongNumber !=''">
-                AND pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
+                 pp.paiGongNumber LIKE concat('%',#{paiGongNumber},'%')
             </if>
             <if test="startTime != null and startTime !=''">
                 AND pp.createTime between #{startTime} and #{endTime}
@@ -105,7 +110,6 @@
                 AND pp.paiGongState =#{paiGongState}
             </if>
         </where>
-        GROUP BY pp.id
         ORDER BY pp.id DESC
     </select>
 
@@ -133,22 +137,18 @@
         select paiGongNumber
         from mro_paigongguanli_paigongdan
         where paiGongNumber like concat('%', #{suoxie}, '%')
-        group by id
-        limit 1
+        ORDER BY createTime desc limit 1
     </select>
 
 
     <!--根据id  查询对应的派工单-->
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        pp.<include refid="Base_Column_List"/>,
-        USER.name
+        pp.<include refid="Base_Column_List"/>
         FROM
-        mro_paigongguanli_paigongdan pp,
-        mro_paigongguanli_user USER
+        mro_paigongguanli_paigongdan pp
         where
-        pp.paiGongPeople = USER.userid
-        and pp.id = #{id,jdbcType=INTEGER}
+        pp.id = #{id,jdbcType=INTEGER}
         GROUP BY pp.id
     </select>
 

@@ -128,12 +128,12 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
         Date dBefore = calendar.getTime(); //得到前一天的时间
 
         Calendar calendar1 = Calendar.getInstance(); //得到日历
-        calendar1.add(Calendar.DAY_OF_MONTH, -1); //设置为后一天
+        calendar1.add(Calendar.DAY_OF_MONTH, 1); //设置为后一天
         Date tommorow = calendar1.getTime(); //得到后一天的时间
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //设置时间格式
-        String yesterdayDate = sdf.format(dBefore); //格式化前一天
-        String tommorowDate = sdf.format(tommorow); //格式化后一天
+        String yesterdayDate = sdf.format(dBefore)+" 00:00:00"; //格式化前一天
+        String tommorowDate = sdf.format(tommorow)+" 23:59:59"; //格式化后一天
         List<PaiGongGuanLiBaoGongEntity> baoGongEntityList = paiGongGuanLiBaoGongDao.findAllBaoGong(yesterdayDate, tommorowDate, baoGongType);
         for (PaiGongGuanLiBaoGongEntity baoGongEntity : baoGongEntityList) {
             Integer coordinationuserid = baoGongEntity.getCoordinationuserid();
@@ -206,14 +206,32 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
     }
 
     @Override
-    public void editBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity) {
+    public void closeBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity) {
+        paiGongGuanLiBaoGongDao.updateByPrimaryKeySelective(paiGongGuanLiBaoGongEntity);
+        //更改日勤状态
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dataTime = sdf.format(paiGongGuanLiBaoGongEntity.getDatetime());
+        paiGongGuanLiUserDaystateDao.editUserBaoGongState(paiGongGuanLiBaoGongEntity.getUserid(), dataTime, 2);
+    }
+
+    @Override
+    public void editBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity, String buChongTime) {
+        if (buChongTime != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date parse = sdf.parse(buChongTime);
+                paiGongGuanLiBaoGongEntity.setDatetime(parse);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         paiGongGuanLiBaoGongEntity.setUpdatename(username);
         paiGongGuanLiBaoGongEntity.setUpdatetime(new Date());
         paiGongGuanLiBaoGongDao.updateByPrimaryKeySelective(paiGongGuanLiBaoGongEntity);
         Integer id = paiGongGuanLiBaoGongEntity.getId();//报工id
-        PaiGongGuanLiBaoGongEntity baoGongEntity=paiGongGuanLiBaoGongDao.selectByPrimaryKey(id);
-        if (baoGongEntity.getIsNeedAnyone()==0 && paiGongGuanLiBaoGongEntity.getIsNeedAnyone()==1){
-            if (paiGongGuanLiBaoGongEntity.getCoordinationuserid()!=null){
+        PaiGongGuanLiBaoGongEntity baoGongEntity = paiGongGuanLiBaoGongDao.selectByPrimaryKey(id);
+        if (baoGongEntity.getIsNeedAnyone() == 0 && paiGongGuanLiBaoGongEntity.getIsNeedAnyone() == 1) {
+            if (paiGongGuanLiBaoGongEntity.getCoordinationuserid() != null) {
                 //给需要协助的人发消息
                 Integer userid = paiGongGuanLiUserDao.findUseridByid(paiGongGuanLiBaoGongEntity.getCoordinationuserid());
                 MessageEntity messageEntity = new MessageEntity();
@@ -229,8 +247,8 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
                 messageService.sendMessage(messageEntity);
             }
         }
-        if (paiGongGuanLiBaoGongEntity.getCoordinationuserid()!=null && baoGongEntity.getCoordinationuserid()!=null ){
-            if (paiGongGuanLiBaoGongEntity.getCoordinationuserid()!=baoGongEntity.getCoordinationuserid()){
+        if (paiGongGuanLiBaoGongEntity.getCoordinationuserid() != null && baoGongEntity.getCoordinationuserid() != null) {
+            if (paiGongGuanLiBaoGongEntity.getCoordinationuserid() != baoGongEntity.getCoordinationuserid()) {
                 //给需要协助的人发消息
                 Integer userid = paiGongGuanLiUserDao.findUseridByid(baoGongEntity.getCoordinationuserid());
                 MessageEntity messageEntity = new MessageEntity();
@@ -343,6 +361,12 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
                     messageEntity.setStatus((short) 1);
                     messageService.sendMessage(messageEntity);
                 }
+                //更改日勤状态
+                if (qita == 5 || qita == 6) {
+                    paiGongGuanLiUserDaystateDao.editUserBaoGongState(Userid, baoGongTime, 3);
+                } else {
+                    paiGongGuanLiUserDaystateDao.editUserBaoGongState(Userid, today, 3);
+                }
             }
 
         }
@@ -437,6 +461,12 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
                             messageEntity.setStatus((short) 1);
                             messageService.sendMessage(messageEntity);
                         }
+                        //更改日勤状态
+                        if (qita == 5 || qita == 6) {
+                            paiGongGuanLiUserDaystateDao.editUserBaoGongState(Userid, baoGongTime, 3);
+                        } else {
+                            paiGongGuanLiUserDaystateDao.editUserBaoGongState(Userid, today, 3);
+                        }
                     }
                 } else {
                     Object baoGongData = baoGongDatas.get(i);
@@ -456,8 +486,6 @@ public class PaiGongGuanLiBaoGongServiceImpl implements PaiGongGuanLiBaoGongServ
                     secondaryEntity.setUpdatetime(new Date());
                     paiGongGuanLiBaoGongSecondaryDao.insertSelective(secondaryEntity);
                 }
-
-
             }
         }
     }

@@ -57,6 +57,25 @@
     createName, updateTime, updateName,remarks
     </sql>
 
+
+    <!--根据车站id 查询对应数据-->
+    <select id="findServiceChooseByCZid"  resultMap="BaseResultMap">
+        select
+        DISTINCT	chezhanName
+        FROM
+        mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE
+        czid = (
+        SELECT DISTINCT
+        czid
+        FROM
+        mro_anzhuangtiaoshi_Xiangmu_Service_Choose
+        WHERE
+        xdid = #{xdId}
+        ORDER BY createTime DESC LIMIT 1)
+    </select>
+
+
     <select id="findRemarksByCZid"  resultType="java.lang.String">
         SELECT
            remarks

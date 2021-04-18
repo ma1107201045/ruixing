@@ -99,6 +99,14 @@ public class PaiGongGuanLiRiQinController extends SessionController {
         return ResponseDataUtil.ok("查询成功",js);
     }
 
+    //查看所有人的历史日勤数据
+    @GetMapping("/findAllPeopleHistoryRiQinDatas")
+    public Map<String,Object>findAllPeopleHistoryRiQinDatas(String riqi){
+        JSONObject js =paiGongGuanLiRiQinService.findAllPeopleHistoryRiQinDatas(riqi);
+        return ResponseDataUtil.ok("查询成功",js);
+    }
+
+
     //更改人员日勤状态
     @PutMapping("/editUserDayState")
     public Map<String,Object>editUserDayState(Integer userid,String dayTime,Integer dayState){

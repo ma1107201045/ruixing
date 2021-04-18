@@ -58,4 +58,6 @@ public interface AnZhuangTiaoShiXiangMuDao {
     long selectProjectSum();
 
     String findXianDuanByXDid(Integer xdid);
+
+    List<AnZhuangTiaoShiXiangMuEntity> findXiangMU(Integer xianDuanId);
 }

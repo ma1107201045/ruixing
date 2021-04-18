@@ -11,12 +11,12 @@ public interface AnZhuangTiaoShiWorkNameTotalDao {
 
     int insert(AnZhuangTiaoShiWorkNameTotalEntity record);
 
-    AnZhuangTiaoShiWorkNameTotalEntity selectByPrimaryKey(Integer id);
-
     int updateByPrimaryKey(AnZhuangTiaoShiWorkNameTotalEntity record);
 
 
+
     //////////////////////////////////////////////////////////////////
+    AnZhuangTiaoShiWorkNameTotalEntity selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(AnZhuangTiaoShiWorkNameTotalEntity record);
 

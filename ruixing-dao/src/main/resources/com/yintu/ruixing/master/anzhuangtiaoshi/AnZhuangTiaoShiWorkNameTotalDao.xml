@@ -22,6 +22,13 @@
      createTime, createName, updateTime, updateName,auditorState,userid,xiangMuType
   </sql>
 
+  <!--根据id  查询作业项配置版本-->
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_worknametotal
+    where id=#{id}
+  </select>
 
   <!--根据id 查询作业项配置版本-->
   <select id="findOneWorksByid"  resultMap="BaseResultMap">

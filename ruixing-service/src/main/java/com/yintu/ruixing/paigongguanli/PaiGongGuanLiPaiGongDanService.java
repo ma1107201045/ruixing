@@ -52,4 +52,10 @@ public interface PaiGongGuanLiPaiGongDanService {
     List<PaiGongGuanLiUserEntity> findUserBySomething(String xiangMuType, String reWuShuXing,String chuChaiType,String yeWuType,String startTime,String endTime);
 
     List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome(Integer page, Integer size);
+
+    List<Integer> findChuChaiPeopleing();
+
+    void updateUserOtherstate(String today, Integer pid);
+
+    void quXiaoPaiGong(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, Integer userid, String username);
 }

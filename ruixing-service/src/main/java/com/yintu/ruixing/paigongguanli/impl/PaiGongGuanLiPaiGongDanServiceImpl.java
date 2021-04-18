@@ -6,10 +6,12 @@ import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.master.paigongguanli.*;
 import com.yintu.ruixing.paigongguanli.*;
 import com.yintu.ruixing.master.xitongguanli.UserDao;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,6 +47,132 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     @Autowired
     private PaiGongGuanLiUserDao paiGongGuanLiUserDao;
 
+
+    @SneakyThrows
+    @Override
+    public void quXiaoPaiGong(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, Integer userid, String username) {
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate()==3){//已经派工 但未开始派工
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(5);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+            //更改派工人员的日勤状态
+            Date today=new Date();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            Date chuchaistarttime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime();//出差开始时间
+            Date chuchaiendtime = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime();//出差结束时间
+            String startTime = sdf.format(chuchaistarttime);//出差开始时间
+            String endTime = sdf.format(chuchaiendtime);//出差结束时间
+            String todayTime = sdf.format(today);//今天时间
+            long todayTimeLong = sdf.parse(todayTime).getTime();//今天的毫秒数
+            long chuChaiEndTimeLong = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime().getTime();//出差结束时间毫秒数
+            long chuChaiStatrTimeLong = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime().getTime();//出差开始时间毫秒数
+            if (todayTimeLong<=chuChaiStatrTimeLong){//取消时间和计划出差是同一天 或者取消时间比计划出差时间早
+                Long times=(chuChaiEndTimeLong-chuChaiStatrTimeLong)/86400000;//出差的天数
+                for (Integer i = 0; i <= times; i++) {
+                    Date oneDate=new Date(chuChaiStatrTimeLong+86400000*i);
+                    Calendar calendar = Calendar.getInstance(); //得到日历
+                    calendar.setTime(oneDate);
+                    int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+                    if (week==0 ||week==6){//周六日
+                        paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(paiGongGuanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),2);
+                    }else {
+                        paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(paiGongGuanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),1);
+                    }
+                }
+            }
+            //给派工人发消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(new Date());//创建时间
+            messageEntity.setContext("有派单任务被取消,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(paiGongGuanLiPaiGongDanEntity.getId());
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(userid);
+            messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(new Date());
+            recordMessageEntity.setContext(username + "取消了派工单");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate()==4){//派工已经开始
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(5);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+            //给派工人发消息
+            MessageEntity messageEntity = new MessageEntity();
+            messageEntity.setCreateBy(username);//创建人
+            messageEntity.setCreateTime(new Date());//创建时间
+            messageEntity.setContext("有派单任务被取消,请查看！");
+            messageEntity.setType((short) 5);
+            messageEntity.setProjectId(paiGongGuanLiPaiGongDanEntity.getId());
+            messageEntity.setMessageType((short) 3);
+            messageEntity.setSenderId(userid);
+            messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
+            messageEntity.setStatus((short) 1);
+            messageService.sendMessage(messageEntity);
+            //更改派工人员的日勤状态
+            Date today=new Date();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            Date chuchaistarttime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime();
+            String startTime = sdf.format(chuchaistarttime);//出差开始时间
+            String endTime = sdf.format(today);//出差结束时间(今天)
+            long todayTime = today.getTime();
+            long chuChaiEndTime = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime().getTime();
+            if (todayTime<chuChaiEndTime){//在原计划结束之前取消了派工
+                //更改员工状态
+                Integer paigongpeople = paiGongGuanLiPaiGongDanEntity.getPaigongpeople();
+                paiGongGuanLiUserDaystateDao.editUserotherStateOverChuChai(paigongpeople,startTime,endTime);
+                //更改剩余天数的日勤状态
+                Long times=(chuChaiEndTime-todayTime)/86400000;
+                for (Integer i = 0; i <= times; i++) {
+                    Date oneDate=new Date(todayTime+86400000*i);
+                    Calendar calendar = Calendar.getInstance(); //得到日历
+                    calendar.setTime(oneDate);
+                    int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+                    if (week==0 ||week==6){//周六日
+                        paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(paiGongGuanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),2);
+                    }else {
+                        paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(paiGongGuanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),1);
+                    }
+                }
+            }
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(new Date());
+            recordMessageEntity.setContext(username + "取消了派工单");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+        }
+        if (paiGongGuanLiPaiGongDanEntity.getPaigongstate()==1 || paiGongGuanLiPaiGongDanEntity.getPaigongstate()==2){
+            paiGongGuanLiPaiGongDanEntity.setPaigongstate(5);
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+            //添加记录
+            PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
+            recordMessageEntity.setTypeid(paiGongGuanLiPaiGongDanEntity.getId());
+            recordMessageEntity.setOperatorname(username);
+            recordMessageEntity.setOperatortime(new Date());
+            recordMessageEntity.setContext(username + "取消了派工单");
+            recordMessageEntity.setTypenum(1);
+            paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
+        }
+    }
+
+    @Override
+    public void updateUserOtherstate(String today, Integer pid) {
+        paiGongGuanLiUserDaystateDao.editUserotherState(pid,today,2);
+    }
+
+    @Override
+    public List<Integer> findChuChaiPeopleing() {
+        return paiGongGuanLiPaiGongDanDao.findChuChaiPeopleing();
+    }
 
     @Override
     public List<PaiGongGuanLiPaiGongDanEntity> findAllPaiGongOnHome(Integer page, Integer size) {
@@ -135,16 +263,53 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     public void editTaskSignById(PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity, String username, Integer userid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
-        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
-            paiGongGuanLiPaiGongDanEntity.setChuchaistarttime(new Date());
-            paiGongGuanLiUserDaystateDao.editUserotherState(userid, today, 1);//改变出差状态
-        }
-        if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {
-            paiGongGuanLiPaiGongDanEntity.setChuchaiendtime(new Date());
-        }
-        paiGongGuanLiPaiGongDanEntity.setState(3);
-        paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+        String oldStartDay=sdf.format(paiGongGuanLiPaiGongDanEntity.getChuchaistarttime());//原计划出差开始时间
+        String oldEndDay=sdf.format(paiGongGuanLiPaiGongDanEntity.getChuchaiendtime());//原计划出差结束时间
+        try {
+            Date todayTime = sdf.parse(today);
+            if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {//开始出差
+                paiGongGuanLiPaiGongDanEntity.setChuchaistarttime(todayTime);
+                paiGongGuanLiPaiGongDanEntity.setState(3);
+                paiGongGuanLiPaiGongDanEntity.setPaigongstate(4);
 
+                //改变出差人的日勤状态
+                long oldStartTime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime().getTime();//原计划出差开始时间
+                long todayTimeTime = todayTime.getTime();//现在实际出差开始时间
+                if (oldStartTime>todayTimeTime){//提前开始出差
+                    //改变日勤状态
+                    paiGongGuanLiUserDaystateDao.updateUserDayState(userid,today,oldStartDay);
+                    //改变出差状态
+                    paiGongGuanLiUserDaystateDao.editUserotherState(userid,today,2);
+                }
+                if (oldStartTime<todayTimeTime){//推迟出差
+                   Long times=(todayTimeTime-oldStartTime)/ 86400000;
+                    for (Integer i = 0; i <= times; i++) {
+                        Date oneDate=new Date(oldStartTime+86400000*i);
+                        Calendar calendar = Calendar.getInstance(); //得到日历
+                        calendar.setTime(oneDate);
+                        int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+                        if (week==0 ||week==6){//周六日
+                            paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(userid,sdf.format(oneDate),2);
+                        }else {
+                            paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(userid,sdf.format(oneDate),1);
+                        }
+                    }
+                    //从今天开始改变出差状态
+                    //改变日勤状态
+                    //paiGongGuanLiUserDaystateDao.updateUserDayState(userid,today,oldDay);
+                    //改变出差状态
+                    paiGongGuanLiUserDaystateDao.editUserotherState(userid,today,2);
+                }
+            }
+           /* if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 2) {//结束出差
+                paiGongGuanLiPaiGongDanEntity.setState(6);
+                paiGongGuanLiPaiGongDanEntity.setChuchaiendtime(todayTime);
+            }*/
+
+            paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongGuanLiPaiGongDanEntity);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //添加记录
         if (paiGongGuanLiPaiGongDanEntity.getTaskSign() == 1) {
             PaiGongGuanLiPaiGongDanRecordMessageEntity recordMessageEntity = new PaiGongGuanLiPaiGongDanRecordMessageEntity();
@@ -205,7 +370,14 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
     public List<PaiGongGuanLiPaiGongDanEntity> findPaiGongDan(Integer page, Integer size, String paiGongNumber,
                                                               String startTime, String endTime, String xdName,
                                                               String czName, String renWuShuXing, Integer peopeleId, Integer paiGongState) {
-        return paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber, startTime, endTime, xdName, czName, renWuShuXing, peopeleId, paiGongState);
+        List<PaiGongGuanLiPaiGongDanEntity> paiGongDanEntityList=paiGongGuanLiPaiGongDanDao.findPaiGongDan(paiGongNumber, startTime,
+                                                                        endTime, xdName, czName, renWuShuXing, peopeleId, paiGongState);
+        for (PaiGongGuanLiPaiGongDanEntity paiGongDanEntity : paiGongDanEntityList) {
+            Integer paigongpeople = paiGongDanEntity.getPaigongpeople();
+            String name=paiGongGuanLiUserDao.findUserName(paigongpeople);
+            paiGongDanEntity.setTruename(name);
+        }
+        return paiGongDanEntityList;
     }
 
     @Override
@@ -309,10 +481,21 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             //添加派工人的派工时间
             PaiGongGuanLiPaiGongDanEntity guanLiPaiGongDanEntity = paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(id);
             PaiGongGuanLiUserEntity userEntity = new PaiGongGuanLiUserEntity();
-            userEntity.setChuChaiStatrTime(guanLiPaiGongDanEntity.getChuchaistarttime());
-            userEntity.setChuChaiEndTime(guanLiPaiGongDanEntity.getChuchaiendtime());
+            userEntity.setCcStatrTime(guanLiPaiGongDanEntity.getChuchaistarttime());
+            userEntity.setCcEndTime(guanLiPaiGongDanEntity.getChuchaiendtime());
             userEntity.setUserid(guanLiPaiGongDanEntity.getPaigongpeople());
             paiGongGuanLiUserDao.updateUserChuChaiTime(userEntity);
+
+            //改变派工人的日勤状态
+
+            //更改派工人员的日勤状态
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Integer paigongpeopleid = guanLiPaiGongDanEntity.getPaigongpeople();//派工人员id
+            Date chuchaistarttime = guanLiPaiGongDanEntity.getChuchaistarttime();//出差开始时间
+            Date chuchaiendtime = guanLiPaiGongDanEntity.getChuchaiendtime();//出差结束时间
+            String chuChaStart = sdf.format(chuchaistarttime);
+            String chuChaEnd = sdf.format(chuchaiendtime);
+            paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid, chuChaStart, chuChaEnd);
         }
     }
 
@@ -435,15 +618,6 @@ public class PaiGongGuanLiPaiGongDanServiceImpl implements PaiGongGuanLiPaiGongD
             messageEntity.setReceiverId(paiGongGuanLiPaiGongDanEntity.getPaigongpeople());
             messageEntity.setStatus((short) 1);
             messageService.sendMessage(messageEntity);
-
-            //更改派工人员的日勤状态
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Integer paigongpeopleid = paiGongGuanLiPaiGongDanEntity.getPaigongpeople();//派工人员id
-            Date chuchaistarttime = paiGongGuanLiPaiGongDanEntity.getChuchaistarttime();//出差开始时间
-            Date chuchaiendtime = paiGongGuanLiPaiGongDanEntity.getChuchaiendtime();//出差结束时间
-            String chuChaStart = sdf.format(chuchaistarttime);
-            String chuChaEnd = sdf.format(chuchaiendtime);
-            paiGongGuanLiUserDaystateDao.updateUserDayState(paigongpeopleid, chuChaStart, chuChaEnd);
 
 
         } else { //自动派工

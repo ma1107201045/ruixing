@@ -1,6 +1,7 @@
 package com.yintu.ruixing.master.paigongguanli;
 
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserDaystateEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserEntity;
 
 import java.util.List;
@@ -43,4 +44,9 @@ public interface PaiGongGuanLiUserDao {
     void updateUserChuChaiTime(PaiGongGuanLiUserEntity userEntity);
 
     List<PaiGongGuanLiUserEntity> findUserByChuChaiTime(Integer uidSet, String startTime, String endTime);
+
+    void deleteByUserid(Long userid);
+
+    List<PaiGongGuanLiUserEntity> findUserID();
+
 }

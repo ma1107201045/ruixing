@@ -17,7 +17,7 @@ public interface PaiGongGuanLiBaoGongService {
 
     List<PaiGongGuanLiBaoGongEntity> findAllBaoGongByUid(Integer page, Integer size, Integer senderid, Date datetime);
 
-    void editBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity);
+    void editBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity,String buChongTime);
 
     void deleteBaoGongByIds(Integer[] ids);
 
@@ -46,4 +46,7 @@ public interface PaiGongGuanLiBaoGongService {
     List<PaiGongGuanLiBaoGongEntity> findAllBaoGongAndAllComment(Integer userid, String riqi);
 
     List<PaiGongGuanLiBaoGongEntity> findAllChuChaiPeopele(String lastDateTime, String nowDateTime);
+
+    void closeBaoGongById(String username, Integer senderid, PaiGongGuanLiBaoGongEntity paiGongGuanLiBaoGongEntity);
+
 }

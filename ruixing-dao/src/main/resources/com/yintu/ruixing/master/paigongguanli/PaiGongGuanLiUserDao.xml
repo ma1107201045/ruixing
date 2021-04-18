@@ -11,20 +11,32 @@
     <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
     <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
     <result column="isdelete" jdbcType="INTEGER" property="isdelete" />
-    <result column="chuChaiStatrTime" jdbcType="TIMESTAMP" property="chuChaiStatrTime" />
-    <result column="chuChaiEndTime" jdbcType="TIMESTAMP" property="chuChaiEndTime" />
+    <result column="ccStatrTime" jdbcType="TIMESTAMP" property="ccStatrTime" />
+    <result column="ccEndTime" jdbcType="TIMESTAMP" property="ccEndTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete,chuChaiStatrTime,chuChaiEndTime
+    id, userid, name, department, create_by, create_time, modified_by, modified_time,isdelete,ccStatrTime,ccEndTime
   </sql>
+
+  <!--查詢所有人員的userid-->
+  <select id="findUserID" resultMap="BaseResultMap">
+    select userid,name from mro_paigongguanli_user
+  </select>
+
+
+  <!--根据userid  删除对应的数据-->
+  <delete id="deleteByUserid" parameterType="java.lang.Long">
+    delete from mro_paigongguanli_user
+    where userid = #{userid}
+  </delete>
 
 
   <!--根据userid  编辑数据-->
   <update id="updateUserChuChaiTime" parameterType="com.yintu.ruixing.paigongguanli.PaiGongGuanLiUserEntity">
     update mro_paigongguanli_user
     set
-    chuChaiStatrTime = #{chuChaiStatrTime},
-    chuChaiEndTime =#{chuChaiEndTime}
+    ccStatrTime = #{ccStatrTime},
+    ccEndTime =#{ccEndTime}
     where
     userid = #{userid}
   </update>
@@ -82,7 +94,7 @@
     mro_paigongguanli_user
     WHERE
     id=#{uidSet}
-    AND (chuChaiStatrTime &gt; #{endTime} OR chuChaiEndTime &lt; #{startTime})
+    AND (ccStatrTime &gt; #{endTime} OR ccEndTime &lt; #{startTime})
   </select>
 
   <!--查詢对应的派工人員-->
@@ -93,7 +105,7 @@
         mro_paigongguanli_user
     WHERE
         id=#{uidSet}
-    AND (chuChaiStatrTime IS NULL OR chuChaiEndTime IS NULL)
+    AND (ccStatrTime IS NULL OR ccEndTime IS NULL)
   </select>
 
 
@@ -199,11 +211,11 @@
       <if test="isdelete != null">
         isdelete,
       </if>
-      <if test="chuChaiStatrTime != null">
-        chuChaiStatrTime,
+      <if test="ccStatrTime != null">
+        ccStatrTime,
       </if>
-      <if test="chuChaiEndTime != null">
-        chuChaiEndTime,
+      <if test="ccEndTime != null">
+        ccEndTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -234,11 +246,11 @@
       <if test="isdelete != null">
         #{isdelete},
       </if>
-      <if test="chuChaiStatrTime != null">
-        #{chuChaiStatrTime,jdbcType=TIMESTAMP},
+      <if test="ccStatrTime != null">
+        #{ccStatrTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chuChaiEndTime != null">
-        #{chuChaiEndTime,jdbcType=TIMESTAMP},
+      <if test="ccEndTime != null">
+        #{ccEndTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -271,11 +283,11 @@
       <if test="isdelete != null">
         isdelete = #{isdelete},
       </if>
-      <if test="chuChaiStatrTime != null">
-        chuChaiStatrTime = #{chuChaiStatrTime,jdbcType=TIMESTAMP},
+      <if test="ccStatrTime != null">
+        ccStatrTime = #{ccStatrTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chuChaiEndTime != null">
-        chuChaiEndTime = #{chuChaiEndTime,jdbcType=TIMESTAMP},
+      <if test="ccEndTime != null">
+        ccEndTime = #{ccEndTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

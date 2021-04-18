@@ -3,16 +3,19 @@ package com.yintu.ruixing.paigongguanli;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yintu.ruixing.chanpinjiaofu.ChanPinJiaoFuXiangMuEntity;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanShenQingDao;
+import com.yintu.ruixing.xitongguanli.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author Mr.liu
@@ -47,9 +50,9 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
                 String paiGongDanNum = suoxie + year + monthStr + "0001";
                 return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
             } else {
-                String substring = paigongdannum.substring(8, 12);
+                String substring = paigongdannum.substring(4, 14);
                 Integer i = Integer.parseInt(substring) + 1;
-                String paiGongDanNum = suoxie + year + monthStr + i.toString();
+                String paiGongDanNum = suoxie + i.toString();
                 return ResponseDataUtil.ok("自动生成派工单号成功", paiGongDanNum);
             }
         }
@@ -185,6 +188,16 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         return ResponseDataUtil.ok("查询派工人员成功",userEntityList);
     }
 
+    //取消派工
+    @PutMapping("/quXiaoPaiGong/{id}")
+    public Map<String,Object>quXiaoPaiGong(@PathVariable Integer id,PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
+        String username = this.getLoginUser().getTrueName();
+        Integer userid = this.getLoginUser().getId().intValue();
+        paiGongGuanLiPaiGongDanService.quXiaoPaiGong(paiGongGuanLiPaiGongDanEntity,userid,username);
+        return ResponseDataUtil.ok("取消派工成功");
+    }
+
+
     //任务标记
     @PutMapping("/editTaskSignById/{id}")
     public Map<String,Object>editTaskSignById(@PathVariable Integer id,PaiGongGuanLiPaiGongDanEntity paiGongGuanLiPaiGongDanEntity){
@@ -245,6 +258,23 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         return ResponseDataUtil.ok("查询符合条件的人员成功",userEntityList);
     }
 
+    //定时更改出差人员的状态
+    @Scheduled(cron = "0 0 02 * * ?")
+    @ResponseBody
+    @GetMapping("/updatePeopleState")
+    public void updatePeopleState(){
+       // Calendar calendar = Calendar.getInstance(); //得到日历
+      //  calendar.add(Calendar.DAY_OF_MONTH, -1); //设置为前一天
+      //  Date dBefore = calendar.getTime(); //得到前一天的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String today = sdf.format(new Date());
+        List<Integer>peopleId=paiGongGuanLiPaiGongDanService.findChuChaiPeopleing();
+        for (Integer pid : peopleId) {
+            paiGongGuanLiPaiGongDanService.updateUserOtherstate(today,pid);
+        }
+
+    }
+
 
     //////////////////模块首页展示//////////////////////////
     @GetMapping("/findAllPaiGongOnHome")
@@ -262,7 +292,7 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Date today = new Date();
         int month = DateUtil.month(today) + 1;
         String monthStr = Integer.toString(month).length() == 1 ? "0" + month : Integer.toString(month);
@@ -274,5 +304,47 @@ public class PaiGongGuanLiPaiGongDanController extends SessionController {
         String substring = num.substring(8);
         System.out.println(substring);
         System.out.println(substring1);
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String today1 = sdf.format(new Date());
+        String today2="2021-04-15";
+        long time1 = sdf.parse(today1).getTime();
+        long time2 = sdf.parse(today2).getTime();
+        System.out.println("time1="+time1);
+        System.out.println("time2="+time2);
+
+
+
+        Calendar calendar = Calendar.getInstance(); //得到日历
+        Date time=sdf.parse("2021-04-19");
+        calendar.setTime(time);
+        int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+        System.out.println("week="+week);
+
+//////////////////////////////////
+        String today21="2021-3-1";
+        Date parse = sdf.parse(today21);
+        Calendar cal11 = Calendar.getInstance();
+        cal11.setTime(parse);
+         int first = cal11.getActualMinimum(Calendar.DAY_OF_MONTH);
+        cal11.set(Calendar.DAY_OF_MONTH, first);
+        System.out.println("123456="+cal11.getTime());
+        String format11 = sdf.format(cal11.getTime());
+        System.out.println("1234564445="+format11);
+
+        Calendar cal22 = Calendar.getInstance();
+        cal22.setTime(parse);
+        Integer last = cal22.getActualMaximum(Calendar.DAY_OF_MONTH);
+        cal22.set(Calendar.DAY_OF_MONTH, last);
+        System.out.println("987456="+cal22.getTime());
+        String format22 = sdf.format(cal22.getTime());
+        System.out.println("987456666666="+format22);
+
+
+
+
+
+
     }
 }

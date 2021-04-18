@@ -26,4 +26,6 @@ public interface PaiGongGuanLiRiQinService {
     JSONObject findAllPeopleRiQinDatas();
 
     void editUserDayState(Integer userid, String dayTime, Integer dayState);
+
+    JSONObject findAllPeopleHistoryRiQinDatas(String riqi);
 }

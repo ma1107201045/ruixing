@@ -1,8 +1,10 @@
 package com.yintu.ruixing.anzhuangtiaoshi;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,10 @@ public class AnZhuangTiaoShiXiangMuEntity {
 
     private Integer worksid; //作业项配置id
 
+    private String worksName; //作业项配置姓名
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date xianduantime;//线段创建的时间
 
     private String tljName;//铁路局名

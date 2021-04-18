@@ -3,10 +3,7 @@ package com.yintu.ruixing.paigongguanli.impl;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
 import com.yintu.ruixing.master.common.MessageDao;
-import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanDao;
-import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanRecordMessageDao;
-import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiPaiGongDanShenQingDao;
-import com.yintu.ruixing.master.paigongguanli.PaiGongGuanLiUserDao;
+import com.yintu.ruixing.master.paigongguanli.*;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanRecordMessageEntity;
 import com.yintu.ruixing.paigongguanli.PaiGongGuanLiPaiGongDanShenQingEntity;
@@ -15,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +39,8 @@ public class PaiGongGuanLiPaiGongDanShenQingServiceImpl implements PaiGongGuanLi
     private PaiGongGuanLiPaiGongDanDao paiGongGuanLiPaiGongDanDao;
     @Autowired
     private PaiGongGuanLiUserDao paiGongGuanLiUserDao;
+    @Autowired
+    private PaiGongGuanLiUserDaystateDao paiGongGuanLiUserDaystateDao;
 
 
     @Override
@@ -80,7 +82,7 @@ public class PaiGongGuanLiPaiGongDanShenQingServiceImpl implements PaiGongGuanLi
             MessageEntity messageEntity = new MessageEntity();
             messageEntity.setCreateBy(username);//创建人
             messageEntity.setCreateTime(new Date());//创建时间
-            messageEntity.setContext("您有派工单申请被拒绝,请查看！");
+            messageEntity.setContext("您有派工单申请已经同意,请查看！");
             messageEntity.setType((short) 5);
             messageEntity.setProjectId(paiGongGuanLiPaiGongDanShenQingEntity.getPgId());
             messageEntity.setMessageType((short) 3);
@@ -103,16 +105,49 @@ public class PaiGongGuanLiPaiGongDanShenQingServiceImpl implements PaiGongGuanLi
             recordMessageEntity.setTypenum(1);
             paiGongGuanLiPaiGongDanRecordMessageDao.insertSelective(recordMessageEntity);
 
+            //更改派工人员日勤状态
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String today = sdf.format(new Date());
+            Integer pgId = paiGongGuanLiPaiGongDanShenQingEntity.getPgId();
+            PaiGongGuanLiPaiGongDanEntity guanLiPaiGongDanEntity=paiGongGuanLiPaiGongDanDao.selectByPrimaryKey(pgId);
+            Date chuchaiendtime = guanLiPaiGongDanEntity.getChuchaiendtime();
+            try {
+                long oldChuChaiEndTime = chuchaiendtime.getTime();//计划出差结束时间
+                long todayTime = sdf.parse(today).getTime();//今天时间
+                if (todayTime<oldChuChaiEndTime){//提前结束派工
+                    Long times=(oldChuChaiEndTime-todayTime)/86400000;
+                    for (Integer i = 0; i <= times; i++) {
+                        Date oneDate=new Date(todayTime+86400000*i);
+                        Calendar calendar = Calendar.getInstance(); //得到日历
+                        calendar.setTime(oneDate);
+                        int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+                        if (week==0 ||week==6){//周六日
+                            paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(guanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),2);
+                        }else {
+                            paiGongGuanLiUserDaystateDao.updateUserDayStateRiQin(guanLiPaiGongDanEntity.getPaigongpeople(),sdf.format(oneDate),1);
+                        }
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             //更改派工状态
             PaiGongGuanLiPaiGongDanEntity paiGongDanEntity=new PaiGongGuanLiPaiGongDanEntity();
             paiGongDanEntity.setId(paiGongGuanLiPaiGongDanShenQingEntity.getPgId());
             if (paiGongGuanLiPaiGongDanShenQingEntity.getShenqingType() == 2) {//申请类型 1：申请完成 2：申请终止'
                 paiGongDanEntity.setPaigongstate(5);
+                paiGongDanEntity.setChuchaiendtime(new Date());
             }
             if (paiGongGuanLiPaiGongDanShenQingEntity.getShenqingType() == 1) {//申请类型 1：申请完成 2：申请终止'
                 paiGongDanEntity.setPaigongstate(6);
+                paiGongDanEntity.setChuchaiendtime(new Date());
             }
             paiGongGuanLiPaiGongDanDao.updateByPrimaryKeySelective(paiGongDanEntity);
+
+            //更改派工人员日勤状态(出差结束的状态)
+            Date chuchaistarttime = guanLiPaiGongDanEntity.getChuchaistarttime();
+            String chuchaiKaiShiTime = sdf.format(chuchaistarttime);
+            paiGongGuanLiUserDaystateDao.editUserotherStateOverChuChai(guanLiPaiGongDanEntity.getPaigongpeople(),chuchaiKaiShiTime,today);
         }
     }
 
