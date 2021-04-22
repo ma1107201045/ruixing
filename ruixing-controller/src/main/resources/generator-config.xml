@@ -23,19 +23,19 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.yintu.ruixing.paigongguanli"
+        <javaModelGenerator targetPackage="com.yintu.ruixing.weixiudaxiu"
                             targetProject="../ruixing-entity/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
             <property name="useActualColumnNames" value="false"/>
         </javaModelGenerator>
         <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.paigongguanli"
+        <sqlMapGenerator targetPackage="com.yintu.ruixing.master.weixiudaxiu"
                          targetProject="../ruixing-dao/src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.paigongguanli"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yintu.ruixing.master.weixiudaxiu"
                              targetProject="../ruixing-dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
@@ -54,9 +54,9 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
-        <table tableName="mro_paigongguanli_baogong_secondary"
-               domainObjectName="PaiGongGuanLiBaoGongSecondaryEntity"
-               mapperName="PaiGongGuanLiBaoGongSecondaryDao"
+        <table tableName="mro_equipment_wenti_return_visit"
+               domainObjectName="EquipmentWenTiReturnVisitEntity"
+               mapperName="EquipmentWenTiReturnVisitDao"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

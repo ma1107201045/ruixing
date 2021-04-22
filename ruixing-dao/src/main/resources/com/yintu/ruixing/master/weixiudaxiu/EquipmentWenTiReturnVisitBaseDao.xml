@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitBaseDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitBaseEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="addUserid" jdbcType="INTEGER" property="adduserid" />
+    <result column="renwuNumber" jdbcType="VARCHAR" property="renwunumber" />
+    <result column="tljName" jdbcType="VARCHAR" property="tljname" />
+    <result column="dwdName" jdbcType="VARCHAR" property="dwdname" />
+    <result column="xdName" jdbcType="VARCHAR" property="xdname" />
+    <result column="returnUserName" jdbcType="VARCHAR" property="returnUserName" />
+    <result column="returnUserid" jdbcType="INTEGER" property="returnuserid" />
+    <result column="returnedUserName" jdbcType="VARCHAR" property="returnedusername" />
+    <result column="returnedUserNamePhone" jdbcType="VARCHAR" property="returnedusernamephone" />
+    <result column="returnCycleType" jdbcType="INTEGER" property="returncycletype" />
+    <result column="renWuStartTime" jdbcType="TIMESTAMP" property="renwustarttime" />
+    <result column="reWuEndTime" jdbcType="TIMESTAMP" property="rewuendtime" />
+    <result column="implementState" jdbcType="INTEGER" property="implementstate" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, addUserid, renwuNumber, tljName, dwdName, xdName, returnUserid, returnedUserName, 
+    returnedUserNamePhone, returnCycleType, renWuStartTime, reWuEndTime, implementState, 
+    createTime, createName, updateTime, updateName
+  </sql>
+
+
+  <!--根据任务开始时间和结束时间  查询对应的回访任务-->
+  <select id="findRenWuByNowTime" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_base
+    where renWuStartTime &lt;=#{today}
+    and reWuEndTime &gt;=#{today}
+    and implementState=1
+    and returnCycleType=1
+  </select>
+
+
+  <!--根据id  查询对应的回访任务-->
+  <select id="findAllReturnVisitRenWu"  resultMap="BaseResultMap">
+    select
+    base.id, addUserid, renwuNumber, tljName, dwdName, xdName, returnUserid, returnedUserName,
+    returnedUserNamePhone, returnCycleType, renWuStartTime, reWuEndTime, implementState,
+    createTime, createName, updateTime, updateName,mc.name as returnUserName
+    from mro_equipment_wenti_return_visit_base base,
+    mro_customer mc
+    <where>
+      base.returnUserid=mc.id
+      <if test="tljName!=null and tljName!=''">
+      and
+        tljName like concat('%',#{tljName},'%')
+      </if>
+      <if test="dwdName!=null and dwdName!=''">
+        and
+        dwdName like concat('%',#{dwdName},'%')
+      </if>
+      <if test="xdName!=null and xdName!=''">
+        and
+        xdName like concat('%',#{xdName},'%')
+      </if>
+      <if test="returnuserid!=null and returnuserid!=''">
+        and
+        returnUserid =#{returnuserid}
+      </if>
+      <if test="returncycletype!=null and returncycletype!=''">
+        and
+        returnCycleType =#{returncycletype}
+      </if>
+      <if test="statrTime!=null and statrTime!=''">
+        and
+        renWuStartTime between #{statrTime} and #{endTime}
+      </if>
+      <if test="implementstate!=null and implementstate!=''">
+        and
+        implementState =#{implementstate}
+      </if>
+    </where>
+  </select>
+
+
+  <!--根据周期类型  查询最新的一条任务-->
+  <select id="findRenWuNumberByType" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select
+    renwuNumber
+    from mro_equipment_wenti_return_visit_base
+    where returnCycleType = #{returncycletype,jdbcType=INTEGER}
+    order by createTime desc limit 1
+  </select>
+
+
+  <!--根据id  查询对应的回访任务-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id删除对应的数据-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_return_visit_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitBaseEntity">
+    insert into mro_equipment_wenti_return_visit_base (id, addUserid, renwuNumber, 
+      tljName, dwdName, xdName, 
+      returnUserid, returnedUserName, returnedUserNamePhone, 
+      returnCycleType, renWuStartTime, reWuEndTime, 
+      implementState, createTime, createName, 
+      updateTime, updateName)
+    values (#{id,jdbcType=INTEGER}, #{adduserid,jdbcType=INTEGER}, #{renwunumber,jdbcType=VARCHAR}, 
+      #{tljname,jdbcType=VARCHAR}, #{dwdname,jdbcType=VARCHAR}, #{xdname,jdbcType=VARCHAR}, 
+      #{returnuserid,jdbcType=INTEGER}, #{returnedusername,jdbcType=VARCHAR}, #{returnedusernamephone,jdbcType=VARCHAR}, 
+      #{returncycletype,jdbcType=INTEGER}, #{renwustarttime,jdbcType=TIMESTAMP}, #{rewuendtime,jdbcType=TIMESTAMP}, 
+      #{implementstate,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR})
+  </insert>
+
+  <!--新增回访任务-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitBaseEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into mro_equipment_wenti_return_visit_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="adduserid != null">
+        addUserid,
+      </if>
+      <if test="renwunumber != null">
+        renwuNumber,
+      </if>
+      <if test="tljname != null">
+        tljName,
+      </if>
+      <if test="dwdname != null">
+        dwdName,
+      </if>
+      <if test="xdname != null">
+        xdName,
+      </if>
+      <if test="returnuserid != null">
+        returnUserid,
+      </if>
+      <if test="returnedusername != null">
+        returnedUserName,
+      </if>
+      <if test="returnedusernamephone != null">
+        returnedUserNamePhone,
+      </if>
+      <if test="returncycletype != null">
+        returnCycleType,
+      </if>
+      <if test="renwustarttime != null">
+        renWuStartTime,
+      </if>
+      <if test="rewuendtime != null">
+        reWuEndTime,
+      </if>
+      <if test="implementstate != null">
+        implementState,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid,jdbcType=INTEGER},
+      </if>
+      <if test="renwunumber != null">
+        #{renwunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="returnuserid != null">
+        #{returnuserid,jdbcType=INTEGER},
+      </if>
+      <if test="returnedusername != null">
+        #{returnedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedusernamephone != null">
+        #{returnedusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="returncycletype != null">
+        #{returncycletype,jdbcType=INTEGER},
+      </if>
+      <if test="renwustarttime != null">
+        #{renwustarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewuendtime != null">
+        #{rewuendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="implementstate != null">
+        #{implementstate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id  编辑对应的回访任务-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitBaseEntity">
+    update mro_equipment_wenti_return_visit_base
+    <set>
+      <if test="adduserid != null">
+        addUserid = #{adduserid,jdbcType=INTEGER},
+      </if>
+      <if test="renwunumber != null">
+        renwuNumber = #{renwunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        tljName = #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        dwdName = #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        xdName = #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="returnuserid != null">
+        returnUserid = #{returnuserid,jdbcType=INTEGER},
+      </if>
+      <if test="returnedusername != null">
+        returnedUserName = #{returnedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedusernamephone != null">
+        returnedUserNamePhone = #{returnedusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="returncycletype != null">
+        returnCycleType = #{returncycletype,jdbcType=INTEGER},
+      </if>
+      <if test="renwustarttime != null">
+        renWuStartTime = #{renwustarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rewuendtime != null">
+        reWuEndTime = #{rewuendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="implementstate != null">
+        implementState = #{implementstate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitBaseEntity">
+    update mro_equipment_wenti_return_visit_base
+    set addUserid = #{adduserid,jdbcType=INTEGER},
+      renwuNumber = #{renwunumber,jdbcType=VARCHAR},
+      tljName = #{tljname,jdbcType=VARCHAR},
+      dwdName = #{dwdname,jdbcType=VARCHAR},
+      xdName = #{xdname,jdbcType=VARCHAR},
+      returnUserid = #{returnuserid,jdbcType=INTEGER},
+      returnedUserName = #{returnedusername,jdbcType=VARCHAR},
+      returnedUserNamePhone = #{returnedusernamephone,jdbcType=VARCHAR},
+      returnCycleType = #{returncycletype,jdbcType=INTEGER},
+      renWuStartTime = #{renwustarttime,jdbcType=TIMESTAMP},
+      reWuEndTime = #{rewuendtime,jdbcType=TIMESTAMP},
+      implementState = #{implementstate,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

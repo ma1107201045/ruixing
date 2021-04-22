@@ -3,10 +3,9 @@ package com.yintu.ruixing.anzhuangtiaoshi.impl;
 import com.yintu.ruixing.anzhuangtiaoshi.*;
 import com.yintu.ruixing.common.MessageEntity;
 import com.yintu.ruixing.common.MessageService;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiAuditorDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiFileDao;
-import com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiRecordMessageDao;
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.PhoneCode;
+import com.yintu.ruixing.master.anzhuangtiaoshi.*;
 import com.yintu.ruixing.master.xitongguanli.DepartmentDao;
 import com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiService;
 import com.yintu.ruixing.xitongguanli.DepartmentEntity;
@@ -29,21 +28,45 @@ import java.util.List;
 public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiService {
     @Autowired
     private AnZhuangTiaoShiWenTiDao anZhuangTiaoShiWenTiDao;
-
     @Autowired
     private AnZhuangTiaoShiWenTiFileDao anZhuangTiaoShiWenTiFileDao;
-
     @Autowired
     private DepartmentDao departmentDao;
-
     @Autowired
     private AnZhuangTiaoShiWenTiRecordMessageDao anZhuangTiaoShiWenTiRecordMessageDao;
-
     @Autowired
     private MessageService messageService;
-
     @Autowired
     private AnZhuangTiaoShiWenTiAuditorDao anZhuangTiaoShiWenTiAuditorDao;
+    @Autowired
+    private AnZhuangTiaoShiWenTiPushRecordDao anZhuangTiaoShiWenTiPushRecordDao;
+
+
+    @Override
+    public List<AnZhuangTiaoShiWenTiPushRecordEntity> findPushMessageRecordById(Integer wid) {
+        return anZhuangTiaoShiWenTiPushRecordDao.findPushMessageRecordById(wid);
+    }
+
+    @Override
+    public void pushMessage(AnZhuangTiaoShiWenTiPushRecordEntity anZhuangTiaoShiWenTiPushRecordEntity) {
+        String phone = anZhuangTiaoShiWenTiPushRecordEntity.getPhone();
+        String phonemsg = PhoneCode.getPhonemsg(phone);
+        if ("true".equals(phonemsg)){
+            anZhuangTiaoShiWenTiPushRecordEntity.setIsnotsuccess(1);
+        }else {
+            anZhuangTiaoShiWenTiPushRecordEntity.setIsnotsuccess(0);
+            throw new BaseRuntimeException("发送消息失败,请检查手机号准确性");
+        }
+        anZhuangTiaoShiWenTiPushRecordDao.insertSelective(anZhuangTiaoShiWenTiPushRecordEntity);
+    }
+
+    @Override
+    public AnZhuangTiaoShiWenTiEntity findOneWenTiById(Integer id) {
+        AnZhuangTiaoShiWenTiEntity wenTiEntity=anZhuangTiaoShiWenTiDao.findOneWenTiById(id);
+        List<AnZhuangTiaoShiWenTiFileEntity>fileEntityList=anZhuangTiaoShiWenTiFileDao.findAllFanKuiFileById(id,null);
+        wenTiEntity.setFileEntityList(fileEntityList);
+        return wenTiEntity;
+    }
 
     @Override
     public List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id) {

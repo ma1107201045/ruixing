@@ -481,4 +481,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose) {
         return customerDao.selectAuditRecordByExample(search, userId, auditStatus, auditorId, activate, isDispose);
     }
+
+    @Override
+    public List<CustomerEntity> findAllCustomer() {
+        return customerDao.findAllCustomer();
+    }
 }

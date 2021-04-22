@@ -56,4 +56,10 @@ public interface AnZhuangTiaoShiWenTiService {
     List<AnZhuangTiaoShiRecordMessageEntity> findFileRecordMessageById(Integer id);
 
     AnZhuangTiaoShiWenTiEntity findWenTiXiangQingById(Integer id);
+
+    AnZhuangTiaoShiWenTiEntity findOneWenTiById(Integer id);
+
+    void pushMessage(AnZhuangTiaoShiWenTiPushRecordEntity anZhuangTiaoShiWenTiPushRecordEntity);
+
+    List<AnZhuangTiaoShiWenTiPushRecordEntity> findPushMessageRecordById(Integer wid);
 }

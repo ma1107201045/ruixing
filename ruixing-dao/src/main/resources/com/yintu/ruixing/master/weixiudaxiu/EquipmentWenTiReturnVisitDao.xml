@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="renWuBaseid" jdbcType="INTEGER" property="renwubaseid" />
+    <result column="renwuNumber" jdbcType="VARCHAR" property="renwunumber" />
+    <result column="recordNumber" jdbcType="VARCHAR" property="recordnumber" />
+    <result column="tljName" jdbcType="VARCHAR" property="tljname" />
+    <result column="dwdName" jdbcType="VARCHAR" property="dwdname" />
+    <result column="xdName" jdbcType="VARCHAR" property="xdname" />
+    <result column="returnUserid" jdbcType="INTEGER" property="returnuserid" />
+    <result column="returnedUserName" jdbcType="VARCHAR" property="returnedusername" />
+    <result column="returnedUserNamePhone" jdbcType="VARCHAR" property="returnedusernamephone" />
+    <result column="renWuState" jdbcType="INTEGER" property="renwustate" />
+    <result column="returnTime" jdbcType="TIMESTAMP" property="returntime" />
+    <result column="returnWenti" jdbcType="VARCHAR" property="returnwenti" />
+    <result column="replyMessage" jdbcType="VARCHAR" property="replymessage" />
+    <result column="implementState" jdbcType="INTEGER" property="implementstate" />
+    <result column="wentiState" jdbcType="INTEGER" property="wentistate" />
+    <result column="pushState" jdbcType="INTEGER" property="pushstate" />
+    <result column="returnCycleType" jdbcType="INTEGER" property="returncycletype" />
+    <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="typeNumber" jdbcType="INTEGER" property="typenumber" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, renWuBaseid, renwuNumber, recordNumber, tljName, dwdName, xdName, returnUserid, 
+    returnedUserName, returnedUserNamePhone, renWuState, returnTime, returnWenti, replyMessage, 
+    implementState, wentiState, pushState, returnCycleType, years, typeNumber, createTime, 
+    createName, updateTime, updateName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_return_visit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+    insert into mro_equipment_wenti_return_visit (id, renWuBaseid, renwuNumber, 
+      recordNumber, tljName, dwdName, 
+      xdName, returnUserid, returnedUserName, 
+      returnedUserNamePhone, renWuState, returnTime, 
+      returnWenti, replyMessage, implementState, 
+      wentiState, pushState, returnCycleType, 
+      years, typeNumber, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{renwubaseid,jdbcType=INTEGER}, #{renwunumber,jdbcType=VARCHAR}, 
+      #{recordnumber,jdbcType=VARCHAR}, #{tljname,jdbcType=VARCHAR}, #{dwdname,jdbcType=VARCHAR}, 
+      #{xdname,jdbcType=VARCHAR}, #{returnuserid,jdbcType=INTEGER}, #{returnedusername,jdbcType=VARCHAR}, 
+      #{returnedusernamephone,jdbcType=VARCHAR}, #{renwustate,jdbcType=INTEGER}, #{returntime,jdbcType=TIMESTAMP}, 
+      #{returnwenti,jdbcType=VARCHAR}, #{replymessage,jdbcType=VARCHAR}, #{implementstate,jdbcType=INTEGER}, 
+      #{wentistate,jdbcType=INTEGER}, #{pushstate,jdbcType=INTEGER}, #{returncycletype,jdbcType=INTEGER}, 
+      #{years,jdbcType=VARCHAR}, #{typenumber,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--新增单次任务回访-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+    insert into mro_equipment_wenti_return_visit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="renwubaseid != null">
+        renWuBaseid,
+      </if>
+      <if test="renwunumber != null">
+        renwuNumber,
+      </if>
+      <if test="recordnumber != null">
+        recordNumber,
+      </if>
+      <if test="tljname != null">
+        tljName,
+      </if>
+      <if test="dwdname != null">
+        dwdName,
+      </if>
+      <if test="xdname != null">
+        xdName,
+      </if>
+      <if test="returnuserid != null">
+        returnUserid,
+      </if>
+      <if test="returnedusername != null">
+        returnedUserName,
+      </if>
+      <if test="returnedusernamephone != null">
+        returnedUserNamePhone,
+      </if>
+      <if test="renwustate != null">
+        renWuState,
+      </if>
+      <if test="returntime != null">
+        returnTime,
+      </if>
+      <if test="returnwenti != null">
+        returnWenti,
+      </if>
+      <if test="replymessage != null">
+        replyMessage,
+      </if>
+      <if test="implementstate != null">
+        implementState,
+      </if>
+      <if test="wentistate != null">
+        wentiState,
+      </if>
+      <if test="pushstate != null">
+        pushState,
+      </if>
+      <if test="returncycletype != null">
+        returnCycleType,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="typenumber != null">
+        typeNumber,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="renwubaseid != null">
+        #{renwubaseid,jdbcType=INTEGER},
+      </if>
+      <if test="renwunumber != null">
+        #{renwunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recordnumber != null">
+        #{recordnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="returnuserid != null">
+        #{returnuserid,jdbcType=INTEGER},
+      </if>
+      <if test="returnedusername != null">
+        #{returnedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedusernamephone != null">
+        #{returnedusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="renwustate != null">
+        #{renwustate,jdbcType=INTEGER},
+      </if>
+      <if test="returntime != null">
+        #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnwenti != null">
+        #{returnwenti,jdbcType=VARCHAR},
+      </if>
+      <if test="replymessage != null">
+        #{replymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="implementstate != null">
+        #{implementstate,jdbcType=INTEGER},
+      </if>
+      <if test="wentistate != null">
+        #{wentistate,jdbcType=INTEGER},
+      </if>
+      <if test="pushstate != null">
+        #{pushstate,jdbcType=INTEGER},
+      </if>
+      <if test="returncycletype != null">
+        #{returncycletype,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="typenumber != null">
+        #{typenumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+    update mro_equipment_wenti_return_visit
+    <set>
+      <if test="renwubaseid != null">
+        renWuBaseid = #{renwubaseid,jdbcType=INTEGER},
+      </if>
+      <if test="renwunumber != null">
+        renwuNumber = #{renwunumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recordnumber != null">
+        recordNumber = #{recordnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        tljName = #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        dwdName = #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        xdName = #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="returnuserid != null">
+        returnUserid = #{returnuserid,jdbcType=INTEGER},
+      </if>
+      <if test="returnedusername != null">
+        returnedUserName = #{returnedusername,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedusernamephone != null">
+        returnedUserNamePhone = #{returnedusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="renwustate != null">
+        renWuState = #{renwustate,jdbcType=INTEGER},
+      </if>
+      <if test="returntime != null">
+        returnTime = #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnwenti != null">
+        returnWenti = #{returnwenti,jdbcType=VARCHAR},
+      </if>
+      <if test="replymessage != null">
+        replyMessage = #{replymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="implementstate != null">
+        implementState = #{implementstate,jdbcType=INTEGER},
+      </if>
+      <if test="wentistate != null">
+        wentiState = #{wentistate,jdbcType=INTEGER},
+      </if>
+      <if test="pushstate != null">
+        pushState = #{pushstate,jdbcType=INTEGER},
+      </if>
+      <if test="returncycletype != null">
+        returnCycleType = #{returncycletype,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=VARCHAR},
+      </if>
+      <if test="typenumber != null">
+        typeNumber = #{typenumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+    update mro_equipment_wenti_return_visit
+    set renWuBaseid = #{renwubaseid,jdbcType=INTEGER},
+      renwuNumber = #{renwunumber,jdbcType=VARCHAR},
+      recordNumber = #{recordnumber,jdbcType=VARCHAR},
+      tljName = #{tljname,jdbcType=VARCHAR},
+      dwdName = #{dwdname,jdbcType=VARCHAR},
+      xdName = #{xdname,jdbcType=VARCHAR},
+      returnUserid = #{returnuserid,jdbcType=INTEGER},
+      returnedUserName = #{returnedusername,jdbcType=VARCHAR},
+      returnedUserNamePhone = #{returnedusernamephone,jdbcType=VARCHAR},
+      renWuState = #{renwustate,jdbcType=INTEGER},
+      returnTime = #{returntime,jdbcType=TIMESTAMP},
+      returnWenti = #{returnwenti,jdbcType=VARCHAR},
+      replyMessage = #{replymessage,jdbcType=VARCHAR},
+      implementState = #{implementstate,jdbcType=INTEGER},
+      wentiState = #{wentistate,jdbcType=INTEGER},
+      pushState = #{pushstate,jdbcType=INTEGER},
+      returnCycleType = #{returncycletype,jdbcType=INTEGER},
+      years = #{years,jdbcType=VARCHAR},
+      typeNumber = #{typenumber,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

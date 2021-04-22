@@ -31,4 +31,6 @@ public interface AnZhuangTiaoShiWenTiDao {
     AnZhuangTiaoShiWenTiEntity findOneWentById(Integer id);
 
     AnZhuangTiaoShiWenTiEntity findWenTiXiangQingById(Integer id);
+
+    AnZhuangTiaoShiWenTiEntity findOneWenTiById(Integer id);
 }

@@ -24,4 +24,7 @@ public interface CustomerDao {
     List<CustomerEntity> selectByExample(Integer[] ids, Integer typeId, Integer departmentId, String name);
 
     List<AuditTotalVo> selectAuditRecordByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
+
+    List<CustomerEntity> findAllCustomer();
+
 }

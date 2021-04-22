@@ -64,4 +64,6 @@ public interface CustomerService extends BaseService<CustomerEntity, Integer> {
     List<AuditTotalVo> findByExample(String search, Integer userId, Short auditStatus, Integer auditorId, Short activate, Short isDispose);
 
 
+    List<CustomerEntity> findAllCustomer();
+
 }

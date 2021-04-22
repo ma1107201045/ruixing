@@ -129,6 +129,8 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
     }
 
 
+
+
     ////////////////////////文件/////////////////////////////
     //根据文件id 编辑审核过程
     @PutMapping("/editAuditorByWTFileId/{id}")
@@ -226,6 +228,35 @@ public class AnZhuangTiaoShiWenTiController extends SessionController {
     public Map<String, Object> deleteFileByIds(@PathVariable Integer[] ids) {
         anZhuangTiaoShiWenTiService.deleteFileByIds(ids);
         return ResponseDataUtil.ok("删除文件成功");
+    }
+
+/////////////////////////////手机推送//////////////////////////////////////////////////
+    //根据id查询对应的问题(处置单查看)
+    @GetMapping("/findOneWenTiById/{id}")
+    public Map<String,Object>findOneWenTiById(@PathVariable Integer id){
+        AnZhuangTiaoShiWenTiEntity wenTiEntity=anZhuangTiaoShiWenTiService.findOneWenTiById(id);
+        return ResponseDataUtil.ok("查询成功",wenTiEntity);
+    }
+
+    //手机推送消息
+    @PostMapping("/pushMessage")
+    public Map<String,Object>pushMessage(AnZhuangTiaoShiWenTiPushRecordEntity anZhuangTiaoShiWenTiPushRecordEntity){
+        String username = this.getLoginUser().getTrueName();
+        anZhuangTiaoShiWenTiPushRecordEntity.setCreatename(username);
+        anZhuangTiaoShiWenTiPushRecordEntity.setCreatetime(new Date());
+        anZhuangTiaoShiWenTiPushRecordEntity.setUpdatename(username);
+        anZhuangTiaoShiWenTiPushRecordEntity.setUpdatetime(new Date());
+        anZhuangTiaoShiWenTiService.pushMessage(anZhuangTiaoShiWenTiPushRecordEntity);
+        return ResponseDataUtil.ok("发送消息成功");
+    }
+
+    //根据问题id  查看推送记录
+    @GetMapping("/findPushMessageRecordById/{wid}")
+    public Map<String,Object>findPushMessageRecordById(@PathVariable Integer wid,Integer page,Integer size){
+        PageHelper.startPage(page,size);
+        List<AnZhuangTiaoShiWenTiPushRecordEntity>pushRecordEntityList=anZhuangTiaoShiWenTiService.findPushMessageRecordById(wid);
+        PageInfo<AnZhuangTiaoShiWenTiPushRecordEntity>pushRecordEntityPageInfo=new PageInfo<>(pushRecordEntityList);
+        return ResponseDataUtil.ok("查询推送记录成功",pushRecordEntityPageInfo);
     }
 
 

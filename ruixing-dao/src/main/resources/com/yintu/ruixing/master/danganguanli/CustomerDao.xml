@@ -25,6 +25,13 @@
         id, create_by, create_time, modified_by, modified_time,user_id, type_id, duty_id, name, phone,
     special_plane, email, province_id, city_id, district_id, detailed_address,audit_status,audit_finish_time
     </sql>
+
+    <select id="findAllCustomer" resultMap="BaseResultMap">
+        select
+        name, phone
+        from mro_customer
+    </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

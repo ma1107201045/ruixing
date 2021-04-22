@@ -31,6 +31,14 @@
     yuliu, createTime, createName, updateTime, updateName,wentiType,auditorState,userid
   </sql>
 
+    <!--根据id 显示问题-->
+    <select id="findOneWenTiById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from mro_anzhuangtiaoshi_wenti
+        where id=#{id}
+    </select>
+
 
     <!--主页面跳转  根据id 显示为未完成的问题-->
     <select id="findWenTiXiangQingById" resultMap="BaseResultMap">
