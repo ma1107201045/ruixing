@@ -18,4 +18,8 @@ public interface AnZhuangTiaoShiWenTiPushRecordDao {
     int insertSelective(AnZhuangTiaoShiWenTiPushRecordEntity record);
 
     List<AnZhuangTiaoShiWenTiPushRecordEntity> findPushMessageRecordById(Integer wid);
+
+    String findFristPushNumber();
+
+
 }

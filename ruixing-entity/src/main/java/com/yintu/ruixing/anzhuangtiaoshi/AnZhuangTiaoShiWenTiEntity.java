@@ -54,4 +54,5 @@ public class AnZhuangTiaoShiWenTiEntity {
 
     private List<AnZhuangTiaoShiWenTiFileEntity>fileEntityList;
 
+    private String pushNumber;
 }

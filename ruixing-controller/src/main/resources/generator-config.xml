@@ -54,9 +54,9 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
-        <table tableName="mro_equipment_wenti_return_visit"
-               domainObjectName="EquipmentWenTiReturnVisitEntity"
-               mapperName="EquipmentWenTiReturnVisitDao"
+        <table tableName="mro_equipment_wenti_return_visit_push_record"
+               domainObjectName="EquipmentWenTiReturnVisitPushRecordEntity"
+               mapperName="EquipmentWenTiReturnVisitPushRecordDao"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,20 +52,92 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     public void pushMessage(AnZhuangTiaoShiWenTiPushRecordEntity anZhuangTiaoShiWenTiPushRecordEntity) {
         String phone = anZhuangTiaoShiWenTiPushRecordEntity.getPhone();
         String phonemsg = PhoneCode.getPhonemsg(phone);
-        if ("true".equals(phonemsg)){
+        if ("true".equals(phonemsg)) {
             anZhuangTiaoShiWenTiPushRecordEntity.setIsnotsuccess(1);
-        }else {
+        } else {
             anZhuangTiaoShiWenTiPushRecordEntity.setIsnotsuccess(0);
             throw new BaseRuntimeException("发送消息失败,请检查手机号准确性");
+        }
+        String pushNumber = anZhuangTiaoShiWenTiPushRecordDao.findFristPushNumber();
+        Calendar calendar = Calendar.getInstance();
+        String months = "";
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH);
+        Integer monthlength = month.toString().length();
+        if (monthlength == 1) {
+            months = "0" + month.toString();
+        }
+        if (monthlength == 2) {
+            months = month.toString();
+        }
+        if (pushNumber == null) {
+            if (monthlength == 1) {
+                String onePushNumber = "GCFK-" + year + "-0" + months + "-001";
+                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
+            }
+            if (monthlength == 2) {
+                String onePushNumber = "GCFK-" + year + "-" + months + "-001";
+                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
+            }
+        } else {//GCFK-2021-04-001
+            String[] number_split = pushNumber.split("-");
+            if (number_split[1].equals(year.toString()) && number_split[2].equals(months)) {
+                Integer num = Integer.valueOf(number_split[3]) + 1;
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
+                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
+            }
+            if (number_split[1].equals(year.toString())){
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
+                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
+            }else {
+                String onePushNumber = "GCFK-" + year + "-" + months + 001;
+                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
+            }
         }
         anZhuangTiaoShiWenTiPushRecordDao.insertSelective(anZhuangTiaoShiWenTiPushRecordEntity);
     }
 
     @Override
     public AnZhuangTiaoShiWenTiEntity findOneWenTiById(Integer id) {
-        AnZhuangTiaoShiWenTiEntity wenTiEntity=anZhuangTiaoShiWenTiDao.findOneWenTiById(id);
-        List<AnZhuangTiaoShiWenTiFileEntity>fileEntityList=anZhuangTiaoShiWenTiFileDao.findAllFanKuiFileById(id,null);
+        AnZhuangTiaoShiWenTiEntity wenTiEntity = anZhuangTiaoShiWenTiDao.findOneWenTiById(id);
+        List<AnZhuangTiaoShiWenTiFileEntity> fileEntityList = anZhuangTiaoShiWenTiFileDao.findAllFanKuiFileById(id, null);
         wenTiEntity.setFileEntityList(fileEntityList);
+        String pushNumber = anZhuangTiaoShiWenTiPushRecordDao.findFristPushNumber();
+        Calendar calendar = Calendar.getInstance();
+        String months = "";
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH);
+        Integer monthlength = month.toString().length();
+        if (monthlength == 1) {
+            months = "0" + month.toString();
+        }
+        if (monthlength == 2) {
+            months = month.toString();
+        }
+        if (pushNumber == null) {
+            if (monthlength == 1) {
+                String onePushNumber = "GCFK-" + year + "-0" + months + "-001";
+                wenTiEntity.setPushNumber(onePushNumber);
+            }
+            if (monthlength == 2) {
+                String onePushNumber = "GCFK-" + year + "-" + months + "-001";
+                wenTiEntity.setPushNumber(onePushNumber);
+            }
+        } else {//GCFK-2021-04-001
+            String[] number_split = pushNumber.split("-");
+            if (number_split[1].equals(year.toString()) && number_split[2].equals(months)) {
+                Integer num = Integer.valueOf(number_split[3]) + 1;
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
+                wenTiEntity.setPushNumber(onePushNumber);
+            }
+            if (number_split[1].equals(year.toString())){
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
+                wenTiEntity.setPushNumber(onePushNumber);
+            }else {
+                String onePushNumber = "GCFK-" + year + "-" + months + 001;
+                wenTiEntity.setPushNumber(onePushNumber);
+            }
+        }
         return wenTiEntity;
     }
 
@@ -99,10 +172,10 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setReceiverId(senderId);
             messageEntity.setStatus((short) 1);
             Integer fenlei = fileEntity.getFenlei();
-            if (fenlei==1){
+            if (fenlei == 1) {
                 messageEntity.setSmallType((short) 2);
             }
-            if (fenlei==2){
+            if (fenlei == 2) {
                 messageEntity.setSmallType((short) 3);
             }
             messageService.sendMessage(messageEntity);
@@ -146,7 +219,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
 
     @Override
     public AnZhuangTiaoShiWenTiEntity findWenTiById(Integer id, Integer receiverid) {
-        return anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id,receiverid);
+        return anZhuangTiaoShiWenTiDao.selectByPrimaryKey(id, receiverid);
     }
 
     @Override
@@ -355,9 +428,9 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
     }
 
     @Override
-    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, Integer receiverid ,String startTime, String endTime,String wenTiType,
-                                                          String fankuiMode, String shouliDanwei,Integer isNotOver) {
-        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, receiverid,startTime,endTime,wenTiType,fankuiMode,shouliDanwei,isNotOver);
+    public List<AnZhuangTiaoShiWenTiEntity> findSomeWenTi(Integer page, Integer size, String xdname, Integer receiverid, String startTime, String endTime, String wenTiType,
+                                                          String fankuiMode, String shouliDanwei, Integer isNotOver) {
+        return anZhuangTiaoShiWenTiDao.findSomeWenTi(xdname, receiverid, startTime, endTime, wenTiType, fankuiMode, shouliDanwei, isNotOver);
     }
 
     @Override
@@ -452,7 +525,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
         anZhuangTiaoShiWenTiEntity.setAuditorState(1);
         anZhuangTiaoShiWenTiEntity.setUserid(senderid);
         Date actualovertime = anZhuangTiaoShiWenTiEntity.getAskovertime();
-        System.out.println("111111111"+actualovertime);
+        System.out.println("111111111" + actualovertime);
         anZhuangTiaoShiWenTiDao.insertSelective(anZhuangTiaoShiWenTiEntity);
         Integer wtid = anZhuangTiaoShiWenTiEntity.getId();
         AnZhuangTiaoShiWenTiRecordMessageEntity recordMessageEntity = new AnZhuangTiaoShiWenTiRecordMessageEntity();
@@ -481,7 +554,7 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             messageEntity.setSenderId(senderid);
             messageEntity.setReceiverId(uid);
             messageEntity.setStatus((short) 1);
-            messageEntity.setSmallType((short)1);
+            messageEntity.setSmallType((short) 1);
             messageService.sendMessage(messageEntity);
         }
 

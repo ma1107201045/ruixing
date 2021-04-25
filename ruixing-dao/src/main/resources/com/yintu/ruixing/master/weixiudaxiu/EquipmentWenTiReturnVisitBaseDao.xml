@@ -20,16 +20,54 @@
     <result column="createName" jdbcType="VARCHAR" property="createname" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="tljid" jdbcType="INTEGER" property="tljid" />
+    <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
+    <result column="xdid" jdbcType="INTEGER" property="xdid" />
   </resultMap>
   <sql id="Base_Column_List">
     id, addUserid, renwuNumber, tljName, dwdName, xdName, returnUserid, returnedUserName, 
     returnedUserNamePhone, returnCycleType, renWuStartTime, reWuEndTime, implementState, 
-    createTime, createName, updateTime, updateName
+    createTime, createName, updateTime, updateName,tljid,dwdid,xdid
   </sql>
 
 
-  <!--根据任务开始时间和结束时间  查询对应的回访任务-->
-  <select id="findRenWuByNowTime" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <!--根据任务开始时间和结束时间  查询对应的季度回访任务-->
+  <select id="findRenWuByNowYear"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_base
+    where renWuStartTime &lt;=#{today}
+    and reWuEndTime &gt;=#{today}
+    and implementState=1
+    and returnCycleType=4
+  </select>
+
+  <!--根据任务开始时间和结束时间  查询对应的季度回访任务-->
+  <select id="findRenWuByNowQuarter"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_base
+    where renWuStartTime &lt;=#{today}
+    and reWuEndTime &gt;=#{today}
+    and implementState=1
+    and returnCycleType=3
+  </select>
+
+
+  <!--根据任务开始时间和结束时间  查询对应的月回访任务-->
+  <select id="findRenWuByNowMonth"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_base
+    where renWuStartTime &lt;=#{today}
+    and reWuEndTime &gt;=#{today}
+    and implementState=1
+    and returnCycleType=2
+  </select>
+
+
+  <!--根据任务开始时间和结束时间  查询对应的周回访任务-->
+  <select id="findRenWuByNowTime"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from mro_equipment_wenti_return_visit_base
@@ -45,11 +83,11 @@
     select
     base.id, addUserid, renwuNumber, tljName, dwdName, xdName, returnUserid, returnedUserName,
     returnedUserNamePhone, returnCycleType, renWuStartTime, reWuEndTime, implementState,
-    createTime, createName, updateTime, updateName,mc.name as returnUserName
+    createTime, createName, updateTime, updateName,us.name as returnUserName,tljid,dwdid,xdid
     from mro_equipment_wenti_return_visit_base base,
-    mro_customer mc
+    mro_paigongguanli_user us
     <where>
-      base.returnUserid=mc.id
+      base.returnUserid=us.userid
       <if test="tljName!=null and tljName!=''">
       and
         tljName like concat('%',#{tljName},'%')
@@ -79,6 +117,7 @@
         implementState =#{implementstate}
       </if>
     </where>
+    order by id desc
   </select>
 
 
@@ -175,6 +214,15 @@
       <if test="updatename != null">
         updateName,
       </if>
+      <if test="tljid != null">
+        tljid,
+      </if>
+      <if test="dwdid != null">
+        dwdid,
+      </if>
+      <if test="xdid != null">
+        xdid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -227,6 +275,15 @@
       </if>
       <if test="updatename != null">
         #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        #{xdid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -282,6 +339,15 @@
       </if>
       <if test="updatename != null">
         updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        tljid = #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        dwdid = #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        xdid = #{xdid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

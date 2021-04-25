@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitCommentDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitCommentEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vid" jdbcType="INTEGER" property="vid" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="commentType" jdbcType="INTEGER" property="commenttype" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, vid, userid, username, comment, commentType, createtime, createName, updateTime, 
+    updateName
+  </sql>
+
+
+  <!--根据回访id  查询对应的评论-->
+  <select id="findCommentByVid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_comment
+    where vid = #{vid,jdbcType=INTEGER}
+    order by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_return_visit_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitCommentEntity">
+    insert into mro_equipment_wenti_return_visit_comment (id, vid, userid, 
+      username, comment, commentType, 
+      createtime, createName, updateTime, 
+      updateName)
+    values (#{id,jdbcType=INTEGER}, #{vid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{username,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{commenttype,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR})
+  </insert>
+
+  <!--新增评论成功-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitCommentEntity">
+    insert into mro_equipment_wenti_return_visit_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="vid != null">
+        vid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="commenttype != null">
+        commentType,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vid != null">
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commenttype != null">
+        #{commenttype,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitCommentEntity">
+    update mro_equipment_wenti_return_visit_comment
+    <set>
+      <if test="vid != null">
+        vid = #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commenttype != null">
+        commentType = #{commenttype,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitCommentEntity">
+    update mro_equipment_wenti_return_visit_comment
+    set vid = #{vid,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      commentType = #{commenttype,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

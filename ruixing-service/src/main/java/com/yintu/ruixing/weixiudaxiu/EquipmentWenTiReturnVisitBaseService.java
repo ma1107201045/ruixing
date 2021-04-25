@@ -27,4 +27,10 @@ public interface EquipmentWenTiReturnVisitBaseService {
     void editImplementstateById(EquipmentWenTiReturnVisitBaseEntity equipmentWenTiReturnVisitBaseEntity);
 
     void findRenWuByNowTime(String today);
+
+    void findRenWuByNowMonth(String today);
+
+    void findRenWuByNowQuarter(String today);
+
+    void findRenWuByNowYear(String today);
 }

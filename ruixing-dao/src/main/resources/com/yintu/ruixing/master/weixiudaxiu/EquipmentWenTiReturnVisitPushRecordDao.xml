@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yintu.ruixing.master.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordDao">
-  <resultMap id="BaseResultMap" type="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordEntity">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="wid" jdbcType="INTEGER" property="wid" />
-    <result column="pushNumber" jdbcType="VARCHAR" property="pushNumber" />
+    <result column="vid" jdbcType="INTEGER" property="vid" />
+    <result column="pushNumber" jdbcType="VARCHAR" property="pushnumber" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="pushname" jdbcType="VARCHAR" property="pushname" />
     <result column="department" jdbcType="VARCHAR" property="department" />
@@ -16,11 +16,20 @@
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, wid,pushNumber, phone, pushname, department, position, isnotsuccess, createTime, createName,
-    updateTime, updateName
+    id, vid, pushNumber, phone, pushname, department, position, isnotsuccess, createTime, 
+    createName, updateTime, updateName
   </sql>
 
 
+  <!--根据vid  查询对应的推送记录-->
+  <select id="findPushMessageRecordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_anzhuangtiaoshi_wenti_push_record
+    where vid = #{vid,jdbcType=INTEGER}
+  </select>
+
+  <!--查询最新的编号-->
   <select id="findFristPushNumber" resultType="java.lang.String">
     select
     pushNumber
@@ -28,47 +37,40 @@
     order by id desc limit 1
   </select>
 
-  <!--根据wid  查询对应的推送记录-->
-  <select id="findPushMessageRecordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_wenti_push_record
-    where wid = #{wid,jdbcType=INTEGER}
-  </select>
-
-
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_wenti_push_record
+    from mro_equipment_wenti_return_visit_push_record
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from mro_anzhuangtiaoshi_wenti_push_record
+    delete from mro_equipment_wenti_return_visit_push_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordEntity">
-    insert into mro_anzhuangtiaoshi_wenti_push_record (id, wid, phone, 
-      pushname, department, position, 
-      isnotsuccess, createTime, createName, 
-      updateTime, updateName)
-    values (#{id,jdbcType=INTEGER}, #{wid,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, 
-      #{pushname,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
-      #{isnotsuccess,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordEntity">
+    insert into mro_equipment_wenti_return_visit_push_record (id, vid, pushNumber, 
+      phone, pushname, department, 
+      position, isnotsuccess, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{vid,jdbcType=INTEGER}, #{pushnumber,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{pushname,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{isnotsuccess,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
   </insert>
 
-  <!--新增问题推送记录-->
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordEntity">
-    insert into mro_anzhuangtiaoshi_wenti_push_record
+  <!--新增推送记录-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordEntity">
+    insert into mro_equipment_wenti_return_visit_push_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="wid != null">
-        wid,
+      <if test="vid != null">
+        vid,
       </if>
-      <if test="pushNumber != null">
+      <if test="pushnumber != null">
         pushNumber,
       </if>
       <if test="phone != null">
@@ -103,11 +105,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="wid != null">
-        #{wid,jdbcType=INTEGER},
+      <if test="vid != null">
+        #{vid,jdbcType=INTEGER},
       </if>
-      <if test="pushNumber != null">
-        #{pushNumber,jdbcType=VARCHAR},
+      <if test="pushnumber != null">
+        #{pushnumber,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
@@ -138,14 +140,14 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordEntity">
-    update mro_anzhuangtiaoshi_wenti_push_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordEntity">
+    update mro_equipment_wenti_return_visit_push_record
     <set>
-      <if test="wid != null">
-        wid = #{wid,jdbcType=INTEGER},
+      <if test="vid != null">
+        vid = #{vid,jdbcType=INTEGER},
       </if>
-      <if test="pushNumber != null">
-        pushNumber = #{pushNumber,jdbcType=VARCHAR},
+      <if test="pushnumber != null">
+        pushNumber = #{pushnumber,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
@@ -177,9 +179,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.anzhuangtiaoshi.AnZhuangTiaoShiWenTiPushRecordEntity">
-    update mro_anzhuangtiaoshi_wenti_push_record
-    set wid = #{wid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordEntity">
+    update mro_equipment_wenti_return_visit_push_record
+    set vid = #{vid,jdbcType=INTEGER},
+      pushNumber = #{pushnumber,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       pushname = #{pushname,jdbcType=VARCHAR},
       department = #{department,jdbcType=VARCHAR},

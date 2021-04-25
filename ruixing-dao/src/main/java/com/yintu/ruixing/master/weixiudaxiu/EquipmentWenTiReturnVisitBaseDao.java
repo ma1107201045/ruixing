@@ -29,4 +29,10 @@ public interface EquipmentWenTiReturnVisitBaseDao {
 
 
     List<EquipmentWenTiReturnVisitBaseEntity> findRenWuByNowTime(String today);
+
+    List<EquipmentWenTiReturnVisitBaseEntity> findRenWuByNowMonth(String today);
+
+    List<EquipmentWenTiReturnVisitBaseEntity> findRenWuByNowQuarter(String today);
+
+    List<EquipmentWenTiReturnVisitBaseEntity> findRenWuByNowYear(String today);
 }

@@ -21,24 +21,105 @@
     <result column="pushState" jdbcType="INTEGER" property="pushstate" />
     <result column="returnCycleType" jdbcType="INTEGER" property="returncycletype" />
     <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="returnUsername" jdbcType="VARCHAR" property="returnUsername" />
     <result column="typeNumber" jdbcType="INTEGER" property="typenumber" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="createName" jdbcType="VARCHAR" property="createname" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="tljid" jdbcType="INTEGER" property="tljid" />
+    <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
+    <result column="xdid" jdbcType="INTEGER" property="xdid" />
+    <result column="editState" jdbcType="INTEGER" property="editState" />
+    <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, renWuBaseid, renwuNumber, recordNumber, tljName, dwdName, xdName, returnUserid, 
     returnedUserName, returnedUserNamePhone, renWuState, returnTime, returnWenti, replyMessage, 
     implementState, wentiState, pushState, returnCycleType, years, typeNumber, createTime, 
-    createName, updateTime, updateName
+    createName, updateTime, updateName,tljid,dwdid,xdid,editState,begintime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from mro_equipment_wenti_return_visit
-    where id = #{id,jdbcType=INTEGER}
+
+
+  <!--改变所有上周/上月/上季度/上年的任务不可编辑-->
+  <update id="editStateByYearAndDatas" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
+  update mro_equipment_wenti_return_visit
+  set editState=0
+  where years=#{years}
+  and typeNumber=#{dataNum}
+  </update>
+
+  <!--初始化访问任务 或者根据条件查询对应的访问任务-->
+  <select id="findAllReturnVisit"  resultMap="BaseResultMap">
+    select
+    visit.id, renWuBaseid, renwuNumber, recordNumber, tljName, dwdName, xdName, returnUserid,
+    returnedUserName, returnedUserNamePhone, renWuState, returnTime, returnWenti, replyMessage,
+    implementState, wentiState, pushState, returnCycleType, years, typeNumber, createTime,
+    createName, updateTime, updateName,us.name as returnUsername,tljid,dwdid,xdid,editState,begintime
+    from mro_equipment_wenti_return_visit visit,
+    mro_paigongguanli_user us
+    <where>
+      visit.returnUserid=us.userid
+      <if test="renWuNumber !=null and renWuNumber !=''">
+        and renwuNumber like concat('%',#{renWuNumber},'%')
+      </if>
+      <if test="recordNumber !=null and recordNumber !=''">
+        and recordNumber like concat('%',#{recordNumber},'%')
+      </if>
+      <if test="tljName !=null and tljName !=''">
+        and tljName like concat('%',#{tljName},'%')
+      </if>
+      <if test="dwdName !=null and dwdName !=''">
+        and dwdName like concat('%',#{dwdName},'%')
+      </if>
+      <if test="xdName !=null and xdName !=''">
+        and xdName like concat('%',#{xdName},'%')
+      </if>
+      <if test="returnUserid !=null and returnUserid !=''">
+        and returnUserid =#{returnUserid}
+      </if>
+      <if test="renWuState !=null and renWuState !=''">
+        and renWuState =#{renWuState}
+      </if>
+      <if test="pushState !=null and pushState !=''">
+        and pushState =#{pushState}
+      </if>
+      <if test="returnWenti !=null and returnWenti !=''">
+        and returnWenti like concat('%',#{returnWenti},'%')
+      </if>
+      <if test="wentiState !=null and wentiState !=''">
+        and wentiState =#{wentiState}
+      </if>
+      <if test="startTime !=null and startTime !=''">
+        and returnTime between #{startTime} and #{endTime}
+      </if>
+      <if test="years !=null and years !=''">
+        and years =#{years}
+      </if>
+      <if test="week !=null and week !=''">
+        and typeNumber =#{week}
+      </if>
+      <if test="longinuserid !=null and longinuserid !=''">
+        and returnUserid =#{longinuserid}
+      </if>
+      and begintime &lt;#{todaystring}
+    </where>
+    order by id desc
   </select>
+
+  <!--根据id 查询对应的回访任务-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     select
+    visit.id, renWuBaseid, renwuNumber, recordNumber, tljName, dwdName, xdName, returnUserid,
+    returnedUserName, returnedUserNamePhone, renWuState, returnTime, returnWenti, replyMessage,
+    implementState, wentiState, pushState, returnCycleType, years, typeNumber, createTime,
+    createName, updateTime, updateName,us.name as returnUsername,tljid,dwdid,xdid,editState,begintime
+    from mro_equipment_wenti_return_visit visit,
+    mro_paigongguanli_user us
+    where visit.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id  删除对应的回访任务-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_equipment_wenti_return_visit
     where id = #{id,jdbcType=INTEGER}
@@ -140,6 +221,21 @@
       <if test="updatename != null">
         updateName,
       </if>
+      <if test="tljid != null">
+        tljid,
+      </if>
+      <if test="dwdid != null">
+        dwdid,
+      </if>
+      <if test="xdid != null">
+        xdid,
+      </if>
+      <if test="editState != null">
+        editState,
+      </if>
+      <if test="begintime != null">
+        begintime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -214,8 +310,25 @@
       <if test="updatename != null">
         #{updatename,jdbcType=VARCHAR},
       </if>
+      <if test="tljid != null">
+        #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        #{xdid,jdbcType=INTEGER},
+      </if>
+      <if test="editState != null">
+        #{editState,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        #{begintime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
+
+  <!--根据id  编辑对应的回访-->
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitEntity">
     update mro_equipment_wenti_return_visit
     <set>
@@ -287,6 +400,21 @@
       </if>
       <if test="updatename != null">
         updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        tljid = #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        dwdid = #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        xdid = #{xdid,jdbcType=INTEGER},
+      </if>
+      <if test="editState != null">
+        editState = #{editState,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        begintime = #{begintime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

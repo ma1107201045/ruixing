@@ -14,6 +14,8 @@ public class AnZhuangTiaoShiWenTiPushRecordEntity {
 
     private Integer wid;
 
+    private String pushNumber;
+
     private String phone;
 
     private String pushname;
