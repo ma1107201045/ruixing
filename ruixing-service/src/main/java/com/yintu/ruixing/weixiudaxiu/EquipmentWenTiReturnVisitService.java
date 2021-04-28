@@ -18,7 +18,8 @@ public interface EquipmentWenTiReturnVisitService {
                                                              Integer returnUserid, Integer renWuState,
                                                              Integer pushState, String returnWenti,
                                                              Integer wentiState, String startTime,
-                                                             String endTime, String years, Integer week,Integer longinuserid);
+                                                             String endTime, String years, Integer week,
+                                                             Integer longinuserid, Integer returnCycleType);
 
     void deleteReturnVisitByIds(Integer[] ids);
 

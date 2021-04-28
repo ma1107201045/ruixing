@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="wentitype" jdbcType="VARCHAR" property="wentitype" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, wentitype, createTime, createName, updateTime, updateName
+  </sql>
+
+  <select id="findAllWenTiType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_customer_wentitype
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_customer_wentitype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id 删除对应问题类型-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_customer_wentitype
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity">
+    insert into mro_equipment_wenti_customer_wentitype (id, wentitype, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{wentitype,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--新增问题类型-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity">
+    insert into mro_equipment_wenti_customer_wentitype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="wentitype != null">
+        wentitype,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wentitype != null">
+        #{wentitype,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id 编辑对应的问题类型-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity">
+    update mro_equipment_wenti_customer_wentitype
+    <set>
+      <if test="wentitype != null">
+        wentitype = #{wentitype,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity">
+    update mro_equipment_wenti_customer_wentitype
+    set wentitype = #{wentitype,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

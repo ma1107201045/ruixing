@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="tljName" jdbcType="VARCHAR" property="tljname" />
+    <result column="dwdName" jdbcType="VARCHAR" property="dwdname" />
+    <result column="xdName" jdbcType="VARCHAR" property="xdname" />
+    <result column="feedbackTime" jdbcType="TIMESTAMP" property="feedbacktime" />
+    <result column="feedbackUserName" jdbcType="VARCHAR" property="feedbackusername" />
+    <result column="feedbackUserNamePhone" jdbcType="VARCHAR" property="feedbackusernamephone" />
+    <result column="wentiType" jdbcType="VARCHAR" property="wentitype" />
+    <result column="wentiMiaoshu" jdbcType="VARCHAR" property="wentimiaoshu" />
+    <result column="feedbackState" jdbcType="INTEGER" property="feedbackstate" />
+    <result column="acceptUserid" jdbcType="INTEGER" property="acceptuserid" />
+    <result column="acceptUserName" jdbcType="VARCHAR" property="acceptusername" />
+    <result column="acceptTime" jdbcType="TIMESTAMP" property="accepttime" />
+    <result column="replyMessage" jdbcType="VARCHAR" property="replymessage" />
+    <result column="wentiState" jdbcType="INTEGER" property="wentistate" />
+    <result column="pushState" jdbcType="INTEGER" property="pushstate" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="tljid" jdbcType="INTEGER" property="tljid" />
+    <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
+    <result column="xdid" jdbcType="INTEGER" property="xdid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, number, tljName, dwdName, xdName, feedbackTime, feedbackUserName, feedbackUserNamePhone, 
+    wentiType, wentiMiaoshu, feedbackState, acceptUserid, acceptUserName, acceptTime, 
+    replyMessage, wentiState, pushState, createTime, createName, updateTime, updateName, 
+    tljid, dwdid, xdid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_online_accept_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_online_accept_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity">
+    insert into mro_equipment_wenti_online_accept_feedback (id, number, tljName, 
+      dwdName, xdName, feedbackTime, 
+      feedbackUserName, feedbackUserNamePhone, 
+      wentiType, wentiMiaoshu, feedbackState, 
+      acceptUserid, acceptUserName, acceptTime, 
+      replyMessage, wentiState, pushState, 
+      createTime, createName, updateTime, 
+      updateName, tljid, dwdid, 
+      xdid)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{tljname,jdbcType=VARCHAR}, 
+      #{dwdname,jdbcType=VARCHAR}, #{xdname,jdbcType=VARCHAR}, #{feedbacktime,jdbcType=TIMESTAMP}, 
+      #{feedbackusername,jdbcType=VARCHAR}, #{feedbackusernamephone,jdbcType=VARCHAR}, 
+      #{wentitype,jdbcType=VARCHAR}, #{wentimiaoshu,jdbcType=VARCHAR}, #{feedbackstate,jdbcType=INTEGER}, 
+      #{acceptuserid,jdbcType=INTEGER}, #{acceptusername,jdbcType=VARCHAR}, #{accepttime,jdbcType=TIMESTAMP}, 
+      #{replymessage,jdbcType=VARCHAR}, #{wentistate,jdbcType=INTEGER}, #{pushstate,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{tljid,jdbcType=INTEGER}, #{dwdid,jdbcType=INTEGER}, 
+      #{xdid,jdbcType=INTEGER})
+  </insert>
+
+  <!--客户新增反馈问题-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into mro_equipment_wenti_online_accept_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="tljname != null">
+        tljName,
+      </if>
+      <if test="dwdname != null">
+        dwdName,
+      </if>
+      <if test="xdname != null">
+        xdName,
+      </if>
+      <if test="feedbacktime != null">
+        feedbackTime,
+      </if>
+      <if test="feedbackusername != null">
+        feedbackUserName,
+      </if>
+      <if test="feedbackusernamephone != null">
+        feedbackUserNamePhone,
+      </if>
+      <if test="wentitype != null">
+        wentiType,
+      </if>
+      <if test="wentimiaoshu != null">
+        wentiMiaoshu,
+      </if>
+      <if test="feedbackstate != null">
+        feedbackState,
+      </if>
+      <if test="acceptuserid != null">
+        acceptUserid,
+      </if>
+      <if test="acceptusername != null">
+        acceptUserName,
+      </if>
+      <if test="accepttime != null">
+        acceptTime,
+      </if>
+      <if test="replymessage != null">
+        replyMessage,
+      </if>
+      <if test="wentistate != null">
+        wentiState,
+      </if>
+      <if test="pushstate != null">
+        pushState,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+      <if test="tljid != null">
+        tljid,
+      </if>
+      <if test="dwdid != null">
+        dwdid,
+      </if>
+      <if test="xdid != null">
+        xdid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbacktime != null">
+        #{feedbacktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackusername != null">
+        #{feedbackusername,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackusernamephone != null">
+        #{feedbackusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="wentitype != null">
+        #{wentitype,jdbcType=VARCHAR},
+      </if>
+      <if test="wentimiaoshu != null">
+        #{wentimiaoshu,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackstate != null">
+        #{feedbackstate,jdbcType=INTEGER},
+      </if>
+      <if test="acceptuserid != null">
+        #{acceptuserid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptusername != null">
+        #{acceptusername,jdbcType=VARCHAR},
+      </if>
+      <if test="accepttime != null">
+        #{accepttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replymessage != null">
+        #{replymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="wentistate != null">
+        #{wentistate,jdbcType=INTEGER},
+      </if>
+      <if test="pushstate != null">
+        #{pushstate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        #{xdid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity">
+    update mro_equipment_wenti_online_accept_feedback
+    <set>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        tljName = #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        dwdName = #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        xdName = #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbacktime != null">
+        feedbackTime = #{feedbacktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedbackusername != null">
+        feedbackUserName = #{feedbackusername,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackusernamephone != null">
+        feedbackUserNamePhone = #{feedbackusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="wentitype != null">
+        wentiType = #{wentitype,jdbcType=VARCHAR},
+      </if>
+      <if test="wentimiaoshu != null">
+        wentiMiaoshu = #{wentimiaoshu,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackstate != null">
+        feedbackState = #{feedbackstate,jdbcType=INTEGER},
+      </if>
+      <if test="acceptuserid != null">
+        acceptUserid = #{acceptuserid,jdbcType=INTEGER},
+      </if>
+      <if test="acceptusername != null">
+        acceptUserName = #{acceptusername,jdbcType=VARCHAR},
+      </if>
+      <if test="accepttime != null">
+        acceptTime = #{accepttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replymessage != null">
+        replyMessage = #{replymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="wentistate != null">
+        wentiState = #{wentistate,jdbcType=INTEGER},
+      </if>
+      <if test="pushstate != null">
+        pushState = #{pushstate,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        tljid = #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        dwdid = #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        xdid = #{xdid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity">
+    update mro_equipment_wenti_online_accept_feedback
+    set number = #{number,jdbcType=VARCHAR},
+      tljName = #{tljname,jdbcType=VARCHAR},
+      dwdName = #{dwdname,jdbcType=VARCHAR},
+      xdName = #{xdname,jdbcType=VARCHAR},
+      feedbackTime = #{feedbacktime,jdbcType=TIMESTAMP},
+      feedbackUserName = #{feedbackusername,jdbcType=VARCHAR},
+      feedbackUserNamePhone = #{feedbackusernamephone,jdbcType=VARCHAR},
+      wentiType = #{wentitype,jdbcType=VARCHAR},
+      wentiMiaoshu = #{wentimiaoshu,jdbcType=VARCHAR},
+      feedbackState = #{feedbackstate,jdbcType=INTEGER},
+      acceptUserid = #{acceptuserid,jdbcType=INTEGER},
+      acceptUserName = #{acceptusername,jdbcType=VARCHAR},
+      acceptTime = #{accepttime,jdbcType=TIMESTAMP},
+      replyMessage = #{replymessage,jdbcType=VARCHAR},
+      wentiState = #{wentistate,jdbcType=INTEGER},
+      pushState = #{pushstate,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR},
+      tljid = #{tljid,jdbcType=INTEGER},
+      dwdid = #{dwdid,jdbcType=INTEGER},
+      xdid = #{xdid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

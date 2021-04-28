@@ -48,14 +48,14 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
         if ("true".equals(phonemsg)) {
             equipmentWenTiReturnVisitPushRecordEntity.setIsnotsuccess(1);
             //改变回访发送状态
-            EquipmentWenTiReturnVisitEntity visitEntity=new EquipmentWenTiReturnVisitEntity();
+            EquipmentWenTiReturnVisitEntity visitEntity = new EquipmentWenTiReturnVisitEntity();
             visitEntity.setPushstate(1);
             visitEntity.setId(equipmentWenTiReturnVisitPushRecordEntity.getVid());
             equipmentWenTiReturnVisitDao.updateByPrimaryKeySelective(visitEntity);
         } else {
             equipmentWenTiReturnVisitPushRecordEntity.setIsnotsuccess(0);
             //改变回访发送状态
-            EquipmentWenTiReturnVisitEntity visitEntity=new EquipmentWenTiReturnVisitEntity();
+            EquipmentWenTiReturnVisitEntity visitEntity = new EquipmentWenTiReturnVisitEntity();
             visitEntity.setPushstate(2);
             visitEntity.setId(equipmentWenTiReturnVisitPushRecordEntity.getVid());
             equipmentWenTiReturnVisitDao.updateByPrimaryKeySelective(visitEntity);
@@ -65,7 +65,7 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
         Calendar calendar = Calendar.getInstance();
         String months = "";
         Integer year = calendar.get(Calendar.YEAR);
-        Integer month = calendar.get(Calendar.MONTH);
+        Integer month = calendar.get(Calendar.MONTH) + 1;
         Integer monthlength = month.toString().length();
         if (monthlength == 1) {
             months = "0" + month.toString();
@@ -74,14 +74,8 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
             months = month.toString();
         }
         if (pushNumber == null) {
-            if (monthlength == 1) {
-                String onePushNumber = "GCFK-" + year + "-0" + months + "-001";
-                equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
-            }
-            if (monthlength == 2) {
-                String onePushNumber = "GCFK-" + year + "-" + months + "-001";
-                equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
-            }
+            String onePushNumber = "GCFK-" + year + "-" + months + "-001";
+            equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
         } else {//GCFK-2021-04-001
             String[] number_split = pushNumber.split("-");
             if (number_split[1].equals(year.toString()) && number_split[2].equals(months)) {
@@ -89,10 +83,10 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
                 equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
             }
-            if (number_split[1].equals(year.toString())){
+            if (number_split[1].equals(year.toString())) {
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
                 equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
-            }else {
+            } else {
                 String onePushNumber = "GCFK-" + year + "-" + months + 001;
                 equipmentWenTiReturnVisitPushRecordEntity.setPushnumber(onePushNumber);
             }
@@ -102,9 +96,9 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
 
     @Override
     public EquipmentWenTiReturnVisitEntity findOneReturnVisitById(Integer id) {
-        EquipmentWenTiReturnVisitEntity returnVisitEntity=equipmentWenTiReturnVisitDao.selectByPrimaryKey(id);
-        List<EquipmentWenTiReturnVisitFileEntity> wenTiFile=equipmentWenTiReturnVisitFileDao.findWenTiFile(id);
-        List<EquipmentWenTiReturnVisitFileEntity> returnFile=equipmentWenTiReturnVisitFileDao.findReturnFile(id);
+        EquipmentWenTiReturnVisitEntity returnVisitEntity = equipmentWenTiReturnVisitDao.selectByPrimaryKey(id);
+        List<EquipmentWenTiReturnVisitFileEntity> wenTiFile = equipmentWenTiReturnVisitFileDao.findWenTiFile(id);
+        List<EquipmentWenTiReturnVisitFileEntity> returnFile = equipmentWenTiReturnVisitFileDao.findReturnFile(id);
         returnVisitEntity.setWenTiFileList(wenTiFile);
         returnVisitEntity.setReturnFileList(returnFile);
         //添加记录
@@ -136,10 +130,10 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
                 returnVisitEntity.setPushNumber(onePushNumber);
             }
-            if (number_split[1].equals(year.toString())){
+            if (number_split[1].equals(year.toString())) {
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
                 returnVisitEntity.setPushNumber(onePushNumber);
-            }else {
+            } else {
                 String onePushNumber = "GCFK-" + year + "-" + months + 001;
                 returnVisitEntity.setPushNumber(onePushNumber);
             }
@@ -163,8 +157,8 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
     }
 
     @Override
-    public List<EquipmentWenTiReturnVisitFileEntity> findFie(Integer filetype,Integer vid) {
-        return equipmentWenTiReturnVisitFileDao.findFie(filetype,vid);
+    public List<EquipmentWenTiReturnVisitFileEntity> findFie(Integer filetype, Integer vid) {
+        return equipmentWenTiReturnVisitFileDao.findFie(filetype, vid);
     }
 
     @Override
@@ -184,17 +178,17 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
                                                                     String dwdName, String xdName, Integer returnUserid,
                                                                     Integer renWuState, Integer pushState, String returnWenti,
                                                                     Integer wentiState, String startTime, String endTime,
-                                                                    String years, Integer week,Integer longinuserid) {
-        Date today=new Date();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                                                                    String years, Integer week, Integer longinuserid, Integer returnCycleType) {
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today_string = sdf.format(today);
         return equipmentWenTiReturnVisitDao.findAllReturnVisit(renWuNumber, recordNumber, tljName, dwdName, xdName,
-                returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, years, week,longinuserid,today_string);
+                returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, years, week, longinuserid, today_string,returnCycleType);
     }
 
     @Override
     public void editReturnVisitById(EquipmentWenTiReturnVisitEntity equipmentWenTiReturnVisitEntity,
-                                    String fristFileName, String firstFilePath, String secondFileName, String secondFilePath,Integer longinUserid) {
+                                    String fristFileName, String firstFilePath, String secondFileName, String secondFilePath, Integer longinUserid) {
         if (equipmentWenTiReturnVisitEntity.getReplymessage() != null || equipmentWenTiReturnVisitEntity.getReturnwenti() != null || firstFilePath != null || secondFilePath != null) {
             Date today = new Date();
             equipmentWenTiReturnVisitEntity.setReturntime(today);
@@ -270,7 +264,7 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
             equipmentWenTiReturnVisitDao.updateByPrimaryKeySelective(equipmentWenTiReturnVisitEntity);
 
             //添加文件
-            if (!"".equals(firstFilePath)  ||!"".equals(fristFileName)) {
+            if (!"".equals(firstFilePath) || !"".equals(fristFileName)) {
                 String[] filePath = firstFilePath.split(",");
                 String[] fileName = fristFileName.split(",");
                 for (int i = 0; i < filePath.length; i++) {
@@ -287,7 +281,7 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
                     equipmentWenTiReturnVisitFileDao.insertSelective(fileEntity);
                 }
             }
-            if (!"".equals(secondFileName)  || !"".equals(secondFilePath)) {
+            if (!"".equals(secondFileName) || !"".equals(secondFilePath)) {
                 String[] filePath = secondFilePath.split(",");
                 String[] fileName = secondFileName.split(",");
                 for (int i = 0; i < filePath.length; i++) {

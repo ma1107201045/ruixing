@@ -148,7 +148,7 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
     public Map<String, Object> findAllReturnVisit(Integer page, Integer size, Integer returnCycleType, String renWuNumber, String recordNumber,
                                                   String tljName, String dwdName, String xdName, Integer returnUserid, Integer renWuState,
                                                   Integer pushState, String returnWenti, Integer wentiState, String startTime, String endTime,
-                                                  Integer typeid ,Integer longinuserid) {//typeid: 1:上，2:本，3:下
+                                                  Integer typeid, Integer longinuserid) {//typeid: 1:上，2:本，3:下
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setFirstDayOfWeek(Calendar.MONDAY);
         calendar1.setTime(new Date());
@@ -179,7 +179,7 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                 oneWeek = week;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -188,14 +188,14 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneWeek = 52;
                     oneYear = years - 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 } else {
                     oneWeek = week - 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
@@ -205,22 +205,23 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneWeek = 1;
                     oneYear = years + 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 } else {
                     oneWeek = week + 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
-            }if (typeid == 0) {
-                oneWeek =null;
+            }
+            if (typeid == 0) {
+                oneWeek = null;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneWeek, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -230,7 +231,7 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                 oneMonth = month;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -239,14 +240,15 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneMonth = 12;
                     oneYear = years - 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
-                } if (typeid == 0) {
+                }
+                if (typeid == 0) {
                     oneMonth = month - 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
@@ -256,22 +258,23 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneMonth = 1;
                     oneYear = years + 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 } else {
                     oneMonth = month + 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
-            }if (typeid == 0) {
+            }
+            if (typeid == 0) {
                 oneMonth = null;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneMonth, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -281,7 +284,7 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                 oneQuarter = quarter;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -290,14 +293,14 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneQuarter = 4;
                     oneYear = years - 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 } else {
                     oneQuarter = quarter - 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
@@ -307,22 +310,23 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
                     oneQuarter = 1;
                     oneYear = years + 1;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 } else {
                     oneQuarter = quarter + 1;
                     oneYear = years;
                     List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                            tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                     PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                     return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
                 }
-            }if (typeid == 0) {
+            }
+            if (typeid == 0) {
                 oneQuarter = null;
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), oneQuarter, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -331,26 +335,27 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
             if (typeid == 2) {//本年
                 oneYear = years;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
             if (typeid == 1) {//上年
                 oneYear = years - 1;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
             if (typeid == 3) {//下年
                 oneYear = years + 1;
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, oneYear.toString(), 1, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
-            }if (typeid == 0) {
+            }
+            if (typeid == 0) {
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
-                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, null, 1,longinuserid);
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, null, 1, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }
@@ -362,27 +367,27 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
     //根据id 编辑对应的回访任务
     @PutMapping("/editReturnVisitById/{id}")
     public Map<String, Object> editReturnVisitById(@PathVariable Integer id, EquipmentWenTiReturnVisitEntity equipmentWenTiReturnVisitEntity,
-                                                   String fristFileName,String firstFilePath,String secondFileName,String secondFilePath) {
+                                                   String fristFileName, String firstFilePath, String secondFileName, String secondFilePath) {
         String longinUsername = this.getLoginUser().getTrueName();
         Integer longinUserid = this.getLoginUser().getId().intValue();
         equipmentWenTiReturnVisitEntity.setUpdatename(longinUsername);
         equipmentWenTiReturnVisitEntity.setUpdatetime(new Date());
-        equipmentWenTiReturnVisitService.editReturnVisitById(equipmentWenTiReturnVisitEntity,fristFileName,firstFilePath,secondFileName,secondFilePath,longinUserid);
+        equipmentWenTiReturnVisitService.editReturnVisitById(equipmentWenTiReturnVisitEntity, fristFileName, firstFilePath, secondFileName, secondFilePath, longinUserid);
         return ResponseDataUtil.ok("编辑成功");
     }
 
     //根据id 删除对应的回访任务
     @DeleteMapping("/deleteReturnVisitByIds/{ids}")
-    public Map<String,Object>deleteReturnVisitByIds(@PathVariable Integer[] ids){
+    public Map<String, Object> deleteReturnVisitByIds(@PathVariable Integer[] ids) {
         equipmentWenTiReturnVisitService.deleteReturnVisitByIds(ids);
         return ResponseDataUtil.ok("删除成功");
     }
 
 
-///////////////////////////////////回访文件///////////////////////////////////////////////
+    ///////////////////////////////////回访文件///////////////////////////////////////////////
     //新增文件
     @PostMapping("/addFile")
-    public Map<String,Object>addFile(EquipmentWenTiReturnVisitFileEntity equipmentWenTiReturnVisitFileEntity){
+    public Map<String, Object> addFile(EquipmentWenTiReturnVisitFileEntity equipmentWenTiReturnVisitFileEntity) {
         String longinUsername = this.getLoginUser().getTrueName();
         Integer longinUserid = this.getLoginUser().getId().intValue();
         equipmentWenTiReturnVisitFileEntity.setCreatename(longinUsername);
@@ -396,14 +401,14 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
 
     //根据类型  查询回访任务文件
     @GetMapping("/findFie")
-    public Map<String,Object>findFie(Integer filetype,Integer vid){
-        List<EquipmentWenTiReturnVisitFileEntity>fileEntityList=equipmentWenTiReturnVisitService.findFie(filetype,vid);
-        return ResponseDataUtil.ok("查询文件成功",fileEntityList);
+    public Map<String, Object> findFie(Integer filetype, Integer vid) {
+        List<EquipmentWenTiReturnVisitFileEntity> fileEntityList = equipmentWenTiReturnVisitService.findFie(filetype, vid);
+        return ResponseDataUtil.ok("查询文件成功", fileEntityList);
     }
 
     //根据id 删除对应的文件
     @DeleteMapping("/deleteFileById/{id}")
-    public Map<String,Object>deleteFileById(@PathVariable Integer id){
+    public Map<String, Object> deleteFileById(@PathVariable Integer id) {
         equipmentWenTiReturnVisitService.deleteFileById(id);
         return ResponseDataUtil.ok("删除文件成功");
     }
@@ -412,7 +417,7 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
     ///////////////////////////评论///////////////////////////////
     //添加评论
     @PostMapping("/addComment")
-    public Map<String,Object>addComment(EquipmentWenTiReturnVisitCommentEntity equipmentWenTiReturnVisitCommentEntity){
+    public Map<String, Object> addComment(EquipmentWenTiReturnVisitCommentEntity equipmentWenTiReturnVisitCommentEntity) {
         String longinUsername = this.getLoginUser().getTrueName();
         Integer longinUserid = this.getLoginUser().getId().intValue();
         equipmentWenTiReturnVisitCommentEntity.setCreatename(longinUsername);
@@ -428,22 +433,22 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
 
     //根据回访id 查询评论
     @GetMapping("/findCommentByVid/{vid}")
-    public Map<String,Object>findCommentByVid(@PathVariable Integer vid){
-        List<EquipmentWenTiReturnVisitCommentEntity>commentEntityList=equipmentWenTiReturnVisitService.findCommentByVid(vid);
-        return ResponseDataUtil.ok("查询评论成功",commentEntityList);
+    public Map<String, Object> findCommentByVid(@PathVariable Integer vid) {
+        List<EquipmentWenTiReturnVisitCommentEntity> commentEntityList = equipmentWenTiReturnVisitService.findCommentByVid(vid);
+        return ResponseDataUtil.ok("查询评论成功", commentEntityList);
     }
 
     ///////////////////////////////////////手机推送消息////////////////////////////////////////////////
     //根据id  查询对应的回访信息
     @GetMapping("/findOneReturnVisitById/{id}")
-    public Map<String,Object>findOneReturnVisitById(@PathVariable Integer id){
-        EquipmentWenTiReturnVisitEntity returnVisitEntity=equipmentWenTiReturnVisitService.findOneReturnVisitById(id);
-        return ResponseDataUtil.ok("查询成功",returnVisitEntity);
+    public Map<String, Object> findOneReturnVisitById(@PathVariable Integer id) {
+        EquipmentWenTiReturnVisitEntity returnVisitEntity = equipmentWenTiReturnVisitService.findOneReturnVisitById(id);
+        return ResponseDataUtil.ok("查询成功", returnVisitEntity);
     }
 
     //手机推送消息
     @PostMapping("/pushMessage")
-    public Map<String,Object>pushMessage(EquipmentWenTiReturnVisitPushRecordEntity equipmentWenTiReturnVisitPushRecordEntity){
+    public Map<String, Object> pushMessage(EquipmentWenTiReturnVisitPushRecordEntity equipmentWenTiReturnVisitPushRecordEntity) {
         String username = this.getLoginUser().getTrueName();
         equipmentWenTiReturnVisitPushRecordEntity.setCreatename(username);
         equipmentWenTiReturnVisitPushRecordEntity.setCreatetime(new Date());
@@ -455,17 +460,12 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
 
     //回访id  查看推送记录
     @GetMapping("/findPushMessageRecordById/{vid}")
-    public Map<String,Object>findPushMessageRecordById(@PathVariable Integer vid,Integer page,Integer size){
-        PageHelper.startPage(page,size);
-        List<EquipmentWenTiReturnVisitPushRecordEntity>pushRecordEntityList=equipmentWenTiReturnVisitService.findPushMessageRecordById(vid);
-        PageInfo<EquipmentWenTiReturnVisitPushRecordEntity>pushRecordEntityPageInfo=new PageInfo<>(pushRecordEntityList);
-        return ResponseDataUtil.ok("查询推送记录成功",pushRecordEntityPageInfo);
+    public Map<String, Object> findPushMessageRecordById(@PathVariable Integer vid, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<EquipmentWenTiReturnVisitPushRecordEntity> pushRecordEntityList = equipmentWenTiReturnVisitService.findPushMessageRecordById(vid);
+        PageInfo<EquipmentWenTiReturnVisitPushRecordEntity> pushRecordEntityPageInfo = new PageInfo<>(pushRecordEntityList);
+        return ResponseDataUtil.ok("查询推送记录成功", pushRecordEntityPageInfo);
     }
-
-
-
-
-
 
 
     public static void main(String[] args) {

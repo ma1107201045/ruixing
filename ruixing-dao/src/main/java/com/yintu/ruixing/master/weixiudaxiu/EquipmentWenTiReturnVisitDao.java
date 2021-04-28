@@ -25,7 +25,7 @@ public interface EquipmentWenTiReturnVisitDao {
                                                              Integer pushState, String returnWenti,
                                                              Integer wentiState, String startTime,
                                                              String endTime, String years, Integer week,
-                                                             Integer longinuserid,String todaystring);
+                                                             Integer longinuserid,String todaystring, Integer returnCycleType);
 
     void editStateByYearAndDatas(String years, Integer dataNum);
 }

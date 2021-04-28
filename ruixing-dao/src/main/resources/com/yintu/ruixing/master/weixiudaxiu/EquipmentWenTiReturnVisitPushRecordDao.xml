@@ -25,7 +25,7 @@
   <select id="findPushMessageRecordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from mro_anzhuangtiaoshi_wenti_push_record
+    from mro_equipment_wenti_return_visit_push_record
     where vid = #{vid,jdbcType=INTEGER}
   </select>
 
@@ -33,7 +33,7 @@
   <select id="findFristPushNumber" resultType="java.lang.String">
     select
     pushNumber
-    from mro_anzhuangtiaoshi_wenti_push_record
+    from mro_equipment_wenti_return_visit_push_record
     order by id desc limit 1
   </select>
 

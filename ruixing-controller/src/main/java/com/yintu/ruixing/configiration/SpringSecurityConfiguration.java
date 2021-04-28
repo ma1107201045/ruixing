@@ -1,15 +1,20 @@
 package com.yintu.ruixing.configiration;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.component.CustomAccessDecisionManager;
 import com.yintu.ruixing.component.CustomFilterInvocationSecurityMetadataSource;
 import com.yintu.ruixing.exception.VerificationCodeException;
+import com.yintu.ruixing.filter.AuthenticationTokenFilter;
 import com.yintu.ruixing.filter.CustomUsernamePasswordAuthenticationFilter;
+import com.yintu.ruixing.filter.VerificationCodeFilter;
 import com.yintu.ruixing.xitongguanli.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -20,17 +25,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
@@ -44,7 +53,14 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
     @Autowired
     private CustomAccessDecisionManager customAccessDecisionManager;
-
+    @Autowired
+    private VerificationCodeFilter verificationCodeFilter;
+    @Autowired
+    private FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource;
+    @Autowired
+    private AccessDecisionManager accessDecisionManager;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     /**
      * 密码加密以及密码匹配bean
@@ -162,12 +178,14 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode", "/druid/**", "/websocket/**", "/test/**", "/files/**", "/backups/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/v2/api-docs",
-                "/webjars/**",
-                "/remote/support/video/meetings/add/join/person/**");
+        web.ignoring()
+                .antMatchers("/captcha/**")
+                .antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode", "/druid/**", "/websocket/**", "/test/**", "/files/**", "/backups/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/v2/api-docs",
+                        "/webjars/**",
+                        "/remote/support/video/meetings/add/join/person/**");
     }
 
     @Override
@@ -206,6 +224,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
+
                 })
                 //没有访问权限时，在这里处理结果，不要重定向
                 .accessDeniedHandler((HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException accessDeniedException) -> {
@@ -217,7 +236,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     out.write(jo.toJSONString());
                     out.flush();
                     out.close();
-                }).and().addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).addFilterAt(concurrentSessionFilter(), ConcurrentSessionFilter.class);
+                }).and().addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(concurrentSessionFilter(), ConcurrentSessionFilter.class);
     }
 
 

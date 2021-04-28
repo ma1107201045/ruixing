@@ -103,6 +103,7 @@
         and returnUserid =#{longinuserid}
       </if>
       and begintime &lt;#{todaystring}
+      and returnCycleType=#{returnCycleType}
     </where>
     order by id desc
   </select>
@@ -116,7 +117,8 @@
     createName, updateTime, updateName,us.name as returnUsername,tljid,dwdid,xdid,editState,begintime
     from mro_equipment_wenti_return_visit visit,
     mro_paigongguanli_user us
-    where visit.id = #{id,jdbcType=INTEGER}
+    where visit.returnUserid=us.userid
+    and visit.id = #{id,jdbcType=INTEGER}
   </select>
 
   <!--根据id  删除对应的回访任务-->
