@@ -71,14 +71,8 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
             months = month.toString();
         }
         if (pushNumber == null) {
-            if (monthlength == 1) {
-                String onePushNumber = "GCFK-" + year + "-0" + months + "-001";
-                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
-            }
-            if (monthlength == 2) {
-                String onePushNumber = "GCFK-" + year + "-" + months + "-001";
-                anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
-            }
+            String onePushNumber = "GCFK-" + year + "-" + months + "-001";
+            anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
         } else {//GCFK-2021-04-001
             String[] number_split = pushNumber.split("-");
             if (number_split[1].equals(year.toString()) && number_split[2].equals(months)) {
@@ -86,10 +80,10 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
                 anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
             }
-            if (number_split[1].equals(year.toString())){
+            if (number_split[1].equals(year.toString())) {
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
                 anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
-            }else {
+            } else {
                 String onePushNumber = "GCFK-" + year + "-" + months + 001;
                 anZhuangTiaoShiWenTiPushRecordEntity.setPushNumber(onePushNumber);
             }
@@ -130,10 +124,10 @@ public class AnZhuangTiaoShiWenTiServiceImpl implements AnZhuangTiaoShiWenTiServ
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
                 wenTiEntity.setPushNumber(onePushNumber);
             }
-            if (number_split[1].equals(year.toString())){
+            if (number_split[1].equals(year.toString())) {
                 String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
                 wenTiEntity.setPushNumber(onePushNumber);
-            }else {
+            } else {
                 String onePushNumber = "GCFK-" + year + "-" + months + 001;
                 wenTiEntity.setPushNumber(onePushNumber);
             }

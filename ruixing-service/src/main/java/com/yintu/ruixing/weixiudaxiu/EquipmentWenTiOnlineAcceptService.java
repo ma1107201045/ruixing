@@ -1,6 +1,7 @@
 package com.yintu.ruixing.weixiudaxiu;
 
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
+import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
 
 import java.util.List;
@@ -25,5 +26,17 @@ public interface EquipmentWenTiOnlineAcceptService {
     List<DianWuDuanEntity> findAllDianWuDuan();
 
     List<XianDuanEntity> findAllXianDuan();
+
+    List<TieLuJuEntity> findAllTieLuJu();
+
+    String findNumber(String tljName);
+
+    void editAcceptFeedbackById(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity);
+
+    void deleteByIds(Integer[] ids);
+
+    List<EquipmentWenTiOnlineAcceptFeedbackEntity> findAcceptFeedbackByphone(String phone);
+
+    void acceptById(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity);
 
 }

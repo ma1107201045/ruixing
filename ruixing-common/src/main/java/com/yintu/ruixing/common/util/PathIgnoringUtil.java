@@ -20,7 +20,7 @@ public class PathIgnoringUtil {
 
     static {
         antPatterns = new ArrayList<>();
-        antPatterns.add("/captcha/**");
+        antPatterns.add("/customer/**");
     }
 
     public static boolean antMatchers(HttpServletRequest request, String path) {

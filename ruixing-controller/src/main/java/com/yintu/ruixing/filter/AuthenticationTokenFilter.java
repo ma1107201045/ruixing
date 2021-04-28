@@ -46,7 +46,7 @@ public class AuthenticationTokenFilter implements Filter {
         String path = StrUtil.split(request.getRequestURI(), '?').get(0);
         if (PathIgnoringUtil.antMatchers(request, path)) {
             List<String> ignores = jwtProperties.getIgnores();
-            if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
+            /*if (!PathIgnoringUtil.antMatchers(request, ignores, path)) {
                 String token = request.getHeader(jwtProperties.getHeader());
                 try {
                     if (StrUtil.isEmpty(token)) {
@@ -69,7 +69,7 @@ public class AuthenticationTokenFilter implements Filter {
                     servletOutputStream.close();
                     return;
                 }
-            }
+            }*/
 
         }
         filterChain.doFilter(request, response);

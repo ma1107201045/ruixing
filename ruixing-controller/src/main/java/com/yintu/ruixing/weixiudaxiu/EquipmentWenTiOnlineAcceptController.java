@@ -64,42 +64,19 @@ public class EquipmentWenTiOnlineAcceptController extends SessionController {
         return ResponseDataUtil.ok("删除问题类型成功");
     }
 
-
-    //查询所有的问题类型
-    @GetMapping("/findWenTiType")
-    public Map<String,Object>findWenTiType(){
-        List<EquipmentWenTiCustomerWenTiTypeEntity>typeEntityList=equipmentWenTiOnlineAcceptService.findAllWenTiType();
-        return ResponseDataUtil.ok("查询成功",typeEntityList);
-    }
-///////////////////////////客户新增反馈问题/////////////////////////////////////////
-
-    //查询所有的电务段
-    @GetMapping("/findAllDianWuDuan")
-    public Map<String,Object>findAllDianWuDuan(){
-        List<DianWuDuanEntity>dianWuDuanEntityList=equipmentWenTiOnlineAcceptService.findAllDianWuDuan();
-        return ResponseDataUtil.ok("查询电务段成功",dianWuDuanEntityList);
+    //员工受理
+    @PutMapping("/acceptById/{id}")
+    public Map<String,Object>acceptById(@PathVariable Integer id,EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity){
+        String longinUsername = this.getLoginUser().getTrueName();
+        Integer longinUserid = this.getLoginUser().getId().intValue();
+        equipmentWenTiOnlineAcceptFeedbackEntity.setAccepttime(new Date());
+        equipmentWenTiOnlineAcceptFeedbackEntity.setAcceptuserid(longinUserid);
+        equipmentWenTiOnlineAcceptFeedbackEntity.setAcceptusername(longinUsername);
+        equipmentWenTiOnlineAcceptService.acceptById(equipmentWenTiOnlineAcceptFeedbackEntity);
+        return ResponseDataUtil.ok("受理成功");
     }
 
-    //查询所有的线段
-    @GetMapping("/findAllXianDuan")
-    public Map<String,Object>findAllXianDuan(){
-        List<XianDuanEntity> xianDuanEntityList=equipmentWenTiOnlineAcceptService.findAllXianDuan();
-        return ResponseDataUtil.ok("查询线段成功",xianDuanEntityList);
-    }
 
-    //新增 客户新增反馈问题
-    @PostMapping("/addAcceptFeedback")
-    public Map<String,Object>addAcceptFeedback(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity){
-        String feedbackusername = equipmentWenTiOnlineAcceptFeedbackEntity.getFeedbackusername();
-        equipmentWenTiOnlineAcceptFeedbackEntity.setCreatename(feedbackusername);
-        equipmentWenTiOnlineAcceptFeedbackEntity.setCreatetime(new Date());
-        equipmentWenTiOnlineAcceptFeedbackEntity.setUpdatename(feedbackusername);
-        equipmentWenTiOnlineAcceptFeedbackEntity.setUpdatetime(new Date());
-        equipmentWenTiOnlineAcceptService.addAcceptFeedback(equipmentWenTiOnlineAcceptFeedbackEntity);
-        return ResponseDataUtil.ok("新增成功");
-    }
-
-    //
 
 
 

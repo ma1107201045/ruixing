@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.FilterChain;
@@ -24,11 +26,9 @@ import java.util.Map;
  * @Date: 2020/11/26 14:02
  * @Version: 1.0
  */
-@Controller
-@RequestMapping("/captcha")
-@Api(tags = "登录有关接口")
+@RestController
+@RequestMapping("/tourist")
 public class CaptchaController {
-
 
     @GetMapping("/getCaptcha")
     public void getCode(@ApiIgnore HttpSession session, @ApiIgnore HttpServletResponse response,String phone) throws IOException {
@@ -48,6 +48,7 @@ public class CaptchaController {
     }
 
     @GetMapping("/smsgoin")
+    @ResponseBody
     public Map<String,Object> feedbackCaptcha( @ApiIgnore HttpServletRequest request, String code){
         String captcha =(String) request.getSession().getAttribute("captcha");
         if (code.equals(captcha)){

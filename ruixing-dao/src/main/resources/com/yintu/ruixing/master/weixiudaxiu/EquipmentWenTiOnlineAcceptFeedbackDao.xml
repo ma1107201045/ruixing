@@ -33,6 +33,26 @@
     replyMessage, wentiState, pushState, createTime, createName, updateTime, updateName, 
     tljid, dwdid, xdid
   </sql>
+
+
+  <!--根据手机号  查询对应的问题反馈-->
+  <select id="findAcceptFeedbackByphone"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_online_accept_feedback
+    where feedbackUserNamePhone = #{phone}
+    order by id desc
+  </select>
+
+  <!--查询最新的一个编号-->
+  <select id="findNumber" resultType="java.lang.String">
+    select
+    number
+    from mro_equipment_wenti_online_accept_feedback
+    order by id desc
+  </select>
+
+  <!--根据id  查询出对应的数据-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
