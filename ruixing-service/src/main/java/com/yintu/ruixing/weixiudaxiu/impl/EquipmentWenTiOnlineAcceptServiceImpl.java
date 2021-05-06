@@ -1,18 +1,17 @@
 package com.yintu.ruixing.weixiudaxiu.impl;
 
+import com.yintu.ruixing.common.exception.BaseRuntimeException;
+import com.yintu.ruixing.common.util.PhoneCode;
+import com.yintu.ruixing.danganguanli.CustomerEntity;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
+import com.yintu.ruixing.master.danganguanli.CustomerDao;
 import com.yintu.ruixing.master.guzhangzhenduan.DianWuDuanDao;
 import com.yintu.ruixing.master.guzhangzhenduan.TieLuJuDao;
 import com.yintu.ruixing.master.guzhangzhenduan.XianDuanDao;
-import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeDao;
-import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackDao;
-import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitRecordmessageDao;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiCustomerWenTiTypeEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptFeedbackEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiOnlineAcceptService;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitRecordmessageEntity;
+import com.yintu.ruixing.master.weixiudaxiu.*;
+import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +42,188 @@ public class EquipmentWenTiOnlineAcceptServiceImpl implements EquipmentWenTiOnli
     private TieLuJuDao tieLuJuDao;
     @Autowired
     private EquipmentWenTiReturnVisitRecordmessageDao equipmentWenTiReturnVisitRecordmessageDao;
+    @Autowired
+    private EquipmentWenTiOnlineAcceptFeedbackFileDao equipmentWenTiOnlineAcceptFeedbackFileDao;
+    @Autowired
+    private EquipmentWenTiReturnVisitCommentDao equipmentWenTiReturnVisitCommentDao;
+    @Autowired
+    private EquipmentWenTiOnlineAcceptFeedbackPushRecordDao equipmentWenTiOnlineAcceptFeedbackPushRecordDao;
+    @Autowired
+    private CustomerDao customerDao;
 
+
+    @Override
+    public List<CustomerEntity> findAllCustomer() {
+        return customerDao.findAllCustomer();
+    }
+
+    @Override
+    public List<EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity> findPushMessageRecordById(Integer fid) {
+        return equipmentWenTiOnlineAcceptFeedbackPushRecordDao.findPushMessageRecordById(fid);
+    }
+
+    @Override
+    public void pushMessage(EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity equipmentWenTiOnlineAcceptFeedbackPushRecordEntity) {
+        String phone = equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.getPhone();
+        String phonemsg = PhoneCode.getPhonemsg(phone);
+        if ("true".equals(phonemsg)) {
+            equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setIsnotsuccess(1);
+            //改变回访发送状态
+            EquipmentWenTiOnlineAcceptFeedbackEntity feedbackEntity = new EquipmentWenTiOnlineAcceptFeedbackEntity();
+            feedbackEntity.setPushstate(1);
+            feedbackEntity.setId(equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.getFid());
+            equipmentWenTiOnlineAcceptFeedbackDao.updateByPrimaryKeySelective(feedbackEntity);
+        } else {
+            equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setIsnotsuccess(0);
+            //改变回访发送状态
+            EquipmentWenTiOnlineAcceptFeedbackEntity feedbackEntity = new EquipmentWenTiOnlineAcceptFeedbackEntity();
+            feedbackEntity.setPushstate(2);
+            feedbackEntity.setId(equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.getFid());
+            equipmentWenTiOnlineAcceptFeedbackDao.updateByPrimaryKeySelective(feedbackEntity);
+            throw new BaseRuntimeException("发送消息失败,请检查手机号准确性");
+        }
+        String pushNumber = equipmentWenTiOnlineAcceptFeedbackPushRecordDao.findFristPushNumber();
+        Calendar calendar = Calendar.getInstance();
+        String months = "";
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH) + 1;
+        Integer monthlength = month.toString().length();
+        if (monthlength == 1) {
+            months = "0" + month.toString();
+        }
+        if (monthlength == 2) {
+            months = month.toString();
+        }
+        if (pushNumber == null) {
+            String onePushNumber = "GCFK-" + year + "-" + months + "-001";
+            equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setPushnumber(onePushNumber);
+        } else {//GCFK-2021-04-001
+            String[] number_split = pushNumber.split("-");
+            if (number_split[1].equals(year.toString()) && number_split[2].equals(months)) {
+                Integer num = Integer.valueOf(number_split[3]) + 1;
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + number_split[2] + num;
+                equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setPushnumber(onePushNumber);
+            }
+            if (number_split[1].equals(year.toString())) {
+                String onePushNumber = "GCFK-" + number_split[1] + "-" + months + 001;
+                equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setPushnumber(onePushNumber);
+            } else {
+                String onePushNumber = "GCFK-" + year + "-" + months + 001;
+                equipmentWenTiOnlineAcceptFeedbackPushRecordEntity.setPushnumber(onePushNumber);
+            }
+        }
+        equipmentWenTiOnlineAcceptFeedbackPushRecordDao.insertSelective(equipmentWenTiOnlineAcceptFeedbackPushRecordEntity);
+    }
+
+    @Override
+    public EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity findOneAcceptFeedbackById(Integer id) {
+        return equipmentWenTiOnlineAcceptFeedbackPushRecordDao.findOneAcceptFeedbackById(id);
+    }
+
+    @Override
+    public List<EquipmentWenTiReturnVisitCommentEntity> findCommentByFid(Integer fid) {
+        return equipmentWenTiReturnVisitCommentDao.findCommentByFid(fid);
+    }
+
+    @Override
+    public void addComment(EquipmentWenTiReturnVisitCommentEntity equipmentWenTiReturnVisitCommentEntity) {
+        equipmentWenTiReturnVisitCommentDao.insertSelective(equipmentWenTiReturnVisitCommentEntity);
+    }
+
+
+
+    @Override
+    public List<EquipmentWenTiOnlineAcceptFeedbackFileEntity> findFileByfid(Integer fid) {
+        return equipmentWenTiOnlineAcceptFeedbackFileDao.findFileByfid(fid);
+    }
+
+    @Override
+    public void editAcceptFeedbackByIdByUser(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity,
+                                             String fileName, String filePath, Integer longinUserid) {
+        EquipmentWenTiOnlineAcceptFeedbackEntity feedbackEntity=equipmentWenTiOnlineAcceptFeedbackDao.selectByPrimaryKey(equipmentWenTiOnlineAcceptFeedbackEntity.getId());
+        equipmentWenTiOnlineAcceptFeedbackDao.updateByPrimaryKeySelective(equipmentWenTiOnlineAcceptFeedbackEntity);
+        String tljname = equipmentWenTiOnlineAcceptFeedbackEntity.getTljname();
+        String dwdname = equipmentWenTiOnlineAcceptFeedbackEntity.getDwdname();
+        String xdname = equipmentWenTiOnlineAcceptFeedbackEntity.getXdname();
+        String feedbackusernamephone = equipmentWenTiOnlineAcceptFeedbackEntity.getFeedbackusernamephone();
+        String wentitype = equipmentWenTiOnlineAcceptFeedbackEntity.getWentitype();
+        String wentimiaoshu = equipmentWenTiOnlineAcceptFeedbackEntity.getWentimiaoshu();
+        String replymessage = equipmentWenTiOnlineAcceptFeedbackEntity.getReplymessage();
+        StringBuilder sb=new StringBuilder();
+        if (!tljname.equals(feedbackEntity.getTljname())){
+            sb.append(" 修改了铁路局 ");
+        }
+        if (!feedbackusernamephone.equals(feedbackEntity.getFeedbackusernamephone())){
+            sb.append(" 修改了电话号码 ");
+        }
+        if (feedbackEntity.getDwdname()!=null){
+            if (!dwdname.equals(feedbackEntity.getDwdname())){
+                sb.append(" 修改了电务段 ");
+            }
+        }
+        if (feedbackEntity.getXdname()!=null){
+            if (!xdname.equals(feedbackEntity.getXdname())){
+                sb.append(" 修改了线段 ");
+            }
+        }
+        if (feedbackEntity.getWentitype()!=null){
+            if (!wentitype.equals(feedbackEntity.getWentitype())){
+                sb.append(" 修改了问题类型 ");
+            }
+        }
+        if (feedbackEntity.getWentimiaoshu()!=null){
+            if (!wentimiaoshu.equals(feedbackEntity.getWentimiaoshu())){
+                sb.append(" 修改了问题描述 ");
+            }
+        }
+        if (feedbackEntity.getReplymessage()!=null){
+            if (!replymessage.equals(feedbackEntity.getReplymessage())){
+                sb.append(" 修改了问题回复 ");
+            }
+        }
+        if (sb.length()==0){
+            sb.append("没做任何修改");
+        }
+
+        //新增记录
+        EquipmentWenTiReturnVisitRecordmessageEntity recordmessageEntity = new EquipmentWenTiReturnVisitRecordmessageEntity();
+        recordmessageEntity.setTypeid(equipmentWenTiOnlineAcceptFeedbackEntity.getId());
+        recordmessageEntity.setOperatorname(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename());
+        recordmessageEntity.setOperatortime(new Date());
+        recordmessageEntity.setTypenum(2);
+        recordmessageEntity.setContext(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename() + sb);
+        equipmentWenTiReturnVisitRecordmessageDao.insertSelective(recordmessageEntity);
+
+        //新增文件
+        if (!"".equals(filePath) || !"".equals(fileName)) {
+            String[] onefilePath = filePath.split(",");
+            String[] onefileName = fileName.split(",");
+            for (int i = 0; i < onefilePath.length; i++) {
+                EquipmentWenTiOnlineAcceptFeedbackFileEntity fileEntity = new EquipmentWenTiOnlineAcceptFeedbackFileEntity();
+                fileEntity.setFileName(onefileName[i]);
+                fileEntity.setFilePath(onefilePath[i]);
+                fileEntity.setFileType(1);
+                fileEntity.setUid(longinUserid);
+                fileEntity.setFid(equipmentWenTiOnlineAcceptFeedbackEntity.getId());
+                fileEntity.setCreatetime(new Date());
+                fileEntity.setCreatename(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename());
+                fileEntity.setUpdatetime(new Date());
+                fileEntity.setUpdatename(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename());
+                equipmentWenTiOnlineAcceptFeedbackFileDao.insertSelective(fileEntity);
+            }
+        }
+    }
+
+    @Override
+    public List<EquipmentWenTiOnlineAcceptFeedbackEntity> findAllAcceptFeedback(String number, String statrTime, String endTime,
+                                                                                String tljName, String dwdName, String xdName,
+                                                                                String feedbackName, String wentiType,
+                                                                                String wentiMiaoshu, Integer feedbackState,
+                                                                                Integer acceptUserid, Integer wentiState,
+                                                                                Integer pushState) {
+        return equipmentWenTiOnlineAcceptFeedbackDao.findAllAcceptFeedback(number,statrTime,endTime,
+                tljName,dwdName,xdName,feedbackName,wentiType,wentiMiaoshu,feedbackState,acceptUserid,wentiState,pushState);
+    }
 
     @Override
     public void acceptById(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity) {
@@ -114,10 +294,10 @@ public class EquipmentWenTiOnlineAcceptServiceImpl implements EquipmentWenTiOnli
         //新增记录
         EquipmentWenTiReturnVisitRecordmessageEntity recordmessageEntity = new EquipmentWenTiReturnVisitRecordmessageEntity();
         recordmessageEntity.setTypeid(equipmentWenTiOnlineAcceptFeedbackEntity.getId());
-        recordmessageEntity.setOperatorname(equipmentWenTiOnlineAcceptFeedbackEntity.getCreatename());
+        recordmessageEntity.setOperatorname(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename());
         recordmessageEntity.setOperatortime(new Date());
         recordmessageEntity.setTypenum(2);
-        recordmessageEntity.setContext(equipmentWenTiOnlineAcceptFeedbackEntity.getCreatename() + sb);
+        recordmessageEntity.setContext(equipmentWenTiOnlineAcceptFeedbackEntity.getUpdatename() + sb);
         equipmentWenTiReturnVisitRecordmessageDao.insertSelective(recordmessageEntity);
     }
 
@@ -159,7 +339,12 @@ public class EquipmentWenTiOnlineAcceptServiceImpl implements EquipmentWenTiOnli
             String num = lastNumber.substring(4, 6);//序号
             if (years.equals(oneyear) && onemonth.equals(months)) {
                 Integer onenum = Integer.parseInt(num) + 1;
-                codeNumber = years + months + onenum;
+                int length = onenum.toString().length();
+                if (length==1){
+                    codeNumber = years + months +"0"+ onenum;
+                }else {
+                    codeNumber = years + months + onenum;
+                }
             }
             else {
                 codeNumber = years + months + "01";
@@ -230,7 +415,7 @@ public class EquipmentWenTiOnlineAcceptServiceImpl implements EquipmentWenTiOnli
 
     @Override
     public List<XianDuanEntity> findAllXianDuan() {
-        return xianDuanDao.findAllXianDuan();
+        return xianDuanDao.findAllXD();
     }
 
     @Override
@@ -240,6 +425,10 @@ public class EquipmentWenTiOnlineAcceptServiceImpl implements EquipmentWenTiOnli
 
     @Override
     public void addAcceptFeedback(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity) {
+        equipmentWenTiOnlineAcceptFeedbackEntity.setFeedbacktime(new Date());
+        equipmentWenTiOnlineAcceptFeedbackEntity.setFeedbackstate(0);
+        equipmentWenTiOnlineAcceptFeedbackEntity.setWentistate(0);
+        equipmentWenTiOnlineAcceptFeedbackEntity.setPushstate(0);
         equipmentWenTiOnlineAcceptFeedbackDao.insertSelective(equipmentWenTiOnlineAcceptFeedbackEntity);
         Integer id = equipmentWenTiOnlineAcceptFeedbackEntity.getId();
         //新增记录

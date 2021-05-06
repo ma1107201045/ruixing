@@ -18,4 +18,6 @@ public interface EquipmentWenTiReturnVisitCommentDao {
     int insertSelective(EquipmentWenTiReturnVisitCommentEntity record);
 
     List<EquipmentWenTiReturnVisitCommentEntity> findCommentByVid(Integer vid);
+
+    List<EquipmentWenTiReturnVisitCommentEntity> findCommentByFid(Integer fid);
 }

@@ -21,4 +21,12 @@ public interface EquipmentWenTiOnlineAcceptFeedbackDao {
     String findNumber();
 
     List<EquipmentWenTiOnlineAcceptFeedbackEntity> findAcceptFeedbackByphone(String phone);
+
+    List<EquipmentWenTiOnlineAcceptFeedbackEntity> findAllAcceptFeedback(String number, String statrTime, String endTime,
+                                                                         String tljName, String dwdName, String xdName,
+                                                                         String feedbackName, String wentiType,
+                                                                         String wentiMiaoshu, Integer feedbackState,
+                                                                         Integer acceptUserid, Integer wentiState,
+                                                                         Integer pushState);
+
 }

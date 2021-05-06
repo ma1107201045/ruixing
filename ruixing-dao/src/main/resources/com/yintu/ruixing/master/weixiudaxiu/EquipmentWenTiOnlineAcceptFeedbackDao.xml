@@ -36,6 +36,53 @@
 
 
   <!--根据手机号  查询对应的问题反馈-->
+  <select id="findAllAcceptFeedback"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_online_accept_feedback
+    <where>
+        1=1
+      <if test="number!=null and number!=''">
+      and  number like concat("%",#{number},"%")
+      </if>
+      <if test="statrTime!=null and statrTime!=''">
+        and  feedbackTime between #{statrTime} and #{endTime}
+      </if>
+      <if test="tljName!=null and tljName!=''">
+        and  tljName like concat("%",#{tljName},"%")
+      </if>
+      <if test="dwdName!=null and dwdName!=''">
+        and  dwdName like concat("%",#{dwdName},"%")
+      </if>
+      <if test="xdName!=null and xdName!=''">
+        and  xdName like concat("%",#{xdName},"%")
+      </if>
+      <if test="feedbackName!=null and feedbackName!=''">
+        and  feedbackUserName like concat("%",#{feedbackName},"%")
+      </if>
+      <if test="wentiType!=null and wentiType!=''">
+        and  wentiType like concat("%",#{wentiType},"%")
+      </if>
+      <if test="wentiMiaoshu!=null and wentiMiaoshu!=''">
+        and  wentiMiaoshu like concat("%",#{wentiMiaoshu},"%")
+      </if>
+      <if test="feedbackState!=null and feedbackState!=''">
+        and  feedbackState =#{feedbackState}
+      </if>
+      <if test="acceptUserid!=null and acceptUserid!=''">
+        and  acceptUserid =#{acceptUserid}
+      </if>
+      <if test="wentiState!=null and wentiState!=''">
+        and  wentiState =#{wentiState}
+      </if>
+      <if test="pushState!=null and pushState!=''">
+        and  pushState =#{pushState}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <!--根据手机号  查询对应的问题反馈-->
   <select id="findAcceptFeedbackByphone"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -49,7 +96,7 @@
     select
     number
     from mro_equipment_wenti_online_accept_feedback
-    order by id desc
+    order by id desc limit 1
   </select>
 
   <!--根据id  查询出对应的数据-->

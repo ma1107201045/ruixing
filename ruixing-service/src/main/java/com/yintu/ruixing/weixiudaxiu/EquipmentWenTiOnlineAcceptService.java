@@ -1,5 +1,6 @@
 package com.yintu.ruixing.weixiudaxiu;
 
+import com.yintu.ruixing.danganguanli.CustomerEntity;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
@@ -39,4 +40,28 @@ public interface EquipmentWenTiOnlineAcceptService {
 
     void acceptById(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity);
 
+    List<EquipmentWenTiOnlineAcceptFeedbackEntity> findAllAcceptFeedback(String number, String statrTime, String endTime,
+                                                                         String tljName, String dwdName, String xdName,
+                                                                         String feedbackName, String wentiType,
+                                                                         String wentiMiaoshu, Integer feedbackState,
+                                                                         Integer acceptUserid, Integer wentiState,
+                                                                         Integer pushState);
+
+
+    void editAcceptFeedbackByIdByUser(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity,
+                                      String fileName, String filePath, Integer longinUserid);
+
+    List<EquipmentWenTiOnlineAcceptFeedbackFileEntity> findFileByfid(Integer fid);
+
+    void addComment(EquipmentWenTiReturnVisitCommentEntity equipmentWenTiReturnVisitCommentEntity);
+
+    List<EquipmentWenTiReturnVisitCommentEntity> findCommentByFid(Integer fid);
+
+    EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity findOneAcceptFeedbackById(Integer id);
+
+    void pushMessage(EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity equipmentWenTiOnlineAcceptFeedbackPushRecordEntity);
+
+    List<EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity> findPushMessageRecordById(Integer fid);
+
+    List<CustomerEntity> findAllCustomer();
 }

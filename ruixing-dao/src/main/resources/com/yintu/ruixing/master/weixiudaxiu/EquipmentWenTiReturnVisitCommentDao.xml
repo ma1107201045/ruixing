@@ -18,6 +18,15 @@
     updateName
   </sql>
 
+  <!--根据反馈fid  查询对应的评论-->
+  <select id="findCommentByFid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_comment
+    where vid = #{fid,jdbcType=INTEGER}
+    and commentType=2
+    order by id desc
+  </select>
 
   <!--根据回访id  查询对应的评论-->
   <select id="findCommentByVid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -25,6 +34,7 @@
     <include refid="Base_Column_List" />
     from mro_equipment_wenti_return_visit_comment
     where vid = #{vid,jdbcType=INTEGER}
+    and commentType=1
     order by id desc
   </select>
 

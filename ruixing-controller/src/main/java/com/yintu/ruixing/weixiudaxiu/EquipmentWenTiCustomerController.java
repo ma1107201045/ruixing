@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yintu.ruixing.common.util.PhoneCode;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
+import com.yintu.ruixing.danganguanli.CustomerEntity;
 import com.yintu.ruixing.guzhangzhenduan.DianWuDuanEntity;
 import com.yintu.ruixing.guzhangzhenduan.TieLuJuEntity;
 import com.yintu.ruixing.guzhangzhenduan.XianDuanEntity;
@@ -32,7 +33,6 @@ import java.util.Map;
 public class EquipmentWenTiCustomerController {
     @Autowired
     private EquipmentWenTiOnlineAcceptService equipmentWenTiOnlineAcceptService;
-
 
 
 
@@ -104,6 +104,13 @@ public class EquipmentWenTiCustomerController {
         return ResponseDataUtil.ok("查询成功",typeEntityList);
     }
 
+    //查询档案管理列出的人员
+    @GetMapping("/findAllCustomer")
+    public Map<String, Object> findAllCustomer() {
+        List<CustomerEntity> customerEntityList = equipmentWenTiOnlineAcceptService.findAllCustomer();
+        return ResponseDataUtil.ok("查询人员成功", customerEntityList);
+    }
+
     //新增 客户新增反馈问题
     @PostMapping("/addAcceptFeedback")
     public Map<String,Object>addAcceptFeedback(EquipmentWenTiOnlineAcceptFeedbackEntity equipmentWenTiOnlineAcceptFeedbackEntity){
@@ -142,5 +149,11 @@ public class EquipmentWenTiCustomerController {
         return ResponseDataUtil.ok("查询成功",feedbackEntityPageInfo);
     }
 
+    //根据fid  查询对应的文件
+    @GetMapping("/findFileByfid/{fid}")
+    public Map<String,Object>findFileByfid(@PathVariable Integer fid){
+        List<EquipmentWenTiOnlineAcceptFeedbackFileEntity>fileEntityList=equipmentWenTiOnlineAcceptService.findFileByfid(fid);
+        return ResponseDataUtil.ok("查询文件成功",fileEntityList);
+    }
 
 }
