@@ -29,7 +29,7 @@
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
     <result column="tljid" jdbcType="INTEGER" property="tljid" />
     <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
-    <result column="xdid" jdbcType="INTEGER" property="xdid" />
+    <result column="xdid" jdbcType="VARCHAR" property="xdid" />
     <result column="editState" jdbcType="INTEGER" property="editState" />
     <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
   </resultMap>
@@ -75,19 +75,19 @@
       <if test="xdName !=null and xdName !=''">
         and xdName like concat('%',#{xdName},'%')
       </if>
-      <if test="returnUserid !=null and returnUserid !=''">
+      <if test="returnUserid !=null">
         and returnUserid =#{returnUserid}
       </if>
-      <if test="renWuState !=null and renWuState !=''">
+      <if test="renWuState !=null ">
         and renWuState =#{renWuState}
       </if>
-      <if test="pushState !=null and pushState !=''">
+      <if test="pushState !=null ">
         and pushState =#{pushState}
       </if>
       <if test="returnWenti !=null and returnWenti !=''">
         and returnWenti like concat('%',#{returnWenti},'%')
       </if>
-      <if test="wentiState !=null and wentiState !=''">
+      <if test="wentiState !=null ">
         and wentiState =#{wentiState}
       </if>
       <if test="startTime !=null and startTime !=''">
@@ -96,14 +96,16 @@
       <if test="years !=null and years !=''">
         and years =#{years}
       </if>
-      <if test="week !=null and week !=''">
+      <if test="week !=null ">
         and typeNumber =#{week}
       </if>
-      <if test="longinuserid !=null and longinuserid !=''">
+      <if test="longinuserid !=null ">
         and returnUserid =#{longinuserid}
       </if>
+      <if test="returnCycleType !=null ">
+        and returnCycleType=#{returnCycleType}
+      </if>
       and begintime &lt;#{todaystring}
-      and returnCycleType=#{returnCycleType}
     </where>
     order by id desc
   </select>
@@ -319,7 +321,7 @@
         #{dwdid,jdbcType=INTEGER},
       </if>
       <if test="xdid != null">
-        #{xdid,jdbcType=INTEGER},
+        #{xdid,jdbcType=VARCHAR},
       </if>
       <if test="editState != null">
         #{editState,jdbcType=INTEGER},
@@ -410,7 +412,7 @@
         dwdid = #{dwdid,jdbcType=INTEGER},
       </if>
       <if test="xdid != null">
-        xdid = #{xdid,jdbcType=INTEGER},
+        xdid = #{xdid,jdbcType=VARCHAR},
       </if>
       <if test="editState != null">
         editState = #{editState,jdbcType=INTEGER},

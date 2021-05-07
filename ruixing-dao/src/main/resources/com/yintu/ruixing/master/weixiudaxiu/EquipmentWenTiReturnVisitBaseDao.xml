@@ -22,7 +22,7 @@
     <result column="updateName" jdbcType="VARCHAR" property="updatename" />
     <result column="tljid" jdbcType="INTEGER" property="tljid" />
     <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
-    <result column="xdid" jdbcType="INTEGER" property="xdid" />
+    <result column="xdid" jdbcType="VARCHAR" property="xdid" />
   </resultMap>
   <sql id="Base_Column_List">
     id, addUserid, renwuNumber, tljName, dwdName, xdName, returnUserid, returnedUserName, 
@@ -100,11 +100,11 @@
         and
         xdName like concat('%',#{xdName},'%')
       </if>
-      <if test="returnuserid!=null and returnuserid!=''">
+      <if test="returnuserid!=null">
         and
         returnUserid =#{returnuserid}
       </if>
-      <if test="returncycletype!=null and returncycletype!=''">
+      <if test="returncycletype!=null">
         and
         returnCycleType =#{returncycletype}
       </if>
@@ -112,7 +112,7 @@
         and
         renWuStartTime between #{statrTime} and #{endTime}
       </if>
-      <if test="implementstate!=null and implementstate!=''">
+      <if test="implementstate!=null">
         and
         implementState =#{implementstate}
       </if>
@@ -283,7 +283,7 @@
         #{dwdid,jdbcType=INTEGER},
       </if>
       <if test="xdid != null">
-        #{xdid,jdbcType=INTEGER},
+        #{xdid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -347,7 +347,7 @@
         dwdid = #{dwdid,jdbcType=INTEGER},
       </if>
       <if test="xdid != null">
-        xdid = #{xdid,jdbcType=INTEGER},
+        xdid = #{xdid,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

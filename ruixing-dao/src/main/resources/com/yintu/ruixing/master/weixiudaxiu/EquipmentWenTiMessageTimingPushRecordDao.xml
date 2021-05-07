@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="recordNumber" jdbcType="VARCHAR" property="recordnumber" />
+    <result column="inTime" jdbcType="TIMESTAMP" property="intime" />
+    <result column="planOutTime" jdbcType="TIMESTAMP" property="planouttime" />
+    <result column="renwuSheDingTime" jdbcType="TIMESTAMP" property="renwushedingtime" />
+    <result column="recorduserid" jdbcType="INTEGER" property="recorduserid" />
+    <result column="recordusername" jdbcType="VARCHAR" property="recordusername" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="pushname" jdbcType="VARCHAR" property="pushname" />
+    <result column="pushTime" jdbcType="TIMESTAMP" property="pushtime" />
+    <result column="recordState" jdbcType="VARCHAR" property="recordstate" />
+    <result column="pushtype" jdbcType="INTEGER" property="pushtype" />
+    <result column="isnotsuccess" jdbcType="INTEGER" property="isnotsuccess" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pid, recordNumber, inTime, planOutTime, renwuSheDingTime, recorduserid, recordusername, 
+    phone, pushname, pushTime, recordState, pushtype, isnotsuccess, createTime, createName, 
+    updateTime, updateName
+  </sql>
+
+  <!--根据任务编号  模糊查询记录编号-->
+  <select id="findRecordNum"  resultType="java.lang.String">
+    select
+    recordNumber
+    from mro_equipment_wenti_message_timing_push_record
+    where recordNumber like concat('%',#{number},'%')
+    order by id desc limit 1
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_message_timing_push_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_message_timing_push_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+    insert into mro_equipment_wenti_message_timing_push_record (id, pid, recordNumber, 
+      inTime, planOutTime, renwuSheDingTime, 
+      recorduserid, recordusername, phone, 
+      pushname, pushTime, recordState, 
+      pushtype, isnotsuccess, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{recordnumber,jdbcType=VARCHAR}, 
+      #{intime,jdbcType=TIMESTAMP}, #{planouttime,jdbcType=TIMESTAMP}, #{renwushedingtime,jdbcType=TIMESTAMP}, 
+      #{recorduserid,jdbcType=INTEGER}, #{recordusername,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{pushname,jdbcType=VARCHAR}, #{pushtime,jdbcType=TIMESTAMP}, #{recordstate,jdbcType=VARCHAR}, 
+      #{pushtype,jdbcType=INTEGER}, #{isnotsuccess,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+    insert into mro_equipment_wenti_message_timing_push_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="recordnumber != null">
+        recordNumber,
+      </if>
+      <if test="intime != null">
+        inTime,
+      </if>
+      <if test="planouttime != null">
+        planOutTime,
+      </if>
+      <if test="renwushedingtime != null">
+        renwuSheDingTime,
+      </if>
+      <if test="recorduserid != null">
+        recorduserid,
+      </if>
+      <if test="recordusername != null">
+        recordusername,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="pushname != null">
+        pushname,
+      </if>
+      <if test="pushtime != null">
+        pushTime,
+      </if>
+      <if test="recordstate != null">
+        recordState,
+      </if>
+      <if test="pushtype != null">
+        pushtype,
+      </if>
+      <if test="isnotsuccess != null">
+        isnotsuccess,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="recordnumber != null">
+        #{recordnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="intime != null">
+        #{intime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planouttime != null">
+        #{planouttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renwushedingtime != null">
+        #{renwushedingtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recorduserid != null">
+        #{recorduserid,jdbcType=INTEGER},
+      </if>
+      <if test="recordusername != null">
+        #{recordusername,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushname != null">
+        #{pushname,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtime != null">
+        #{pushtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordstate != null">
+        #{recordstate,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtype != null">
+        #{pushtype,jdbcType=INTEGER},
+      </if>
+      <if test="isnotsuccess != null">
+        #{isnotsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+    update mro_equipment_wenti_message_timing_push_record
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="recordnumber != null">
+        recordNumber = #{recordnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="intime != null">
+        inTime = #{intime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planouttime != null">
+        planOutTime = #{planouttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="renwushedingtime != null">
+        renwuSheDingTime = #{renwushedingtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recorduserid != null">
+        recorduserid = #{recorduserid,jdbcType=INTEGER},
+      </if>
+      <if test="recordusername != null">
+        recordusername = #{recordusername,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushname != null">
+        pushname = #{pushname,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtime != null">
+        pushTime = #{pushtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordstate != null">
+        recordState = #{recordstate,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtype != null">
+        pushtype = #{pushtype,jdbcType=INTEGER},
+      </if>
+      <if test="isnotsuccess != null">
+        isnotsuccess = #{isnotsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+    update mro_equipment_wenti_message_timing_push_record
+    set pid = #{pid,jdbcType=INTEGER},
+      recordNumber = #{recordnumber,jdbcType=VARCHAR},
+      inTime = #{intime,jdbcType=TIMESTAMP},
+      planOutTime = #{planouttime,jdbcType=TIMESTAMP},
+      renwuSheDingTime = #{renwushedingtime,jdbcType=TIMESTAMP},
+      recorduserid = #{recorduserid,jdbcType=INTEGER},
+      recordusername = #{recordusername,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      pushname = #{pushname,jdbcType=VARCHAR},
+      pushTime = #{pushtime,jdbcType=TIMESTAMP},
+      recordState = #{recordstate,jdbcType=VARCHAR},
+      pushtype = #{pushtype,jdbcType=INTEGER},
+      isnotsuccess = #{isnotsuccess,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -7,7 +7,6 @@ import com.yintu.ruixing.common.SessionController;
 import com.yintu.ruixing.common.util.ResponseDataUtil;
 import com.yintu.ruixing.danganguanli.CustomerEntity;
 import com.yintu.ruixing.danganguanli.CustomerService;
-import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitPushRecordDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -102,6 +101,9 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
     //根据id 是否执行
     @PutMapping("/editImplementstateById/{id}")
     public Map<String, Object> editImplementstateById(@PathVariable Integer id, EquipmentWenTiReturnVisitBaseEntity equipmentWenTiReturnVisitBaseEntity) {
+        String longinUsername = this.getLoginUser().getTrueName();
+        equipmentWenTiReturnVisitBaseEntity.setUpdatename(longinUsername);
+        equipmentWenTiReturnVisitBaseEntity.setUpdatetime(new Date());
         equipmentWenTiReturnVisitBaseService.editImplementstateById(equipmentWenTiReturnVisitBaseEntity);
         return ResponseDataUtil.ok("执行成功");
     }
@@ -356,6 +358,14 @@ public class EquipmentWenTiReturnVisitController extends SessionController {
             if (typeid == 0) {
                 List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
                         tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, null, 1, longinuserid, returnCycleType);
+                PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
+                return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
+            }
+        }
+        if (returnCycleType == 5) {//全部任务
+            if (typeid == 0) {
+                List<EquipmentWenTiReturnVisitEntity> visitEntityList = equipmentWenTiReturnVisitService.findAllReturnVisit(renWuNumber, recordNumber,
+                        tljName, dwdName, xdName, returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, null, null, longinuserid, returnCycleType);
                 PageInfo<EquipmentWenTiReturnVisitEntity> returnVisitEntityPageInfo = new PageInfo<>(visitEntityList);
                 return ResponseDataUtil.ok("查询成功", returnVisitEntityPageInfo);
             }

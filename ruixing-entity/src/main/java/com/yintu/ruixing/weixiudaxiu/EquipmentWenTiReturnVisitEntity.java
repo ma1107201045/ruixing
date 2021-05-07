@@ -25,7 +25,7 @@ public class EquipmentWenTiReturnVisitEntity {
 
     private Integer dwdid;
 
-    private Integer xdid;
+    private String xdid;
 
     private String tljname;
 

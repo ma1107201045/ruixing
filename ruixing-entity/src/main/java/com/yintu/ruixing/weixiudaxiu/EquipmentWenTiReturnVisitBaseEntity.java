@@ -16,7 +16,7 @@ public class EquipmentWenTiReturnVisitBaseEntity {
     private Integer adduserid;
     private Integer tljid;
     private Integer dwdid;
-    private Integer xdid;
+    private String xdid;
 
     private String renwunumber;
 

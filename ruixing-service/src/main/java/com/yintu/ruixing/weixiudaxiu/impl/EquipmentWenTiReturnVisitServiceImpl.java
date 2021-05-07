@@ -182,6 +182,8 @@ public class EquipmentWenTiReturnVisitServiceImpl implements EquipmentWenTiRetur
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today_string = sdf.format(today);
+        if (returnCycleType==5)
+            returnCycleType=null;
         return equipmentWenTiReturnVisitDao.findAllReturnVisit(renWuNumber, recordNumber, tljName, dwdName, xdName,
                 returnUserid, renWuState, pushState, returnWenti, wentiState, startTime, endTime, years, week, longinuserid, today_string,returnCycleType);
     }

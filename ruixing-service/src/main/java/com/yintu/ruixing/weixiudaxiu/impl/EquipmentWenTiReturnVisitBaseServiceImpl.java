@@ -259,6 +259,14 @@ public class EquipmentWenTiReturnVisitBaseServiceImpl implements EquipmentWenTiR
     @Override
     public void editImplementstateById(EquipmentWenTiReturnVisitBaseEntity equipmentWenTiReturnVisitBaseEntity) {
         equipmentWenTiReturnVisitBaseDao.updateByPrimaryKeySelective(equipmentWenTiReturnVisitBaseEntity);
+        //新增记录
+        EquipmentWenTiReturnVisitRecordmessageEntity recordmessageEntity = new EquipmentWenTiReturnVisitRecordmessageEntity();
+        recordmessageEntity.setTypeid(equipmentWenTiReturnVisitBaseEntity.getId());
+        recordmessageEntity.setOperatorname(equipmentWenTiReturnVisitBaseEntity.getUpdatename());
+        recordmessageEntity.setOperatortime(new Date());
+        recordmessageEntity.setTypenum(1);
+        recordmessageEntity.setContext(equipmentWenTiReturnVisitBaseEntity.getUpdatename() + "开启了此任务");
+        equipmentWenTiReturnVisitRecordmessageDao.insertSelective(recordmessageEntity);
     }
 
 

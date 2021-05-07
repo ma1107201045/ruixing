@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="addUserid" jdbcType="INTEGER" property="adduserid" />
+    <result column="renwuName" jdbcType="VARCHAR" property="renwuName" />
+    <result column="configTime" jdbcType="TIMESTAMP" property="configTime" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="tljName" jdbcType="VARCHAR" property="tljname" />
+    <result column="dwdName" jdbcType="VARCHAR" property="dwdname" />
+    <result column="xdName" jdbcType="VARCHAR" property="xdname" />
+    <result column="pushUserName" jdbcType="VARCHAR" property="pushusername" />
+    <result column="pushUserNamePhone" jdbcType="VARCHAR" property="pushusernamephone" />
+    <result column="pushType" jdbcType="INTEGER" property="pushtype" />
+    <result column="implementState" jdbcType="INTEGER" property="implementState" />
+    <result column="pushStartTime" jdbcType="TIMESTAMP" property="pushstarttime" />
+    <result column="pushEndTime" jdbcType="TIMESTAMP" property="pushendtime" />
+    <result column="pushtime" jdbcType="TIMESTAMP" property="pushtime" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+    <result column="tljid" jdbcType="INTEGER" property="tljid" />
+    <result column="dwdid" jdbcType="INTEGER" property="dwdid" />
+    <result column="xdid" jdbcType="VARCHAR" property="xdid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, addUserid, number,renwuName,configTime, tljName, dwdName, xdName, pushUserName, pushUserNamePhone,
+    pushType,implementState, pushStartTime, pushEndTime, pushtime, createTime, createName, updateTime,
+    updateName, tljid, dwdid, xdid
+  </sql>
+
+  <!--根据条件  查询对应的信息推送-->
+  <select id="findAllMessagePush" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_message_timing_push
+    <where>
+      pushType=#{pushType}
+      <if test="tljName!=null ">
+       and tljName like concat('%',#{tljName},'%')
+      </if>
+      <if test="dwdName!=null ">
+       and dwdName like concat('%',#{dwdName},'%')
+      </if>
+      <if test="xdName!=null ">
+       and xdName like concat('%',#{xdName},'%')
+      </if>
+      <if test="startTime!=null ">
+       and pushStartTime &gt;=#{startTime} and pushEndTime &lt;=#{endTime}
+      </if>
+      <if test="implementState!=null ">
+        and implementState =#{implementState}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+
+  <!--查询最新的一个编号-->
+  <select id="findFristNumber" resultType="java.lang.String">
+    select
+    number
+    from mro_equipment_wenti_message_timing_push
+    order by id desc limit 1
+  </select>
+
+  <!--根据id  查询对应的信息推送-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_message_timing_push
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_message_timing_push
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity">
+    insert into mro_equipment_wenti_message_timing_push (id, addUserid, number, 
+      tljName, dwdName, xdName, 
+      pushUserName, pushUserNamePhone, pushType, 
+      pushStartTime, pushEndTime, pushtime, 
+      createTime, createName, updateTime, 
+      updateName, tljid, dwdid, 
+      xdid)
+    values (#{id,jdbcType=INTEGER}, #{adduserid,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+      #{tljname,jdbcType=VARCHAR}, #{dwdname,jdbcType=VARCHAR}, #{xdname,jdbcType=VARCHAR}, 
+      #{pushusername,jdbcType=VARCHAR}, #{pushusernamephone,jdbcType=VARCHAR}, #{pushtype,jdbcType=INTEGER}, 
+      #{pushstarttime,jdbcType=TIMESTAMP}, #{pushendtime,jdbcType=TIMESTAMP}, #{pushtime,jdbcType=TIMESTAMP}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{updatename,jdbcType=VARCHAR}, #{tljid,jdbcType=INTEGER}, #{dwdid,jdbcType=INTEGER}, 
+      #{xdid,jdbcType=VARCHAR})
+  </insert>
+
+  <!--新增信息推送-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into mro_equipment_wenti_message_timing_push
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="adduserid != null">
+        addUserid,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="tljname != null">
+        tljName,
+      </if>
+      <if test="dwdname != null">
+        dwdName,
+      </if>
+      <if test="xdname != null">
+        xdName,
+      </if>
+      <if test="pushusername != null">
+        pushUserName,
+      </if>
+      <if test="pushusernamephone != null">
+        pushUserNamePhone,
+      </if>
+      <if test="pushtype != null">
+        pushType,
+      </if>
+      <if test="pushstarttime != null">
+        pushStartTime,
+      </if>
+      <if test="pushendtime != null">
+        pushEndTime,
+      </if>
+      <if test="pushtime != null">
+        pushtime,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+      <if test="tljid != null">
+        tljid,
+      </if>
+      <if test="dwdid != null">
+        dwdid,
+      </if>
+      <if test="xdid != null">
+        xdid,
+      </if>
+      <if test="implementState != null">
+        implementState,
+      </if>
+      <if test="renwuName != null">
+        renwuName,
+      </if>
+      <if test="configTime != null">
+        configTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="pushusername != null">
+        #{pushusername,jdbcType=VARCHAR},
+      </if>
+      <if test="pushusernamephone != null">
+        #{pushusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtype != null">
+        #{pushtype,jdbcType=INTEGER},
+      </if>
+      <if test="pushstarttime != null">
+        #{pushstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushendtime != null">
+        #{pushendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushtime != null">
+        #{pushtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        #{xdid,jdbcType=VARCHAR},
+      </if>
+      <if test="implementState != null">
+        #{implementState,jdbcType=INTEGER},
+      </if>
+      <if test="renwuName != null">
+        #{renwuName,jdbcType=VARCHAR},
+      </if>
+      <if test="configTime != null">
+        #{configTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity">
+    update mro_equipment_wenti_message_timing_push
+    <set>
+      <if test="adduserid != null">
+        addUserid = #{adduserid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tljname != null">
+        tljName = #{tljname,jdbcType=VARCHAR},
+      </if>
+      <if test="dwdname != null">
+        dwdName = #{dwdname,jdbcType=VARCHAR},
+      </if>
+      <if test="xdname != null">
+        xdName = #{xdname,jdbcType=VARCHAR},
+      </if>
+      <if test="pushusername != null">
+        pushUserName = #{pushusername,jdbcType=VARCHAR},
+      </if>
+      <if test="pushusernamephone != null">
+        pushUserNamePhone = #{pushusernamephone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushtype != null">
+        pushType = #{pushtype,jdbcType=INTEGER},
+      </if>
+      <if test="pushstarttime != null">
+        pushStartTime = #{pushstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushendtime != null">
+        pushEndTime = #{pushendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pushtime != null">
+        pushtime = #{pushtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+      <if test="tljid != null">
+        tljid = #{tljid,jdbcType=INTEGER},
+      </if>
+      <if test="dwdid != null">
+        dwdid = #{dwdid,jdbcType=INTEGER},
+      </if>
+      <if test="xdid != null">
+        xdid = #{xdid,jdbcType=VARCHAR},
+      </if>
+      <if test="implementState != null">
+        implementState = #{implementState,jdbcType=INTEGER},
+      </if>
+      <if test="renwuName != null">
+        renwuName = #{renwuName,jdbcType=VARCHAR},
+      </if>
+      <if test="configTime != null">
+        configTime = #{configTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity">
+    update mro_equipment_wenti_message_timing_push
+    set addUserid = #{adduserid,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
+      tljName = #{tljname,jdbcType=VARCHAR},
+      dwdName = #{dwdname,jdbcType=VARCHAR},
+      xdName = #{xdname,jdbcType=VARCHAR},
+      pushUserName = #{pushusername,jdbcType=VARCHAR},
+      pushUserNamePhone = #{pushusernamephone,jdbcType=VARCHAR},
+      pushType = #{pushtype,jdbcType=INTEGER},
+      pushStartTime = #{pushstarttime,jdbcType=TIMESTAMP},
+      pushEndTime = #{pushendtime,jdbcType=TIMESTAMP},
+      pushtime = #{pushtime,jdbcType=TIMESTAMP},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR},
+      tljid = #{tljid,jdbcType=INTEGER},
+      dwdid = #{dwdid,jdbcType=INTEGER},
+      xdid = #{xdid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
