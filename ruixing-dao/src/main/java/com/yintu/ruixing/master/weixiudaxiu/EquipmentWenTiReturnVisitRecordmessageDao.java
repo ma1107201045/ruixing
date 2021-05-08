@@ -18,4 +18,6 @@ public interface EquipmentWenTiReturnVisitRecordmessageDao {
     int insertSelective(EquipmentWenTiReturnVisitRecordmessageEntity record);
 
     List<EquipmentWenTiReturnVisitRecordmessageEntity> findRecordById(Integer id);
+
+    List<EquipmentWenTiReturnVisitRecordmessageEntity> findRecordByPid(Integer pid);
 }

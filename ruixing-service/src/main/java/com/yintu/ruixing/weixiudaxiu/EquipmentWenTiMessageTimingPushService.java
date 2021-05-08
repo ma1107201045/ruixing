@@ -22,4 +22,16 @@ public interface EquipmentWenTiMessageTimingPushService {
                                                                    Integer pushType);
 
     String findRecordNumberByPid(Integer pid);
+
+    void addMessagePushRecord(EquipmentWenTiMessageTimingPushRecordEntity equipmentWenTiMessageTimingPushRecordEntity,
+                              String filename, String filepath,Integer longinUserid);
+
+    List<EquipmentWenTiReturnVisitRecordmessageEntity> findRecordByPid(Integer pid);
+
+    void editMessagePushRecordById(EquipmentWenTiMessageTimingPushRecordEntity equipmentWenTiMessageTimingPushRecordEntity,
+                                   String filename, String filepath,Integer longinUserid);
+
+    void deleteMessagePushRecordByIds(Integer[] ids);
+
+    List<EquipmentWenTiMessageTimingPushRecordEntity> findAllMessagePushRecord(Integer pushtype);
 }

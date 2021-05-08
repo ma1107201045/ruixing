@@ -7,7 +7,7 @@
     <result column="recordNumber" jdbcType="VARCHAR" property="recordnumber" />
     <result column="inTime" jdbcType="TIMESTAMP" property="intime" />
     <result column="planOutTime" jdbcType="TIMESTAMP" property="planouttime" />
-    <result column="renwuSheDingTime" jdbcType="TIMESTAMP" property="renwushedingtime" />
+    <result column="renwuSheDingTime" jdbcType="VARCHAR" property="renwushedingtime" />
     <result column="recorduserid" jdbcType="INTEGER" property="recorduserid" />
     <result column="recordusername" jdbcType="VARCHAR" property="recordusername" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -27,6 +27,14 @@
     updateTime, updateName
   </sql>
 
+
+  <select id="findAllMessagePushRecord"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_message_timing_push_record
+    where pushtype = #{pushtype,jdbcType=INTEGER}
+  </select>
+
   <!--根据任务编号  模糊查询记录编号-->
   <select id="findRecordNum"  resultType="java.lang.String">
     select
@@ -43,6 +51,8 @@
     from mro_equipment_wenti_message_timing_push_record
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!--根据id 删除对应的数据-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mro_equipment_wenti_message_timing_push_record
     where id = #{id,jdbcType=INTEGER}
@@ -63,7 +73,9 @@
       #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
+
+  <!--新增记录-->
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity" useGeneratedKeys="true" keyProperty="id">
     insert into mro_equipment_wenti_message_timing_push_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -138,7 +150,7 @@
         #{planouttime,jdbcType=TIMESTAMP},
       </if>
       <if test="renwushedingtime != null">
-        #{renwushedingtime,jdbcType=TIMESTAMP},
+        #{renwushedingtime,jdbcType=VARCHAR},
       </if>
       <if test="recorduserid != null">
         #{recorduserid,jdbcType=INTEGER},
@@ -178,6 +190,8 @@
       </if>
     </trim>
   </insert>
+
+  <!--根据id 编辑对应的数据-->
   <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordEntity">
     update mro_equipment_wenti_message_timing_push_record
     <set>
@@ -194,7 +208,7 @@
         planOutTime = #{planouttime,jdbcType=TIMESTAMP},
       </if>
       <if test="renwushedingtime != null">
-        renwuSheDingTime = #{renwushedingtime,jdbcType=TIMESTAMP},
+        renwuSheDingTime = #{renwushedingtime,jdbcType=VARCHAR},
       </if>
       <if test="recorduserid != null">
         recorduserid = #{recorduserid,jdbcType=INTEGER},

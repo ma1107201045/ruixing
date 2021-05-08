@@ -2,10 +2,9 @@ package com.yintu.ruixing.weixiudaxiu.impl;
 
 import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushDao;
 import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordDao;
+import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordFileDao;
 import com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiReturnVisitRecordmessageDao;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushEntity;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushService;
-import com.yintu.ruixing.weixiudaxiu.EquipmentWenTiReturnVisitRecordmessageEntity;
+import com.yintu.ruixing.weixiudaxiu.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +28,60 @@ public class EquipmentWenTiMessageTimingPushServiceImpl implements EquipmentWenT
     private EquipmentWenTiReturnVisitRecordmessageDao equipmentWenTiReturnVisitRecordmessageDao;
     @Autowired
     private EquipmentWenTiMessageTimingPushRecordDao equipmentWenTiMessageTimingPushRecordDao;
+    @Autowired
+    private EquipmentWenTiMessageTimingPushRecordFileDao equipmentWenTiMessageTimingPushRecordFileDao;
 
 
+
+
+
+    @Override
+    public List<EquipmentWenTiMessageTimingPushRecordEntity> findAllMessagePushRecord(Integer pushtype) {
+        return equipmentWenTiMessageTimingPushRecordDao.findAllMessagePushRecord(pushtype);
+    }
+
+    @Override
+    public void deleteMessagePushRecordByIds(Integer[] ids) {
+        for (Integer id : ids) {
+            equipmentWenTiMessageTimingPushRecordDao.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
+    public void editMessagePushRecordById(EquipmentWenTiMessageTimingPushRecordEntity equipmentWenTiMessageTimingPushRecordEntity,
+                                          String filename, String filepath,Integer longinUserid) {
+        equipmentWenTiMessageTimingPushRecordDao.updateByPrimaryKeySelective(equipmentWenTiMessageTimingPushRecordEntity);
+        //新增文件
+        if (filename!=null&&filepath!=null){
+            EquipmentWenTiMessageTimingPushRecordFileEntity fileEntity=new EquipmentWenTiMessageTimingPushRecordFileEntity();
+            fileEntity.setRid(equipmentWenTiMessageTimingPushRecordEntity.getId());
+            fileEntity.setUid(longinUserid);
+            fileEntity.setFilePath(filepath);
+            fileEntity.setFileName(filename);
+            equipmentWenTiMessageTimingPushRecordFileDao.insertSelective(fileEntity);
+        }
+    }
+
+    @Override
+    public List<EquipmentWenTiReturnVisitRecordmessageEntity> findRecordByPid(Integer pid) {
+        return equipmentWenTiReturnVisitRecordmessageDao.findRecordByPid(pid);
+    }
+
+    @Override
+    public void addMessagePushRecord(EquipmentWenTiMessageTimingPushRecordEntity equipmentWenTiMessageTimingPushRecordEntity,
+                                     String filename, String filepath,Integer longinUserid) {
+        equipmentWenTiMessageTimingPushRecordDao.insertSelective(equipmentWenTiMessageTimingPushRecordEntity);
+        Integer id = equipmentWenTiMessageTimingPushRecordEntity.getId();
+        //新增文件
+        if (filename!=null&&filepath!=null){
+            EquipmentWenTiMessageTimingPushRecordFileEntity fileEntity=new EquipmentWenTiMessageTimingPushRecordFileEntity();
+            fileEntity.setRid(id);
+            fileEntity.setUid(longinUserid);
+            fileEntity.setFilePath(filepath);
+            fileEntity.setFileName(filename);
+            equipmentWenTiMessageTimingPushRecordFileDao.insertSelective(fileEntity);
+        }
+    }
 
     @Override
     public String findRecordNumberByPid(Integer pid) {

@@ -54,9 +54,9 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableUpdateByExample="false"-->
         <!--               enableSelectByExample="false"/>-->
-        <table tableName="mro_equipment_wenti_online_accept_feedback_push_record"
-               domainObjectName="EquipmentWenTiOnlineAcceptFeedbackPushRecordEntity"
-               mapperName="EquipmentWenTiOnlineAcceptFeedbackPushRecordDao"
+        <table tableName="mro_equipment_wenti_message_timing_push_record_phone"
+               domainObjectName="EquipmentWenTiMessageTimingPushRecordPhoneEntity"
+               mapperName="EquipmentWenTiMessageTimingPushRecordPhoneDao"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

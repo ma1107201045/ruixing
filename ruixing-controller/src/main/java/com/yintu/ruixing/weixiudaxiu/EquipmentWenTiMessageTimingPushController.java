@@ -73,6 +73,12 @@ public class EquipmentWenTiMessageTimingPushController extends SessionController
         return ResponseDataUtil.ok("查询成功",pushEntityPageInfo);
     }
 
+    //查看记录
+    @GetMapping("/findRecordByPid/{pid}")
+    public Map<String,Object>findRecordByPid(@PathVariable Integer pid){
+        List<EquipmentWenTiReturnVisitRecordmessageEntity> recordmessageEntityList = equipmentWenTiMessageTimingPushService.findRecordByPid(pid);
+        return ResponseDataUtil.ok("查询记录成功", recordmessageEntityList);
+    }
 
     /////////////////////////////信息推送记录/////////////////////////////////////
     //根据推送信息id 自动生成对应的记录编号
@@ -93,10 +99,48 @@ public class EquipmentWenTiMessageTimingPushController extends SessionController
             equipmentWenTiMessageTimingPushRecordEntity.setRecorduserid(longinUserid);
             equipmentWenTiMessageTimingPushRecordEntity.setRecordusername(longinUsername);
             equipmentWenTiMessageTimingPushRecordEntity.setRecordstate("未完成");
-            equipmentWenTiMessageTimingPushRecordEntity.setIsnotsuccess(0);
         }
+        equipmentWenTiMessageTimingPushRecordEntity.setIsnotsuccess(0);
+        equipmentWenTiMessageTimingPushRecordEntity.setCreatename(longinUsername);
+        equipmentWenTiMessageTimingPushRecordEntity.setCreatetime(new Date());
+        equipmentWenTiMessageTimingPushRecordEntity.setUpdatename(longinUsername);
+        equipmentWenTiMessageTimingPushRecordEntity.setUpdatetime(new Date());
+        equipmentWenTiMessageTimingPushService.addMessagePushRecord(equipmentWenTiMessageTimingPushRecordEntity,filename,filepath,longinUserid);
         return ResponseDataUtil.ok("新增成功");
     }
+
+    //根据id 编辑对应的信息推送记录
+    @PutMapping("/editMessagePushRecordById/{id}")
+    public Map<String,Object>editMessagePushRecordById(@PathVariable Integer id,EquipmentWenTiMessageTimingPushRecordEntity equipmentWenTiMessageTimingPushRecordEntity,
+                                                       String filename,String filepath){
+        String longinUsername = this.getLoginUser().getTrueName();
+        Integer longinUserid = this.getLoginUser().getId().intValue();
+        equipmentWenTiMessageTimingPushRecordEntity.setUpdatename(longinUsername);
+        equipmentWenTiMessageTimingPushRecordEntity.setUpdatetime(new Date());
+        equipmentWenTiMessageTimingPushService.editMessagePushRecordById(equipmentWenTiMessageTimingPushRecordEntity,filename,filepath,longinUserid);
+        return ResponseDataUtil.ok("编辑成功");
+    }
+
+    //根据id 删除对应的记录
+    @DeleteMapping("/deleteMessagePushRecordByIds/{ids}")
+    public Map<String,Object>deleteMessagePushRecordByIds(@PathVariable Integer[] ids){
+        equipmentWenTiMessageTimingPushService.deleteMessagePushRecordByIds(ids);
+        return ResponseDataUtil.ok("删除成功");
+    }
+
+    //根据出发类型 初始化对应的记录
+    @GetMapping("/findAllMessagePushRecord")
+    public Map<String,Object>findAllMessagePushRecord(Integer page,Integer size,Integer pushtype){
+        PageHelper.startPage(page,size);
+        List<EquipmentWenTiMessageTimingPushRecordEntity>pushRecordEntityList=equipmentWenTiMessageTimingPushService.findAllMessagePushRecord(pushtype);
+        PageInfo<EquipmentWenTiMessageTimingPushRecordEntity>pushRecordEntityPageInfo=new PageInfo<>(pushRecordEntityList);
+        return ResponseDataUtil.ok("查询成功",pushRecordEntityPageInfo);
+    }
+
+    //推送
+
+
+
 
 
 }

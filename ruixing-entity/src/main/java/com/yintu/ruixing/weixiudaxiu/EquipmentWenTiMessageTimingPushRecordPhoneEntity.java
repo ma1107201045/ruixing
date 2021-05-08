@@ -8,32 +8,20 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EquipmentWenTiMessageTimingPushRecordEntity {
+public class EquipmentWenTiMessageTimingPushRecordPhoneEntity {
     private Integer id;
 
     private Integer pid;
 
-    private String recordnumber;
-
-    private Date intime;
-
-    private Date planouttime;
-
-    private String renwushedingtime;
-
-    private Integer recorduserid;
-
-    private String recordusername;
+    private String pushnumber;
 
     private String phone;
 
     private String pushname;
 
-    private Date pushtime;
+    private String department;
 
-    private String recordstate;
-
-    private Integer pushtype;
+    private String position;
 
     private Integer isnotsuccess;
 

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yintu.ruixing.master.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneDao">
+  <resultMap id="BaseResultMap" type="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pushNumber" jdbcType="VARCHAR" property="pushnumber" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="pushname" jdbcType="VARCHAR" property="pushname" />
+    <result column="department" jdbcType="VARCHAR" property="department" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="isnotsuccess" jdbcType="INTEGER" property="isnotsuccess" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="createName" jdbcType="VARCHAR" property="createname" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="updateName" jdbcType="VARCHAR" property="updatename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pid, pushNumber, phone, pushname, department, position, isnotsuccess, createTime, 
+    createName, updateTime, updateName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_message_timing_push_record_phone
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mro_equipment_wenti_message_timing_push_record_phone
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneEntity">
+    insert into mro_equipment_wenti_message_timing_push_record_phone (id, pid, pushNumber, 
+      phone, pushname, department, 
+      position, isnotsuccess, createTime, 
+      createName, updateTime, updateName
+      )
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{pushnumber,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{pushname,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{isnotsuccess,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createname,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{updatename,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneEntity">
+    insert into mro_equipment_wenti_message_timing_push_record_phone
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pushnumber != null">
+        pushNumber,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="pushname != null">
+        pushname,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="isnotsuccess != null">
+        isnotsuccess,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="createname != null">
+        createName,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="updatename != null">
+        updateName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pushnumber != null">
+        #{pushnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushname != null">
+        #{pushname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="isnotsuccess != null">
+        #{isnotsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        #{updatename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneEntity">
+    update mro_equipment_wenti_message_timing_push_record_phone
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pushnumber != null">
+        pushNumber = #{pushnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pushname != null">
+        pushname = #{pushname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="isnotsuccess != null">
+        isnotsuccess = #{isnotsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createname != null">
+        createName = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatename != null">
+        updateName = #{updatename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yintu.ruixing.weixiudaxiu.EquipmentWenTiMessageTimingPushRecordPhoneEntity">
+    update mro_equipment_wenti_message_timing_push_record_phone
+    set pid = #{pid,jdbcType=INTEGER},
+      pushNumber = #{pushnumber,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      pushname = #{pushname,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      isnotsuccess = #{isnotsuccess,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      createName = #{createname,jdbcType=VARCHAR},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      updateName = #{updatename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

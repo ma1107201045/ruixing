@@ -13,6 +13,14 @@
     id, typeId, operatorName, operatorTime, context, typeNum
   </sql>
 
+  <!--根据回访任务id  查询对应的数据-->
+  <select id="findRecordByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mro_equipment_wenti_return_visit_recordmessage
+    where typeId = #{pid,jdbcType=INTEGER}
+    and typeNum=3
+  </select>
 
   <!--根据回访任务id  查询对应的数据-->
   <select id="findRecordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
